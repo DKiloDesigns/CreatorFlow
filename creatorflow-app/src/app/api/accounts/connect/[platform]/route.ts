@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { auth } from '@/auth';
+import { getSession } from '@/auth';
 
 // NOTE: We will need to add actual OAuth logic here using a library like 'openid-client' 
 // or specific SDKs, and configure client IDs/secrets/scopes for each platform.
@@ -8,7 +8,7 @@ export async function POST(
   request: Request,
   { params }: { params: { platform: string } }
 ) {
-  const session = await auth();
+  const session = await getSession();
   const platform = params.platform;
 
   if (!session?.user?.id) {
@@ -27,7 +27,7 @@ export async function POST(
 
   // Example Placeholder Redirect (Replace with actual OAuth URL)
   let authorizationUrl = '/'; // Default fallback
-  const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3000'; // Use AUTH_URL or NEXTAUTH_URL
+  const baseUrl = process.env.NEXTAUTH_URL || 'http://localhost:3001'; // Use AUTH_URL or NEXTAUTH_URL
   const redirectUri = `${baseUrl}/api/auth/callback/${platform}`;
 
   console.log(`Initiating OAuth for ${platform}. Redirect URI: ${redirectUri}`);

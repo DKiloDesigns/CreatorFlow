@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 // import { PrismaClient } from '@prisma/client'; // Adjust import path if needed based on actual location
 // import { PostStatus } from '@prisma/client';
-import { PrismaClient, PostStatus } from '@/generated/prisma'; // Corrected import path
+import { PrismaClient, PostStatus } from '@prisma/client';
 import { publishPost } from '@/lib/publishing'; // Assuming '@/' maps to 'src/' in tsconfig
 
 const prisma = new PrismaClient();

@@ -16,6 +16,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { toast } from "sonner"
 import { useDropzone, FileWithPath } from 'react-dropzone';
 import Image from 'next/image';
+// import { PostStatus } from '@prisma/client';
 
 // Assuming local enum exists if prisma client isn't fully available everywhere yet
 // import { PostStatus } from '@/generated/prisma';
@@ -90,36 +91,8 @@ export default function PostComposer() {
   };
 
   // --- Dropzone Logic Start ---
-  const onDrop = useCallback((acceptedFiles: FileWithPath[]) => {
-    // TODO: Add validation (file types, size limits, max number)
-    console.log('Accepted files:', acceptedFiles);
-    setFilesToUpload(prev => [...prev, ...acceptedFiles]);
-    // Trigger upload process here (Step 5)
-    handleUploadFiles(acceptedFiles);
-  }, []); // Add dependencies if needed
-
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({
-    onDrop,
-    accept: { // Example: Accept images and videos
-      'image/*': ['.jpeg', '.png', '.gif', '.webp'],
-      'video/*': ['.mp4', '.mov']
-    },
-    maxFiles: 5, // Example limit
-    // Add maxSize limit if needed
-  });
-
-  const removeFileToUpload = (file: FileWithPath) => {
-    setFilesToUpload(prev => prev.filter(f => f !== file));
-  };
-  // --- Dropzone Logic End ---
-
-  // Clean up Object URLs on unmount or when files change
-  useEffect(() => {
-    return () => filesToUpload.forEach(file => URL.revokeObjectURL(URL.createObjectURL(file)));
-  }, [filesToUpload]);
-
   // Step 5: Actual Upload Function
-  const handleUploadFiles = async (files: FileWithPath[]) => {
+  const handleUploadFiles = async (files: File[]) => {
     if (!files || files.length === 0) return;
     
     const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
@@ -192,7 +165,7 @@ export default function PostComposer() {
             setUploadedMediaUrls((prev) => [...prev, secureUrl]);
             toast.success(`${file.name} uploaded successfully!`, { id: toastId });
             // Remove the successfully uploaded file from the preview list
-            removeFileToUpload(file); 
+            removeFileToUpload(file as FileWithPath); 
 
         } catch (error) {
             console.error(`Error uploading ${file.name}:`, error);
@@ -202,6 +175,30 @@ export default function PostComposer() {
         }
     }
   };
+
+  const handleDrop = useCallback((acceptedFiles: File[]) => {
+    handleUploadFiles(acceptedFiles);
+  }, [handleUploadFiles]);
+
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({
+    onDrop: handleDrop,
+    accept: { // Example: Accept images and videos
+      'image/*': ['.jpeg', '.png', '.gif', '.webp'],
+      'video/*': ['.mp4', '.mov']
+    },
+    maxFiles: 5, // Example limit
+    // Add maxSize limit if needed
+  });
+
+  const removeFileToUpload = (file: FileWithPath) => {
+    setFilesToUpload(prev => prev.filter(f => f !== file));
+  };
+  // --- Dropzone Logic End ---
+
+  // Clean up Object URLs on unmount or when files change
+  useEffect(() => {
+    return () => filesToUpload.forEach(file => URL.revokeObjectURL(URL.createObjectURL(file)));
+  }, [filesToUpload]);
 
   const handleSaveDraft = async () => {
     if (!contentText && !selectedPlatforms.length && uploadedMediaUrls.length === 0) {
@@ -326,8 +323,8 @@ export default function PostComposer() {
             className={cn(
               "flex flex-col items-center justify-center p-6 rounded-md border-2 border-dashed",
               "cursor-pointer transition-colors",
-              isDragActive ? "border-primary bg-primary/10" : "border-border hover:border-primary/50",
-              isSubmitting ? "cursor-not-allowed opacity-50 bg-muted/50" : ""
+              isDragActive ? "border-primary bg-primary bg-opacity-10" : "border-border hover:border-primary hover:border-opacity-50",
+              isSubmitting ? "cursor-not-allowed opacity-50 bg-muted bg-opacity-50" : ""
             )}
           >
             <input {...getInputProps()} disabled={isSubmitting} />
@@ -347,7 +344,7 @@ export default function PostComposer() {
               {filesToUpload.map((file, index) => {
                 const objectUrl = URL.createObjectURL(file); // Create URL here
                 return (
-                  <div key={`${file.name}-${index}`} className="flex items-center justify-between p-2 border rounded-md bg-muted/50">
+                  <div key={`${file.name}-${index}`} className="flex items-center justify-between p-2 border rounded-md bg-muted bg-opacity-50">
                     <div className="flex items-center space-x-2 overflow-hidden">
                       {file.type.startsWith('image/') ? (
                         <Image 

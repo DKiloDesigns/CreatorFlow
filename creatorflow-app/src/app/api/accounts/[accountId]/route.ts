@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { auth } from '@/auth';
+import { getSession } from '@/auth';
 import { PrismaClient } from '@/generated/prisma';
 
 const prisma = new PrismaClient();
@@ -8,7 +8,7 @@ export async function DELETE(
   request: Request,
   { params }: { params: { accountId: string } }
 ) {
-  const session = await auth();
+  const session = await getSession();
   const accountId = params.accountId;
 
   if (!session?.user?.id) {

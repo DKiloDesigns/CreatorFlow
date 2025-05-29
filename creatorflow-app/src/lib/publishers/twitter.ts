@@ -1,11 +1,13 @@
-// import { Post, SocialAccount } from '@prisma/client'; // Adjust import path
-import { Post, SocialAccount, PrismaClient } from '@/generated/prisma'; // Corrected import path
+// Import from the generated Prisma client
+import { Post, SocialAccount, PrismaClient } from '@prisma/client';
 import { decrypt, encrypt } from '@/lib/crypto'; // Import crypto utils
-import { TwitterApi, EUploadMimeType } from 'twitter-api-v2'; // Import the library
+import { TwitterApi, EUploadMimeType, SendTweetV2Params, TweetV2PostTweetResult, InlineErrorV2 } from 'twitter-api-v2'; // Import the library
 // Consider using a library like twitter-api-v2 for easier interaction
 // import { TwitterApi } from 'twitter-api-v2';
+import { prisma } from '@/lib/prisma';
+import { PlatformResult } from '../publishing';
 
-const prisma = new PrismaClient(); // For updating tokens
+const prismaClient = new PrismaClient(); // For updating tokens
 
 // Ensure required environment variables are set for Twitter API interaction
 if (!process.env.TWITTER_CLIENT_ID || !process.env.TWITTER_CLIENT_SECRET) {
@@ -14,10 +16,34 @@ if (!process.env.TWITTER_CLIENT_ID || !process.env.TWITTER_CLIENT_SECRET) {
 }
 
 // Define the expected return type for publisher functions
-interface PublishResult {
-    success: boolean;
-    error?: string;
-    platformPostId?: string; // The ID of the tweet created on the platform
+type PublishResult = PlatformResult;
+
+// Add these types at the top of the file after the imports
+interface TwitterError {
+    message: string;
+    code?: string;
+    details?: string;
+}
+
+interface TwitterApiError {
+    message: string;
+    code?: string;
+}
+
+interface TwitterTweetResult {
+    data: {
+        id: string;
+        text: string;
+    };
+    errors?: TwitterApiError[];
+}
+
+// Update TwitterTweetContent to match SendTweetV2Params
+interface TwitterTweetContent {
+    text: string;
+    media?: {
+        media_ids: string[];
+    };
 }
 
 // --- Helper: Get Authenticated Twitter Client --- 
@@ -60,7 +86,7 @@ async function getTwitterApiClient(account: SocialAccount): Promise<{ client: Tw
 
             if (encryptedNewAccess && encryptedNewRefresh) {
                 try {
-                    await prisma.socialAccount.update({
+                    await prismaClient.socialAccount.update({
                         where: { id: account.id },
                         data: {
                             encryptedAccessToken: encryptedNewAccess,
@@ -85,20 +111,23 @@ async function getTwitterApiClient(account: SocialAccount): Promise<{ client: Tw
 
         return { client: refreshedClient }; // Return the client ready for V2 API calls
 
-    } catch (error: any) {
-        console.error(`[Twitter Publisher] Failed to refresh token or initialize client for account ${account.id}:`, error);
+    } catch (error: unknown) {
+        const twitterError = error as TwitterError;
+        console.error(`[Twitter Publisher] Failed to refresh token or initialize client for account ${account.id}:`, twitterError);
         // If refresh fails, mark account as needing re-auth
-        if (error.message?.includes('invalid_grant') || error.message?.includes('invalid_request')) {
+        if (twitterError.message?.includes('invalid_grant') || twitterError.message?.includes('invalid_request')) {
             try {
-                await prisma.socialAccount.update({
+                await prismaClient.socialAccount.update({
                     where: { id: account.id },
                     data: { status: 'needs_reauth' }
                 });
                 console.log(`[Twitter Publisher] Marked account ${account.id} as needs_reauth due to refresh failure.`);
-            } catch (dbError) { /* Log DB error */ }
+            } catch (dbError) {
+                console.error('Failed to update account status:', dbError);
+            }
             return { client: null, error: 'Failed to refresh token. Account needs re-authentication.' };
         } else {
-            return { client: null, error: `Twitter client initialization/refresh error: ${error.message}` };
+            return { client: null, error: `Twitter client initialization/refresh error: ${twitterError.message}` };
         }
     }
 }
@@ -137,7 +166,7 @@ export async function publishToTwitter(
 
     if (authError || !apiClient) {
         console.error(`[Twitter Publisher] Authentication failed for account ${account.id}: ${authError}`);
-        return { success: false, error: authError || 'Authentication failed' };
+        return { platform: 'twitter', success: false, error: authError || 'Authentication failed' };
     }
 
     // --- Media Upload --- 
@@ -170,10 +199,10 @@ export async function publishToTwitter(
                 mediaIds.push(mediaId);
                 console.log(`[Twitter Publisher]     -> Uploaded media, ID: ${mediaId}`);
 
-            } catch (mediaError: any) {
-                console.error(`[Twitter Publisher] Failed to upload media from ${mediaUrl}:`, mediaError);
-                // Decide if one media failure should stop the whole post
-                return { success: false, error: `Failed to upload media: ${mediaError.message}` };
+            } catch (mediaError: unknown) {
+                const error = mediaError as TwitterError;
+                console.error(`[Twitter Publisher] Failed to upload media from ${mediaUrl}:`, error);
+                return { platform: 'twitter', success: false, error: `Failed to upload media: ${error.message}` };
             }
         }
         console.log(`[Twitter Publisher] Finished processing media. IDs: ${mediaIds.join(', ')}`);
@@ -181,35 +210,59 @@ export async function publishToTwitter(
 
     // --- Post Tweet --- 
     try {
-        const tweetContent: { text: string; media?: { media_ids: string[] } } = { 
-            text: post.contentText || '' 
+        const tweetParams: SendTweetV2Params = {
+            text: post.contentText || '',
+            ...(mediaIds.length > 0 && {
+                media: {
+                    media_ids: mediaIds.slice(0, 4) as [string] | [string, string] | [string, string, string] | [string, string, string, string]
+                }
+            })
         };
-        if (mediaIds.length > 0) {
-            tweetContent.media = { media_ids: mediaIds };
-        }
 
-        console.log('[Twitter Publisher] Posting tweet...', JSON.stringify(tweetContent));
+        console.log('[Twitter Publisher] Posting tweet...', JSON.stringify(tweetParams));
 
-        const result = await apiClient.v2.tweet(tweetContent);
+        const result = await apiClient.v2.tweet(tweetParams);
         
-        if (result.errors) {
+        if ('errors' in result && result.errors) {
             console.error('[Twitter Publisher] API Error posting tweet:', result.errors);
-            throw new Error(`Twitter API Error: ${result.errors.map(e => e.message).join('; ')}`);
+            throw new Error(`Twitter API Error: ${result.errors.map(e => e.detail || e.title).join('; ')}`);
         }
         
         const platformPostId = result.data.id;
         console.log(`[Twitter Publisher] Successfully posted tweet. Platform ID: ${platformPostId}`);
 
         return {
+            platform: 'twitter',
             success: true,
             platformPostId: platformPostId,
         };
 
-    } catch (error: any) {
-        console.error(`[Twitter Publisher] Failed to post tweet for post ${post.id}:`, error);
+    } catch (error: unknown) {
+        const twitterError = error as TwitterError;
+        console.error(`[Twitter Publisher] Failed to post tweet for post ${post.id}:`, twitterError);
         return {
+            platform: 'twitter',
             success: false,
-            error: error.message || 'Unknown error posting tweet',
+            error: twitterError.message || 'Unknown error posting tweet',
         };
     }
+}
+
+async function postTweet(client: TwitterApi, content: SendTweetV2Params): Promise<PublishResult> {
+  try {
+    const tweet = await client.v2.tweet(content);
+    return {
+      platform: 'twitter',
+      success: true,
+      platformPostId: tweet.data.id
+    };
+  } catch (error) {
+    const twitterError = error as TwitterError;
+    console.error('[Twitter Publisher] Error posting tweet:', twitterError);
+    return {
+      platform: 'twitter',
+      success: false,
+      error: twitterError.message || 'Unknown error occurred'
+    };
+  }
 } 

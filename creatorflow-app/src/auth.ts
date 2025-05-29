@@ -1,30 +1,70 @@
-import NextAuth from "next-auth"
 import { PrismaAdapter } from "@auth/prisma-adapter"
 import { PrismaClient } from "@prisma/client"
-// Import providers here (e.g., import Google from "next-auth/providers/google")
+import GitHub from "next-auth/providers/github"
+import { getServerSession } from "next-auth/next"
+import type { NextAuthOptions } from "next-auth"
+// Re-export signIn and signOut from next-auth/react for client components
+export { signIn, signOut } from "next-auth/react"
 
 const prisma = new PrismaClient()
 
-export const { handlers, signIn, signOut, auth } = NextAuth({
+// Define the auth config for NextAuth v4
+export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
-    // Add providers here
-    // Example: Google({
-    //   clientId: process.env.GOOGLE_CLIENT_ID,
-    //   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-    // }),
-    // We will add custom OAuth providers for Instagram, TikTok, etc. later
+    GitHub({
+      clientId: process.env.GITHUB_CLIENT_ID as string,
+      clientSecret: process.env.GITHUB_CLIENT_SECRET as string,
+    }),
   ],
   session: {
-    strategy: "jwt", // Using JWT for session strategy is often recommended
+    strategy: "jwt",
   },
   callbacks: {
-    // Add callbacks here if needed later (e.g., modify session token)
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (session?.user && token?.id) {
+        session.user.id = token.id as string;
+      }
+      return session;
+    },
   },
-  // Add secret for production
-  // secret: process.env.AUTH_SECRET,
-  // Add pages configuration if needed for custom sign-in page
-  // pages: {
-  //   signIn: '/auth/signin',
-  // }
-}) 
+  secret: process.env.AUTH_SECRET,
+  debug: process.env.NODE_ENV === 'development',
+  pages: {
+    signIn: '/signin',
+    signOut: '/',
+    error: '/error',
+  },
+  cookies: {
+    sessionToken: {
+      name: `next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: 'lax',
+        path: '/',
+        secure: process.env.NODE_ENV === 'production'
+      }
+    }
+  },
+}
+
+// Export for Pages Router API route
+export default authOptions;
+
+// Export for App Router compatibility
+export const authConfig = authOptions;
+
+// Export the getSession helper for server components
+export const getSession = () => getServerSession(authOptions);
+
+// Export auth function for compatibility with existing imports
+export const auth = async () => {
+  const session = await getServerSession(authOptions);
+  return session;
+};

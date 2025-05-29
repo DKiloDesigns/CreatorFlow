@@ -1,4 +1,4 @@
-import { PrismaClient, Post, SocialAccount } from '@/generated/prisma';
+import { PrismaClient, Post, SocialAccount } from '@prisma/client';
 import { decrypt, encrypt } from '@/lib/crypto'; // Import crypto utils
 
 const prisma = new PrismaClient(); // For updating tokens
@@ -8,6 +8,57 @@ interface PublishResult {
     success: boolean;
     error?: string;
     platformPostId?: string; // The ID of the post created on the platform (URN for LinkedIn)
+}
+
+// Add these types at the top of the file after the imports
+interface LinkedInRefreshResponse {
+    access_token: string;
+    expires_in: number;
+    refresh_token?: string;
+    refresh_token_expires_in?: number;
+    scope?: string;
+}
+
+interface LinkedInError {
+    message: string;
+    code?: string;
+    details?: string;
+}
+
+interface LinkedInMediaUploadResponse {
+    value?: {
+        uploadMechanism?: {
+            'com.linkedin.digitalmedia.uploading.MediaUploadHttpRequest'?: {
+                uploadUrl: string;
+            };
+        };
+        asset?: string;
+    };
+    message?: string;
+}
+
+interface LinkedInShareContent {
+    text: string;
+    media?: {
+        id: string;
+        status: string;
+        serviceRelationships: Array<{
+            relationshipType: string;
+            identifier: string;
+        }>;
+    }[];
+}
+
+interface LinkedInPostBody {
+    author: string;
+    commentary: string;
+    visibility: string;
+    distribution?: {
+        feedDistribution: string;
+        targetEntities: string[];
+        thirdPartyDistributionChannels: string[];
+    };
+    content?: LinkedInShareContent;
 }
 
 // --- Helper: Get Authenticated LinkedIn Client (Placeholder) ---
@@ -110,21 +161,29 @@ async function getLinkedInApiClient(account: SocialAccount): Promise<{ accessTok
                 // return { accessToken: null, error: 'Failed to encrypt refreshed tokens.' };
             }
 
-        } catch (refreshError: any) {
-             // Refresh failed (Network error or API error handled above)
-             console.error('[LinkedIn Publisher] Token refresh failed:', refreshError);
-             try {
-                 await prisma.socialAccount.update({
-                     where: { id: account.id },
-                     data: { status: 'needs_reauth' }
-                 });
-             } catch (dbError) { /* Log DB error */ }
-            return { accessToken: null, error: `Failed to refresh expired LinkedIn token: ${refreshError.message}` };
+        } catch (refreshError: unknown) {
+            const error = refreshError as LinkedInError;
+            console.error('[LinkedIn Publisher] Token refresh failed:', error);
+            try {
+                await prisma.socialAccount.update({
+                    where: { id: account.id },
+                    data: { status: 'needs_reauth' }
+                });
+            } catch (dbError) { 
+                console.error('Failed to update account status:', dbError);
+            }
+            return { accessToken: null, error: `Failed to refresh expired LinkedIn token: ${error.message}` };
         }
     }
     
     console.log(`[LinkedIn Publisher] Using access token (potentially refreshed) for account ${account.id}`);
     return { accessToken: currentAccessToken };
+}
+
+// Fix explicit any usage
+async function handleError(error: LinkedInError): Promise<never> {
+    const errorMessage = error.message || 'Unknown error occurred';
+    throw new Error(`LinkedIn API error: ${errorMessage}`);
 }
 
 // --- Main Publish Function ---
@@ -232,35 +291,29 @@ export async function publishToLinkedIn(
                  console.warn("   [LinkedIn Publisher] Video uploaded, but status polling is not implemented. Post might fail if video isn't processed yet.");
             }
 
-        } catch (mediaError: any) {
-            console.error(`[LinkedIn Publisher] Failed to process or upload media from ${mediaUrl}:`, mediaError);
-            return { success: false, error: `Failed to upload media: ${mediaError.message}` };
+        } catch (mediaError: unknown) {
+            const error = mediaError as LinkedInError;
+            console.error(`[LinkedIn Publisher] Failed to process or upload media from ${mediaUrl}:`, error);
+            return { success: false, error: `Failed to upload media: ${error.message}` };
         }
     }
 
     // --- Create Post --- 
     try {
-        const postBody: any = {
+        const postBody: LinkedInPostBody = {
             author: authorUrn,
-            lifecycleState: "PUBLISHED",
-            specificContent: {
-                "com.linkedin.ugc.ShareContent": {
-                    shareCommentary: {
-                        text: post.contentText || ''
-                    },
-                    shareMediaCategory: mediaUrn ? "IMAGE" : "NONE" // Adjust based on media type (IMAGE, ARTICLE, VIDEO etc.)
-                }
+            commentary: post.contentText || '',
+            visibility: "CONNECTIONS",
+            distribution: {
+                feedDistribution: "PUBLIC",
+                targetEntities: [],
+                thirdPartyDistributionChannels: [],
             },
-            visibility: { 
-                "com.linkedin.ugc.MemberNetworkVisibility": "CONNECTIONS" // Or PUBLIC, etc.
-            }
+            content: {
+                text: post.contentText || '',
+                media: mediaUrn ? [{ id: mediaUrn, status: "READY", serviceRelationships: [{ relationshipType: "OWNER", identifier: "urn:li:userGeneratedContent" }] }] : [],
+            },
         };
-
-        if (mediaUrn) {
-            postBody.specificContent["com.linkedin.ugc.ShareContent"].media = [
-                { status: "READY", media: mediaUrn }
-            ];
-        }
 
         console.log('[LinkedIn Publisher] Posting content...', JSON.stringify(postBody));
 
@@ -323,11 +376,12 @@ export async function publishToLinkedIn(
             platformPostId: platformPostId,
         };
 
-    } catch (error: any) {
-        console.error(`[LinkedIn Publisher] Failed to publish post ${post.id}:`, error);
+    } catch (error: unknown) {
+        const linkedInError = error as LinkedInError;
+        console.error(`[LinkedIn Publisher] Failed to publish post ${post.id}:`, linkedInError);
         return {
             success: false,
-            error: error.message || 'Unknown LinkedIn API error',
+            error: linkedInError.message || 'Unknown LinkedIn API error',
         };
     }
 } 

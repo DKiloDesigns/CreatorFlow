@@ -1,5 +1,32 @@
 {
+  "name": "creatorflow",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "cd creatorflow-app && npm run dev",
+    "dev:3001": "cd creatorflow-app && npm run dev:3001",
+    "build": "cd creatorflow-app && npm run build",
+    "start": "cd creatorflow-app && npm run start",
+    "lint": "cd creatorflow-app && npm run lint",
+    "setup-stripe": "cd creatorflow-app && npm run setup-stripe"
+  },
   "dependencies": {
+    "@prisma/client": "^6.7.0",
+    "@types/formidable": "^3.4.5",
+    "cloudinary": "^2.6.1",
+    "formidable": "^3.5.4",
+    "next-auth": "^4.24.11",
+    "puppeteer": "^24.9.0",
     "stripe": "^18.1.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.1.8",
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.3",
+    "prisma": "^6.7.0",
+    "tailwindcss": "^4.1.7"
+  },
+  "engines": {
+    "node": ">=20.0.0"
   }
 }

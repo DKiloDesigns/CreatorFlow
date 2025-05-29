@@ -1,5 +1,5 @@
 // import { PrismaClient, Post, SocialAccount, PostStatus } from '@prisma/client'; // Adjust import path
-import { PrismaClient, Post, SocialAccount, PostStatus } from '@/generated/prisma'; // Corrected import path
+import { PrismaClient, Post, SocialAccount, PostStatus } from '@prisma/client';
 // import { publishToTwitter } from './publishers/twitter'; // Placeholder import
 // import { publishToLinkedIn } from './publishers/linkedin'; // Placeholder import
 // ... other platform imports
@@ -13,6 +13,19 @@ type PostWithDetails = Post & {
         socialAccounts: SocialAccount[];
     };
 };
+
+// Add these types at the top of the file after the imports
+export interface PlatformResult {
+    platform: string;
+    success: boolean;
+    error?: string;
+    platformPostId?: string;
+}
+
+export interface PlatformError extends Error {
+    code?: string | number;
+    details?: unknown;
+}
 
 /**
  * Orchestrates the publishing of a single post to its selected platforms.
@@ -54,7 +67,7 @@ export async function publishPost(postId: string): Promise<void> {
         console.log(`[Publishing Service] Publishing post ${postId} for platforms: ${post.platforms.join(', ')}`);
 
         // 2. Iterate through target platforms and call specific publishers
-        const platformResults: { platform: string; success: boolean; error?: string; platformPostId?: string }[] = [];
+        const platformResults: PlatformResult[] = [];
         let overallSuccess = true;
 
         for (const platform of post.platforms) {
@@ -110,9 +123,14 @@ export async function publishPost(postId: string): Promise<void> {
                     console.error(`[Publishing Service]   -> Failed to publish to ${platform}: ${platformError || 'Unknown error'}`);
                 }
 
-            } catch (error: any) {
-                console.error(`[Publishing Service]   -> Unexpected error publishing to ${platform}:`, error);
-                platformResults.push({ platform, success: false, error: error.message || 'Unexpected error during platform publishing.' });
+            } catch (error: unknown) {
+                const platformError = error as PlatformError;
+                console.error(`[Publishing Service]   -> Unexpected error publishing to ${platform}:`, platformError);
+                platformResults.push({ 
+                    platform, 
+                    success: false, 
+                    error: platformError.message || 'Unexpected error during platform publishing.' 
+                });
                 overallSuccess = false;
             }
         }
@@ -140,8 +158,9 @@ export async function publishPost(postId: string): Promise<void> {
 
         console.log(`[Publishing Service] Post ${postId} finished processing. Final status: ${finalStatus}`);
 
-    } catch (error: any) {
-        console.error(`[Publishing Service] Critical error processing post ${postId}:`, error);
+    } catch (error: unknown) {
+        const platformError = error as PlatformError;
+        console.error(`[Publishing Service] Critical error processing post ${postId}:`, platformError);
         // If we have the post object, try to mark it as FAILED
         if (post && post.status === PostStatus.PUBLISHING) { // Only update if it was in PUBLISHING state
             try {
@@ -149,7 +168,7 @@ export async function publishPost(postId: string): Promise<void> {
                     where: { id: postId },
                     data: {
                         status: PostStatus.FAILED,
-                        errorMessage: `Critical error during processing: ${error.message || 'Unknown error'}`,
+                        errorMessage: `Critical error during processing: ${platformError.message || 'Unknown error'}`,
                     },
                 });
                 console.error(`[Publishing Service] Marked post ${postId} as FAILED due to critical error.`);

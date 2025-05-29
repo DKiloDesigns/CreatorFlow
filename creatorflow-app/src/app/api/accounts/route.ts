@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server';
-import { auth } from '@/auth'; // Assuming auth is correctly configured in src/auth.ts
-import { PrismaClient } from '@/generated/prisma'; // Updated import path based on generate output
+import { getSession } from '@/auth'; // Assuming auth is correctly configured in src/auth.ts
+import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
 export async function GET(request: Request) {
-  const session = await auth();
+  const session = await getSession();
 
   if (!session?.user?.id) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

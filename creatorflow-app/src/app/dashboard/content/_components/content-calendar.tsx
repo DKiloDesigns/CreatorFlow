@@ -168,10 +168,10 @@ export default function ContentCalendar() {
                 const status = (arg.event.extendedProps as CalendarEvent['extendedProps']).status;
                 let classes = ['cursor-pointer', 'p-1', 'rounded-sm', 'text-xs', 'border'];
                 switch (status) {
-                  case PostStatus.SCHEDULED: classes.push('bg-blue-100', 'border-blue-300', 'text-blue-800', 'dark:bg-blue-900/50', 'dark:border-blue-700', 'dark:text-blue-300'); break;
-                  case PostStatus.PUBLISHED: classes.push('bg-green-100', 'border-green-300', 'text-green-800', 'dark:bg-green-900/50', 'dark:border-green-700', 'dark:text-green-300'); break;
-                  case PostStatus.FAILED: classes.push('bg-red-100', 'border-red-300', 'text-red-800', 'dark:bg-red-900/50', 'dark:border-red-700', 'dark:text-red-300'); break;
-                  case PostStatus.PUBLISHING: classes.push('bg-yellow-100', 'border-yellow-300', 'text-yellow-800', 'dark:bg-yellow-900/50', 'dark:border-yellow-700', 'dark:text-yellow-300'); break;
+                  case PostStatus.SCHEDULED: classes.push('bg-blue-100', 'border-blue-300', 'text-blue-800', 'dark:bg-blue-900', 'dark:bg-opacity-50', 'dark:border-blue-700', 'dark:text-blue-300'); break;
+                  case PostStatus.PUBLISHED: classes.push('bg-green-100', 'border-green-300', 'text-green-800', 'dark:bg-green-900', 'dark:bg-opacity-50', 'dark:border-green-700', 'dark:text-green-300'); break;
+                  case PostStatus.FAILED: classes.push('bg-red-100', 'border-red-300', 'text-red-800', 'dark:bg-red-900', 'dark:bg-opacity-50', 'dark:border-red-700', 'dark:text-red-300'); break;
+                  case PostStatus.PUBLISHING: classes.push('bg-yellow-100', 'border-yellow-300', 'text-yellow-800', 'dark:bg-yellow-900', 'dark:bg-opacity-50', 'dark:border-yellow-700', 'dark:text-yellow-300'); break;
                 }
                 return classes;
             }}

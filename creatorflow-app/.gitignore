@@ -39,3 +39,13 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Twitter Credentials
+TWITTER_CLIENT_ID=T3RPeWRlZ0RhaWRUbU5JdVdiWFg6MTpjaQ
+TWITTER_CLIENT_SECRET=GnQva9fSXE9LiYO4jDcfeHFAo7TG_h3Lb7PsWH0uUHvQhtDZRe
+
+# LinkedIn Credentials
+LINKEDIN_CLIENT_ID=...
+LINKEDIN_CLIENT_SECRET=...
+
+# etc...

@@ -1,7 +1,7 @@
 import { NextResponse, NextRequest } from 'next/server';
 // Corrected import path based on generator output and tsconfig alias
-import { PrismaClient, PostStatus } from '@/generated/prisma'; 
-import { auth } from "@/auth"; // Import auth from the config file
+import { PrismaClient, PostStatus } from '@prisma/client'; 
+import { getSession } from "@/auth";
 // import { getServerSession } from "next-auth/next" // Example import
 // import { authOptions } from "@/lib/auth"; // Example import for auth config
 
@@ -17,9 +17,12 @@ const prisma = new PrismaClient();
 // }
 
 export async function POST(req: NextRequest) {
+    // Debug logging for session/cookie issues
+    console.log('--- API DEBUG ---');
+    console.log('HEADERS:', Object.fromEntries(req.headers.entries()));
+    console.log('COOKIES:', req.cookies.getAll());
     try {
-        // Use the auth() helper to get the session
-        const session = await auth();
+        const session = await getSession();
         const userId = session?.user?.id;
 
         if (!userId) {
@@ -71,11 +74,17 @@ export async function POST(req: NextRequest) {
 
 // --- GET Handler to Fetch Posts ---
 export async function GET(req: NextRequest) {
+    // Debug logging for session/cookie issues
+    console.log('--- API DEBUG ---');
+    console.log('HEADERS:', Object.fromEntries(req.headers.entries()));
+    console.log('COOKIES:', req.cookies.getAll());
     try {
-        const session = await auth();
+        const session = await getSession();
+        console.log("GET /api/posts - Session:", session);
         const userId = session?.user?.id;
 
         if (!userId) {
+            console.error("GET /api/posts - Unauthorized: userId is missing from session", session);
             return NextResponse.json({ error: 'Unauthorized: User not logged in' }, { status: 401 });
         }
 

@@ -6,7 +6,6 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
 }
 
 datasource db {
@@ -32,6 +31,8 @@ model User {
   stripeSubscriptionId   String?   @unique @map(name: "stripe_subscription_id")
   stripePriceId          String?   @map(name: "stripe_price_id")
   stripeCurrentPeriodEnd DateTime? @map(name: "stripe_current_period_end")
+  paymentRetryCount      Int?      @default(0) @map(name: "payment_retry_count")
+  paymentRetryDate       DateTime? @map(name: "payment_retry_date")
 
   accounts      Account[] // NextAuth.js accounts
   sessions      Session[] // NextAuth.js sessions

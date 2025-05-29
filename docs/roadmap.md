@@ -6,6 +6,15 @@
 
 **Target Audience:** Hungry individual social media creators and influencers ready to level up on Insta, TikTok, YouTube, and X/Twitter.
 
+## 2025-05-28: Engineering Progress Update
+- **Prisma import path issue resolved** (migrated all imports to @prisma/client, removed custom output path).
+- **Dashboard loads successfully** on http://localhost:3001.
+- **Dev server running on Node 20** (confirmed compatibility).
+- **Stripe webhook setup in progress** (webhook secret obtained, integration pending verification).
+- **Tailwind/PostCSS config fixed** (installed @tailwindcss/postcss, updated config as required by Next.js 15+).
+- **Previous blockers (Prisma, build, and port issues) are now resolved.**
+- **Next:** Verify Stripe integration and run end-to-end tests for billing and post publishing.
+
 ---
 
 ### **Phase 1: MVP Launch & Initial Monetization (Target: 3-5 Months)**
