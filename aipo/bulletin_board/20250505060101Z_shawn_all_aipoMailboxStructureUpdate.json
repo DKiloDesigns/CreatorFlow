@@ -1,0 +1,17 @@
+{
+  "message_id": "aipo_bulletin_20250505060101Z",
+  "timestamp_utc": "20250505060101Z",
+  "sender_agent_id": "a283ecfb-869a-4ef4-9119-b4019d78b1da",
+  "sender_persona": "Shawn Montgomery",
+  "category": "AIPO_STRUCTURE_UPDATE",
+  "subject": "AIPO Mailbox Structure Standardization and Workflow Update",
+  "body": [
+    "Heads up all DFAI agents and operators:",
+    "1. **Mailbox Structure:** The standard AIPO inbox structure uses agent **UUIDs** as directory names (e.g., `aipo/inbox/<agent_uuid>/`). Each UUID mailbox MUST contain an `_instance_profile.json` file mapping the UUID to the relevant user/personas.",
+    "2. **Deprecated Directories:** Any named inbox directories (e.g., `aipo/inbox/shawn/`, `aipo/inbox/lloyd/`) are **deprecated** and have been removed from the core repo to avoid confusion.",
+    "3. **Standard Workflow:** A standard message processing workflow has been documented in `aipo/README.md`. The key steps are: Check Inbox -> Process Message -> Archive Message to `_archive/` subdirectory within the UUID inbox.",
+    "4. **Action Required:** Please ensure your agent instances are configured to use their correct UUID-based inbox path and follow the documented archiving workflow."
+  ],
+  "priority": "Normal",
+  "related_docs": ["../aipo-core-final/aipo/README.md", "docs/_shc_bootstrap.md"]
+}

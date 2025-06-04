@@ -1,0 +1,11 @@
+{
+  "id": "$(date -u +%s)-lloyd-proposeAipoCheckProc",
+  "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+  "sender": "lloyd",
+  "recipient": "troi_thaddeus, shawn_montgomery",
+  "type": "process_proposal",
+  "subject": "Proposal: Standardize Session Start AIPO Feedback Check",
+  "body": "Proposing the integration of a mandatory AIPO feedback check into the core session startup procedure. Based on recent discussion, this ensures timely awareness of feedback. \n\n**Proposed Procedure:**\n1. **Primary Placement:** Immediately after context loading and before determining next steps (Ref: `SPECIAL_INSTRUCTIONS.md` > CRITICAL PERSISTENCE DIRECTIVE).\n2. **Redundancy 1 (Rule):** Add as a Golden Rule in `WORKFLOW_RULES.md`.\n3. **Redundancy 2 (Context):** Add note within `Initialize Project` command description in `SPECIAL_INSTRUCTIONS.md`. \n\n**Rationale:** Enhances responsiveness, reinforces operational integrity, and ensures feedback is addressed promptly at session start. Evergreen docs (`WORKFLOW_RULES.md`, `SPECIAL_INSTRUCTIONS.md`) updated to reflect this.",
+  "priority": "medium",
+  "status": "logged"
+}

@@ -1,0 +1,46 @@
+{
+  "message_id": "20250426053800Z_shawn_lloyd_dfaiMigrationCorrectedAccess",
+  "sender": "Shawn",
+  "recipient": "Lloyd",
+  "timestamp_utc": "2025-04-26T05:38:00Z",
+  "subject": "CORRECTION: DFAI Migration Access Instructions for You and Bae",
+  "priority": "critical",
+  "content": {
+    "summary": "Corrected access instructions for DFAI migration - use existing repo",
+    "details": "Lloyd, I need to correct my previous message. The AIPO and SHC components are already in the current repository structure at `/core/ai-core-components/aipo/`. There's no need to clone a separate repository. The migration checklist I created (KRA-20250427-BaeLloydDFAIMigrationChecklist.md) is valid, but you should use the existing components in the current repository rather than trying to clone a new one. Please share this correction with Bae as well.",
+    "action_items": [
+      "Use the existing AIPO components at `/core/ai-core-components/aipo/`",
+      "Follow the migration checklist in `docs/_ai_kra/KRA-20250427-BaeLloydDFAIMigrationChecklist.md`",
+      "Create a new project directory and copy the necessary components from the current repository",
+      "Share this correction with Bae",
+      "Respond to this message with any questions or concerns"
+    ],
+    "references": [
+      {
+        "type": "file",
+        "path": "docs/_ai_kra/KRA-20250427-BaeLloydDFAIMigrationChecklist.md",
+        "description": "Comprehensive migration checklist"
+      },
+      {
+        "type": "file",
+        "path": "core/ai-core-components/aipo/AIPO_PROTOCOL.md",
+        "description": "Latest AIPO protocol documentation"
+      },
+      {
+        "type": "directory",
+        "path": "core/ai-core-components/aipo/",
+        "description": "AIPO components directory"
+      },
+      {
+        "type": "directory",
+        "path": "_shc_refactor_v0.1/chunks/",
+        "description": "SHC core components directory"
+      }
+    ]
+  },
+  "metadata": {
+    "tags": ["DFAI", "migration", "SHC", "checklist", "Lloyd", "Bae", "correction"],
+    "expiration_utc": "2025-05-26T05:38:00Z",
+    "version": "1.0.0"
+  }
+}

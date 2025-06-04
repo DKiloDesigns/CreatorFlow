@@ -42,6 +42,12 @@ model User {
   posts           Post[]
   captionTemplates CaptionTemplate[]
   hashtagGroups   HashtagGroup[]
+  audienceMetrics AudienceMetric[]
+  brandCollabs    BrandCollab[]
+
+  apiKeys ApiKey[]
+  snippets TemplateSnippet[]
+  folders TemplateFolder[]
 }
 
 // NextAuth.js Account Model (Handles OAuth sign-in connections)
@@ -139,6 +145,14 @@ model Post {
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
 
+  views         Int      @default(0)
+  likes         Int      @default(0)
+  comments      Int      @default(0)
+  shares        Int      @default(0)
+  saves         Int      @default(0)
+  brandCollabId String?
+  brandCollab   BrandCollab? @relation(fields: [brandCollabId], references: [id])
+
   @@index([userId, status, scheduledAt]) // Index for fetching scheduled posts
 }
 
@@ -149,11 +163,31 @@ model CaptionTemplate {
   
   name      String   // User-given name for the template
   content   String   @db.Text
+  category  String   @default("Uncategorized")
+  tags      String[] @default([])
+  isFavorite Boolean @default(false)
+  isPinned   Boolean @default(false)
   
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   
+  activeFrom DateTime?
+  activeTo   DateTime?
+  usageLimit Int?
+  usageCount Int @default(0)
+  
+  usages TemplateUsage[] @relation("CaptionTemplateUsages")
+  
+  language String @default("en")
+  
+  order Int @default(0)
+  
+  folderId String?
+  folder   TemplateFolder? @relation(fields: [folderId], references: [id])
+  
   @@index([userId])
+  versions TemplateVersion[] @relation("CaptionTemplateVersions")
+  shares TemplateShare[] @relation("CaptionTemplateShares")
 }
 
 model HashtagGroup {
@@ -163,11 +197,67 @@ model HashtagGroup {
   
   name      String   // User-given name for the group
   hashtags  String[] // Array of hashtag strings (e.g., ["#marketing", "#socialmedia"])
+  category  String   @default("Uncategorized")
+  tags      String[] @default([])
+  isFavorite Boolean @default(false)
+  isPinned   Boolean @default(false)
   
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  activeFrom DateTime?
+  activeTo   DateTime?
+  usageLimit Int?
+  usageCount Int @default(0)
+
+  usages TemplateUsage[] @relation("HashtagGroupUsages")
+
+  language String @default("en")
+
+  order Int @default(0)
+
+  folderId String?
+  folder   TemplateFolder? @relation(fields: [folderId], references: [id])
+
   @@index([userId])
+  versions TemplateVersion[] @relation("HashtagGroupVersions")
+  shares TemplateShare[] @relation("HashtagGroupShares")
+}
+
+model AudienceMetric {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  platform  String
+  date      DateTime
+  followers Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model BrandCollab {
+  id            String   @id @default(cuid())
+  userId        String
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  brandName     String
+  campaignName  String
+  deadline      DateTime?
+  deliverables  String?
+  payment       Float?
+  notes         String?
+  posts         Post[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model ApiKey {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  key       String   @unique
+  name      String?
+  createdAt DateTime @default(now())
+  revokedAt DateTime?
 }
 
 // Example Enum for Plan (Can be used later)
@@ -175,3 +265,84 @@ model HashtagGroup {
 //  FREE
 //  PRO
 // }
+
+model TemplateVersion {
+  id        String   @id @default(cuid())
+  captionTemplateId String? 
+  hashtagGroupId    String?
+  type      String   // 'caption' or 'hashtag'
+  userId    String
+  name      String
+  content   String?  // For captions
+  hashtags  String[] // For hashtags
+  category  String
+  tags      String[]
+  createdAt DateTime @default(now())
+
+  // Relations
+  captionTemplate CaptionTemplate? @relation("CaptionTemplateVersions", fields: [captionTemplateId], references: [id])
+  hashtagGroup   HashtagGroup?    @relation("HashtagGroupVersions", fields: [hashtagGroupId], references: [id])
+}
+
+model TemplateShare {
+  id        String   @id @default(cuid())
+  type      String   // 'caption' or 'hashtag'
+  captionTemplateId String?
+  hashtagGroupId    String?
+  userId    String  // Owner
+  sharedWithUserId String?
+  sharedWithEmail  String
+  permissions      String[]
+  createdAt DateTime @default(now())
+
+  captionTemplate CaptionTemplate? @relation("CaptionTemplateShares", fields: [captionTemplateId], references: [id])
+  hashtagGroup   HashtagGroup?    @relation("HashtagGroupShares", fields: [hashtagGroupId], references: [id])
+
+  @@index([captionTemplateId])
+  @@index([hashtagGroupId])
+  @@index([sharedWithEmail])
+}
+
+model TemplateUsage {
+  id        String   @id @default(cuid())
+  type      String   // 'caption' or 'hashtag'
+  captionTemplateId String?
+  hashtagGroupId    String?
+  userId    String
+  action    String   // e.g., 'insert', 'export', 'bulk', etc.
+  usedAt    DateTime @default(now())
+
+  captionTemplate CaptionTemplate? @relation("CaptionTemplateUsages", fields: [captionTemplateId], references: [id])
+  hashtagGroup   HashtagGroup?    @relation("HashtagGroupUsages", fields: [hashtagGroupId], references: [id])
+
+  @@index([captionTemplateId])
+  @@index([hashtagGroupId])
+  @@index([userId])
+}
+
+model TemplateSnippet {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String
+  content   String   @db.Text
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+model TemplateFolder {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String
+  parentId  String?
+  parent    TemplateFolder? @relation("FolderParent", fields: [parentId], references: [id])
+  children  TemplateFolder[] @relation("FolderParent")
+  createdAt DateTime @default(now())
+  captionTemplates CaptionTemplate[]
+  hashtagGroups HashtagGroup[]
+
+  @@index([userId])
+  @@index([parentId])
+}

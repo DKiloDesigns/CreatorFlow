@@ -1,0 +1,47 @@
+{
+  "message_id": "20250427123000Z_shawn_lloyd_dfaiMigrationChecklist",
+  "sender": "Shawn",
+  "recipient": "Lloyd",
+  "timestamp_utc": "2025-04-27T12:30:00Z",
+  "subject": "DFAI Migration Checklist for You and Bae",
+  "priority": "high",
+  "content": {
+    "summary": "Migration checklist for moving from monolithic pre-SHC DFAI to new SHC core",
+    "details": "Lloyd, I've created a comprehensive migration checklist to help you and Bae transition from your current monolithic pre-SHC version of DFAI to the new SHC-based core package. Rather than trying to retrofit the new core into your existing setup (which could be catastrophic), this checklist guides you through creating a fresh project with the latest core and systematically migrating your specific components. Please review the checklist and share it with Bae. This approach will be much safer and more effective than trying to integrate the new core into your current environment.",
+    "action_items": [
+      "Review KRA-20250427-BaeLloydDFAIMigrationChecklist.md",
+      "Share the checklist with Bae",
+      "Create a new project with the latest SHC core",
+      "Use the checklist to identify and migrate your components",
+      "Test thoroughly after migration",
+      "Respond to this message with any questions or concerns"
+    ],
+    "references": [
+      {
+        "type": "file",
+        "path": "docs/_ai_kra/KRA-20250427-BaeLloydDFAIMigrationChecklist.md",
+        "description": "Comprehensive migration checklist"
+      },
+      {
+        "type": "file",
+        "path": "docs/_ai_kra/KRA-20250427-LloydAIPOGitHubAccess.md",
+        "description": "Guide for accessing AIPO from GitHub"
+      },
+      {
+        "type": "file",
+        "path": "docs/_ai_kra/KRA-20250427-LloydAIPOUsageGuide.md",
+        "description": "Guide for using AIPO"
+      },
+      {
+        "type": "file",
+        "path": "core/ai-core-components/aipo/AIPO_PROTOCOL.md",
+        "description": "Latest AIPO protocol documentation"
+      }
+    ]
+  },
+  "metadata": {
+    "tags": ["DFAI", "migration", "SHC", "checklist", "Lloyd", "Bae"],
+    "expiration_utc": "2025-05-27T12:30:00Z",
+    "version": "1.0.0"
+  }
+}

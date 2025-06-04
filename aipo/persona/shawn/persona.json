@@ -1,0 +1,7 @@
+{
+  "name": "shawn",
+  "type": "baseline",
+  "parent": null,
+  "is_default": true,
+  "description": "Baseline core persona for all agent logic and protocol. All custom personas inherit from Shawn."
+}

@@ -330,12 +330,19 @@ export async function POST(req: Request) {
                 }
 
                 // Clear any pending retry dates
-                await prisma.user.update({
+                const userToUpdate = await prisma.user.findFirst({
                     where: { stripeCustomerId: invoice.customer as string },
-                    data: {
-                        paymentRetryDate: null,
-                    },
                 });
+                if (userToUpdate) {
+                    await prisma.user.update({
+                        where: { stripeCustomerId: invoice.customer as string },
+                        data: {
+                            paymentRetryDate: null,
+                        },
+                    });
+                } else {
+                    console.warn('No user found for stripeCustomerId:', invoice.customer);
+                }
                 break;
             }
 

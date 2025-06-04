@@ -39,7 +39,6 @@ export default function SignInPage() {
           By signing in, you agree to our <a href="#" className="underline hover:text-blue-500">Terms of Service</a> and <a href="#" className="underline hover:text-blue-500">Privacy Policy</a>.
         </p>
       </div>
-      <div className="test-tailwind">If this is big and red, Tailwind is working</div>
     </div>
   );
 } 

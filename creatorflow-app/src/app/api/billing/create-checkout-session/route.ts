@@ -9,12 +9,14 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 const PRICE_IDS = {
     [process.env.STRIPE_PRICE_BASIC!]: 'basic',
     [process.env.STRIPE_PRICE_PRO!]: 'pro',
-    [process.env.STRIPE_PRICE_ENTERPRISE!]: 'enterprise',
+    [process.env.STRIPE_PRICE_PRO_YEARLY!]: 'pro_yearly',
+    [process.env.STRIPE_PRICE_BUSINESS!]: 'business',
+    [process.env.STRIPE_PRICE_BUSINESS_YEARLY!]: 'business_yearly',
 };
 
 export async function POST(req: Request) {
     try {
-        const session = await getSession();
+        const session = await getSession(req);
         if (!session?.user?.id) {
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }

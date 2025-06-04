@@ -1,0 +1,29 @@
+name: Visual Regression
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  visual-regression:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+      - name: Install dependencies
+        run: npm ci
+      - name: Build app
+        run: npm run build
+      - name: Start app
+        run: npm start &
+      - name: Wait for app to be ready
+        run: npx wait-on http://localhost:3001
+      - name: Run visual regression
+        run: npm run visual:regression
+      - name: Run visual diff
+        run: npm run visual:diff 

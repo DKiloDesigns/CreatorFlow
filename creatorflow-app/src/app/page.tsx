@@ -1,102 +1,52 @@
-import Image from "next/image";
+import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-inter)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-mono">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-mono font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div className="min-h-screen flex flex-col bg-gradient-to-br from-white to-slate-100 dark:from-[#18181b] dark:to-[#23272f]">
+      <header className="w-full flex justify-between items-center px-6 py-4 border-b border-slate-200 dark:border-slate-800">
+        <div className="flex items-center gap-2">
+          <span className="text-2xl font-bold text-primary">CreatorFlow</span>
         </div>
+        <nav className="flex gap-4">
+          <Link href="/dashboard" className="text-sm font-medium hover:underline">Dashboard</Link>
+          <Link href="/signin" className="text-sm font-medium hover:underline">Sign In</Link>
+        </nav>
+      </header>
+      <main className="flex-1 flex flex-col items-center justify-center px-4 py-16 gap-12">
+        {/* Hero Section */}
+        <section className="max-w-2xl text-center flex flex-col items-center gap-6">
+          <h1 className="text-4xl sm:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white">
+            Grow Your Brand. <span className="text-primary">Automate</span> Your Content. <span className="text-primary">Monetize</span> Your Audience.
+          </h1>
+          <p className="text-lg text-slate-600 dark:text-slate-300">
+            CreatorFlow is the all-in-one platform for creators, brands, and teams to schedule, analyze, and monetize content across every channel.
+          </p>
+          <Link href="/signin" className="inline-block bg-primary text-white font-semibold rounded-lg px-8 py-3 mt-2 shadow hover:bg-primary/90 transition">
+            Get Started
+          </Link>
+        </section>
+        {/* Features Section */}
+        <section className="w-full max-w-4xl grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="bg-white dark:bg-slate-800 rounded-xl shadow p-6 flex flex-col items-center gap-3 border border-slate-100 dark:border-slate-700">
+            <svg className="h-8 w-8 text-primary dark:text-slate-100" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M12 8v4l3 3" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            <h3 className="font-bold text-lg text-slate-900 dark:text-slate-100">Automated Scheduling</h3>
+            <p className="text-sm text-slate-600 dark:text-slate-100 text-center">Plan, schedule, and publish to all your social channels from one place. Never miss a post again.</p>
+          </div>
+          <div className="bg-white dark:bg-slate-800 rounded-xl shadow p-6 flex flex-col items-center gap-3 border border-slate-100 dark:border-slate-700">
+            <svg className="h-8 w-8 text-primary dark:text-slate-100" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M3 3v18h18" strokeLinecap="round" strokeLinejoin="round"/><path d="M8 17l4-4 4 4" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            <h3 className="font-bold text-lg text-slate-900 dark:text-slate-100">Analytics & Insights</h3>
+            <p className="text-sm text-slate-600 dark:text-slate-100 text-center">Track growth, engagement, and ROI with beautiful, actionable dashboards.</p>
+          </div>
+          <div className="bg-white dark:bg-slate-800 rounded-xl shadow p-6 flex flex-col items-center gap-3 border border-slate-100 dark:border-slate-700">
+            <svg className="h-8 w-8 text-primary dark:text-slate-100" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M12 6v6l4 2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            <h3 className="font-bold text-lg text-slate-900 dark:text-slate-100">Monetization Tools</h3>
+            <p className="text-sm text-slate-600 dark:text-slate-100 text-center">Connect with brands, manage collabs, and get paid—all inside CreatorFlow.</p>
+          </div>
+        </section>
       </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
+      <footer className="w-full py-6 flex flex-col items-center gap-2 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400">
+        <span>&copy; {new Date().getFullYear()} CreatorFlow. All rights reserved.</span>
+        <span>Made with ❤️ for creators.</span>
       </footer>
     </div>
   );

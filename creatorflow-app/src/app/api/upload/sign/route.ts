@@ -1,6 +1,7 @@
-import { NextResponse } from 'next/server';
+import { NextResponse, NextRequest } from 'next/server';
 import { v2 as cloudinary } from 'cloudinary';
 import { getSession } from "@/auth";
+import { requireApiKey } from '@/lib/apiKeyAuth';
 
 // Configure Cloudinary (ensure env vars are set)
 if (!process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME || !process.env.CLOUDINARY_API_KEY || !process.env.CLOUDINARY_API_SECRET) {
@@ -14,8 +15,30 @@ cloudinary.config({
     secure: true, // Use https
 });
 
-export async function POST(request: Request) {
-    const session = await getSession();
+export async function POST(request: NextRequest) {
+    // Check for API key first
+    const apiKeyHeader = request.headers.get('x-api-key');
+    if (apiKeyHeader) {
+        const auth = await requireApiKey(request);
+        if ('user' in auth) {
+            const body = await request.json();
+            const { paramsToSign } = body;
+            if (!paramsToSign) {
+                return NextResponse.json({ error: 'Parameters to sign are required' }, { status: 400 });
+            }
+            try {
+                const signature = cloudinary.utils.api_sign_request(paramsToSign, process.env.CLOUDINARY_API_SECRET! );
+                return NextResponse.json({ signature, apiKey: process.env.CLOUDINARY_API_KEY });
+            } catch (error) {
+                console.error('Error generating Cloudinary signature:', error);
+                return NextResponse.json({ error: 'Failed to generate upload signature' }, { status: 500 });
+            }
+        } else {
+            return NextResponse.json(auth.body, { status: auth.status });
+        }
+    }
+    // Fallback to session auth
+    const session = await getSession(request);
     if (!session?.user?.id) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }

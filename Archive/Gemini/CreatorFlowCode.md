@@ -258,7 +258,7 @@ npm run dev
 
 4.   
 5.   
-6. Open your browser and navigate to http://localhost:3000.
+6. Open your browser and navigate to http://localhost:3001.
 
 You should see a basic welcome page with links to the different sections in the navigation bar at the top. Clicking on these links will take you to the corresponding empty pages.
 

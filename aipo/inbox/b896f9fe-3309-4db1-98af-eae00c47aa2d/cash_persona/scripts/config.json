@@ -1,0 +1,28 @@
+{
+    "api_keys": {
+        "binance": {
+            "api_key": "",
+            "api_secret": ""
+        },
+        "coinmarketcap": "",
+        "coingecko": ""
+    },
+    "portfolio": {
+        "track_wallets": [],
+        "manual_holdings": {
+            "BTC": {"balance": 0.5},
+            "ETH": {"balance": 5.0},
+            "SOL": {"balance": 20.0},
+            "USDT": {"balance": 5000.0}
+        }
+    },
+    "market_scan": {
+        "top_coins": 100,
+        "trending_threshold": 5,
+        "sources": ["coingecko", "reddit", "twitter"]
+    },
+    "bot_hunt": {
+        "github_topics": ["crypto-trading-bot", "trading-bot", "crypto-bot"],
+        "min_stars": 100
+    }
+}

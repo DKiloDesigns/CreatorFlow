@@ -1,0 +1,1 @@
+// Session Management Note (2025-05-29): When closing a session, update CONTEXT_ENTRY.md with a summary, add a closure note to session_flow_context_loading_list.md, and update the roadmap. See 2025-05-29 session for example. 

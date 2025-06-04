@@ -1,0 +1,7 @@
+{
+  "name": "cash",
+  "type": "custom",
+  "parent": "shawn",
+  "is_default": false,
+  "description": "Custom persona for finance, money management, and economic strategy. Inherits all core logic from Shawn."
+}

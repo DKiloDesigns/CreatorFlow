@@ -90,14 +90,13 @@
 }
 
 /* FullCalendar Customizations */
-.fc {
-  /* Make buttons look more like Shadcn buttons */
-  .fc-button {
-    @apply bg-primary text-primary-foreground hover:bg-primary hover:bg-opacity-90 text-xs rounded-md px-3 py-1.5 shadow-sm;
-    @apply focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring;
-    border: none; /* Remove default FullCalendar borders */
-    text-transform: none; /* Remove uppercase text */
-  }
+/* Flattened CSS to avoid nesting issues */
+.fc-button {
+  @apply bg-primary text-primary-foreground hover:bg-primary hover:bg-opacity-90 text-xs rounded-md px-3 py-1.5 shadow-sm;
+  @apply focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring;
+  border: none; /* Remove default FullCalendar borders */
+  text-transform: none; /* Remove uppercase text */
+}
   .fc-button-primary:disabled {
     @apply bg-secondary text-secondary-foreground opacity-50 cursor-not-allowed;
   }
@@ -149,7 +148,6 @@
   .dark .fc-event {
     color: var(--foreground) !important; /* Force foreground color for dark mode */
   }
-}
 
 @layer utilities {
   .outline-ring-opacity-50 {

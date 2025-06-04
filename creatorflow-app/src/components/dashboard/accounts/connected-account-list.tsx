@@ -25,7 +25,7 @@ export default function ConnectedAccountList() {
   const fetchAccounts = useCallback(async () => {
     setError(null);
     try {
-      const response = await fetch('/api/accounts');
+      const response = await fetch('/api/accounts', { credentials: 'include' });
       if (!response.ok) {
         throw new Error('Failed to fetch accounts');
       }
@@ -52,6 +52,7 @@ export default function ConnectedAccountList() {
     try {
       const response = await fetch(`/api/accounts/${accountId}`, {
         method: 'DELETE',
+        credentials: 'include',
       });
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));

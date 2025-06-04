@@ -63,4 +63,4 @@ Before starting development, run:
 npm run check:ports
 ```
 
-This will scan your codebase for any hardcoded `localhost:3000` or `localhost:3001` references and warn you if any are found. Update them to use environment variables or the correct port as needed.
+This will scan your codebase for any hardcoded `localhost:3001` references and warn you if any are found. Update them to use environment variables or the correct port as needed.

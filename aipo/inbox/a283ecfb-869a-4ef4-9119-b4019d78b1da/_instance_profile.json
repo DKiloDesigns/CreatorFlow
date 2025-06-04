@@ -1,0 +1,7 @@
+{
+  "instance_uuid": "a283ecfb-869a-4ef4-9119-b4019d78b1da",
+  "github_username": "oliksueddaht",
+  "primary_user_alias": "Thad",
+  "active_personas": ["Shawn"],
+  "last_updated_utc": "$(date -u +'%Y-%m-%dT%H:%M:%SZ')"
+}

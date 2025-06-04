@@ -120,3 +120,8 @@
 
 **Disclaimer:** This roadmap is our battle plan, but we stay flexible. Market shifts, user feedback, new tech – we adapt and overcome. But the focus on building value and *getting paid* is locked in.
 
+## 2025-05-29
+- Session closed at user request after persistent authentication/session and schema issues (NextAuth, Prisma, PostCSS, API route request types).
+- Attempted fixes: session handling refactor, Prisma schema sync, PostCSS config update, API route request type correction.
+- Next steps: Refactor authentication/session logic for Next.js 15 App Router, ensure Prisma schema/db sync, revisit CSS nesting config.
+

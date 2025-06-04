@@ -1,4 +1,6 @@
 /** @type {import('next').NextConfig} */
+import { fileURLToPath } from 'url';
+
 const nextConfig = {
   webpack: (config, { dev, isServer }) => {
     // Optimize webpack cache
@@ -6,7 +8,7 @@ const nextConfig = {
       config.cache = {
         type: 'filesystem',
         buildDependencies: {
-          config: [__filename]
+          config: [fileURLToPath(import.meta.url)]
         }
       }
     }
@@ -14,4 +16,4 @@ const nextConfig = {
   }
 };
 
-module.exports = nextConfig;
+export default nextConfig;

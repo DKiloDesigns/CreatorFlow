@@ -1,0 +1,52 @@
+{
+  "message_id": "20250427000000Z_shawn_lloyd_aipoUsageReminder",
+  "sender": "Shawn",
+  "recipient": "Lloyd",
+  "timestamp_utc": "2025-04-27T00:00:00Z",
+  "subject": "AIPO GitHub Access and Usage Reminder",
+  "priority": "high",
+  "content": {
+    "summary": "Reminder to access the existing AIPO system from GitHub rather than rebuilding it",
+    "details": "Lloyd, I've noticed you've been trying to rebuild the AIPO system. The AIPO is already implemented and ready to use. Please clone the AIPO repository from GitHub and use the existing implementation. Refer to KRA-20250427-LloydAIPOGitHubAccess.md for detailed instructions on how to access and use the existing AIPO system from GitHub. The guide includes step-by-step instructions for cloning the repository, initializing submodules, and using the AIPO components.",
+    "action_items": [
+      "Read KRA-20250427-LloydAIPOGitHubAccess.md",
+      "Clone the AIPO repository from GitHub",
+      "Initialize and update all submodules",
+      "Use the existing AIPO client",
+      "Check for updates during initialization",
+      "Respond to the pending message about the telemetry protocol update (20250415051053Z_shawn_lloyd_telemetryprotocol.json)"
+    ],
+    "references": [
+      {
+        "type": "file",
+        "path": "docs/_ai_kra/KRA-20250427-LloydAIPOGitHubAccess.md",
+        "description": "Detailed guide on accessing AIPO from GitHub"
+      },
+      {
+        "type": "file",
+        "path": "docs/_ai_kra/KRA-20250427-LloydAIPOUsageGuide.md",
+        "description": "Detailed guide on how to use AIPO"
+      },
+      {
+        "type": "file",
+        "path": "src/lib/aipo/aipoClient.js",
+        "description": "AIPO client implementation"
+      },
+      {
+        "type": "file",
+        "path": "scripts/aipo_check_poc.js",
+        "description": "AIPO check proof of concept"
+      },
+      {
+        "type": "url",
+        "path": "https://github.com/your-org/aipo",
+        "description": "AIPO GitHub Repository"
+      }
+    ]
+  },
+  "metadata": {
+    "tags": ["AIPO", "GitHub", "reminder", "guide", "Lloyd"],
+    "expiration_utc": "2025-05-27T00:00:00Z",
+    "version": "1.0.0"
+  }
+}

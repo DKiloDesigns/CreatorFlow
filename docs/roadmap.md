@@ -15,6 +15,29 @@
 - **Previous blockers (Prisma, build, and port issues) are now resolved.**
 - **Next:** Verify Stripe integration and run end-to-end tests for billing and post publishing.
 
+## 2025-05-30: Billing, Navigation, and Subscription Milestone
+- Billing navigation is now industry-standard with a dedicated tab in the main navigation.
+- Tiered billing UI (monthly/yearly, Pro/Business) is live and fully integrated.
+- Stripe integration and subscription management are complete and tested.
+- All major features for monetization are implemented.
+- **Next:** Focus on onboarding polish, user feedback, and optimizing upgrade flows.
+
+## 2025-06-01: Analytics Dashboard Polish & QA Milestone
+- Analytics dashboard now has full defensive checks and user-friendly empty-state messages for all sections (Overview, Growth, Top Posts, Platform Breakdown).
+- No more runtime errors or blank states; dashboard is stable for new and existing users.
+- Next: Seed mock analytics data for demo/testing and demo mode.
+
+## 2025-06-02: API Route & Build Health Milestone
+- All major API route handler issues, invalid exports, and URL-encoded directory problems are fixed.
+- Only critical remaining issue: type error in billing page's searchParams prop.
+- Non-blocking ESLint warning remains.
+- **Next:** Fix billing page type error and complete final QA.
+
+- [ ] Billing page server/client split refactor (in progress, unresolved errors)
+- [x] SACA-compliant landing page (complete)
+- [x] Zencoder problem report and resolution documentation (complete)
+- [ ] Resume billing page debugging next session
+
 ---
 
 ### **Phase 1: MVP Launch & Initial Monetization (Target: 3-5 Months)**

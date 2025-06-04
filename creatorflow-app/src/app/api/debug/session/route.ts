@@ -3,7 +3,7 @@ import { getSession } from '@/auth';
 
 export async function GET(req: NextRequest) {
   try {
-    const session = await getSession();
+    const session = await getSession(req);
     const cookies = req.cookies.getAll();
     
     if (process.env.NODE_ENV === 'production') {

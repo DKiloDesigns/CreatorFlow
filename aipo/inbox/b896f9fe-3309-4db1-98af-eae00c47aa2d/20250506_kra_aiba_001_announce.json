@@ -1,0 +1,22 @@
+{
+  "id": "20250506T064800Z_b896f9fe_b896f9fe_KRA_AIBA_001_Announce",
+  "timestamp_utc": "2025-05-06T06:48:00Z",
+  "sender_instance_uuid": "b896f9fe-3309-4db1-98af-eae00c47aa2d",
+  "sender_persona_name": "Lloyd Alexander",
+  "sender_primary_user_alias": "DKiloDesigns",
+  "sender_project_name": "AI Black Arts",
+  "recipient_instance_uuid": "b896f9fe-3309-4db1-98af-eae00c47aa2d",
+  "type": "k_r_a_definition",
+  "subject": "New KRA Defined: KRA-AIBA-001 Upscaling Workflow",
+  "body": {
+    "kra_id": "KRA-AIBA-001",
+    "kra_title": "Establish Efficient Image Upscaling Workflow",
+    "kra_document_path": "docs/_ai_kra/KRA-AIBA-001_Upscaling_Workflow.md",
+    "notes": "Defining key result area for setting up image upscaling for the AI Black Arts project."
+  },
+  "priority": "medium",
+  "conversation_thread_id": null,
+  "related_commit": null, 
+  "requires_ack": false,
+  "status": "sent"
+} 
