@@ -98,7 +98,7 @@ export async function handleConnectAccount({ req, params, getSession }: {
   if (!platform) {
     return { status: 400, body: { error: 'Platform is required' } };
   }
-  const supportedProviders = ['github', 'google', 'twitter', 'instagram'];
+  const supportedProviders = ['github', 'google', 'twitter', 'instagram', 'linkedin'];
   if (!supportedProviders.includes(platform)) {
     return { status: 400, body: { error: 'Unsupported platform' } };
   }

@@ -48,6 +48,8 @@ model User {
   apiKeys ApiKey[]
   snippets TemplateSnippet[]
   folders TemplateFolder[]
+  analyticsAggregations AnalyticsAggregation[]
+  sharedFolders TemplateFolder[] @relation("FolderShares")
 }
 
 // NextAuth.js Account Model (Handles OAuth sign-in connections)
@@ -122,38 +124,31 @@ enum PostStatus {
   FAILED
 }
 
+// Enhanced Post model with more analytics fields
 model Post {
-  id           String     @id @default(cuid())
-  userId       String
-  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  
-  contentText  String?    @db.Text // Use Text for potentially long captions
-  mediaUrls    String[]   // Array of URLs pointing to media (e.g., Cloudinary URLs)
-  platforms    String[]   // List of platforms to post to (e.g., ["instagram", "twitter"])
-  // Alternatively, could relate to SocialAccount IDs if more complex logic needed
-  
-  status       PostStatus @default(DRAFT)
-  scheduledAt  DateTime?  // Null if draft, set when scheduled
-  publishedAt  DateTime?  // Timestamp when successfully published
-  
-  // Store platform-specific post IDs if returned after successful publishing
-  // Using Json type to handle variability between platforms
-  platformPostIds Json?   
-  
-  errorMessage String?    // Store error message if status is FAILED
-
-  createdAt    DateTime   @default(now())
-  updatedAt    DateTime   @updatedAt
-
-  views         Int      @default(0)
-  likes         Int      @default(0)
-  comments      Int      @default(0)
-  shares        Int      @default(0)
-  saves         Int      @default(0)
-  brandCollabId String?
+  id            String      @id @default(cuid())
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  userId        String
+  contentText   String?     @db.Text
+  mediaUrls     String[]
+  platforms     String[]
+  scheduledAt   DateTime?
+  publishedAt   DateTime?
+  status        PostStatus  @default(DRAFT)
+  views         Int?        @default(0)
+  likes         Int?        @default(0)
+  comments      Int?        @default(0)
+  shares        Int?        @default(0)
+  reach         Int?        @default(0)
+  impressions   Int?        @default(0)
+  engagementRate Float?     @default(0)
+  user          User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   brandCollab   BrandCollab? @relation(fields: [brandCollabId], references: [id])
+  brandCollabId String?
 
-  @@index([userId, status, scheduledAt]) // Index for fetching scheduled posts
+  @@index([userId])
+  @@index([brandCollabId])
 }
 
 model CaptionTemplate {
@@ -343,6 +338,54 @@ model TemplateFolder {
   captionTemplates CaptionTemplate[]
   hashtagGroups HashtagGroup[]
 
+  // Sharing
+  sharedWith        User[]   @relation("FolderShares")
+  sharedWithEmails  String[] @default([])
+
+  // Soft delete
+  deletedAt DateTime?
+  isDeleted Boolean @default(false)
+
   @@index([userId])
   @@index([parentId])
+}
+
+// Analytics Cache for performance optimization
+model AnalyticsCache {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  data      Json
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([key, expiresAt])
+}
+
+// Rate Limiting for API endpoints
+model AnalyticsRateLimit {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  count     Int      @default(0)
+  resetAt   DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  @@index([key, resetAt])
+}
+
+// Analytics Aggregation for pre-computed metrics
+model AnalyticsAggregation {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  type      String   // e.g., "daily", "weekly", "monthly"
+  platform  String?
+  startDate DateTime
+  endDate   DateTime
+  data      Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId, type, platform, startDate, endDate])
 }

@@ -6,6 +6,7 @@ import type { NextAuthOptions } from "next-auth"
 import GoogleProvider from "next-auth/providers/google"
 import TwitterProvider from "next-auth/providers/twitter"
 import InstagramProvider from "next-auth/providers/instagram"
+import LinkedInProvider from "next-auth/providers/linkedin"
 // Re-export signIn and signOut from next-auth/react for client components
 export { signIn, signOut } from "next-auth/react"
 
@@ -31,6 +32,10 @@ export const authOptions: NextAuthOptions = {
     InstagramProvider({
       clientId: process.env.INSTAGRAM_CLIENT_ID as string,
       clientSecret: process.env.INSTAGRAM_CLIENT_SECRET as string,
+    }),
+    LinkedInProvider({
+      clientId: process.env.LINKEDIN_CLIENT_ID as string,
+      clientSecret: process.env.LINKEDIN_CLIENT_SECRET as string,
     }),
   ],
   session: {
@@ -88,3 +93,7 @@ export const getSession = (req?: any, res?: any) => {
 export const auth = async (req?: any, res?: any) => {
   return await getSession(req, res);
 };
+
+// Required ENV VARS:
+// LINKEDIN_CLIENT_ID=your_linkedin_client_id
+// LINKEDIN_CLIENT_SECRET=your_linkedin_client_secret

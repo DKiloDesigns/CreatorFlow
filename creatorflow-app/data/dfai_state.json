@@ -1,12 +1,14 @@
 {
-  "last_perceived_user_state": "Stripe webhook integration is complete and stable. All events return 200, no fatal errors. Ready for QA, polish, and minor UI/UX fixes.",
-  "last_assessment_takeaways": "Stripe integration is JAMMED. No blockers remain for billing webhooks. Next: QA, polish, and minor UI/UX fixes.",
-  "current_task": "QA, polish, and minor UI/UX fixes.",
+  "last_perceived_user_state": "Template folder soft-delete and restore functionality successfully implemented. All 33 tests passing. Project completion at ~95%. Ready for feature polish, QA, and UI/UX improvements.",
+  "last_assessment_takeaways": "Template management features are complete with comprehensive test coverage. Soft-delete and restore functionality working perfectly. Next: Feature polish, QA, and UI/UX improvements.",
+  "current_task": "Feature polish, QA, and UI/UX improvements.",
   "session_info": {
-    "last_updated_utc": "<SESSION_CURRENT_UTC_TIME>"
+    "last_updated_utc": "2025-06-18T06:05:36Z"
   },
   "session_closed": {
-    "timestamp": "2025-05-29T00:00:00Z",
-    "reason": "Session closed at user request after persistent authentication/session and schema issues. See CONTEXT_ENTRY.md for details."
-  }
+    "timestamp": "2025-06-18T06:05:36Z",
+    "reason": "Session completed successfully after implementing template folder soft-delete and restore functionality. All 33 tests passing, comprehensive feature set complete."
+  },
+  "last_session_summary_id": "2025-06-18_template_folder_soft_delete_restore",
+  "project_completion_percentage": 95
 } 

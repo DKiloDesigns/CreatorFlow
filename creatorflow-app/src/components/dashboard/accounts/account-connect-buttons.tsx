@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { SiInstagram, SiTiktok, SiYoutube, SiX } from "react-icons/si"; // Platform icons
+import { SiInstagram, SiTiktok, SiYoutube, SiX, SiLinkedin } from "react-icons/si"; // Platform icons
 import { toast } from "sonner";
 
 // Define user state structure
@@ -29,6 +29,7 @@ const PLATFORMS = [
   { id: 'tiktok', name: 'TikTok', icon: SiTiktok },
   { id: 'youtube', name: 'YouTube', icon: SiYoutube },
   { id: 'twitter', name: 'Twitter / X', icon: SiX },
+  { id: 'linkedin', name: 'LinkedIn', icon: SiLinkedin },
 ];
 
 const FREE_TIER_LIMIT = 2;

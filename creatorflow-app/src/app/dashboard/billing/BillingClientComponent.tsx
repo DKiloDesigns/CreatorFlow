@@ -63,7 +63,36 @@ const tiers = [
   },
 ];
 
-export default function BillingClientComponent({ user, searchParams, upcomingCharges, paymentHistory }: any) {
+type BillingClientComponentProps = {
+  user: {
+    id: string;
+    stripeCustomerId: string | null;
+    plan: string | null;
+    stripeSubscriptionId: string | null;
+    stripeCurrentPeriodEnd: string | null;
+    _count: {
+      posts: number;
+      socialAccounts: number;
+    };
+  };
+  searchParams: { [key: string]: string | string[] | undefined };
+  upcomingCharges: Array<{
+    id: string;
+    description: string;
+    date: number;
+    amount: number;
+  }> | null;
+  paymentHistory: Array<{
+    id: string;
+    description: string;
+    date: number;
+    amount: number;
+    status: string;
+    invoice_pdf: string;
+  }> | null;
+}
+
+export default function BillingClientComponent({ user, searchParams, upcomingCharges, paymentHistory }: BillingClientComponentProps) {
   console.log("BillingClientComponent: Component rendering", { 
     userExists: !!user, 
     searchParamsExists: !!searchParams,

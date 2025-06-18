@@ -1,23 +1,34 @@
-module.exports = {
-  rootDir: '.',
-  preset: 'ts-jest/presets/default-esm',
+const nextJest = require('next/jest');
+
+const createJestConfig = nextJest({
+  // Provide the path to your Next.js app to load next.config.js and .env files in your test environment
+  dir: './',
+});
+
+// Add any custom config to be passed to Jest
+const customJestConfig = {
+  preset: 'ts-jest',
   testEnvironment: 'node',
-  extensionsToTreatAsEsm: ['.ts', '.tsx'],
-  transform: {
-    '^.+\\.(ts|tsx)$': ['ts-jest', { useESM: true }],
-    '^.+\\.(js|jsx)$': 'babel-jest',
-  },
-  globals: {
-    'ts-jest': {
-      useESM: true,
-      tsconfig: './tsconfig.json',
-    },
-  },
-  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
-  transformIgnorePatterns: [
-    '/node_modules/(?!(\@auth/prisma-adapter|\@prisma/client)/)'
-  ],
+  setupFilesAfterEnv: ['./jest.setup.js'],
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
   },
-}; 
+  transform: {
+    '^.+\\.(ts|tsx)$': ['ts-jest', {
+      tsconfig: 'tsconfig.json'
+    }]
+  },
+  testMatch: [
+    '**/__tests__/**/*.test.[jt]s?(x)',
+    '**/?(*.)+(spec|test).[jt]s?(x)'
+  ],
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
+  globals: {
+    'ts-jest': {
+      tsconfig: 'tsconfig.json'
+    }
+  }
+};
+
+// createJestConfig is exported this way to ensure that next/jest can load the Next.js config which is async
+module.exports = createJestConfig(customJestConfig); 

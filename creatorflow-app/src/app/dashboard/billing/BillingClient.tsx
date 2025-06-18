@@ -10,6 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 
 const tiers = [
   {
@@ -64,7 +65,36 @@ const tiers = [
   },
 ];
 
-export default function BillingClient({ user, searchParams, upcomingCharges, paymentHistory }: any) {
+type BillingClientProps = {
+  user: {
+    id: string;
+    stripeCustomerId: string | null;
+    plan: string | null;
+    stripeSubscriptionId: string | null;
+    stripeCurrentPeriodEnd: string | null;
+    _count: {
+      posts: number;
+      socialAccounts: number;
+    };
+  };
+  searchParams: { [key: string]: string | string[] | undefined };
+  upcomingCharges: Array<{
+    id: string;
+    description: string;
+    date: number;
+    amount: number;
+  }> | null;
+  paymentHistory: Array<{
+    id: string;
+    description: string;
+    date: number;
+    amount: number;
+    status: string;
+    invoice_pdf: string;
+  }> | null;
+}
+
+export default function BillingClient({ user, searchParams, upcomingCharges, paymentHistory }: BillingClientProps) {
   const [billingFrequency, setBillingFrequency] = useState<'monthly' | 'yearly'>('monthly');
   const router = useRouter();
 
@@ -148,12 +178,21 @@ export default function BillingClient({ user, searchParams, upcomingCharges, pay
                   {user?.stripeCustomerId && (
                     <Button
                       onClick={async () => {
-                        const response = await fetch('/api/billing/create-portal-session', {
-                          method: 'POST',
-                          headers: { 'Content-Type': 'application/json' },
-                        });
-                        const { url } = await response.json();
-                        if (url) window.location.href = url;
+                        try {
+                          const response = await fetch('/api/billing/create-portal-session', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                          });
+                          const { url } = await response.json();
+                          if (url) {
+                            toast.success('Opening Stripe portal...');
+                            window.location.href = url;
+                          } else {
+                            toast.error('Failed to open Stripe portal.');
+                          }
+                        } catch (err) {
+                          toast.error('An error occurred while opening the Stripe portal.');
+                        }
                       }}
                       variant="outline"
                     >
@@ -509,12 +548,13 @@ export default function BillingClient({ user, searchParams, upcomingCharges, pay
                         });
                         const data = await response.json();
                         if (data.url) {
+                          toast.success('Redirecting to checkout...');
                           window.location.href = data.url;
                         } else {
-                          alert('Failed to create checkout session.');
+                          toast.error('Failed to create checkout session.');
                         }
                       } catch (err) {
-                        alert('An error occurred while starting checkout.');
+                        toast.error('An error occurred while starting checkout.');
                       }
                     }}
                   >

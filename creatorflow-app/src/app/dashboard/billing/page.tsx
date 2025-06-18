@@ -1,8 +1,18 @@
 import { getSession } from "@/auth";
 import { prisma } from '@/lib/prisma';
 import BillingClient from './BillingClient';
+import { Metadata } from "next";
 
-export default async function BillingPage({ searchParams }: { searchParams: { success?: string; canceled?: string } }) {
+type BillingPageProps = {
+  searchParams: { [key: string]: string | string[] | undefined }
+}
+
+export const metadata: Metadata = {
+  title: "Billing & Subscription",
+  description: "Manage your billing and subscription details",
+};
+
+export default async function BillingPage({ searchParams }: BillingPageProps) {
   const session = await getSession();
   
   if (!session?.user) {
