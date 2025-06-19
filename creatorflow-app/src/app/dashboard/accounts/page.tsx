@@ -142,6 +142,38 @@ export default function AccountsPage() {
     else setAriaMessage('');
   }, [action]);
 
+  // Handle OAuth callback messages
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const success = urlParams.get('success');
+    const error = urlParams.get('error');
+    const platform = urlParams.get('platform');
+
+    if (success === 'connected' && platform) {
+      toast.success(`Successfully connected to ${platform}!`);
+      // Clean up URL
+      window.history.replaceState({}, document.title, window.location.pathname);
+    } else if (error && platform) {
+      let errorMessage = 'Failed to connect account';
+      switch (error) {
+        case 'oauth_failed':
+          errorMessage = `OAuth authentication failed for ${platform}`;
+          break;
+        case 'no_code':
+          errorMessage = `No authorization code received from ${platform}`;
+          break;
+        case 'callback_failed':
+          errorMessage = `Failed to complete ${platform} connection`;
+          break;
+        default:
+          errorMessage = `Error connecting to ${platform}: ${error}`;
+      }
+      toast.error(errorMessage);
+      // Clean up URL
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  }, []);
+
   const handleConnect = async (provider: string) => {
     setAction(`Connecting to ${provider}...`);
     try {
@@ -221,9 +253,6 @@ export default function AccountsPage() {
       toast.error(e.message);
     }
   };
-
-  // TODO: Add logic here to read query params for success/error messages from OAuth callback
-  // and potentially display initial toasts
 
   return (
     <TooltipProvider>

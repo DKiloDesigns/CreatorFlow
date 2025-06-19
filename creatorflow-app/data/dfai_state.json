@@ -10,5 +10,7 @@
     "reason": "Session completed successfully after implementing template folder soft-delete and restore functionality. All 33 tests passing, comprehensive feature set complete."
   },
   "last_session_summary_id": "2025-06-18_template_folder_soft_delete_restore",
-  "project_completion_percentage": 95
+  "project_completion_percentage": 95,
+  "last_commit_hash": "92f5b6bc496d3528ba88c858e1e661cdd7b7bc1f",
+  "session_status": "completed_successfully"
 } 

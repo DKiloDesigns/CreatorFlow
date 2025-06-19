@@ -8,6 +8,25 @@ import { LineChart, Line, XAxis, YAxis, Tooltip as RechartsTooltip, Legend as Re
 import { PieChart, Pie, Cell } from 'recharts';
 import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
 import { Loader2 } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { AnalyticsChart, MetricCard } from '@/components/dashboard/analytics-chart';
+import { LoadingSpinner, LoadingSkeleton } from '@/components/ui/loading-spinner';
+import { EmptyState } from '@/components/ui/empty-state';
+import { 
+  BarChart2, 
+  TrendingUp, 
+  Users, 
+  Heart, 
+  Share2, 
+  MessageSquare,
+  Eye,
+  Calendar,
+  Download,
+  Filter
+} from 'lucide-react';
 
 // If process.env.NEXT_PUBLIC_MOCK_ANALYTICS is set, use mock analytics data (append ?mock=1 to API requests)
 const useMockAnalytics = process.env.NEXT_PUBLIC_MOCK_ANALYTICS === '1';
@@ -54,6 +73,39 @@ export default function AnalyticsPage() {
   const [platformError, setPlatformError] = useState<any>(null);
   const [platformLoading, setPlatformLoading] = useState<boolean>(true);
   
+  const [timeRange, setTimeRange] = useState('7d');
+  const [selectedPlatform, setSelectedPlatform] = useState('all');
+
+  // Mock data - in real app, this would come from API
+  const [analyticsData, setAnalyticsData] = useState({
+    engagement: [
+      { label: 'Likes', value: 1247, color: '#3b82f6' },
+      { label: 'Comments', value: 342, color: '#06b6d4' },
+      { label: 'Shares', value: 189, color: '#8b5cf6' },
+      { label: 'Saves', value: 89, color: '#f59e0b' }
+    ],
+    platformPerformance: [
+      { label: 'Instagram', value: 45, color: '#e4405f' },
+      { label: 'Twitter', value: 32, color: '#1da1f2' },
+      { label: 'LinkedIn', value: 18, color: '#0077b5' },
+      { label: 'Facebook', value: 5, color: '#1877f2' }
+    ],
+    weeklyTrend: [
+      { label: 'Mon', value: 120 },
+      { label: 'Tue', value: 145 },
+      { label: 'Wed', value: 98 },
+      { label: 'Thu', value: 167 },
+      { label: 'Fri', value: 203 },
+      { label: 'Sat', value: 178 },
+      { label: 'Sun', value: 156 }
+    ],
+    contentTypes: [
+      { label: 'Images', value: 65, color: '#10b981' },
+      { label: 'Videos', value: 25, color: '#f97316' },
+      { label: 'Text', value: 10, color: '#6366f1' }
+    ]
+  });
+
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -95,250 +147,253 @@ export default function AnalyticsPage() {
     
     fetchData();
   }, []);
-  const [ariaMessage, setAriaMessage] = React.useState('');
 
-  React.useEffect(() => {
-    if (error) setAriaMessage('Error loading analytics data.');
-    else if (growthError) setAriaMessage('Error loading growth data.');
-    else if (platformError) setAriaMessage('Error loading platform breakdown.');
-    else setAriaMessage('');
-  }, [error, growthError, platformError]);
+  const metrics = [
+    {
+      title: 'Total Reach',
+      value: '24.5K',
+      change: { value: 12, isPositive: true },
+      icon: Eye
+    },
+    {
+      title: 'Total Engagement',
+      value: '2,847',
+      change: { value: 8, isPositive: true },
+      icon: Heart
+    },
+    {
+      title: 'New Followers',
+      value: '+342',
+      change: { value: 15, isPositive: true },
+      icon: Users
+    },
+    {
+      title: 'Posts Published',
+      value: '12',
+      change: { value: 3, isPositive: true },
+      icon: Calendar
+    }
+  ];
+
+  if (isLoading) {
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <LoadingSkeleton variant="text" className="h-8 w-48" />
+          <LoadingSkeleton variant="button" className="h-10 w-32" />
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <LoadingSkeleton key={i} variant="card" />
+          ))}
+        </div>
+        
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <LoadingSkeleton key={i} variant="card" />
+          ))}
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <TooltipProvider>
-      <div className="max-w-5xl mx-auto py-8">
-        <h1 className="text-2xl font-bold mb-6">Analytics</h1>
-        <h2 className="sr-only" id="analytics-dashboard-heading">Analytics Dashboard</h2>
-        <Section title="Overview">
-          {isLoading ? (
-            <div className="flex items-center justify-center h-32">
-              <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
-              <span className="ml-2 text-muted-foreground">Loading overview...</span>
-            </div>
-          ) : error ? (
-            <div className="text-red-500" aria-live="polite">Error loading analytics data.</div>
-          ) : data && (data.totalPosts || data.totalViews || data.totalEngagements || data.avgEngagementRate) ? (
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <div className="bg-white rounded shadow p-4 flex flex-col items-center focus-visible:ring-2 focus-visible:ring-primary transition-shadow" tabIndex={0} aria-label="Total Posts">
-                    <span className="text-2xl font-bold">{safeNumber(data.totalPosts)}</span>
-                    <span className="text-xs text-muted-foreground mt-1">Total Posts</span>
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent>Total number of posts published</TooltipContent>
-              </Tooltip>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <div className="bg-white rounded shadow p-4 flex flex-col items-center focus-visible:ring-2 focus-visible:ring-primary transition-shadow" tabIndex={0} aria-label="Total Views">
-                    <span className="text-2xl font-bold">{safeNumber(data.totalViews)}</span>
-                    <span className="text-xs text-muted-foreground mt-1">Total Views</span>
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent>Total number of views across all posts</TooltipContent>
-              </Tooltip>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <div className="bg-white rounded shadow p-4 flex flex-col items-center focus-visible:ring-2 focus-visible:ring-primary transition-shadow" tabIndex={0} aria-label="Total Engagements">
-                    <span className="text-2xl font-bold">{safeNumber(data.totalEngagements)}</span>
-                    <span className="text-xs text-muted-foreground mt-1">Total Engagements</span>
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent>Total likes, comments, and shares</TooltipContent>
-              </Tooltip>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <div className="bg-white rounded shadow p-4 flex flex-col items-center focus-visible:ring-2 focus-visible:ring-primary transition-shadow" tabIndex={0} aria-label="Avg Engagement Rate">
-                    <span className="text-2xl font-bold">{safeNumber(data.avgEngagementRate, 2)}</span>
-                    <span className="text-xs text-muted-foreground mt-1">Avg Engagement Rate</span>
-                  </div>
-                </TooltipTrigger>
-                <TooltipContent>Average engagement per post</TooltipContent>
-              </Tooltip>
-            </div>
-          ) : (
-            <div className="text-center text-muted-foreground py-8">No analytics data yet. Start posting to see your stats!</div>
-          )}
-        </Section>
-        <Section title="Growth">
-          {growthLoading ? (
-            <div className="flex items-center justify-center h-64">
-              <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-              <span className="ml-2 text-muted-foreground">Loading growth data...</span>
-            </div>
-          ) : growthError ? (
-            <div className="text-red-500" aria-live="polite">Error loading growth data.</div>
-          ) : growthData && Object.keys(growthData).length > 0 ? (
-            <div className="w-full h-64 mb-4">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={(() => {
-                  // Flatten and group by date for multi-line chart
-                  const allDates = new Set<string>();
-                  Object.values(growthData).forEach((entries: any) => entries.forEach((e: any) => allDates.add(e.date)));
-                  const sortedDates = Array.from(allDates).sort();
-                  return sortedDates.map(date => {
-                    const row: any = { date: new Date(date).toLocaleDateString() };
-                    for (const [platform, entries] of Object.entries(growthData)) {
-                      const found = (entries as any[]).find(e => e.date === date);
-                      row[platform] = found ? found.followers : null;
-                    }
-                    return row;
-                  });
-                })()} aria-label="Growth chart">
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="date" />
-                  <YAxis allowDecimals={false} />
-                  <RechartsTooltip content={({ active, payload }) => {
-                    if (!active || !payload || !payload.length) return null;
-                    const d = payload[0].payload;
-                    return (
-                      <div className="bg-white p-2 rounded shadow text-xs">
-                        <div className="font-semibold mb-1">Date: {d.date}</div>
-                        {Object.keys(growthData).map((platform, i) => (
-                          <div key={platform} className="flex items-center gap-1">
-                            <span className="font-semibold" style={{ color: ['#6366f1','#10b981','#f59e42','#ef4444'][i%4] }}>{platform}:</span>
-                            <span>{d[platform] ?? '-'}</span>
-                          </div>
-                        ))}
-                      </div>
-                    );
-                  }} />
-                  <RechartsLegend content={({ payload }: { payload?: any[] }) => (
-                    <div className="flex gap-4">
-                      {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                      {payload?.map((entry: any, i: number) => (
-                        <span
-                          key={entry.value}
-                          className="flex items-center gap-1 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary transition-shadow"
-                          tabIndex={0}
-                          aria-label={entry.value}
-                          title={`${entry.value} growth`}
-                        >
-                          <span className="w-3 h-3 rounded-full" style={{ backgroundColor: entry.color }} />
-                          <span>{entry.value}</span>
-                        </span>
-                      ))}
-                    </div>
-                  )} />
-                  {Object.keys(growthData).map((platform, i) => (
-                    <Line key={platform} type="monotone" dataKey={platform} stroke={['#6366f1','#10b981','#f59e42','#ef4444'][i%4]} dot={false} />
-                  ))}
-                </LineChart>
-              </ResponsiveContainer>
-            </div>
-          ) : (
-            <div className="text-center text-muted-foreground py-8">No growth data yet. Your follower growth will appear here once you start posting.</div>
-          )}
-        </Section>
-        <Section title="Top Posts">
-          {topPostsLoading ? (
-            <div>Loading...</div>
-          ) : topPostsError ? (
-            <div className="text-red-500">Error loading top posts.</div>
-          ) : Array.isArray(topPosts) && topPosts.length > 0 ? (
-            <>
-              <div className="w-full h-64 mb-4">
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={Array.isArray(topPosts) ? topPosts : []}
-                      dataKey="views"
-                      nameKey="id"
-                      cx="50%"
-                      cy="50%"
-                      outerRadius={80}
-                      label={({ name, percent }) => `${safeString(name).slice(0, 4)}… (${safeNumber(percent * 100, 0)}%)`}
-                    >
-                      {(Array.isArray(topPosts) ? topPosts : []).map((_: any, i: number) => (
-                        <Cell key={i} fill={["#6366f1","#10b981","#f59e42","#ef4444","#a21caf"][i%5]} />
-                      ))}
-                    </Pie>
-                    <RechartsTooltip />
-                  </PieChart>
-                </ResponsiveContainer>
-              </div>
-              <div className="overflow-x-auto">
-                <table className="min-w-full text-sm">
-                  <thead>
-                    <tr>
-                      <th className="text-left p-2">Post ID</th>
-                      <th className="text-left p-2">Platforms</th>
-                      <th className="text-left p-2">Views</th>
-                      <th className="text-left p-2">Likes</th>
-                      <th className="text-left p-2">Comments</th>
-                      <th className="text-left p-2">Shares</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {(Array.isArray(topPosts) ? topPosts : []).map((post: any) => (
-                      <tr key={safeString(post.id)}>
-                        <td className="p-2 font-mono">{safeString(post.id).slice(0, 8)}…</td>
-                        <td className="p-2">{Array.isArray(post.platforms) ? post.platforms.join(', ') : '-'}</td>
-                        <td className="p-2">{safeNumber(post.views)}</td>
-                        <td className="p-2">{safeNumber(post.likes)}</td>
-                        <td className="p-2">{safeNumber(post.comments)}</td>
-                        <td className="p-2">{safeNumber(post.shares)}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </>
-          ) : (
-            <div className="text-center text-muted-foreground py-8">No top posts yet. Your most popular content will show up here.</div>
-          )}
-        </Section>
-        <Section title="Platform Breakdown">
-          {platformLoading ? (
-            <div className="flex items-center justify-center h-64">
-              <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-              <span className="ml-2 text-muted-foreground">Loading platform breakdown...</span>
-            </div>
-          ) : platformError ? (
-            <div className="text-red-500" aria-live="polite">Error loading platform breakdown.</div>
-          ) : Array.isArray(platformData) && platformData.length > 0 ? (
-            <div className="w-full h-64 mb-4">
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart aria-label="Platform breakdown chart">
-                  <RechartsTooltip content={({ active, payload }) => {
-                    if (!active || !payload || !payload.length) return null;
-                    const d = payload[0].payload;
-                    return (
-                      <div className="bg-white p-2 rounded shadow text-xs">
-                        <div className="font-semibold mb-1">{d.name}</div>
-                        <div>Posts: {d.value}</div>
-                      </div>
-                    );
-                  }} />
-                  <RechartsLegend content={({ payload }: { payload?: any[] }) => (
-                    <div className="flex gap-4">
-                      {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
-                      {payload?.map((entry: any, i: number) => (
-                        <span
-                          key={entry.value}
-                          className="flex items-center gap-1 cursor-pointer focus-visible:ring-2 focus-visible:ring-primary transition-shadow"
-                          tabIndex={0}
-                          aria-label={entry.value}
-                          title={`${entry.value} posts`}
-                        >
-                          <span className="w-3 h-3 rounded-full" style={{ backgroundColor: entry.color }} />
-                          <span>{entry.value}</span>
-                        </span>
-                      ))}
-                    </div>
-                  )} />
-                  {Array.isArray(platformData) ? platformData.map((entry: any, i: number) => (
-                    <Pie key={entry.name} dataKey="value" nameKey="name" data={platformData} cx="50%" cy="50%" outerRadius={80} fill={['#6366f1','#10b981','#f59e42','#ef4444'][i%4]} label />
-                  )) : null}
-                </PieChart>
-              </ResponsiveContainer>
-            </div>
-          ) : (
-            <div className="text-center text-muted-foreground py-8">No platform data yet. Connect your accounts and publish content to see platform analytics.</div>
-          )}
-        </Section>
-        <div aria-live="polite" className="sr-only" id="analytics-dashboard-aria-live">{ariaMessage}</div>
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">Analytics</h1>
+          <p className="text-muted-foreground">
+            Track your social media performance and engagement metrics.
+          </p>
+        </div>
+        <div className="flex items-center gap-2">
+          <Select value={timeRange} onValueChange={setTimeRange}>
+            <SelectTrigger className="w-32">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="7d">Last 7 days</SelectItem>
+              <SelectItem value="30d">Last 30 days</SelectItem>
+              <SelectItem value="90d">Last 90 days</SelectItem>
+              <SelectItem value="1y">Last year</SelectItem>
+            </SelectContent>
+          </Select>
+          <Button variant="outline" size="sm">
+            <Download className="h-4 w-4 mr-2" />
+            Export
+          </Button>
+        </div>
       </div>
-    </TooltipProvider>
+
+      {/* Key Metrics */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        {metrics.map((metric, index) => (
+          <MetricCard
+            key={index}
+            title={metric.title}
+            value={metric.value}
+            change={metric.change}
+            icon={metric.icon}
+          />
+        ))}
+      </div>
+
+      {/* Charts */}
+      <Tabs defaultValue="overview" className="space-y-4">
+        <TabsList>
+          <TabsTrigger value="overview">Overview</TabsTrigger>
+          <TabsTrigger value="engagement">Engagement</TabsTrigger>
+          <TabsTrigger value="platforms">Platforms</TabsTrigger>
+          <TabsTrigger value="content">Content</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="overview" className="space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <AnalyticsChart
+              title="Weekly Engagement Trend"
+              data={analyticsData.weeklyTrend}
+              type="line"
+            />
+            <AnalyticsChart
+              title="Engagement Breakdown"
+              data={analyticsData.engagement}
+              type="donut"
+            />
+          </div>
+        </TabsContent>
+
+        <TabsContent value="engagement" className="space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <AnalyticsChart
+              title="Engagement by Type"
+              data={analyticsData.engagement}
+              type="bar"
+            />
+            <Card>
+              <CardHeader>
+                <CardTitle>Top Performing Posts</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {[
+                    { title: 'Behind the scenes look at our process', engagement: 847, platform: 'Instagram' },
+                    { title: 'New product announcement', engagement: 623, platform: 'LinkedIn' },
+                    { title: 'Industry insights and tips', engagement: 445, platform: 'Twitter' }
+                  ].map((post, index) => (
+                    <div key={index} className="flex items-center justify-between p-3 rounded-lg border">
+                      <div className="flex-1">
+                        <p className="font-medium text-sm">{post.title}</p>
+                        <p className="text-xs text-muted-foreground">{post.platform}</p>
+                      </div>
+                      <div className="text-right">
+                        <p className="font-semibold text-sm">{post.engagement}</p>
+                        <p className="text-xs text-muted-foreground">engagements</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="platforms" className="space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <AnalyticsChart
+              title="Performance by Platform"
+              data={analyticsData.platformPerformance}
+              type="pie"
+            />
+            <Card>
+              <CardHeader>
+                <CardTitle>Platform Comparison</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {analyticsData.platformPerformance.map((platform, index) => (
+                    <div key={index} className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div 
+                          className="w-4 h-4 rounded-full"
+                          style={{ backgroundColor: platform.color }}
+                        />
+                        <span className="font-medium">{platform.label}</span>
+                      </div>
+                      <div className="text-right">
+                        <p className="font-semibold">{platform.value}%</p>
+                        <p className="text-xs text-muted-foreground">of total engagement</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="content" className="space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <AnalyticsChart
+              title="Content Type Performance"
+              data={analyticsData.contentTypes}
+              type="bar"
+            />
+            <Card>
+              <CardHeader>
+                <CardTitle>Content Insights</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between p-3 rounded-lg bg-blue-50 dark:bg-blue-950/20">
+                    <div>
+                      <p className="font-medium">Best Time to Post</p>
+                      <p className="text-sm text-muted-foreground">Based on engagement data</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="font-semibold">2-4 PM</p>
+                      <p className="text-xs text-muted-foreground">Weekdays</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between p-3 rounded-lg bg-green-50 dark:bg-green-950/20">
+                    <div>
+                      <p className="font-medium">Optimal Post Length</p>
+                      <p className="text-sm text-muted-foreground">For maximum engagement</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="font-semibold">150-200</p>
+                      <p className="text-xs text-muted-foreground">characters</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between p-3 rounded-lg bg-purple-50 dark:bg-purple-950/20">
+                    <div>
+                      <p className="font-medium">Hashtag Performance</p>
+                      <p className="text-sm text-muted-foreground">Average engagement</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="font-semibold">+23%</p>
+                      <p className="text-xs text-muted-foreground">with hashtags</p>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </TabsContent>
+      </Tabs>
+
+      {/* Empty State for no data */}
+      {analyticsData.engagement.length === 0 && (
+        <EmptyState
+          title="No analytics data yet"
+          description="Start posting content to see your performance metrics and insights."
+          action={{
+            label: "Create First Post",
+            onClick: () => window.location.href = '/dashboard/content'
+          }}
+        />
+      )}
+    </div>
   );
 } 
