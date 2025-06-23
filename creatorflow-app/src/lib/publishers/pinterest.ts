@@ -6,11 +6,6 @@ const prisma = new PrismaClient();
 
 type PublishResult = PlatformResult;
 
-interface PinterestError extends Error {
-  code?: number;
-  message?: string;
-}
-
 // Helper: Get Authenticated Pinterest Client
 async function getPinterestApiClient(account: SocialAccount): Promise<{ accessToken: string | null; error?: string }> {
   if (!account.encryptedAccessToken) {
@@ -27,7 +22,6 @@ async function getPinterestApiClient(account: SocialAccount): Promise<{ accessTo
   const isExpired = account.tokenExpiresAt ? new Date(account.tokenExpiresAt) < new Date() : false;
   
   if (isExpired) {
-    console.log(`[Pinterest Publisher] Token for account ${account.id} expired. Marking for re-auth...`);
     try {
       await prisma.socialAccount.update({
         where: { id: account.id },
@@ -76,12 +70,8 @@ export async function publishToPinterest(
   post: Post,
   account: SocialAccount
 ): Promise<PublishResult> {
-  console.log(`[Pinterest Publisher] Publishing post ${post.id} for user ${account.userId} to account ${account.username}`);
-
   const { accessToken, error: authError } = await getPinterestApiClient(account);
-
   if (authError || !accessToken) {
-    console.error(`[Pinterest Publisher] Authentication failed for account ${account.id}: ${authError}`);
     return { platform: 'pinterest', success: false, error: authError || 'Authentication failed' };
   }
 
@@ -92,10 +82,8 @@ export async function publishToPinterest(
     }
 
     const imageUrl = post.mediaUrls[0]; // Pinterest typically uses one image per pin
-    console.log(`[Pinterest Publisher] Processing image: ${imageUrl}`);
 
     // 1. Get user's boards (we'll use the first available board)
-    console.log('[Pinterest Publisher] Fetching user boards...');
     const boardsResponse = await fetch('https://api.pinterest.com/v5/user_account/boards', {
       headers: {
         'Authorization': `Bearer ${accessToken}`,
@@ -114,10 +102,8 @@ export async function publishToPinterest(
     }
 
     const boardId = boardsData.items[0].id; // Use the first board
-    console.log(`[Pinterest Publisher] Using board: ${boardId}`);
 
     // 2. Create the pin
-    console.log('[Pinterest Publisher] Creating pin...');
     const pinData = {
       board_id: boardId,
       title: post.contentText?.substring(0, 100) || 'CreatorFlow Pin', // Pinterest title limit
@@ -146,8 +132,6 @@ export async function publishToPinterest(
     const pinResult = await pinResponse.json();
     const platformPostId = pinResult.id;
 
-    console.log(`[Pinterest Publisher] Successfully published pin ${post.id}. Platform ID: ${platformPostId}`);
-
     return {
       platform: 'pinterest',
       success: true,
@@ -155,12 +139,10 @@ export async function publishToPinterest(
     };
 
   } catch (error: unknown) {
-    const pinterestError = error as PinterestError;
-    console.error(`[Pinterest Publisher] Failed to publish post ${post.id}:`, pinterestError);
     return {
       platform: 'pinterest',
       success: false,
-      error: pinterestError.message || 'Unknown Pinterest API error',
+      error: error instanceof Error ? error.message : 'Unknown Pinterest API error',
     };
   }
 }
@@ -173,12 +155,8 @@ export async function publishToPinterestWithUpload(
   post: Post,
   account: SocialAccount
 ): Promise<PublishResult> {
-  console.log(`[Pinterest Upload Publisher] Publishing post ${post.id} with image upload`);
-
   const { accessToken, error: authError } = await getPinterestApiClient(account);
-
   if (authError || !accessToken) {
-    console.error(`[Pinterest Upload Publisher] Authentication failed for account ${account.id}: ${authError}`);
     return { platform: 'pinterest', success: false, error: authError || 'Authentication failed' };
   }
 
@@ -188,7 +166,6 @@ export async function publishToPinterestWithUpload(
     }
 
     const imageUrl = post.mediaUrls[0];
-    console.log(`[Pinterest Upload Publisher] Processing image: ${imageUrl}`);
 
     // 1. Fetch image from source
     const imageResponse = await fetch(imageUrl);
@@ -242,8 +219,6 @@ export async function publishToPinterestWithUpload(
     const pinResult = await pinResponse.json();
     const platformPostId = pinResult.id;
 
-    console.log(`[Pinterest Upload Publisher] Successfully published pin ${post.id}. Platform ID: ${platformPostId}`);
-
     return {
       platform: 'pinterest',
       success: true,
@@ -251,12 +226,10 @@ export async function publishToPinterestWithUpload(
     };
 
   } catch (error: unknown) {
-    const pinterestError = error as PinterestError;
-    console.error(`[Pinterest Upload Publisher] Failed to publish post ${post.id}:`, pinterestError);
     return {
       platform: 'pinterest',
       success: false,
-      error: pinterestError.message || 'Unknown Pinterest API error',
+      error: error instanceof Error ? error.message : 'Unknown Pinterest API error',
     };
   }
 } 

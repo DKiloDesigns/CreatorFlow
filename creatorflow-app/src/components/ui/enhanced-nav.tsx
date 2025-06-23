@@ -144,18 +144,22 @@ export function EnhancedNavigation() {
 
 export function UserMenu() {
   const { data: session } = useSession();
+  const userImage = session?.user?.image;
+  const userName = session?.user?.name || 'User';
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="w-full justify-between">
           <div className="flex items-center gap-2">
-            <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
-              <User className="h-4 w-4" />
-            </div>
-            <span className="text-sm font-medium">
-              {session?.user?.name || 'User'}
-            </span>
+            {userImage ? (
+              <img src={userImage} alt={userName} className="h-8 w-8 rounded-full object-cover" />
+            ) : (
+              <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
+                <User className="h-4 w-4" />
+              </div>
+            )}
+            <span className="text-sm font-medium">{userName}</span>
           </div>
           <ChevronDown className="h-4 w-4" />
         </Button>
@@ -170,6 +174,16 @@ export function UserMenu() {
         <DropdownMenuItem>
           <Settings className="mr-2 h-4 w-4" />
           Settings
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link href="/dashboard/billing" className="flex items-center w-full">
+            <CreditCard className="mr-2 h-4 w-4" />
+            Billing
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem>
+          <Bell className="mr-2 h-4 w-4" />
+          Notifications
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={() => signOut({ callbackUrl: '/' })}>

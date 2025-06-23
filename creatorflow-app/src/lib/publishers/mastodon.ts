@@ -46,12 +46,9 @@ export async function publishToMastodon(
   account: SocialAccount,
   visibility: 'public' | 'unlisted' | 'private' | 'direct' = 'public'
 ): Promise<PlatformResult> {
-  console.log(`[Mastodon Publisher] Publishing post ${post.id} for user ${account.userId} to account ${account.username}`);
-
   const { accessToken, error: authError } = await getMastodonApiClient(account);
 
   if (authError || !accessToken) {
-    console.error(`[Mastodon Publisher] Authentication failed for account ${account.id}: ${authError}`);
     return { platform: 'mastodon', success: false, error: authError || 'Authentication failed' };
   }
 
@@ -68,14 +65,10 @@ export async function publishToMastodon(
 
     // Handle media if present
     if (hasMedia && post.mediaUrls) {
-      console.log(`[Mastodon Publisher] Processing ${post.mediaUrls.length} media items...`);
-      
       const mediaIds: string[] = [];
       
       for (const mediaUrl of post.mediaUrls.slice(0, 4)) { // Mastodon allows up to 4 media attachments
         try {
-          console.log(`[Mastodon Publisher] Uploading media: ${mediaUrl}`);
-          
           // Fetch media from URL
           const mediaResponse = await fetch(mediaUrl);
           if (!mediaResponse.ok) {
@@ -101,10 +94,8 @@ export async function publishToMastodon(
           
           const uploadResult = await uploadResponse.json();
           mediaIds.push(uploadResult.id);
-          console.log(`[Mastodon Publisher] Media uploaded with ID: ${uploadResult.id}`);
           
         } catch (mediaError) {
-          console.error(`[Mastodon Publisher] Failed to upload media ${mediaUrl}:`, mediaError);
           // Continue with other media items
         }
       }
@@ -115,7 +106,6 @@ export async function publishToMastodon(
     }
 
     // Post to Mastodon
-    console.log('[Mastodon Publisher] Publishing toot...');
     const response = await fetch(`https://${mastodonInstance}/api/v1/statuses`, {
       method: 'POST',
       headers: {
@@ -134,8 +124,6 @@ export async function publishToMastodon(
     const result = await response.json();
     const platformPostId = result.id;
 
-    console.log(`[Mastodon Publisher] Successfully published post ${post.id}. Platform ID: ${platformPostId}`);
-
     return {
       platform: 'mastodon',
       success: true,
@@ -144,7 +132,6 @@ export async function publishToMastodon(
 
   } catch (error: unknown) {
     const mastodonError = error as MastodonError;
-    console.error(`[Mastodon Publisher] Failed to publish post ${post.id}:`, mastodonError);
     return {
       platform: 'mastodon',
       success: false,
@@ -162,12 +149,9 @@ export async function publishToMastodonWithWarning(
   contentWarning: string,
   visibility: 'public' | 'unlisted' | 'private' | 'direct' = 'public'
 ): Promise<PlatformResult> {
-  console.log(`[Mastodon Publisher] Publishing post with content warning: ${contentWarning}`);
-
   const { accessToken, error: authError } = await getMastodonApiClient(account);
 
   if (authError || !accessToken) {
-    console.error(`[Mastodon Publisher] Authentication failed for account ${account.id}: ${authError}`);
     return { platform: 'mastodon', success: false, error: authError || 'Authentication failed' };
   }
 
@@ -199,8 +183,6 @@ export async function publishToMastodonWithWarning(
     const result = await response.json();
     const platformPostId = result.id;
 
-    console.log(`[Mastodon Publisher] Successfully published post with warning. Platform ID: ${platformPostId}`);
-
     return {
       platform: 'mastodon',
       success: true,
@@ -209,7 +191,6 @@ export async function publishToMastodonWithWarning(
 
   } catch (error: unknown) {
     const mastodonError = error as MastodonError;
-    console.error(`[Mastodon Publisher] Failed to publish post with warning:`, mastodonError);
     return {
       platform: 'mastodon',
       success: false,

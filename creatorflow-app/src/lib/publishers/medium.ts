@@ -45,12 +45,9 @@ export async function publishToMedium(
   account: SocialAccount,
   publicationId?: string
 ): Promise<PlatformResult> {
-  console.log(`[Medium Publisher] Publishing post ${post.id} for user ${account.userId} to account ${account.username}`);
-
   const { accessToken, error: authError } = await getMediumApiClient(account);
 
   if (authError || !accessToken) {
-    console.error(`[Medium Publisher] Authentication failed for account ${account.id}: ${authError}`);
     return { platform: 'medium', success: false, error: authError || 'Authentication failed' };
   }
 
@@ -81,7 +78,6 @@ export async function publishToMedium(
 
     // Add media if present
     if (hasMedia && mediaUrl) {
-      console.log(`[Medium Publisher] Processing media: ${mediaUrl}`);
       articleContent += `\n\n![${title}](${mediaUrl})`;
     }
 
@@ -101,7 +97,6 @@ export async function publishToMedium(
       ? `https://api.medium.com/v1/publications/${publicationId}/posts`
       : `https://api.medium.com/v1/users/${userId}/posts`;
 
-    console.log('[Medium Publisher] Publishing article...');
     const articleResponse = await fetch(endpoint, {
       method: 'POST',
       headers: {
@@ -121,8 +116,6 @@ export async function publishToMedium(
     const platformPostId = articleResult.data.id;
     const articleUrl = articleResult.data.url;
 
-    console.log(`[Medium Publisher] Successfully published post ${post.id}. Platform ID: ${platformPostId}, URL: ${articleUrl}`);
-
     return {
       platform: 'medium',
       success: true,
@@ -131,7 +124,6 @@ export async function publishToMedium(
 
   } catch (error: unknown) {
     const mediumError = error as MediumError;
-    console.error(`[Medium Publisher] Failed to publish post ${post.id}:`, mediumError);
     return {
       platform: 'medium',
       success: false,
@@ -151,12 +143,9 @@ export async function createMediumDraft(
   post: Post,
   account: SocialAccount
 ): Promise<PlatformResult> {
-  console.log(`[Medium Draft Publisher] Creating draft for post ${post.id}`);
-
   const { accessToken, error: authError } = await getMediumApiClient(account);
 
   if (authError || !accessToken) {
-    console.error(`[Medium Draft Publisher] Authentication failed for account ${account.id}: ${authError}`);
     return { platform: 'medium', success: false, error: authError || 'Authentication failed' };
   }
 
@@ -215,8 +204,6 @@ export async function createMediumDraft(
     const draftResult = await draftResponse.json();
     const platformPostId = draftResult.data.id;
 
-    console.log(`[Medium Draft Publisher] Successfully created draft for post ${post.id}. Platform ID: ${platformPostId}`);
-
     return {
       platform: 'medium',
       success: true,
@@ -225,7 +212,6 @@ export async function createMediumDraft(
 
   } catch (error: unknown) {
     const mediumError = error as MediumError;
-    console.error(`[Medium Draft Publisher] Failed to create draft for post ${post.id}:`, mediumError);
     return {
       platform: 'medium',
       success: false,

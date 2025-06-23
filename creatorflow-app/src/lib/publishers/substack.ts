@@ -45,12 +45,9 @@ export async function publishToSubstack(
   account: SocialAccount,
   publicationId?: string
 ): Promise<PlatformResult> {
-  console.log(`[Substack Publisher] Publishing post ${post.id} for user ${account.userId} to account ${account.username}`);
-
   const { accessToken, error: authError } = await getSubstackApiClient(account);
 
   if (authError || !accessToken) {
-    console.error(`[Substack Publisher] Authentication failed for account ${account.id}: ${authError}`);
     return { platform: 'substack', success: false, error: authError || 'Authentication failed' };
   }
 
@@ -87,7 +84,6 @@ export async function publishToSubstack(
 
     // Add media if present
     if (hasMedia && mediaUrl) {
-      console.log(`[Substack Publisher] Processing media: ${mediaUrl}`);
       newsletterContent += `\n\n![${title}](${mediaUrl})`;
     }
 
@@ -101,7 +97,6 @@ export async function publishToSubstack(
       published_at: new Date().toISOString(),
     };
 
-    console.log('[Substack Publisher] Publishing newsletter...');
     const newsletterResponse = await fetch(`https://substack.com/api/v1/publications/${targetPublicationId}/posts`, {
       method: 'POST',
       headers: {
@@ -120,8 +115,6 @@ export async function publishToSubstack(
     const newsletterResult = await newsletterResponse.json();
     const platformPostId = newsletterResult.id;
 
-    console.log(`[Substack Publisher] Successfully published post ${post.id}. Platform ID: ${platformPostId}`);
-
     return {
       platform: 'substack',
       success: true,
@@ -130,7 +123,6 @@ export async function publishToSubstack(
 
   } catch (error: unknown) {
     const substackError = error as SubstackError;
-    console.error(`[Substack Publisher] Failed to publish post ${post.id}:`, substackError);
     return {
       platform: 'substack',
       success: false,
@@ -150,12 +142,9 @@ export async function createSubstackDraft(
   post: Post,
   account: SocialAccount
 ): Promise<PlatformResult> {
-  console.log(`[Substack Draft Publisher] Creating draft for post ${post.id}`);
-
   const { accessToken, error: authError } = await getSubstackApiClient(account);
 
   if (authError || !accessToken) {
-    console.error(`[Substack Draft Publisher] Authentication failed for account ${account.id}: ${authError}`);
     return { platform: 'substack', success: false, error: authError || 'Authentication failed' };
   }
 
@@ -218,8 +207,6 @@ export async function createSubstackDraft(
     const draftResult = await draftResponse.json();
     const platformPostId = draftResult.id;
 
-    console.log(`[Substack Draft Publisher] Successfully created draft for post ${post.id}. Platform ID: ${platformPostId}`);
-
     return {
       platform: 'substack',
       success: true,
@@ -228,7 +215,6 @@ export async function createSubstackDraft(
 
   } catch (error: unknown) {
     const substackError = error as SubstackError;
-    console.error(`[Substack Draft Publisher] Failed to create draft for post ${post.id}:`, substackError);
     return {
       platform: 'substack',
       success: false,

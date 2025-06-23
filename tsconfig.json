@@ -1,0 +1,11 @@
+{
+  "extends": "./creatorflow-app/tsconfig.json",
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["creatorflow-app/src", "creatorflow-app/types", "**/*.ts", "**/*.tsx"],
+  "exclude": ["node_modules"]
+} 

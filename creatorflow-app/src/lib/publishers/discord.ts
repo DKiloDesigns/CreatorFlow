@@ -45,12 +45,9 @@ export async function publishToDiscord(
   account: SocialAccount,
   channelId?: string
 ): Promise<PlatformResult> {
-  console.log(`[Discord Publisher] Publishing post ${post.id} for user ${account.userId} to account ${account.username}`);
-
   const { accessToken, error: authError } = await getDiscordApiClient(account);
 
   if (authError || !accessToken) {
-    console.error(`[Discord Publisher] Authentication failed for account ${account.id}: ${authError}`);
     return { platform: 'discord', success: false, error: authError || 'Authentication failed' };
   }
 
@@ -59,8 +56,6 @@ export async function publishToDiscord(
     let targetChannel = channelId;
     
     if (!targetChannel) {
-      console.log('[Discord Publisher] No channel specified, fetching user guilds...');
-      
       // Get user's guilds (servers)
       const guildsResponse = await fetch('https://discord.com/api/users/@me/guilds', {
         headers: {
@@ -98,7 +93,6 @@ export async function publishToDiscord(
       }
 
       targetChannel = textChannels[0].id;
-      console.log(`[Discord Publisher] Using channel: ${targetChannel}`);
     }
 
     // Prepare message content
@@ -112,8 +106,6 @@ export async function publishToDiscord(
 
     // Handle media if present
     if (hasMedia && mediaUrl) {
-      console.log(`[Discord Publisher] Processing media: ${mediaUrl}`);
-      
       // Create an embed with the media
       messageData.embeds = [{
         title: 'CreatorFlow Post',
@@ -130,7 +122,6 @@ export async function publishToDiscord(
     }
 
     // Send the message
-    console.log('[Discord Publisher] Sending message...');
     const messageResponse = await fetch(`https://discord.com/api/channels/${targetChannel}/messages`, {
       method: 'POST',
       headers: {
@@ -148,8 +139,6 @@ export async function publishToDiscord(
     const messageResult = await messageResponse.json();
     const platformPostId = messageResult.id;
 
-    console.log(`[Discord Publisher] Successfully published post ${post.id}. Platform ID: ${platformPostId}`);
-
     return {
       platform: 'discord',
       success: true,
@@ -158,7 +147,6 @@ export async function publishToDiscord(
 
   } catch (error: unknown) {
     const discordError = error as DiscordError;
-    console.error(`[Discord Publisher] Failed to publish post ${post.id}:`, discordError);
     return {
       platform: 'discord',
       success: false,
@@ -176,8 +164,6 @@ export async function publishToDiscordWebhook(
   account: SocialAccount,
   webhookUrl: string
 ): Promise<PlatformResult> {
-  console.log(`[Discord Webhook Publisher] Publishing post ${post.id} via webhook`);
-
   try {
     const content = post.contentText || 'CreatorFlow Post';
     const hasMedia = post.mediaUrls && post.mediaUrls.length > 0;
@@ -191,8 +177,6 @@ export async function publishToDiscordWebhook(
 
     // Handle media if present
     if (hasMedia && mediaUrl) {
-      console.log(`[Discord Webhook Publisher] Processing media: ${mediaUrl}`);
-      
       webhookData.embeds = [{
         title: 'CreatorFlow Post',
         description: content,
@@ -220,8 +204,6 @@ export async function publishToDiscordWebhook(
 
     const platformPostId = `webhook_${Date.now()}`;
 
-    console.log(`[Discord Webhook Publisher] Successfully published post ${post.id}. Platform ID: ${platformPostId}`);
-
     return {
       platform: 'discord',
       success: true,
@@ -230,7 +212,6 @@ export async function publishToDiscordWebhook(
 
   } catch (error: unknown) {
     const discordError = error as DiscordError;
-    console.error(`[Discord Webhook Publisher] Failed to publish post ${post.id}:`, discordError);
     return {
       platform: 'discord',
       success: false,

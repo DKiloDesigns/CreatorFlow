@@ -92,9 +92,8 @@ export default function AccountConnectButtons() {
   };
 
   const handleUpgrade = () => {
-      console.log("Upgrade button clicked");
-      // TODO: Redirect to billing/upgrade page
-      toast.info("Redirecting to upgrade page... (Not Implemented)");
+      // Redirect to billing/upgrade page
+      window.location.href = '/dashboard/billing';
   };
 
   if (isLoading) {

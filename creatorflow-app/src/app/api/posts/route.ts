@@ -54,52 +54,40 @@ export async function POST(req: NextRequest) {
         }
     }
     // Fallback to session auth
-    // Debug logging for session/cookie issues
-    console.log('--- API DEBUG ---');
-    console.log('HEADERS:', Object.fromEntries(req.headers.entries()));
-    console.log('COOKIES:', req.cookies.getAll());
     try {
         const session = await getSession(req);
-        console.log("GET /api/posts - Session:", session);
         const userId = session?.user?.id;
 
         if (!userId) {
-            console.error("GET /api/posts - Unauthorized: userId is missing from session", session);
             return NextResponse.json({ error: 'Unauthorized: User not logged in' }, { status: 401 });
         }
 
-        // Fetch posts for the logged-in user
-        // Select only necessary fields to send to the client
-        const posts = await prisma.post.findMany({
-            where: {
-                userId: userId,
-                // Optionally filter by status if needed (e.g., exclude drafts from calendar)
-                status: {
-                    not: PostStatus.DRAFT // Example: Don't fetch drafts for the calendar
-                }
-            },
-            select: {
-                id: true,
-                contentText: true,
-                mediaUrls: true,
-                platforms: true,
-                status: true,
-                scheduledAt: true,
-                publishedAt: true,
-                errorMessage: true,
-                createdAt: true,
-                updatedAt: true,
-                // Do NOT include userId or user relation unless specifically needed
-            },
-            orderBy: {
-                scheduledAt: 'asc' // Order by scheduled date
-            }
-        });
-
-        return NextResponse.json(posts);
-
+        const body = await req.json();
+        const { contentText, mediaUrls, platforms, scheduledAt, status } = body;
+        // Basic Validation
+        if (!platforms || !Array.isArray(platforms) || platforms.length === 0) {
+            return NextResponse.json({ error: 'Platforms are required' }, { status: 400 });
+        }
+        if (!contentText && (!mediaUrls || mediaUrls.length === 0)) {
+            return NextResponse.json({ error: 'Post must have content or media' }, { status: 400 });
+        }
+        if (status && !Object.values(PostStatus).includes(status as PostStatus)) {
+            return NextResponse.json({ error: 'Invalid post status' }, { status: 400 });
+        }
+        if (status === PostStatus.SCHEDULED && !scheduledAt) {
+            return NextResponse.json({ error: 'Scheduled posts require a scheduledAt date' }, { status: 400 });
+        }
+        const postData: any = {
+            userId,
+            contentText: contentText || null,
+            mediaUrls: mediaUrls || [],
+            platforms,
+            status: status || PostStatus.DRAFT,
+            scheduledAt: scheduledAt ? new Date(scheduledAt) : null,
+        };
+        const newPost = await prisma.post.create({ data: postData });
+        return NextResponse.json(newPost, { status: 201 });
     } catch (error) {
-        console.error('Error fetching posts:', error);
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
     }
 }
@@ -130,10 +118,8 @@ export async function GET(req: NextRequest) {
                     status: true,
                     scheduledAt: true,
                     publishedAt: true,
-                    errorMessage: true,
                     createdAt: true,
                     updatedAt: true,
-                    // Do NOT include userId or user relation unless specifically needed
                 },
                 orderBy: {
                     scheduledAt: 'asc' // Order by scheduled date
@@ -146,17 +132,11 @@ export async function GET(req: NextRequest) {
         }
     }
     // Fallback to session auth
-    // Debug logging for session/cookie issues
-    console.log('--- API DEBUG ---');
-    console.log('HEADERS:', Object.fromEntries(req.headers.entries()));
-    console.log('COOKIES:', req.cookies.getAll());
     try {
         const session = await getSession(req);
-        console.log("GET /api/posts - Session:", session);
         const userId = session?.user?.id;
 
         if (!userId) {
-            console.error("GET /api/posts - Unauthorized: userId is missing from session", session);
             return NextResponse.json({ error: 'Unauthorized: User not logged in' }, { status: 401 });
         }
 
@@ -165,9 +145,8 @@ export async function GET(req: NextRequest) {
         const posts = await prisma.post.findMany({
             where: {
                 userId: userId,
-                // Optionally filter by status if needed (e.g., exclude drafts from calendar)
                 status: {
-                    not: PostStatus.DRAFT // Example: Don't fetch drafts for the calendar
+                    not: PostStatus.DRAFT
                 }
             },
             select: {
@@ -178,20 +157,17 @@ export async function GET(req: NextRequest) {
                 status: true,
                 scheduledAt: true,
                 publishedAt: true,
-                errorMessage: true,
                 createdAt: true,
                 updatedAt: true,
-                // Do NOT include userId or user relation unless specifically needed
             },
             orderBy: {
-                scheduledAt: 'asc' // Order by scheduled date
+                scheduledAt: 'asc'
             }
         });
 
         return NextResponse.json(posts);
 
     } catch (error) {
-        console.error('Error fetching posts:', error);
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
     }
 } 

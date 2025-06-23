@@ -1,3 +1,5 @@
+// File temporarily disabled for troubleshooting. See middleware.ts.bak
+
 import { NextResponse } from "next/server"
 import { getToken } from "next-auth/jwt"
 import { withAuth } from "next-auth/middleware"

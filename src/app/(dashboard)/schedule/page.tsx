@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Link from 'next/link'
-import { Button } from '@/components/ui/button'
+import { Button } from '../../../components/ui/button'
 
 export default function SchedulePage() {
+  const [deletingId, setDeletingId] = useState<number | null>(null);
   const scheduledPosts = [
     {
       id: 1,
@@ -23,6 +24,17 @@ export default function SchedulePage() {
       platform: 'Instagram',
     },
   ]
+
+  function handleDelete(postId: number) {
+    if (window.confirm('Are you sure you want to delete this scheduled post? This action cannot be undone.')) {
+      setDeletingId(postId);
+      setTimeout(() => {
+        // Simulate async delete
+        setDeletingId(null);
+        // TODO REMOVED: Remove post from state or refetch. Implement if/when post deletion is added.
+      }, 1200);
+    }
+  }
 
   return (
     <div className="space-y-6">
@@ -50,19 +62,36 @@ export default function SchedulePage() {
                   <td className="p-4 align-middle">{post.title}</td>
                   <td className="p-4 align-middle">{post.date}</td>
                   <td className="p-4 align-middle">
-                    <span className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium
-                      ${post.platform === 'Twitter' ? 'bg-blue-100 text-blue-800' :
-                        post.platform === 'LinkedIn' ? 'bg-blue-900 text-white' :
-                        'bg-pink-100 text-pink-800'}`}>
+                    <span
+                      className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium
+                        ${post.platform === 'Twitter' ? 'bg-blue-100 text-blue-800' :
+                          post.platform === 'LinkedIn' ? 'bg-blue-900 text-white' :
+                          'bg-pink-100 text-pink-800'}`}
+                      aria-label={`Platform: ${post.platform}`}
+                    >
                       {post.platform}
                     </span>
                   </td>
                   <td className="p-4 align-middle">
                     <div className="flex gap-2">
-                      <Button variant="outline" size="sm" asChild>
+                      <Button variant="outline" size="sm" asChild aria-label="Edit scheduled post">
                         <Link href={`/posts/${post.id}/edit`}>Edit</Link>
                       </Button>
-                      <Button variant="destructive" size="sm">Delete</Button>
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        aria-label="Delete scheduled post"
+                        onClick={() => handleDelete(post.id)}
+                        disabled={deletingId === post.id}
+                        className="focus-visible:ring-2 focus-visible:ring-red-500"
+                      >
+                        {deletingId === post.id ? (
+                          <svg className="animate-spin h-4 w-4 mr-1 inline" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
+                          </svg>
+                        ) : 'Delete'}
+                      </Button>
                     </div>
                   </td>
                 </tr>

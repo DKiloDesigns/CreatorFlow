@@ -32,7 +32,8 @@ import {
   MessageSquare,
   Heart,
   Share2,
-  Brain
+  Brain,
+  CreditCard
 } from 'lucide-react';
 import { AISetupReminder } from '@/components/ui/ai-setup-reminder';
 import { useAPIKey } from '@/hooks/use-api-key';
@@ -205,6 +206,14 @@ export default function DashboardPage() {
                 >
                   <MessageSquare className="h-6 w-6" />
                   <span>Brand Collabs</span>
+                </Button>
+                <Button 
+                  variant="outline"
+                  className="h-16 flex flex-col items-center justify-center gap-2"
+                  onClick={() => window.location.href = '/dashboard/billing'}
+                >
+                  <CreditCard className="h-6 w-6" />
+                  <span>Billing</span>
                 </Button>
               </div>
             </CardContent>

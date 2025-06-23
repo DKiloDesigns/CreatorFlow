@@ -45,12 +45,9 @@ export async function publishToDribbble(
   account: SocialAccount,
   shotType: 'shot' | 'project' = 'shot'
 ): Promise<PlatformResult> {
-  console.log(`[Dribbble Publisher] Publishing post ${post.id} for user ${account.userId} to account ${account.username}`);
-
   const { accessToken, error: authError } = await getDribbbleApiClient(account);
 
   if (authError || !accessToken) {
-    console.error(`[Dribbble Publisher] Authentication failed for account ${account.id}: ${authError}`);
     return { platform: 'dribbble', success: false, error: authError || 'Authentication failed' };
   }
 
@@ -64,8 +61,6 @@ export async function publishToDribbble(
 
     // Get the first image URL (Dribbble typically handles one image per shot)
     const imageUrl = post.mediaUrls[0];
-    
-    console.log(`[Dribbble Publisher] Processing image: ${imageUrl}`);
 
     if (shotType === 'shot') {
       // Create a new shot
@@ -94,8 +89,6 @@ export async function publishToDribbble(
 
       const result = await response.json();
       const platformPostId = result.id.toString();
-
-      console.log(`[Dribbble Publisher] Successfully created shot. Shot ID: ${platformPostId}`);
 
       return {
         platform: 'dribbble',
@@ -129,8 +122,6 @@ export async function publishToDribbble(
       const result = await response.json();
       const platformPostId = result.id.toString();
 
-      console.log(`[Dribbble Publisher] Successfully created project. Project ID: ${platformPostId}`);
-
       return {
         platform: 'dribbble',
         success: true,
@@ -140,7 +131,6 @@ export async function publishToDribbble(
 
   } catch (error: unknown) {
     const dribbbleError = error as DribbbleError;
-    console.error(`[Dribbble Publisher] Failed to publish post ${post.id}:`, dribbbleError);
     return {
       platform: 'dribbble',
       success: false,
@@ -163,12 +153,9 @@ export async function publishToDribbbleWithMetadata(
     low_profile?: boolean;
   }
 ): Promise<PlatformResult> {
-  console.log(`[Dribbble Publisher] Creating shot with detailed metadata`);
-
   const { accessToken, error: authError } = await getDribbbleApiClient(account);
 
   if (authError || !accessToken) {
-    console.error(`[Dribbble Publisher] Authentication failed for account ${account.id}: ${authError}`);
     return { platform: 'dribbble', success: false, error: authError || 'Authentication failed' };
   }
 
@@ -209,8 +196,6 @@ export async function publishToDribbbleWithMetadata(
     const result = await response.json();
     const platformPostId = result.id.toString();
 
-    console.log(`[Dribbble Publisher] Successfully created shot with metadata. Shot ID: ${platformPostId}`);
-
     return {
       platform: 'dribbble',
       success: true,
@@ -219,7 +204,6 @@ export async function publishToDribbbleWithMetadata(
 
   } catch (error: unknown) {
     const dribbbleError = error as DribbbleError;
-    console.error(`[Dribbble Publisher] Failed to create shot with metadata:`, dribbbleError);
     return {
       platform: 'dribbble',
       success: false,

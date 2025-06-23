@@ -45,12 +45,9 @@ export async function publishToBehance(
   account: SocialAccount,
   projectType: 'project' | 'collection' = 'project'
 ): Promise<PlatformResult> {
-  console.log(`[Behance Publisher] Publishing post ${post.id} for user ${account.userId} to account ${account.username}`);
-
   const { accessToken, error: authError } = await getBehanceApiClient(account);
 
   if (authError || !accessToken) {
-    console.error(`[Behance Publisher] Authentication failed for account ${account.id}: ${authError}`);
     return { platform: 'behance', success: false, error: authError || 'Authentication failed' };
   }
 
@@ -78,8 +75,6 @@ export async function publishToBehance(
 
     if (projectType === 'project') {
       // Create a new project
-      console.log(`[Behance Publisher] Creating project with ${post.mediaUrls.length} media items...`);
-
       const projectData = {
         name: content.substring(0, 100), // Behance title limit
         description: content,
@@ -110,8 +105,6 @@ export async function publishToBehance(
       const result = await response.json();
       const platformPostId = result.project.id.toString();
 
-      console.log(`[Behance Publisher] Successfully created project. Project ID: ${platformPostId}`);
-
       return {
         platform: 'behance',
         success: true,
@@ -120,8 +113,6 @@ export async function publishToBehance(
 
     } else {
       // Create a collection
-      console.log(`[Behance Publisher] Creating collection...`);
-
       const collectionData = {
         name: content.substring(0, 100),
         description: content,
@@ -146,8 +137,6 @@ export async function publishToBehance(
       const result = await response.json();
       const platformPostId = result.collection.id.toString();
 
-      console.log(`[Behance Publisher] Successfully created collection. Collection ID: ${platformPostId}`);
-
       return {
         platform: 'behance',
         success: true,
@@ -157,7 +146,6 @@ export async function publishToBehance(
 
   } catch (error: unknown) {
     const behanceError = error as BehanceError;
-    console.error(`[Behance Publisher] Failed to publish post ${post.id}:`, behanceError);
     return {
       platform: 'behance',
       success: false,
@@ -181,12 +169,9 @@ export async function publishToBehanceWithMetadata(
     fields: string[];
   }
 ): Promise<PlatformResult> {
-  console.log(`[Behance Publisher] Creating project with detailed metadata`);
-
   const { accessToken, error: authError } = await getBehanceApiClient(account);
 
   if (authError || !accessToken) {
-    console.error(`[Behance Publisher] Authentication failed for account ${account.id}: ${authError}`);
     return { platform: 'behance', success: false, error: authError || 'Authentication failed' };
   }
 
@@ -230,8 +215,6 @@ export async function publishToBehanceWithMetadata(
     const result = await response.json();
     const platformPostId = result.project.id.toString();
 
-    console.log(`[Behance Publisher] Successfully created project with metadata. Project ID: ${platformPostId}`);
-
     return {
       platform: 'behance',
       success: true,
@@ -240,7 +223,6 @@ export async function publishToBehanceWithMetadata(
 
   } catch (error: unknown) {
     const behanceError = error as BehanceError;
-    console.error(`[Behance Publisher] Failed to create project with metadata:`, behanceError);
     return {
       platform: 'behance',
       success: false,

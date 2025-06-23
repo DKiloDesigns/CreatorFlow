@@ -8,11 +8,6 @@ import { signIn } from "next-auth/react"
 
 import { Button } from "@/components/ui/button"
 
-export const metadata: Metadata = {
-  title: "Login",
-  description: "Login to your account",
-}
-
 export default function LoginPage() {
   return (
     <div className="container relative h-screen flex-col items-center justify-center grid lg:max-w-none lg:grid-cols-2 lg:px-0">

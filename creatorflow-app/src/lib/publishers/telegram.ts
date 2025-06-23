@@ -70,19 +70,15 @@ export async function publishToTelegram(
   account: SocialAccount,
   channelId?: string
 ): Promise<PublishResult> {
-  console.log(`[Telegram Publisher] Publishing post ${post.id} for user ${account.userId} to account ${account.username}`);
-
   const { botToken, error: authError } = await getTelegramApiClient(account);
 
   if (authError || !botToken) {
-    console.error(`[Telegram Publisher] Authentication failed for account ${account.id}: ${authError}`);
     return { platform: 'telegram', success: false, error: authError || 'Authentication failed' };
   }
 
   try {
     // Use provided channel ID or default to bot's channel
     const targetChannel = channelId || '@' + account.username;
-    console.log(`[Telegram Publisher] Posting to channel: ${targetChannel}`);
 
     // Determine message type and content
     const hasMedia = post.mediaUrls && post.mediaUrls.length > 0;
@@ -92,8 +88,6 @@ export async function publishToTelegram(
     let platformPostId: string;
 
     if (hasMedia && mediaUrl) {
-      console.log(`[Telegram Publisher] Processing media: ${mediaUrl}`);
-      
       // Determine media type
       const isImage = /\.(jpg|jpeg|png|gif|webp)$/i.test(mediaUrl);
       const isVideo = /\.(mp4|mov|avi|webm)$/i.test(mediaUrl);
@@ -171,7 +165,6 @@ export async function publishToTelegram(
       
     } else {
       // Send text message only
-      console.log('[Telegram Publisher] Sending text message...');
       const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
         method: 'POST',
         headers: {
@@ -193,8 +186,6 @@ export async function publishToTelegram(
       platformPostId = result.result.message_id.toString();
     }
 
-    console.log(`[Telegram Publisher] Successfully published post ${post.id}. Platform ID: ${platformPostId}`);
-
     return {
       platform: 'telegram',
       success: true,
@@ -203,7 +194,6 @@ export async function publishToTelegram(
 
   } catch (error: unknown) {
     const telegramError = error as TelegramError;
-    console.error(`[Telegram Publisher] Failed to publish post ${post.id}:`, telegramError);
     return {
       platform: 'telegram',
       success: false,
@@ -221,8 +211,6 @@ export async function publishToTelegramChannel(
   account: SocialAccount,
   channelId: string
 ): Promise<PublishResult> {
-  console.log(`[Telegram Channel Publisher] Publishing post ${post.id} to channel ${channelId}`);
-
   // Validate channel ID format
   if (!channelId || (!channelId.startsWith('@') && !channelId.startsWith('-100'))) {
     return { platform: 'telegram', success: false, error: 'Invalid channel ID format' };
@@ -239,7 +227,6 @@ export async function getTelegramChats(account: SocialAccount): Promise<any[]> {
   const { botToken, error: authError } = await getTelegramApiClient(account);
 
   if (authError || !botToken) {
-    console.error(`[Telegram Publisher] Authentication failed for account ${account.id}: ${authError}`);
     return [];
   }
 
@@ -272,7 +259,6 @@ export async function getTelegramChats(account: SocialAccount): Promise<any[]> {
 
     return Array.from(chats.values());
   } catch (error) {
-    console.error('[Telegram Publisher] Failed to fetch chats:', error);
     return [];
   }
 } 

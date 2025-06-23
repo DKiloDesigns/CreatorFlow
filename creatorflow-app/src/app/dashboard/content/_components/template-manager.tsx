@@ -4,13 +4,10 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { toast } from 'sonner';
 import { Star, Pin, Eye, Share2, Users } from 'lucide-react';
-import ShareModal from './share-modal';
-import AiSuggestModal from './ai-suggest-modal';
-import UsageModal from './usage-modal';
+import dynamic from 'next/dynamic';
 import { DndContext, closestCenter, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { arrayMove, SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import SnippetManager, { COMMON_VARIABLES } from './snippet-manager';
 
 const LANGUAGES = [
   { code: 'en', label: 'English' },
@@ -23,6 +20,13 @@ const LANGUAGES = [
   { code: 'hi', label: 'Hindi' },
   { code: 'ar', label: 'Arabic' },
 ];
+
+const ShareModal = dynamic(() => import('./share-modal'));
+const AiSuggestModal = dynamic(() => import('./ai-suggest-modal'));
+const UsageModal = dynamic(() => import('./usage-modal'));
+const SnippetManager = dynamic(() => import('./snippet-manager').then(mod => mod.default));
+
+type CommonVariable = { key: string; label: string };
 
 export default function TemplateManager({ onInsert }: { onInsert?: (text: string) => void }) {
   const [open, setOpen] = useState(false);
@@ -70,6 +74,7 @@ export default function TemplateManager({ onInsert }: { onInsert?: (text: string
   const folderInputRef = useRef<HTMLInputElement>(null);
   const [suggested, setSuggested] = useState<any[]>([]);
   const [suggestedLoading, setSuggestedLoading] = useState(false);
+  const [commonVariables, setCommonVariables] = useState<CommonVariable[]>([]);
 
   const sensors = useSensors(useSensor(PointerSensor));
 
@@ -128,6 +133,14 @@ export default function TemplateManager({ onInsert }: { onInsert?: (text: string
       .then(data => { setSuggested(data); setSuggestedLoading(false); })
       .catch(() => setSuggestedLoading(false));
   }, [open, category]);
+
+  // Add this at the top with other imports
+  useEffect(() => {
+    (async () => {
+      const mod = await import('./snippet-manager');
+      setCommonVariables(mod.COMMON_VARIABLES || []);
+    })();
+  }, []);
 
   // Add new template/group
   const handleAdd = async () => {
@@ -543,7 +556,7 @@ export default function TemplateManager({ onInsert }: { onInsert?: (text: string
   function renderPreview(text: string) {
     if (!text) return null;
     let replaced = text;
-    COMMON_VARIABLES.forEach(v => {
+    commonVariables.forEach(v => {
       replaced = replaced.replaceAll(`{${v.key}}`, `[${v.label}]`);
     });
     return <span className="block bg-gray-50 border rounded p-2 mt-1 text-sm text-gray-700">{replaced}</span>;

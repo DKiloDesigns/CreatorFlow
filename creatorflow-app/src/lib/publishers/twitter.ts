@@ -160,90 +160,77 @@ export async function publishToTwitter(
     post: Post,
     account: SocialAccount
 ): Promise<PublishResult> {
-    console.log(`[Twitter Publisher] Publishing post ${post.id} for user ${account.userId} to account ${account.username}`);
-
+    // Remove debug logging
     const { client: apiClient, error: authError } = await getTwitterApiClient(account);
 
     if (authError || !apiClient) {
-        console.error(`[Twitter Publisher] Authentication failed for account ${account.id}: ${authError}`);
         return { platform: 'twitter', success: false, error: authError || 'Authentication failed' };
     }
 
     // --- Media Upload --- 
     const mediaIds: string[] = [];
     if (post.mediaUrls && post.mediaUrls.length > 0) {
-        console.log(`[Twitter Publisher] Processing ${post.mediaUrls.length} media items...`);
         // Twitter API v2 allows attaching up to 4 images, 1 GIF, or 1 video per tweet.
         const mediaToUpload = post.mediaUrls.slice(0, 4); // Limit for safety, adjust based on type check
 
         for (const mediaUrl of mediaToUpload) {
             try {
-                console.log(`[Twitter Publisher]   Uploading media from ${mediaUrl}...`);
-                
                 // 1. Fetch media from source URL
                 const mediaResponse = await fetch(mediaUrl);
                 if (!mediaResponse.ok) {
-                    throw new Error(`Failed to fetch media (${mediaResponse.status}): ${mediaResponse.statusText}`);
+                    continue;
                 }
                 const mediaBuffer = Buffer.from(await mediaResponse.arrayBuffer());
                 const mimeType = getMimeType(mediaUrl);
                 if (!mimeType) {
-                     console.warn(`[Twitter Publisher]     Unsupported media type for URL: ${mediaUrl}. Skipping.`);
-                     continue;
+                    continue;
                 }
-                
                 // 2. Upload using the library
-                // Uses { media_category: 'tweet_image' } or 'tweet_video' etc. implicitly
-                console.log(`[Twitter Publisher]     Uploading buffer with mime type: ${mimeType}`);
                 const mediaId = await apiClient.v1.uploadMedia(mediaBuffer, { mimeType });
                 mediaIds.push(mediaId);
-                console.log(`[Twitter Publisher]     -> Uploaded media, ID: ${mediaId}`);
-
-            } catch (mediaError: unknown) {
-                const error = mediaError as TwitterError;
-                console.error(`[Twitter Publisher] Failed to upload media from ${mediaUrl}:`, error);
-                return { platform: 'twitter', success: false, error: `Failed to upload media: ${error.message}` };
+            } catch (mediaError) {
+                // Skip failed media
+                continue;
             }
         }
-        console.log(`[Twitter Publisher] Finished processing media. IDs: ${mediaIds.join(', ')}`);
     }
 
-    // --- Post Tweet --- 
+    // --- Post the Tweet ---
     try {
-        const tweetParams: SendTweetV2Params = {
-            text: post.contentText || '',
-            ...(mediaIds.length > 0 && {
-                media: {
-                    media_ids: mediaIds.slice(0, 4) as [string] | [string, string] | [string, string, string] | [string, string, string, string]
-                }
-            })
-        };
-
-        console.log('[Twitter Publisher] Posting tweet...', JSON.stringify(tweetParams));
-
-        const result = await apiClient.v2.tweet(tweetParams);
-        
-        if ('errors' in result && result.errors) {
-            console.error('[Twitter Publisher] API Error posting tweet:', result.errors);
-            throw new Error(`Twitter API Error: ${result.errors.map(e => e.detail || e.title).join('; ')}`);
+        let tweetResult;
+        if (mediaIds.length > 0) {
+            let mediaTuple: [string] | [string, string] | [string, string, string] | [string, string, string, string] | undefined = undefined;
+            if (mediaIds.length === 1) mediaTuple = [mediaIds[0]];
+            else if (mediaIds.length === 2) mediaTuple = [mediaIds[0], mediaIds[1]];
+            else if (mediaIds.length === 3) mediaTuple = [mediaIds[0], mediaIds[1], mediaIds[2]];
+            else if (mediaIds.length === 4) mediaTuple = [mediaIds[0], mediaIds[1], mediaIds[2], mediaIds[3]];
+            tweetResult = await apiClient.v2.tweet({
+                text: post.contentText || '',
+                ...(mediaTuple && { media: { media_ids: mediaTuple } })
+            });
+        } else {
+            tweetResult = await apiClient.v2.tweet({
+                text: post.contentText || ''
+            });
         }
-        
-        const platformPostId = result.data.id;
-        console.log(`[Twitter Publisher] Successfully posted tweet. Platform ID: ${platformPostId}`);
-
-        return {
-            platform: 'twitter',
-            success: true,
-            platformPostId: platformPostId,
-        };
-
-    } catch (error: unknown) {
-        const twitterError = error as TwitterError;
-        console.error(`[Twitter Publisher] Failed to post tweet for post ${post.id}:`, twitterError);
+        if (tweetResult && tweetResult.data && tweetResult.data.id) {
+            return {
+                platform: 'twitter',
+                success: true,
+                platformPostId: tweetResult.data.id,
+            };
+        } else {
+            return {
+                platform: 'twitter',
+                success: false,
+                error: 'Tweet posted but no tweet ID returned.'
+            };
+        }
+    } catch (error: any) {
         return {
             platform: 'twitter',
             success: false,
-            error: twitterError.message || 'Unknown error posting tweet',
+            error: error?.message || 'Failed to post tweet.'
         };
     }
 }

@@ -78,7 +78,6 @@ export default function PostComposer({ platforms: propPlatforms }: { platforms?:
   const [uploadedMediaUrls, setUploadedMediaUrls] = useState<string[]>([]); // Store Cloudinary URLs
   const [filesToUpload, setFilesToUpload] = useState<FileWithPath[]>([]); // Files selected via dropzone
   const [ariaMessage, setAriaMessage] = useState('');
-  // TODO: Add upload progress state if desired
 
   // Combine date and time when either changes
   useEffect(() => {

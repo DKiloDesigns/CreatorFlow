@@ -43,12 +43,9 @@ export async function publishToBluesky(
   post: Post,
   account: SocialAccount
 ): Promise<PlatformResult> {
-  console.log(`[Bluesky Publisher] Publishing post ${post.id} for user ${account.userId} to account ${account.username}`);
-
   const { accessToken, error: authError } = await getBlueskyApiClient(account);
 
   if (authError || !accessToken) {
-    console.error(`[Bluesky Publisher] Authentication failed for account ${account.id}: ${authError}`);
     return { platform: 'bluesky', success: false, error: authError || 'Authentication failed' };
   }
 
@@ -83,8 +80,6 @@ export async function publishToBluesky(
 
     // Handle media if present
     if (hasMedia && post.mediaUrls) {
-      console.log(`[Bluesky Publisher] Processing ${post.mediaUrls.length} media items...`);
-      
       const mediaEmbed: any = {
         $type: 'app.bsky.embed.images',
         images: [],
@@ -92,8 +87,6 @@ export async function publishToBluesky(
       
       for (const mediaUrl of post.mediaUrls.slice(0, 4)) { // Bluesky allows up to 4 images
         try {
-          console.log(`[Bluesky Publisher] Uploading media: ${mediaUrl}`);
-          
           // Fetch media from URL
           const mediaResponse = await fetch(mediaUrl);
           if (!mediaResponse.ok) {
@@ -123,10 +116,7 @@ export async function publishToBluesky(
             image: uploadResult.blob,
           });
           
-          console.log(`[Bluesky Publisher] Media uploaded successfully`);
-          
         } catch (mediaError) {
-          console.error(`[Bluesky Publisher] Failed to upload media ${mediaUrl}:`, mediaError);
           // Continue with other media items
         }
       }
@@ -137,7 +127,6 @@ export async function publishToBluesky(
     }
 
     // Post to Bluesky
-    console.log('[Bluesky Publisher] Publishing skeet...');
     const response = await fetch('https://bsky.social/xrpc/com.atproto.repo.createRecord', {
       method: 'POST',
       headers: {
@@ -156,8 +145,6 @@ export async function publishToBluesky(
     const result = await response.json();
     const platformPostId = result.uri;
 
-    console.log(`[Bluesky Publisher] Successfully published post ${post.id}. Platform ID: ${platformPostId}`);
-
     return {
       platform: 'bluesky',
       success: true,
@@ -166,7 +153,6 @@ export async function publishToBluesky(
 
   } catch (error: unknown) {
     const blueskyError = error as BlueskyError;
-    console.error(`[Bluesky Publisher] Failed to publish post ${post.id}:`, blueskyError);
     return {
       platform: 'bluesky',
       success: false,
@@ -183,12 +169,9 @@ export async function publishToBlueskyWithFormatting(
   account: SocialAccount,
   facets?: Array<{ index: { byteStart: number; byteEnd: number }; features: Array<any> }>
 ): Promise<PlatformResult> {
-  console.log(`[Bluesky Publisher] Publishing post with rich text formatting`);
-
   const { accessToken, error: authError } = await getBlueskyApiClient(account);
 
   if (authError || !accessToken) {
-    console.error(`[Bluesky Publisher] Authentication failed for account ${account.id}: ${authError}`);
     return { platform: 'bluesky', success: false, error: authError || 'Authentication failed' };
   }
 
@@ -236,8 +219,6 @@ export async function publishToBlueskyWithFormatting(
     const result = await response.json();
     const platformPostId = result.uri;
 
-    console.log(`[Bluesky Publisher] Successfully published formatted post. Platform ID: ${platformPostId}`);
-
     return {
       platform: 'bluesky',
       success: true,
@@ -246,7 +227,6 @@ export async function publishToBlueskyWithFormatting(
 
   } catch (error: unknown) {
     const blueskyError = error as BlueskyError;
-    console.error(`[Bluesky Publisher] Failed to publish formatted post:`, blueskyError);
     return {
       platform: 'bluesky',
       success: false,

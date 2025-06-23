@@ -73,10 +73,8 @@ export class AnalyticsMonitoring {
         (metrics.hits + metrics.misses + 1);
 
       this.cacheMetrics.set(key, metrics);
-
-      // Log operation
-      console.log(`[Cache] ${timestamp} - User: ${userId}, Endpoint: ${endpoint}, Operation: ${operation}, ResponseTime: ${responseTime}ms`);
     } catch (error) {
+      // Log operation
       console.error('Error tracking cache metrics:', error);
     }
   }
@@ -116,9 +114,6 @@ export class AnalyticsMonitoring {
         metrics.totalRequests;
 
       this.rateLimitMetrics.set(key, metrics);
-
-      // Log operation
-      console.log(`[RateLimit] ${timestamp} - User: ${userId}, Endpoint: ${endpoint}, Blocked: ${blocked}, ResponseTime: ${responseTime}ms`);
     } catch (error) {
       console.error('Error tracking rate limit metrics:', error);
     }

@@ -23,6 +23,9 @@ export default function ErrorPage() {
   } else if (error === "OAuthSignin" || error === "OAuthCallback" || error === "OAuthCreateAccount") {
     errorMessage = "OAuth Sign-in Error";
     errorDescription = "There was a problem with the OAuth sign-in process. Please try again.";
+  } else if (error === "unauthorized") {
+    errorMessage = "Authentication Failed";
+    errorDescription = "We couldn't authenticate you with the provider. This could be due to missing email information or a database issue. Please ensure your email is public and verified in your provider settings.";
   }
 
   return (

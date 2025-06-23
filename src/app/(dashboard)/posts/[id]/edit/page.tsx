@@ -2,6 +2,17 @@ import React from 'react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 
+function StatusBadge({ status }: { status: string }) {
+  let color = 'bg-gray-200 text-gray-800';
+  if (status === 'published') color = 'bg-green-100 text-green-800';
+  else if (status === 'scheduled') color = 'bg-blue-100 text-blue-800';
+  else if (status === 'publishing') color = 'bg-yellow-100 text-yellow-800';
+  else if (status === 'failed') color = 'bg-red-100 text-red-800';
+  return (
+    <span className={`inline-block rounded px-2 py-1 text-xs font-semibold ${color}`}>{status.charAt(0).toUpperCase() + status.slice(1)}</span>
+  );
+}
+
 interface EditPostPageProps {
   params: {
     id: string
@@ -14,7 +25,11 @@ export default function EditPostPage({ params }: EditPostPageProps) {
     id: parseInt(params.id),
     title: 'Getting Started with Social Media Marketing',
     content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit...',
-    status: 'published',
+    status: 'published', // could be 'scheduled', 'publishing', 'failed', etc.
+    errorMessage: '', // e.g. 'Failed to publish to Twitter'
+    scheduledAt: '2025-06-10T12:00:00Z',
+    publishedAt: '2025-06-10T12:01:00Z',
+    failedAt: '',
   }
 
   return (
@@ -26,7 +41,26 @@ export default function EditPostPage({ params }: EditPostPageProps) {
         </Button>
       </div>
 
-      <div className="rounded-lg border p-6">
+      <div className="rounded-lg border p-6 space-y-4">
+        {/* Status and error display */}
+        <div className="flex items-center gap-4">
+          <StatusBadge status={post.status} />
+          {post.status === 'scheduled' && post.scheduledAt && (
+            <span className="text-xs text-blue-700">Scheduled for: {new Date(post.scheduledAt).toLocaleString()}</span>
+          )}
+          {post.status === 'published' && post.publishedAt && (
+            <span className="text-xs text-green-700">Published at: {new Date(post.publishedAt).toLocaleString()}</span>
+          )}
+          {post.status === 'failed' && post.failedAt && (
+            <span className="text-xs text-red-700">Failed at: {new Date(post.failedAt).toLocaleString()}</span>
+          )}
+        </div>
+        {post.errorMessage && (
+          <div className="rounded bg-red-100 text-red-800 px-3 py-2 text-xs font-medium mt-2">
+            Error: {post.errorMessage}
+          </div>
+        )}
+
         <form className="space-y-6">
           <div className="space-y-2">
             <label htmlFor="title" className="text-sm font-medium">
@@ -64,6 +98,8 @@ export default function EditPostPage({ params }: EditPostPageProps) {
               <option value="draft">Draft</option>
               <option value="published">Published</option>
               <option value="scheduled">Scheduled</option>
+              <option value="publishing">Publishing</option>
+              <option value="failed">Failed</option>
             </select>
           </div>
 

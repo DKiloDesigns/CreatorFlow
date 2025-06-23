@@ -1,9 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
-import React from 'react';
-// Use a different approach for data fetching
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { LineChart, Line, XAxis, YAxis, Tooltip as RechartsTooltip, Legend as RechartsLegend, ResponsiveContainer, CartesianGrid, BarChart, Bar } from 'recharts';
 import { PieChart, Pie, Cell } from 'recharts';
 import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
@@ -12,7 +10,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { AnalyticsChart, MetricCard } from '@/components/dashboard/analytics-chart';
 import { LoadingSpinner, LoadingSkeleton } from '@/components/ui/loading-spinner';
 import { EmptyState } from '@/components/ui/empty-state';
 import { 
@@ -27,6 +24,8 @@ import {
   Download,
   Filter
 } from 'lucide-react';
+import dynamic from 'next/dynamic';
+import useSWR from 'swr';
 
 // If process.env.NEXT_PUBLIC_MOCK_ANALYTICS is set, use mock analytics data (append ?mock=1 to API requests)
 const useMockAnalytics = process.env.NEXT_PUBLIC_MOCK_ANALYTICS === '1';
@@ -40,10 +39,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
   );
 }
 
-const fetcher = async (url: string) => {
-  const res = await fetch(url);
-  return res.json();
-};
+const fetcher = (url: string) => fetch(url).then(res => res.json());
 
 // Add safe number and string helpers
 function safeNumber(val: any, digits: number = 0, fallback: string = '-') {
@@ -56,22 +52,14 @@ function safeString(val: any, fallback: string = '-') {
   return typeof val === 'string' && val.length > 0 ? val : fallback;
 }
 
+// Replace static imports with dynamic imports
+const AnalyticsChart = dynamic(() => import('@/components/dashboard/analytics-chart').then(mod => mod.AnalyticsChart));
+const MetricCard = dynamic(() => import('@/components/dashboard/analytics-chart').then(mod => mod.MetricCard));
+
 export default function AnalyticsPage() {
   const [data, setData] = useState<any>(null);
   const [error, setError] = useState<any>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  
-  const [growthData, setGrowthData] = useState<any>(null);
-  const [growthError, setGrowthError] = useState<any>(null);
-  const [growthLoading, setGrowthLoading] = useState<boolean>(true);
-  
-  const [topPosts, setTopPosts] = useState<any>(null);
-  const [topPostsError, setTopPostsError] = useState<any>(null);
-  const [topPostsLoading, setTopPostsLoading] = useState<boolean>(true);
-  
-  const [platformData, setPlatformData] = useState<any>(null);
-  const [platformError, setPlatformError] = useState<any>(null);
-  const [platformLoading, setPlatformLoading] = useState<boolean>(true);
   
   const [timeRange, setTimeRange] = useState('7d');
   const [selectedPlatform, setSelectedPlatform] = useState('all');
@@ -106,49 +94,12 @@ export default function AnalyticsPage() {
     ]
   });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const overview = await fetcher(`/api/analytics/overview${useMockAnalytics ? '?mock=1' : ''}`);
-        setData(overview);
-      } catch (err) {
-        setError(err);
-      } finally {
-        setIsLoading(false);
-      }
-      
-      try {
-        const growth = await fetcher(`/api/analytics/growth${useMockAnalytics ? '?mock=1' : ''}`);
-        setGrowthData(growth);
-      } catch (err) {
-        setGrowthError(err);
-      } finally {
-        setGrowthLoading(false);
-      }
-      
-      try {
-        const posts = await fetcher(`/api/analytics/top-posts${useMockAnalytics ? '?mock=1' : ''}`);
-        setTopPosts(posts);
-      } catch (err) {
-        setTopPostsError(err);
-      } finally {
-        setTopPostsLoading(false);
-      }
-      
-      try {
-        const platform = await fetcher(`/api/analytics/platform-breakdown${useMockAnalytics ? '?mock=1' : ''}`);
-        setPlatformData(platform);
-      } catch (err) {
-        setPlatformError(err);
-      } finally {
-        setPlatformLoading(false);
-      }
-    };
-    
-    fetchData();
-  }, []);
+  // Replace useEffect and useState for API data with SWR hooks
+  const { data: overviewData, error: overviewError } = useSWR(`/api/analytics/overview${useMockAnalytics ? '?mock=1' : ''}`, fetcher);
+  const { data: platformData, error: platformError, isLoading: platformLoading } = useSWR(`/api/analytics/platform-breakdown${useMockAnalytics ? '?mock=1' : ''}`, fetcher);
 
-  const metrics = [
+  // Replace metrics array with useMemo
+  const metrics = useMemo(() => [
     {
       title: 'Total Reach',
       value: '24.5K',
@@ -173,9 +124,17 @@ export default function AnalyticsPage() {
       change: { value: 3, isPositive: true },
       icon: Calendar
     }
-  ];
+  ], []);
 
-  if (isLoading) {
+  // Memoize top posts and platform performance lists
+  const topPostsList = useMemo(() => ([
+    { title: 'Behind the scenes look at our process', engagement: 847, platform: 'Instagram' },
+    { title: 'New product announcement', engagement: 623, platform: 'LinkedIn' },
+    { title: 'Industry insights and tips', engagement: 445, platform: 'Twitter' }
+  ]), []);
+  const platformPerformanceList = useMemo(() => analyticsData.platformPerformance, [analyticsData.platformPerformance]);
+
+  if (overviewError || platformError) {
     return (
       <div className="space-y-6">
         <div className="flex items-center justify-between">
@@ -277,11 +236,7 @@ export default function AnalyticsPage() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {[
-                    { title: 'Behind the scenes look at our process', engagement: 847, platform: 'Instagram' },
-                    { title: 'New product announcement', engagement: 623, platform: 'LinkedIn' },
-                    { title: 'Industry insights and tips', engagement: 445, platform: 'Twitter' }
-                  ].map((post, index) => (
+                  {topPostsList.map((post, index) => (
                     <div key={index} className="flex items-center justify-between p-3 rounded-lg border">
                       <div className="flex-1">
                         <p className="font-medium text-sm">{post.title}</p>
@@ -303,7 +258,7 @@ export default function AnalyticsPage() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <AnalyticsChart
               title="Performance by Platform"
-              data={analyticsData.platformPerformance}
+              data={platformPerformanceList}
               type="pie"
             />
             <Card>
@@ -312,7 +267,7 @@ export default function AnalyticsPage() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {analyticsData.platformPerformance.map((platform, index) => (
+                  {platformPerformanceList.map((platform, index) => (
                     <div key={index} className="flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <div 

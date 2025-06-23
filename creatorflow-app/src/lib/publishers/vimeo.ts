@@ -45,12 +45,9 @@ export async function publishToVimeo(
   account: SocialAccount,
   privacy: 'anybody' | 'contacts' | 'disable' | 'nobody' | 'password' | 'unlisted' | 'users' = 'anybody'
 ): Promise<PlatformResult> {
-  console.log(`[Vimeo Publisher] Publishing post ${post.id} for user ${account.userId} to account ${account.username}`);
-
   const { accessToken, error: authError } = await getVimeoApiClient(account);
 
   if (authError || !accessToken) {
-    console.error(`[Vimeo Publisher] Authentication failed for account ${account.id}: ${authError}`);
     return { platform: 'vimeo', success: false, error: authError || 'Authentication failed' };
   }
 
@@ -65,8 +62,6 @@ export async function publishToVimeo(
     // Get the first video URL (Vimeo typically handles one video at a time)
     const videoUrl = post.mediaUrls[0];
     
-    console.log(`[Vimeo Publisher] Processing video: ${videoUrl}`);
-
     // Step 1: Create upload
     const createUploadResponse = await fetch('https://api.vimeo.com/me/videos', {
       method: 'POST',
@@ -97,14 +92,6 @@ export async function publishToVimeo(
     const videoId = uploadData.uri.split('/').pop();
     const platformPostId = videoId;
 
-    console.log(`[Vimeo Publisher] Video upload created. Video ID: ${videoId}`);
-
-    // Step 2: Check upload status (optional - for pull uploads, this might be immediate)
-    // For pull uploads, the video is typically available immediately
-    // For other upload methods, you might need to poll the status
-
-    console.log(`[Vimeo Publisher] Successfully published post ${post.id}. Platform ID: ${platformPostId}`);
-
     return {
       platform: 'vimeo',
       success: true,
@@ -113,7 +100,6 @@ export async function publishToVimeo(
 
   } catch (error: unknown) {
     const vimeoError = error as VimeoError;
-    console.error(`[Vimeo Publisher] Failed to publish post ${post.id}:`, vimeoError);
     return {
       platform: 'vimeo',
       success: false,
@@ -137,12 +123,9 @@ export async function publishToVimeoWithSettings(
     comments?: 'anybody' | 'contacts' | 'nobody';
   } = {}
 ): Promise<PlatformResult> {
-  console.log(`[Vimeo Publisher] Publishing video with custom settings`);
-
   const { accessToken, error: authError } = await getVimeoApiClient(account);
 
   if (authError || !accessToken) {
-    console.error(`[Vimeo Publisher] Authentication failed for account ${account.id}: ${authError}`);
     return { platform: 'vimeo', success: false, error: authError || 'Authentication failed' };
   }
 
@@ -197,8 +180,6 @@ export async function publishToVimeoWithSettings(
     const result = await response.json();
     const videoId = result.uri.split('/').pop();
 
-    console.log(`[Vimeo Publisher] Successfully published video with custom settings. Video ID: ${videoId}`);
-
     return {
       platform: 'vimeo',
       success: true,
@@ -207,7 +188,6 @@ export async function publishToVimeoWithSettings(
 
   } catch (error: unknown) {
     const vimeoError = error as VimeoError;
-    console.error(`[Vimeo Publisher] Failed to publish video with custom settings:`, vimeoError);
     return {
       platform: 'vimeo',
       success: false,

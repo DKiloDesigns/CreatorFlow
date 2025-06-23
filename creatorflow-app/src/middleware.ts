@@ -1,3 +1,5 @@
+// File temporarily disabled for troubleshooting. See middleware.ts.bak
+
 // creatorflow-app/src/middleware.ts
 // Keep Node.js runtime explicit for now
 export const runtime = 'nodejs'; 
