@@ -52,7 +52,7 @@ interface PlatformBreakdown {
     totalPosts: number;
     totalEngagement: number;
     avgEngagementRate: number;
-    topPerformingPost: TopPost;
+    topPerformingPost?: TopPost | null;
     growth: number;
     audienceDemographics: {
       ageGroups: { [key: string]: number };

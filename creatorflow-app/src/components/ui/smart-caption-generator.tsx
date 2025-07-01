@@ -449,7 +449,7 @@ Which tip resonates most with you? 🤔
                 <Input
                   placeholder="e.g., fitness, tech, fashion..."
                   value={industry}
-                  onChange={(e) => setIndustry(e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setIndustry(e.target.value)}
                 />
               </div>
 
@@ -458,7 +458,7 @@ Which tip resonates most with you? 🤔
                 <Input
                   placeholder="e.g., entrepreneurs, fitness enthusiasts..."
                   value={targetAudience}
-                  onChange={(e) => setTargetAudience(e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTargetAudience(e.target.value)}
                 />
               </div>
             </div>

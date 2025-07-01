@@ -2,6 +2,7 @@
 
 import { signIn } from "next-auth/react";
 import { useState } from "react";
+import { ThemeToggle } from '@/components/theme-toggle';
 
 export default function SignInPage() {
   const [email, setEmail] = useState("");
@@ -22,17 +23,22 @@ export default function SignInPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
-      <div className="relative bg-white dark:bg-gray-900 shadow-2xl rounded-3xl px-8 py-8 w-full max-w-md flex flex-col items-center justify-center text-center">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 p-4 relative">
+      {/* Theme Toggle - Top Right */}
+      <div className="absolute top-4 right-4 z-10">
+        <ThemeToggle isLandingPage={false} />
+      </div>
+      
+      <div className="relative bg-white dark:bg-gray-900 shadow-2xl rounded-2xl sm:rounded-3xl px-6 sm:px-8 py-6 sm:py-8 w-full max-w-sm sm:max-w-md flex flex-col items-center justify-center text-center">
         {/* Logo */}
-        <div className="mb-6 flex justify-center w-full">
-          <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-purple-500 dark:from-blue-400 dark:to-purple-600 rounded-2xl flex items-center justify-center">
-            <span className="text-3xl font-extrabold text-white drop-shadow">CF</span>
+        <div className="mb-4 sm:mb-6 flex justify-center w-full">
+          <div className="w-12 h-12 sm:w-16 sm:h-16 bg-gradient-to-br from-blue-500 to-purple-500 dark:from-blue-400 dark:to-purple-600 rounded-xl sm:rounded-2xl flex items-center justify-center">
+            <span className="text-2xl sm:text-3xl font-extrabold text-white drop-shadow">CF</span>
           </div>
         </div>
         {/* Heading */}
-        <h1 className="text-2xl font-extrabold mb-1 text-gray-900 dark:text-white">Welcome to CreatorFlow</h1>
-        <p className="mb-6 text-gray-600 dark:text-gray-300 text-base">Manage your social media like a pro</p>
+        <h1 className="text-xl sm:text-2xl font-extrabold mb-1 text-gray-900 dark:text-white">Welcome to CreatorFlow</h1>
+        <p className="mb-4 sm:mb-6 text-gray-600 dark:text-gray-300 text-sm sm:text-base">Manage your social media like a pro</p>
         {/* Sign In Form */}
         <div className="w-full flex flex-col gap-3">
           <button
@@ -81,7 +87,8 @@ export default function SignInPage() {
             placeholder="Email"
             value={email}
             onChange={e => setEmail(e.target.value)}
-            className="p-2 border rounded"
+            className="p-2 border-2 rounded text-black bg-white dark:text-white dark:bg-gray-900 transition-colors duration-200"
+            style={{ borderColor: '#2563eb' }}
             required
           />
           <input
@@ -89,7 +96,8 @@ export default function SignInPage() {
             placeholder="Password"
             value={password}
             onChange={e => setPassword(e.target.value)}
-            className="p-2 border rounded"
+            className="p-2 border-2 rounded text-black bg-white dark:text-white dark:bg-gray-900 transition-colors duration-200"
+            style={{ borderColor: '#2563eb' }}
             required
           />
           <button type="submit" className="w-full py-2 px-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 transition-all duration-200">

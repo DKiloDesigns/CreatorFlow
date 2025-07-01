@@ -31,16 +31,16 @@ export function AISetupReminder({ onSetup, onDismiss, className }: AISetupRemind
   if (!isVisible) return null;
 
   return (
-    <Card className={`bg-gradient-to-r from-purple-50 to-blue-50 dark:from-purple-950/20 dark:to-blue-950/20 border-purple-200 dark:border-purple-800 ${className}`}>
+    <Card className={`bg-card border-border ${className}`}>
       <CardContent className="p-6">
         <div className="flex items-start justify-between">
           <div className="flex items-start gap-4">
-            <div className="p-2 bg-gradient-to-r from-purple-500 to-blue-500 rounded-lg">
+            <div className="p-2 bg-primary rounded-lg">
               <Brain className="h-6 w-6 text-white" />
             </div>
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-2">
-                <h3 className="font-semibold text-lg">Unlock AI-Powered Features</h3>
+                <h3 className="font-semibold text-lg text-foreground">Unlock AI-Powered Features</h3>
                 <Badge variant="outline" className="text-xs">
                   <Zap className="h-3 w-3 mr-1" />
                   New

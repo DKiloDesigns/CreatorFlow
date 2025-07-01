@@ -1,3 +1,4 @@
+'use client';
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -136,7 +137,7 @@ export function APIKeySetup({ onKeyAdded, className }: APIKeySetupProps) {
             <h3 className="font-medium">Get Your OpenAI API Key</h3>
           </div>
           
-          <div className="p-4 bg-blue-50 dark:bg-blue-950/20 rounded-lg">
+          <div className="p-4 bg-blue-50 dark:bg-blue-900/60 rounded-lg">
             <div className="flex items-start gap-3">
               <Key className="h-5 w-5 text-blue-600 mt-0.5" />
               <div className="flex-1">
@@ -167,7 +168,7 @@ export function APIKeySetup({ onKeyAdded, className }: APIKeySetupProps) {
                 type={showKey ? 'text' : 'password'}
                 placeholder="sk-..."
                 value={apiKey}
-                onChange={(e) => handleKeyChange(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleKeyChange(e.target.value)}
                 className={`pr-20 ${isValid ? 'border-green-500' : error ? 'border-red-500' : ''}`}
               />
               <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
@@ -271,7 +272,7 @@ export function APIKeySetup({ onKeyAdded, className }: APIKeySetupProps) {
         </AlertDialog>
 
         {/* Pricing Info */}
-        <div className="p-3 bg-yellow-50 dark:bg-yellow-950/20 rounded-lg">
+        <div className="p-3 bg-yellow-50 dark:bg-yellow-900/60 rounded-lg">
           <div className="flex items-start gap-2">
             <Zap className="h-4 w-4 text-yellow-600 mt-0.5" />
             <div className="text-sm">

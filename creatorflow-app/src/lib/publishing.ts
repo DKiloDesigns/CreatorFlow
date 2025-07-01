@@ -212,7 +212,6 @@ export async function publishPost(postId: string, userId: string): Promise<Publi
         data: {
             status: newStatus,
             publishedAt: overallSuccess ? new Date() : null,
-            errorMessage: errors.join('; '),
         },
     });
 

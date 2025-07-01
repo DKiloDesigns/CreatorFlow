@@ -61,7 +61,6 @@ export async function GET(req: NextRequest) {
           reach: true,
           impressions: true,
           engagementRate: true,
-          clickThroughRate: true,
         },
       });
 
@@ -71,7 +70,6 @@ export async function GET(req: NextRequest) {
       const totalReach = posts.reduce((sum, p) => sum + (p.reach || 0), 0);
       const totalImpressions = posts.reduce((sum, p) => sum + (p.impressions || 0), 0);
       const avgEngagementRate = totalPosts ? (totalEngagements / totalPosts) : 0;
-      const avgClickThroughRate = totalPosts ? posts.reduce((sum, p) => sum + (p.clickThroughRate || 0), 0) / totalPosts : 0;
 
       return NextResponse.json({
         data: {
@@ -80,8 +78,7 @@ export async function GET(req: NextRequest) {
           totalEngagements,
           avgEngagementRate,
           totalReach,
-          totalImpressions,
-          avgClickThroughRate
+          totalImpressions
         },
         timestamp: new Date().toISOString(),
         cached: false
@@ -117,7 +114,6 @@ export async function GET(req: NextRequest) {
         reach: true,
         impressions: true,
         engagementRate: true,
-        clickThroughRate: true,
       },
     });
 
@@ -127,7 +123,6 @@ export async function GET(req: NextRequest) {
     const totalReach = posts.reduce((sum, p) => sum + (p.reach || 0), 0);
     const totalImpressions = posts.reduce((sum, p) => sum + (p.impressions || 0), 0);
     const avgEngagementRate = totalPosts ? (totalEngagements / totalPosts) : 0;
-    const avgClickThroughRate = totalPosts ? posts.reduce((sum, p) => sum + (p.clickThroughRate || 0), 0) / totalPosts : 0;
 
     return NextResponse.json({
       data: {
@@ -136,8 +131,7 @@ export async function GET(req: NextRequest) {
         totalEngagements,
         avgEngagementRate,
         totalReach,
-        totalImpressions,
-        avgClickThroughRate
+        totalImpressions
       },
       timestamp: new Date().toISOString(),
       cached: false

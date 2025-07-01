@@ -281,7 +281,7 @@ export function AIHashtagGenerator({ onHashtagsSelect, className }: AIHashtagGen
 
         {/* Selected Hashtags Preview */}
         {selectedHashtags.length > 0 && (
-          <div className="p-3 bg-blue-50 dark:bg-blue-950/20 rounded-lg">
+          <div className="p-3 bg-blue-50 dark:bg-blue-900/60 rounded-lg">
             <h4 className="font-medium text-sm mb-2">Selected Hashtags:</h4>
             <div className="flex flex-wrap gap-1">
               {selectedHashtags.map((hashtag, index) => (

@@ -3,9 +3,19 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": [
+        "./src/*"
+      ]
     }
   },
-  "include": ["creatorflow-app/src", "creatorflow-app/types", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"]
-} 
+  "include": [
+    "creatorflow-app/src",
+    "creatorflow-app/types",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

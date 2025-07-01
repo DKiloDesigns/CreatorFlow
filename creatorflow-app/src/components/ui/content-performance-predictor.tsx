@@ -11,6 +11,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from './tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './select';
 import { Switch } from './switch';
 import { 
+  Lightbulb, 
   TrendingUp, 
   Target, 
   Users, 
@@ -20,6 +21,7 @@ import {
   RefreshCw,
   Zap,
   Eye,
+  Clock,
   Globe,
   Star,
   Heart,
@@ -36,46 +38,27 @@ import {
   ArrowUpRight,
   ArrowDownRight,
   Minus,
+  Video,
+  Image,
+  FileText,
+  Mic,
+  Play,
+  Camera,
+  Edit3,
+  Hash,
   MapPin,
   CalendarDays,
   Clock3,
-  Target,
-  Zap,
   Rocket,
   Crown,
   Trophy,
   Medal,
-  DollarSign,
-  TrendingUp,
   Activity,
   PieChart,
   LineChart,
   BarChart,
-  Target,
-  Zap,
-  Brain,
-  Lightbulb,
-  Settings,
-  Maximize2,
-  Minimize2,
-  RotateCcw,
-  Play,
-  Pause,
-  SkipForward,
-  SkipBack,
-  Volume2,
-  VolumeX,
-  Wifi,
-  WifiOff,
-  Signal,
-  SignalHigh,
-  SignalMedium,
-  SignalLow,
-  Battery,
-  BatteryCharging,
-  BatteryFull,
-  BatteryLow,
-  BatteryMedium
+  TrendingUp as TrendingUpIcon,
+  DollarSign
 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -468,7 +451,7 @@ export function ContentPerformancePredictor({ provider }: ContentPerformancePred
               <Input
                 placeholder="e.g., tech, fitness, fashion, business..."
                 value={industry}
-                onChange={(e) => setIndustry(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setIndustry(e.target.value)}
               />
             </div>
 
@@ -477,7 +460,7 @@ export function ContentPerformancePredictor({ provider }: ContentPerformancePred
               <Input
                 placeholder="e.g., entrepreneurs, fitness enthusiasts..."
                 value={targetAudience}
-                onChange={(e) => setTargetAudience(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTargetAudience(e.target.value)}
               />
             </div>
           </div>

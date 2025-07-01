@@ -670,7 +670,7 @@ export default function TemplateManager({ onInsert }: { onInsert?: (text: string
                       <label className="inline-block">
                         <span className="sr-only">Import</span>
                         <input type="file" accept="application/json" onChange={e => handleImport(e, 'captions')} className="hidden" disabled={importing} />
-                        <Button asChild disabled={importing}>Import</Button>
+                        <Button asChild disabled={importing}><span>Import</span></Button>
                       </label>
                     </div>
                     <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEndCaptions}>
@@ -777,7 +777,7 @@ export default function TemplateManager({ onInsert }: { onInsert?: (text: string
                       <label className="inline-block">
                         <span className="sr-only">Import</span>
                         <input type="file" accept="application/json" onChange={e => handleImport(e, 'hashtags')} className="hidden" disabled={importing} />
-                        <Button asChild disabled={importing}>Import</Button>
+                        <Button asChild disabled={importing}><span>Import</span></Button>
                       </label>
                     </div>
                     <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEndHashtags}>

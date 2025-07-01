@@ -222,7 +222,7 @@ export function AIProviderSetupModal({
                   type={showApiKey ? 'text' : 'password'}
                   placeholder="Enter your API key here..."
                   value={apiKey}
-                  onChange={(e) => setApiKey(e.target.value)}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setApiKey(e.target.value)}
                   className="pr-20"
                 />
                 <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center gap-1">

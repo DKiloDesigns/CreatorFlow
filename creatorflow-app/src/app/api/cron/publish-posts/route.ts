@@ -74,7 +74,7 @@ export async function GET(request: Request) {
         if (updateResult.count === 1) {
            console.log(`   -> Marked post ${postRef.id} as PUBLISHING.`);
            // Now call the actual publishing logic (which handles final status updates)
-           await publishPost(postRef.id); 
+           await publishPost(postRef.id, postRef.userId);
            processedCount++;
         } else {
             console.log(`   -> Post ${postRef.id} was likely already processed or status changed. Skipping.`);

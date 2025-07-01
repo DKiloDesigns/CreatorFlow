@@ -1,6 +1,6 @@
 {
   "extends": "../tsconfig.json",
   "include": ["../next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "github_username": "your_test_github_username",
-  "github_password": "your_test_github_password"
+  "github_username": DKILODESIGNS,
+  "github_password": "DTKilo123!@#"
 } 

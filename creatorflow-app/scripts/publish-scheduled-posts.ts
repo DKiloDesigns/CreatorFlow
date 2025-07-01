@@ -23,7 +23,7 @@ async function processScheduledPosts() {
           where: { id: post.id },
           data: { status: PostStatus.PUBLISHING },
         });
-        await publishPost(post.id);
+        await publishPost(post.id, post.userId);
         console.log(`[${now.toISOString()}] Published post ${post.id}`);
       } catch (err) {
         console.error(`[${now.toISOString()}] Error publishing post ${post.id}:`, err);

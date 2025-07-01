@@ -1,10 +1,18 @@
+'use client';
+
 import { useState } from "react";
+import { ThemeToggle } from '@/components/theme-toggle';
 
 export default function Contact() {
   const [submitted, setSubmitted] = useState(false);
 
   return (
-    <div className="max-w-lg mx-auto py-16 px-4">
+    <div className="max-w-lg mx-auto py-16 px-4 relative">
+      {/* Theme Toggle - Top Right */}
+      <div className="absolute top-4 right-4 z-10">
+        <ThemeToggle />
+      </div>
+      
       <h1 className="text-3xl font-bold mb-6 text-center">Contact Sales</h1>
       {submitted ? (
         <div className="bg-green-100 text-green-800 rounded p-6 text-center font-semibold">

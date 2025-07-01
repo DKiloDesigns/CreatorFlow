@@ -59,7 +59,6 @@ function Calendar({
         day_hidden: "invisible",
         ...classNames,
       }}
-      // @ts-expect-error - DayPicker component types are incorrect
       components={{
         IconLeft: ({ ...props }) => <ChevronLeft className="size-4" {...props} />,
         IconRight: ({ ...props }) => <ChevronRight className="size-4" {...props} />

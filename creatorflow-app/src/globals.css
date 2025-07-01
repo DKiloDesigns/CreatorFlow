@@ -89,253 +89,111 @@
   }
 }
 
+/* All global rules that forcibly set gradients on .bg-primary, .btn, .button, button, .primary, .rounded-lg.px-8.py-3.shadow, .font-semibold, etc. have been removed. Tailwind utility classes now control the background. */
+
 /* FullCalendar Customizations */
-/* Flattened CSS to avoid nesting issues */
 .fc-button {
-  @apply bg-primary text-primary-foreground hover:bg-primary hover:bg-opacity-90 text-xs rounded-md px-3 py-1.5 shadow-sm;
-  @apply focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring;
+  @apply bg-primary text-primary-foreground border border-input hover:bg-primary hover:bg-opacity-90;
   border: none; /* Remove default FullCalendar borders */
   text-transform: none; /* Remove uppercase text */
 }
-  .fc-button-primary:disabled {
-    @apply bg-secondary text-secondary-foreground opacity-50 cursor-not-allowed;
-  }
-  .fc-button-group > .fc-button {
-      @apply rounded-none shadow-none;
-  }
-  .fc-button-group > .fc-button:first-child {
-      @apply rounded-l-md;
-  }
-  .fc-button-group > .fc-button:last-child {
-      @apply rounded-r-md;
-  }
-  .fc-prev-button, .fc-next-button {
-      @apply px-2; /* Adjust padding for icon buttons */
-  }
-  .fc-today-button {
-      /* Specific styles if needed */
-  }
-  
-  /* Adjust header toolbar spacing */
-  .fc .fc-toolbar.fc-header-toolbar {
-      @apply mb-4;
-  }
-  .fc .fc-toolbar-title {
-      @apply text-lg font-semibold;
-  }
-
-  /* Day Header styling */
-  .fc .fc-col-header-cell-cushion {
-    @apply text-sm font-medium text-muted-foreground py-2;
-  }
-
-  /* General border color */
-  .fc table, .fc th, .fc td {
-      @apply border-border;
-  }
-
-  /* Remove default event border color (we use eventClassNames) */
-  .fc-daygrid-event {
-      border: none !important; 
-      /* Add box-shadow for better visibility if needed */
-      /* @apply shadow-sm; */
-  }
-  
-  /* Ensure event content uses foreground color */
-  .fc-event {
-    color: var(--foreground) !important; /* Force foreground color for text */
-  }
-  .dark .fc-event {
-    color: var(--foreground) !important; /* Force foreground color for dark mode */
-  }
-
-@layer utilities {
-  .outline-ring-opacity-50 {
-    outline: 2px solid rgb(59 130 246 / 0.5); /* Example: blue-500 at 50% opacity */
-  }
+.fc-button-primary:disabled {
+  @apply bg-secondary text-secondary-foreground opacity-50 cursor-not-allowed;
+}
+.fc-button-group > .fc-button {
+  @apply border-r border-border;
+}
+.fc-button-group > .fc-button:first-child {
+  @apply rounded-l-md;
+}
+.fc-button-group > .fc-button:last-child {
+  @apply rounded-r-md border-r-0;
+}
+.fc-prev-button, .fc-next-button {
+  @apply px-3;
+}
+.fc-today-button {
+  @apply bg-secondary text-secondary-foreground hover:bg-secondary hover:bg-opacity-80;
 }
 
-/* Improved dark mode for readability */
-@media (prefers-color-scheme: dark) {
-  body {
-    background: #181A20;
-    color: #F3F4F6;
-  }
-  h1, h2, h3, h4, h5, h6 {
-    color: #FFFFFF;
-  }
-  .card, .bg-white, .bg-gray-900, .rounded-3xl, .shadow-2xl {
-    background: #23272F !important;
-    color: #F3F4F6 !important;
-    border: 1px solid #23272F;
-  }
-  .text-gray-400, .text-gray-500, .text-gray-600 {
-    color: #B0B3B8 !important;
-  }
-  .text-gray-700, .text-gray-800, .text-gray-900 {
-    color: #F3F4F6 !important;
-  }
-  .button, button, .btn, .bg-blue-500, .bg-purple-500 {
-    background: linear-gradient(90deg, #4F8CFF 0%, #8F5AFF 100%) !important;
-    color: #FFFFFF !important;
-    border: none;
-  }
-  .bg-gradient-to-br {
-    background: linear-gradient(135deg, #23272F 0%, #181A20 100%) !important;
-  }
-  .border-gray-200, .border-gray-300 {
-    border-color: #23272F !important;
-  }
-  .bg-blue-100, .bg-purple-100, .bg-pink-100 {
-    background: #23272F !important;
-  }
-  .bg-gray-800 {
-    background: #23272F !important;
-  }
-  .bg-gray-900 {
-    background: #181A20 !important;
-  }
-  .shadow-2xl {
-    box-shadow: 0 8px 32px 0 rgba(0,0,0,0.45) !important;
-  }
-  .border {
-    border-color: #23272F !important;
-  }
-  .text-blue-500, .text-purple-500, .text-pink-500 {
-    color: #8F5AFF !important;
-  }
-  .text-white {
-    color: #FFFFFF !important;
-  }
+/* FullCalendar Layout */
+.fc .fc-toolbar.fc-header-toolbar {
+  @apply mb-4;
+}
+.fc .fc-toolbar-title {
+  @apply text-lg font-semibold text-foreground;
+}
 
-  /* 1. Logo visibility */
-  .logo, .site-logo, .navbar-logo, .brand, .brand-logo {
-    color: #fff !important;
-    fill: #fff !important;
-    filter: none !important;
-  }
+/* FullCalendar Headers */
+.fc .fc-col-header-cell-cushion {
+  @apply text-sm font-medium text-muted-foreground;
+}
 
-  /* 2. Overlay/Muted/Secondary Headings */
-  .text-muted, .text-secondary, .text-overlay, .subtitle, .subheading, .overlay-heading, .heading-overlay, .hero-overlay, .opacity-50, .opacity-60, .opacity-70 {
-    color: #E0E3E8 !important;
-    opacity: 0.85 !important;
-  }
-  h1, h2, h3, h4, h5, h6 {
-    color: #fff !important;
-  }
+/* FullCalendar Grid */
+.fc table, .fc th, .fc td {
+  @apply border-border;
+}
 
-  /* 3. Button visibility */
-  .button, button, .btn, .primary, .secondary, .outline, .ghost, .link, .nav-link {
-    color: #fff !important;
-    background: linear-gradient(90deg, #4F8CFF 0%, #8F5AFF 100%) !important;
-    border: none !important;
-    box-shadow: 0 2px 8px 0 rgba(0,0,0,0.18);
-  }
-  .button:disabled, .btn:disabled, button:disabled {
-    background: #23272F !important;
-    color: #B0B3B8 !important;
-    opacity: 0.6 !important;
-  }
+/* FullCalendar Events */
+.fc-daygrid-event {
+  @apply bg-primary text-primary-foreground border-0 rounded px-2 py-1 text-xs;
+}
+.fc-event {
+  @apply border-0;
+}
+.dark .fc-event {
+  @apply bg-primary text-primary-foreground;
+}
 
-  /* 4. Transparent backgrounds */
-  .bg-transparent {
-    background: rgba(24,26,32,0.85) !important;
-    color: #fff !important;
-  }
+/* Utility Classes */
+.outline-ring-opacity-50 {
+  outline: 2px solid hsl(var(--ring) / 0.5);
+  outline-offset: 2px;
+}
 
-  /* 5. Overlay text always readable */
-  .overlay-text, .hero-overlay, .overlay, .opacity-50, .opacity-60, .opacity-70 {
-    color: #E0E3E8 !important;
-    opacity: 0.95 !important;
-    text-shadow: 0 1px 4px rgba(0,0,0,0.4);
-  }
+/* Hide scrollbar for webkit browsers */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
 
-  /* --- LOGO (Nav and Signin) --- */
-  .navbar-logo, .site-logo, .brand, .brand-logo, .text-primary, .text-xl.font-bold.text-primary, .text-3xl.font-extrabold.text-white, .text-3xl.font-extrabold, .drop-shadow {
-    color: #fff !important;
-    fill: #fff !important;
-    filter: none !important;
-    text-shadow: 0 1px 8px #0008;
-  }
-  /* Signin logo box */
-  .bg-gradient-to-br.from-blue-500.to-purple-500,
-  .bg-gradient-to-br.from-blue-400.to-purple-600 {
-    background: linear-gradient(135deg, #4F8CFF 0%, #8F5AFF 100%) !important;
-  }
+/* Touch target size */
+.touch-target {
+  min-height: 44px;
+  min-width: 44px;
+}
 
-  /* --- HERO HEADINGS --- */
-  .text-slate-900, .text-gray-900, .text-4xl, .text-5xl, .font-extrabold, .tracking-tight, h1, h2, h3, h4, h5, h6 {
-    color: #fff !important;
-    text-shadow: 0 1px 8px #0008;
-  }
-  .text-primary {
-    color: #8F5AFF !important;
-    text-shadow: 0 1px 8px #0008;
-  }
-  .text-slate-600, .text-gray-600, .text-muted, .text-muted-foreground, .text-secondary, .text-overlay, .subtitle, .subheading, .overlay-heading, .heading-overlay, .hero-overlay {
-    color: #E0E3E8 !important;
-    opacity: 0.95 !important;
-    text-shadow: 0 1px 8px #0008;
-  }
-  .text-slate-300, .text-gray-300 {
-    color: #F3F4F6 !important;
-  }
+/* Responsive text sizes */
+.text-responsive {
+  font-size: clamp(0.875rem, 2vw, 1rem);
+}
 
-  /* --- BUTTONS --- */
-  .bg-primary, .text-white, .inline-block.bg-primary, .btn, .button, button, .primary, .rounded-lg.px-8.py-3.shadow, .font-semibold {
-    color: #fff !important;
-    background: linear-gradient(90deg, #4F8CFF 0%, #8F5AFF 100%) !important;
-    border: none !important;
-    box-shadow: 0 2px 8px 0 rgba(0,0,0,0.18);
-  }
-  .inline-block.border.border-primary.text-primary {
-    color: #8F5AFF !important;
-    background: transparent !important;
-    border: 2px solid #8F5AFF !important;
-  }
-  .inline-block.border.border-primary.text-primary:hover, .inline-block.border.border-primary.text-primary:focus {
-    color: #fff !important;
-    background: linear-gradient(90deg, #4F8CFF 0%, #8F5AFF 100%) !important;
-    border: 2px solid #8F5AFF !important;
-  }
-  .shadow, .shadow-2xl {
-    box-shadow: 0 8px 32px 0 rgba(0,0,0,0.45) !important;
-  }
+.text-responsive-lg {
+  font-size: clamp(1rem, 2.5vw, 1.125rem);
+}
 
-  /* --- GENERAL --- */
-  .bg-white, .bg-gray-900, .rounded-3xl, .card {
-    background: #23272F !important;
-    color: #F3F4F6 !important;
-    border: 1px solid #23272F;
-  }
-  .bg-gradient-to-br {
-    background: linear-gradient(135deg, #23272F 0%, #181A20 100%) !important;
-  }
-  .border-gray-200, .border-gray-300, .border-slate-200, .border-slate-800 {
-    border-color: #23272F !important;
-  }
-  .bg-blue-100, .bg-purple-100, .bg-pink-100 {
-    background: #23272F !important;
-  }
-  .bg-gray-800 {
-    background: #23272F !important;
-  }
-  .bg-gray-900 {
-    background: #181A20 !important;
-  }
-  .text-slate-500, .text-slate-400, .text-gray-400, .text-gray-500, .text-gray-600 {
-    color: #B0B3B8 !important;
-  }
-  .text-slate-900, .text-gray-900, .text-gray-800, .text-gray-700 {
-    color: #fff !important;
-  }
-  .bg-transparent {
-    background: rgba(24,26,32,0.85) !important;
-    color: #fff !important;
-  }
-  .opacity-50, .opacity-60, .opacity-70 {
-    color: #E0E3E8 !important;
-    opacity: 0.95 !important;
-    text-shadow: 0 1px 4px rgba(0,0,0,0.4);
-  }
-} 
+.text-responsive-xl {
+  font-size: clamp(1.125rem, 3vw, 1.25rem);
+}
+
+/* Responsive spacing */
+.space-responsive {
+  gap: clamp(0.5rem, 2vw, 1rem);
+}
+
+.p-responsive {
+  padding: clamp(0.5rem, 2vw, 1rem);
+}
+
+.px-responsive {
+  padding-left: clamp(0.5rem, 2vw, 1rem);
+  padding-right: clamp(0.5rem, 2vw, 1rem);
+}
+
+.py-responsive {
+  padding-top: clamp(0.5rem, 2vw, 1rem);
+  padding-bottom: clamp(0.5rem, 2vw, 1rem);
+}

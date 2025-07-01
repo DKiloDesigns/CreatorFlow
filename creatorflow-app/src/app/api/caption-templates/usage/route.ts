@@ -7,7 +7,7 @@ import { handleRecordCaptionTemplateUsage, handleGetCaptionTemplateUsage } from 
 // POST: Record a usage event
 export async function POST(req: NextRequest) {
   const apiKeyHeader = req.headers.get('x-api-key');
-  let userId;
+  let userId: string | undefined;
   let getSessionWithUser;
   if (apiKeyHeader) {
     const auth = await requireApiKey(req);
@@ -25,7 +25,7 @@ export async function POST(req: NextRequest) {
 // GET: Usage stats/history for a template
 export async function GET(req: NextRequest) {
   const apiKeyHeader = req.headers.get('x-api-key');
-  let userId;
+  let userId: string | undefined;
   let getSessionWithUser;
   if (apiKeyHeader) {
     const auth = await requireApiKey(req);

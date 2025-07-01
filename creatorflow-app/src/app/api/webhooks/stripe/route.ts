@@ -15,13 +15,7 @@ const resend = new Resend(process.env.RESEND_API_KEY)
 const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
 
 // Stripe requires the raw body, so we need to configure the route
-export const config = {
-    runtime: 'nodejs',
-    unstable_allowDynamic: [
-        '/node_modules/stripe/**',
-        '/node_modules/resend/**',
-    ],
-};
+export const runtime = 'nodejs';
 
 async function buffer(readable: ReadableStream<Uint8Array> | null): Promise<Buffer> {
     if (!readable) {

@@ -10,7 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from './tabs';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './select';
 import { Switch } from './switch';
 import { 
-  Clock, 
+  Lightbulb, 
   TrendingUp, 
   Target, 
   Users, 
@@ -20,6 +20,7 @@ import {
   RefreshCw,
   Zap,
   Eye,
+  Clock,
   Globe,
   Star,
   Heart,
@@ -36,29 +37,25 @@ import {
   ArrowUpRight,
   ArrowDownRight,
   Minus,
+  Video,
+  Image,
+  FileText,
+  Mic,
+  Play,
+  Camera,
+  Edit3,
+  Hash,
   MapPin,
   CalendarDays,
   Clock3,
-  Target,
-  Zap,
   Rocket,
   Crown,
   Trophy,
   Medal,
   Sun,
-  Moon,
-  Coffee,
   Briefcase,
   Home,
-  Bed,
-  Utensils,
-  Car,
-  Train,
-  Plane,
-  Wifi,
-  Smartphone,
-  Laptop,
-  Tv
+  Moon
 } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -367,7 +364,7 @@ export function OptimalPostingTimePredictor({ provider }: OptimalPostingTimePred
               <Input
                 placeholder="e.g., entrepreneurs, fitness enthusiasts..."
                 value={targetAudience}
-                onChange={(e) => setTargetAudience(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTargetAudience(e.target.value)}
               />
             </div>
             
@@ -376,7 +373,7 @@ export function OptimalPostingTimePredictor({ provider }: OptimalPostingTimePred
               <Input
                 placeholder="e.g., tech, fitness, business..."
                 value={industry}
-                onChange={(e) => setIndustry(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setIndustry(e.target.value)}
               />
             </div>
 

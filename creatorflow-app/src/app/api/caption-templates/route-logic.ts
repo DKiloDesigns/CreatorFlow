@@ -1,4 +1,13 @@
-export async function handleGetCaptionTemplates({ req, getSession, prisma }) {
+import { NextRequest } from 'next/server';
+import { PrismaClient } from '@prisma/client';
+
+interface RouteContext {
+  req: NextRequest;
+  getSession: (req: NextRequest) => Promise<any>;
+  prisma: PrismaClient;
+}
+
+export async function handleGetCaptionTemplates({ req, getSession, prisma }: RouteContext) {
   const session = await getSession(req);
   if (!session?.user?.id) return { status: 401, body: { error: 'Unauthorized' } };
   try {
@@ -11,7 +20,7 @@ export async function handleGetCaptionTemplates({ req, getSession, prisma }) {
   }
 }
 
-export async function handleCreateCaptionTemplate({ req, getSession, prisma }) {
+export async function handleCreateCaptionTemplate({ req, getSession, prisma }: RouteContext) {
   const session = await getSession(req);
   if (!session?.user?.id) return { status: 401, body: { error: 'Unauthorized' } };
   const { name, content, category = 'Uncategorized', tags = [] } = await req.json();
@@ -26,7 +35,7 @@ export async function handleCreateCaptionTemplate({ req, getSession, prisma }) {
   }
 }
 
-export async function handleUpdateCaptionTemplate({ req, getSession, prisma }) {
+export async function handleUpdateCaptionTemplate({ req, getSession, prisma }: RouteContext) {
   const session = await getSession(req);
   if (!session?.user?.id) return { status: 401, body: { error: 'Unauthorized' } };
   const { id, name, content, category = 'Uncategorized', tags = [] } = await req.json();
@@ -41,7 +50,7 @@ export async function handleUpdateCaptionTemplate({ req, getSession, prisma }) {
   }
 }
 
-export async function handleDeleteCaptionTemplate({ req, getSession, prisma }) {
+export async function handleDeleteCaptionTemplate({ req, getSession, prisma }: RouteContext) {
   const session = await getSession(req);
   if (!session?.user?.id) return { status: 401, body: { error: 'Unauthorized' } };
   const { id } = await req.json();
@@ -56,12 +65,12 @@ export async function handleDeleteCaptionTemplate({ req, getSession, prisma }) {
   }
 }
 
-export async function handlePatchCaptionTemplate({ req, getSession, prisma }) {
+export async function handlePatchCaptionTemplate({ req, getSession, prisma }: RouteContext) {
   const session = await getSession(req);
   if (!session?.user?.id) return { status: 401, body: { error: 'Unauthorized' } };
   const { id, isFavorite, isPinned } = await req.json();
   if (!id) return { status: 400, body: { error: 'ID is required' } };
-  const data = {};
+  const data: { isFavorite?: boolean; isPinned?: boolean } = {};
   if (typeof isFavorite === 'boolean') data.isFavorite = isFavorite;
   if (typeof isPinned === 'boolean') data.isPinned = isPinned;
   if (!Object.keys(data).length) return { status: 400, body: { error: 'No fields to update' } };

@@ -293,7 +293,7 @@ export function AIContentIdeas({ onIdeaSelect, className }: AIContentIdeasProps)
         )}
 
         {/* Quick Tips */}
-        <div className="p-3 bg-yellow-50 dark:bg-yellow-950/20 rounded-lg">
+        <div className="p-3 bg-yellow-50 dark:bg-yellow-900/60 rounded-lg">
           <h4 className="font-medium text-sm mb-2 flex items-center gap-2">
             <Lightbulb className="h-4 w-4 text-yellow-600" />
             Content Creation Tips

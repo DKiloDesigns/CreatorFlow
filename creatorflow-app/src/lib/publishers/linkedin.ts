@@ -5,6 +5,7 @@ const prisma = new PrismaClient(); // For updating tokens
 
 // Define the expected return type for publisher functions
 interface PublishResult {
+    platform: string;
     success: boolean;
     error?: string;
     platformPostId?: string; // The ID of the post created on the platform (URN for LinkedIn)
@@ -197,7 +198,7 @@ export async function publishToLinkedIn(
 
     if (authError || !accessToken) {
         console.error(`[LinkedIn Publisher] Authentication failed for account ${account.id}: ${authError}`);
-        return { success: false, error: authError || 'Authentication failed' };
+        return { platform: 'linkedin', success: false, error: authError || 'Authentication failed' };
     }
 
     const authorUrn = `urn:li:person:${account.platformUserId}`; // Needed for API calls
@@ -294,7 +295,7 @@ export async function publishToLinkedIn(
         } catch (mediaError: unknown) {
             const error = mediaError as LinkedInError;
             console.error(`[LinkedIn Publisher] Failed to process or upload media from ${mediaUrl}:`, error);
-            return { success: false, error: `Failed to upload media: ${error.message}` };
+            return { platform: 'linkedin', success: false, error: `Failed to upload media: ${error.message}` };
         }
     }
 
@@ -372,6 +373,7 @@ export async function publishToLinkedIn(
         console.log(`[LinkedIn Publisher] Successfully published post ${post.id}. Platform ID: ${platformPostId}`);
         
         return {
+            platform: 'linkedin',
             success: true,
             platformPostId: platformPostId,
         };
@@ -380,6 +382,7 @@ export async function publishToLinkedIn(
         const linkedInError = error as LinkedInError;
         console.error(`[LinkedIn Publisher] Failed to publish post ${post.id}:`, linkedInError);
         return {
+            platform: 'linkedin',
             success: false,
             error: linkedInError.message || 'Unknown LinkedIn API error',
         };

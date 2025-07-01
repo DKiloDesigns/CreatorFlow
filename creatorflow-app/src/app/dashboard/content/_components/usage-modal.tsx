@@ -41,7 +41,7 @@ export default function UsageModal({ open, onOpenChange, template, type }: {
             <b>Per User:</b>
             <ul className="ml-4">
               {Object.entries(stats.perUser || {}).map(([user, count]) => (
-                <li key={user}>{user}: {count}</li>
+                <li key={user}>{user}: {count as number}</li>
               ))}
             </ul>
           </div>

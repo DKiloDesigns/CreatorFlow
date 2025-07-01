@@ -1,0 +1,290 @@
+import { NextRequest, NextResponse } from 'next/server';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '@/auth';
+import { prisma } from '@/lib/db';
+import { cloudinaryService } from '@/lib/cloudinary';
+
+interface ParsedMetadata {
+  tags?: string[];
+  description?: string;
+  [key: string]: any;
+}
+
+const MAX_FILE_SIZE = 100 * 1024 * 1024; // 100MB
+const ACCEPTED_TYPES = [
+  'image/jpeg',
+  'image/jpg', 
+  'image/png',
+  'image/gif',
+  'image/webp',
+  'image/svg+xml',
+  'video/mp4',
+  'video/mov',
+  'video/avi',
+  'video/webm',
+  'video/mkv'
+];
+
+export async function POST(request: NextRequest) {
+  try {
+    const session = await getServerSession(authOptions);
+    
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const formData = await request.formData();
+    const files = formData.getAll('files') as File[];
+    const metadata = formData.get('metadata') as string;
+
+    if (!files || files.length === 0) {
+      return NextResponse.json({ error: 'No files provided' }, { status: 400 });
+    }
+
+    if (files.length > 10) {
+      return NextResponse.json({ error: 'Maximum 10 files allowed' }, { status: 400 });
+    }
+
+    // Parse metadata
+    let parsedMetadata = {};
+    try {
+      if (metadata) {
+        parsedMetadata = JSON.parse(metadata);
+      }
+    } catch (error) {
+      console.error('Failed to parse metadata:', error);
+    }
+
+    const uploadedFiles = [];
+
+    for (const file of files) {
+      try {
+        // Validate file size
+        if (file.size > MAX_FILE_SIZE) {
+          return NextResponse.json(
+            { error: `File ${file.name} is too large. Maximum size is 100MB` },
+            { status: 400 }
+          );
+        }
+
+        // Validate file type
+        if (!ACCEPTED_TYPES.includes(file.type)) {
+          return NextResponse.json(
+            { error: `File type ${file.type} is not supported` },
+            { status: 400 }
+          );
+        }
+
+        // Convert file to buffer
+        const buffer = Buffer.from(await file.arrayBuffer());
+
+        // Upload to Cloudinary
+        const uploadResult = await cloudinaryService.uploadFile(buffer, {
+          folder: `creatorflow/${session.user.id}`,
+          resource_type: file.type.startsWith('image/') ? 'image' : 'video',
+          allowed_formats: ['jpg', 'jpeg', 'png', 'gif', 'webp', 'mp4', 'mov', 'avi', 'webm'],
+          max_bytes: MAX_FILE_SIZE
+        });
+
+        // Save to database
+        const mediaRecord = await prisma.media.create({
+          data: {
+            userId: session.user.id,
+            filename: uploadResult.public_id,
+            originalName: file.name,
+            mimeType: file.type,
+            size: uploadResult.bytes,
+            url: uploadResult.secure_url,
+            thumbnailUrl: uploadResult.thumbnail_url || (file.type.startsWith('image/') ? uploadResult.secure_url : null),
+            metadata: {
+              ...parsedMetadata,
+              cloudinary_public_id: uploadResult.public_id,
+              width: uploadResult.width,
+              height: uploadResult.height,
+              format: uploadResult.format,
+              resource_type: uploadResult.resource_type,
+              duration: uploadResult.duration
+            },
+            tags: (parsedMetadata as ParsedMetadata).tags || [],
+            description: (parsedMetadata as ParsedMetadata).description || '',
+          },
+        });
+
+        uploadedFiles.push({
+          id: mediaRecord.id,
+          name: file.name,
+          url: uploadResult.secure_url,
+          thumbnailUrl: mediaRecord.thumbnailUrl,
+          size: uploadResult.bytes,
+          type: file.type,
+          uploadedAt: mediaRecord.createdAt,
+          tags: mediaRecord.tags,
+          description: mediaRecord.description,
+          publicId: uploadResult.public_id,
+          width: uploadResult.width,
+          height: uploadResult.height,
+          format: uploadResult.format,
+          resourceType: uploadResult.resource_type,
+          duration: uploadResult.duration
+        });
+
+      } catch (error) {
+        console.error(`Failed to upload file ${file.name}:`, error);
+        return NextResponse.json(
+          { error: `Failed to upload ${file.name}: ${error instanceof Error ? error.message : 'Unknown error'}` },
+          { status: 500 }
+        );
+      }
+    }
+
+    return NextResponse.json({
+      success: true,
+      files: uploadedFiles,
+      message: `Successfully uploaded ${uploadedFiles.length} files`
+    });
+
+  } catch (error) {
+    console.error('Upload error:', error);
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    );
+  }
+}
+
+export async function GET(request: NextRequest) {
+  try {
+    const session = await getServerSession(authOptions);
+    
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const { searchParams } = new URL(request.url);
+    const page = parseInt(searchParams.get('page') || '1');
+    const limit = parseInt(searchParams.get('limit') || '20');
+    const type = searchParams.get('type');
+    const search = searchParams.get('search');
+    const tags = searchParams.get('tags');
+
+    const skip = (page - 1) * limit;
+
+    // Build where clause
+    const where: any = {
+      userId: session.user.id,
+    };
+
+    if (type && type !== 'all') {
+      where.mimeType = {
+        startsWith: type === 'image' ? 'image/' : 'video/'
+      };
+    }
+
+    if (search) {
+      where.OR = [
+        { originalName: { contains: search, mode: 'insensitive' } },
+        { description: { contains: search, mode: 'insensitive' } },
+        { tags: { hasSome: [search] } }
+      ];
+    }
+
+    if (tags) {
+      const tagArray = tags.split(',').map(t => t.trim());
+      where.tags = { hasSome: tagArray };
+    }
+
+    const [media, total] = await Promise.all([
+      prisma.media.findMany({
+        where,
+        orderBy: { createdAt: 'desc' },
+        skip,
+        take: limit,
+      }),
+      prisma.media.count({ where })
+    ]);
+
+    return NextResponse.json({
+      media: media.map((item: any) => ({
+        id: item.id,
+        name: item.originalName,
+        url: item.url,
+        thumbnailUrl: item.thumbnailUrl,
+        type: item.mimeType.startsWith('image/') ? 'image' : 'video',
+        size: item.size,
+        uploadedAt: item.createdAt,
+        tags: item.tags,
+        description: item.description,
+        publicId: item.filename,
+        metadata: item.metadata
+      })),
+      pagination: {
+        page,
+        limit,
+        total,
+        pages: Math.ceil(total / limit)
+      }
+    });
+
+  } catch (error) {
+    console.error('Media fetch error:', error);
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(request: NextRequest) {
+  try {
+    const session = await getServerSession(authOptions);
+    
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const { searchParams } = new URL(request.url);
+    const mediaId = searchParams.get('id');
+
+    if (!mediaId) {
+      return NextResponse.json({ error: 'Media ID is required' }, { status: 400 });
+    }
+
+    // Get media record
+    const media = await prisma.media.findFirst({
+      where: {
+        id: mediaId,
+        userId: session.user.id
+      }
+    });
+
+    if (!media) {
+      return NextResponse.json({ error: 'Media not found' }, { status: 404 });
+    }
+
+    // Delete from Cloudinary
+    try {
+      const resourceType = media.mimeType.startsWith('image/') ? 'image' : 'video';
+      await cloudinaryService.deleteFile(media.filename, resourceType);
+    } catch (error) {
+      console.error('Failed to delete from Cloudinary:', error);
+      // Continue with database deletion even if Cloudinary fails
+    }
+
+    // Delete from database
+    await prisma.media.delete({
+      where: { id: mediaId }
+    });
+
+    return NextResponse.json({
+      success: true,
+      message: 'Media deleted successfully'
+    });
+
+  } catch (error) {
+    console.error('Media delete error:', error);
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    );
+  }
+} 

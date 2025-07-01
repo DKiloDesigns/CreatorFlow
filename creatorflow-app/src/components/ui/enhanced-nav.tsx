@@ -6,6 +6,7 @@ import { Button } from './button';
 import { 
   BarChart2, 
   Users, 
+  Users2,
   FileText, 
   Handshake, 
   CreditCard, 
@@ -16,7 +17,9 @@ import {
   LogOut,
   User,
   Bell,
-  Brain
+  Brain,
+  LifeBuoy,
+  Shield
 } from 'lucide-react';
 import { NotificationBadge } from './notification-badge';
 import {
@@ -40,6 +43,7 @@ const navItems: NavItem[] = [
   { href: '/dashboard/content', label: 'Content', icon: FileText },
   { href: '/dashboard/ai-tools', label: 'AI Tools', icon: Brain },
   { href: '/dashboard/accounts', label: 'Accounts', icon: Users },
+  { href: '/dashboard/teams', label: 'Teams', icon: Users2 },
   { href: '/dashboard/analytics', label: 'Analytics', icon: BarChart2 },
   { href: '/dashboard/collabs', label: 'Brand Collabs', icon: Handshake },
   { href: '/dashboard/billing', label: 'Billing', icon: CreditCard },
@@ -145,45 +149,65 @@ export function EnhancedNavigation() {
 export function UserMenu() {
   const { data: session } = useSession();
   const userImage = session?.user?.image;
-  const userName = session?.user?.name || 'User';
-
+  const userName = session?.user?.name || 'Account';
+  // Helper for initials if no image and no name
+  const getInitials = (name: string) => {
+    if (!name) return 'A';
+    return name.split(' ').map((n) => n[0]).join('').toUpperCase();
+  };
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    alert('Profile image upload coming soon!');
+  };
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="w-full justify-between">
-          <div className="flex items-center gap-2">
-            {userImage ? (
-              <img src={userImage} alt={userName} className="h-8 w-8 rounded-full object-cover" />
-            ) : (
-              <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center">
-                <User className="h-4 w-4" />
-              </div>
-            )}
-            <span className="text-sm font-medium">{userName}</span>
-          </div>
-          <ChevronDown className="h-4 w-4" />
-        </Button>
+        <button
+          type="button"
+          className="flex items-center gap-2 rounded-full px-3 py-1 hover:bg-muted focus:outline-none focus:ring-2 focus:ring-primary/50 transition"
+        >
+          {userImage ? (
+            <img src={userImage} alt={userName} className="h-8 w-8 rounded-full object-cover" />
+          ) : (
+            <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">
+              {getInitials(userName)}
+            </div>
+          )}
+          <span className="font-medium text-sm max-w-[120px] truncate">{userName}</span>
+          <svg className="h-4 w-4 text-muted-foreground" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
+        </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-56">
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          <User className="mr-2 h-4 w-4" />
-          Profile
-        </DropdownMenuItem>
-        <DropdownMenuItem>
-          <Settings className="mr-2 h-4 w-4" />
-          Settings
-        </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <Link href="/dashboard/billing" className="flex items-center w-full">
-            <CreditCard className="mr-2 h-4 w-4" />
-            Billing
+          <Link href="/dashboard/profile" className="flex items-center w-full">
+            <User className="mr-2 h-4 w-4" />
+            Profile
           </Link>
         </DropdownMenuItem>
-        <DropdownMenuItem>
-          <Bell className="mr-2 h-4 w-4" />
-          Notifications
+        <DropdownMenuItem asChild>
+          <Link href="/dashboard/settings" className="flex items-center w-full">
+            <Settings className="mr-2 h-4 w-4" />
+            Settings
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link href="/dashboard/security" className="flex items-center w-full">
+            <Shield className="mr-2 h-4 w-4" />
+            Security
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link href="/dashboard/notifications" className="flex items-center w-full">
+            <Bell className="mr-2 h-4 w-4" />
+            Notifications
+          </Link>
+        </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <Link href="/dashboard/support" className="flex items-center w-full">
+            <LifeBuoy className="mr-2 h-4 w-4" />
+            Support / Help
+          </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={() => signOut({ callbackUrl: '/' })}>

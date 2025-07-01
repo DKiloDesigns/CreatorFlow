@@ -100,33 +100,7 @@ export async function GET(req: NextRequest) {
         const auth = await requireApiKey(req);
         if ('user' in auth) {
             const userId = auth.user.id;
-            // Fetch posts for the logged-in user
-            // Select only necessary fields to send to the client
-            const posts = await prisma.post.findMany({
-                where: {
-                    userId: userId,
-                    // Optionally filter by status if needed (e.g., exclude drafts from calendar)
-                    status: {
-                        not: PostStatus.DRAFT // Example: Don't fetch drafts for the calendar
-                    }
-                },
-                select: {
-                    id: true,
-                    contentText: true,
-                    mediaUrls: true,
-                    platforms: true,
-                    status: true,
-                    scheduledAt: true,
-                    publishedAt: true,
-                    createdAt: true,
-                    updatedAt: true,
-                },
-                orderBy: {
-                    scheduledAt: 'asc' // Order by scheduled date
-                }
-            });
-
-            return NextResponse.json(posts);
+            return await getPostsWithFilters(req, userId);
         } else {
             return auth; // Error response from requireApiKey
         }
@@ -140,34 +114,76 @@ export async function GET(req: NextRequest) {
             return NextResponse.json({ error: 'Unauthorized: User not logged in' }, { status: 401 });
         }
 
-        // Fetch posts for the logged-in user
-        // Select only necessary fields to send to the client
-        const posts = await prisma.post.findMany({
-            where: {
-                userId: userId,
-                status: {
-                    not: PostStatus.DRAFT
-                }
-            },
-            select: {
-                id: true,
-                contentText: true,
-                mediaUrls: true,
-                platforms: true,
-                status: true,
-                scheduledAt: true,
-                publishedAt: true,
-                createdAt: true,
-                updatedAt: true,
-            },
-            orderBy: {
-                scheduledAt: 'asc'
-            }
-        });
-
-        return NextResponse.json(posts);
-
+        return await getPostsWithFilters(req, userId);
     } catch (error) {
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
     }
+}
+
+async function getPostsWithFilters(req: NextRequest, userId: string) {
+    const { searchParams } = new URL(req.url);
+    const status = searchParams.get('status');
+    const platform = searchParams.get('platform');
+    const search = searchParams.get('search');
+    const page = parseInt(searchParams.get('page') || '1');
+    const pageSize = parseInt(searchParams.get('pageSize') || '10');
+    const skip = (page - 1) * pageSize;
+
+    // Build where clause
+    const where: any = { userId };
+    
+    if (status && status !== 'ALL') {
+        where.status = status;
+    }
+    
+    if (platform && platform !== 'ALL') {
+        where.platforms = { has: platform };
+    }
+    
+    if (search) {
+        where.OR = [
+            { contentText: { contains: search, mode: 'insensitive' } },
+        ];
+    }
+
+    // Get total count
+    const total = await prisma.post.count({ where });
+
+    // Get posts with pagination
+    const posts = await prisma.post.findMany({
+        where,
+        select: {
+            id: true,
+            contentText: true,
+            mediaUrls: true,
+            platforms: true,
+            status: true,
+            scheduledAt: true,
+            publishedAt: true,
+            createdAt: true,
+            updatedAt: true,
+            views: true,
+            likes: true,
+            comments: true,
+            shares: true,
+            reach: true,
+            impressions: true,
+            engagementRate: true,
+        },
+        orderBy: [
+            { scheduledAt: 'desc' },
+            { publishedAt: 'desc' },
+            { createdAt: 'desc' }
+        ],
+        skip,
+        take: pageSize
+    });
+
+    return NextResponse.json({
+        posts,
+        total,
+        page,
+        pageSize,
+        totalPages: Math.ceil(total / pageSize)
+    });
 } 

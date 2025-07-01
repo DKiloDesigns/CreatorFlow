@@ -11,6 +11,7 @@ import FacebookProvider from "next-auth/providers/facebook"
 import AppleProvider from "next-auth/providers/apple"
 import GitHubProvider from "next-auth/providers/github"
 import CredentialsProvider from "next-auth/providers/credentials"
+import { cookies as nextCookies } from 'next/headers'
 // Re-export signIn and signOut from next-auth/react for client components
 export { signIn, signOut } from "next-auth/react"
 
@@ -26,12 +27,32 @@ export const authOptions: NextAuthOptions = {
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        username: { label: "Username", type: "text" },
+        email: { label: "Email", type: "email" },
         password: { label: "Password", type: "password" }
       },
       async authorize(credentials) {
-        // Always allow login for test
-        return { id: "1", name: "Test User", email: "test@example.com" };
+        if (!credentials?.email || !credentials?.password) {
+          return null;
+        }
+        
+        try {
+          const user = await prisma.user.findUnique({
+            where: { email: credentials.email }
+          });
+          
+          if (user && user.password === credentials.password) {
+            return {
+              id: user.id,
+              name: user.name || "Test User",
+              email: user.email,
+            };
+          }
+          
+          return null;
+        } catch (error) {
+          console.error('[NextAuth][Credentials] Error during authorization:', error);
+          return null;
+        }
       }
     }),
     GitHubProvider({
@@ -49,7 +70,7 @@ export const authOptions: NextAuthOptions = {
             if (res.ok) {
               const emails = await res.json();
               // Find the primary, verified email
-              const primary = emails.find((e) => e.primary && e.verified);
+              const primary = emails.find((e: any) => e.primary && e.verified);
               email = primary?.email || emails[0]?.email;
             }
           } catch (err) {
@@ -125,26 +146,48 @@ export const authOptions: NextAuthOptions = {
     },
     async jwt({ token, user, account, profile }) {
       console.log('[NextAuth][jwt callback]', { 
-        token: token ? { ...token, sub: token.sub } : null,
-        user: user ? { id: user.id } : null,
+        token: token ? { sub: token.sub, id: token.id, name: token.name, email: token.email } : null,
+        user: user ? { id: user.id, name: user.name, email: user.email } : null,
         account: account ? { provider: account.provider } : null,
       });
       
+      // If user is provided, update token with user data
       if (user) {
         token.id = user.id;
+        token.name = user.name;
+        token.email = user.email;
+        token.picture = user.image;
       }
+      
+      // Ensure token.id is always available
+      if (!token.id && token.sub) {
+        token.id = token.sub;
+      }
+      
+      console.log('[NextAuth][jwt callback] Final token:', { id: token.id, name: token.name, email: token.email });
       return token;
     },
     async session({ session, token, user }) {
       console.log('[NextAuth][session callback]', { 
         session: session ? 'Session data available' : null,
-        token: token ? { sub: token.sub } : null,
+        token: token ? { sub: token.sub, id: token.id, name: token.name, email: token.email } : null,
         user: user ? { id: user?.id } : null
       });
       
-      if (session?.user && token?.id) {
-        session.user.id = token.id as string;
+      // Ensure session.user exists
+      if (!session.user) {
+        session.user = { id: '' };
       }
+      
+      // Populate session with token data
+      if (token) {
+        session.user.id = token.id as string;
+        session.user.name = token.name as string;
+        session.user.email = token.email as string;
+        session.user.image = token.picture as string;
+      }
+      
+      console.log('[NextAuth][session callback] Final session:', session);
       return session;
     },
   },
@@ -175,11 +218,35 @@ export default authOptions;
 export const authConfig = authOptions;
 
 // Export the getSession helper for server components and API routes
-export const getSession = (req?: any, res?: any) => {
+export const getSession = async (req?: any, res?: any) => {
+  // Get the base session
+  let session;
   if (req && res) {
-    return getServerSession(req, res, authOptions);
+    session = await getServerSession(req, res, authOptions);
+  } else {
+    session = await getServerSession(authOptions);
   }
-  return getServerSession(authOptions);
+  if (!session?.user?.id) return session;
+
+  // Try to get impersonation cookie
+  let impersonateId: string | undefined;
+  if (req?.cookies) {
+    impersonateId = req.cookies.get('impersonate_user_id')?.value;
+  } else {
+    // App router: use next/headers
+    try {
+      impersonateId = nextCookies().get('impersonate_user_id')?.value;
+    } catch {}
+  }
+  if (impersonateId && impersonateId !== session.user.id) {
+    // Check if the real user is admin
+    const realUser = await prisma.user.findUnique({ where: { id: session.user.id }, select: { role: true } });
+    if (realUser?.role === 'ADMIN') {
+      // Swap user context
+      session.user = { ...session.user, id: impersonateId, impersonated: true, impersonatorId: session.user.id };
+    }
+  }
+  return session;
 };
 
 // Export auth function for compatibility with existing imports

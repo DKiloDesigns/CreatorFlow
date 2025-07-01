@@ -106,14 +106,14 @@ export default function AIToolsPage() {
       </Card>
 
       {/* AI Tools */}
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-        <TabsList className="grid w-full grid-cols-6">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="caption">Caption Generator</TabsTrigger>
-          <TabsTrigger value="hashtags">Hashtag Recommender</TabsTrigger>
-          <TabsTrigger value="ideas">Content Ideas</TabsTrigger>
-          <TabsTrigger value="scheduling">Posting Times</TabsTrigger>
-          <TabsTrigger value="performance">Performance Predictor</TabsTrigger>
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4 sm:space-y-6">
+        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-1">
+          <TabsTrigger value="overview" className="text-xs sm:text-sm">Overview</TabsTrigger>
+          <TabsTrigger value="caption" className="text-xs sm:text-sm">Caption Generator</TabsTrigger>
+          <TabsTrigger value="hashtags" className="text-xs sm:text-sm">Hashtag Recommender</TabsTrigger>
+          <TabsTrigger value="ideas" className="text-xs sm:text-sm">Content Ideas</TabsTrigger>
+          <TabsTrigger value="scheduling" className="text-xs sm:text-sm">Posting Times</TabsTrigger>
+          <TabsTrigger value="performance" className="text-xs sm:text-sm">Performance Predictor</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6">
@@ -183,21 +183,21 @@ export default function AIToolsPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
                 <Button
                   variant="outline"
-                  className="h-24 flex flex-col items-center justify-center gap-2"
+                  className="h-20 sm:h-24 flex flex-col items-center justify-center gap-1 sm:gap-2 text-xs sm:text-sm"
                   onClick={() => setActiveTab('caption')}
                 >
-                  <Sparkles className="w-6 h-6" />
+                  <Sparkles className="w-4 h-4 sm:w-6 sm:h-6" />
                   <span>Generate Caption</span>
                 </Button>
                 <Button
                   variant="outline"
-                  className="h-24 flex flex-col items-center justify-center gap-2"
+                  className="h-20 sm:h-24 flex flex-col items-center justify-center gap-1 sm:gap-2 text-xs sm:text-sm"
                   onClick={() => setActiveTab('hashtags')}
                 >
-                  <Hash className="w-6 h-6" />
+                  <Hash className="w-4 h-4 sm:w-6 sm:h-6" />
                   <span>Find Hashtags</span>
                 </Button>
                 <Button

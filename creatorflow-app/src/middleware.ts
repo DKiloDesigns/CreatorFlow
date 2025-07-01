@@ -4,9 +4,6 @@
 // Keep Node.js runtime explicit for now
 export const runtime = 'nodejs'; 
 
-// Directly export auth from the *middleware-specific* config
-export { auth as middleware } from "@/auth.middleware";
-
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { getSession } from '@/auth';

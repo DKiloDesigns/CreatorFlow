@@ -1,10 +1,15 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import { Heading } from '@/components/ui/heading'; // Assuming a shared Heading component
+import { Heading } from '@/components/ui/heading';
 import { Separator } from "@/components/ui/separator";
 import { toast } from 'sonner';
 import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { RefreshCw, AlertCircle, CheckCircle, Clock, XCircle } from 'lucide-react';
+import { SocialAccountStatus } from '@/components/dashboard/social-account-status';
 
 const PROVIDERS = [
   { name: 'Facebook', id: 'facebook', icon: '📘', color: '#1877F3' },
@@ -24,6 +29,18 @@ const PROVIDERS = [
   { name: 'Google My Business', id: 'gmb', icon: '🏢', color: '#4285F4' },
 ];
 
+type SocialAccount = {
+  id: string;
+  platform: string;
+  platformUserId: string;
+  username: string;
+  status: 'active' | 'pending' | 'needs_reauth' | 'error';
+  createdAt: string;
+  updatedAt: string;
+  tokenExpiresAt?: string;
+  scopes?: string;
+};
+
 type Account = {
   id: string;
   provider: string;
@@ -31,54 +48,197 @@ type Account = {
 };
 
 type AccountConnectButtonsProps = {
-  accounts: Account[];
+  accounts: SocialAccount[];
   onConnect: (provider: string) => void;
   loading: boolean;
 };
 
 function AccountConnectButtons({ accounts, onConnect, loading }: AccountConnectButtonsProps) {
   return (
-    <div style={{ display: 'flex', gap: 12 }}>
-      {PROVIDERS.map((p) => (
-        <button
-          key={p.id}
-          onClick={() => onConnect(p.id)}
-          disabled={loading || accounts.some((a: Account) => a.provider === p.id)}
-          style={{ opacity: loading || accounts.some((a: Account) => a.provider === p.id) ? 0.5 : 1 }}
-        >
-          {p.icon} Connect {p.name}
-        </button>
-      ))}
+    <div className="w-full">
+      <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
+        {PROVIDERS.map((p) => {
+          const connectedAccount = accounts.find((a: SocialAccount) => a.platform === p.id);
+          const isConnected = !!connectedAccount;
+          const isPending = connectedAccount?.status === 'pending';
+          const needsReauth = connectedAccount?.status === 'needs_reauth';
+          
+          return (
+            <div key={p.id} className="flex-shrink-0">
+              <button
+                onClick={() => onConnect(p.id)}
+                disabled={loading || (isConnected && !needsReauth)}
+                className={`
+                  relative group flex flex-col items-center justify-center
+                  w-20 h-20 rounded-full border-2 transition-all duration-200
+                  ${isConnected && !needsReauth
+                    ? 'border-green-500 bg-green-50 cursor-not-allowed' 
+                    : needsReauth
+                    ? 'border-orange-500 bg-orange-50 cursor-pointer'
+                    : 'border-gray-200 hover:border-gray-300 hover:shadow-md cursor-pointer'
+                  }
+                  ${loading ? 'opacity-50 cursor-not-allowed' : ''}
+                `}
+                style={{
+                  background: isConnected && !needsReauth 
+                    ? 'linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)'
+                    : needsReauth
+                    ? 'linear-gradient(135deg, #fff7ed 0%, #fed7aa 100%)'
+                    : 'white'
+                }}
+              >
+                <div 
+                  className="text-2xl mb-1 transition-transform group-hover:scale-110"
+                  style={{ filter: isConnected && !needsReauth ? 'grayscale(0)' : 'grayscale(0)' }}
+                >
+                  {p.icon}
+                </div>
+                <div className={`
+                  text-xs font-medium text-center px-1
+                  ${isConnected && !needsReauth ? 'text-green-700' : needsReauth ? 'text-orange-700' : 'text-gray-600'}
+                `}>
+                  {p.name}
+                </div>
+                {isConnected && !needsReauth && (
+                  <div className="absolute -top-1 -right-1 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
+                    <CheckCircle className="w-3 h-3 text-white" />
+                  </div>
+                )}
+                {needsReauth && (
+                  <div className="absolute -top-1 -right-1 w-5 h-5 bg-orange-500 rounded-full flex items-center justify-center">
+                    <AlertCircle className="w-3 h-3 text-white" />
+                  </div>
+                )}
+                {isPending && (
+                  <div className="absolute -top-1 -right-1 w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center">
+                    <Clock className="w-3 h-3 text-white" />
+                  </div>
+                )}
+              </button>
+            </div>
+          );
+        })}
+      </div>
+      <style jsx>{`
+        .scrollbar-hide {
+          -ms-overflow-style: none;
+          scrollbar-width: none;
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+          display: none;
+        }
+      `}</style>
     </div>
   );
 }
 
-type ConnectedAccountListProps = {
-  accounts: Account[];
+type ConnectedAccountCardProps = {
+  account: SocialAccount;
   onDisconnect: (accountId: string) => void;
+  onRefresh: (accountId: string) => void;
+  onReauth: (platform: string) => void;
   loading: boolean;
 };
 
-function ConnectedAccountList({ accounts, onDisconnect, loading }: ConnectedAccountListProps) {
+function ConnectedAccountCard({ account, onDisconnect, onRefresh, onReauth, loading }: ConnectedAccountCardProps) {
+  const provider = PROVIDERS.find((p) => p.id === account.platform);
+  const isTokenExpired = account.tokenExpiresAt && new Date(account.tokenExpiresAt) < new Date();
+  const isExpiringSoon = account.tokenExpiresAt && 
+    new Date(account.tokenExpiresAt) < new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
+
+  const getStatusBadge = () => {
+    switch (account.status) {
+      case 'active':
+        return <Badge variant="default" className="bg-green-100 text-green-800">Active</Badge>;
+      case 'pending':
+        return <Badge variant="secondary" className="bg-blue-100 text-blue-800">Pending</Badge>;
+      case 'needs_reauth':
+        return <Badge variant="destructive" className="bg-orange-100 text-orange-800">Needs Re-auth</Badge>;
+      case 'error':
+        return <Badge variant="destructive" className="bg-red-100 text-red-800">Error</Badge>;
+      default:
+        return <Badge variant="outline">Unknown</Badge>;
+    }
+  };
+
   return (
-    <ul>
-      {accounts.map((acc: Account) => (
-        <li key={acc.id} style={{ marginBottom: 8 }}>
-          <b>{PROVIDERS.find((p) => p.id === acc.provider)?.icon} {acc.provider}</b> ({acc.providerAccountId})
-          <button
-            style={{ marginLeft: 12 }}
-            onClick={() => onDisconnect(acc.id)}
+    <Card className="relative">
+      <CardHeader className="pb-3">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <div 
+              className="w-10 h-10 rounded-full flex items-center justify-center"
+              style={{ backgroundColor: provider?.color || '#eee' }}
+            >
+              <span className="text-xl">{provider?.icon}</span>
+            </div>
+            <div>
+              <CardTitle className="text-lg">{provider?.name}</CardTitle>
+              <CardDescription>@{account.username}</CardDescription>
+            </div>
+          </div>
+          {getStatusBadge()}
+        </div>
+      </CardHeader>
+      <CardContent className="space-y-3">
+        <div className="text-sm text-muted-foreground">
+          <p>Platform ID: {account.platformUserId}</p>
+          <p>Connected: {new Date(account.createdAt).toLocaleDateString()}</p>
+          {account.tokenExpiresAt && (
+            <p className={`${isTokenExpired ? 'text-red-600' : isExpiringSoon ? 'text-orange-600' : 'text-green-600'}`}>
+              Token expires: {new Date(account.tokenExpiresAt).toLocaleString()}
+            </p>
+          )}
+        </div>
+        
+        <div className="flex gap-2">
+          {account.status === 'active' && (
+            <>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => onRefresh(account.id)}
+                disabled={loading}
+                className="flex items-center gap-1"
+              >
+                <RefreshCw className="w-4 h-4" />
+                Refresh
+              </Button>
+            </>
+          )}
+          
+          {account.status === 'needs_reauth' && (
+            // SPECIAL COLOR BUTTON: Re-authorize (add color later)
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => onReauth(account.platform)}
+              disabled={loading}
+              className="flex items-center gap-1 text-orange-600 border-orange-200 hover:bg-orange-50"
+            >
+              <AlertCircle className="w-4 h-4" />
+              Re-authorize
+            </Button>
+          )}
+          
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => onDisconnect(account.id)}
             disabled={loading}
+            className="flex items-center gap-1 bg-red-700 text-white border-red-700 hover:bg-red-800 hover:border-red-800"
           >
+            <XCircle className="w-4 h-4" />
             Disconnect
-          </button>
-        </li>
-      ))}
-    </ul>
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
   );
 }
 
 export default function AccountsPage() {
+  const [socialAccounts, setSocialAccounts] = useState<SocialAccount[]>([]);
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [loading, setLoading] = useState(true);
   const [action, setAction] = useState('');
@@ -92,12 +252,13 @@ export default function AccountsPage() {
 
   const [ariaMessage, setAriaMessage] = useState('');
 
-  const fetchAccounts = async () => {
+  const fetchSocialAccounts = async () => {
     setLoading(true);
     try {
-      const res = await fetch('/api/accounts', { method: 'POST' });
-      if (!res.ok) throw new Error('Failed to fetch accounts');
-      setAccounts(await res.json());
+      const res = await fetch('/api/accounts', { method: 'GET' });
+      if (!res.ok) throw new Error('Failed to fetch social accounts');
+      const data = await res.json();
+      setSocialAccounts(data);
     } catch (e) {
       const msg = e instanceof Error ? e.message : String(e);
       toast.error(msg);
@@ -106,7 +267,19 @@ export default function AccountsPage() {
     }
   };
 
+  const fetchAccounts = async () => {
+    try {
+      const res = await fetch('/api/accounts', { method: 'POST' });
+      if (!res.ok) throw new Error('Failed to fetch accounts');
+      setAccounts(await res.json());
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      toast.error(msg);
+    }
+  };
+
   useEffect(() => {
+    fetchSocialAccounts();
     fetchAccounts();
   }, []);
 
@@ -151,6 +324,7 @@ export default function AccountsPage() {
 
     if (success === 'connected' && platform) {
       toast.success(`Successfully connected to ${platform}!`);
+      fetchSocialAccounts(); // Refresh the list
       // Clean up URL
       window.history.replaceState({}, document.title, window.location.pathname);
     } else if (error && platform) {
@@ -194,15 +368,57 @@ export default function AccountsPage() {
   };
 
   const handleDisconnect = async (accountId: string) => {
+    if (!window.confirm('Are you sure you want to disconnect this account? This will remove all access.')) {
+      return;
+    }
+    
     setAction('Disconnecting...');
     try {
       const res = await fetch(`/api/accounts/${accountId}`, { method: 'DELETE' });
       const data = await res.json();
       if (data.success) {
         toast.success('Disconnected successfully');
-        fetchAccounts();
+        fetchSocialAccounts();
       } else {
         toast.error(data.error || 'Failed to disconnect');
+      }
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      toast.error(msg);
+    } finally {
+      setAction('');
+    }
+  };
+
+  const handleRefresh = async (accountId: string) => {
+    setAction('Refreshing token...');
+    try {
+      const res = await fetch(`/api/accounts/${accountId}/refresh`, { method: 'POST' });
+      const data = await res.json();
+      if (data.success) {
+        toast.success('Token refreshed successfully');
+        fetchSocialAccounts();
+      } else {
+        toast.error(data.error || 'Failed to refresh token');
+      }
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : String(e);
+      toast.error(msg);
+    } finally {
+      setAction('');
+    }
+  };
+
+  const handleReauth = async (platform: string) => {
+    setAction(`Re-authorizing ${platform}...`);
+    try {
+      const res = await fetch(`/api/accounts/connect/${platform}`, { method: 'POST' });
+      const data = await res.json();
+      if (data.url) {
+        toast.success(`Redirecting to ${platform} for re-authorization...`);
+        window.location.href = data.url;
+      } else {
+        toast.error(data.error || 'Failed to get re-authorization URL');
       }
     } catch (e) {
       const msg = e instanceof Error ? e.message : String(e);
@@ -264,25 +480,25 @@ export default function AccountsPage() {
         />
 
         {/* Section to Add New Accounts */}
-        <section className="sm:block hidden">
-          <div className="flex flex-col sm:flex-row gap-2 sm:gap-4" aria-label="Connect social accounts">
-            {PROVIDERS.map((p) => (
-              <Tooltip key={p.id}>
-                <TooltipTrigger asChild>
-                  <button
-                    onClick={() => handleConnect(p.id)}
-                    disabled={loading || accounts.some((a: Account) => a.provider === p.id)}
-                    className="px-4 py-2 rounded border bg-white shadow hover:bg-primary/10 focus-visible:ring-2 focus-visible:ring-primary transition-colors"
-                    tabIndex={0}
-                    aria-label={`Connect ${p.name}`}
-                  >
-                    {p.icon} Connect {p.name}
-                  </button>
-                </TooltipTrigger>
-                <TooltipContent>{accounts.some((a: Account) => a.provider === p.id) ? `Already connected to ${p.name}` : `Connect your ${p.name} account`}</TooltipContent>
-              </Tooltip>
-            ))}
+        <section>
+          <div className="flex gap-4" aria-label="Connect social accounts">
+            <AccountConnectButtons 
+              accounts={socialAccounts} 
+              onConnect={handleConnect} 
+              loading={loading} 
+            />
           </div>
+        </section>
+
+        <Separator />
+
+        {/* Social Account Status Monitoring */}
+        <section>
+          <SocialAccountStatus 
+            accounts={socialAccounts}
+            onRefresh={handleRefresh}
+            onReauth={handleReauth}
+          />
         </section>
 
         <Separator />
@@ -291,64 +507,27 @@ export default function AccountsPage() {
         <section>
           <h3 className="text-lg font-medium mb-4">Your Connections</h3>
           {loading ? (
-            <p>Loading...</p>
+            <div className="flex items-center justify-center py-8">
+              <RefreshCw className="w-6 h-6 animate-spin" />
+              <span className="ml-2">Loading accounts...</span>
+            </div>
+          ) : socialAccounts.length === 0 ? (
+            <div className="text-center py-8 text-muted-foreground">
+              <p>No social accounts connected yet.</p>
+              <p className="text-sm">Connect your first account above to get started.</p>
+            </div>
           ) : (
-            <div>
-              {/* Mobile: horizontal scrollable row for all platforms */}
-              <div className="flex sm:hidden overflow-x-auto gap-3 pb-2 -mx-2 px-2">
-                {PROVIDERS.map((provider) => {
-                  const acc = accounts.find((a) => a.provider === provider.id);
-                  return (
-                    <div
-                      key={provider.id}
-                      className="flex flex-col items-center justify-center min-w-[72px] max-w-[80px] relative group"
-                    >
-                      <button
-                        className="rounded-full w-14 h-14 flex items-center justify-center border-2 shadow-md mb-1 relative focus:outline-none focus:ring-2 focus:ring-primary transition"
-                        style={{ background: provider.color || '#eee', borderColor: provider.color || '#ccc' }}
-                        title={provider.name}
-                        onClick={() => acc ? handleDisconnect(acc.id) : handleConnect(provider.id)}
-                        disabled={loading}
-                        aria-label={acc ? `Disconnect ${provider.name}` : `Connect ${provider.name}`}
-                        tabIndex={0}
-                      >
-                        <span className="text-2xl" aria-label={provider.name}>{provider.icon}</span>
-                        {acc && (
-                          <span className="absolute -top-2 -right-2 bg-white text-red-600 rounded-full p-1 shadow hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-primary text-xs">×</span>
-                        )}
-                        {!acc && (
-                          <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 bg-primary text-white rounded-full px-2 py-0.5 text-xs shadow">+</span>
-                        )}
-                      </button>
-                      <span className="text-xs text-center truncate w-14" title={provider.name}>{provider.name}</span>
-                    </div>
-                  );
-                })}
-              </div>
-              {/* Desktop: grid of cards */}
-              <ul className="hidden sm:grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" aria-label="Connected accounts list">
-                {accounts.map((acc) => {
-                  const provider = PROVIDERS.find((p) => p.id === acc.provider);
-                  return (
-                    <li key={acc.id} className="rounded-xl shadow bg-white flex flex-col items-center p-4 relative border" style={{ borderColor: provider?.color || '#ccc' }}>
-                      <div className="rounded-full w-12 h-12 flex items-center justify-center mb-2" style={{ background: provider?.color || '#eee' }}>
-                        <span className="text-2xl" aria-label={provider?.name}>{provider?.icon}</span>
-                      </div>
-                      <span className="font-bold text-sm mb-1" title={provider?.name}>{provider?.name}</span>
-                      <span className="text-xs text-muted-foreground mb-2 truncate max-w-[120px]">{acc.providerAccountId}</span>
-                      <button
-                        className="text-red-600 hover:underline focus-visible:ring-2 focus-visible:ring-primary transition-colors px-2 py-1 rounded text-xs"
-                        onClick={() => handleDisconnect(acc.id)}
-                        disabled={loading}
-                        tabIndex={0}
-                        aria-label={`Disconnect ${provider?.name}`}
-                      >
-                        Disconnect
-                      </button>
-                    </li>
-                  );
-                })}
-              </ul>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {socialAccounts.map((account) => (
+                <ConnectedAccountCard
+                  key={account.id}
+                  account={account}
+                  onDisconnect={handleDisconnect}
+                  onRefresh={handleRefresh}
+                  onReauth={handleReauth}
+                  loading={loading}
+                />
+              ))}
             </div>
           )}
         </section>

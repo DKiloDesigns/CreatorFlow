@@ -49,8 +49,6 @@ import {
   MapPin,
   CalendarDays,
   Clock3,
-  Target,
-  Zap,
   Rocket,
   Crown,
   Trophy,
@@ -404,7 +402,7 @@ export function ContentIdeasGenerator({ provider }: ContentIdeasGeneratorProps) 
               <Input
                 placeholder="e.g., productivity, growth, tips..."
                 value={contentFocus}
-                onChange={(e) => setContentFocus(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setContentFocus(e.target.value)}
               />
             </div>
           </div>
@@ -490,7 +488,7 @@ export function ContentIdeasGenerator({ provider }: ContentIdeasGeneratorProps) 
                     <Input
                       placeholder="e.g., summer, holidays, back to school..."
                       value={seasonalFocus}
-                      onChange={(e) => setSeasonalFocus(e.target.value)}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSeasonalFocus(e.target.value)}
                     />
                   </div>
 

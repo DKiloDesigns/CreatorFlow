@@ -1,6 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import Link from "next/link"
+import { useRouter } from 'next/navigation';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
@@ -39,54 +40,49 @@ import { AISetupReminder } from '@/components/ui/ai-setup-reminder';
 import { useAPIKey } from '@/hooks/use-api-key';
 
 export default function DashboardPage() {
+  const router = useRouter();
+  const { data: session } = useSession();
+  const { hasAPIKey } = useAPIKey();
+  const [isLoading, setIsLoading] = useState(true);
   const [showWelcome, setShowWelcome] = useState(false);
   const [showGettingStarted, setShowGettingStarted] = useState(false);
-  const [feedback, setFeedback] = useState('');
-  const [feedbackSent, setFeedbackSent] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
   const [showAIReminder, setShowAIReminder] = useState(true);
-  const { data: session, status } = useSession();
-  const { hasAPIKey } = useAPIKey();
-
-  // Mock data - in real app, this would come from API
+  const [feedback, setFeedback] = useState('');
   const [stats, setStats] = useState({
     totalPosts: 0,
     connectedAccounts: 0,
     totalEngagement: 0,
-    scheduledPosts: 0
+    scheduledPosts: 0,
   });
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const seen = localStorage.getItem('cf_welcome_seen');
-      if (!seen) setShowWelcome(true);
-    }
-
-    // Simulate loading
+    // Simulate loading stats
     setTimeout(() => {
       setStats({
         totalPosts: 12,
         connectedAccounts: 3,
-        totalEngagement: 2847,
-        scheduledPosts: 5
+        totalEngagement: 15420,
+        scheduledPosts: 5,
       });
       setIsLoading(false);
     }, 1000);
+
+    // Show welcome modal for new users
+    const hasSeenWelcome = localStorage.getItem('hasSeenWelcome');
+    if (!hasSeenWelcome) {
+      setShowWelcome(true);
+    }
   }, []);
 
   const handleClose = () => {
     setShowWelcome(false);
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('cf_welcome_seen', '1');
-    }
+    localStorage.setItem('hasSeenWelcome', 'true');
   };
 
   const handleFeedbackSubmit = () => {
-    setFeedbackSent(true);
-    setTimeout(() => {
-      setFeedback('');
-      setFeedbackSent(false);
-    }, 2000);
+    // Handle feedback submission
+    console.log('Feedback submitted:', feedback);
+    setFeedback('');
   };
 
   return (
@@ -95,23 +91,19 @@ export default function DashboardPage() {
         {/* Enhanced Header */}
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-2xl font-bold tracking-tight">
+            <h1 className="text-2xl font-bold tracking-tight text-black dark:text-white">
               Welcome back{session?.user?.name ? `, ${session.user.name}` : ''}!
             </h1>
-            <p className="text-muted-foreground">
+            <p className="text-black dark:text-white">
               Here's what's happening with your content today.
             </p>
-          </div>
-          <div className="flex items-center gap-2">
-            <NotificationBadge count={3} />
-            <UserMenu />
           </div>
         </div>
 
         {/* AI Setup Reminder */}
         {!hasAPIKey && showAIReminder && (
           <AISetupReminder
-            onSetup={() => window.location.href = '/dashboard/ai-tools'}
+            onSetup={() => router.push('/dashboard/ai-tools')}
             onDismiss={() => setShowAIReminder(false)}
           />
         )}
@@ -125,7 +117,7 @@ export default function DashboardPage() {
             icon={FileText}
             trend={{ value: 12, isPositive: true, period: 'last month' }}
             loading={isLoading}
-            onClick={() => window.location.href = '/dashboard/content'}
+            onClick={() => router.push('/dashboard/content')}
           />
           <StatsCard
             title="Connected Accounts"
@@ -134,7 +126,8 @@ export default function DashboardPage() {
             icon={Users}
             variant="success"
             loading={isLoading}
-            onClick={() => window.location.href = '/dashboard/accounts'}
+            onClick={() => router.push('/dashboard/accounts')}
+            className="bg-black text-white border-green-500"
           />
           <StatsCard
             title="Total Engagement"
@@ -143,7 +136,7 @@ export default function DashboardPage() {
             icon={Heart}
             trend={{ value: 8, isPositive: true, period: 'last week' }}
             loading={isLoading}
-            onClick={() => window.location.href = '/dashboard/analytics'}
+            onClick={() => router.push('/dashboard/analytics')}
           />
           <StatsCard
             title="Scheduled Posts"
@@ -152,16 +145,17 @@ export default function DashboardPage() {
             icon={Calendar}
             variant="warning"
             loading={isLoading}
-            onClick={() => window.location.href = '/dashboard/content'}
+            onClick={() => router.push('/dashboard/content')}
+            className="bg-black text-white border-yellow-500"
           />
         </div>
 
         {/* Quick Actions */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Create Content */}
-          <Card className="lg:col-span-2">
+          <Card className="lg:col-span-2 border-0">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+              <CardTitle className="flex items-center gap-2 text-black dark:text-white">
                 <Plus className="h-5 w-5" />
                 Quick Actions
               </CardTitle>
@@ -169,48 +163,43 @@ export default function DashboardPage() {
             <CardContent className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 <Button 
-                  className="h-16 flex flex-col items-center justify-center gap-2"
-                  onClick={() => window.location.href = '/dashboard/content'}
+                  className="h-16 flex flex-col items-center justify-center gap-2 bg-black text-white hover:bg-gray-800 dark:bg-black dark:hover:bg-gray-700"
+                  onClick={() => router.push('/dashboard/content')}
                 >
                   <FileText className="h-6 w-6" />
                   <span>Create Post</span>
                 </Button>
                 <Button 
-                  variant="outline"
-                  className="h-16 flex flex-col items-center justify-center gap-2"
-                  onClick={() => window.location.href = '/dashboard/ai-tools'}
+                  className="h-16 flex flex-col items-center justify-center gap-2 bg-black text-white hover:bg-gray-800 dark:bg-black dark:hover:bg-gray-700"
+                  onClick={() => router.push('/dashboard/ai-tools')}
                 >
                   <Brain className="h-6 w-6" />
                   <span>AI Tools</span>
                 </Button>
                 <Button 
-                  variant="outline"
-                  className="h-16 flex flex-col items-center justify-center gap-2"
-                  onClick={() => window.location.href = '/dashboard/accounts'}
+                  className="h-16 flex flex-col items-center justify-center gap-2 bg-black text-white hover:bg-gray-800 dark:bg-black dark:hover:bg-gray-700"
+                  onClick={() => router.push('/dashboard/accounts')}
                 >
                   <Users className="h-6 w-6" />
                   <span>Connect Account</span>
                 </Button>
                 <Button 
-                  variant="outline"
-                  className="h-16 flex flex-col items-center justify-center gap-2"
-                  onClick={() => window.location.href = '/dashboard/analytics'}
+                  className="h-16 flex flex-col items-center justify-center gap-2 bg-black text-white hover:bg-gray-800 dark:bg-black dark:hover:bg-gray-700"
+                  onClick={() => router.push('/dashboard/analytics')}
                 >
                   <BarChart2 className="h-6 w-6" />
                   <span>View Analytics</span>
                 </Button>
                 <Button 
-                  variant="outline"
-                  className="h-16 flex flex-col items-center justify-center gap-2"
-                  onClick={() => window.location.href = '/dashboard/collabs'}
+                  className="h-16 flex flex-col items-center justify-center gap-2 bg-black text-white hover:bg-gray-800 dark:bg-black dark:hover:bg-gray-700"
+                  onClick={() => router.push('/dashboard/collabs')}
                 >
                   <MessageSquare className="h-6 w-6" />
                   <span>Brand Collabs</span>
                 </Button>
                 <Button 
-                  variant="outline"
-                  className="h-16 flex flex-col items-center justify-center gap-2"
-                  onClick={() => window.location.href = '/dashboard/billing'}
+                  className="h-16 flex flex-col items-center justify-center gap-2 bg-black text-white hover:bg-gray-800 dark:bg-black dark:hover:bg-gray-700"
+                  onClick={() => router.push('/dashboard/billing')}
                 >
                   <CreditCard className="h-6 w-6" />
                   <span>Billing</span>
@@ -220,29 +209,29 @@ export default function DashboardPage() {
           </Card>
 
           {/* Recent Activity */}
-          <Card>
+          <Card className="border-0 bg-gray-100 dark:bg-gray-800">
             <CardHeader>
-              <CardTitle>Recent Activity</CardTitle>
+              <CardTitle className="text-black dark:text-white">Recent Activity</CardTitle>
             </CardHeader>
             <CardContent>
               {stats.totalPosts > 0 ? (
                 <div className="space-y-3">
-                  <div className="flex items-center gap-3 p-2 rounded-lg bg-muted/50">
-                    <div className="h-8 w-8 rounded-full bg-green-100 flex items-center justify-center">
-                      <Share2 className="h-4 w-4 text-green-600" />
+                  <div className="flex items-center gap-3 p-2 rounded-lg">
+                    <div className="h-8 w-8 flex items-center justify-center">
+                      <Share2 className="h-4 w-4 text-black dark:text-white" />
                     </div>
                     <div className="flex-1">
-                      <p className="text-sm font-medium">Post published</p>
-                      <p className="text-xs text-muted-foreground">2 hours ago</p>
+                      <p className="text-sm font-medium text-black dark:text-white">Post published</p>
+                      <p className="text-xs text-black dark:text-white">2 hours ago</p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-3 p-2 rounded-lg bg-muted/50">
-                    <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center">
-                      <Users className="h-4 w-4 text-blue-600" />
+                  <div className="flex items-center gap-3 p-2 rounded-lg">
+                    <div className="h-8 w-8 flex items-center justify-center">
+                      <Users className="h-4 w-4 text-black dark:text-white" />
                     </div>
                     <div className="flex-1">
-                      <p className="text-sm font-medium">Account connected</p>
-                      <p className="text-xs text-muted-foreground">1 day ago</p>
+                      <p className="text-sm font-medium text-black dark:text-white">Account connected</p>
+                      <p className="text-xs text-black dark:text-white">1 day ago</p>
                     </div>
                   </div>
                 </div>
@@ -252,7 +241,7 @@ export default function DashboardPage() {
                   description="Start creating content to see your activity here."
                   action={{
                     label: "Create First Post",
-                    onClick: () => window.location.href = '/dashboard/content'
+                    onClick: () => router.push('/dashboard/content')
                   }}
                   variant="minimal"
                 />
@@ -345,44 +334,45 @@ export default function DashboardPage() {
         )}
 
         {/* Feedback Section */}
-        <Card className="bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-950/20 dark:to-indigo-950/20">
+        <Card className="bg-gray-800 dark:bg-gray-800">
           <CardContent className="p-6">
             <div className="flex items-start gap-4">
               <div className="flex-shrink-0">
-                <div className="h-10 w-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
-                  <MessageSquare className="h-5 w-5 text-blue-600 dark:text-blue-400" />
+                <div className="h-10 w-10 rounded-full bg-gray-700 flex items-center justify-center">
+                  <MessageSquare className="h-5 w-5 text-white" />
                 </div>
               </div>
               <div className="flex-1">
-                <h3 className="font-semibold mb-2">Help us improve CreatorFlow</h3>
-                <p className="text-sm text-muted-foreground mb-3">
-                  We'd love to hear your feedback to make CreatorFlow even better.
+                <h3 className="font-semibold mb-2 text-black dark:text-white">How are we doing?</h3>
+                <p className="text-sm text-black dark:text-white mb-4">
+                  We'd love to hear your feedback about CreatorFlow. What can we improve?
                 </p>
-                <div className="flex gap-2">
+                <div className="space-y-3">
                   <Textarea
                     placeholder="Share your thoughts..."
                     value={feedback}
                     onChange={(e) => setFeedback(e.target.value)}
-                    className="min-h-[80px]"
+                    className="min-h-[80px] text-black dark:text-white"
                   />
-                  <Button 
-                    onClick={handleFeedbackSubmit}
-                    disabled={!feedback.trim() || feedbackSent}
-                  >
-                    {feedbackSent ? 'Sent!' : 'Send'}
-                  </Button>
+                  <div className="flex gap-2">
+                    <Button size="sm" className="bg-black text-white hover:bg-gray-800" onClick={handleFeedbackSubmit}>
+                      Send Feedback
+                    </Button>
+                    <Button size="sm" className="bg-black text-white hover:bg-gray-800" onClick={() => setFeedback('')}>
+                      Clear
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>
           </CardContent>
         </Card>
 
-        {/* Getting Started Button */}
         <div className="flex justify-center">
           <Button 
             variant="outline" 
             onClick={() => setShowGettingStarted(true)}
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 bg-black text-white hover:bg-gray-800 dark:bg-gray-800 dark:hover:bg-gray-700 dark:text-white"
           >
             <Calendar className="h-4 w-4" />
             Getting Started Guide

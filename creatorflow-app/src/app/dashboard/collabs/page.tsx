@@ -27,7 +27,7 @@ function Section({ title, children }: { title: string; children: React.ReactNode
   return (
     <div className="mb-8">
       <h2 className="text-xl font-bold mb-2">{title}</h2>
-      <div className="bg-white rounded shadow p-4 min-h-[100px]">{children}</div>
+      <div className="bg-gray-100 dark:bg-white rounded shadow p-3 sm:p-4 min-h-[100px]">{children}</div>
     </div>
   );
 }
@@ -485,7 +485,7 @@ export default function CollabsPage() {
             </AlertDialog>
             <AlertDialog open={showUpdate} onOpenChange={setShowUpdate}>
               <AlertDialogTrigger asChild>
-                <button className="bg-yellow-500 text-white px-4 py-2 rounded" disabled={!selectedCollabId}>Update Collab</button>
+                <button className="bg-black text-white px-4 py-2 rounded" disabled={!selectedCollabId}>Update Collab</button>
               </AlertDialogTrigger>
               <AlertDialogContent>
                 <AlertDialogHeader>

@@ -160,16 +160,16 @@ export default function AnalyticsPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Analytics</h1>
-          <p className="text-muted-foreground">
+          <h1 className="text-xl sm:text-2xl font-bold tracking-tight">Analytics</h1>
+          <p className="text-sm sm:text-base text-muted-foreground">
             Track your social media performance and engagement metrics.
           </p>
         </div>
         <div className="flex items-center gap-2">
           <Select value={timeRange} onValueChange={setTimeRange}>
-            <SelectTrigger className="w-32">
+            <SelectTrigger className="w-28 sm:w-32">
               <SelectValue />
             </SelectTrigger>
             <SelectContent>
@@ -179,9 +179,12 @@ export default function AnalyticsPage() {
               <SelectItem value="1y">Last year</SelectItem>
             </SelectContent>
           </Select>
-          <Button variant="outline" size="sm">
+          <Button variant="outline" size="sm" className="hidden sm:flex">
             <Download className="h-4 w-4 mr-2" />
             Export
+          </Button>
+          <Button variant="outline" size="sm" className="sm:hidden">
+            <Download className="h-4 w-4" />
           </Button>
         </div>
       </div>
@@ -295,33 +298,33 @@ export default function AnalyticsPage() {
               data={analyticsData.contentTypes}
               type="bar"
             />
-            <Card>
+            <Card className="bg-gray-100 dark:bg-gray-800">
               <CardHeader>
                 <CardTitle>Content Insights</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  <div className="flex items-center justify-between p-3 rounded-lg bg-blue-50 dark:bg-blue-950/20">
+                  <div className="flex items-center justify-between p-3 rounded-lg bg-blue-50 dark:bg-blue-900/60">
                     <div>
                       <p className="font-medium">Best Time to Post</p>
-                      <p className="text-sm text-muted-foreground">Based on engagement data</p>
+                      <p className="text-sm text-white">Based on engagement data</p>
                     </div>
                     <div className="text-right">
                       <p className="font-semibold">2-4 PM</p>
                       <p className="text-xs text-muted-foreground">Weekdays</p>
                     </div>
                   </div>
-                  <div className="flex items-center justify-between p-3 rounded-lg bg-green-50 dark:bg-green-950/20">
+                  <div className="flex items-center justify-between p-3 rounded-lg bg-green-50 dark:bg-green-900/60">
                     <div>
                       <p className="font-medium">Optimal Post Length</p>
-                      <p className="text-sm text-muted-foreground">For maximum engagement</p>
+                      <p className="text-sm text-white">For maximum engagement</p>
                     </div>
                     <div className="text-right">
                       <p className="font-semibold">150-200</p>
                       <p className="text-xs text-muted-foreground">characters</p>
                     </div>
                   </div>
-                  <div className="flex items-center justify-between p-3 rounded-lg bg-purple-50 dark:bg-purple-950/20">
+                  <div className="flex items-center justify-between p-3 rounded-lg bg-purple-50 dark:bg-purple-900/60">
                     <div>
                       <p className="font-medium">Hashtag Performance</p>
                       <p className="text-sm text-muted-foreground">Average engagement</p>

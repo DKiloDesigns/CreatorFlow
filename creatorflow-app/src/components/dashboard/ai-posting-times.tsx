@@ -165,7 +165,7 @@ export function AIPostingTimes({ className }: AIPostingTimesProps) {
                       </div>
                     </div>
 
-                    <div className="p-3 bg-blue-50 dark:bg-blue-950/20 rounded-lg">
+                    <div className="p-3 bg-blue-50 dark:bg-blue-900/60 rounded-lg">
                       <h5 className="text-sm font-medium mb-1 flex items-center gap-2">
                         <Info className="h-4 w-4" />
                         AI Reasoning
@@ -182,7 +182,7 @@ export function AIPostingTimes({ className }: AIPostingTimesProps) {
         )}
 
         {/* Tips Section */}
-        <div className="p-4 bg-green-50 dark:bg-green-950/20 rounded-lg">
+        <div className="p-4 bg-green-50 dark:bg-green-900/60 rounded-lg">
           <h4 className="font-medium text-sm mb-3 flex items-center gap-2">
             <TrendingUp className="h-4 w-4 text-green-600" />
             Posting Time Best Practices

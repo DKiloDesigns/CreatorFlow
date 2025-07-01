@@ -306,7 +306,7 @@ export function AdvancedHashtagRecommender({ provider }: AdvancedHashtagRecommen
               <Input
                 placeholder="Describe your content or key message..."
                 value={content}
-                onChange={(e) => setContent(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setContent(e.target.value)}
               />
             </div>
             
@@ -315,7 +315,7 @@ export function AdvancedHashtagRecommender({ provider }: AdvancedHashtagRecommen
               <Input
                 placeholder="e.g., tech, fitness, fashion, business..."
                 value={industry}
-                onChange={(e) => setIndustry(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setIndustry(e.target.value)}
               />
             </div>
           </div>
@@ -345,7 +345,7 @@ export function AdvancedHashtagRecommender({ provider }: AdvancedHashtagRecommen
               <Input
                 placeholder="e.g., entrepreneurs, fitness enthusiasts..."
                 value={targetAudience}
-                onChange={(e) => setTargetAudience(e.target.value)}
+                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTargetAudience(e.target.value)}
               />
             </div>
 
@@ -400,7 +400,7 @@ export function AdvancedHashtagRecommender({ provider }: AdvancedHashtagRecommen
                     <Input
                       placeholder="e.g., @competitor1, @competitor2"
                       value={competitorAccounts.join(', ')}
-                      onChange={(e) => setCompetitorAccounts(e.target.value.split(',').map(s => s.trim()))}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCompetitorAccounts(e.target.value.split(',').map((s: string) => s.trim()))}
                     />
                   </div>
                 </div>
@@ -411,7 +411,7 @@ export function AdvancedHashtagRecommender({ provider }: AdvancedHashtagRecommen
                     <Input
                       type="number"
                       value={maxHashtags}
-                      onChange={(e) => setMaxHashtags(Number(e.target.value))}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => setMaxHashtags(Number(e.target.value))}
                       min={1}
                       max={currentPlatform?.maxHashtags || 30}
                     />
@@ -426,7 +426,7 @@ export function AdvancedHashtagRecommender({ provider }: AdvancedHashtagRecommen
                       type="number"
                       step="0.1"
                       value={minEngagement}
-                      onChange={(e) => setMinEngagement(Number(e.target.value))}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => setMinEngagement(Number(e.target.value))}
                     />
                   </div>
 

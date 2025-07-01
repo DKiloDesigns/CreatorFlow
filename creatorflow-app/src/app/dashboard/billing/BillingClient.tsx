@@ -16,7 +16,9 @@ const tiers = [
   {
     name: 'Basic',
     id: process.env.NEXT_PUBLIC_STRIPE_PRICE_BASIC!,
+    yearlyId: process.env.NEXT_PUBLIC_STRIPE_PRICE_BASIC_YEARLY!,
     price: '$9',
+    yearlyPrice: '$108',
     description: 'Perfect for getting started',
     features: [
       'Up to 10 posts per month',
@@ -153,10 +155,10 @@ export default function BillingClient({ user, searchParams, upcomingCharges, pay
   }
 
   return (
-    <div className="container max-w-5xl py-8">
-      <h1 className="text-3xl font-bold mb-8">Billing & Subscription</h1>
-      <Tabs defaultValue="overview" className="space-y-6">
-        <TabsList>
+    <div className="container max-w-5xl py-4 sm:py-8 px-4 sm:px-6 lg:px-8">
+      <h1 className="text-2xl sm:text-3xl font-bold mb-6 sm:mb-8">Billing & Subscription</h1>
+      <Tabs defaultValue="overview" className="space-y-4 sm:space-y-6">
+        <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="usage">Usage</TabsTrigger>
           <TabsTrigger value="plans">Plans</TabsTrigger>
@@ -483,9 +485,9 @@ export default function BillingClient({ user, searchParams, upcomingCharges, pay
           </Card>
         </TabsContent>
 
-        <TabsContent value="plans" className="space-y-6">
+        <TabsContent value="plans" className="space-y-4 sm:space-y-6">
           {/* Billing Frequency Toggle */}
-          <div className="flex items-center gap-4 mb-4">
+          <div className="flex flex-col sm:flex-row items-center gap-4 mb-4">
             <span className={billingFrequency === 'monthly' ? 'font-bold' : ''}>Monthly</span>
             <button
               className="bg-gray-200 rounded-full px-3 py-1 text-sm"
@@ -495,12 +497,12 @@ export default function BillingClient({ user, searchParams, upcomingCharges, pay
             </button>
             <span className={billingFrequency === 'yearly' ? 'font-bold' : ''}>Yearly</span>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
             {tiers.map((tier) => (
               <Card key={tier.id} className={tier.mostPopular ? 'border-primary' : ''}>
                 <CardHeader>
-                  <CardTitle>{tier.name}</CardTitle>
-                  <CardDescription>{tier.description}</CardDescription>
+                  <CardTitle className="text-lg sm:text-xl">{tier.name}</CardTitle>
+                  <CardDescription className="text-sm">{tier.description}</CardDescription>
                   {tier.mostPopular && (
                     <div className="mt-2">
                       <span className="inline-flex items-center rounded-full bg-primary bg-opacity-10 px-2.5 py-0.5 text-xs font-medium text-primary">
@@ -511,18 +513,18 @@ export default function BillingClient({ user, searchParams, upcomingCharges, pay
                 </CardHeader>
                 <CardContent>
                   <div className="mt-4">
-                    <p className="text-4xl font-bold">
+                    <p className="text-3xl sm:text-4xl font-bold">
                       {billingFrequency === 'monthly' ? tier.price : tier.yearlyPrice}
                     </p>
                     <p className="text-sm text-muted-foreground">
                       per {billingFrequency === 'monthly' ? 'month' : 'year'}
                     </p>
                   </div>
-                  <ul className="mt-6 space-y-4">
+                  <ul className="mt-6 space-y-3 sm:space-y-4">
                     {tier.features.map((feature) => (
-                      <li key={feature} className="flex items-center gap-2">
+                      <li key={feature} className="flex items-center gap-2 text-sm">
                         <svg
-                          className="h-5 w-5 text-primary"
+                          className="h-4 w-4 sm:h-5 sm:w-5 text-primary flex-shrink-0"
                           viewBox="0 0 20 20"
                           fill="currentColor"
                         >
@@ -532,7 +534,7 @@ export default function BillingClient({ user, searchParams, upcomingCharges, pay
                             clipRule="evenodd"
                           />
                         </svg>
-                        {feature}
+                        <span className="text-sm">{feature}</span>
                       </li>
                     ))}
                   </ul>

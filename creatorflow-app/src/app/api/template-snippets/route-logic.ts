@@ -1,4 +1,13 @@
-export async function handleGetSnippets({ req, getSession, prisma }) {
+import { NextRequest } from 'next/server';
+import { PrismaClient } from '@prisma/client';
+
+interface RouteContext {
+  req: NextRequest;
+  getSession: (req: NextRequest) => Promise<any>;
+  prisma: PrismaClient;
+}
+
+export async function handleGetSnippets({ req, getSession, prisma }: RouteContext) {
   const session = await getSession(req);
   if (!session?.user?.id) return { status: 401, body: { error: 'Unauthorized' } };
   try {
@@ -11,7 +20,7 @@ export async function handleGetSnippets({ req, getSession, prisma }) {
   }
 }
 
-export async function handleCreateSnippet({ req, getSession, prisma }) {
+export async function handleCreateSnippet({ req, getSession, prisma }: RouteContext) {
   const session = await getSession(req);
   if (!session?.user?.id) return { status: 401, body: { error: 'Unauthorized' } };
   const { name, content } = await req.json();
@@ -26,7 +35,7 @@ export async function handleCreateSnippet({ req, getSession, prisma }) {
   }
 }
 
-export async function handleUpdateSnippet({ req, getSession, prisma }) {
+export async function handleUpdateSnippet({ req, getSession, prisma }: RouteContext) {
   const session = await getSession(req);
   if (!session?.user?.id) return { status: 401, body: { error: 'Unauthorized' } };
   const { id, name, content } = await req.json();
@@ -41,7 +50,7 @@ export async function handleUpdateSnippet({ req, getSession, prisma }) {
   }
 }
 
-export async function handleDeleteSnippet({ req, getSession, prisma }) {
+export async function handleDeleteSnippet({ req, getSession, prisma }: RouteContext) {
   const session = await getSession(req);
   if (!session?.user?.id) return { status: 401, body: { error: 'Unauthorized' } };
   const { id } = await req.json();

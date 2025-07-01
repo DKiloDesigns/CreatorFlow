@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState, useRef, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -18,9 +20,14 @@ import {
   Bold,
   Italic,
   List,
-  Quote
+  Quote,
+  Sparkles,
+  Brain,
+  Zap
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { toast } from 'sonner';
+import AiSuggestModal from '@/app/dashboard/content/_components/ai-suggest-modal';
 
 interface Platform {
   id: string;
@@ -91,7 +98,15 @@ export function EnhancedComposer({ onSubmit, className }: EnhancedComposerProps)
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
   const [showPreview, setShowPreview] = useState(false);
   const [activeTab, setActiveTab] = useState('compose');
+  const [aiModalOpen, setAiModalOpen] = useState(false);
+  const [aiModalType, setAiModalType] = useState<'captions' | 'hashtags'>('captions');
+  const [isClient, setIsClient] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+  // Client-side hydration check
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const currentPlatform = platforms.find(p => selectedPlatforms.includes(p.id)) || platforms[0];
   const remainingChars = currentPlatform.maxLength - content.length;
@@ -152,6 +167,57 @@ export function EnhancedComposer({ onSubmit, className }: EnhancedComposerProps)
     if (content.trim() && selectedPlatforms.length > 0 && !isOverLimit) {
       onSubmit?.(content, selectedPlatforms);
       setContent('');
+    }
+  };
+
+  const handleAiSuggestion = (type: 'captions' | 'hashtags') => {
+    setAiModalType(type);
+    setAiModalOpen(true);
+  };
+
+  const handleAiInsert = (text: string) => {
+    insertText(text);
+    setAiModalOpen(false);
+    toast.success('AI suggestion inserted!');
+  };
+
+  const handleAiSave = (name: string, text: string) => {
+    // Save as template - you can implement this later
+    toast.success(`Saved as template: ${name}`);
+    setAiModalOpen(false);
+  };
+
+  const generateAiContent = async () => {
+    if (!content.trim()) {
+      toast.error('Please enter some content first to get AI suggestions');
+      return;
+    }
+
+    try {
+      const response = await fetch('/api/ai/generate-ideas', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          platform: selectedPlatforms[0] || 'twitter',
+          industry: 'general',
+          targetAudience: 'general'
+        })
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        if (data.data && data.data.length > 0) {
+          const suggestion = data.data[0];
+          insertText(suggestion);
+          toast.success('AI content generated!');
+        } else {
+          toast.error('No AI suggestions available');
+        }
+      } else {
+        toast.error('Failed to generate AI content');
+      }
+    } catch (error) {
+      toast.error('Failed to generate AI content');
     }
   };
 
@@ -252,6 +318,37 @@ export function EnhancedComposer({ onSubmit, className }: EnhancedComposerProps)
                 </div>
               </div>
 
+              {/* AI Magic Buttons */}
+              <div className="flex items-center gap-2 p-2 border rounded-md bg-gradient-to-r from-purple-50 to-blue-50">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={generateAiContent}
+                  className="flex items-center gap-2 bg-white hover:bg-purple-50"
+                >
+                  <Sparkles className="h-4 w-4 text-purple-600" />
+                  <span className="text-sm">AI Content</span>
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleAiSuggestion('captions')}
+                  className="flex items-center gap-2 bg-white hover:bg-blue-50"
+                >
+                  <Brain className="h-4 w-4 text-blue-600" />
+                  <span className="text-sm">AI Captions</span>
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handleAiSuggestion('hashtags')}
+                  className="flex items-center gap-2 bg-white hover:bg-green-50"
+                >
+                  <Zap className="h-4 w-4 text-green-600" />
+                  <span className="text-sm">AI Hashtags</span>
+                </Button>
+              </div>
+
               {/* Formatting Toolbar */}
               <div className="flex items-center gap-1 p-2 border rounded-md bg-muted/50">
                 <Button
@@ -338,7 +435,7 @@ export function EnhancedComposer({ onSubmit, className }: EnhancedComposerProps)
                 ref={textareaRef}
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
-                placeholder="What's on your mind?"
+                placeholder="What's on your mind? Use AI buttons above for suggestions!"
                 className={cn(
                   'min-h-[120px] resize-none',
                   isOverLimit && 'border-red-500 focus:border-red-500'
@@ -382,6 +479,17 @@ export function EnhancedComposer({ onSubmit, className }: EnhancedComposerProps)
           </TabsContent>
         </Tabs>
       </CardContent>
+
+      {/* AI Suggestion Modal */}
+      {isClient && (
+        <AiSuggestModal
+          open={aiModalOpen}
+          onOpenChange={setAiModalOpen}
+          type={aiModalType}
+          onInsert={handleAiInsert}
+          onSave={handleAiSave}
+        />
+      )}
     </Card>
   );
 } 

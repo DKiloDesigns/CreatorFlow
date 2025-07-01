@@ -32,15 +32,15 @@ export function StatsCard({
 }: StatsCardProps) {
   const variantStyles = {
     default: 'border-border hover:border-primary/50',
-    success: 'border-green-200 hover:border-green-300 bg-green-50/50 dark:bg-green-950/20',
-    warning: 'border-yellow-200 hover:border-yellow-300 bg-yellow-50/50 dark:bg-yellow-950/20',
-    danger: 'border-red-200 hover:border-red-300 bg-red-50/50 dark:bg-red-950/20'
+    success: 'border-green-500 bg-black text-white dark:bg-black dark:text-white',
+    warning: 'border-yellow-500 bg-black text-white dark:bg-black dark:text-white',
+    danger: 'border-red-200 hover:border-red-300 bg-red-50/50 dark:bg-red-900/60'
   };
 
   const iconColors = {
     default: 'text-primary',
-    success: 'text-green-600 dark:text-green-400',
-    warning: 'text-yellow-600 dark:text-yellow-400',
+    success: 'text-white',
+    warning: 'text-white',
     danger: 'text-red-600 dark:text-red-400'
   };
 
@@ -54,7 +54,12 @@ export function StatsCard({
       onClick={onClick}
     >
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle className="text-sm font-medium text-muted-foreground">
+        <CardTitle className={cn(
+          "text-sm font-medium",
+          variant === 'success' || variant === 'warning' 
+            ? 'text-white' 
+            : 'text-muted-foreground'
+        )}>
           {title}
         </CardTitle>
         {Icon && (
@@ -71,11 +76,19 @@ export function StatsCard({
           </div>
         ) : (
           <div className="space-y-1">
-            <div className="text-2xl font-bold tracking-tight">
+            <div className={cn(
+              "text-2xl font-bold tracking-tight",
+              variant === 'success' || variant === 'warning' ? 'text-white' : ''
+            )}>
               {value}
             </div>
             {description && (
-              <p className="text-xs text-muted-foreground">
+              <p className={cn(
+                "text-xs",
+                variant === 'success' || variant === 'warning' 
+                  ? 'text-white' 
+                  : 'text-muted-foreground'
+              )}>
                 {description}
               </p>
             )}
