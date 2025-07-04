@@ -89,7 +89,8 @@ export default function ContentCalendar() {
         const errorData = await response.json().catch(() => ({}));
         throw new Error(errorData.error || `Failed to fetch posts (HTTP ${response.status})`);
       }
-      const posts: FetchedPost[] = await response.json();
+      const data = await response.json();
+      const posts: FetchedPost[] = data.posts || data; // Handle both formats
       // Format fetched posts into calendar events
       const formattedEvents = posts
         .filter(post => post.scheduledAt)

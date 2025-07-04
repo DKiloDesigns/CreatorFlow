@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Badge } from '@/components/ui/badge';
+import { AlertDialog } from '@/components/ui/alert-dialog';
 import { 
   Image, 
   Video, 
@@ -482,13 +483,15 @@ export function EnhancedComposer({ onSubmit, className }: EnhancedComposerProps)
 
       {/* AI Suggestion Modal */}
       {isClient && (
-        <AiSuggestModal
-          open={aiModalOpen}
-          onOpenChange={setAiModalOpen}
-          type={aiModalType}
-          onInsert={handleAiInsert}
-          onSave={handleAiSave}
-        />
+        <AlertDialog open={aiModalOpen} onOpenChange={setAiModalOpen}>
+          <AiSuggestModal
+            open={aiModalOpen}
+            onOpenChange={setAiModalOpen}
+            type={aiModalType}
+            onInsert={handleAiInsert}
+            onSave={handleAiSave}
+          />
+        </AlertDialog>
       )}
     </Card>
   );

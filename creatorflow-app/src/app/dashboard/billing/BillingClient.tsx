@@ -368,13 +368,13 @@ export default function BillingClient({ user, searchParams, upcomingCharges, pay
                       ))}
                     </div>
                     <div className="flex justify-between mt-2 text-xs text-muted-foreground">
-                      <span>Mon</span>
-                      <span>Tue</span>
-                      <span>Wed</span>
-                      <span>Thu</span>
-                      <span>Fri</span>
-                      <span>Sat</span>
-                      <span>Sun</span>
+                      <span key="mon">Mon</span>
+                      <span key="tue">Tue</span>
+                      <span key="wed">Wed</span>
+                      <span key="thu">Thu</span>
+                      <span key="fri">Fri</span>
+                      <span key="sat">Sat</span>
+                      <span key="sun">Sun</span>
                     </div>
                   </div>
                   <p className="text-sm text-muted-foreground">
@@ -397,13 +397,13 @@ export default function BillingClient({ user, searchParams, upcomingCharges, pay
                       ))}
                     </div>
                     <div className="flex justify-between mt-2 text-xs text-muted-foreground">
-                      <span>Mon</span>
-                      <span>Tue</span>
-                      <span>Wed</span>
-                      <span>Thu</span>
-                      <span>Fri</span>
-                      <span>Sat</span>
-                      <span>Sun</span>
+                      <span key="mon2">Mon</span>
+                      <span key="tue2">Tue</span>
+                      <span key="wed2">Wed</span>
+                      <span key="thu2">Thu</span>
+                      <span key="fri2">Fri</span>
+                      <span key="sat2">Sat</span>
+                      <span key="sun2">Sun</span>
                     </div>
                   </div>
                   <p className="text-sm text-muted-foreground">
@@ -426,13 +426,13 @@ export default function BillingClient({ user, searchParams, upcomingCharges, pay
                       ))}
                     </div>
                     <div className="flex justify-between mt-2 text-xs text-muted-foreground">
-                      <span>Mon</span>
-                      <span>Tue</span>
-                      <span>Wed</span>
-                      <span>Thu</span>
-                      <span>Fri</span>
-                      <span>Sat</span>
-                      <span>Sun</span>
+                      <span key="mon3">Mon</span>
+                      <span key="tue3">Tue</span>
+                      <span key="wed3">Wed</span>
+                      <span key="thu3">Thu</span>
+                      <span key="fri3">Fri</span>
+                      <span key="sat3">Sat</span>
+                      <span key="sun3">Sun</span>
                     </div>
                   </div>
                   <p className="text-sm text-muted-foreground">

@@ -9,7 +9,7 @@ const PLANS = [
     price: "$0/month",
     features: ["1 social account", "Basic analytics", "Community access"],
     cta: "Get Started",
-    href: "/signin",
+    href: "/auth",
     highlight: false,
   },
   {
@@ -17,7 +17,7 @@ const PLANS = [
     price: "$12/month",
     features: ["5 social accounts", "Advanced analytics", "Monetization dashboard", "Priority support"],
     cta: "Start Free Trial",
-    href: "/signin",
+    href: "/auth",
     highlight: true,
   },
   {
@@ -42,7 +42,7 @@ export default function Home() {
           The all-in-one platform for creators to plan, publish, analyze, and get paid—everywhere.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
-          <Link href="/signin" className="inline-block bg-primary text-primary-foreground font-semibold rounded-lg px-6 sm:px-8 py-2 sm:py-3 shadow hover:bg-primary/90 transition text-sm sm:text-base">
+          <Link href="/auth" className="inline-block bg-primary text-primary-foreground font-semibold rounded-lg px-6 sm:px-8 py-2 sm:py-3 shadow hover:bg-primary/90 transition text-sm sm:text-base">
             Start Free
           </Link>
           <Link href="#how-it-works" className="inline-block border border-primary text-primary font-semibold rounded-lg px-6 sm:px-8 py-2 sm:py-3 shadow hover:bg-primary hover:text-primary-foreground transition text-sm sm:text-base">

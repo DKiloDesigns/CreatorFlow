@@ -1,4 +1,4 @@
-import { PrismaAdapter } from "@next-auth/prisma-adapter"
+import { PrismaAdapter } from "@auth/prisma-adapter"
 import { prisma } from "@/lib/prisma"
 import GitHub from "next-auth/providers/github"
 import { getServerSession } from "next-auth/next"
@@ -12,6 +12,7 @@ import AppleProvider from "next-auth/providers/apple"
 import GitHubProvider from "next-auth/providers/github"
 import CredentialsProvider from "next-auth/providers/credentials"
 import { cookies as nextCookies } from 'next/headers'
+import bcrypt from 'bcryptjs'
 // Re-export signIn and signOut from next-auth/react for client components
 export { signIn, signOut } from "next-auth/react"
 
@@ -40,12 +41,26 @@ export const authOptions: NextAuthOptions = {
             where: { email: credentials.email }
           });
           
-          if (user && user.password === credentials.password) {
-            return {
-              id: user.id,
-              name: user.name || "Test User",
-              email: user.email,
-            };
+          if (user && user.password) {
+            // Check if password is hashed (bcrypt) or plain text (legacy)
+            const isHashed = user.password.startsWith('$2a$') || user.password.startsWith('$2b$');
+            
+            let isValidPassword = false;
+            if (isHashed) {
+              // Compare with bcrypt
+              isValidPassword = await bcrypt.compare(credentials.password, user.password);
+            } else {
+              // Legacy plain text comparison (for existing users)
+              isValidPassword = user.password === credentials.password;
+            }
+            
+            if (isValidPassword) {
+              return {
+                id: user.id,
+                name: user.name || "Test User",
+                email: user.email,
+              };
+            }
           }
           
           return null;
