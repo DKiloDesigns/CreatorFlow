@@ -103,7 +103,7 @@ export default function ClientRoot({ children }: { children: React.ReactNode }) 
                 </button>
               </div>
               <ThemeToggle isLandingPage={true} />
-              <Link href="/signin" className="text-sm font-medium hover:underline !text-black">Login</Link>
+                              <Link href="/auth" className="text-sm font-medium hover:underline !text-black">Login</Link>
             </div>
           </div>
         </nav>
