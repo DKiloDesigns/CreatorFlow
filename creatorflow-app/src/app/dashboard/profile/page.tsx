@@ -1,105 +1,120 @@
 'use client';
 
-import React, { useState, useRef } from 'react';
-import { useUserProfile } from '@/hooks/useUserProfile';
+import { useSession } from 'next-auth/react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { 
+  Brain, 
+  Users, 
+  Users2, 
+  Settings, 
+  Shield, 
+  Bell, 
+  LifeBuoy,
+  LogOut,
+  User
+} from 'lucide-react';
+import Link from 'next/link';
 
 export default function ProfilePage() {
-  const { user, isLoading, error, updating, updateError, updateUser } = useUserProfile();
-  const [name, setName] = useState('');
-  const [bio, setBio] = useState('');
-  const [image, setImage] = useState<string | undefined>(undefined);
-  const [success, setSuccess] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const { data: session, status } = useSession();
+  
+  if (status === 'loading') {
+    return <div className="p-8">Loading...</div>;
+  }
+  
+  if (!session) {
+    return <div className="p-8">Please sign in to view your profile.</div>;
+  }
 
-  React.useEffect(() => {
-    if (user) {
-      setName(user.name || '');
-      setBio(user.bio || '');
-      setImage(user.image);
+  const profileSections = [
+    {
+      title: 'Account Management',
+      items: [
+        { href: '/dashboard/ai-tools', label: 'AI Tools', icon: Brain, description: 'AI-powered content tools' },
+        { href: '/dashboard/accounts', label: 'Social Accounts', icon: Users, description: 'Manage connected platforms' },
+        { href: '/dashboard/teams', label: 'Teams', icon: Users2, description: 'Collaborate with team members' },
+      ]
+    },
+    {
+      title: 'Settings & Security',
+      items: [
+        { href: '/dashboard/settings', label: 'Settings', icon: Settings, description: 'App preferences and configuration' },
+        { href: '/dashboard/security', label: 'Security', icon: Shield, description: 'Password and account security' },
+        { href: '/dashboard/notifications', label: 'Notifications', icon: Bell, description: 'Manage notification preferences' },
+      ]
+    },
+    {
+      title: 'Support',
+      items: [
+        { href: '/dashboard/support', label: 'Help & Support', icon: LifeBuoy, description: 'Get help and contact support' },
+      ]
     }
-  }, [user]);
-
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImage(reader.result as string);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setSuccess(false);
-    await updateUser({ name, bio, image });
-    setSuccess(true);
-  };
-
-  if (isLoading) return <div className="p-8">Loading...</div>;
-  if (error) return <div className="p-8 text-red-500">Error loading profile.</div>;
+  ];
 
   return (
-    <div className="p-8 max-w-xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Profile</h1>
-      <form className="space-y-6" onSubmit={handleSubmit}>
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-center justify-between">
         <div>
-          <label className="block font-medium mb-1">Profile Picture</label>
-          <div className="flex items-center gap-4 mb-2">
-            {image ? (
-              <img src={image} alt="Profile" className="h-16 w-16 rounded-full object-cover border" />
-            ) : (
-              <div className="h-16 w-16 rounded-full bg-gray-200 flex items-center justify-center text-gray-400">No Image</div>
-            )}
-            <input
-              type="file"
-              accept="image/*"
-              className="block"
-              ref={fileInputRef}
-              onChange={handleImageChange}
-            />
+          <h1 className="text-2xl font-bold">Profile & Settings</h1>
+          <p className="text-muted-foreground">Manage your account and preferences</p>
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
+            <User className="h-5 w-5 text-primary" />
+          </div>
+          <div className="hidden sm:block">
+            <p className="font-medium">{session.user.name}</p>
+            <p className="text-sm text-muted-foreground">{session.user.email}</p>
           </div>
         </div>
-        <div>
-          <label className="block font-medium mb-1">Full Name</label>
-          <input
-            type="text"
-            className="w-full border rounded px-3 py-2"
-            placeholder="Your name"
-            value={name}
-            onChange={e => setName(e.target.value)}
-          />
-        </div>
-        <div>
-          <label className="block font-medium mb-1">Email</label>
-          <input
-            type="email"
-            className="w-full border rounded px-3 py-2 bg-gray-100"
-            value={user.email || ''}
-            disabled
-          />
-        </div>
-        <div>
-          <label className="block font-medium mb-1">Bio</label>
-          <textarea
-            className="w-full border rounded px-3 py-2"
-            placeholder="Tell us about yourself..."
-            rows={3}
-            value={bio}
-            onChange={e => setBio(e.target.value)}
-          />
-        </div>
-        <button
-          type="submit"
-          className="bg-primary text-white px-4 py-2 rounded"
-          disabled={updating}
-        >
-          {updating ? 'Saving...' : 'Save'}
-        </button>
-        {updateError && <div className="text-red-500">{updateError}</div>}
-        {success && !updateError && <div className="text-green-600">Profile updated!</div>}
-      </form>
+      </div>
+
+      {/* Profile Sections */}
+      <div className="grid gap-6">
+        {profileSections.map((section) => (
+          <Card key={section.title}>
+            <CardHeader>
+              <CardTitle className="text-lg">{section.title}</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="grid gap-3">
+                {section.items.map((item) => {
+                  const Icon = item.icon;
+                  return (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className="flex items-center gap-3 p-3 rounded-lg border hover:bg-muted/50 transition-colors"
+                    >
+                      <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                        <Icon className="h-5 w-5 text-primary" />
+                      </div>
+                      <div className="flex-1">
+                        <h3 className="font-medium">{item.label}</h3>
+                        <p className="text-sm text-muted-foreground">{item.description}</p>
+                      </div>
+                    </Link>
+                  );
+                })}
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      {/* Sign Out */}
+      <Card>
+        <CardContent className="pt-6">
+          <Button variant="outline" className="w-full" asChild>
+            <Link href="/api/auth/signout">
+              <LogOut className="mr-2 h-4 w-4" />
+              Sign Out
+            </Link>
+          </Button>
+        </CardContent>
+      </Card>
     </div>
   );
 } 

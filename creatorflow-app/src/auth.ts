@@ -250,7 +250,9 @@ export const getSession = async (req?: any, res?: any) => {
   } else {
     // App router: use next/headers
     try {
-      impersonateId = nextCookies().get('impersonate_user_id')?.value;
+      // TODO: Fix for Next.js 15 compatibility
+      // const cookies = await nextCookies();
+      // impersonateId = cookies.get('impersonate_user_id')?.value;
     } catch {}
   }
   if (impersonateId && impersonateId !== session.user.id) {

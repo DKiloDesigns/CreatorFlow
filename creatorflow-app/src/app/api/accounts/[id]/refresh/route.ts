@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/auth';
 import { PrismaClient } from '@prisma/client';
 
@@ -33,11 +33,11 @@ const PLATFORM_CONFIGS = {
 };
 
 export async function POST(
-  request: Request,
-  { params }: { params: { id: string } }
+  request: NextRequest,
+  context: any
 ) {
   try {
-    const { id } = params;
+    const { id } = context.params;
     
     // Get session
     const session = await getSession();

@@ -11,6 +11,7 @@ import { EnhancedNavigation, UserMenu, Breadcrumbs } from '@/components/ui/enhan
 import { NotificationBadge } from '@/components/ui/notification-badge';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import { ThemeToggle } from '@/components/theme-toggle';
+import { MobileLayout } from '@/components/layout/mobile-layout';
 
 export default function DashboardLayout({
   children,
@@ -47,15 +48,15 @@ export default function DashboardLayout({
   }, []);
 
   return (
-    <div className="min-h-screen bg-background">
+    <MobileLayout>
       {/* Enhanced Top Navigation Bar */}
-      <nav className="bg-card shadow-sm border-b">
+      <nav className="bg-white dark:bg-gray-900 shadow-sm border-b border-gray-200 dark:border-gray-700">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16">
             <div className="flex items-center">
               {/* Logo/Brand */}
               <div className="flex-shrink-0 flex items-center">
-                <Link href="/dashboard" className="text-lg sm:text-xl font-bold text-black dark:text-white hover:text-primary transition-colors">
+                <Link href="/dashboard" className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
                   CreatorFlow
                 </Link>
               </div>
@@ -75,13 +76,13 @@ export default function DashboardLayout({
               {isClient && (
                 <Popover open={notifOpen} onOpenChange={setNotifOpen}>
                   <PopoverTrigger asChild>
-                    <button className="relative p-2 hover:bg-muted focus:outline-none" aria-label="Notifications">
-                      <Bell className="h-5 w-5 sm:h-6 sm:w-6 text-black dark:text-white" />
+                    <button className="relative p-2 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none rounded-md transition-colors" aria-label="Notifications">
+                      <Bell className="h-5 w-5 sm:h-6 sm:w-6 text-gray-700 dark:text-gray-300" />
                     </button>
                   </PopoverTrigger>
-                  <PopoverContent align="end" className="w-80 bg-white dark:bg-gray-800 border-0">
-                    <div className="font-semibold mb-2 text-black dark:text-white">Recent Activity</div>
-                    <div className="text-sm text-black dark:text-white">(Placeholder) No new notifications.</div>
+                  <PopoverContent align="end" className="w-80 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg">
+                    <div className="font-semibold mb-2 text-gray-900 dark:text-white">Recent Activity</div>
+                    <div className="text-sm text-gray-600 dark:text-gray-300">(Placeholder) No new notifications.</div>
                   </PopoverContent>
                 </Popover>
               )}
@@ -93,22 +94,22 @@ export default function DashboardLayout({
                 </div>
               )}
               
-              {/* Mobile Navigation Toggle */}
-              <div className="lg:hidden">
+              {/* Mobile Navigation Toggle - REMOVED for bottom nav */}
+              {/* <div className="lg:hidden">
                 <EnhancedNavigation />
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
       </nav>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto py-4 sm:py-6 px-4 sm:px-6 lg:px-8">
+      <main className="max-w-7xl mx-auto py-4 sm:py-6 px-4 sm:px-6 lg:px-8 bg-background min-h-screen">
         <Breadcrumbs />
         <div id="dashboard-main-content">
           {children}
         </div>
       </main>
-    </div>
+    </MobileLayout>
   )
 } 

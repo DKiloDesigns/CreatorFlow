@@ -4,11 +4,8 @@ import { prisma } from '@/lib/prisma';
 import { requireApiKey } from '@/lib/apiKeyAuth';
 
 // PUT: Accept or decline team invitation
-export async function PUT(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
-  const invitationId = params.id;
+export async function PUT(req: NextRequest, context: any) {
+  const { id } = context.params;
   const { action } = await req.json(); // 'accept' or 'decline'
   
   if (!['accept', 'decline'].includes(action)) {
@@ -28,7 +25,7 @@ export async function PUT(
       }
       const invitation = await prisma.teamInvitation.findFirst({
         where: {
-          id: invitationId,
+          id: id,
           email: auth.user.email as string,
           status: 'PENDING',
         },
@@ -44,7 +41,7 @@ export async function PUT(
       // Check if invitation has expired
       if (invitation.expiresAt < new Date()) {
         await prisma.teamInvitation.update({
-          where: { id: invitationId },
+          where: { id: id },
           data: { status: 'EXPIRED' },
         });
         return NextResponse.json({ error: 'Invitation has expired' }, { status: 400 });
@@ -64,7 +61,7 @@ export async function PUT(
               },
             }),
             prisma.teamInvitation.update({
-              where: { id: invitationId },
+              where: { id: id },
               data: { 
                 status: 'ACCEPTED',
                 respondedAt: new Date(),
@@ -84,7 +81,7 @@ export async function PUT(
         // Decline invitation
         try {
           await prisma.teamInvitation.update({
-            where: { id: invitationId },
+            where: { id: id },
             data: { 
               status: 'DECLINED',
               respondedAt: new Date(),
@@ -116,7 +113,7 @@ export async function PUT(
   // Find invitation and verify it's for the current user
   const invitation = await prisma.teamInvitation.findFirst({
     where: {
-      id: invitationId,
+      id: id,
       email: userEmail as string,
       status: 'PENDING',
     },
@@ -132,7 +129,7 @@ export async function PUT(
   // Check if invitation has expired
   if (invitation.expiresAt < new Date()) {
     await prisma.teamInvitation.update({
-      where: { id: invitationId },
+      where: { id: id },
       data: { status: 'EXPIRED' },
     });
     return NextResponse.json({ error: 'Invitation has expired' }, { status: 400 });
@@ -152,7 +149,7 @@ export async function PUT(
           },
         }),
         prisma.teamInvitation.update({
-          where: { id: invitationId },
+          where: { id: id },
           data: { 
             status: 'ACCEPTED',
             respondedAt: new Date(),
@@ -172,7 +169,7 @@ export async function PUT(
     // Decline invitation
     try {
       await prisma.teamInvitation.update({
-        where: { id: invitationId },
+        where: { id: id },
         data: { 
           status: 'DECLINED',
           respondedAt: new Date(),
@@ -187,11 +184,8 @@ export async function PUT(
 }
 
 // DELETE: Cancel invitation (team owner only)
-export async function DELETE(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
-  const invitationId = params.id;
+export async function DELETE(req: NextRequest, context: any) {
+  const { id } = context.params;
   
   // API key auth
   const apiKeyHeader = req.headers.get('x-api-key');
@@ -203,7 +197,7 @@ export async function DELETE(
       // Find invitation and verify user is team owner
       const invitation = await prisma.teamInvitation.findFirst({
         where: {
-          id: invitationId,
+          id: id,
           team: { ownerId: userId },
           status: 'PENDING',
         },
@@ -215,7 +209,7 @@ export async function DELETE(
       
       try {
         await prisma.teamInvitation.update({
-          where: { id: invitationId },
+          where: { id: id },
           data: { 
             status: 'CANCELED',
             respondedAt: new Date(),
@@ -242,7 +236,7 @@ export async function DELETE(
   // Find invitation and verify user is team owner
   const invitation = await prisma.teamInvitation.findFirst({
     where: {
-      id: invitationId,
+      id: id,
       team: { ownerId: userId },
       status: 'PENDING',
     },
@@ -254,7 +248,7 @@ export async function DELETE(
   
   try {
     await prisma.teamInvitation.update({
-      where: { id: invitationId },
+      where: { id: id },
       data: { 
         status: 'CANCELED',
         respondedAt: new Date(),

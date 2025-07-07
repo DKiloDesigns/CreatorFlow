@@ -4,12 +4,8 @@ import { prisma } from '@/lib/prisma';
 import { requireApiKey } from '@/lib/apiKeyAuth';
 
 // POST: Resend team invitation (team owner only)
-export async function POST(
-  req: NextRequest,
-  { params }: { params: { id: string; inviteId: string } }
-) {
-  const teamId = params.id;
-  const invitationId = params.inviteId;
+export async function POST(req: NextRequest, context: any) {
+  const { id: teamId, inviteId: invitationId } = context.params;
   
   // API key auth
   const apiKeyHeader = req.headers.get('x-api-key');

@@ -21,15 +21,16 @@ async function getUserId(req: NextRequest): Promise<string | null> {
 }
 
 // GET: Fetch a single post
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(req: NextRequest, context: any) {
     const userId = await getUserId(req);
     if (!userId) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     try {
+        const { id } = context.params;
         const post = await prisma.post.findFirst({
-            where: { id: params.id, userId },
+            where: { id: id, userId },
             select: {
                 id: true,
                 contentText: true,
@@ -62,19 +63,20 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
 }
 
 // PUT: Update a post
-export async function PUT(req: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(req: NextRequest, context: any) {
     const userId = await getUserId(req);
     if (!userId) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     try {
+        const { id } = context.params;
         const body = await req.json();
         const { contentText, mediaUrls, platforms, scheduledAt, status } = body;
 
         // Verify post belongs to user
         const existingPost = await prisma.post.findFirst({
-            where: { id: params.id, userId }
+            where: { id: id, userId }
         });
 
         if (!existingPost) {
@@ -92,7 +94,7 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
         }
 
         const updatedPost = await prisma.post.update({
-            where: { id: params.id },
+            where: { id: id },
             data: {
                 contentText: contentText !== undefined ? contentText : undefined,
                 mediaUrls: mediaUrls !== undefined ? mediaUrls : undefined,
@@ -109,16 +111,17 @@ export async function PUT(req: NextRequest, { params }: { params: { id: string }
 }
 
 // DELETE: Delete a post
-export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(req: NextRequest, context: any) {
     const userId = await getUserId(req);
     if (!userId) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     try {
+        const { id } = context.params;
         // Verify post belongs to user
         const existingPost = await prisma.post.findFirst({
-            where: { id: params.id, userId }
+            where: { id: id, userId }
         });
 
         if (!existingPost) {
@@ -126,7 +129,7 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
         }
 
         await prisma.post.delete({
-            where: { id: params.id }
+            where: { id: id }
         });
 
         return NextResponse.json({ message: 'Post deleted successfully' });
@@ -136,16 +139,17 @@ export async function DELETE(req: NextRequest, { params }: { params: { id: strin
 }
 
 // POST: Duplicate a post
-export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
+export async function POST(req: NextRequest, context: any) {
     const userId = await getUserId(req);
     if (!userId) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
     try {
+        const { id } = context.params;
         // Get the original post
         const originalPost = await prisma.post.findFirst({
-            where: { id: params.id, userId }
+            where: { id: id, userId }
         });
 
         if (!originalPost) {

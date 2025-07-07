@@ -4,11 +4,8 @@ import { prisma } from '@/lib/prisma';
 import { requireApiKey } from '@/lib/apiKeyAuth';
 
 // GET: List team members
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
-  const teamId = params.id;
+export async function GET(req: NextRequest, context: any) {
+  const { id } = context.params;
   
   // API key auth
   const apiKeyHeader = req.headers.get('x-api-key');
@@ -20,7 +17,7 @@ export async function GET(
       // Check if user has access to team
       const team = await prisma.team.findFirst({
         where: {
-          id: teamId,
+          id: id,
           OR: [
             { ownerId: userId },
             { members: { some: { userId } } },
@@ -33,7 +30,7 @@ export async function GET(
       }
       
       const members = await prisma.teamMember.findMany({
-        where: { teamId },
+        where: { teamId: id },
         include: {
           user: { select: { id: true, name: true, email: true, image: true } },
         },
@@ -56,7 +53,7 @@ export async function GET(
   // Check if user has access to team
   const team = await prisma.team.findFirst({
     where: {
-      id: teamId,
+      id: id,
       OR: [
         { ownerId: userId },
         { members: { some: { userId } } },
@@ -69,7 +66,7 @@ export async function GET(
   }
   
   const members = await prisma.teamMember.findMany({
-    where: { teamId },
+    where: { teamId: id },
     include: {
       user: { select: { id: true, name: true, email: true, image: true } },
     },
@@ -79,11 +76,8 @@ export async function GET(
 }
 
 // POST: Add member to team (owner only)
-export async function POST(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
-  const teamId = params.id;
+export async function POST(req: NextRequest, context: any) {
+  const { id } = context.params;
   const { userId: newMemberId, role = 'MEMBER' } = await req.json();
   
   // API key auth
@@ -95,7 +89,7 @@ export async function POST(
       
       // Check if user is team owner
       const team = await prisma.team.findFirst({
-        where: { id: teamId, ownerId: userId },
+        where: { id: id, ownerId: userId },
       });
       
       if (!team) {
@@ -105,7 +99,7 @@ export async function POST(
       try {
         const member = await prisma.teamMember.create({
           data: {
-            teamId,
+            teamId: id,
             userId: newMemberId,
             role,
           },
@@ -136,7 +130,7 @@ export async function POST(
   
   // Check if user is team owner
   const team = await prisma.team.findFirst({
-    where: { id: teamId, ownerId: userId },
+    where: { id: id, ownerId: userId },
   });
   
   if (!team) {
@@ -146,7 +140,7 @@ export async function POST(
   try {
     const member = await prisma.teamMember.create({
       data: {
-        teamId,
+        teamId: id,
         userId: newMemberId,
         role,
       },
@@ -165,11 +159,8 @@ export async function POST(
 }
 
 // DELETE: Remove member from team (owner only)
-export async function DELETE(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
-  const teamId = params.id;
+export async function DELETE(req: NextRequest, context: any) {
+  const { id } = context.params;
   const { searchParams } = new URL(req.url);
   const memberId = searchParams.get('memberId');
   
@@ -186,7 +177,7 @@ export async function DELETE(
       
       // Check if user is team owner
       const team = await prisma.team.findFirst({
-        where: { id: teamId, ownerId: userId },
+        where: { id: id, ownerId: userId },
       });
       
       if (!team) {
@@ -197,7 +188,7 @@ export async function DELETE(
         await prisma.teamMember.delete({
           where: {
             teamId_userId: {
-              teamId,
+              teamId: id,
               userId: memberId,
             },
           },
@@ -222,7 +213,7 @@ export async function DELETE(
   
   // Check if user is team owner
   const team = await prisma.team.findFirst({
-    where: { id: teamId, ownerId: userId },
+    where: { id: id, ownerId: userId },
   });
   
   if (!team) {
@@ -233,7 +224,7 @@ export async function DELETE(
     await prisma.teamMember.delete({
       where: {
         teamId_userId: {
-          teamId,
+          teamId: id,
           userId: memberId,
         },
       },

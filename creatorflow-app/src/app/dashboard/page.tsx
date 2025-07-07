@@ -334,12 +334,12 @@ export default function DashboardPage() {
         )}
 
         {/* Feedback Section */}
-        <Card className="bg-gray-800 dark:bg-gray-800">
+        <Card className="bg-gray-100 dark:bg-gray-800">
           <CardContent className="p-6">
             <div className="flex items-start gap-4">
               <div className="flex-shrink-0">
-                <div className="h-10 w-10 rounded-full bg-gray-700 flex items-center justify-center">
-                  <MessageSquare className="h-5 w-5 text-white" />
+                <div className="h-10 w-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+                  <MessageSquare className="h-5 w-5 text-gray-600 dark:text-white" />
                 </div>
               </div>
               <div className="flex-1">
@@ -355,10 +355,10 @@ export default function DashboardPage() {
                     className="min-h-[80px] text-black dark:text-white"
                   />
                   <div className="flex gap-2">
-                    <Button size="sm" className="bg-black text-white hover:bg-gray-800" onClick={handleFeedbackSubmit}>
+                    <Button size="sm" className="bg-black text-white hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200" onClick={handleFeedbackSubmit}>
                       Send Feedback
                     </Button>
-                    <Button size="sm" className="bg-black text-white hover:bg-gray-800" onClick={() => setFeedback('')}>
+                    <Button size="sm" className="bg-black text-white hover:bg-gray-800 dark:bg-white dark:text-black dark:hover:bg-gray-200" onClick={() => setFeedback('')}>
                       Clear
                     </Button>
                   </div>

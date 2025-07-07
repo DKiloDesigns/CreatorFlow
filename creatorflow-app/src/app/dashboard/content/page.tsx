@@ -83,6 +83,26 @@ export default function ContentPage() {
     setIsClient(true);
   }, []);
 
+  // Listen for custom events from the composer
+  useEffect(() => {
+    const handleUploadModal = () => setUploadModalOpen(true);
+    const handleCreateVideoModal = () => setCreateVideoModalOpen(true);
+    const handleUseTemplateModal = () => setUseTemplateModalOpen(true);
+    const handleBulkScheduleModal = () => setBulkScheduleModalOpen(true);
+
+    window.addEventListener('openUploadModal', handleUploadModal);
+    window.addEventListener('openCreateVideoModal', handleCreateVideoModal);
+    window.addEventListener('openUseTemplateModal', handleUseTemplateModal);
+    window.addEventListener('openBulkScheduleModal', handleBulkScheduleModal);
+
+    return () => {
+      window.removeEventListener('openUploadModal', handleUploadModal);
+      window.removeEventListener('openCreateVideoModal', handleCreateVideoModal);
+      window.removeEventListener('openUseTemplateModal', handleUseTemplateModal);
+      window.removeEventListener('openBulkScheduleModal', handleBulkScheduleModal);
+    };
+  }, []);
+
   const handleUploadMedia = async () => {
     setUploadModalOpen(true);
   };
@@ -287,24 +307,7 @@ export default function ContentPage() {
           </p>
         </div>
         
-        {/* Quick Actions */}
-        <div className="flex items-center gap-2">
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setMediaLibraryOpen(true)}
-          >
-            <Image className="h-4 w-4 mr-2" />
-            Media Library
-          </Button>
-          <Button
-            size="sm"
-            onClick={handleUploadMedia}
-          >
-            <Upload className="h-4 w-4 mr-2" />
-            Upload Media
-          </Button>
-        </div>
+        {/* Quick Actions - Moved to composer */}
       </div>
 
       {/* AI Onboarding Reminder */}
@@ -321,48 +324,48 @@ export default function ContentPage() {
 
       {/* Content Overview */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        <div className="bg-white rounded-lg border p-4">
+        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 shadow-sm">
           <div className="flex items-center gap-3">
-            <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-blue-100 flex items-center justify-center">
-              <FileText className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600" />
+            <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+              <FileText className="h-4 w-4 sm:h-5 sm:w-5 text-blue-600 dark:text-blue-400" />
             </div>
             <div>
-              <p className="text-xs sm:text-sm font-medium text-gray-900">Draft Posts</p>
-              <p className="text-xl sm:text-2xl font-bold text-gray-900">{overview.drafts}</p>
+              <p className="text-xs sm:text-sm font-medium text-gray-900 dark:text-gray-100">Draft Posts</p>
+              <p className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100">{overview.drafts}</p>
             </div>
           </div>
         </div>
         
-        <div className="bg-white rounded-lg border p-4">
+        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 shadow-sm">
           <div className="flex items-center gap-3">
-            <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-green-100 flex items-center justify-center">
-              <Calendar className="h-4 w-4 sm:h-5 sm:w-5 text-green-600" />
+            <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-green-100 dark:bg-green-900/30 flex items-center justify-center">
+              <Calendar className="h-4 w-4 sm:h-5 sm:w-5 text-green-600 dark:text-green-400" />
             </div>
             <div>
-              <p className="text-xs sm:text-sm font-medium text-gray-900">Scheduled</p>
-              <p className="text-xl sm:text-2xl font-bold text-gray-900">{overview.scheduled}</p>
+              <p className="text-xs sm:text-sm font-medium text-gray-900 dark:text-gray-100">Scheduled</p>
+              <p className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100">{overview.scheduled}</p>
             </div>
           </div>
         </div>
         
-        <div className="bg-white rounded-lg border p-4 sm:col-span-2 lg:col-span-1">
+        <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 shadow-sm sm:col-span-2 lg:col-span-1">
           <div className="flex items-center gap-3">
-            <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-purple-100 flex items-center justify-center">
-              <Image className="h-4 w-4 sm:h-5 sm:w-5 text-purple-600" />
+            <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-full bg-purple-100 dark:bg-purple-900/30 flex items-center justify-center">
+              <Image className="h-4 w-4 sm:h-5 sm:w-5 text-purple-600 dark:text-purple-400" />
             </div>
             <div>
-              <p className="text-xs sm:text-sm font-medium text-gray-900">Media Files</p>
-              <p className="text-xl sm:text-2xl font-bold text-gray-900">{uploadedMedia.length}</p>
+              <p className="text-xs sm:text-sm font-medium text-gray-900 dark:text-gray-100">Media Files</p>
+              <p className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-gray-100">{uploadedMedia.length}</p>
             </div>
           </div>
         </div>
       </div>
 
       {/* Content Calendar */}
-      <div className="bg-white rounded-lg border">
-        <div className="p-4 sm:p-6 border-b">
-          <h2 className="text-base sm:text-lg font-semibold">Content Calendar</h2>
-          <p className="text-xs sm:text-sm text-muted-foreground">
+      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
+        <div className="p-4 sm:p-6 border-b border-gray-200 dark:border-gray-700">
+          <h2 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-gray-100">Content Calendar</h2>
+          <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
             Visualize your content schedule across all platforms.
           </p>
         </div>
@@ -372,10 +375,10 @@ export default function ContentPage() {
       </div>
 
       {/* Content Table/Grid */}
-      <div className="bg-white rounded-lg border">
-        <div className="p-4 sm:p-6 border-b flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
+        <div className="p-4 sm:p-6 border-b border-gray-200 dark:border-gray-700 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex gap-2">
-            <select value={statusFilter} onChange={e => setStatusFilter(e.target.value)} className="border rounded px-2 py-1 text-sm">
+            <select value={statusFilter} onChange={e => setStatusFilter(e.target.value)} className="border border-gray-300 dark:border-gray-600 rounded px-2 py-1 text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
               <option value="ALL">All Statuses</option>
               <option value="DRAFT">Draft</option>
               <option value="SCHEDULED">Scheduled</option>
@@ -383,7 +386,7 @@ export default function ContentPage() {
               <option value="PUBLISHED">Published</option>
               <option value="FAILED">Failed</option>
             </select>
-            <select value={platformFilter} onChange={e => setPlatformFilter(e.target.value)} className="border rounded px-2 py-1 text-sm">
+            <select value={platformFilter} onChange={e => setPlatformFilter(e.target.value)} className="border border-gray-300 dark:border-gray-600 rounded px-2 py-1 text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100">
               <option value="ALL">All Platforms</option>
               <option value="twitter">Twitter</option>
               <option value="instagram">Instagram</option>
@@ -395,13 +398,13 @@ export default function ContentPage() {
               value={search}
               onChange={e => setSearch(e.target.value)}
               placeholder="Search content..."
-              className="border rounded px-2 py-1 text-sm"
+              className="border border-gray-300 dark:border-gray-600 rounded px-2 py-1 text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
             />
           </div>
           <div>
-            <span className="text-xs text-muted-foreground">Page {page} of {Math.ceil(total / pageSize) || 1}</span>
-            <button disabled={page === 1} onClick={() => setPage(page - 1)} className="ml-2 px-2 py-1 border rounded text-xs">Prev</button>
-            <button disabled={page * pageSize >= total} onClick={() => setPage(page + 1)} className="ml-2 px-2 py-1 border rounded text-xs">Next</button>
+            <span className="text-xs text-gray-600 dark:text-gray-400">Page {page} of {Math.ceil(total / pageSize) || 1}</span>
+            <button disabled={page === 1} onClick={() => setPage(page - 1)} className="ml-2 px-2 py-1 border border-gray-300 dark:border-gray-600 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 disabled:opacity-50 disabled:cursor-not-allowed">Prev</button>
+            <button disabled={page * pageSize >= total} onClick={() => setPage(page + 1)} className="ml-2 px-2 py-1 border border-gray-300 dark:border-gray-600 rounded text-xs bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 disabled:opacity-50 disabled:cursor-not-allowed">Next</button>
           </div>
         </div>
         <div className="p-4 sm:p-6">
@@ -417,13 +420,13 @@ export default function ContentPage() {
       </div>
 
       {/* AI Analytics Summary */}
-      <div className="bg-white rounded-lg border">
-        <div className="p-4 sm:p-6 border-b">
+      <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
+        <div className="p-4 sm:p-6 border-b border-gray-200 dark:border-gray-700">
           <div className="flex items-center gap-2">
-            <Brain className="h-5 w-5 text-purple-600" />
-            <h2 className="text-base sm:text-lg font-semibold">AI Analytics Summary</h2>
+            <Brain className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+            <h2 className="text-base sm:text-lg font-semibold text-gray-900 dark:text-gray-100">AI Analytics Summary</h2>
           </div>
-          <p className="text-xs sm:text-sm text-muted-foreground">
+          <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
             AI-powered insights about your content performance and recommendations.
           </p>
         </div>
@@ -431,48 +434,48 @@ export default function ContentPage() {
           {aiInsightsLoading ? (
             <div className="text-center py-8">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600 mx-auto mb-4"></div>
-              <p className="text-sm text-muted-foreground">Generating AI insights...</p>
+              <p className="text-sm text-gray-600 dark:text-gray-400">Generating AI insights...</p>
             </div>
           ) : aiInsights ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {/* Performance Overview */}
-              <div className="bg-gradient-to-br from-purple-50 to-blue-50 rounded-lg p-4">
+              <div className="bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20 rounded-lg p-4 border border-purple-200 dark:border-purple-800">
                 <div className="flex items-center gap-2 mb-3">
-                  <TrendingUp className="h-5 w-5 text-purple-600" />
-                  <h3 className="font-medium text-sm">Performance Overview</h3>
+                  <TrendingUp className="h-5 w-5 text-purple-600 dark:text-purple-400" />
+                  <h3 className="font-medium text-sm text-gray-900 dark:text-gray-100">Performance Overview</h3>
                 </div>
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Avg. Engagement:</span>
-                    <span className="font-medium">{aiInsights.avgEngagement || '8.2%'}</span>
+                    <span className="text-gray-600 dark:text-gray-400">Avg. Engagement:</span>
+                    <span className="font-medium text-gray-900 dark:text-gray-100">{aiInsights.avgEngagement || '8.2%'}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Best Time:</span>
-                    <span className="font-medium">{aiInsights.bestTime || '2-4 PM'}</span>
+                    <span className="text-gray-600 dark:text-gray-400">Best Time:</span>
+                    <span className="font-medium text-gray-900 dark:text-gray-100">{aiInsights.bestTime || '2-4 PM'}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Top Platform:</span>
-                    <span className="font-medium">{aiInsights.topPlatform || 'Instagram'}</span>
+                    <span className="text-gray-600 dark:text-gray-400">Top Platform:</span>
+                    <span className="font-medium text-gray-900 dark:text-gray-100">{aiInsights.topPlatform || 'Instagram'}</span>
                   </div>
                 </div>
               </div>
 
               {/* Content Recommendations */}
-              <div className="bg-gradient-to-br from-green-50 to-emerald-50 rounded-lg p-4">
+              <div className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 rounded-lg p-4 border border-green-200 dark:border-green-800">
                 <div className="flex items-center gap-2 mb-3">
-                  <Lightbulb className="h-5 w-5 text-green-600" />
-                  <h3 className="font-medium text-sm">Content Recommendations</h3>
+                  <Lightbulb className="h-5 w-5 text-green-600 dark:text-green-400" />
+                  <h3 className="font-medium text-sm text-gray-900 dark:text-gray-100">Content Recommendations</h3>
                 </div>
                 <div className="space-y-2 text-sm">
                   {aiInsights.recommendations ? (
                     aiInsights.recommendations.slice(0, 3).map((rec: any, index: number) => (
                       <div key={index} className="flex items-start gap-2">
-                        <div className="w-1.5 h-1.5 bg-green-600 rounded-full mt-2 flex-shrink-0"></div>
-                        <span className="text-muted-foreground">{rec}</span>
+                        <div className="w-1.5 h-1.5 bg-green-600 dark:bg-green-400 rounded-full mt-2 flex-shrink-0"></div>
+                        <span className="text-gray-600 dark:text-gray-400">{rec}</span>
                       </div>
                     ))
                   ) : (
-                    <div className="space-y-2 text-sm text-muted-foreground">
+                    <div className="space-y-2 text-sm text-gray-600 dark:text-gray-400">
                       <div>• Post more video content</div>
                       <div>• Use trending hashtags</div>
                       <div>• Engage with followers</div>
@@ -482,93 +485,34 @@ export default function ContentPage() {
               </div>
 
               {/* Audience Insights */}
-              <div className="bg-gradient-to-br from-orange-50 to-red-50 rounded-lg p-4">
+              <div className="bg-gradient-to-br from-orange-50 to-red-50 dark:from-orange-900/20 dark:to-red-900/20 rounded-lg p-4 border border-orange-200 dark:border-orange-800">
                 <div className="flex items-center gap-2 mb-3">
-                  <Target className="h-5 w-5 text-orange-600" />
-                  <h3 className="font-medium text-sm">Audience Insights</h3>
+                  <Target className="h-5 w-5 text-orange-600 dark:text-orange-400" />
+                  <h3 className="font-medium text-sm text-gray-900 dark:text-gray-100">Audience Insights</h3>
                 </div>
                 <div className="space-y-2 text-sm">
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Peak Activity:</span>
-                    <span className="font-medium">{aiInsights.peakActivity || 'Weekends'}</span>
+                    <span className="text-gray-600 dark:text-gray-400">Peak Activity:</span>
+                    <span className="font-medium text-gray-900 dark:text-gray-100">{aiInsights.peakActivity || 'Weekends'}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Content Type:</span>
-                    <span className="font-medium">{aiInsights.preferredContent || 'Visual'}</span>
+                    <span className="text-gray-600 dark:text-gray-400">Content Type:</span>
+                    <span className="font-medium text-gray-900 dark:text-gray-100">{aiInsights.contentType || 'Video'}</span>
                   </div>
                   <div className="flex justify-between">
-                    <span className="text-muted-foreground">Growth Rate:</span>
-                    <span className="font-medium">{aiInsights.growthRate || '+12%'}</span>
+                    <span className="text-gray-600 dark:text-gray-400">Growth Rate:</span>
+                    <span className="font-medium text-gray-900 dark:text-gray-100">{aiInsights.growthRate || '+12%'}</span>
                   </div>
                 </div>
               </div>
             </div>
           ) : (
-            <div className="text-center py-8 text-muted-foreground">
-              <Brain className="h-12 w-12 mx-auto mb-4 opacity-50" />
-              <p>No AI insights available yet. Create more content to get personalized recommendations.</p>
+            <div className="text-center py-8">
+              <Brain className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+              <p className="text-sm text-gray-600 dark:text-gray-400">No AI insights available yet. Create some content to get started!</p>
             </div>
           )}
         </div>
-      </div>
-
-      {/* Quick Actions */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-        <Button 
-          variant="outline" 
-          className="h-20 sm:h-24 flex flex-col items-center justify-center gap-1 sm:gap-2 hover:bg-blue-50 hover:border-blue-200 transition-colors text-xs sm:text-sm"
-          onClick={handleUploadMedia}
-          disabled={isUploading}
-        >
-          {isUploading ? (
-            <div className="animate-spin rounded-full h-4 w-4 sm:h-6 sm:w-6 border-b-2 border-blue-600"></div>
-          ) : (
-            <Upload className="h-4 w-4 sm:h-6 sm:w-6" />
-          )}
-          <span>{isUploading ? 'Uploading...' : 'Upload Media'}</span>
-        </Button>
-        
-        <Button 
-          variant="outline" 
-          className="h-20 sm:h-24 flex flex-col items-center justify-center gap-1 sm:gap-2 hover:bg-green-50 hover:border-green-200 transition-colors text-xs sm:text-sm"
-          onClick={handleCreateVideo}
-          disabled={isCreatingVideo}
-        >
-          {isCreatingVideo ? (
-            <div className="animate-spin rounded-full h-4 w-4 sm:h-6 sm:w-6 border-b-2 border-green-600"></div>
-          ) : (
-            <Video className="h-4 w-4 sm:h-6 sm:w-6" />
-          )}
-          <span>{isCreatingVideo ? 'Creating...' : 'Create Video'}</span>
-        </Button>
-        
-        <Button 
-          variant="outline" 
-          className="h-20 sm:h-24 flex flex-col items-center justify-center gap-1 sm:gap-2 hover:bg-purple-50 hover:border-purple-200 transition-colors text-xs sm:text-sm"
-          onClick={handleUseTemplate}
-          disabled={isUsingTemplate}
-        >
-          {isUsingTemplate ? (
-            <div className="animate-spin rounded-full h-4 w-4 sm:h-6 sm:w-6 border-b-2 border-purple-600"></div>
-          ) : (
-            <FileText className="h-4 w-4 sm:h-6 sm:w-6" />
-          )}
-          <span>{isUsingTemplate ? 'Loading...' : 'Use Template'}</span>
-        </Button>
-        
-        <Button 
-          variant="outline" 
-          className="h-20 sm:h-24 flex flex-col items-center justify-center gap-1 sm:gap-2 hover:bg-orange-50 hover:border-orange-200 transition-colors text-xs sm:text-sm"
-          onClick={handleBulkSchedule}
-          disabled={isBulkScheduling}
-        >
-          {isBulkScheduling ? (
-            <div className="animate-spin rounded-full h-4 w-4 sm:h-6 sm:w-6 border-b-2 border-orange-600"></div>
-          ) : (
-            <Clock className="h-4 w-4 sm:h-6 sm:w-6" />
-          )}
-          <span>{isBulkScheduling ? 'Opening...' : 'Bulk Schedule'}</span>
-        </Button>
       </div>
 
       {/* Upload Media Modal */}

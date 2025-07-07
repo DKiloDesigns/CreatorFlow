@@ -24,7 +24,10 @@ import {
   Quote,
   Sparkles,
   Brain,
-  Zap
+  Zap,
+  Upload,
+  FileText,
+  Folder
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
@@ -277,6 +280,55 @@ export function EnhancedComposer({ onSubmit, className }: EnhancedComposerProps)
             </Button>
           </div>
         </CardTitle>
+        
+        {/* Action Buttons - Right below the header */}
+        <div className="flex flex-wrap gap-2 mt-4">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => window.dispatchEvent(new CustomEvent('openUploadModal'))}
+            className="flex items-center gap-2 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800"
+          >
+            <Upload className="h-4 w-4" />
+            Upload Media
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => window.dispatchEvent(new CustomEvent('openCreateVideoModal'))}
+            className="flex items-center gap-2 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800"
+          >
+            <Video className="h-4 w-4" />
+            Create Video
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => window.dispatchEvent(new CustomEvent('openUseTemplateModal'))}
+            className="flex items-center gap-2 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800"
+          >
+            <FileText className="h-4 w-4" />
+            Use Template
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => window.dispatchEvent(new CustomEvent('openBulkScheduleModal'))}
+            className="flex items-center gap-2 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800"
+          >
+            <Calendar className="h-4 w-4" />
+            Bulk Schedule
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => window.dispatchEvent(new CustomEvent('openMediaLibraryModal'))}
+            className="flex items-center gap-2 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800"
+          >
+            <Folder className="h-4 w-4" />
+            Media Library
+          </Button>
+        </div>
       </CardHeader>
       <CardContent>
         <Tabs value={activeTab} onValueChange={setActiveTab}>
@@ -402,20 +454,6 @@ export function EnhancedComposer({ onSubmit, className }: EnhancedComposerProps)
                   <AtSign className="h-4 w-4" />
                 </Button>
                 <div className="w-px h-6 bg-border mx-1" />
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="h-8 w-8 p-0"
-                >
-                  <Image className="h-4 w-4" />
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="h-8 w-8 p-0"
-                >
-                  <Video className="h-4 w-4" />
-                </Button>
                 <Button
                   variant="ghost"
                   size="sm"

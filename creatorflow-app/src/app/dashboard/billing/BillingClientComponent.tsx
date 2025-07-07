@@ -437,7 +437,7 @@ export default function BillingClientComponent({ user, searchParams, upcomingCha
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {tiers.map((tier) => (
-              <Card key={tier.name} className={tier.mostPopular ? 'border-primary' : ''}>
+              <Card key={tier.id} className={tier.mostPopular ? 'border-primary' : ''}>
                 {tier.mostPopular && (
                   <div className="bg-primary text-white text-center py-1 text-sm font-medium">
                     Most Popular

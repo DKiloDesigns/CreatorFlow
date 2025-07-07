@@ -4,11 +4,8 @@ import { prisma } from '@/lib/prisma';
 import { requireApiKey } from '@/lib/apiKeyAuth';
 
 // GET: Get team details by ID
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
-  const teamId = params.id;
+export async function GET(req: NextRequest, context: any) {
+  const { id } = context.params;
   
   // API key auth
   const apiKeyHeader = req.headers.get('x-api-key');
@@ -18,7 +15,7 @@ export async function GET(
       const userId = auth.user.id;
       const team = await prisma.team.findFirst({
         where: {
-          id: teamId,
+          id: id,
           OR: [
             { ownerId: userId },
             { members: { some: { userId } } },
@@ -55,7 +52,7 @@ export async function GET(
   const userId = session.user.id;
   const team = await prisma.team.findFirst({
     where: {
-      id: teamId,
+      id: id,
       OR: [
         { ownerId: userId },
         { members: { some: { userId } } },
@@ -81,11 +78,8 @@ export async function GET(
 }
 
 // PUT: Update team details (owner only)
-export async function PUT(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
-  const teamId = params.id;
+export async function PUT(req: NextRequest, context: any) {
+  const { id } = context.params;
   const data = await req.json();
   
   // API key auth
@@ -97,7 +91,7 @@ export async function PUT(
       
       // Check if user is team owner
       const team = await prisma.team.findFirst({
-        where: { id: teamId, ownerId: userId },
+        where: { id: id, ownerId: userId },
       });
       
       if (!team) {
@@ -106,7 +100,7 @@ export async function PUT(
       
       try {
         const updatedTeam = await prisma.team.update({
-          where: { id: teamId },
+          where: { id: id },
           data: { name: data.name, description: data.description },
           include: {
             owner: { select: { id: true, name: true, email: true, image: true } },
@@ -137,7 +131,7 @@ export async function PUT(
   
   // Check if user is team owner
   const team = await prisma.team.findFirst({
-    where: { id: teamId, ownerId: userId },
+    where: { id: id, ownerId: userId },
   });
   
   if (!team) {
@@ -146,7 +140,7 @@ export async function PUT(
   
   try {
     const updatedTeam = await prisma.team.update({
-      where: { id: teamId },
+      where: { id: id },
       data: { name: data.name, description: data.description },
       include: {
         owner: { select: { id: true, name: true, email: true, image: true } },
@@ -165,11 +159,8 @@ export async function PUT(
 }
 
 // DELETE: Delete team (owner only)
-export async function DELETE(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
-  const teamId = params.id;
+export async function DELETE(req: NextRequest, context: any) {
+  const { id } = context.params;
   
   // API key auth
   const apiKeyHeader = req.headers.get('x-api-key');
@@ -180,7 +171,7 @@ export async function DELETE(
       
       // Check if user is team owner
       const team = await prisma.team.findFirst({
-        where: { id: teamId, ownerId: userId },
+        where: { id: id, ownerId: userId },
       });
       
       if (!team) {
@@ -188,7 +179,7 @@ export async function DELETE(
       }
       
       try {
-        await prisma.team.delete({ where: { id: teamId } });
+        await prisma.team.delete({ where: { id: id } });
         return NextResponse.json({ message: 'Team deleted successfully' });
       } catch (error) {
         return NextResponse.json({ error: 'Failed to delete team' }, { status: 500 });
@@ -208,7 +199,7 @@ export async function DELETE(
   
   // Check if user is team owner
   const team = await prisma.team.findFirst({
-    where: { id: teamId, ownerId: userId },
+    where: { id: id, ownerId: userId },
   });
   
   if (!team) {
@@ -216,7 +207,7 @@ export async function DELETE(
   }
   
   try {
-    await prisma.team.delete({ where: { id: teamId } });
+    await prisma.team.delete({ where: { id: id } });
     return NextResponse.json({ message: 'Team deleted successfully' });
   } catch (error) {
     return NextResponse.json({ error: 'Failed to delete team' }, { status: 500 });

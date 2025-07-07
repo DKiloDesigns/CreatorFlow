@@ -4,7 +4,7 @@ import { authOptions } from '@/auth';
 import { prisma } from '@/lib/prisma';
 import { logAudit } from '@/lib/audit-log';
 
-export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
+export async function POST(req: NextRequest, context: any) {
   const session = await getServerSession(authOptions);
   if (!session || !session.user || !session.user.id) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
@@ -13,7 +13,7 @@ export async function POST(req: NextRequest, { params }: { params: { id: string 
   if (!admin || admin.role !== 'ADMIN') {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }
-  const { id } = params;
+  const { id } = context.params;
   const user = await prisma.user.update({ where: { id }, data: { deactivated: false } });
   await logAudit({ action: 'user.reactivate', actorId: session.user.id, targetId: id, targetType: 'User' });
   return NextResponse.json({ success: true, user });

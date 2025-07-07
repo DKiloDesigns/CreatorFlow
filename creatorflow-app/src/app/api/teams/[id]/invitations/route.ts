@@ -4,11 +4,8 @@ import { prisma } from '@/lib/prisma';
 import { requireApiKey } from '@/lib/apiKeyAuth';
 
 // GET: List team invitations
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
-  const teamId = params.id;
+export async function GET(req: NextRequest, context: any) {
+  const { id } = context.params;
   
   // API key auth
   const apiKeyHeader = req.headers.get('x-api-key');
@@ -20,7 +17,7 @@ export async function GET(
       // Check if user has access to team
       const team = await prisma.team.findFirst({
         where: {
-          id: teamId,
+          id: id,
           OR: [
             { ownerId: userId },
             { members: { some: { userId } } },
@@ -33,7 +30,7 @@ export async function GET(
       }
       
       const invitations = await prisma.teamInvitation.findMany({
-        where: { teamId },
+        where: { teamId: id },
         include: {
           invitedByUser: { select: { id: true, name: true, email: true } },
         },
@@ -56,7 +53,7 @@ export async function GET(
   // Check if user has access to team
   const team = await prisma.team.findFirst({
     where: {
-      id: teamId,
+      id: id,
       OR: [
         { ownerId: userId },
         { members: { some: { userId } } },
@@ -69,7 +66,7 @@ export async function GET(
   }
   
   const invitations = await prisma.teamInvitation.findMany({
-    where: { teamId },
+    where: { teamId: id },
     include: {
       invitedByUser: { select: { id: true, name: true, email: true } },
     },
@@ -79,11 +76,8 @@ export async function GET(
 }
 
 // POST: Send team invitation (owner only)
-export async function POST(
-  req: NextRequest,
-  { params }: { params: { id: string } }
-) {
-  const teamId = params.id;
+export async function POST(req: NextRequest, context: any) {
+  const { id } = context.params;
   const { email, role = 'MEMBER' } = await req.json();
   
   if (!email) {
@@ -99,7 +93,7 @@ export async function POST(
       
       // Check if user is team owner
       const team = await prisma.team.findFirst({
-        where: { id: teamId, ownerId: userId },
+        where: { id: id, ownerId: userId },
       });
       
       if (!team) {
@@ -110,7 +104,7 @@ export async function POST(
         // Check for existing pending invitation
         const existingInvitation = await prisma.teamInvitation.findFirst({
           where: {
-            teamId,
+            teamId: id,
             email,
             status: 'PENDING',
           },
@@ -123,7 +117,7 @@ export async function POST(
         // Check if user is already a team member
         const existingMember = await prisma.teamMember.findFirst({
           where: {
-            teamId,
+            teamId: id,
             user: { email },
           },
         });
@@ -138,7 +132,7 @@ export async function POST(
         
         const invitation = await prisma.teamInvitation.create({
           data: {
-            teamId,
+            teamId: id,
             email,
             role,
             invitedBy: userId,
@@ -171,7 +165,7 @@ export async function POST(
   
   // Check if user is team owner
   const team = await prisma.team.findFirst({
-    where: { id: teamId, ownerId: userId },
+    where: { id: id, ownerId: userId },
   });
   
   if (!team) {
@@ -182,7 +176,7 @@ export async function POST(
     // Check for existing pending invitation
     const existingInvitation = await prisma.teamInvitation.findFirst({
       where: {
-        teamId,
+        teamId: id,
         email,
         status: 'PENDING',
       },
@@ -195,7 +189,7 @@ export async function POST(
     // Check if user is already a team member
     const existingMember = await prisma.teamMember.findFirst({
       where: {
-        teamId,
+        teamId: id,
         user: { email },
       },
     });
@@ -210,7 +204,7 @@ export async function POST(
     
     const invitation = await prisma.teamInvitation.create({
       data: {
-        teamId,
+        teamId: id,
         email,
         role,
         invitedBy: userId,
