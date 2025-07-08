@@ -1,7 +1,7 @@
 'use client';
 
 import { useSession } from 'next-auth/react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+
 import { Button } from '@/components/ui/button';
 import { 
   Brain, 
@@ -74,47 +74,41 @@ export default function ProfilePage() {
       {/* Profile Sections */}
       <div className="grid gap-6">
         {profileSections.map((section) => (
-          <Card key={section.title}>
-            <CardHeader>
-              <CardTitle className="text-lg">{section.title}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="grid gap-3">
-                {section.items.map((item) => {
-                  const Icon = item.icon;
-                  return (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      className="flex items-center gap-3 p-3 rounded-lg border hover:bg-muted/50 transition-colors"
-                    >
-                      <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                        <Icon className="h-5 w-5 text-primary" />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="font-medium">{item.label}</h3>
-                        <p className="text-sm text-muted-foreground">{item.description}</p>
-                      </div>
-                    </Link>
-                  );
-                })}
-              </div>
-            </CardContent>
-          </Card>
+          <div key={section.title}>
+            <h2 className="text-lg font-semibold mb-4">{section.title}</h2>
+            <div className="grid gap-3">
+              {section.items.map((item) => {
+                const Icon = item.icon;
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className="flex items-center gap-3 p-3 rounded-lg border hover:bg-muted/50 transition-colors"
+                  >
+                    <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
+                      <Icon className="h-5 w-5 text-primary" />
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-medium">{item.label}</h3>
+                      <p className="text-sm text-muted-foreground">{item.description}</p>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          </div>
         ))}
       </div>
 
       {/* Sign Out */}
-      <Card>
-        <CardContent className="pt-6">
-          <Button variant="outline" className="w-full" asChild>
-            <Link href="/api/auth/signout">
-              <LogOut className="mr-2 h-4 w-4" />
-              Sign Out
-            </Link>
-          </Button>
-        </CardContent>
-      </Card>
+      <div>
+        <Button variant="outline" className="w-full bg-red-600 text-white border-red-600 hover:bg-red-700 hover:border-red-700" asChild>
+          <Link href="/api/auth/signout">
+            <LogOut className="mr-2 h-4 w-4" />
+            Sign Out
+          </Link>
+        </Button>
+      </div>
     </div>
   );
 } 

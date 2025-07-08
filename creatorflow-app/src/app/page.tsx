@@ -42,10 +42,10 @@ export default function Home() {
           The all-in-one platform for creators to plan, publish, analyze, and get paid—everywhere.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
-          <Link href="/auth" className="inline-block bg-primary text-primary-foreground font-semibold rounded-lg px-6 sm:px-8 py-2 sm:py-3 shadow hover:bg-primary/90 transition text-sm sm:text-base">
+          <Link href="/auth" className="inline-block bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-lg px-6 sm:px-8 py-2 sm:py-3 shadow hover:from-blue-600 hover:to-purple-700 transition text-sm sm:text-base">
             Start Free
           </Link>
-          <Link href="#how-it-works" className="inline-block border border-primary text-primary font-semibold rounded-lg px-6 sm:px-8 py-2 sm:py-3 shadow hover:bg-primary hover:text-primary-foreground transition text-sm sm:text-base">
+          <Link href="#how-it-works" className="inline-block border-2 border-transparent bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-border text-white font-semibold rounded-lg px-6 sm:px-8 py-2 sm:py-3 shadow hover:from-blue-600 hover:to-purple-700 transition text-sm sm:text-base">
             See CreatorFlow in Action
           </Link>
         </div>
@@ -59,22 +59,42 @@ export default function Home() {
       </section>
 
       {/* Plans Section */}
-      <section className="w-full max-w-5xl mx-auto px-4 py-12 sm:py-16 flex flex-col items-center gap-6 sm:gap-8" id="plans">
-        <h2 className="text-xl sm:text-2xl font-bold text-foreground mb-4">Our Plans</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 w-full">
+      <section className="w-full max-w-5xl mx-auto px-4 py-12 sm:py-16" id="plans">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl sm:text-4xl font-bold mb-4">Choose Your Plan</h2>
+          <p className="text-lg text-muted-foreground">Start free, upgrade when you're ready</p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {PLANS.map((plan) => (
             <div
               key={plan.name}
-              className={`bg-card rounded-xl shadow p-4 sm:p-6 flex flex-col items-center border transition-transform ${plan.highlight ? 'border-2 border-primary scale-105' : 'border-border'} text-card-foreground`}
+              className={`relative bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 flex flex-col ${
+                plan.highlight ? 'ring-2 ring-primary scale-105' : ''
+              }`}
             >
-              <h2 className="font-bold text-lg sm:text-xl mb-2">{plan.name}</h2>
-              <p className="mb-4 text-sm sm:text-base">{plan.price}</p>
-              <ul className="mb-6 text-xs sm:text-sm text-muted-foreground">
-                {plan.features.map((f) => (
-                  <li key={f}>✓ {f}</li>
+              {plan.highlight && (
+                <span className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-1 rounded-full text-sm font-semibold">
+                  Most Popular
+                </span>
+              )}
+              <h3 className="text-xl font-bold mb-2">{plan.name}</h3>
+              <p className="text-3xl font-bold mb-4">{plan.price}</p>
+              <ul className="mb-8 flex-1 space-y-2">
+                {plan.features.map((feature) => (
+                  <li key={feature} className="flex items-center gap-2">
+                    <span className="text-green-500">✓</span>
+                    <span className="text-sm">{feature}</span>
+                  </li>
                 ))}
               </ul>
-              <Link href={plan.href} className="bg-primary text-primary-foreground px-4 sm:px-6 py-2 rounded text-center w-full block text-sm sm:text-base">
+              <Link
+                href={plan.href}
+                className={`inline-block text-center font-semibold rounded-lg px-6 py-3 transition ${
+                  plan.highlight
+                    ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:from-blue-600 hover:to-purple-700'
+                    : 'bg-primary text-primary-foreground hover:bg-primary/90'
+                }`}
+              >
                 {plan.cta}
               </Link>
             </div>
@@ -83,24 +103,32 @@ export default function Home() {
       </section>
 
       {/* How It Works */}
-      <section className="w-full max-w-4xl mx-auto px-4 py-16 flex flex-col items-center gap-8" id="how-it-works">
-        <h2 className="text-2xl font-bold text-foreground mb-4">How It Works</h2>
-        <ol className="flex flex-col md:flex-row gap-6 w-full justify-center items-center">
-          {HOW_IT_WORKS.map((step, idx) => (
-            <li key={idx} className="flex flex-col items-center gap-2 max-w-xs">
-              <span className="h-10 w-10 flex items-center justify-center rounded-full bg-primary text-primary-foreground font-bold text-lg">{idx + 1}</span>
-              <span className="text-base text-muted-foreground text-center">{step}</span>
-            </li>
+      <section className="w-full max-w-5xl mx-auto px-4 py-12 sm:py-16" id="how-it-works">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl sm:text-4xl font-bold mb-4">How It Works</h2>
+          <p className="text-lg text-muted-foreground">Get started in minutes</p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
+          {HOW_IT_WORKS.map((step, index) => (
+            <div key={index} className="text-center">
+              <div className="w-12 h-12 bg-primary text-primary-foreground rounded-full flex items-center justify-center mx-auto mb-4 font-bold">
+                {index + 1}
+              </div>
+              <p className="text-sm">{step}</p>
+            </div>
           ))}
-        </ol>
+        </div>
       </section>
 
       {/* Testimonials */}
-      <section className="w-full max-w-3xl mx-auto px-4 py-16 flex flex-col items-center gap-8">
-        <h2 className="text-2xl font-bold text-foreground mb-4">Why Creators Love CreatorFlow</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 w-full">
-          {TESTIMONIALS.map((t, idx) => (
-            <TestimonialCard key={idx} {...t} />
+      <section className="w-full max-w-5xl mx-auto px-4 py-12 sm:py-16">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl sm:text-4xl font-bold mb-4">What Creators Say</h2>
+          <p className="text-lg text-muted-foreground">Join thousands of successful creators</p>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {TESTIMONIALS.map((testimonial) => (
+            <TestimonialCard key={testimonial.author} {...testimonial} />
           ))}
         </div>
       </section>

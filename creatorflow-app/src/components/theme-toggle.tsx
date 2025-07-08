@@ -57,7 +57,7 @@ export function ThemeToggle({ isLandingPage = false }: ThemeToggleProps) {
   const getTextColor = () => {
     // Always use high contrast colors for visibility
     if (theme === 'dark') {
-      return 'text-white'; // White icon on dark background
+      return 'text-black'; // Black icon on dark background
     }
     return 'text-black'; // Black icon on light background
   };

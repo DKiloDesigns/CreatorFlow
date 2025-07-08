@@ -1,7 +1,6 @@
 'use client'; // FullCalendar requires this
 
 import React, { useState, useEffect } from 'react';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/card';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid'; // For month/week/day views
 import interactionPlugin from '@fullcalendar/interaction'; // For clicking events
@@ -172,61 +171,53 @@ export default function ContentCalendar() {
 
   return (
     <TooltipProvider>
-      <Card>
-        <CardHeader>
-          <CardTitle>Content Calendar</CardTitle>
-          <CardDescription>View your scheduled and published posts.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          {isLoading && (
-            <div className="flex items-center justify-center h-64">
-              <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-              <span className="ml-2 text-muted-foreground">Loading Calendar...</span>
-            </div>
-          )}
-          {error && !isLoading && (
-            <div className="flex flex-col items-center justify-center h-64 text-destructive">
-              <AlertCircle className="h-8 w-8 mb-2" />
-              <span>Error loading calendar:</span>
-              <span className="text-sm mb-2">{error}</span>
-              <Button onClick={handleRetry} className="mt-2 focus-visible:ring-2 focus-visible:ring-primary transition-shadow" aria-label="Retry loading calendar">Retry</Button>
-              <div aria-live="polite" className="sr-only">{ariaMessage}</div>
-            </div>
-          )}
-          {!isLoading && !error && (
-            <FullCalendar
-              key={calendarEvents.length}
-              plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
-              initialView="dayGridMonth"
-              weekends={true}
-              events={calendarEvents}
-              headerToolbar={{
-                left: 'prev,next today',
-                center: 'title',
-                right: 'dayGridMonth,timeGridWeek,timeGridDay'
-              }}
-              buttonText={{ today: 'Today', month: 'Month', week: 'Week', day: 'Day' }}
-              eventTimeFormat={{ hour: 'numeric', minute: '2-digit', omitZeroMinute: true, meridiem: 'short' }}
-              dayMaxEventRows={true}
-              views={{ dayGridMonth: { dayMaxEventRows: 3 } }}
-              eventClassNames={function(arg) {
-                const status = (arg.event.extendedProps as CalendarEvent['extendedProps']).status;
-                let classes = ['cursor-pointer', 'p-1', 'rounded-sm', 'text-xs', 'border', 'transition-shadow', 'focus-visible:ring-2', 'focus-visible:ring-primary'];
-                switch (status) {
-                  case PostStatus.SCHEDULED: classes.push('bg-blue-100', 'border-blue-300', 'text-blue-800', 'dark:bg-blue-900', 'dark:bg-opacity-50', 'dark:border-blue-700', 'dark:text-blue-300'); break;
-                  case PostStatus.PUBLISHED: classes.push('bg-green-100', 'border-green-300', 'text-green-800', 'dark:bg-green-900', 'dark:bg-opacity-50', 'dark:border-green-700', 'dark:text-green-300'); break;
-                  case PostStatus.FAILED: classes.push('bg-red-100', 'border-red-300', 'text-red-800', 'dark:bg-red-900', 'dark:bg-opacity-50', 'dark:border-red-700', 'dark:text-red-300'); break;
-                  case PostStatus.PUBLISHING: classes.push('bg-yellow-100', 'border-yellow-300', 'text-yellow-800', 'dark:bg-yellow-900', 'dark:bg-opacity-50', 'dark:border-yellow-700', 'dark:text-yellow-300'); break;
-                }
-                return classes;
-              }}
-              eventContent={eventRenderWithTooltip}
-              height={500}
-              aria-label="Content calendar"
-            />
-          )}
-        </CardContent>
-      </Card>
+      {isLoading && (
+        <div className="flex items-center justify-center h-64">
+          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+          <span className="ml-2 text-muted-foreground">Loading Calendar...</span>
+        </div>
+      )}
+      {error && !isLoading && (
+        <div className="flex flex-col items-center justify-center h-64 text-destructive">
+          <AlertCircle className="h-8 w-8 mb-2" />
+          <span>Error loading calendar:</span>
+          <span className="text-sm mb-2">{error}</span>
+          <Button onClick={handleRetry} className="mt-2 focus-visible:ring-2 focus-visible:ring-primary transition-shadow" aria-label="Retry loading calendar">Retry</Button>
+          <div aria-live="polite" className="sr-only">{ariaMessage}</div>
+        </div>
+      )}
+      {!isLoading && !error && (
+        <FullCalendar
+          key={calendarEvents.length}
+          plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
+          initialView="dayGridMonth"
+          weekends={true}
+          events={calendarEvents}
+          headerToolbar={{
+            left: 'title',
+            center: 'prev,next today',
+            right: 'dayGridMonth,timeGridWeek,timeGridDay'
+          }}
+          buttonText={{ today: 'Today', month: 'Month', week: 'Week', day: 'Day' }}
+          eventTimeFormat={{ hour: 'numeric', minute: '2-digit', omitZeroMinute: true, meridiem: 'short' }}
+          dayMaxEventRows={true}
+          views={{ dayGridMonth: { dayMaxEventRows: 3 } }}
+          eventClassNames={function(arg) {
+            const status = (arg.event.extendedProps as CalendarEvent['extendedProps']).status;
+            let classes = ['cursor-pointer', 'p-1', 'rounded-sm', 'text-xs', 'border', 'transition-shadow', 'focus-visible:ring-2', 'focus-visible:ring-primary'];
+            switch (status) {
+              case PostStatus.SCHEDULED: classes.push('bg-blue-100', 'border-blue-300', 'text-blue-800', 'dark:bg-blue-900', 'dark:bg-opacity-50', 'dark:border-blue-700', 'dark:text-blue-300'); break;
+              case PostStatus.PUBLISHED: classes.push('bg-green-100', 'border-green-300', 'text-green-800', 'dark:bg-green-900', 'dark:bg-opacity-50', 'dark:border-green-700', 'dark:text-green-300'); break;
+              case PostStatus.FAILED: classes.push('bg-red-100', 'border-red-300', 'text-red-800', 'dark:bg-red-900', 'dark:bg-opacity-50', 'dark:border-red-700', 'dark:text-red-300'); break;
+              case PostStatus.PUBLISHING: classes.push('bg-yellow-100', 'border-yellow-300', 'text-yellow-800', 'dark:bg-yellow-900', 'dark:bg-opacity-50', 'dark:border-yellow-700', 'dark:text-yellow-300'); break;
+            }
+            return classes;
+          }}
+          eventContent={eventRenderWithTooltip}
+          height={500}
+          aria-label="Content calendar"
+        />
+      )}
     </TooltipProvider>
   );
 } 

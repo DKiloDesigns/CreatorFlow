@@ -165,149 +165,133 @@ export default function BillingClient({ user, searchParams, upcomingCharges, pay
         </TabsList>
         <TabsContent value="overview" className="space-y-6">
           {/* Current Plan Section */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Current Plan</CardTitle>
-              <CardDescription>Your current subscription details</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium">Plan</p>
-                    <p className="text-2xl font-bold">{user?.plan || 'Free'}</p>
-                  </div>
-                  {user?.stripeCustomerId && (
-                    <Button
-                      onClick={async () => {
-                        try {
-                          const response = await fetch('/api/billing/create-portal-session', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                          });
-                          const { url } = await response.json();
-                          if (url) {
-                            toast.success('Opening Stripe portal...');
-                            window.location.href = url;
-                          } else {
-                            toast.error('Failed to open Stripe portal.');
-                          }
-                        } catch (err) {
-                          toast.error('An error occurred while opening the Stripe portal.');
-                        }
-                      }}
-                      variant="outline"
-                    >
-                      Manage Subscription
-                    </Button>
-                  )}
+          <div>
+            <h2 className="text-lg font-semibold mb-2">Current Plan</h2>
+            <p className="text-sm text-muted-foreground mb-4">Your current subscription details</p>
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm font-medium">Plan</p>
+                  <p className="text-2xl font-bold">{user?.plan || 'Free'}</p>
                 </div>
-                {user?.stripeCurrentPeriodEnd && (
-                  <div>
-                    <p className="text-sm font-medium">Next Billing Date</p>
-                    <p className="text-lg">
-                      {format(new Date(user.stripeCurrentPeriodEnd), 'MMMM d, yyyy')}
-                    </p>
-                  </div>
+                {user?.stripeCustomerId && (
+                  <Button
+                    onClick={async () => {
+                      try {
+                        const response = await fetch('/api/billing/create-portal-session', {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                        });
+                        const { url } = await response.json();
+                        if (url) {
+                          toast.success('Opening Stripe portal...');
+                          window.location.href = url;
+                        } else {
+                          toast.error('Failed to open Stripe portal.');
+                        }
+                      } catch (err) {
+                        toast.error('An error occurred while opening the Stripe portal.');
+                      }
+                    }}
+                    variant="outline"
+                  >
+                    Manage Subscription
+                  </Button>
                 )}
               </div>
-            </CardContent>
-          </Card>
+              {user?.stripeCurrentPeriodEnd && (
+                <div>
+                  <p className="text-sm font-medium">Next Billing Date</p>
+                  <p className="text-lg">
+                    {format(new Date(user.stripeCurrentPeriodEnd), 'MMMM d, yyyy')}
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
 
           {/* Usage Statistics */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Usage Statistics</CardTitle>
-              <CardDescription>Your current usage and limits</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2">
-                    <TrendingUp className="h-5 w-5 text-muted-foreground" />
-                    <p className="text-sm font-medium">Scheduled Posts</p>
-                  </div>
-                  <p className="text-2xl font-bold">{user?._count.posts || 0}</p>
-                  <Progress value={postUsage} className="h-2" />
-                  <p className="text-sm text-muted-foreground">
-                    {user?.plan === 'Free' ? 'Limited to 5 posts' : 'Unlimited posts'}
-                  </p>
+          <div>
+            <h2 className="text-lg font-semibold mb-2">Usage Statistics</h2>
+            <p className="text-sm text-muted-foreground mb-4">Your current usage and limits</p>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <TrendingUp className="h-5 w-5 text-muted-foreground" />
+                  <p className="text-sm font-medium">Scheduled Posts</p>
                 </div>
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2">
-                    <CreditCard className="h-5 w-5 text-muted-foreground" />
-                    <p className="text-sm font-medium">Connected Accounts</p>
-                  </div>
-                  <p className="text-2xl font-bold">{user?._count.socialAccounts || 0}</p>
-                  <Progress value={accountUsage} className="h-2" />
-                  <p className="text-sm text-muted-foreground">
-                    {user?.plan === 'Free' ? 'Limited to 2 accounts' : 'Unlimited accounts'}
-                  </p>
-                </div>
+                <p className="text-2xl font-bold">{user?._count.posts || 0}</p>
+                <Progress value={postUsage} className="h-2" />
+                <p className="text-sm text-muted-foreground">
+                  {user?.plan === 'Free' ? 'Limited to 5 posts' : 'Unlimited posts'}
+                </p>
               </div>
-            </CardContent>
-          </Card>
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <CreditCard className="h-5 w-5 text-muted-foreground" />
+                  <p className="text-sm font-medium">Connected Accounts</p>
+                </div>
+                <p className="text-2xl font-bold">{user?._count.socialAccounts || 0}</p>
+                <Progress value={accountUsage} className="h-2" />
+                <p className="text-sm text-muted-foreground">
+                  {user?.plan === 'Free' ? 'Limited to 2 accounts' : 'Unlimited accounts'}
+                </p>
+              </div>
+            </div>
+          </div>
 
           {/* Upcoming Charges */}
           {upcomingCharges && (
-            <Card>
-              <CardHeader>
-                <CardTitle>Upcoming Charges</CardTitle>
-                <CardDescription>Your next billing details</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {upcomingCharges.map((charge: any) => (
-                    <div key={charge.id} className="flex items-center justify-between">
-                      <div>
-                        <p className="font-medium">{charge.description}</p>
-                        <p className="text-sm text-muted-foreground">
-                          {format(new Date(charge.date * 1000), 'MMMM d, yyyy')}
-                        </p>
-                      </div>
-                      <p className="font-medium">${(charge.amount / 100).toFixed(2)}</p>
+            <div>
+              <h2 className="text-lg font-semibold mb-2">Upcoming Charges</h2>
+              <p className="text-sm text-muted-foreground mb-4">Your next billing details</p>
+              <div className="space-y-4">
+                {upcomingCharges.map((charge: any) => (
+                  <div key={charge.id} className="flex items-center justify-between">
+                    <div>
+                      <p className="font-medium">{charge.description}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {format(new Date(charge.date * 1000), 'MMMM d, yyyy')}
+                      </p>
                     </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+                    <p className="font-medium">${(charge.amount / 100).toFixed(2)}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
           )}
 
           {/* Payment History */}
           {paymentHistory && (
-            <Card>
-              <CardHeader>
-                <CardTitle>Payment History</CardTitle>
-                <CardDescription>Your recent transactions</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {paymentHistory.map((payment: any) => (
-                    <div key={payment.id} className="flex items-center justify-between">
-                      <div>
-                        <p className="font-medium">{payment.description}</p>
-                        <p className="text-sm text-muted-foreground">
-                          {format(new Date(payment.date * 1000), 'MMMM d, yyyy')}
-                        </p>
-                      </div>
-                      <div className="flex items-center gap-4">
-                        <p className={`font-medium ${payment.status === 'succeeded' ? 'text-green-600' : 'text-red-600'}`}>
-                          ${(payment.amount / 100).toFixed(2)}
-                        </p>
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          onClick={() => window.open(payment.invoice_pdf, '_blank')}
-                        >
-                          <History className="h-4 w-4 mr-2" />
-                          View Invoice
-                        </Button>
-                      </div>
+            <div>
+              <h2 className="text-lg font-semibold mb-2">Payment History</h2>
+              <p className="text-sm text-muted-foreground mb-4">Your recent transactions</p>
+              <div className="space-y-4">
+                {paymentHistory.map((payment: any) => (
+                  <div key={payment.id} className="flex items-center justify-between">
+                    <div>
+                      <p className="font-medium">{payment.description}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {format(new Date(payment.date * 1000), 'MMMM d, yyyy')}
+                      </p>
                     </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+                    <div className="flex items-center gap-4">
+                      <p className={`font-medium ${payment.status === 'succeeded' ? 'text-green-600' : 'text-red-600'}`}>
+                        ${(payment.amount / 100).toFixed(2)}
+                      </p>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => window.open(payment.invoice_pdf, '_blank')}
+                      >
+                        <History className="h-4 w-4 mr-2" />
+                        View Invoice
+                      </Button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           )}
         </TabsContent>
 
@@ -345,144 +329,151 @@ export default function BillingClient({ user, searchParams, upcomingCharges, pay
             </div>
           </div>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>Content Performance</CardTitle>
-              <CardDescription>Track your content engagement and reach</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2">
-                    <BarChart2 className="h-5 w-5 text-muted-foreground" />
-                    <p className="text-sm font-medium">Engagement Rate</p>
-                  </div>
-                  <div className="h-[200px] bg-muted bg-opacity-20 rounded-lg p-4">
-                    <div className="h-full flex items-end gap-2">
-                      {[30, 45, 60, 75, 90, 85, 70].map((value, index) => (
-                        <div
-                          key={index}
-                          className="flex-1 bg-primary bg-opacity-20 hover:bg-primary hover:bg-opacity-30 transition-colors rounded-t"
-                          style={{ height: `${value}%` }}
-                        />
-                      ))}
-                    </div>
-                    <div className="flex justify-between mt-2 text-xs text-muted-foreground">
-                      <span key="mon">Mon</span>
-                      <span key="tue">Tue</span>
-                      <span key="wed">Wed</span>
-                      <span key="thu">Thu</span>
-                      <span key="fri">Fri</span>
-                      <span key="sat">Sat</span>
-                      <span key="sun">Sun</span>
-                    </div>
-                  </div>
-                  <p className="text-sm text-muted-foreground">
-                    Average engagement rate: 4.2%
-                  </p>
+          <div>
+            <h2 className="text-lg font-semibold mb-2">Content Performance</h2>
+            <p className="text-sm text-muted-foreground mb-4">Track your content engagement and reach</p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <BarChart2 className="h-5 w-5 text-muted-foreground" />
+                  <p className="text-sm font-medium">Engagement Rate</p>
                 </div>
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2">
-                    <TrendingUp className="h-5 w-5 text-muted-foreground" />
-                    <p className="text-sm font-medium">Reach Growth</p>
+                <div className="h-[200px] rounded-lg p-4">
+                  <div className="h-full flex items-end gap-2">
+                    {[30, 45, 60, 75, 90, 85, 70].map((value, index) => (
+                      <div
+                        key={index}
+                        className="flex-1 bg-gradient-to-t from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 transition-colors rounded-t"
+                        style={{ height: `${value}%` }}
+                      />
+                    ))}
                   </div>
-                  <div className="h-[200px] bg-muted bg-opacity-20 rounded-lg p-4">
-                    <div className="h-full flex items-end gap-2">
-                      {[20, 35, 50, 65, 80, 95, 110].map((value, index) => (
-                        <div
-                          key={index}
-                          className="flex-1 bg-green-500 bg-opacity-20 hover:bg-green-500 hover:bg-opacity-30 transition-colors rounded-t"
-                          style={{ height: `${value}%` }}
-                        />
-                      ))}
-                    </div>
-                    <div className="flex justify-between mt-2 text-xs text-muted-foreground">
-                      <span key="mon2">Mon</span>
-                      <span key="tue2">Tue</span>
-                      <span key="wed2">Wed</span>
-                      <span key="thu2">Thu</span>
-                      <span key="fri2">Fri</span>
-                      <span key="sat2">Sat</span>
-                      <span key="sun2">Sun</span>
-                    </div>
+                  <div className="flex justify-between mt-2 text-xs text-muted-foreground">
+                    <span key="mon">Mon</span>
+                    <span key="tue">Tue</span>
+                    <span key="wed">Wed</span>
+                    <span key="thu">Thu</span>
+                    <span key="fri">Fri</span>
+                    <span key="sat">Sat</span>
+                    <span key="sun">Sun</span>
                   </div>
-                  <p className="text-sm text-muted-foreground">
-                    Total reach: 12.5K (+15% this week)
-                  </p>
                 </div>
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2">
-                    <Users className="h-5 w-5 text-muted-foreground" />
-                    <p className="text-sm font-medium">Audience Growth</p>
-                  </div>
-                  <div className="h-[200px] bg-muted bg-opacity-20 rounded-lg p-4">
-                    <div className="h-full flex items-end gap-2">
-                      {[15, 25, 35, 45, 55, 65, 75].map((value, index) => (
-                        <div
-                          key={index}
-                          className="flex-1 bg-blue-500 bg-opacity-20 hover:bg-blue-500 hover:bg-opacity-30 transition-colors rounded-t"
-                          style={{ height: `${value}%` }}
-                        />
-                      ))}
-                    </div>
-                    <div className="flex justify-between mt-2 text-xs text-muted-foreground">
-                      <span key="mon3">Mon</span>
-                      <span key="tue3">Tue</span>
-                      <span key="wed3">Wed</span>
-                      <span key="thu3">Thu</span>
-                      <span key="fri3">Fri</span>
-                      <span key="sat3">Sat</span>
-                      <span key="sun3">Sun</span>
-                    </div>
-                  </div>
-                  <p className="text-sm text-muted-foreground">
-                    New followers: 245 (+8% this week)
-                  </p>
-                </div>
+                <p className="text-sm text-muted-foreground">
+                  Average engagement rate: 4.2%
+                </p>
               </div>
-            </CardContent>
-          </Card>
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <TrendingUp className="h-5 w-5 text-muted-foreground" />
+                  <p className="text-sm font-medium">Reach Growth</p>
+                </div>
+                <div className="h-[200px] rounded-lg p-4">
+                  <div className="h-full flex items-end gap-2">
+                    {[20, 35, 50, 65, 80, 95, 110].map((value, index) => (
+                      <div
+                        key={index}
+                        className="flex-1 bg-gradient-to-t from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 transition-colors rounded-t"
+                        style={{ height: `${value}%` }}
+                      />
+                    ))}
+                  </div>
+                  <div className="flex justify-between mt-2 text-xs text-muted-foreground">
+                    <span key="mon2">Mon</span>
+                    <span key="tue2">Tue</span>
+                    <span key="wed2">Wed</span>
+                    <span key="thu2">Thu</span>
+                    <span key="fri2">Fri</span>
+                    <span key="sat2">Sat</span>
+                    <span key="sun2">Sun</span>
+                  </div>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  Total reach: 12.5K (+15% this week)
+                </p>
+              </div>
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <Users className="h-5 w-5 text-muted-foreground" />
+                  <p className="text-sm font-medium">Audience Growth</p>
+                </div>
+                <div className="h-[200px] rounded-lg p-4">
+                  <div className="h-full flex items-end gap-2">
+                    {[15, 25, 35, 45, 55, 65, 75].map((value, index) => (
+                      <div
+                        key={index}
+                        className="flex-1 bg-gradient-to-t from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 transition-colors rounded-t"
+                        style={{ height: `${value}%` }}
+                      />
+                    ))}
+                  </div>
+                  <div className="flex justify-between mt-2 text-xs text-muted-foreground">
+                    <span key="mon3">Mon</span>
+                    <span key="tue3">Tue</span>
+                    <span key="wed3">Wed</span>
+                    <span key="thu3">Thu</span>
+                    <span key="fri3">Fri</span>
+                    <span key="sat3">Sat</span>
+                    <span key="sun3">Sun</span>
+                  </div>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  New followers: 245 (+8% this week)
+                </p>
+              </div>
+            </div>
+          </div>
 
-          <Card>
-            <CardHeader>
-              <CardTitle>AI-Powered Insights</CardTitle>
-              <CardDescription>Performance optimization suggestions</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-6">
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center">
-                    <p className="font-medium">Content Optimization</p>
-                    <span className="text-green-500">+15%</span>
-                  </div>
-                  <Progress value={75} className="h-2" />
-                  <p className="text-sm text-muted-foreground">
-                    Suggested improvements for your content strategy
-                  </p>
+          <div>
+            <h2 className="text-lg font-semibold mb-2">AI-Powered Insights</h2>
+            <p className="text-sm text-muted-foreground mb-4">Performance optimization suggestions</p>
+            <div className="space-y-6">
+              <div className="space-y-2">
+                <div className="flex justify-between items-center">
+                  <p className="font-medium">Content Optimization</p>
+                  <span className="text-green-500">+15%</span>
                 </div>
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center">
-                    <p className="font-medium">Best Posting Times</p>
-                    <span className="text-green-500">+25%</span>
-                  </div>
-                  <Progress value={85} className="h-2" />
-                  <p className="text-sm text-muted-foreground">
-                    Optimized schedule for maximum engagement
-                  </p>
+                <div className="h-2 bg-muted rounded-full overflow-hidden">
+                  <div 
+                    className="h-full bg-gradient-to-r from-blue-500 to-purple-600 rounded-full transition-all duration-300"
+                    style={{ width: '75%' }}
+                  />
                 </div>
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center">
-                    <p className="font-medium">Hashtag Performance</p>
-                    <span className="text-green-500">+10%</span>
-                  </div>
-                  <Progress value={60} className="h-2" />
-                  <p className="text-sm text-muted-foreground">
-                    Trending hashtags in your niche
-                  </p>
-                </div>
+                <p className="text-sm text-muted-foreground">
+                  Suggested improvements for your content strategy
+                </p>
               </div>
-            </CardContent>
-          </Card>
+              <div className="space-y-2">
+                <div className="flex justify-between items-center">
+                  <p className="font-medium">Best Posting Times</p>
+                  <span className="text-green-500">+25%</span>
+                </div>
+                <div className="h-2 bg-muted rounded-full overflow-hidden">
+                  <div 
+                    className="h-full bg-gradient-to-r from-blue-500 to-purple-600 rounded-full transition-all duration-300"
+                    style={{ width: '85%' }}
+                  />
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  Optimized schedule for maximum engagement
+                </p>
+              </div>
+              <div className="space-y-2">
+                <div className="flex justify-between items-center">
+                  <p className="font-medium">Hashtag Performance</p>
+                  <span className="text-green-500">+10%</span>
+                </div>
+                <div className="h-2 bg-muted rounded-full overflow-hidden">
+                  <div 
+                    className="h-full bg-gradient-to-r from-blue-500 to-purple-600 rounded-full transition-all duration-300"
+                    style={{ width: '60%' }}
+                  />
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  Trending hashtags in your niche
+                </p>
+              </div>
+            </div>
+          </div>
         </TabsContent>
 
         <TabsContent value="plans" className="space-y-4 sm:space-y-6">
@@ -505,7 +496,7 @@ export default function BillingClient({ user, searchParams, upcomingCharges, pay
                   <CardDescription className="text-sm">{tier.description}</CardDescription>
                   {tier.mostPopular && (
                     <div className="mt-2">
-                      <span className="inline-flex items-center rounded-full bg-primary bg-opacity-10 px-2.5 py-0.5 text-xs font-medium text-primary">
+                      <span className="inline-flex items-center rounded-full bg-gradient-to-r from-blue-500 to-purple-600 text-white px-2.5 py-0.5 text-xs font-medium">
                         Most Popular
                       </span>
                     </div>
@@ -539,7 +530,7 @@ export default function BillingClient({ user, searchParams, upcomingCharges, pay
                     ))}
                   </ul>
                   <Button
-                    className="mt-6 w-full"
+                    className={`mt-6 w-full ${tier.cta === 'Get Pro' ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:from-blue-600 hover:to-purple-700' : ''}`}
                     onClick={async () => {
                       const priceId = billingFrequency === 'monthly' ? tier.id : tier.yearlyId;
                       try {

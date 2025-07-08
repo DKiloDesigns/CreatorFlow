@@ -1,7 +1,7 @@
 # CreatorFlow Design Specification (2025 Base)
 
 ## Overview
-This document defines the **base design system** for CreatorFlow, reflecting the current implementation and screenshots for both light and dark modes. It covers the landing page, navigation, theme toggle, cards, buttons, and overall color system.
+This document defines the **current design system** for CreatorFlow, reflecting the implementation as of July 2025. It covers the landing page, navigation, theme toggle, cards, buttons, gradients, and overall color system.
 
 ---
 
@@ -13,7 +13,7 @@ This document defines the **base design system** for CreatorFlow, reflecting the
 - **Card Background:** White (`#fff`)
 - **Muted/Secondary Background:** `#f5f5f5`
 - **Primary Color:** Black (`#262626`)
-- **Accent/Highlight:** No gradients, use solid colors only
+- **Accent/Highlight:** Blue-to-purple gradients (`from-blue-500 to-purple-600`)
 
 ### Dark Mode
 - **Background:** Very dark gray (`#171717`)
@@ -21,7 +21,7 @@ This document defines the **base design system** for CreatorFlow, reflecting the
 - **Card Background:** Dark gray (`#262626`)
 - **Muted/Secondary Background:** `#404040`
 - **Primary Color:** Light gray (`#e5e5e5`)
-- **Accent/Highlight:** No gradients, use solid colors only
+- **Accent/Highlight:** Blue-to-purple gradients (`from-blue-500 to-purple-600`)
 
 ---
 
@@ -72,34 +72,130 @@ This document defines the **base design system** for CreatorFlow, reflecting the
 
 ---
 
-## 6. Section Dividers & Spacing
+## 6. Dashboard & Content Areas
+
+### Quick Actions Buttons
+- **Background:** Match scheduled post content area background
+  - Light mode: White (`bg-white`)
+  - Dark mode: Dark gray (`bg-gray-800`)
+- **Text:** 
+  - Light mode: Black (`text-black`)
+  - Dark mode: White (`dark:text-white`)
+- **Hover:** Subtle background change
+  - Light mode: `hover:bg-gray-100`
+  - Dark mode: `hover:bg-gray-700`
+
+### AI Buttons (Content, Captions, Hashtags)
+- **Background:**
+  - Light mode: White (`bg-white hover:bg-gray-100`)
+  - Dark mode: Black (`dark:bg-black dark:hover:bg-gray-800`)
+- **Text:**
+  - Light mode: Black (`text-black`)
+  - Dark mode: White (`dark:text-white`)
+
+### Post Now Button
+- **Background:** Blue-to-purple gradient (`bg-gradient-to-r from-blue-500 to-purple-600`)
+- **Hover:** Darker gradient (`hover:from-blue-600 hover:to-purple-700`)
+- **Text:** White (`text-white`)
+- **Disabled State:** Full opacity (`disabled:opacity-100`)
+
+### Graph Bars & Progress Bars
+- **Background:** Blue-to-purple gradient (`bg-gradient-to-t from-blue-500 to-purple-600`)
+- **Hover:** Darker gradient (`hover:from-blue-600 hover:to-purple-700`)
+- **Direction:** Vertical for bars (`bg-gradient-to-t`), horizontal for progress (`bg-gradient-to-r`)
+
+---
+
+## 7. Calendar Toolbar
+- **Button Background:** Black (`background-color: black !important`)
+- **Button Text:** White (`color: white !important`)
+- **Hover:** Dark gray (`background-color: #1f2937 !important`)
+- **Disabled:** Gray with reduced opacity
+- **Layout:** Title first, navigation buttons center, view buttons right
+
+---
+
+## 8. Content Areas & Containers
+
+### Scheduled Post Content Area
+- **Background:** Card background color
+  - Light mode: White (`--card: #ffffff`)
+  - Dark mode: Dark gray (`--card: #262626`)
+
+### Removed Containers
+- **Draft Posts, Scheduled, Media Files:** No containers, content only
+- **Content Calendar:** No container, calendar content only
+- **Content Table/Grid:** No container, table content only
+- **Recent Activity:** No container, content only
+- **AI Analytics Summary:** No containers, cards only
+- **Profile Sections:** No containers, content only
+- **Billing Sections:** No containers except main tabs and plan cards
+
+### Text Colors
+- **Light Mode:** Black text for all content
+- **Dark Mode:** White text for all content
+- **Placeholder Text:** Black in light mode, white in dark mode
+
+---
+
+## 9. Section Dividers & Spacing
 - **Dividers:** Use subtle border lines (`border-border`)
 - **Spacing:** Generous padding and margin for clarity
 
 ---
 
-## 7. Footer
+## 10. Footer
 - **Background:** Inherits from page
 - **Text:** Muted foreground
 - **Links:** No underline by default, underline on hover
 
 ---
 
-## 8. General Rules
-- **No gradients anywhere**
+## 11. Security Page
+- **Delete Account:** Button only, no label
+- **Clean Interface:** Minimal labels and containers
+
+---
+
+## 12. General Rules
+- **Gradients:** Use blue-to-purple gradients (`from-blue-500 to-purple-600`) for:
+  - Graph bars
+  - Progress bars
+  - Post Now button
+  - Other accent elements
 - **No drop shadows except for subtle card shadow**
 - **All icons use solid color, no gradients**
 - **All text is high-contrast for accessibility**
 - **All interactive elements have clear hover/focus states**
+- **Containers removed where possible for cleaner interface**
 
 ---
 
-## 9. Reference Screenshots
+## 13. Recent UI/UX Improvements (July 2025)
+
+### Applied Gradients
+- **Billing Page Graphs:** All usage statistics bars use blue-to-purple gradient
+- **AI-Powered Insights:** Progress bars use blue-to-purple gradient
+- **Post Now Button:** Blue-to-purple gradient background
+
+### Button Styling Updates
+- **AI Buttons:** White backgrounds in light mode for better readability
+- **Quick Actions:** Match scheduled post content area background colors
+- **Calendar Toolbar:** Black backgrounds with white text
+
+### Interface Cleanup
+- **Container Removal:** Removed unnecessary containers while keeping content
+- **Text Colors:** Ensured proper contrast in both light and dark modes
+- **Calendar Toolbar:** Reorganized for better UX (title first, navigation center, views right)
+
+---
+
+## 14. Reference Screenshots
 - See attached screenshots for exact visual reference of light and dark modes.
 
 ---
 
-_Last updated: 2025-07-01_
+_Last updated: 2025-07-08_
 
 ---
 
@@ -109,18 +205,15 @@ _Last updated: 2025-07-01_
 - **All text:** White color
 - **Font:** System default (inherit from Tailwind)
 
-### 2. UI Elements - Remove Gradients
-**NO gradient backgrounds on:**
-- User profile dropdown menu
-- Notification display
-- Light/dark mode toggle
-- Section headers:
-  - "+ Quick Actions"
-  - "Recent Activity" 
-  - "How are we doing?"
+### 2. UI Elements - Gradient Applications
+**Blue-to-purple gradients applied to:**
+- Graph bars in billing page
+- Progress bars in AI-Powered Insights
+- Post Now button
+- Other accent elements
 
 ### 3. Quick Actions Section
-- **Buttons:** Dark color (closer to black than grey, but not pure black)
+- **Buttons:** Match scheduled post content area background (dark gray)
 - **Purpose:** Must stand out against the black page background
 - **Border:** Remove border from Quick Actions box
 
@@ -152,18 +245,15 @@ _Last updated: 2025-07-01_
 - **All text:** Black color
 - **Font:** System default (inherit from Tailwind)
 
-### 2. UI Elements - Remove Gradients
-**NO gradient backgrounds on:**
-- User profile dropdown menu
-- Notification display
-- Light/dark mode toggle
-- Section headers:
-  - "Recent Activity"
-  - "Quick Actions"
-  - "How are we doing?"
+### 2. UI Elements - Gradient Applications
+**Blue-to-purple gradients applied to:**
+- Graph bars in billing page
+- Progress bars in AI-Powered Insights
+- Post Now button
+- Other accent elements
 
 ### 3. Quick Actions Section
-- **Buttons:** Black backgrounds
+- **Buttons:** White backgrounds to match scheduled post content area
 - **Border:** Remove border from Quick Actions box
 
 ### 4. Recent Activity Section
@@ -201,12 +291,14 @@ _Last updated: 2025-07-01_
 - **Yellow Pastel:** Soft yellow (define specific hex)
 - **Green Pastel:** Soft green (define specific hex)
 - **Dark Grey (for buttons):** Dark grey that stands out from black background
+- **Gradient Colors:** Blue (#3b82f6) to Purple (#9333ea)
 
 ### Design Principles
 1. **Consistency:** All similar elements must follow the same styling rules
 2. **Contrast:** Elements must have sufficient contrast against their backgrounds
-3. **Simplicity:** No unnecessary gradients or decorative elements
-4. **Accessibility:** Maintain readability and usability standards
+3. **Gradients:** Use blue-to-purple gradients for accent elements
+4. **Simplicity:** Remove unnecessary containers while maintaining functionality
+5. **Accessibility:** Maintain readability and usability standards
 
 ### Maintenance
 - This document should be updated whenever new styling requirements are added
@@ -217,6 +309,7 @@ _Last updated: 2025-07-01_
 
 ## Version History
 
+- **v1.1 (July 2025):** Updated to reflect current UI/UX improvements including gradients, button styling, and container removals
 - **v1.0 (January 2025):** Initial design specification based on user feedback
 
 ---

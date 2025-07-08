@@ -287,46 +287,46 @@ export function EnhancedComposer({ onSubmit, className }: EnhancedComposerProps)
             variant="outline"
             size="sm"
             onClick={() => window.dispatchEvent(new CustomEvent('openUploadModal'))}
-            className="flex items-center gap-2 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800"
+            className="flex items-center gap-2 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800"
           >
             <Upload className="h-4 w-4" />
-            Upload Media
+            <span className="text-black dark:text-white">Upload Media</span>
           </Button>
           <Button
             variant="outline"
             size="sm"
             onClick={() => window.dispatchEvent(new CustomEvent('openCreateVideoModal'))}
-            className="flex items-center gap-2 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800"
+            className="flex items-center gap-2 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800"
           >
             <Video className="h-4 w-4" />
-            Create Video
+            <span className="text-black dark:text-white">Create Video</span>
           </Button>
           <Button
             variant="outline"
             size="sm"
             onClick={() => window.dispatchEvent(new CustomEvent('openUseTemplateModal'))}
-            className="flex items-center gap-2 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800"
+            className="flex items-center gap-2 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800"
           >
             <FileText className="h-4 w-4" />
-            Use Template
+            <span className="text-black dark:text-white">Use Template</span>
           </Button>
           <Button
             variant="outline"
             size="sm"
             onClick={() => window.dispatchEvent(new CustomEvent('openBulkScheduleModal'))}
-            className="flex items-center gap-2 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800"
+            className="flex items-center gap-2 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800"
           >
             <Calendar className="h-4 w-4" />
-            Bulk Schedule
+            <span className="text-black dark:text-white">Bulk Schedule</span>
           </Button>
           <Button
             variant="outline"
             size="sm"
             onClick={() => window.dispatchEvent(new CustomEvent('openMediaLibraryModal'))}
-            className="flex items-center gap-2 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800"
+            className="flex items-center gap-2 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800"
           >
             <Folder className="h-4 w-4" />
-            Media Library
+            <span className="text-black dark:text-white">Media Library</span>
           </Button>
         </div>
       </CardHeader>
@@ -372,33 +372,33 @@ export function EnhancedComposer({ onSubmit, className }: EnhancedComposerProps)
               </div>
 
               {/* AI Magic Buttons */}
-              <div className="flex items-center gap-2 p-2 border rounded-md bg-gradient-to-r from-purple-50 to-blue-50">
+              <div className="flex items-center gap-2">
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={generateAiContent}
-                  className="flex items-center gap-2 bg-white hover:bg-purple-50"
+                  className="flex items-center gap-2 bg-white hover:bg-gray-100 dark:bg-black dark:hover:bg-gray-800"
                 >
-                  <Sparkles className="h-4 w-4 text-purple-600" />
-                  <span className="text-sm">AI Content</span>
+                  <Sparkles className="h-4 w-4 text-purple-400" />
+                  <span className="text-sm text-black dark:text-white">AI Content</span>
                 </Button>
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={() => handleAiSuggestion('captions')}
-                  className="flex items-center gap-2 bg-white hover:bg-blue-50"
+                  className="flex items-center gap-2 bg-white hover:bg-gray-100 dark:bg-black dark:hover:bg-gray-800"
                 >
-                  <Brain className="h-4 w-4 text-blue-600" />
-                  <span className="text-sm">AI Captions</span>
+                  <Brain className="h-4 w-4 text-blue-400" />
+                  <span className="text-sm text-black dark:text-white">AI Captions</span>
                 </Button>
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={() => handleAiSuggestion('hashtags')}
-                  className="flex items-center gap-2 bg-white hover:bg-green-50"
+                  className="flex items-center gap-2 bg-white hover:bg-gray-100 dark:bg-black dark:hover:bg-gray-800"
                 >
-                  <Zap className="h-4 w-4 text-green-600" />
-                  <span className="text-sm">AI Hashtags</span>
+                  <Zap className="h-4 w-4 text-green-400" />
+                  <span className="text-sm text-black dark:text-white">AI Hashtags</span>
                 </Button>
               </div>
 
@@ -502,7 +502,7 @@ export function EnhancedComposer({ onSubmit, className }: EnhancedComposerProps)
               <Button
                 onClick={handleSubmit}
                 disabled={!content.trim() || selectedPlatforms.length === 0 || isOverLimit}
-                className="flex items-center gap-2"
+                className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white disabled:opacity-100"
               >
                 <Send className="h-4 w-4" />
                 Post Now
