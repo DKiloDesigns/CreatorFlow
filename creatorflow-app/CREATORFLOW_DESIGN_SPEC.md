@@ -1,4 +1,25 @@
-# CreatorFlow Design Specification (2025 Base)
+# CreatorFlow Design Specification (2025 Baseline)
+
+## Purpose & Usage
+
+**This document defines the current baseline design for CreatorFlow and serves as the authoritative reference for all UI decisions.**
+
+### How to Use This Document
+- **Before making any UI changes, check this spec first**
+- **If a component isn't covered here, follow the nearest similar pattern**
+- **When in doubt, maintain the current baseline rather than introducing new patterns**
+- **This is NOT just a record of what we've done - it IS the guide for future decisions**
+- **The current implementation represents the baseline - any changes should either maintain this baseline or be explicitly approved deviations**
+
+### Design Philosophy
+CreatorFlow follows a **clean, minimal aesthetic** with:
+- High contrast for accessibility
+- Consistent color system across light/dark modes
+- Blue-to-purple gradients for accent elements
+- Removed unnecessary containers for cleaner interface
+- Unified theming using CSS variables
+
+---
 
 ## Overview
 This document defines the **current design system** for CreatorFlow, reflecting the implementation as of July 2025. It covers the landing page, navigation, theme toggle, cards, buttons, gradients, and overall color system.
@@ -195,6 +216,47 @@ This document defines the **current design system** for CreatorFlow, reflecting 
 
 ---
 
+## 15. Decision-Making Framework
+
+### When Making UI Changes
+1. **First:** Check this design spec for existing patterns
+2. **Second:** If no pattern exists, find the most similar component and follow its styling
+3. **Third:** If still unsure, maintain the current baseline rather than introducing new patterns
+4. **Fourth:** Document any deviations and get approval before implementing
+
+### Consistency Rules
+- **Color System:** Always use the defined light/dark mode colors
+- **Gradients:** Only use blue-to-purple gradients for accent elements
+- **Containers:** Remove unnecessary containers unless they serve a specific purpose
+- **Typography:** Maintain high contrast and readability
+- **Spacing:** Use consistent padding and margins
+
+### Baseline Maintenance
+- The current implementation represents the **baseline design**
+- Changes should either **maintain this baseline** or be **explicitly approved deviations**
+- When in doubt, **preserve the current design language**
+
+---
+
+## 16. Recent UI/UX Improvements (July 2025)
+
+### Applied Gradients
+- **Billing Page Graphs:** All usage statistics bars use blue-to-purple gradient
+- **AI-Powered Insights:** Progress bars use blue-to-purple gradient
+- **Post Now Button:** Blue-to-purple gradient background
+
+### Button Styling Updates
+- **AI Buttons:** White backgrounds in light mode for better readability
+- **Quick Actions:** Match scheduled post content area background colors
+- **Calendar Toolbar:** Black backgrounds with white text
+
+### Interface Cleanup
+- **Container Removal:** Removed unnecessary containers while keeping content
+- **Text Colors:** Ensured proper contrast in both light and dark modes
+- **Calendar Toolbar:** Reorganized for better UX (title first, navigation center, views right)
+
+---
+
 _Last updated: 2025-07-08_
 
 ---
@@ -283,6 +345,12 @@ _Last updated: 2025-07-08_
 
 ## Implementation Notes
 
+### Design Baseline Reference
+- **This document serves as the single source of truth for CreatorFlow's visual design**
+- **Before implementing any UI changes, reference this document first**
+- **The current implementation represents the baseline - maintain consistency with these specifications**
+- **Any deviations from these specifications must be documented and approved**
+
 ### Color Definitions
 - **Dark Mode Background:** Black (#000000)
 - **Light Mode Background:** White (#FFFFFF)
@@ -299,19 +367,22 @@ _Last updated: 2025-07-08_
 3. **Gradients:** Use blue-to-purple gradients for accent elements
 4. **Simplicity:** Remove unnecessary containers while maintaining functionality
 5. **Accessibility:** Maintain readability and usability standards
+6. **Baseline Preservation:** Maintain the current design language unless explicitly approved to change
 
 ### Maintenance
 - This document should be updated whenever new styling requirements are added
 - All developers must reference this document before making styling changes
 - Screenshots should be taken after major styling updates to verify compliance
+- **This document guides UI decisions - it is not just documentation**
 
 ---
 
 ## Version History
 
+- **v1.2 (August 2025):** Updated to emphasize baseline reference purpose and decision-making framework
 - **v1.1 (July 2025):** Updated to reflect current UI/UX improvements including gradients, button styling, and container removals
 - **v1.0 (January 2025):** Initial design specification based on user feedback
 
 ---
 
-**Note:** This document serves as the single source of truth for CreatorFlow's visual design. Any deviations from these specifications must be documented and approved. 
+**Note:** This document serves as the **authoritative reference** for CreatorFlow's visual design. Any deviations from these specifications must be documented and approved. The current implementation represents the baseline design that should be maintained unless explicitly changed. 

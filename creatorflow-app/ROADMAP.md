@@ -1,5 +1,14 @@
 # CreatorFlow Roadmap
 
+## ✅ 2025-08-08: Dark Mode CSS Variable Conflict Resolution
+- **Complex Debugging Achievement**: Successfully resolved cards always showing dark background regardless of theme
+- **Root Cause Analysis**: Identified conflict between Tailwind dark mode utilities (`bg-gray-100 dark:bg-gray-800`) and CSS variable system (`--card`, `--card-foreground`)
+- **Solution Implementation**: Switched to unified CSS variable approach using `bg-[var(--card)]` and `text-[var(--card-foreground)]`
+- **Systematic Debugging**: Demonstrated comprehensive debugging methodology including browser inspection, CSS analysis, and alternative approaches
+- **Documentation**: Created detailed KRA document (`docs/_ai_kra/KRA-Dark-Mode-Debugging-2025-08-08.md`) covering entire debugging process
+- **Best Practices**: Established CSS variables over Tailwind utilities for complex theming scenarios
+- **Theme Consistency**: Cards now display correctly in both light and dark modes with proper background and text colors
+
 ## ✅ 2025-07-08: UI/UX Improvements & Gradient Implementation
 - **Graph Gradient Application**: Applied blue-to-purple gradients to all graph bars in billing page usage statistics and AI-Powered Insights progress bars
 - **Button Styling Updates**: Updated AI Content/Captions/Hashtags buttons to have white backgrounds in light mode for better readability

@@ -21,6 +21,8 @@ const config: Config = {
     'dark:bg-white/10',
     'dark:hover:bg-white/20',
     'dark:text-white',
+    'bg-gray-100',
+    'dark:bg-gray-800',
   ],
   theme: {
     extend: {},

@@ -1,7 +1,10 @@
+'use client';
+
 import Link from "next/link";
 import { FEATURES, HOW_IT_WORKS, TESTIMONIALS } from "@/data/landing";
 import { FeatureCard } from "@/components/FeatureCard";
 import { TestimonialCard } from "@/components/TestimonialCard";
+import { useIsDarkMode } from "@/hooks/useIsDarkMode";
 
 const PLANS = [
   {
@@ -31,6 +34,7 @@ const PLANS = [
 ];
 
 export default function Home() {
+  const isDark = useIsDarkMode();
   return (
     <div className="min-h-screen flex flex-col bg-background">
       {/* Hero Section */}
@@ -45,8 +49,20 @@ export default function Home() {
           <Link href="/auth" className="inline-block bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-lg px-6 sm:px-8 py-2 sm:py-3 shadow hover:from-blue-600 hover:to-purple-700 transition text-sm sm:text-base">
             Start Free
           </Link>
-          <Link href="#how-it-works" className="inline-block border-2 border-transparent bg-gradient-to-r from-blue-500 to-purple-600 bg-clip-border text-white font-semibold rounded-lg px-6 sm:px-8 py-2 sm:py-3 shadow hover:from-blue-600 hover:to-purple-700 transition text-sm sm:text-base">
-            See CreatorFlow in Action
+          <Link
+            href="#how-it-works"
+            className="relative inline-block font-semibold rounded-lg px-6 sm:px-8 py-2 sm:py-3 shadow transition text-sm sm:text-base overflow-hidden"
+          >
+            {/* Gradient border */}
+            <span className="absolute inset-0 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 z-0" aria-hidden="true"></span>
+            {/* Inner background: auto-detect dark mode */}
+            <span
+              className="absolute inset-[4px] rounded-lg z-10"
+              style={{ background: isDark ? "black" : "white" }}
+              aria-hidden="true"
+            ></span>
+            {/* Text */}
+            <span className="relative z-20" style={{ color: isDark ? "white" : "black" }}>See CreatorFlow in Action</span>
           </Link>
         </div>
       </header>
@@ -68,7 +84,7 @@ export default function Home() {
           {PLANS.map((plan) => (
             <div
               key={plan.name}
-              className={`relative bg-white dark:bg-slate-800 rounded-xl shadow-lg p-6 flex flex-col ${
+              className={`relative bg-[var(--card)] rounded-xl shadow-lg p-6 flex flex-col ${
                 plan.highlight ? 'ring-2 ring-primary scale-105' : ''
               }`}
             >
@@ -77,26 +93,16 @@ export default function Home() {
                   Most Popular
                 </span>
               )}
-              <h3 className="text-xl font-bold mb-2">{plan.name}</h3>
-              <p className="text-3xl font-bold mb-4">{plan.price}</p>
-              <ul className="mb-8 flex-1 space-y-2">
-                {plan.features.map((feature) => (
-                  <li key={feature} className="flex items-center gap-2">
-                    <span className="text-green-500">✓</span>
-                    <span className="text-sm">{feature}</span>
+              <h3 className="text-lg font-bold mb-2 text-[var(--card-foreground)]">{plan.name}</h3>
+              <p className="text-4xl font-bold mb-4 text-[var(--card-foreground)]">{plan.price}</p>
+              <ul className="mb-6 space-y-2">
+                {plan.features.map((feature, i) => (
+                  <li key={i} className="text-sm text-[var(--card-foreground)] flex items-center gap-2">
+                    {feature}
                   </li>
                 ))}
               </ul>
-              <Link
-                href={plan.href}
-                className={`inline-block text-center font-semibold rounded-lg px-6 py-3 transition ${
-                  plan.highlight
-                    ? 'bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:from-blue-600 hover:to-purple-700'
-                    : 'bg-primary text-primary-foreground hover:bg-primary/90'
-                }`}
-              >
-                {plan.cta}
-              </Link>
+              <button className="w-full py-2 px-4 rounded bg-primary text-primary-foreground font-semibold shadow hover:bg-primary/90 transition">{plan.cta}</button>
             </div>
           ))}
         </div>

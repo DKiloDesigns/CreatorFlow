@@ -197,17 +197,3 @@
 .space-responsive {
   gap: clamp(0.5rem, 2vw, 1rem);
 }
-
-.p-responsive {
-  padding: clamp(0.5rem, 2vw, 1rem);
-}
-
-.px-responsive {
-  padding-left: clamp(0.5rem, 2vw, 1rem);
-  padding-right: clamp(0.5rem, 2vw, 1rem);
-}
-
-.py-responsive {
-  padding-top: clamp(0.5rem, 2vw, 1rem);
-  padding-bottom: clamp(0.5rem, 2vw, 1rem);
-}

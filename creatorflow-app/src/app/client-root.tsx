@@ -84,19 +84,19 @@ export default function ClientRoot({ children }: { children: React.ReactNode }) 
         </div>
       )}
       {showNav && (
-        <nav className="w-full border-b border-slate-200 dark:border-slate-800 bg-white !bg-white dark:bg-[#18181b] sticky top-0 z-40">
+        <nav className="w-full border-b border-slate-200 bg-white sticky top-0 z-40">
           <div className="max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-6 lg:px-8 py-4">
             <div className="flex items-center gap-4 sm:gap-6">
-              <Link href="/" className="text-lg sm:text-xl font-bold text-black dark:text-white">CreatorFlow</Link>
+              <Link href="/" className="text-lg sm:text-xl font-bold text-black">CreatorFlow</Link>
               <div className="hidden sm:flex items-center gap-4">
-                <Link href="/#features" className="text-sm font-medium hover:underline !text-black">Features</Link>
-                <Link href="/#plans" className="text-sm font-medium hover:underline !text-black">Plans</Link>
-                <Link href="/contact" className="text-sm font-medium hover:underline !text-black">Contact</Link>
+                <Link href="/#features" className="text-sm font-medium hover:underline text-black">Features</Link>
+                <Link href="/#plans" className="text-sm font-medium hover:underline text-black">Plans</Link>
+                <Link href="/contact" className="text-sm font-medium hover:underline text-black">Contact</Link>
               </div>
             </div>
             <div className="flex items-center gap-2 sm:gap-4">
               <ThemeToggle isLandingPage={true} />
-              <Link href="/auth" className="text-sm font-medium hover:underline !text-black">Login</Link>
+              <Link href="/auth" className="text-sm font-medium hover:underline text-black">Login</Link>
             </div>
           </div>
         </nav>
