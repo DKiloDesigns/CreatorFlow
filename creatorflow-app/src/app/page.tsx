@@ -5,6 +5,8 @@ import { FEATURES, HOW_IT_WORKS, TESTIMONIALS } from "@/data/landing";
 import { FeatureCard } from "@/components/FeatureCard";
 import { TestimonialCard } from "@/components/TestimonialCard";
 import { useIsDarkMode } from "@/hooks/useIsDarkMode";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { Footer } from "@/components/Footer";
 
 const PLANS = [
   {
@@ -36,7 +38,38 @@ const PLANS = [
 export default function Home() {
   const isDark = useIsDarkMode();
   return (
-    <div className="min-h-screen flex flex-col bg-background">
+    <div className="min-h-screen flex flex-col bg-background overflow-x-hidden">
+      {/* Header with Logo and Theme Toggle */}
+      <header className="w-full bg-white border-b border-gray-200 sticky top-0 z-40">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center h-16">
+            {/* Logo and Brand */}
+            <div className="flex items-center">
+              <Link href="/" className="flex items-center space-x-2 min-w-[44px] min-h-[44px]">
+                {/* No logo or gradient square */}
+                <span className="font-bold text-xl text-black">CreatorFlow</span>
+              </Link>
+            </div>
+
+            {/* Right side actions */}
+            <div className="flex items-center gap-4">
+              {/* Theme Toggle */}
+              <div className="min-w-[44px] min-h-[44px] flex items-center justify-center">
+                <ThemeToggle isLandingPage={true} />
+              </div>
+              
+              {/* Sign In Link */}
+              <Link 
+                href="/auth" 
+                className="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-black hover:text-blue-600 transition-colors min-w-[44px] min-h-[44px] rounded-md hover:bg-gray-50"
+              >
+                Sign In
+              </Link>
+            </div>
+          </div>
+        </div>
+      </header>
+
       {/* Hero Section */}
       <header className="w-full flex flex-col items-center justify-center px-4 sm:px-6 py-12 sm:py-16 border-b border-border text-center gap-4 sm:gap-6">
         <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground max-w-3xl">
@@ -46,12 +79,12 @@ export default function Home() {
           The all-in-one platform for creators to plan, publish, analyze, and get paid—everywhere.
         </p>
         <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
-          <Link href="/auth" className="inline-block bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-lg px-6 sm:px-8 py-2 sm:py-3 shadow hover:from-blue-600 hover:to-purple-700 transition text-sm sm:text-base">
+          <Link href="/auth" className="inline-block bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-lg px-6 sm:px-8 py-2 sm:py-3 shadow hover:from-blue-600 hover:to-purple-700 transition text-sm sm:text-base w-full sm:w-auto">
             Start Free
           </Link>
           <Link
             href="#how-it-works"
-            className="relative inline-block font-semibold rounded-lg px-6 sm:px-8 py-2 sm:py-3 shadow transition text-sm sm:text-base overflow-hidden"
+            className="relative inline-block font-semibold rounded-lg px-6 sm:px-8 py-2 sm:py-3 shadow transition text-sm sm:text-base overflow-hidden w-full sm:w-auto"
           >
             {/* Gradient border */}
             <span className="absolute inset-0 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 z-0" aria-hidden="true"></span>
@@ -102,7 +135,13 @@ export default function Home() {
                   </li>
                 ))}
               </ul>
-              <button className="w-full py-2 px-4 rounded bg-primary text-primary-foreground font-semibold shadow hover:bg-primary/90 transition">{plan.cta}</button>
+              <button className={`w-full py-2 px-4 rounded font-semibold shadow transition ${
+                plan.cta === "Start Free Trial" 
+                  ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:from-blue-600 hover:to-purple-700" 
+                  : "bg-primary text-primary-foreground hover:bg-primary/90"
+              }`}>
+                {plan.cta}
+              </button>
             </div>
           ))}
         </div>
@@ -147,26 +186,7 @@ export default function Home() {
         </p>
       </section>
 
-      {/* Footer */}
-      <footer className="w-full py-6 flex flex-col items-center gap-2 border-t border-border text-xs text-muted-foreground">
-        <nav className="flex gap-4 mb-1">
-          <Link href="/about">About</Link>
-          <Link href="/blog">Blog</Link>
-          <Link href="/community">Community</Link>
-          <Link href="/support">Support</Link>
-          <Link href="/careers">Careers</Link>
-          <Link href="/#plans">Plans</Link>
-        </nav>
-        <div className="flex gap-3">
-          <a href="#" aria-label="YouTube">🎥</a>
-          <a href="#" aria-label="Instagram">📸</a>
-          <a href="#" aria-label="TikTok">🎵</a>
-          <a href="#" aria-label="X">🐦</a>
-          <a href="#" aria-label="Discord">💬</a>
-        </div>
-        <span>&copy; {new Date().getFullYear()} CreatorFlow. All rights reserved.</span>
-        <span>Made with ❤️ for creators.</span>
-      </footer>
+      <Footer />
     </div>
   );
 }

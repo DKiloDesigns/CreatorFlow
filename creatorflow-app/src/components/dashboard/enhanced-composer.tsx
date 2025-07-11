@@ -282,51 +282,42 @@ export function EnhancedComposer({ onSubmit, className }: EnhancedComposerProps)
         </CardTitle>
         
         {/* Action Buttons - Right below the header */}
-        <div className="flex flex-wrap gap-2 mt-4">
+        <div className="flex flex-col sm:flex-row flex-wrap gap-2 mt-4">
           <Button
             variant="outline"
             size="sm"
             onClick={() => window.dispatchEvent(new CustomEvent('openUploadModal'))}
-            className="flex items-center gap-2 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800"
+            className="flex items-center gap-2 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 w-full sm:w-auto min-w-[44px] min-h-[44px]"
           >
             <Upload className="h-4 w-4" />
-            <span className="text-black dark:text-white">Upload Media</span>
+            <span className="text-black dark:text-white break-words">Upload Media</span>
           </Button>
           <Button
             variant="outline"
             size="sm"
             onClick={() => window.dispatchEvent(new CustomEvent('openCreateVideoModal'))}
-            className="flex items-center gap-2 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800"
+            className="flex items-center gap-2 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 w-full sm:w-auto min-w-[44px] min-h-[44px]"
           >
             <Video className="h-4 w-4" />
-            <span className="text-black dark:text-white">Create Video</span>
+            <span className="text-black dark:text-white break-words">Create Video</span>
           </Button>
           <Button
             variant="outline"
             size="sm"
             onClick={() => window.dispatchEvent(new CustomEvent('openUseTemplateModal'))}
-            className="flex items-center gap-2 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800"
+            className="flex items-center gap-2 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 w-full sm:w-auto min-w-[44px] min-h-[44px]"
           >
             <FileText className="h-4 w-4" />
-            <span className="text-black dark:text-white">Use Template</span>
+            <span className="text-black dark:text-white break-words">Use Template</span>
           </Button>
           <Button
             variant="outline"
             size="sm"
             onClick={() => window.dispatchEvent(new CustomEvent('openBulkScheduleModal'))}
-            className="flex items-center gap-2 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800"
+            className="flex items-center gap-2 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 w-full sm:w-auto min-w-[44px] min-h-[44px]"
           >
             <Calendar className="h-4 w-4" />
-            <span className="text-black dark:text-white">Bulk Schedule</span>
-          </Button>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => window.dispatchEvent(new CustomEvent('openMediaLibraryModal'))}
-            className="flex items-center gap-2 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800"
-          >
-            <Folder className="h-4 w-4" />
-            <span className="text-black dark:text-white">Media Library</span>
+            <span className="text-black dark:text-white break-words">Bulk Schedule</span>
           </Button>
         </div>
       </CardHeader>

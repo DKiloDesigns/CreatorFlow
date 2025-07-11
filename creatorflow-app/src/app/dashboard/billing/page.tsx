@@ -4,7 +4,7 @@ import BillingClient from './BillingClient';
 import { Metadata } from "next";
 
 type BillingPageProps = {
-  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+  searchParams: { [key: string]: string | string[] | undefined }
 }
 
 export const metadata: Metadata = {
@@ -14,7 +14,8 @@ export const metadata: Metadata = {
 
 export default async function BillingPage({ searchParams }: BillingPageProps) {
   const session = await getSession();
-  const resolvedSearchParams = await searchParams;
+  // searchParams is now a plain object
+  const resolvedSearchParams = searchParams;
   
   if (!session?.user) {
     return <div className="p-8 text-center">Please sign in to view billing information.</div>;

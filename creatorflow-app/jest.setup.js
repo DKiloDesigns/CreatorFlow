@@ -1,5 +1,6 @@
 // Learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom';
+import 'whatwg-fetch';
 import { expect } from '@jest/globals';
 
 // Mock environment variables
@@ -95,5 +96,104 @@ jest.mock('next/navigation', () => ({
   },
 }))
 
-// Global test setup
-global.fetch = jest.fn() 
+// Mock NextAuth
+jest.mock('next-auth/react', () => ({
+  useSession() {
+    return {
+      data: {
+        user: {
+          id: 'test-user-id',
+          name: 'Test User',
+          email: 'test@example.com',
+        },
+        expires: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+      },
+      status: 'authenticated',
+    }
+  },
+  signIn: jest.fn(),
+  signOut: jest.fn(),
+}))
+
+// Mock fetch
+global.fetch = jest.fn()
+
+// Mock IntersectionObserver
+global.IntersectionObserver = jest.fn().mockImplementation(() => ({
+  observe: jest.fn(),
+  unobserve: jest.fn(),
+  disconnect: jest.fn(),
+}))
+
+// Mock ResizeObserver
+global.ResizeObserver = jest.fn().mockImplementation(() => ({
+  observe: jest.fn(),
+  unobserve: jest.fn(),
+  disconnect: jest.fn(),
+}))
+
+// Mock matchMedia
+Object.defineProperty(window, 'matchMedia', {
+  writable: true,
+  value: jest.fn().mockImplementation(query => ({
+    matches: false,
+    media: query,
+    onchange: null,
+    addListener: jest.fn(), // deprecated
+    removeListener: jest.fn(), // deprecated
+    addEventListener: jest.fn(),
+    removeEventListener: jest.fn(),
+    dispatchEvent: jest.fn(),
+  })),
+})
+
+// Mock localStorage
+const localStorageMock = {
+  getItem: jest.fn(),
+  setItem: jest.fn(),
+  removeItem: jest.fn(),
+  clear: jest.fn(),
+}
+global.localStorage = localStorageMock
+
+// Mock sessionStorage
+const sessionStorageMock = {
+  getItem: jest.fn(),
+  setItem: jest.fn(),
+  removeItem: jest.fn(),
+  clear: jest.fn(),
+}
+global.sessionStorage = sessionStorageMock
+
+// Mock NextResponse.json for API route tests
+jest.mock('next/server', () => {
+  const actual = jest.requireActual('next/server');
+  return {
+    ...actual,
+    NextResponse: {
+      ...actual.NextResponse,
+      json: (data, init) => ({
+        status: init?.status || 200,
+        json: async () => data,
+      }),
+    },
+  };
+});
+
+// Suppress console errors in tests
+const originalError = console.error
+beforeAll(() => {
+  console.error = (...args) => {
+    if (
+      typeof args[0] === 'string' &&
+      args[0].includes('Warning: ReactDOM.render is no longer supported')
+    ) {
+      return
+    }
+    originalError.call(console, ...args)
+  }
+})
+
+afterAll(() => {
+  console.error = originalError
+}) 

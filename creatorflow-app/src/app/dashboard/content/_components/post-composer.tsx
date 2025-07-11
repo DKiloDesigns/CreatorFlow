@@ -323,21 +323,21 @@ export default function PostComposer({ platforms: propPlatforms }: { platforms?:
           {/* Platform Selector */}
           <div className="space-y-2">
             <Label>Platforms</Label>
-            <div className="flex flex-row flex-wrap gap-2 sm:gap-4" aria-label="Platform selector">
+            <div className="flex flex-col sm:flex-row sm:flex-wrap gap-2 sm:gap-4" aria-label="Platform selector">
               {platforms.map((platform) => (
                 <Tooltip key={platform.id}>
                   <TooltipTrigger asChild>
-                    <div className="flex items-center space-x-2 px-2 py-1 rounded-lg" style={{ background: platform.color + '22' }}>
+                    <div className="flex items-center space-x-2 px-3 py-2 rounded-lg min-w-[44px] min-h-[44px]" style={{ background: platform.color + '22' }}>
                       <Checkbox
                         id={`platform-${platform.id}`}
                         checked={selectedPlatforms.includes(platform.id)}
                         onCheckedChange={() => handlePlatformChange(platform.id)}
                         disabled={isSubmitting}
                         aria-label={`Select ${platform.name}`}
-                        className="focus-visible:ring-2 focus-visible:ring-primary transition-shadow"
+                        className="focus-visible:ring-2 focus-visible:ring-primary transition-shadow min-w-[44px] min-h-[44px]"
                       />
                       <span className="text-xl" aria-label={platform.name}>{platform.icon}</span>
-                      <Label htmlFor={`platform-${platform.id}`} className={cn("font-normal cursor-pointer transition-colors", isSubmitting && "text-muted-foreground")}>{platform.name}</Label>
+                      <Label htmlFor={`platform-${platform.id}`} className={cn("font-normal cursor-pointer transition-colors break-words", isSubmitting && "text-muted-foreground")}>{platform.name}</Label>
                     </div>
                   </TooltipTrigger>
                   <TooltipContent>Select to post on {platform.name}</TooltipContent>
@@ -358,7 +358,7 @@ export default function PostComposer({ platforms: propPlatforms }: { platforms?:
               disabled={isSubmitting}
               aria-required="true"
               aria-label="Post content"
-              className="focus-visible:ring-2 focus-visible:ring-primary transition-shadow"
+              className="focus-visible:ring-2 focus-visible:ring-primary transition-shadow min-h-[120px]"
             />
           </div>
 
@@ -368,7 +368,7 @@ export default function PostComposer({ platforms: propPlatforms }: { platforms?:
               <div
                 {...getRootProps()}
                 className={cn(
-                  "flex flex-col items-center justify-center p-6 rounded-md border-2 border-dashed cursor-pointer transition-colors focus-visible:ring-2 focus-visible:ring-primary outline-none",
+                  "flex flex-col items-center justify-center p-4 sm:p-6 rounded-md border-2 border-dashed cursor-pointer transition-colors focus-visible:ring-2 focus-visible:ring-primary outline-none min-h-[120px]",
                   isDragActive ? "border-primary bg-primary bg-opacity-10" : "border-border hover:border-primary hover:border-opacity-50",
                   isSubmitting ? "cursor-not-allowed opacity-50 bg-muted bg-opacity-50" : ""
                 )}
@@ -378,11 +378,11 @@ export default function PostComposer({ platforms: propPlatforms }: { platforms?:
                 <input {...getInputProps()} disabled={isSubmitting} aria-label="Select media files to upload" />
                 <UploadCloud className={cn("h-8 w-8 mb-2 transition-colors", isDragActive ? "text-primary" : "text-muted-foreground")} />
                 {isDragActive ? (
-                  <p className="text-primary">Drop the files here ...</p>
+                  <p className="text-primary text-center">Drop the files here ...</p>
                 ) : (
-                  <p className="text-muted-foreground text-sm text-center">Drag 'n' drop some files here, or click to select files</p>
+                  <p className="text-muted-foreground text-sm text-center break-words">Drag 'n' drop some files here, or click to select files</p>
                 )}
-                <p className="text-xs text-muted-foreground mt-1">(Max 5 files, images or videos)</p>
+                <p className="text-xs text-muted-foreground mt-1 text-center">(Max 5 files, images or videos)</p>
               </div>
             </TooltipTrigger>
             <TooltipContent>Upload images or videos (max 5)</TooltipContent>

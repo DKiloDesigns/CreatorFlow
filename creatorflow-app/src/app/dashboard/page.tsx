@@ -89,16 +89,16 @@ export default function DashboardPage() {
     <TooltipProvider>
       <div className="space-y-6">
         {/* Enhanced Header */}
-        <div className="flex items-center justify-between">
-          <div>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+          <div className="space-y-2">
             <h1
-              className="text-2xl font-bold tracking-tight text-black dark:text-white"
+              className="text-xl sm:text-2xl font-bold tracking-tight text-black dark:text-white break-words"
               style={{ color: 'var(--foreground)', ...(typeof window !== 'undefined' && document.documentElement.classList.contains('dark') ? { color: '#fff' } : {}) }}
             >
               Welcome back{session?.user?.name ? `, ${session.user.name}` : ''}!
             </h1>
             <p
-              className="text-black dark:text-white"
+              className="text-sm sm:text-base text-black dark:text-white break-words"
               style={{ color: 'var(--foreground)', ...(typeof window !== 'undefined' && document.documentElement.classList.contains('dark') ? { color: '#fff' } : {}) }}
             >
               Here's what's happening with your content today.
@@ -115,7 +115,7 @@ export default function DashboardPage() {
         )}
 
         {/* Enhanced Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
           <StatsCard
             title="Total Posts"
             value={stats.totalPosts}
@@ -157,61 +157,61 @@ export default function DashboardPage() {
         </div>
 
         {/* Quick Actions */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
           {/* Create Content */}
           <Card className="lg:col-span-2 border-0">
             <CardHeader>
               <CardTitle
-                className="flex items-center gap-2 text-black dark:text-white"
+                className="flex items-center gap-2 text-black dark:text-white break-words"
                 style={{ color: 'var(--foreground)', ...(typeof window !== 'undefined' && document.documentElement.classList.contains('dark') ? { color: '#fff' } : {}) }}
               >
-                <Plus className="h-5 w-5" />
+                <Plus className="h-5 w-5 flex-shrink-0" />
                 Quick Actions
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <CardContent className="space-y-3 sm:space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
                 <Button 
-                  className="h-16 flex flex-col items-center justify-center gap-2 bg-white text-black hover:bg-gray-100 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
+                  className="h-16 flex flex-col items-center justify-center gap-2 bg-white text-black hover:bg-gray-100 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700 min-w-[44px] min-h-[44px]"
                   onClick={() => router.push('/dashboard/content')}
                 >
-                  <FileText className="h-6 w-6" />
-                  <span>Create Post</span>
+                  <FileText className="h-6 w-6 flex-shrink-0" />
+                  <span className="text-sm break-words">Create Post</span>
                 </Button>
                 <Button 
-                  className="h-16 flex flex-col items-center justify-center gap-2 bg-white text-black hover:bg-gray-100 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
+                  className="h-16 flex flex-col items-center justify-center gap-2 bg-white text-black hover:bg-gray-100 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700 min-w-[44px] min-h-[44px]"
                   onClick={() => router.push('/dashboard/ai-tools')}
                 >
-                  <Brain className="h-6 w-6" />
-                  <span>AI Tools</span>
+                  <Brain className="h-6 w-6 flex-shrink-0" />
+                  <span className="text-sm break-words">AI Tools</span>
                 </Button>
                 <Button 
-                  className="h-16 flex flex-col items-center justify-center gap-2 bg-white text-black hover:bg-gray-100 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
+                  className="h-16 flex flex-col items-center justify-center gap-2 bg-white text-black hover:bg-gray-100 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700 min-w-[44px] min-h-[44px]"
                   onClick={() => router.push('/dashboard/accounts')}
                 >
-                  <Users className="h-6 w-6" />
-                  <span>Connect Account</span>
+                  <Users className="h-6 w-6 flex-shrink-0" />
+                  <span className="text-sm break-words">Connect Account</span>
                 </Button>
                 <Button 
-                  className="h-16 flex flex-col items-center justify-center gap-2 bg-white text-black hover:bg-gray-100 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
+                  className="h-16 flex flex-col items-center justify-center gap-2 bg-white text-black hover:bg-gray-100 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700 min-w-[44px] min-h-[44px]"
                   onClick={() => router.push('/dashboard/analytics')}
                 >
-                  <BarChart2 className="h-6 w-6" />
-                  <span>View Analytics</span>
+                  <BarChart2 className="h-6 w-6 flex-shrink-0" />
+                  <span className="text-sm break-words">View Analytics</span>
                 </Button>
                 <Button 
-                  className="h-16 flex flex-col items-center justify-center gap-2 bg-white text-black hover:bg-gray-100 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
+                  className="h-16 flex flex-col items-center justify-center gap-2 bg-white text-black hover:bg-gray-100 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700 min-w-[44px] min-h-[44px]"
                   onClick={() => router.push('/dashboard/collabs')}
                 >
-                  <MessageSquare className="h-6 w-6" />
-                  <span>Brand Collabs</span>
+                  <MessageSquare className="h-6 w-6 flex-shrink-0" />
+                  <span className="text-sm break-words">Brand Collabs</span>
                 </Button>
                 <Button 
-                  className="h-16 flex flex-col items-center justify-center gap-2 bg-white text-black hover:bg-gray-100 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
+                  className="h-16 flex flex-col items-center justify-center gap-2 bg-white text-black hover:bg-gray-100 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700 min-w-[44px] min-h-[44px]"
                   onClick={() => router.push('/dashboard/billing')}
                 >
-                  <CreditCard className="h-6 w-6" />
-                  <span>Billing</span>
+                  <CreditCard className="h-6 w-6 flex-shrink-0" />
+                  <span className="text-sm break-words">Billing</span>
                 </Button>
               </div>
             </CardContent>

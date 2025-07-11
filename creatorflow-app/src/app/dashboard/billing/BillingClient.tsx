@@ -296,10 +296,10 @@ export default function BillingClient({ user, searchParams, upcomingCharges, pay
         </TabsContent>
 
         <TabsContent value="usage" className="space-y-6">
-          <div className="flex justify-between items-center mb-6">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 mb-6 w-full">
             <h2 className="text-2xl font-bold">Usage Analytics</h2>
-            <div className="flex gap-2">
-              <Button variant="outline" size="sm" onClick={() => window.print()}>
+            <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+              <Button variant="outline" size="sm" onClick={() => window.print()} className="w-full sm:w-auto">
                 <FileText className="h-4 w-4 mr-2" />
                 Export Report
               </Button>
@@ -322,7 +322,7 @@ export default function BillingClient({ user, searchParams, upcomingCharges, pay
                 a.click();
                 document.body.removeChild(a);
                 URL.revokeObjectURL(url);
-              }}>
+              }} className="w-full sm:w-auto">
                 <Download className="h-4 w-4 mr-2" />
                 Download Data
               </Button>

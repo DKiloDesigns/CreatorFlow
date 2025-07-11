@@ -67,7 +67,7 @@ export function ThemeToggle({ isLandingPage = false }: ThemeToggleProps) {
       onClick={toggleTheme}
       title={getTitle()}
       className={cn(
-        "h-8 w-8 flex items-center justify-center transition-colors",
+        "h-11 w-11 min-w-[44px] min-h-[44px] flex items-center justify-center transition-colors",
         getTextColor()
       )}
     >

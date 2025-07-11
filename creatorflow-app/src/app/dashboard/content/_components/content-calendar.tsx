@@ -187,37 +187,60 @@ export default function ContentCalendar() {
         </div>
       )}
       {!isLoading && !error && (
-        <FullCalendar
-          key={calendarEvents.length}
-          plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
-          initialView="dayGridMonth"
-          weekends={true}
-          events={calendarEvents}
-          headerToolbar={{
-            left: 'title',
-            center: 'prev,next today',
-            right: 'dayGridMonth,timeGridWeek,timeGridDay'
-          }}
-          buttonText={{ today: 'Today', month: 'Month', week: 'Week', day: 'Day' }}
-          eventTimeFormat={{ hour: 'numeric', minute: '2-digit', omitZeroMinute: true, meridiem: 'short' }}
-          dayMaxEventRows={true}
-          views={{ dayGridMonth: { dayMaxEventRows: 3 } }}
-          eventClassNames={function(arg) {
-            const status = (arg.event.extendedProps as CalendarEvent['extendedProps']).status;
-            let classes = ['cursor-pointer', 'p-1', 'rounded-sm', 'text-xs', 'border', 'transition-shadow', 'focus-visible:ring-2', 'focus-visible:ring-primary'];
-            switch (status) {
-              case PostStatus.SCHEDULED: classes.push('bg-blue-100', 'border-blue-300', 'text-blue-800', 'dark:bg-blue-900', 'dark:bg-opacity-50', 'dark:border-blue-700', 'dark:text-blue-300'); break;
-              case PostStatus.PUBLISHED: classes.push('bg-green-100', 'border-green-300', 'text-green-800', 'dark:bg-green-900', 'dark:bg-opacity-50', 'dark:border-green-700', 'dark:text-green-300'); break;
-              case PostStatus.FAILED: classes.push('bg-red-100', 'border-red-300', 'text-red-800', 'dark:bg-red-900', 'dark:bg-opacity-50', 'dark:border-red-700', 'dark:text-red-300'); break;
-              case PostStatus.PUBLISHING: classes.push('bg-yellow-100', 'border-yellow-300', 'text-yellow-800', 'dark:bg-yellow-900', 'dark:bg-opacity-50', 'dark:border-yellow-700', 'dark:text-yellow-300'); break;
-            }
-            return classes;
-          }}
-          eventContent={eventRenderWithTooltip}
-          height={500}
-          aria-label="Content calendar"
-        />
-      )}
+  <div className="min-h-[400px]">
+    <FullCalendar
+      key={calendarEvents.length}
+      plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
+      initialView="dayGridMonth"
+      weekends={true}
+      events={calendarEvents}
+      headerToolbar={{
+        left: 'title',
+        center: 'prev,next today',
+        right: 'dayGridMonth,timeGridWeek,timeGridDay'
+      }}
+      height="auto"
+      aspectRatio={1.35}
+      dayMaxEvents={3}
+      eventContent={eventRenderWithTooltip}
+      eventClick={(info) => {
+        const { contentText, status, platforms } = info.event.extendedProps as CalendarEvent['extendedProps'];
+        toast.info(`${contentText.substring(0, 100)}...`, {
+          description: `Status: ${status} | Platforms: ${platforms.join(', ')}`
+        });
+      }}
+      buttonText={{
+        today: 'Today',
+        month: 'Month',
+        week: 'Week',
+        day: 'Day'
+      }}
+      views={{
+        dayGridMonth: {
+          titleFormat: { year: 'numeric', month: 'long' },
+          dayHeaderFormat: { weekday: 'short' }
+        },
+        timeGridWeek: {
+          titleFormat: { year: 'numeric', month: 'short', day: 'numeric' }
+        },
+        timeGridDay: {
+          titleFormat: { year: 'numeric', month: 'long', day: 'numeric' }
+        }
+      }}
+      windowResizeDelay={100}
+      eventResizableFromStart={false}
+      selectable={false}
+      selectMirror={false}
+      loading={(isLoading) => {
+        if (isLoading) {
+          setAriaMessage('Loading calendar events...');
+        } else {
+          setAriaMessage('');
+        }
+      }}
+    />
+  </div>
+)}
     </TooltipProvider>
   );
 } 

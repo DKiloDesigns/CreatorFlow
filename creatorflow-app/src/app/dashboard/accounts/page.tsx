@@ -8,8 +8,11 @@ import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from '@/comp
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { RefreshCw, AlertCircle, CheckCircle, Clock, XCircle } from 'lucide-react';
+import { RefreshCw, AlertCircle, CheckCircle, Clock, XCircle, Globe } from 'lucide-react';
 import { SocialAccountStatus } from '@/components/dashboard/social-account-status';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 
 const PROVIDERS = [
   { name: 'Facebook', id: 'facebook', icon: '📘', color: '#1877F3' },
@@ -27,6 +30,7 @@ const PROVIDERS = [
   { name: 'Reddit', id: 'reddit', icon: '👽', color: '#FF4500' },
   { name: 'Snapchat', id: 'snapchat', icon: '👻', color: '#FFFC00' },
   { name: 'Google My Business', id: 'gmb', icon: '🏢', color: '#4285F4' },
+  { name: 'Mastodon', id: 'mastodon', icon: '🐘', color: '#6364FF', requiresInstance: true },
 ];
 
 type SocialAccount = {
@@ -49,11 +53,105 @@ type Account = {
 
 type AccountConnectButtonsProps = {
   accounts: SocialAccount[];
-  onConnect: (provider: string) => void;
+  onConnect: (provider: string, instance?: string) => void;
   loading: boolean;
 };
 
+function MastodonInstanceDialog({ 
+  isOpen, 
+  onClose, 
+  onConnect 
+}: { 
+  isOpen: boolean; 
+  onClose: () => void; 
+  onConnect: (instance: string) => void; 
+}) {
+  const [instance, setInstance] = useState('');
+  const [isValidating, setIsValidating] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!instance.trim()) return;
+
+    setIsValidating(true);
+    try {
+      // Validate the instance URL
+      const cleanInstance = instance.trim().replace(/^https?:\/\//, '');
+      const testUrl = `https://${cleanInstance}/api/v1/instance`;
+      
+      const response = await fetch(testUrl);
+      if (response.ok) {
+        onConnect(cleanInstance);
+        onClose();
+        setInstance('');
+      } else {
+        toast.error('Invalid Mastodon instance. Please check the URL and try again.');
+      }
+    } catch (error) {
+      toast.error('Could not connect to Mastodon instance. Please check the URL and try again.');
+    } finally {
+      setIsValidating(false);
+    }
+  };
+
+  return (
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle className="flex items-center gap-2">
+            <Globe className="w-5 h-5" />
+            Connect Mastodon Instance
+          </DialogTitle>
+          <DialogDescription>
+            Enter your Mastodon instance URL (e.g., mastodon.social, hachyderm.io)
+          </DialogDescription>
+        </DialogHeader>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="space-y-2">
+            <Label htmlFor="instance">Instance URL</Label>
+            <Input
+              id="instance"
+              type="text"
+              placeholder="mastodon.social"
+              value={instance}
+              onChange={(e) => setInstance(e.target.value)}
+              disabled={isValidating}
+            />
+            <p className="text-xs text-muted-foreground">
+              Enter your Mastodon instance domain without https:// (e.g., mastodon.social)
+            </p>
+          </div>
+          <div className="flex gap-2 justify-end">
+            <Button type="button" variant="outline" onClick={onClose} disabled={isValidating}>
+              Cancel
+            </Button>
+            <Button type="submit" disabled={!instance.trim() || isValidating}>
+              {isValidating ? 'Validating...' : 'Connect'}
+            </Button>
+          </div>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
 function AccountConnectButtons({ accounts, onConnect, loading }: AccountConnectButtonsProps) {
+  const [mastodonDialogOpen, setMastodonDialogOpen] = useState(false);
+
+  const handleConnect = (provider: string) => {
+    const providerConfig = PROVIDERS.find(p => p.id === provider);
+    
+    if (providerConfig?.requiresInstance) {
+      setMastodonDialogOpen(true);
+    } else {
+      onConnect(provider);
+    }
+  };
+
+  const handleMastodonConnect = (instance: string) => {
+    onConnect('mastodon', instance);
+  };
+
   return (
     <div className="w-full">
       <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
@@ -66,7 +164,7 @@ function AccountConnectButtons({ accounts, onConnect, loading }: AccountConnectB
           return (
             <div key={p.id} className="flex-shrink-0">
               <button
-                onClick={() => onConnect(p.id)}
+                onClick={() => handleConnect(p.id)}
                 disabled={loading || (isConnected && !needsReauth)}
                 className={`
                   relative group flex flex-col items-center justify-center
@@ -119,6 +217,11 @@ function AccountConnectButtons({ accounts, onConnect, loading }: AccountConnectB
           );
         })}
       </div>
+      <MastodonInstanceDialog
+        isOpen={mastodonDialogOpen}
+        onClose={() => setMastodonDialogOpen(false)}
+        onConnect={handleMastodonConnect}
+      />
       <style jsx>{`
         .scrollbar-hide {
           -ms-overflow-style: none;
@@ -191,7 +294,7 @@ function ConnectedAccountCard({ account, onDisconnect, onRefresh, onReauth, load
           )}
         </div>
         
-        <div className="flex gap-2">
+        <div className="flex flex-col sm:flex-row gap-2">
           {account.status === 'active' && (
             <>
               <Button
@@ -199,10 +302,10 @@ function ConnectedAccountCard({ account, onDisconnect, onRefresh, onReauth, load
                 size="sm"
                 onClick={() => onRefresh(account.id)}
                 disabled={loading}
-                className="flex items-center gap-1"
+                className="flex items-center gap-1 w-full sm:w-auto min-w-[44px] min-h-[44px]"
               >
                 <RefreshCw className="w-4 h-4" />
-                Refresh
+                <span className="sr-only sm:not-sr-only">Refresh</span>
               </Button>
             </>
           )}
@@ -214,10 +317,10 @@ function ConnectedAccountCard({ account, onDisconnect, onRefresh, onReauth, load
               size="sm"
               onClick={() => onReauth(account.platform)}
               disabled={loading}
-              className="flex items-center gap-1 text-orange-600 border-orange-200 hover:bg-orange-50"
+              className="flex items-center gap-1 text-orange-600 border-orange-200 hover:bg-orange-50 w-full sm:w-auto min-w-[44px] min-h-[44px]"
             >
               <AlertCircle className="w-4 h-4" />
-              Re-authorize
+              <span className="sr-only sm:not-sr-only">Re-authorize</span>
             </Button>
           )}
           
@@ -226,10 +329,10 @@ function ConnectedAccountCard({ account, onDisconnect, onRefresh, onReauth, load
             size="sm"
             onClick={() => onDisconnect(account.id)}
             disabled={loading}
-            className="flex items-center gap-1 bg-red-700 text-white border-red-700 hover:bg-red-800 hover:border-red-800"
+            className="flex items-center gap-1 bg-red-700 text-white border-red-700 hover:bg-red-800 hover:border-red-800 w-full sm:w-auto min-w-[44px] min-h-[44px]"
           >
             <XCircle className="w-4 h-4" />
-            Disconnect
+            <span className="sr-only sm:not-sr-only">Disconnect</span>
           </Button>
         </div>
       </CardContent>
@@ -348,10 +451,14 @@ export default function AccountsPage() {
     }
   }, []);
 
-  const handleConnect = async (provider: string) => {
+  const handleConnect = async (provider: string, instance?: string) => {
     setAction(`Connecting to ${provider}...`);
     try {
-      const res = await fetch(`/api/accounts/connect/${provider}`, { method: 'POST' });
+      const url = instance 
+        ? `/api/accounts/connect/${provider}?instance=${encodeURIComponent(instance)}`
+        : `/api/accounts/connect/${provider}`;
+      
+      const res = await fetch(url, { method: 'POST' });
       const data = await res.json();
       if (data.url) {
         toast.success(`Redirecting to ${provider}...`);
@@ -565,29 +672,33 @@ export default function AccountsPage() {
             <table className="min-w-full text-sm">
               <thead>
                 <tr>
-                  <th className="text-left p-2">Key</th>
-                  <th className="text-left p-2">Name</th>
-                  <th className="text-left p-2">Created</th>
-                  <th className="text-left p-2">Revoked</th>
-                  <th className="text-left p-2">Actions</th>
+                  <th className="text-left p-2 break-words">Key</th>
+                  <th className="text-left p-2 break-words">Name</th>
+                  <th className="text-left p-2 break-words">Created</th>
+                  <th className="text-left p-2 break-words">Revoked</th>
+                  <th className="text-left p-2 break-words">Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {loadingKeys ? (
-                  <tr><td colSpan={5}>Loading...</td></tr>
+                  <tr><td colSpan={5} className="p-2 break-words">Loading...</td></tr>
                 ) : apiKeys.length === 0 ? (
-                  <tr><td colSpan={5}>No API keys found.</td></tr>
+                  <tr><td colSpan={5} className="p-2 break-words">No API keys found.</td></tr>
                 ) : apiKeys.map((key: any) => (
                   <tr key={key.id} className={key.revokedAt ? 'text-gray-400' : ''}>
-                    <td className="p-2 font-mono">{key.key.slice(0, 8)}...{key.key.slice(-4)}</td>
-                    <td className="p-2">{key.name || '-'}</td>
-                    <td className="p-2">{new Date(key.createdAt).toLocaleDateString()}</td>
-                    <td className="p-2">{key.revokedAt ? new Date(key.revokedAt).toLocaleDateString() : '-'}</td>
+                    <td className="p-2 font-mono break-words">{key.key.slice(0, 8)}...{key.key.slice(-4)}</td>
+                    <td className="p-2 break-words">{key.name || '-'}</td>
+                    <td className="p-2 break-words">{new Date(key.createdAt).toLocaleDateString()}</td>
+                    <td className="p-2 break-words">{key.revokedAt ? new Date(key.revokedAt).toLocaleDateString() : '-'}</td>
                     <td className="p-2">
                       {!key.revokedAt && (
                         <Tooltip>
                           <TooltipTrigger asChild>
-                            <button className="text-red-600 hover:underline focus-visible:ring-2 focus-visible:ring-primary transition-colors px-2 py-1 rounded" onClick={() => handleRevokeKey(key.id)} aria-label="Revoke API Key">
+                            <button 
+                              className="text-red-600 hover:underline focus-visible:ring-2 focus-visible:ring-primary transition-colors px-2 py-1 rounded min-w-[44px] min-h-[44px]" 
+                              onClick={() => handleRevokeKey(key.id)} 
+                              aria-label="Revoke API Key"
+                            >
                               Revoke
                             </button>
                           </TooltipTrigger>

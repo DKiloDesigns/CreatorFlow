@@ -40,61 +40,75 @@ export default function ContentTable({ posts, loading, error, onEdit, onDelete, 
       <table className="min-w-full border rounded-lg">
         <thead>
           <tr className="bg-gray-50">
-            <th className="px-4 py-2 text-left text-xs font-semibold text-gray-700">Content</th>
-            <th className="px-4 py-2 text-left text-xs font-semibold text-gray-700">Status</th>
-            <th className="px-4 py-2 text-left text-xs font-semibold text-gray-700">Platforms</th>
-            <th className="px-4 py-2 text-left text-xs font-semibold text-gray-700">Scheduled / Published</th>
-            <th className="px-4 py-2 text-left text-xs font-semibold text-gray-700">Actions</th>
+            <th className="px-2 sm:px-4 py-2 text-left text-xs font-semibold text-gray-700">Content</th>
+            <th className="px-2 sm:px-4 py-2 text-left text-xs font-semibold text-gray-700">Status</th>
+            <th className="px-2 sm:px-4 py-2 text-left text-xs font-semibold text-gray-700">Platforms</th>
+            <th className="px-2 sm:px-4 py-2 text-left text-xs font-semibold text-gray-700">Scheduled / Published</th>
+            <th className="px-2 sm:px-4 py-2 text-left text-xs font-semibold text-gray-700">Actions</th>
           </tr>
         </thead>
         <tbody>
           {posts.map((post) => (
-            <tr key={post.id} className="border-b hover:bg-gray-50">
-              <td className="px-4 py-2 max-w-xs truncate">
-                <div className="flex items-center gap-2">
-                  <FileText className="h-4 w-4 text-gray-400" />
-                  <span className="truncate">{post.contentText || <span className="italic text-gray-400">(No content)</span>}</span>
+            <tr key={post.id} className="border-t hover:bg-gray-50">
+              <td className="px-2 sm:px-4 py-3">
+                <div className="max-w-xs sm:max-w-md">
+                  <p className="text-sm font-medium text-gray-900 break-words">
+                    {post.contentText || 'No content'}
+                  </p>
                 </div>
               </td>
-              <td className="px-4 py-2">
-                <span className={`px-2 py-1 rounded text-xs font-medium ${statusColors[post.status] || 'bg-gray-100 text-gray-700'}`}>{post.status}</span>
+              <td className="px-2 sm:px-4 py-3">
+                <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${statusColors[post.status] || 'bg-gray-100 text-gray-700'}`}>
+                  {post.status}
+                </span>
               </td>
-              <td className="px-4 py-2">
-                {post.platforms && post.platforms.length > 0 ? (
-                  <div className="flex gap-1 flex-wrap">
-                    {post.platforms.map((p) => (
-                      <span key={p} className="bg-gray-100 text-gray-700 px-2 py-0.5 rounded text-xs">{p}</span>
-                    ))}
-                  </div>
-                ) : (
-                  <span className="text-xs text-gray-400">-</span>
-                )}
+              <td className="px-2 sm:px-4 py-3">
+                <div className="flex flex-wrap gap-1">
+                  {post.platforms.map((platform) => (
+                    <span key={platform} className="inline-flex px-2 py-1 text-xs bg-blue-100 text-blue-700 rounded">
+                      {platform}
+                    </span>
+                  ))}
+                </div>
               </td>
-              <td className="px-4 py-2 text-xs">
-                {post.scheduledAt ? (
-                  <div>
-                    <span className="block text-blue-700">Scheduled</span>
-                    <span>{new Date(post.scheduledAt).toLocaleString()}</span>
-                  </div>
-                ) : post.publishedAt ? (
-                  <div>
-                    <span className="block text-green-700">Published</span>
-                    <span>{new Date(post.publishedAt).toLocaleString()}</span>
-                  </div>
-                ) : (
-                  <span className="text-gray-400">-</span>
-                )}
+              <td className="px-2 sm:px-4 py-3">
+                <div className="text-xs text-gray-600">
+                  {post.scheduledAt && (
+                    <div>Scheduled: {new Date(post.scheduledAt).toLocaleDateString()}</div>
+                  )}
+                  {post.publishedAt && (
+                    <div>Published: {new Date(post.publishedAt).toLocaleDateString()}</div>
+                  )}
+                </div>
               </td>
-              <td className="px-4 py-2">
-                <div className="flex gap-2">
-                  <Button size="icon" variant="ghost" onClick={() => onEdit(post)} title="Edit">
+              <td className="px-2 sm:px-4 py-3">
+                <div className="flex flex-col sm:flex-row gap-1 sm:gap-2">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => onEdit(post)}
+                    className="h-8 w-8 sm:h-8 sm:w-auto p-0 sm:px-2 sm:py-1 min-w-[44px] min-h-[44px]"
+                  >
                     <Edit className="h-4 w-4" />
+                    <span className="sr-only sm:not-sr-only sm:ml-1">Edit</span>
                   </Button>
-                  <Button size="icon" variant="ghost" onClick={() => onDuplicate(post)} title="Duplicate">
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => onDuplicate(post)}
+                    className="h-8 w-8 sm:h-8 sm:w-auto p-0 sm:px-2 sm:py-1 min-w-[44px] min-h-[44px]"
+                  >
                     <Copy className="h-4 w-4" />
+                    <span className="sr-only sm:not-sr-only sm:ml-1">Duplicate</span>
                   </Button>
-                  <Button size="icon" variant="ghost" onClick={() => onDelete(post)} title="Delete">
-                    <Trash2 className="h-4 w-4 text-red-500" />
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => onDelete(post)}
+                    className="h-8 w-8 sm:h-8 sm:w-auto p-0 sm:px-2 sm:py-1 min-w-[44px] min-h-[44px] text-red-600 hover:text-red-700"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                    <span className="sr-only sm:not-sr-only sm:ml-1">Delete</span>
                   </Button>
                 </div>
               </td>

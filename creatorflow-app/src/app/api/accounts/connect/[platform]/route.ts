@@ -5,7 +5,16 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 // Platform-specific OAuth configurations
-const PLATFORM_CONFIGS = {
+const PLATFORM_CONFIGS: Record<string, {
+  name: string;
+  authUrl: string;
+  tokenUrl: string;
+  scopes: string[];
+  clientId?: string;
+  clientSecret?: string;
+  redirectUri: string;
+  requiresInstance?: boolean;
+}> = {
   instagram: {
     name: 'Instagram',
     authUrl: 'https://api.instagram.com/oauth/authorize',
@@ -60,6 +69,16 @@ const PLATFORM_CONFIGS = {
     clientSecret: process.env.TIKTOK_CLIENT_SECRET,
     redirectUri: `${process.env.NEXTAUTH_URL}/api/accounts/callback/tiktok`,
   },
+  mastodon: {
+    name: 'Mastodon',
+    authUrl: 'https://[INSTANCE]/oauth/authorize',
+    tokenUrl: 'https://[INSTANCE]/oauth/token',
+    scopes: ['read', 'write', 'follow', 'push'],
+    clientId: process.env.MASTODON_CLIENT_ID,
+    clientSecret: process.env.MASTODON_CLIENT_SECRET,
+    redirectUri: `${process.env.NEXTAUTH_URL}/api/accounts/callback/mastodon`,
+    requiresInstance: true,
+  },
 };
 
 export async function POST(request: Request) {
@@ -68,6 +87,10 @@ export async function POST(request: Request) {
     const url = new URL(request.url);
     const pathParts = url.pathname.split('/');
     const platform = pathParts[pathParts.length - 2];
+    
+    // Get query parameters for instance-specific platforms
+    const { searchParams } = url;
+    const instance = searchParams.get('instance');
     
     // Get session
     const session = await getSession();
@@ -79,6 +102,13 @@ export async function POST(request: Request) {
     const config = PLATFORM_CONFIGS[platform as keyof typeof PLATFORM_CONFIGS];
     if (!config) {
       return NextResponse.json({ error: 'Unsupported platform' }, { status: 400 });
+    }
+
+    // Handle instance-specific platforms (like Mastodon)
+    if (config.requiresInstance && !instance) {
+      return NextResponse.json({ 
+        error: `${config.name} requires an instance parameter` 
+      }, { status: 400 });
     }
 
     // Check if client credentials are configured
@@ -117,22 +147,31 @@ export async function POST(request: Request) {
         status: 'pending',
         encryptedAccessToken: state, // Temporarily store state here
         tokenExpiresAt: new Date(Date.now() + 10 * 60 * 1000), // 10 minutes expiry
+        // Store instance information for Mastodon
+        ...(instance && { metadata: { instance } }),
       },
     });
 
     // Build OAuth URL
+    let authUrl = config.authUrl;
+    
+    // Handle instance-specific platforms (like Mastodon)
+    if (config.requiresInstance && instance) {
+      authUrl = authUrl.replace('[INSTANCE]', instance);
+    }
+    
     const params = new URLSearchParams({
-      client_id: config.clientId,
+      client_id: config.clientId!,
       redirect_uri: config.redirectUri,
       response_type: 'code',
       scope: config.scopes.join(' '),
       state: state,
     });
 
-    const authUrl = `${config.authUrl}?${params.toString()}`;
+    const finalAuthUrl = `${authUrl}?${params.toString()}`;
 
     return NextResponse.json({ 
-      url: authUrl,
+      url: finalAuthUrl,
       platform: platform,
       platformName: config.name,
     });

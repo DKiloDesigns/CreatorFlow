@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
@@ -19,7 +19,8 @@ import {
   Bell,
   Brain,
   LifeBuoy,
-  Shield
+  Shield,
+  Upload
 } from 'lucide-react';
 import { NotificationBadge } from './notification-badge';
 import {
@@ -150,72 +151,152 @@ export function UserMenu() {
   const { data: session } = useSession();
   const userImage = session?.user?.image;
   const userName = session?.user?.name || 'Account';
+  const [isUploading, setIsUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  
   // Helper for initials if no image and no name
   const getInitials = (name: string) => {
     if (!name) return 'A';
     return name.split(' ').map((n) => n[0]).join('').toUpperCase();
   };
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    alert('Profile image upload coming soon!');
+
+  const handleImageClick = () => {
+    fileInputRef.current?.click();
   };
+
+  const handleFileUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      alert('Please select an image file');
+      return;
+    }
+
+    // Validate file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      alert('Image must be smaller than 5MB');
+      return;
+    }
+
+    setIsUploading(true);
+    
+    try {
+      const formData = new FormData();
+      formData.append('image', file);
+      
+      const response = await fetch('/api/user/profile-image', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to upload image');
+      }
+
+      // Refresh the session to get the new image
+      window.location.reload();
+    } catch (error) {
+      console.error('Upload failed:', error);
+      alert('Failed to upload image. Please try again.');
+    } finally {
+      setIsUploading(false);
+    }
+  };
+
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <button
-          type="button"
-          className="flex items-center gap-2 rounded-full px-3 py-1 hover:bg-muted focus:outline-none focus:ring-2 focus:ring-primary/50 transition"
-        >
-          {userImage ? (
-            <img src={userImage} alt={userName} className="h-8 w-8 rounded-full object-cover" />
-          ) : (
-            <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">
-              {getInitials(userName)}
-            </div>
-          )}
-          <span className="font-medium text-sm max-w-[120px] truncate">{userName}</span>
-          <svg className="h-4 w-4 text-muted-foreground" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
-        </button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent align="end" className="w-56">
-        <DropdownMenuLabel>My Account</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem asChild>
-          <Link href="/dashboard/profile" className="flex items-center w-full">
-            <User className="mr-2 h-4 w-4" />
-            Profile
-          </Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link href="/dashboard/settings" className="flex items-center w-full">
-            <Settings className="mr-2 h-4 w-4" />
-            Settings
-          </Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link href="/dashboard/security" className="flex items-center w-full">
-            <Shield className="mr-2 h-4 w-4" />
-            Security
-          </Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link href="/dashboard/notifications" className="flex items-center w-full">
-            <Bell className="mr-2 h-4 w-4" />
-            Notifications
-          </Link>
-        </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link href="/dashboard/support" className="flex items-center w-full">
-            <LifeBuoy className="mr-2 h-4 w-4" />
-            Support / Help
-          </Link>
-        </DropdownMenuItem>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem onClick={() => signOut({ callbackUrl: '/' })} className="text-black dark:text-white">
-          <LogOut className="mr-2 h-4 w-4" />
-          Sign out
-        </DropdownMenuItem>
-      </DropdownMenuContent>
-    </DropdownMenu>
+    <>
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        onChange={handleFileUpload}
+        className="hidden"
+      />
+      
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <button
+            type="button"
+            className="flex items-center gap-2 rounded-full px-3 py-1 hover:bg-muted focus:outline-none focus:ring-2 focus:ring-primary/50 transition group"
+            onClick={handleImageClick}
+            disabled={isUploading}
+          >
+            {userImage ? (
+              <div className="relative">
+                <img src={userImage} alt={userName} className="h-8 w-8 rounded-full object-cover" />
+                {isUploading && (
+                  <div className="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center">
+                    <Upload className="w-4 h-4 text-white animate-pulse" />
+                  </div>
+                )}
+                {/* Upload indicator */}
+                <div className="absolute -top-1 -right-1 w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                  <Upload className="w-2.5 h-2.5 text-white" />
+                </div>
+              </div>
+            ) : (
+              <div className="relative">
+                <div className="h-8 w-8 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">
+                  {getInitials(userName)}
+                </div>
+                {isUploading && (
+                  <div className="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center">
+                    <Upload className="w-4 h-4 text-white animate-pulse" />
+                  </div>
+                )}
+                {/* Upload indicator */}
+                <div className="absolute -top-1 -right-1 w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                  <Upload className="w-2.5 h-2.5 text-white" />
+                </div>
+              </div>
+            )}
+            <span className="font-medium text-sm max-w-[120px] truncate">{userName}</span>
+            <svg className="h-4 w-4 text-muted-foreground" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" /></svg>
+          </button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end" className="w-56">
+          <DropdownMenuLabel>My Account</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem asChild>
+            <Link href="/dashboard/profile" className="flex items-center w-full">
+              <User className="mr-2 h-4 w-4" />
+              Profile
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link href="/dashboard/settings" className="flex items-center w-full">
+              <Settings className="mr-2 h-4 w-4" />
+              Settings
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link href="/dashboard/security" className="flex items-center w-full">
+              <Shield className="mr-2 h-4 w-4" />
+              Security
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link href="/dashboard/notifications" className="flex items-center w-full">
+              <Bell className="mr-2 h-4 w-4" />
+              Notifications
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link href="/dashboard/support" className="flex items-center w-full">
+              <LifeBuoy className="mr-2 h-4 w-4" />
+              Support / Help
+            </Link>
+          </DropdownMenuItem>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={() => signOut({ callbackUrl: '/' })} className="text-black dark:text-white">
+            <LogOut className="mr-2 h-4 w-4" />
+            Sign out
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </>
   );
 }
 

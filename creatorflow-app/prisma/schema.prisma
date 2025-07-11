@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,71 +7,52 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// User Model (Compatible with NextAuth.js)
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  password      String? // <-- Added for credentials auth
-  emailVerified DateTime?
-  image         String?
-  resetToken    String?   @unique // For password reset
-  resetTokenExpiry DateTime? // When reset token expires
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-
-  // Simplified plan field (could be removed or kept alongside Stripe status)
-  plan String @default("FREE")
-
-  // --- Stripe Billing Fields ---
-  stripeCustomerId       String?   @unique @map(name: "stripe_customer_id")
-  stripeSubscriptionId   String?   @unique @map(name: "stripe_subscription_id")
-  stripePriceId          String?   @map(name: "stripe_price_id")
-  stripeCurrentPeriodEnd DateTime? @map(name: "stripe_current_period_end")
-  paymentRetryCount      Int?      @default(0) @map(name: "payment_retry_count")
-  paymentRetryDate       DateTime? @map(name: "payment_retry_date")
-
-  accounts       Account[] // NextAuth.js accounts
-  sessions       Session[] // NextAuth.js sessions
-  socialAccounts SocialAccount[] // Our specific social media connections
-
-  // --- Relations for Content Scheduling ---
-  posts            Post[]
-  captionTemplates CaptionTemplate[]
-  hashtagGroups    HashtagGroup[]
-  audienceMetrics  AudienceMetric[]
-  brandCollabs     BrandCollab[]
-
-  apiKeys               ApiKey[]
-  snippets              TemplateSnippet[]
-  folders               TemplateFolder[]
-  analyticsAggregations AnalyticsAggregation[]
-  sharedFolders         TemplateFolder[]       @relation("FolderShares")
-
-  // Team management
-  ownedTeams      Team[]           @relation("TeamOwner")
-  teamMemberships TeamMember[]     @relation("TeamMemberships")
-  sentInvitations TeamInvitation[] @relation("TeamInvitationSender")
-
-  settings      Json?
-  notifications Json?
-  twoFAEnabled  Boolean  @default(false)
-  role          UserRole @default(USER)
-  deactivated   Boolean  @default(false)
-
-  // Announcements created by this user
-  announcementsCreated Announcement[] @relation("AnnouncementCreatedBy")
-  // Announcements this user has read
-  announcementsRead    Announcement[] @relation("AnnouncementReads")
-  // Feedback
-  feedback             Feedback[]
-  // Audit logs
-  auditLogs            AuditLog[]     @relation("AuditLogActor")
-
-  notificationPreferences Json? // e.g. { announcement: { inApp: true, email: false }, feedback: { inApp: true, email: true }, ... }
+  id                      String                 @id @default(cuid())
+  name                    String?
+  email                   String?                @unique
+  password                String?
+  emailVerified           DateTime?
+  image                   String?
+  createdAt               DateTime               @default(now())
+  updatedAt               DateTime               @updatedAt
+  plan                    String                 @default("FREE")
+  stripeCustomerId        String?                @unique @map("stripe_customer_id")
+  stripeSubscriptionId    String?                @unique @map("stripe_subscription_id")
+  stripePriceId           String?                @map("stripe_price_id")
+  stripeCurrentPeriodEnd  DateTime?              @map("stripe_current_period_end")
+  paymentRetryCount       Int?                   @default(0) @map("payment_retry_count")
+  paymentRetryDate        DateTime?              @map("payment_retry_date")
+  settings                Json?
+  twoFAEnabled            Boolean                @default(false)
+  role                    UserRole               @default(USER)
+  notificationPreferences Json?
+  deactivated             Boolean                @default(false)
+  resetToken              String?                @unique
+  resetTokenExpiry        DateTime?
+  accounts                Account[]
+  analyticsAggregations   AnalyticsAggregation[]
+  announcementsCreated    Announcement[]         @relation("AnnouncementCreatedBy")
+  apiKeys                 ApiKey[]
+  audienceMetrics         AudienceMetric[]
+  auditLogs               AuditLog[]             @relation("AuditLogActor")
+  brandCollabs            BrandCollab[]
+  captionTemplates        CaptionTemplate[]
+  feedback                Feedback[]
+  hashtagGroups           HashtagGroup[]
+  notifications           Notification[]
+  posts                   Post[]
+  sessions                Session[]
+  socialAccounts          SocialAccount[]
+  ownedTeams              Team[]                 @relation("TeamOwner")
+  sentInvitations         TeamInvitation[]       @relation("TeamInvitationSender")
+  teamMemberships         TeamMember[]           @relation("TeamMemberships")
+  folders                 TemplateFolder[]
+  snippets                TemplateSnippet[]
+  announcementsRead       Announcement[]         @relation("AnnouncementReads")
+  sharedFolders           TemplateFolder[]       @relation("FolderShares")
 }
 
-// NextAuth.js Account Model (Handles OAuth sign-in connections)
 model Account {
   id                String  @id @default(cuid())
   userId            String
@@ -91,13 +66,11 @@ model Account {
   scope             String?
   id_token          String?
   session_state     String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
 
-// NextAuth.js Session Model
 model Session {
   id           String   @id @default(cuid())
   sessionToken String   @unique
@@ -106,7 +79,6 @@ model Session {
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-// NextAuth.js VerificationToken Model
 model VerificationToken {
   identifier String
   token      String   @unique
@@ -115,47 +87,30 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-// Our Specific Social Media Account Connections
 model SocialAccount {
-  id             String @id @default(cuid())
-  userId         String
-  platform       String // e.g., "instagram", "tiktok", "youtube", "twitter"
-  platformUserId String // The user's ID on that platform
-  username       String // The user's handle/username on that platform
-
-  // Encrypted Tokens - Store as strings, handle encryption/decryption in code
+  id                    String    @id @default(cuid())
+  userId                String
+  platform              String
+  platformUserId        String
+  username              String
   encryptedAccessToken  String?
   encryptedRefreshToken String?
-  // Consider storing expiry and scopes if needed for refresh
   tokenExpiresAt        DateTime?
-  scopes                String? // Comma-separated list of scopes granted
+  scopes                String?
+  status                String    @default("active")
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  status    String   @default("active") // e.g., "active", "needs_reauth"
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([userId, platform]) // User can only connect one account per platform
+  @@unique([userId, platform])
 }
 
-// --- New Models for Content Scheduling ---
-
-enum PostStatus {
-  DRAFT
-  SCHEDULED
-  PUBLISHING // In the process of being sent to the platform
-  PUBLISHED
-  FAILED
-}
-
-// Enhanced Post model with more analytics fields
 model Post {
   id             String       @id @default(cuid())
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
   userId         String
-  contentText    String?      @db.Text
+  contentText    String?
   mediaUrls      String[]
   platforms      String[]
   scheduledAt    DateTime?
@@ -168,78 +123,78 @@ model Post {
   reach          Int?         @default(0)
   impressions    Int?         @default(0)
   engagementRate Float?       @default(0)
-  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
-  brandCollab    BrandCollab? @relation(fields: [brandCollabId], references: [id])
+  
+  // Enhanced metadata fields
+  hashtags       String[]     @default([])
+  mentions       String[]     @default([])
+  location       String?
+  errorMessage   String?      @db.Text
+  
+  // Repost functionality
+  isRepost       Boolean      @default(false)
+  repostInterval Int?         // Days between reposts
+  repostCount    Int?         // Number of reposts remaining
+  parentPostId   String?      // Link to original post for reposts
+  
   brandCollabId  String?
+  brandCollab    BrandCollab? @relation(fields: [brandCollabId], references: [id])
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([brandCollabId])
+  @@index([parentPostId])
 }
 
 model CaptionTemplate {
-  id     String @id @default(cuid())
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  name       String // User-given name for the template
-  content    String   @db.Text
-  category   String   @default("Uncategorized")
-  tags       String[] @default([])
-  isFavorite Boolean  @default(false)
-  isPinned   Boolean  @default(false)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
+  id         String            @id @default(cuid())
+  userId     String
+  name       String
+  content    String
+  category   String            @default("Uncategorized")
+  tags       String[]          @default([])
+  isFavorite Boolean           @default(false)
+  isPinned   Boolean           @default(false)
+  createdAt  DateTime          @default(now())
+  updatedAt  DateTime          @updatedAt
   activeFrom DateTime?
   activeTo   DateTime?
   usageLimit Int?
-  usageCount Int       @default(0)
-
-  usages TemplateUsage[] @relation("CaptionTemplateUsages")
-
-  language String @default("en")
-
-  order Int @default(0)
-
-  folderId String?
-  folder   TemplateFolder?   @relation(fields: [folderId], references: [id])
-  versions TemplateVersion[] @relation("CaptionTemplateVersions")
-  shares   TemplateShare[]   @relation("CaptionTemplateShares")
+  usageCount Int               @default(0)
+  language   String            @default("en")
+  order      Int               @default(0)
+  folderId   String?
+  folder     TemplateFolder?   @relation(fields: [folderId], references: [id])
+  user       User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  shares     TemplateShare[]   @relation("CaptionTemplateShares")
+  usages     TemplateUsage[]   @relation("CaptionTemplateUsages")
+  versions   TemplateVersion[] @relation("CaptionTemplateVersions")
 
   @@index([userId])
 }
 
 model HashtagGroup {
-  id     String @id @default(cuid())
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  name       String // User-given name for the group
-  hashtags   String[] // Array of hashtag strings (e.g., ["#marketing", "#socialmedia"])
-  category   String   @default("Uncategorized")
-  tags       String[] @default([])
-  isFavorite Boolean  @default(false)
-  isPinned   Boolean  @default(false)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
+  id         String            @id @default(cuid())
+  userId     String
+  name       String
+  hashtags   String[]
+  category   String            @default("Uncategorized")
+  tags       String[]          @default([])
+  isFavorite Boolean           @default(false)
+  isPinned   Boolean           @default(false)
+  createdAt  DateTime          @default(now())
+  updatedAt  DateTime          @updatedAt
   activeFrom DateTime?
   activeTo   DateTime?
   usageLimit Int?
-  usageCount Int       @default(0)
-
-  usages TemplateUsage[] @relation("HashtagGroupUsages")
-
-  language String @default("en")
-
-  order Int @default(0)
-
-  folderId String?
-  folder   TemplateFolder?   @relation(fields: [folderId], references: [id])
-  versions TemplateVersion[] @relation("HashtagGroupVersions")
-  shares   TemplateShare[]   @relation("HashtagGroupShares")
+  usageCount Int               @default(0)
+  language   String            @default("en")
+  order      Int               @default(0)
+  folderId   String?
+  folder     TemplateFolder?   @relation(fields: [folderId], references: [id])
+  user       User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  shares     TemplateShare[]   @relation("HashtagGroupShares")
+  usages     TemplateUsage[]   @relation("HashtagGroupUsages")
+  versions   TemplateVersion[] @relation("HashtagGroupVersions")
 
   @@index([userId])
 }
@@ -247,76 +202,67 @@ model HashtagGroup {
 model AudienceMetric {
   id        String   @id @default(cuid())
   userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   platform  String
   date      DateTime
   followers Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model BrandCollab {
   id           String    @id @default(cuid())
   userId       String
-  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   brandName    String
   campaignName String
   deadline     DateTime?
   deliverables String?
   payment      Float?
   notes        String?
-  posts        Post[]
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  posts        Post[]
 }
 
 model ApiKey {
   id        String    @id @default(cuid())
   userId    String
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   key       String    @unique
   name      String?
   createdAt DateTime  @default(now())
   revokedAt DateTime?
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-// Example Enum for Plan (Can be used later)
-// enum Plan {
-//  FREE
-//  PRO
-// }
-
 model TemplateVersion {
-  id                String   @id @default(cuid())
+  id                String           @id @default(cuid())
   captionTemplateId String?
   hashtagGroupId    String?
-  type              String // 'caption' or 'hashtag'
+  type              String
   userId            String
   name              String
-  content           String? // For captions
-  hashtags          String[] // For hashtags
+  content           String?
+  hashtags          String[]
   category          String
   tags              String[]
-  createdAt         DateTime @default(now())
-
-  // Relations
-  captionTemplate CaptionTemplate? @relation("CaptionTemplateVersions", fields: [captionTemplateId], references: [id])
-  hashtagGroup    HashtagGroup?    @relation("HashtagGroupVersions", fields: [hashtagGroupId], references: [id])
+  createdAt         DateTime         @default(now())
+  captionTemplate   CaptionTemplate? @relation("CaptionTemplateVersions", fields: [captionTemplateId], references: [id])
+  hashtagGroup      HashtagGroup?    @relation("HashtagGroupVersions", fields: [hashtagGroupId], references: [id])
 }
 
 model TemplateShare {
-  id                String   @id @default(cuid())
-  type              String // 'caption' or 'hashtag'
+  id                String           @id @default(cuid())
+  type              String
   captionTemplateId String?
   hashtagGroupId    String?
-  userId            String // Owner
+  userId            String
   sharedWithUserId  String?
   sharedWithEmail   String
   permissions       String[]
-  createdAt         DateTime @default(now())
-
-  captionTemplate CaptionTemplate? @relation("CaptionTemplateShares", fields: [captionTemplateId], references: [id])
-  hashtagGroup    HashtagGroup?    @relation("HashtagGroupShares", fields: [hashtagGroupId], references: [id])
+  createdAt         DateTime         @default(now())
+  captionTemplate   CaptionTemplate? @relation("CaptionTemplateShares", fields: [captionTemplateId], references: [id])
+  hashtagGroup      HashtagGroup?    @relation("HashtagGroupShares", fields: [hashtagGroupId], references: [id])
 
   @@index([captionTemplateId])
   @@index([hashtagGroupId])
@@ -324,16 +270,15 @@ model TemplateShare {
 }
 
 model TemplateUsage {
-  id                String   @id @default(cuid())
-  type              String // 'caption' or 'hashtag'
+  id                String           @id @default(cuid())
+  type              String
   captionTemplateId String?
   hashtagGroupId    String?
   userId            String
-  action            String // e.g., 'insert', 'export', 'bulk', etc.
-  usedAt            DateTime @default(now())
-
-  captionTemplate CaptionTemplate? @relation("CaptionTemplateUsages", fields: [captionTemplateId], references: [id])
-  hashtagGroup    HashtagGroup?    @relation("HashtagGroupUsages", fields: [hashtagGroupId], references: [id])
+  action            String
+  usedAt            DateTime         @default(now())
+  captionTemplate   CaptionTemplate? @relation("CaptionTemplateUsages", fields: [captionTemplateId], references: [id])
+  hashtagGroup      HashtagGroup?    @relation("HashtagGroupUsages", fields: [hashtagGroupId], references: [id])
 
   @@index([captionTemplateId])
   @@index([hashtagGroupId])
@@ -343,10 +288,10 @@ model TemplateUsage {
 model TemplateSnippet {
   id        String   @id @default(cuid())
   userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   name      String
-  content   String   @db.Text
+  content   String
   createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
 }
@@ -354,28 +299,23 @@ model TemplateSnippet {
 model TemplateFolder {
   id               String            @id @default(cuid())
   userId           String
-  user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
   name             String
   parentId         String?
-  parent           TemplateFolder?   @relation("FolderParent", fields: [parentId], references: [id])
-  children         TemplateFolder[]  @relation("FolderParent")
   createdAt        DateTime          @default(now())
+  sharedWithEmails String[]          @default([])
+  deletedAt        DateTime?
+  isDeleted        Boolean           @default(false)
   captionTemplates CaptionTemplate[]
   hashtagGroups    HashtagGroup[]
-
-  // Sharing
-  sharedWith       User[]   @relation("FolderShares")
-  sharedWithEmails String[] @default([])
-
-  // Soft delete
-  deletedAt DateTime?
-  isDeleted Boolean   @default(false)
+  parent           TemplateFolder?   @relation("FolderParent", fields: [parentId], references: [id])
+  children         TemplateFolder[]  @relation("FolderParent")
+  user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sharedWith       User[]            @relation("FolderShares")
 
   @@index([userId])
   @@index([parentId])
 }
 
-// Analytics Cache for performance optimization
 model AnalyticsCache {
   id        String   @id @default(cuid())
   key       String   @unique
@@ -387,7 +327,6 @@ model AnalyticsCache {
   @@index([key, expiresAt])
 }
 
-// Rate Limiting for API endpoints
 model AnalyticsRateLimit {
   id        String   @id @default(cuid())
   key       String   @unique
@@ -399,18 +338,17 @@ model AnalyticsRateLimit {
   @@index([key, resetAt])
 }
 
-// Analytics Aggregation for pre-computed metrics
 model AnalyticsAggregation {
   id        String   @id @default(cuid())
   userId    String
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  type      String // e.g., "daily", "weekly", "monthly"
+  type      String
   platform  String?
   startDate DateTime
   endDate   DateTime
   data      Json
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId, type, platform, startDate, endDate])
 }
@@ -421,35 +359,26 @@ model Announcement {
   body        String
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
-  createdBy   User      @relation("AnnouncementCreatedBy", fields: [createdById], references: [id])
   createdById String
   published   Boolean   @default(false)
   publishedAt DateTime?
-  audience    String? // e.g., 'all', 'admins', 'user:{id}', etc.
+  audience    String?
+  createdBy   User      @relation("AnnouncementCreatedBy", fields: [createdById], references: [id])
   readBy      User[]    @relation("AnnouncementReads")
 }
 
-// Team Management Models
 model Team {
-  id          String   @id @default(cuid())
+  id          String           @id @default(cuid())
   name        String
   description String?
   ownerId     String
-  owner       User     @relation("TeamOwner", fields: [ownerId], references: [id], onDelete: Cascade)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  // Team members
-  members TeamMember[]
-
-  // Team workspaces
-  workspaces TeamWorkspace[]
-
-  // Team invitations
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  settings    Json?
+  owner       User             @relation("TeamOwner", fields: [ownerId], references: [id], onDelete: Cascade)
   invitations TeamInvitation[]
-
-  // Team settings
-  settings Json? // e.g., { allowInvites: true, approvalRequired: false }
+  members     TeamMember[]
+  workspaces  TeamWorkspace[]
 
   @@index([ownerId])
 }
@@ -457,14 +386,14 @@ model Team {
 model TeamMember {
   id        String           @id @default(cuid())
   teamId    String
-  team      Team             @relation(fields: [teamId], references: [id], onDelete: Cascade)
   userId    String
-  user      User             @relation("TeamMemberships", fields: [userId], references: [id], onDelete: Cascade)
   role      TeamRole         @default(MEMBER)
   joinedAt  DateTime         @default(now())
   invitedBy String?
   invitedAt DateTime?
   status    TeamMemberStatus @default(ACTIVE)
+  team      Team             @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  user      User             @relation("TeamMemberships", fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([teamId, userId])
   @@index([teamId])
@@ -474,40 +403,93 @@ model TeamMember {
 model TeamWorkspace {
   id          String   @id @default(cuid())
   teamId      String
-  team        Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
   name        String
   description String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-
-  // Workspace settings
-  settings Json? // e.g., { allowComments: true, approvalRequired: true }
+  settings    Json?
+  team        Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
 
   @@index([teamId])
 }
 
-// Team Invitations
 model TeamInvitation {
-  id            String    @id @default(cuid())
+  id            String               @id @default(cuid())
   teamId        String
-  team          Team      @relation(fields: [teamId], references: [id], onDelete: Cascade)
   email         String
-  role          TeamRole  @default(MEMBER)
+  role          TeamRole             @default(MEMBER)
   invitedBy     String
-  invitedByUser User      @relation("TeamInvitationSender", fields: [invitedBy], references: [id])
-  token         String    @unique
+  token         String               @unique
   expiresAt     DateTime
   acceptedAt    DateTime?
-  createdAt     DateTime  @default(now())
-  status        TeamInvitationStatus @default(PENDING)
+  createdAt     DateTime             @default(now())
   respondedAt   DateTime?
+  status        TeamInvitationStatus @default(PENDING)
+  invitedByUser User                 @relation("TeamInvitationSender", fields: [invitedBy], references: [id])
+  team          Team                 @relation(fields: [teamId], references: [id], onDelete: Cascade)
 
   @@index([teamId])
   @@index([email])
   @@index([token])
 }
 
-// Enums for team models
+model Feedback {
+  id        String    @id @default(cuid())
+  userId    String
+  message   String
+  createdAt DateTime  @default(now())
+  resolved  Boolean   @default(false)
+  reply     String?
+  repliedAt DateTime?
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  action     String
+  actorId    String?
+  targetId   String?
+  targetType String?
+  details    Json?
+  createdAt  DateTime @default(now())
+  actor      User?    @relation("AuditLogActor", fields: [actorId], references: [id])
+}
+
+// Notification model
+model Notification {
+  id          String   @id @default(cuid())
+  userId      String
+  type        String   // NotificationType enum
+  title       String
+  message     String   @db.Text
+  severity    String   // NotificationSeverity enum
+  category    String   // NotificationCategory enum
+  channels    String[] // NotificationChannel[]
+  priority    String   // NotificationPriority enum
+  metadata    Json?
+  actionUrl   String?
+  actionText  String?
+  read        Boolean  @default(false)
+  expiresAt   DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([type])
+  @@index([read])
+  @@index([createdAt])
+}
+
+enum PostStatus {
+  DRAFT
+  SCHEDULED
+  PUBLISHING
+  PUBLISHED
+  FAILED
+}
+
 enum TeamRole {
   OWNER
   ADMIN
@@ -521,34 +503,9 @@ enum TeamMemberStatus {
   SUSPENDED
 }
 
-// User roles enum
 enum UserRole {
   USER
   ADMIN
-}
-
-// Feedback model
-model Feedback {
-  id        String    @id @default(cuid())
-  userId    String
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  message   String
-  createdAt DateTime  @default(now())
-  resolved  Boolean   @default(false)
-  reply     String?
-  repliedAt DateTime?
-}
-
-// Audit log model
-model AuditLog {
-  id         String   @id @default(cuid())
-  action     String
-  actorId    String?
-  actor      User?    @relation("AuditLogActor", fields: [actorId], references: [id])
-  targetId   String?
-  targetType String?
-  details    Json?
-  createdAt  DateTime @default(now())
 }
 
 enum TeamInvitationStatus {

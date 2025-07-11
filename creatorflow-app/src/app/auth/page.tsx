@@ -146,7 +146,7 @@ export default function AuthPage() {
       <Card className="w-full max-w-md">
         <CardHeader className="space-y-1">
           <div className="flex items-center space-x-2">
-            <Link href="/" className="p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded">
+            <Link href="/" className="p-1 hover:bg-gray-100 dark:hover:bg-gray-800 rounded min-w-[44px] min-h-[44px]">
               <ArrowLeft className="h-4 w-4" />
             </Link>
             <div>
@@ -199,7 +199,7 @@ export default function AuthPage() {
           {/* Error Display */}
           {error && (
             <Alert variant="destructive">
-              <AlertDescription>{error}</AlertDescription>
+              <AlertDescription className="break-words">{error}</AlertDescription>
             </Alert>
           )}
 
@@ -261,7 +261,7 @@ export default function AuthPage() {
                 <button
                   type="button"
                   onClick={() => setShowPassword(!showPassword)}
-                  className="absolute right-3 top-3 text-muted-foreground hover:text-foreground"
+                  className="absolute right-3 top-3 text-muted-foreground hover:text-foreground min-w-[44px] min-h-[44px]"
                 >
                   {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
                 </button>

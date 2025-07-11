@@ -8,10 +8,11 @@ import { usePathname } from 'next/navigation';
 import { BarChart2, Users, FileText, Handshake, CreditCard, Menu, Bell } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { EnhancedNavigation, UserMenu, Breadcrumbs } from '@/components/ui/enhanced-nav';
-import { NotificationBadge } from '@/components/ui/notification-badge';
+import { NotificationCenter } from '@/components/notifications/notification-center';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { MobileLayout } from '@/components/layout/mobile-layout';
+import { useRealTimeNotifications } from '@/components/notifications/real-time-provider';
 
 export default function DashboardLayout({
   children,
@@ -23,6 +24,7 @@ export default function DashboardLayout({
   const [notifOpen, setNotifOpen] = useState(false);
   const [unreadAnnouncements, setUnreadAnnouncements] = useState(0);
   const [isClient, setIsClient] = useState(false);
+  const { unreadCount, isConnected } = useRealTimeNotifications();
 
   useEffect(() => {
     setIsClient(true);
@@ -49,42 +51,81 @@ export default function DashboardLayout({
 
   return (
     <MobileLayout>
-      {/* Enhanced Top Navigation Bar */}
-      <nav className="bg-white dark:bg-gray-900 shadow-sm border-b border-gray-200 dark:border-gray-700">
+      {/* Navigation */}
+      <nav className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between h-16">
+          <div className="flex justify-between items-center h-16">
+            {/* Logo and Brand */}
             <div className="flex items-center">
-              {/* Logo/Brand */}
-              <div className="flex-shrink-0 flex items-center">
-                <Link href="/dashboard" className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
-                  CreatorFlow
-                </Link>
-              </div>
-              
-              {/* Desktop Navigation */}
-              <div className="hidden lg:flex lg:ml-8">
-                <EnhancedNavigation />
-              </div>
+              <Link href="/dashboard" className="flex items-center space-x-2 min-w-[44px] min-h-[44px]">
+                {/* Removed CF logo gradient square */}
+                <span className="font-bold text-xl text-gray-900 dark:text-white break-words">CreatorFlow</span>
+              </Link>
             </div>
 
-            {/* Right side - User menu and mobile nav */}
+            {/* Desktop Navigation */}
+            <div className="hidden lg:flex items-center space-x-8">
+              <Link 
+                href="/dashboard" 
+                className={`text-sm font-medium transition-colors min-w-[44px] min-h-[44px] ${
+                  pathname === '/dashboard' 
+                    ? 'text-blue-600 dark:text-blue-400' 
+                    : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400'
+                }`}
+              >
+                Dashboard
+              </Link>
+              <Link 
+                href="/dashboard/analytics" 
+                className={`text-sm font-medium transition-colors min-w-[44px] min-h-[44px] ${
+                  pathname === '/dashboard/analytics' 
+                    ? 'text-blue-600 dark:text-blue-400' 
+                    : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400'
+                }`}
+              >
+                Analytics
+              </Link>
+              <Link 
+                href="/dashboard/content" 
+                className={`text-sm font-medium transition-colors min-w-[44px] min-h-[44px] ${
+                  pathname === '/dashboard/content' 
+                    ? 'text-blue-600 dark:text-blue-400' 
+                    : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400'
+                }`}
+              >
+                Content
+              </Link>
+              <Link 
+                href="/dashboard/notifications/enhanced" 
+                className={`text-sm font-medium transition-colors min-w-[44px] min-h-[44px] ${
+                  pathname === '/dashboard/notifications/enhanced' 
+                    ? 'text-blue-600 dark:text-blue-400' 
+                    : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400'
+                }`}
+              >
+                Notifications
+              </Link>
+            </div>
+
+            {/* Right side actions */}
             <div className="flex items-center gap-2 sm:gap-4">
               {/* Theme Toggle */}
-              <ThemeToggle isLandingPage={false} />
+              <div className="min-w-[44px] min-h-[44px] flex items-center justify-center">
+                <ThemeToggle isLandingPage={false} />
+              </div>
               
-              {/* Notification Button - Only render on client */}
+              {/* Notification Center - Only render on client */}
               {isClient && (
-                <Popover open={notifOpen} onOpenChange={setNotifOpen}>
-                  <PopoverTrigger asChild>
-                    <button className="relative p-2 hover:bg-gray-100 dark:hover:bg-gray-800 focus:outline-none rounded-md transition-colors" aria-label="Notifications">
-                      <Bell className="h-5 w-5 sm:h-6 sm:w-6 text-gray-700 dark:text-gray-300" />
-                    </button>
-                  </PopoverTrigger>
-                  <PopoverContent align="end" className="w-80 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg">
-                    <div className="font-semibold mb-2 text-gray-900 dark:text-white">Recent Activity</div>
-                    <div className="text-sm text-gray-600 dark:text-gray-300">(Placeholder) No new notifications.</div>
-                  </PopoverContent>
-                </Popover>
+                <div className="relative min-w-[44px] min-h-[44px] flex items-center justify-center">
+                  <NotificationCenter />
+                  {unreadCount > 0 && (
+                    <div className="absolute -top-1 -right-1 h-5 w-5 bg-red-500 rounded-full flex items-center justify-center">
+                      <span className="text-xs text-white font-medium">
+                        {unreadCount > 99 ? '99+' : unreadCount}
+                      </span>
+                    </div>
+                  )}
+                </div>
               )}
               
               {/* Desktop User Menu - Only render on client */}
