@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { createPortalSession } from './actions';
 import { ArrowRight, CreditCard, History, TrendingUp, BarChart3, Users, Zap, Download, FileText, BarChart2 } from 'lucide-react';
+import { PromoCodeInput } from '@/components/PromoCodeInput';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Progress } from '@/components/ui/progress';
 import { useState } from 'react';
@@ -74,6 +75,10 @@ type BillingClientProps = {
     plan: string | null;
     stripeSubscriptionId: string | null;
     stripeCurrentPeriodEnd: string | null;
+    isTrialUser?: boolean;
+    trialStartDate?: Date | null;
+    trialEndDate?: Date | null;
+    promoCodeUsed?: string | null;
     _count: {
       posts: number;
       socialAccounts: number;
@@ -342,7 +347,7 @@ export default function BillingClient({ user, searchParams, upcomingCharges, pay
                   <div className="h-full flex items-end gap-2">
                     {[30, 45, 60, 75, 90, 85, 70].map((value, index) => (
                       <div
-                        key={index}
+                        key={`engagement-${index}`}
                         className="flex-1 bg-gradient-to-t from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 transition-colors rounded-t"
                         style={{ height: `${value}%` }}
                       />
@@ -371,7 +376,7 @@ export default function BillingClient({ user, searchParams, upcomingCharges, pay
                   <div className="h-full flex items-end gap-2">
                     {[20, 35, 50, 65, 80, 95, 110].map((value, index) => (
                       <div
-                        key={index}
+                        key={`reach-${index}`}
                         className="flex-1 bg-gradient-to-t from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 transition-colors rounded-t"
                         style={{ height: `${value}%` }}
                       />
@@ -400,7 +405,7 @@ export default function BillingClient({ user, searchParams, upcomingCharges, pay
                   <div className="h-full flex items-end gap-2">
                     {[15, 25, 35, 45, 55, 65, 75].map((value, index) => (
                       <div
-                        key={index}
+                        key={`audience-${index}`}
                         className="flex-1 bg-gradient-to-t from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 transition-colors rounded-t"
                         style={{ height: `${value}%` }}
                       />
@@ -477,6 +482,18 @@ export default function BillingClient({ user, searchParams, upcomingCharges, pay
         </TabsContent>
 
         <TabsContent value="plans" className="space-y-4 sm:space-y-6">
+          {/* Promo Code Section */}
+          {!user?.isTrialUser && (
+            <div className="mb-6">
+              <PromoCodeInput 
+                onSuccess={(data) => {
+                  toast.success('Trial activated successfully!');
+                  router.refresh();
+                }}
+              />
+            </div>
+          )}
+          
           {/* Billing Frequency Toggle */}
           <div className="flex flex-col sm:flex-row items-center gap-4 mb-4">
             <span className={billingFrequency === 'monthly' ? 'font-bold' : ''}>Monthly</span>
@@ -489,8 +506,8 @@ export default function BillingClient({ user, searchParams, upcomingCharges, pay
             <span className={billingFrequency === 'yearly' ? 'font-bold' : ''}>Yearly</span>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
-            {tiers.map((tier) => (
-              <Card key={tier.id} className={tier.mostPopular ? 'border-primary' : ''}>
+            {tiers.map((tier, index) => (
+              <Card key={`${tier.name}-${index}`} className={tier.mostPopular ? 'border-primary' : ''}>
                 <CardHeader>
                   <CardTitle className="text-lg sm:text-xl">{tier.name}</CardTitle>
                   <CardDescription className="text-sm">{tier.description}</CardDescription>

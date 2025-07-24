@@ -61,7 +61,12 @@ export function UploadMediaModal({ open, onOpenChange, onUploadComplete }: Uploa
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [selectedFile, setSelectedFile] = useState<MediaFile | null>(null);
 
-  const generateId = () => Math.random().toString(36).substr(2, 9);
+  const [idCounter, setIdCounter] = useState(0);
+  const generateId = () => {
+    // Use a counter-based ID generation to prevent hydration issues
+    setIdCounter(prev => prev + 1);
+    return `file-${idCounter}`;
+  };
 
   const formatFileSize = (bytes: number) => {
     if (bytes === 0) return '0 Bytes';

@@ -67,7 +67,7 @@ export default function DashboardLayout({
             <div className="hidden lg:flex items-center space-x-8">
               <Link 
                 href="/dashboard" 
-                className={`text-sm font-medium transition-colors min-w-[44px] min-h-[44px] ${
+                className={`text-sm font-medium transition-colors min-w-[44px] min-h-[44px] flex items-center ${
                   pathname === '/dashboard' 
                     ? 'text-blue-600 dark:text-blue-400' 
                     : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400'
@@ -77,7 +77,7 @@ export default function DashboardLayout({
               </Link>
               <Link 
                 href="/dashboard/analytics" 
-                className={`text-sm font-medium transition-colors min-w-[44px] min-h-[44px] ${
+                className={`text-sm font-medium transition-colors min-w-[44px] min-h-[44px] flex items-center ${
                   pathname === '/dashboard/analytics' 
                     ? 'text-blue-600 dark:text-blue-400' 
                     : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400'
@@ -87,7 +87,7 @@ export default function DashboardLayout({
               </Link>
               <Link 
                 href="/dashboard/content" 
-                className={`text-sm font-medium transition-colors min-w-[44px] min-h-[44px] ${
+                className={`text-sm font-medium transition-colors min-w-[44px] min-h-[44px] flex items-center ${
                   pathname === '/dashboard/content' 
                     ? 'text-blue-600 dark:text-blue-400' 
                     : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400'
@@ -97,7 +97,7 @@ export default function DashboardLayout({
               </Link>
               <Link 
                 href="/dashboard/notifications/enhanced" 
-                className={`text-sm font-medium transition-colors min-w-[44px] min-h-[44px] ${
+                className={`text-sm font-medium transition-colors min-w-[44px] min-h-[44px] flex items-center ${
                   pathname === '/dashboard/notifications/enhanced' 
                     ? 'text-blue-600 dark:text-blue-400' 
                     : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400'

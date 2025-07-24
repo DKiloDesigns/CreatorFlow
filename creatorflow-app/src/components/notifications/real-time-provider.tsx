@@ -31,6 +31,10 @@ export function RealTimeNotificationProvider({ children }: RealTimeNotificationP
 
   // Initialize WebSocket connection
   useEffect(() => {
+    // Temporarily disable WebSocket functionality to prevent errors
+    // TODO: Re-enable when WebSocket server is properly configured
+    return;
+    
     const newSocket = io(process.env.NEXT_PUBLIC_WEBSOCKET_URL || 'http://localhost:4001', {
       transports: ['websocket'],
       autoConnect: true,

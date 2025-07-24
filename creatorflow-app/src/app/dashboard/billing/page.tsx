@@ -4,7 +4,7 @@ import BillingClient from './BillingClient';
 import { Metadata } from "next";
 
 type BillingPageProps = {
-  searchParams: { [key: string]: string | string[] | undefined }
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }
 
 export const metadata: Metadata = {
@@ -14,8 +14,8 @@ export const metadata: Metadata = {
 
 export default async function BillingPage({ searchParams }: BillingPageProps) {
   const session = await getSession();
-  // searchParams is now a plain object
-  const resolvedSearchParams = searchParams;
+  // Await searchParams for Next.js 15 compatibility
+  const resolvedSearchParams = await searchParams;
   
   if (!session?.user) {
     return <div className="p-8 text-center">Please sign in to view billing information.</div>;

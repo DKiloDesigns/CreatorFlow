@@ -7,6 +7,10 @@ const MAX_RECONNECT_ATTEMPTS = 3;
 
 export function useAnnouncementSocket(onAnnouncement: (announcement: any) => void) {
   useEffect(() => {
+    // Temporarily disable WebSocket functionality to prevent errors
+    // TODO: Re-enable when WebSocket server is properly configured
+    return;
+    
     if (!socket && connectionAttempts < MAX_RECONNECT_ATTEMPTS) {
       try {
         socket = io('http://localhost:4001', { 

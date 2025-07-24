@@ -104,7 +104,8 @@ export async function handleConnectAccount({ req, params, getSession }: {
     'facebook', 'pinterest', 'threads', 'whatsapp', 'messenger', 
     'wechat', 'telegram', 'reddit', 'snapchat', 'gmb',
     'discord', 'twitch', 'medium', 'substack',
-    'mastodon', 'bluesky', 'vimeo', 'behance', 'dribbble'
+    'mastodon', 'bluesky', 'vimeo', 'behance', 'dribbble',
+    'slack', 'producthunt', 'notion', 'mailchimp', 'klaviyo', 'sms'
   ];
   if (!supportedProviders.includes(platform)) {
     return { status: 400, body: { error: 'Unsupported platform' } };
@@ -391,6 +392,84 @@ export async function handleConnectAccount({ req, params, getSession }: {
         state: session.user.id,
       });
       break;
+
+    case 'slack':
+      const slackClientId = process.env.SLACK_CLIENT_ID;
+      if (!slackClientId) {
+        return { status: 500, body: { error: 'Slack OAuth not configured' } };
+      }
+      // Slack requires HTTPS - use ngrok URL for development
+      const slackRedirectUri = process.env.NODE_ENV === 'development' 
+        ? process.env.SLACK_REDIRECT_URI || redirectUri.replace('http://', 'https://')
+        : redirectUri;
+      oauthUrl = `https://slack.com/oauth/v2/authorize?` + new URLSearchParams({
+        response_type: 'code',
+        client_id: slackClientId,
+        redirect_uri: slackRedirectUri,
+        scope: 'chat:write,channels:read,groups:read,im:read,mpim:read',
+        state: session.user.id,
+      });
+      break;
+
+    case 'producthunt':
+      const producthuntClientId = process.env.PRODUCTHUNT_CLIENT_ID;
+      if (!producthuntClientId) {
+        return { status: 500, body: { error: 'Product Hunt OAuth not configured' } };
+      }
+      oauthUrl = `https://api.producthunt.com/v2/oauth/authorize?` + new URLSearchParams({
+        response_type: 'code',
+        client_id: producthuntClientId,
+        redirect_uri: redirectUri,
+        scope: 'public',
+        state: session.user.id,
+      });
+      break;
+
+    case 'notion':
+      const notionClientId = process.env.NOTION_CLIENT_ID;
+      if (!notionClientId) {
+        return { status: 500, body: { error: 'Notion OAuth not configured' } };
+      }
+      oauthUrl = `https://api.notion.com/v1/oauth/authorize?` + new URLSearchParams({
+        response_type: 'code',
+        client_id: notionClientId,
+        redirect_uri: redirectUri,
+        scope: 'read,write',
+        state: session.user.id,
+      });
+      break;
+
+    case 'mailchimp':
+      const mailchimpClientId = process.env.MAILCHIMP_CLIENT_ID;
+      if (!mailchimpClientId) {
+        return { status: 500, body: { error: 'Mailchimp OAuth not configured' } };
+      }
+      oauthUrl = `https://login.mailchimp.com/oauth2/authorize?` + new URLSearchParams({
+        response_type: 'code',
+        client_id: mailchimpClientId,
+        redirect_uri: redirectUri,
+        scope: 'campaigns:read,campaigns:write',
+        state: session.user.id,
+      });
+      break;
+
+    case 'klaviyo':
+      const klaviyoClientId = process.env.KLAVIYO_CLIENT_ID;
+      if (!klaviyoClientId) {
+        return { status: 500, body: { error: 'Klaviyo OAuth not configured' } };
+      }
+      oauthUrl = `https://www.klaviyo.com/oauth/authorize?` + new URLSearchParams({
+        response_type: 'code',
+        client_id: klaviyoClientId,
+        redirect_uri: redirectUri,
+        scope: 'read-campaigns,write-campaigns',
+        state: session.user.id,
+      });
+      break;
+
+    case 'sms':
+      // SMS doesn't use OAuth, it uses API keys
+      return { status: 500, body: { error: 'SMS integration uses API keys, not OAuth' } };
 
     case 'mastodon':
       const mastodonClientId = process.env.MASTODON_CLIENT_ID;

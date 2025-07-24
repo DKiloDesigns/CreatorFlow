@@ -15,6 +15,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
 const PROVIDERS = [
+  // Social Media Platforms
   { name: 'Facebook', id: 'facebook', icon: '📘', color: '#1877F3' },
   { name: 'Instagram', id: 'instagram', icon: '📸', color: '#E1306C' },
   { name: 'X', id: 'twitter', icon: '🐦', color: '#000000' },
@@ -31,6 +32,22 @@ const PROVIDERS = [
   { name: 'Snapchat', id: 'snapchat', icon: '👻', color: '#FFFC00' },
   { name: 'Google My Business', id: 'gmb', icon: '🏢', color: '#4285F4' },
   { name: 'Mastodon', id: 'mastodon', icon: '🐘', color: '#6364FF', requiresInstance: true },
+  
+  // Content & Development Platforms
+  { name: 'GitHub', id: 'github', icon: '🐙', color: '#333333' },
+  { name: 'Discord', id: 'discord', icon: '🎮', color: '#5865F2' },
+  { name: 'Slack', id: 'slack', icon: '💬', color: '#4A154B' },
+  { name: 'Medium', id: 'medium', icon: '📝', color: '#00AB6C' },
+  { name: 'Substack', id: 'substack', icon: '📧', color: '#FF6719' },
+  { name: 'Twitch', id: 'twitch', icon: '🎥', color: '#9146FF' },
+  { name: 'Vimeo', id: 'vimeo', icon: '🎬', color: '#1AB7EA' },
+  { name: 'Product Hunt', id: 'producthunt', icon: '🔍', color: '#DA552F' },
+  
+  // Business & Productivity Tools
+  { name: 'Notion', id: 'notion', icon: '📋', color: '#000000' },
+  { name: 'Mailchimp', id: 'mailchimp', icon: '📧', color: '#FFE01B' },
+  { name: 'Klaviyo', id: 'klaviyo', icon: '📊', color: '#E31C79' },
+  { name: 'SMS', id: 'sms', icon: '📱', color: '#00C851' },
 ];
 
 type SocialAccount = {

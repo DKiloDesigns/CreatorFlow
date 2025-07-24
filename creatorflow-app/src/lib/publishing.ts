@@ -9,8 +9,8 @@ import { publishToFacebook } from './publishers/facebook';
 import { publishToPinterest } from './publishers/pinterest';
 import { publishToReddit } from './publishers/reddit';
 import { publishToTelegram } from './publishers/telegram';
-import { publishToDiscord } from './publishers/discord';
-import { publishToTwitch } from './publishers/twitch';
+import DiscordPublisher from './publishers/discord';
+import TwitchPublisher from './publishers/twitch';
 import { publishToMedium } from './publishers/medium';
 import { publishToSubstack } from './publishers/substack';
 import { publishToMastodon } from './publishers/mastodon';
@@ -18,6 +18,12 @@ import { publishToBluesky } from './publishers/bluesky';
 import { publishToVimeo } from './publishers/vimeo';
 import { publishToBehance } from './publishers/behance';
 import { publishToDribbble } from './publishers/dribbble';
+import { publishToSlack } from './publishers/slack';
+import { publishToProductHunt } from './publishers/producthunt';
+import { publishToNotion } from './publishers/notion';
+import { publishToMailchimp } from './publishers/mailchimp';
+import { publishToKlaviyo } from './publishers/klaviyo';
+import { publishToSMS } from './publishers/sms';
 // ... other platform imports
 
 const prisma = new PrismaClient();
@@ -160,10 +166,12 @@ export async function publishPost(postId: string, userId: string): Promise<Publi
                 result = { platform: 'gmb', success: false, error: 'Google My Business publishing not yet implemented' };
                 break;
             case 'discord':
-                result = await publishToDiscord(post, account);
+                // Discord uses a different pattern - needs to be implemented
+                result = { platform: 'discord', success: false, error: 'Discord publishing not yet implemented' };
                 break;
             case 'twitch':
-                result = await publishToTwitch(post, account);
+                // Twitch uses a different pattern - needs to be implemented
+                result = { platform: 'twitch', success: false, error: 'Twitch publishing not yet implemented' };
                 break;
             case 'medium':
                 result = await publishToMedium(post, account);
@@ -185,6 +193,24 @@ export async function publishPost(postId: string, userId: string): Promise<Publi
                 break;
             case 'dribbble':
                 result = await publishToDribbble(post, account);
+                break;
+            case 'slack':
+                result = await publishToSlack(post, account);
+                break;
+            case 'producthunt':
+                result = await publishToProductHunt(post, account);
+                break;
+            case 'notion':
+                result = await publishToNotion(post, account);
+                break;
+            case 'mailchimp':
+                result = await publishToMailchimp(post, account);
+                break;
+            case 'klaviyo':
+                result = await publishToKlaviyo(post, account);
+                break;
+            case 'sms':
+                result = await publishToSMS(post, account);
                 break;
             default:
                 result = {

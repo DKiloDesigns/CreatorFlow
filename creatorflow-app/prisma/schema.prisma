@@ -30,6 +30,12 @@ model User {
   deactivated             Boolean                @default(false)
   resetToken              String?                @unique
   resetTokenExpiry        DateTime?
+  // Trial and Promo Code fields
+  isTrialUser             Boolean                @default(false) @map("is_trial_user")
+  trialStartDate          DateTime?              @map("trial_start_date")
+  trialEndDate            DateTime?              @map("trial_end_date")
+  promoCodeUsed           String?                @map("promo_code_used")
+  promoCodeUsedAt         DateTime?              @map("promo_code_used_at")
   accounts                Account[]
   analyticsAggregations   AnalyticsAggregation[]
   announcementsCreated    Announcement[]         @relation("AnnouncementCreatedBy")
@@ -480,6 +486,28 @@ model Notification {
   @@index([type])
   @@index([read])
   @@index([createdAt])
+}
+
+// PromoCode model for trial campaigns
+model PromoCode {
+  id          String   @id @default(cuid())
+  code        String   @unique
+  name        String
+  description String?
+  type        String   @default("TRIAL") // TRIAL, DISCOUNT, etc.
+  value       Int      // Trial days, discount percentage, etc.
+  maxUses     Int?     @map("max_uses") // null = unlimited
+  usedCount   Int      @default(0) @map("used_count")
+  isActive    Boolean  @default(true) @map("is_active")
+  validFrom   DateTime @default(now()) @map("valid_from")
+  validUntil  DateTime? @map("valid_until")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([code])
+  @@index([isActive])
+  @@index([validFrom])
+  @@index([validUntil])
 }
 
 enum PostStatus {

@@ -68,15 +68,19 @@ export default function DashboardPage() {
     }, 1000);
 
     // Show welcome modal for new users
-    const hasSeenWelcome = localStorage.getItem('hasSeenWelcome');
-    if (!hasSeenWelcome) {
-      setShowWelcome(true);
+    if (typeof window !== 'undefined') {
+      const hasSeenWelcome = localStorage.getItem('hasSeenWelcome');
+      if (!hasSeenWelcome) {
+        setShowWelcome(true);
+      }
     }
   }, []);
 
   const handleClose = () => {
     setShowWelcome(false);
-    localStorage.setItem('hasSeenWelcome', 'true');
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('hasSeenWelcome', 'true');
+    }
   };
 
   const handleFeedbackSubmit = () => {
@@ -91,16 +95,10 @@ export default function DashboardPage() {
         {/* Enhanced Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="space-y-2">
-            <h1
-              className="text-xl sm:text-2xl font-bold tracking-tight text-black dark:text-white break-words"
-              style={{ color: 'var(--foreground)', ...(typeof window !== 'undefined' && document.documentElement.classList.contains('dark') ? { color: '#fff' } : {}) }}
-            >
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-black dark:text-white break-words">
               Welcome back{session?.user?.name ? `, ${session.user.name}` : ''}!
             </h1>
-            <p
-              className="text-sm sm:text-base text-black dark:text-white break-words"
-              style={{ color: 'var(--foreground)', ...(typeof window !== 'undefined' && document.documentElement.classList.contains('dark') ? { color: '#fff' } : {}) }}
-            >
+            <p className="text-sm sm:text-base text-black dark:text-white break-words">
               Here's what's happening with your content today.
             </p>
           </div>
@@ -161,10 +159,7 @@ export default function DashboardPage() {
           {/* Create Content */}
           <Card className="lg:col-span-2 border-0">
             <CardHeader>
-              <CardTitle
-                className="flex items-center gap-2 text-black dark:text-white break-words"
-                style={{ color: 'var(--foreground)', ...(typeof window !== 'undefined' && document.documentElement.classList.contains('dark') ? { color: '#fff' } : {}) }}
-              >
+              <CardTitle className="flex items-center gap-2 text-black dark:text-white break-words">
                 <Plus className="h-5 w-5 flex-shrink-0" />
                 Quick Actions
               </CardTitle>

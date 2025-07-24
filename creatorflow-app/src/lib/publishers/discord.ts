@@ -1,221 +1,110 @@
-import { PrismaClient, Post, SocialAccount } from '@prisma/client';
-import { decrypt, encrypt } from '@/lib/crypto';
-import { PlatformResult } from '../publishing';
+import { Client, GatewayIntentBits, TextChannel, EmbedBuilder } from 'discord.js';
 
-const prisma = new PrismaClient();
-
-type PublishResult = PlatformResult;
-
-interface DiscordError {
-  code?: number;
-  message: string;
+export interface DiscordPostData {
+  content?: string;
+  title?: string;
+  description?: string;
+  imageUrl?: string;
+  color?: number;
+  channelId?: string;
 }
 
-// Helper: Get Authenticated Discord Client
-async function getDiscordApiClient(account: SocialAccount): Promise<{ accessToken: string | null; error?: string }> {
-  if (!account.encryptedAccessToken) {
-    return { accessToken: null, error: 'Missing encrypted access token' };
-  }
+export class DiscordPublisher {
+  private client: Client;
+  private botToken: string;
+  private defaultChannelId?: string;
 
-  // Decrypt token
-  const accessToken = decrypt(account.encryptedAccessToken);
-  if (!accessToken) {
-    return { accessToken: null, error: 'Failed to decrypt access token' };
-  }
-
-  return { accessToken };
-}
-
-/**
- * Publishes a message to a Discord channel.
- * 
- * Discord API supports:
- * - Text messages
- * - Embeds with images, videos, and links
- * - File attachments
- * - Webhook messages
- * 
- * @param post The post data from Prisma.
- * @param account The user's Discord social account data.
- * @param channelId Optional channel ID to post to (defaults to user's default channel)
- * @returns A promise resolving to a PublishResult object.
- */
-export async function publishToDiscord(
-  post: Post,
-  account: SocialAccount,
-  channelId?: string
-): Promise<PlatformResult> {
-  const { accessToken, error: authError } = await getDiscordApiClient(account);
-
-  if (authError || !accessToken) {
-    return { platform: 'discord', success: false, error: authError || 'Authentication failed' };
-  }
-
-  try {
-    // Use provided channel ID or get user's guilds and use first available channel
-    let targetChannel = channelId;
+  constructor() {
+    this.botToken = process.env.DISCORD_BOT_TOKEN || '';
+    this.defaultChannelId = process.env.DISCORD_DEFAULT_CHANNEL_ID;
     
-    if (!targetChannel) {
-      // Get user's guilds (servers)
-      const guildsResponse = await fetch('https://discord.com/api/users/@me/guilds', {
-        headers: {
-          'Authorization': `Bearer ${accessToken}`,
-        },
-      });
+    this.client = new Client({
+      intents: [
+        GatewayIntentBits.Guilds,
+        GatewayIntentBits.GuildMessages,
+        GatewayIntentBits.MessageContent,
+      ],
+    });
+  }
 
-      if (!guildsResponse.ok) {
-        throw new Error('Failed to fetch Discord guilds');
-      }
-
-      const guildsData = await guildsResponse.json();
-      
-      if (guildsData.length === 0) {
-        return { platform: 'discord', success: false, error: 'No Discord servers found. Please join a server first.' };
-      }
-
-      // Get channels from the first guild
-      const guildId = guildsData[0].id;
-      const channelsResponse = await fetch(`https://discord.com/api/guilds/${guildId}/channels`, {
-        headers: {
-          'Authorization': `Bearer ${accessToken}`,
-        },
-      });
-
-      if (!channelsResponse.ok) {
-        throw new Error('Failed to fetch Discord channels');
-      }
-
-      const channelsData = await channelsResponse.json();
-      const textChannels = channelsData.filter((channel: any) => channel.type === 0); // Text channels
-
-      if (textChannels.length === 0) {
-        return { platform: 'discord', success: false, error: 'No text channels found in the server.' };
-      }
-
-      targetChannel = textChannels[0].id;
+  async initialize(): Promise<void> {
+    if (!this.botToken) {
+      throw new Error('Discord Bot Token not configured');
     }
 
-    // Prepare message content
-    const content = post.contentText || 'CreatorFlow Post';
-    const hasMedia = post.mediaUrls && post.mediaUrls.length > 0;
-    const mediaUrl = hasMedia ? post.mediaUrls[0] : null;
-
-    let messageData: any = {
-      content: content,
-    };
-
-    // Handle media if present
-    if (hasMedia && mediaUrl) {
-      // Create an embed with the media
-      messageData.embeds = [{
-        title: 'CreatorFlow Post',
-        description: content,
-        image: {
-          url: mediaUrl,
-        },
-        color: 0x5865F2, // Discord brand color
-        timestamp: new Date().toISOString(),
-      }];
-      
-      // Clear content since it's in the embed
-      messageData.content = '';
+    try {
+      await this.client.login(this.botToken);
+      console.log('✅ Discord bot logged in successfully');
+    } catch (error) {
+      console.error('❌ Failed to login to Discord:', error);
+      throw error;
     }
+  }
 
-    // Send the message
-    const messageResponse = await fetch(`https://discord.com/api/channels/${targetChannel}/messages`, {
-      method: 'POST',
-      headers: {
-        'Authorization': `Bot ${accessToken}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(messageData),
+  async post(data: DiscordPostData): Promise<boolean> {
+    try {
+      const channelId = data.channelId || this.defaultChannelId;
+      
+      if (!channelId) {
+        throw new Error('No Discord channel ID specified');
+      }
+
+      const channel = this.client.channels.cache.get(channelId) as TextChannel;
+      
+      if (!channel) {
+        throw new Error(`Channel ${channelId} not found or not accessible`);
+      }
+
+      // Create embed if title/description provided
+      if (data.title || data.description) {
+        const embed = new EmbedBuilder()
+          .setColor(data.color || 0x00ff00)
+          .setTimestamp();
+
+        if (data.title) embed.setTitle(data.title);
+        if (data.description) embed.setDescription(data.description);
+        if (data.imageUrl) embed.setImage(data.imageUrl);
+
+        await channel.send({
+          content: data.content,
+          embeds: [embed]
+        });
+      } else {
+        // Send plain text message
+        await channel.send(data.content || '');
+      }
+
+      console.log('✅ Message posted to Discord successfully');
+      return true;
+    } catch (error) {
+      console.error('❌ Failed to post to Discord:', error);
+      return false;
+    }
+  }
+
+  async getAvailableChannels(): Promise<Array<{ id: string; name: string; guildName: string }>> {
+    const channels: Array<{ id: string; name: string; guildName: string }> = [];
+    
+    this.client.guilds.cache.forEach(guild => {
+      guild.channels.cache.forEach(channel => {
+        if (channel.type === 0) { // Text channel
+          channels.push({
+            id: channel.id,
+            name: channel.name,
+            guildName: guild.name
+          });
+        }
+      });
     });
 
-    if (!messageResponse.ok) {
-      const errorData = await messageResponse.json();
-      throw new Error(`Failed to send Discord message: ${errorData.message || 'Unknown error'}`);
+    return channels;
+  }
+
+  async disconnect(): Promise<void> {
+    if (this.client) {
+      await this.client.destroy();
     }
-
-    const messageResult = await messageResponse.json();
-    const platformPostId = messageResult.id;
-
-    return {
-      platform: 'discord',
-      success: true,
-      platformPostId: platformPostId,
-    };
-
-  } catch (error: unknown) {
-    const discordError = error as DiscordError;
-    return {
-      platform: 'discord',
-      success: false,
-      error: discordError.message || 'Unknown Discord API error',
-    };
   }
 }
 
-/**
- * Alternative implementation using Discord webhooks
- * This is simpler and doesn't require bot permissions
- */
-export async function publishToDiscordWebhook(
-  post: Post,
-  account: SocialAccount,
-  webhookUrl: string
-): Promise<PlatformResult> {
-  try {
-    const content = post.contentText || 'CreatorFlow Post';
-    const hasMedia = post.mediaUrls && post.mediaUrls.length > 0;
-    const mediaUrl = hasMedia ? post.mediaUrls[0] : null;
-
-    let webhookData: any = {
-      content: content,
-      username: 'CreatorFlow',
-      avatar_url: 'https://creatorflow.com/logo.png', // Optional: set custom avatar
-    };
-
-    // Handle media if present
-    if (hasMedia && mediaUrl) {
-      webhookData.embeds = [{
-        title: 'CreatorFlow Post',
-        description: content,
-        image: {
-          url: mediaUrl,
-        },
-        color: 0x5865F2,
-        timestamp: new Date().toISOString(),
-      }];
-      
-      webhookData.content = '';
-    }
-
-    const response = await fetch(webhookUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(webhookData),
-    });
-
-    if (!response.ok) {
-      throw new Error(`Webhook request failed: ${response.statusText}`);
-    }
-
-    const platformPostId = `webhook_${Date.now()}`;
-
-    return {
-      platform: 'discord',
-      success: true,
-      platformPostId: platformPostId,
-    };
-
-  } catch (error: unknown) {
-    const discordError = error as DiscordError;
-    return {
-      platform: 'discord',
-      success: false,
-      error: discordError.message || 'Unknown Discord webhook error',
-    };
-  }
-} 
+export default DiscordPublisher; 
