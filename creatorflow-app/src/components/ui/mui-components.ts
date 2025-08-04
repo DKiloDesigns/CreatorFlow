@@ -8,6 +8,8 @@ export { Select as MuiSelect, SelectGroup, SelectValue, SelectTrigger, SelectCon
 export { Checkbox as MuiCheckbox } from './mui-checkbox';
 export { Switch as MuiSwitch } from './mui-switch';
 export { DataTable } from './mui-data-table';
+export { Dialog as MuiDialog, DialogContent as MuiDialogContent, DialogHeader as MuiDialogHeader, DialogFooter as MuiDialogFooter, DialogTitle as MuiDialogTitle, DialogDescription as MuiDialogDescription, DialogTrigger, DialogPortal, DialogClose, DialogOverlay } from './mui-dialog';
+export { LoadingSpinner, LoadingBar, SkeletonCard, LoadingOverlay, LoadingState, ProgressIndicator } from './mui-loading';
 
 // Re-export common MUI components that we'll use directly
 export {
