@@ -222,7 +222,7 @@ export function NotificationCenter({ className, onNotificationClick }: Notificat
             className="relative"
             aria-label="Notifications"
           >
-            <Bell className="h-5 w-5" />
+            <Bell className="h-5 w-5 text-black" />
             {unreadCount > 0 && (
               <Badge
                 variant="destructive"

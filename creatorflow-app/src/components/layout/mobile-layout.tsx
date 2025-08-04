@@ -15,7 +15,7 @@ export function MobileLayout({ children }: MobileLayoutProps) {
         {children}
       </div>
       
-      {/* Bottom navigation - only shows on mobile */}
+      {/* Bottom navigation - only shows on mobile (hidden on md and up) */}
       <BottomNavigation />
     </div>
   );

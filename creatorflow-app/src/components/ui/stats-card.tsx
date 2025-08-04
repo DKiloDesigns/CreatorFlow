@@ -32,15 +32,15 @@ export function StatsCard({
 }: StatsCardProps) {
   const variantStyles = {
     default: 'border-border hover:border-primary/50',
-    success: 'border-green-500 bg-black text-white dark:bg-black dark:text-white',
-    warning: 'border-yellow-500 bg-black text-white dark:bg-black dark:text-white',
+    success: 'border-green-500',
+    warning: 'border-yellow-500',
     danger: 'border-red-200 hover:border-red-300 bg-red-50/50 dark:bg-red-900/60'
   };
 
   const iconColors = {
     default: 'text-primary',
-    success: 'text-white',
-    warning: 'text-white',
+    success: 'text-green-600 dark:text-green-400',
+    warning: 'text-yellow-600 dark:text-yellow-400',
     danger: 'text-red-600 dark:text-red-400'
   };
 
@@ -56,9 +56,7 @@ export function StatsCard({
       <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
         <CardTitle className={cn(
           "text-sm font-medium",
-          variant === 'success' || variant === 'warning' 
-            ? 'text-white' 
-            : 'text-muted-foreground'
+          className?.includes('dark:bg-gray-800') ? 'text-white' : 'text-foreground'
         )}>
           {title}
         </CardTitle>
@@ -78,16 +76,14 @@ export function StatsCard({
           <div className="space-y-1">
             <div className={cn(
               "text-2xl font-bold tracking-tight",
-              variant === 'success' || variant === 'warning' ? 'text-white' : ''
+              className?.includes('dark:bg-gray-800') ? 'text-white' : 'text-foreground'
             )}>
               {value}
             </div>
             {description && (
               <p className={cn(
                 "text-xs",
-                variant === 'success' || variant === 'warning' 
-                  ? 'text-white' 
-                  : 'text-muted-foreground'
+                className?.includes('dark:bg-gray-800') ? 'text-white' : 'text-muted-foreground'
               )}>
                 {description}
               </p>

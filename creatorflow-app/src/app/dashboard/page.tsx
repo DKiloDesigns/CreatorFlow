@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import Link from "next/link"
 import { useRouter } from 'next/navigation';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
 import {
@@ -38,6 +38,7 @@ import {
 } from 'lucide-react';
 import { AISetupReminder } from '@/components/ui/ai-setup-reminder';
 import { useAPIKey } from '@/hooks/use-api-key';
+import { FeedbackWidget } from '@/components/FeedbackWidget';
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -54,6 +55,27 @@ export default function DashboardPage() {
     totalEngagement: 0,
     scheduledPosts: 0,
   });
+
+  useEffect(() => {
+    // Add CSS to force white text in dark mode
+    const style = document.createElement('style');
+    style.textContent = `
+      .dark h1, .dark p, .dark .text-gray-900 {
+        color: white !important;
+      }
+      .dark .text-sm.font-medium {
+        color: white !important;
+      }
+      .dark .text-base.font-semibold {
+        color: white !important;
+      }
+    `;
+    document.head.appendChild(style);
+    
+    return () => {
+      document.head.removeChild(style);
+    };
+  }, []);
 
   useEffect(() => {
     // Simulate loading stats
@@ -95,10 +117,10 @@ export default function DashboardPage() {
         {/* Enhanced Header */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="space-y-2">
-            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-black dark:text-white break-words">
+            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground break-words">
               Welcome back{session?.user?.name ? `, ${session.user.name}` : ''}!
             </h1>
-            <p className="text-sm sm:text-base text-black dark:text-white break-words">
+            <p className="text-sm sm:text-base text-foreground break-words">
               Here's what's happening with your content today.
             </p>
           </div>
@@ -131,7 +153,7 @@ export default function DashboardPage() {
             variant="success"
             loading={isLoading}
             onClick={() => router.push('/dashboard/accounts')}
-            className="bg-gray-100 dark:bg-slate-800 text-black dark:text-white border-green-500 [&_.text-white]:text-black [&_.text-muted-foreground]:text-black"
+            className="bg-gray-100 dark:bg-gray-800 border-green-500"
           />
           <StatsCard
             title="Total Engagement"
@@ -150,7 +172,7 @@ export default function DashboardPage() {
             variant="warning"
             loading={isLoading}
             onClick={() => router.push('/dashboard/content')}
-            className="bg-gray-100 dark:bg-slate-800 text-black dark:text-white border-yellow-500 [&_.text-white]:text-black [&_.text-muted-foreground]:text-black"
+            className="bg-gray-100 dark:bg-gray-800 border-yellow-500"
           />
         </div>
 
@@ -159,7 +181,7 @@ export default function DashboardPage() {
           {/* Create Content */}
           <Card className="lg:col-span-2 border-0">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-black dark:text-white break-words">
+              <CardTitle className="flex items-center gap-2 text-foreground break-words">
                 <Plus className="h-5 w-5 flex-shrink-0" />
                 Quick Actions
               </CardTitle>
@@ -189,65 +211,71 @@ export default function DashboardPage() {
                 </Button>
                 <Button 
                   className="h-16 flex flex-col items-center justify-center gap-2 bg-white text-black hover:bg-gray-100 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700 min-w-[44px] min-h-[44px]"
-                  onClick={() => router.push('/dashboard/analytics')}
+                  onClick={() => router.push('/dashboard/scheduling')}
                 >
-                  <BarChart2 className="h-6 w-6 flex-shrink-0" />
-                  <span className="text-sm break-words">View Analytics</span>
-                </Button>
-                <Button 
-                  className="h-16 flex flex-col items-center justify-center gap-2 bg-white text-black hover:bg-gray-100 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700 min-w-[44px] min-h-[44px]"
-                  onClick={() => router.push('/dashboard/collabs')}
-                >
-                  <MessageSquare className="h-6 w-6 flex-shrink-0" />
-                  <span className="text-sm break-words">Brand Collabs</span>
-                </Button>
-                <Button 
-                  className="h-16 flex flex-col items-center justify-center gap-2 bg-white text-black hover:bg-gray-100 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700 min-w-[44px] min-h-[44px]"
-                  onClick={() => router.push('/dashboard/billing')}
-                >
-                  <CreditCard className="h-6 w-6 flex-shrink-0" />
-                  <span className="text-sm break-words">Billing</span>
+                  <Calendar className="h-6 w-6 flex-shrink-0" />
+                  <span className="text-sm break-words">Schedule</span>
                 </Button>
               </div>
             </CardContent>
           </Card>
 
-          {/* Recent Activity */}
-          <div className="space-y-3">
-            <h3 className="text-lg font-semibold text-black dark:text-white">Recent Activity</h3>
-            {stats.totalPosts > 0 ? (
-              <div className="space-y-3">
-                <div className="flex items-center gap-3 p-2 rounded-lg">
-                  <div className="h-8 w-8 flex items-center justify-center">
-                    <Share2 className="h-4 w-4 text-black dark:text-white" />
+          {/* Welcome Message */}
+          <Card className="border-0">
+            <CardHeader>
+              <CardTitle className="text-foreground">Welcome back, Darrell Mayberry!</CardTitle>
+              <CardDescription className="text-foreground">
+                Here's what's happening with your content today.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                  <span className="text-sm text-foreground">Post published</span>
+                </div>
+                <p className="text-xs text-muted-foreground">2 hours ago</p>
+              </div>
+              <div className="space-y-2">
+                <div className="flex items-center gap-2">
+                  <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
+                  <span className="text-sm text-foreground">Account connected</span>
+                </div>
+                <p className="text-xs text-muted-foreground">1 day ago</p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Recent Activity */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
+          <Card className="border-0">
+            <CardHeader>
+              <CardTitle className="text-foreground">Recent Activity</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center">
+                    <FileText className="h-4 w-4 text-blue-600 dark:text-blue-400" />
                   </div>
                   <div className="flex-1">
-                    <p className="text-sm font-medium text-black dark:text-white">Post published</p>
-                    <p className="text-xs text-black dark:text-white">2 hours ago</p>
+                    <p className="text-sm font-medium text-foreground">Post published</p>
+                    <p className="text-xs text-muted-foreground">2 hours ago</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-3 p-2 rounded-lg">
-                  <div className="h-8 w-8 flex items-center justify-center">
-                    <Users className="h-4 w-4 text-black dark:text-white" />
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center">
+                    <Users className="h-4 w-4 text-green-600 dark:text-green-400" />
                   </div>
                   <div className="flex-1">
-                    <p className="text-sm font-medium text-black dark:text-white">Account connected</p>
-                    <p className="text-xs text-black dark:text-white">1 day ago</p>
+                    <p className="text-sm font-medium text-foreground">Account connected</p>
+                    <p className="text-xs text-muted-foreground">1 day ago</p>
                   </div>
                 </div>
               </div>
-            ) : (
-              <EmptyState
-                title="No activity yet"
-                description="Start creating content to see your activity here."
-                action={{
-                  label: "Create First Post",
-                  onClick: () => router.push('/dashboard/content')
-                }}
-                variant="minimal"
-              />
-            )}
-          </div>
+            </CardContent>
+          </Card>
         </div>
 
         {/* Welcome Modal */}
@@ -332,39 +360,6 @@ export default function DashboardPage() {
             </AlertDialogContent>
           </AlertDialog>
         )}
-
-        {/* Feedback Section */}
-        <div className="space-y-4">
-          <div className="flex items-start gap-4">
-            <div className="flex-shrink-0">
-              <div className="h-10 w-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-                <MessageSquare className="h-5 w-5 text-gray-600 dark:text-white" />
-              </div>
-            </div>
-            <div className="flex-1">
-              <h3 className="font-semibold mb-2 text-black dark:text-white">How are we doing?</h3>
-              <p className="text-sm text-black dark:text-white mb-4">
-                We'd love to hear your feedback about CreatorFlow. What can we improve?
-              </p>
-              <div className="space-y-3">
-                <Textarea
-                  placeholder="Share your thoughts..."
-                  value={feedback}
-                  onChange={(e) => setFeedback(e.target.value)}
-                  className="min-h-[80px] text-black dark:text-white bg-white dark:bg-slate-800 placeholder:text-black dark:placeholder:text-white"
-                />
-                <div className="flex gap-2">
-                  <Button size="sm" className="bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:from-blue-600 hover:to-purple-700" onClick={handleFeedbackSubmit}>
-                    Send Feedback
-                  </Button>
-                  <Button size="sm" className="bg-gray-600 text-white hover:bg-gray-700" onClick={() => setFeedback('')}>
-                    Clear
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
 
         <div className="flex justify-center">
           <Button 

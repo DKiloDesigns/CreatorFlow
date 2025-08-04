@@ -158,8 +158,8 @@ export function AnalyticsDashboard() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 break-words">Analytics Dashboard</h1>
-          <p className="text-gray-600 mt-1 break-words">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white break-words">Analytics Dashboard</h1>
+          <p className="text-gray-600 dark:text-gray-300 mt-1 break-words">
             Last updated: {new Date(analyticsData.lastUpdated).toLocaleString()}
           </p>
         </div>
@@ -168,7 +168,7 @@ export function AnalyticsDashboard() {
             variant="outline"
             onClick={loadAnalyticsData}
             disabled={refreshing}
-            className="w-full sm:w-auto min-w-[44px] min-h-[44px]"
+            className="w-full sm:w-auto min-w-[44px] min-h-[44px] bg-card"
           >
             <RefreshCw className={`h-4 w-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} />
             Refresh

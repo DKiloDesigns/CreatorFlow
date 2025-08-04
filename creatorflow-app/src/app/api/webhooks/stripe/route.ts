@@ -1,410 +1,310 @@
-import { headers } from 'next/headers'
-import { NextResponse } from 'next/server'
-import Stripe from 'stripe'
-import { prisma } from '@/lib/prisma'
-import { Resend } from 'resend'
-import { emailTemplates } from '@/lib/email-templates'
+import { NextRequest, NextResponse } from 'next/server';
+import { integrationManager } from '@/lib/integration-manager';
+import { prisma } from '@/lib/prisma';
+import crypto from 'crypto';
 
-// @ts-ignore - Ignore the apiVersion type error
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-    apiVersion: '2023-10-16' as any, // Use a valid API version
-});
+export async function POST(req: NextRequest) {
+  try {
+    const body = await req.text();
+    const signature = req.headers.get('stripe-signature');
 
-const resend = new Resend(process.env.RESEND_API_KEY)
-
-const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
-
-// Stripe requires the raw body, so we need to configure the route
-export const runtime = 'nodejs';
-
-async function buffer(readable: ReadableStream<Uint8Array> | null): Promise<Buffer> {
-    if (!readable) {
-        throw new Error("Request body is null");
+    if (!signature) {
+      return NextResponse.json({ error: 'Missing signature' }, { status: 400 });
     }
+
+    // Verify webhook signature
+    const isValid = verifyStripeSignature(body, signature);
+    if (!isValid) {
+      return NextResponse.json({ error: 'Invalid signature' }, { status: 400 });
+    }
+
+    const event = JSON.parse(body);
+    const eventType = event.type;
+
+    // Process webhook event
+    const webhookEvent = await integrationManager.processWebhook(
+      'stripe',
+      eventType,
+      event
+    );
+
+    // Handle specific event types
+    switch (eventType) {
+      case 'payment_intent.succeeded':
+        await handlePaymentSucceeded(event);
+        break;
+      
+      case 'payment_intent.payment_failed':
+        await handlePaymentFailed(event);
+        break;
+      
+      case 'customer.subscription.created':
+        await handleSubscriptionCreated(event);
+        break;
+      
+      case 'customer.subscription.updated':
+        await handleSubscriptionUpdated(event);
+        break;
+      
+      case 'customer.subscription.deleted':
+        await handleSubscriptionDeleted(event);
+        break;
+      
+      case 'invoice.payment_succeeded':
+        await handleInvoicePaymentSucceeded(event);
+        break;
+      
+      case 'invoice.payment_failed':
+        await handleInvoicePaymentFailed(event);
+        break;
+      
+      default:
+        console.log(`Unhandled Stripe event type: ${eventType}`);
+    }
+
+    return NextResponse.json({
+      success: true,
+      webhookEvent: {
+        id: webhookEvent.id,
+        status: webhookEvent.status,
+      },
+    });
+
+  } catch (error) {
+    console.error('Stripe webhook error:', error);
+    return NextResponse.json({ error: 'Webhook processing failed' }, { status: 500 });
+  }
+}
+
+async function handlePaymentSucceeded(event: any) {
+  try {
+    const paymentIntent = event.data.object;
     
-    const chunks = [];
-    const reader = readable.getReader();
+    // Update user subscription status
+    await prisma.user.updateMany({
+      where: {
+        stripeCustomerId: paymentIntent.customer,
+      },
+      data: {
+        subscriptionStatus: 'active',
+        subscriptionTier: getSubscriptionTier(paymentIntent.amount),
+        lastPaymentAt: new Date(),
+      },
+    });
+
+    // Log payment event
+    await prisma.analyticsEvent.create({
+      data: {
+        userId: await getUserIdByStripeCustomer(paymentIntent.customer),
+        eventType: 'PAYMENT_SUCCEEDED',
+        eventData: JSON.stringify({
+          amount: paymentIntent.amount,
+          currency: paymentIntent.currency,
+          paymentIntentId: paymentIntent.id,
+        }),
+        timestamp: new Date(),
+      },
+    });
+
+    console.log(`Payment succeeded: ${paymentIntent.id}`);
+  } catch (error) {
+    console.error('Error handling payment succeeded:', error);
+  }
+}
+
+async function handlePaymentFailed(event: any) {
+  try {
+    const paymentIntent = event.data.object;
     
-    try {
-        while (true) {
-            const { done, value } = await reader.read();
-            if (done) break;
-            chunks.push(Buffer.from(value));
-        }
-        return Buffer.concat(chunks);
-    } finally {
-        reader.releaseLock();
-    }
+    // Update user subscription status
+    await prisma.user.updateMany({
+      where: {
+        stripeCustomerId: paymentIntent.customer,
+      },
+      data: {
+        subscriptionStatus: 'past_due',
+        lastPaymentFailedAt: new Date(),
+      },
+    });
+
+    // Log payment failure
+    await prisma.analyticsEvent.create({
+      data: {
+        userId: await getUserIdByStripeCustomer(paymentIntent.customer),
+        eventType: 'PAYMENT_FAILED',
+        eventData: JSON.stringify({
+          amount: paymentIntent.amount,
+          currency: paymentIntent.currency,
+          paymentIntentId: paymentIntent.id,
+          failureReason: paymentIntent.last_payment_error?.message,
+        }),
+        timestamp: new Date(),
+      },
+    });
+
+    console.log(`Payment failed: ${paymentIntent.id}`);
+  } catch (error) {
+    console.error('Error handling payment failed:', error);
+  }
 }
 
-async function sendNotification(email: string, template: keyof typeof emailTemplates, data: any) {
-    try {
-        const { subject, html } = emailTemplates[template]
-        await resend.emails.send({
-            from: 'CreatorFlow <billing@creatorflow.app>',
-            to: email,
-            subject,
-            html: html(data),
-        })
-    } catch (error) {
-        console.error('Failed to send email notification:', error)
-    }
+async function handleSubscriptionCreated(event: any) {
+  try {
+    const subscription = event.data.object;
+    
+    // Update user subscription details
+    await prisma.user.updateMany({
+      where: {
+        stripeCustomerId: subscription.customer,
+      },
+      data: {
+        subscriptionId: subscription.id,
+        subscriptionStatus: subscription.status,
+        subscriptionTier: getSubscriptionTier(subscription.items.data[0].price.unit_amount),
+        subscriptionStartDate: new Date(subscription.current_period_start * 1000),
+        subscriptionEndDate: new Date(subscription.current_period_end * 1000),
+      },
+    });
+
+    console.log(`Subscription created: ${subscription.id}`);
+  } catch (error) {
+    console.error('Error handling subscription created:', error);
+  }
 }
 
-async function handleFailedPayment(invoice: Stripe.Invoice & { payment_intent?: string }) {
-    try {
-        const customer = await stripe.customers.retrieve(invoice.customer as string) as Stripe.Customer;
-        const userEmail = customer.email;
-        
-        if (!userEmail) {
-            console.error('No email found for customer:', invoice.customer);
-            return;
-        }
+async function handleSubscriptionUpdated(event: any) {
+  try {
+    const subscription = event.data.object;
+    
+    // Update user subscription details
+    await prisma.user.updateMany({
+      where: {
+        stripeCustomerId: subscription.customer,
+      },
+      data: {
+        subscriptionStatus: subscription.status,
+        subscriptionTier: getSubscriptionTier(subscription.items.data[0].price.unit_amount),
+        subscriptionEndDate: new Date(subscription.current_period_end * 1000),
+      },
+    });
 
-        // Get user's payment retry count and date
-        const user = await prisma.user.findFirst({
-            where: { email: userEmail },
-            select: {
-                id: true,
-                paymentRetryCount: true,
-                paymentRetryDate: true,
-                stripeCustomerId: true,
-            },
-        });
-
-        if (!user) {
-            console.error('No user found for email:', userEmail);
-            return;
-        }
-
-        // Get the payment intent from the invoice
-        const paymentIntentId = invoice.payment_intent;
-        if (!paymentIntentId || typeof paymentIntentId !== 'string') {
-            console.error('No payment intent found for invoice:', invoice.id);
-            return;
-        }
-
-        // Get the payment method that failed
-        const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
-        const paymentMethodId = typeof paymentIntent.payment_method === 'string'
-            ? paymentIntent.payment_method
-            : paymentIntent.payment_method?.id;
-
-        if (!paymentMethodId) {
-            console.error('No payment method found for payment intent:', paymentIntentId);
-            return;
-        }
-
-        const paymentMethod = await stripe.paymentMethods.retrieve(paymentMethodId);
-
-        // Check for other payment methods
-        const paymentMethods = await stripe.paymentMethods.list({
-            customer: invoice.customer as string,
-            type: 'card',
-        });
-
-        const otherPaymentMethods = paymentMethods.data.filter(
-            pm => pm.id !== paymentMethod.id
-        );
-
-        if (otherPaymentMethods.length > 0) {
-            // Try with another payment method
-            const newPaymentMethod = otherPaymentMethods[0];
-            
-            // Update default payment method
-            await stripe.customers.update(invoice.customer as string, {
-                invoice_settings: {
-                    default_payment_method: newPaymentMethod.id,
-                },
-            });
-
-            // Retry the payment
-            try {
-                if (!invoice.id) {
-                    throw new Error('Invoice ID is required');
-                }
-
-                const retryResult = await stripe.invoices.pay(invoice.id, {
-                    payment_method: newPaymentMethod.id,
-                });
-
-                if (retryResult.status === 'paid') {
-                    // Reset retry count on success
-                    await prisma.user.update({
-                        where: { id: user.id },
-                        data: {
-                            paymentRetryCount: 0,
-                            paymentRetryDate: null,
-                        },
-                    });
-
-                    // Send success notification
-                    await sendNotification(userEmail, 'paymentSucceeded', {
-                        amount: invoice.amount_due,
-                        date: new Date().toLocaleDateString(),
-                        invoiceUrl: invoice.hosted_invoice_url,
-                    });
-                    return;
-                }
-            } catch (retryError) {
-                console.error('Failed to retry payment with alternative method:', retryError);
-            }
-        }
-
-        // Calculate next retry date with exponential backoff
-        const retryCount = (user.paymentRetryCount || 0) + 1;
-        const retryIntervals = [3, 7, 14, 30]; // Days between retries
-        const nextRetryDate = new Date();
-        nextRetryDate.setDate(nextRetryDate.getDate() + (retryIntervals[Math.min(retryCount - 1, retryIntervals.length - 1)]));
-
-        // Update user's retry count and date
-        await prisma.user.update({
-            where: { id: user.id },
-            data: {
-                paymentRetryCount: retryCount,
-                paymentRetryDate: nextRetryDate,
-            },
-        });
-
-        // Create a new payment intent for manual retry
-        const newPaymentIntent = await stripe.paymentIntents.create({
-            amount: invoice.amount_due,
-            currency: invoice.currency,
-            customer: invoice.customer as string,
-            payment_method_types: ['card'],
-            metadata: {
-                invoice_id: invoice.id || '',
-                retry_count: retryCount.toString(),
-            },
-        });
-
-        // Send notification with retry information
-        await sendNotification(userEmail, 'paymentFailed', {
-            amount: invoice.amount_due,
-            retryDate: nextRetryDate.toLocaleDateString(),
-            retryCount,
-            paymentIntentId: newPaymentIntent.id,
-            maxRetries: retryIntervals.length,
-            daysUntilNextRetry: retryIntervals[Math.min(retryCount - 1, retryIntervals.length - 1)],
-        });
-
-    } catch (error) {
-        console.error('Error handling failed payment:', error);
-    }
+    console.log(`Subscription updated: ${subscription.id}`);
+  } catch (error) {
+    console.error('Error handling subscription updated:', error);
+  }
 }
 
-export async function POST(req: Request) {
-    try {
-        const body = await req.text();
-        const signature = req.headers.get('stripe-signature')!;
+async function handleSubscriptionDeleted(event: any) {
+  try {
+    const subscription = event.data.object;
+    
+    // Update user subscription status
+    await prisma.user.updateMany({
+      where: {
+        stripeCustomerId: subscription.customer,
+      },
+      data: {
+        subscriptionStatus: 'canceled',
+        subscriptionEndDate: new Date(subscription.canceled_at * 1000),
+      },
+    });
 
-        let event: Stripe.Event;
+    console.log(`Subscription deleted: ${subscription.id}`);
+  } catch (error) {
+    console.error('Error handling subscription deleted:', error);
+  }
+}
 
-        try {
-            event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
-        } catch (err) {
-            console.error('Webhook signature verification failed:', err);
-            return NextResponse.json({ error: 'Invalid signature' }, { status: 400 });
-        }
+async function handleInvoicePaymentSucceeded(event: any) {
+  try {
+    const invoice = event.data.object;
+    
+    // Log successful invoice payment
+    await prisma.analyticsEvent.create({
+      data: {
+        userId: await getUserIdByStripeCustomer(invoice.customer),
+        eventType: 'INVOICE_PAYMENT_SUCCEEDED',
+        eventData: JSON.stringify({
+          invoiceId: invoice.id,
+          amount: invoice.amount_paid,
+          currency: invoice.currency,
+        }),
+        timestamp: new Date(),
+      },
+    });
 
-        switch (event.type) {
-            case 'customer.subscription.created': {
-                const subscription = event.data.object as Stripe.Subscription & {
-                    current_period_end: number;
-                    items: {
-                        data: Array<{
-                            price: {
-                                nickname?: string;
-                            };
-                        }>;
-                    };
-                };
-                const user = await prisma.user.findFirst({
-                    where: { stripeSubscriptionId: subscription.id },
-                    select: { email: true },
-                });
+    console.log(`Invoice payment succeeded: ${invoice.id}`);
+  } catch (error) {
+    console.error('Error handling invoice payment succeeded:', error);
+  }
+}
 
-                if (user?.email) {
-                    await sendNotification(
-                        user.email,
-                        'subscriptionCreated',
-                        {
-                            plan: subscription.items.data[0]?.price.nickname || 'Pro',
-                            nextBillingDate: new Date(subscription.current_period_end * 1000).toLocaleDateString(),
-                        }
-                    );
-                }
-                break;
-            }
+async function handleInvoicePaymentFailed(event: any) {
+  try {
+    const invoice = event.data.object;
+    
+    // Log failed invoice payment
+    await prisma.analyticsEvent.create({
+      data: {
+        userId: await getUserIdByStripeCustomer(invoice.customer),
+        eventType: 'INVOICE_PAYMENT_FAILED',
+        eventData: JSON.stringify({
+          invoiceId: invoice.id,
+          amount: invoice.amount_due,
+          currency: invoice.currency,
+        }),
+        timestamp: new Date(),
+      },
+    });
 
-            case 'customer.subscription.updated': {
-                const subscription = event.data.object as Stripe.Subscription & {
-                    current_period_end: number;
-                    items: {
-                        data: Array<{
-                            price: {
-                                nickname?: string;
-                            };
-                        }>;
-                    };
-                };
-                const user = await prisma.user.findFirst({
-                    where: { stripeSubscriptionId: subscription.id },
-                    select: { email: true },
-                });
+    console.log(`Invoice payment failed: ${invoice.id}`);
+  } catch (error) {
+    console.error('Error handling invoice payment failed:', error);
+  }
+}
 
-                if (user?.email) {
-                    const changes = []
-                    if (subscription.cancel_at_period_end) {
-                        changes.push('Subscription will be cancelled at the end of the billing period')
-                    }
-                    if (subscription.status === 'active') {
-                        changes.push('Subscription is now active')
-                    }
-
-                    await sendNotification(
-                        user.email,
-                        'subscriptionUpdated',
-                        {
-                            plan: subscription.items.data[0]?.price.nickname || 'Pro',
-                            nextBillingDate: new Date(subscription.current_period_end * 1000).toLocaleDateString(),
-                            changes,
-                        }
-                    );
-                }
-                break;
-            }
-
-            case 'customer.subscription.deleted': {
-                const subscription = event.data.object as Stripe.Subscription & {
-                    current_period_end: number;
-                    items: {
-                        data: Array<{
-                            price: {
-                                nickname?: string;
-                            };
-                        }>;
-                    };
-                };
-                const user = await prisma.user.findFirst({
-                    where: { stripeSubscriptionId: subscription.id },
-                    select: { email: true },
-                });
-
-                if (user?.email) {
-                    await sendNotification(
-                        user.email,
-                        'subscriptionCancelled',
-                        {
-                            plan: subscription.items.data[0]?.price.nickname || 'Pro',
-                            endDate: new Date(subscription.current_period_end * 1000).toLocaleDateString(),
-                        }
-                    );
-                }
-                break;
-            }
-
-            case 'invoice.payment_succeeded': {
-                const invoice = event.data.object as Stripe.Invoice;
-                const user = await prisma.user.findFirst({
-                    where: { stripeCustomerId: invoice.customer as string },
-                    select: { email: true },
-                });
-
-                if (user?.email) {
-                    await sendNotification(
-                        user.email,
-                        'paymentSucceeded',
-                        {
-                            amount: invoice.amount_paid,
-                            date: new Date(invoice.created * 1000).toLocaleDateString(),
-                            invoiceUrl: invoice.hosted_invoice_url || '',
-                        }
-                    );
-                }
-
-                // Clear any pending retry dates
-                const userToUpdate = await prisma.user.findFirst({
-                    where: { stripeCustomerId: invoice.customer as string },
-                });
-                if (userToUpdate) {
-                    await prisma.user.update({
-                        where: { stripeCustomerId: invoice.customer as string },
-                        data: {
-                            paymentRetryDate: null,
-                        },
-                    });
-                } else {
-                    console.warn('No user found for stripeCustomerId:', invoice.customer);
-                }
-                break;
-            }
-
-            case 'invoice.payment_failed': {
-                const invoice = event.data.object as Stripe.Invoice;
-                await handleFailedPayment(invoice);
-                break;
-            }
-
-            case 'payment_method.attached': {
-                const paymentMethod = event.data.object as Stripe.PaymentMethod;
-                const user = await prisma.user.findFirst({
-                    where: { stripeCustomerId: paymentMethod.customer as string },
-                    select: { 
-                        email: true, 
-                        paymentRetryDate: true,
-                        paymentRetryCount: true,
-                    },
-                });
-
-                if (user?.email && user.paymentRetryDate) {
-                    // If there's a pending retry, try to pay the latest invoice
-                    const customer = await stripe.customers.retrieve(paymentMethod.customer as string);
-                    const latestInvoice = await stripe.invoices.list({
-                        customer: paymentMethod.customer as string,
-                        limit: 1,
-                        status: 'open',
-                    });
-
-                    if (latestInvoice.data.length > 0 && latestInvoice.data[0].id) {
-                        try {
-                            await stripe.invoices.pay(latestInvoice.data[0].id, {
-                                payment_method: paymentMethod.id,
-                            });
-
-                            // Reset retry count on success
-                            await prisma.user.update({
-                                where: { stripeCustomerId: paymentMethod.customer as string },
-                                data: {
-                                    paymentRetryCount: 0,
-                                    paymentRetryDate: null,
-                                },
-                            });
-
-                            await sendNotification(
-                                user.email,
-                                'paymentSucceeded',
-                                {
-                                    amount: latestInvoice.data[0].amount_due,
-                                    date: new Date().toLocaleDateString(),
-                                    invoiceUrl: latestInvoice.data[0].hosted_invoice_url || '',
-                                }
-                            );
-                        } catch (error) {
-                            console.error('Failed to retry payment with new method:', error);
-                        }
-                    }
-                }
-                break;
-            }
-        }
-
-        return NextResponse.json({ received: true });
-    } catch (error) {
-        console.error('Error processing webhook:', error);
-        return NextResponse.json(
-            { error: 'Webhook handler failed' },
-            { status: 500 }
-        );
+function verifyStripeSignature(payload: string, signature: string): boolean {
+  try {
+    const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+    if (!webhookSecret) {
+      console.error('Stripe webhook secret not configured');
+      return false;
     }
+
+    const expectedSignature = crypto
+      .createHmac('sha256', webhookSecret)
+      .update(payload, 'utf8')
+      .digest('hex');
+
+    return crypto.timingSafeEqual(
+      Buffer.from(signature),
+      Buffer.from(expectedSignature)
+    );
+  } catch (error) {
+    console.error('Error verifying Stripe signature:', error);
+    return false;
+  }
+}
+
+function getSubscriptionTier(amount: number): string {
+  // Convert amount from cents to dollars
+  const amountInDollars = amount / 100;
+  
+  if (amountInDollars >= 29) return 'premium';
+  if (amountInDollars >= 19) return 'pro';
+  if (amountInDollars >= 9) return 'basic';
+  return 'free';
+}
+
+async function getUserIdByStripeCustomer(stripeCustomerId: string): Promise<string | null> {
+  try {
+    const user = await prisma.user.findFirst({
+      where: { stripeCustomerId },
+      select: { id: true },
+    });
+    return user?.id || null;
+  } catch (error) {
+    console.error('Error getting user ID by Stripe customer:', error);
+    return null;
+  }
 } 

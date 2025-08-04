@@ -8,7 +8,7 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "CreatorFlow",
-  description: "Streamline your content creation workflow",
+  description: "Social media management platform",
 };
 
 export default function RootLayout({

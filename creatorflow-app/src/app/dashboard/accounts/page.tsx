@@ -8,7 +8,7 @@ import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from '@/comp
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { RefreshCw, AlertCircle, CheckCircle, Clock, XCircle, Globe } from 'lucide-react';
+import { RefreshCw, AlertCircle, CheckCircle, Clock, XCircle, Globe, Twitter, Instagram, Youtube } from 'lucide-react';
 import { SocialAccountStatus } from '@/components/dashboard/social-account-status';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
@@ -185,7 +185,7 @@ function AccountConnectButtons({ accounts, onConnect, loading }: AccountConnectB
                 disabled={loading || (isConnected && !needsReauth)}
                 className={`
                   relative group flex flex-col items-center justify-center
-                  w-20 h-20 rounded-full border-2 transition-all duration-200
+                  w-16 h-12 rounded-lg border-2 transition-all duration-200
                   ${isConnected && !needsReauth
                     ? 'border-green-500 bg-green-50 cursor-not-allowed' 
                     : needsReauth
@@ -675,7 +675,7 @@ export default function AccountsPage() {
               <TooltipTrigger asChild>
                 <button
                   type="submit"
-                  className="bg-primary text-white px-4 py-1 rounded focus-visible:ring-2 focus-visible:ring-primary transition-colors"
+                  className="bg-gray-600 dark:bg-gray-800 text-white px-4 py-1 rounded focus-visible:ring-2 focus-visible:ring-primary transition-colors"
                   disabled={plan === 'Free' || creatingKey}
                   aria-label="Create API Key"
                 >

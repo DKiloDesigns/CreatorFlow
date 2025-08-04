@@ -494,16 +494,13 @@ export default function BillingClient({ user, searchParams, upcomingCharges, pay
             </div>
           )}
           
-          {/* Billing Frequency Toggle */}
-          <div className="flex flex-col sm:flex-row items-center gap-4 mb-4">
-            <span className={billingFrequency === 'monthly' ? 'font-bold' : ''}>Monthly</span>
-            <button
-              className="bg-gray-200 rounded-full px-3 py-1 text-sm"
-              onClick={() => setBillingFrequency(billingFrequency === 'monthly' ? 'yearly' : 'monthly')}
-            >
-              Switch to {billingFrequency === 'monthly' ? 'Yearly' : 'Monthly'}
+          {/* Billing Toggle */}
+          <div className="flex items-center justify-center gap-4 mb-6">
+            <span className="text-sm font-medium">Monthly</span>
+            <button className="bg-gray-600 hover:bg-gray-700 dark:bg-gray-700 dark:hover:bg-gray-800 text-white dark:text-white rounded-full px-3 py-1 text-sm font-medium transition-colors">
+              Switch to Yearly
             </button>
-            <span className={billingFrequency === 'yearly' ? 'font-bold' : ''}>Yearly</span>
+            <span className="text-sm font-medium">Yearly</span>
           </div>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
             {tiers.map((tier, index) => (

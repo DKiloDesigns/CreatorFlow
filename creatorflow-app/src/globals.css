@@ -89,6 +89,18 @@
   }
 }
 
+/* Force white text in dark mode for dashboard elements */
+.dark .text-gray-900 {
+  color: white !important;
+}
+
+.dark h1.text-gray-900,
+.dark p.text-gray-900,
+.dark .text-sm.font-medium.text-gray-900,
+.dark .text-base.font-semibold.text-gray-900 {
+  color: white !important;
+}
+
 /* All global rules that forcibly set gradients on .bg-primary, .btn, .button, button, .primary, .rounded-lg.px-8.py-3.shadow, .font-semibold, etc. have been removed. Tailwind utility classes now control the background. */
 
 /* FullCalendar Customizations */

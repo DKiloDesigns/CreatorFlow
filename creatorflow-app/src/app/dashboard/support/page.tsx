@@ -24,8 +24,8 @@ export default function SupportPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {/* Resources Section */}
         <div className="space-y-6">
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
-            <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+          <div>
+            <h2 className="text-xl font-semibold mb-4 flex items-center gap-2 text-foreground">
               <HelpCircle className="h-5 w-5 text-blue-600" />
               Resources
             </h2>
@@ -52,8 +52,8 @@ export default function SupportPage() {
           </div>
 
           {/* Contact Support Section */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
-            <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+          <div>
+            <h2 className="text-xl font-semibold mb-4 flex items-center gap-2 text-foreground">
               <Mail className="h-5 w-5 text-green-600" />
               Contact Support
             </h2>
@@ -79,8 +79,8 @@ export default function SupportPage() {
         {/* Legal & Feedback Section */}
         <div className="space-y-6">
           {/* Legal & Policies Section */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
-            <h2 className="text-xl font-semibold mb-4 flex items-center gap-2">
+          <div>
+            <h2 className="text-xl font-semibold mb-4 flex items-center gap-2 text-foreground">
               <Shield className="h-5 w-5 text-purple-600" />
               Legal & Policies
             </h2>
@@ -103,7 +103,7 @@ export default function SupportPage() {
           </div>
 
           {/* Feedback Section */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700">
+          <div>
             <h2 className="text-xl font-semibold mb-4">Feedback</h2>
             <form className="space-y-4" onSubmit={handleFeedback}>
               <textarea 

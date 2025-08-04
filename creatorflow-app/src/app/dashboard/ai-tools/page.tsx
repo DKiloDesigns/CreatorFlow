@@ -24,7 +24,10 @@ import {
   Zap,
   TrendingUp,
   Users,
-  BarChart3
+  BarChart3,
+  Star,
+  Shield,
+  Info
 } from 'lucide-react';
 
 export default function AIToolsPage() {
@@ -82,6 +85,29 @@ export default function AIToolsPage() {
             <Settings className="w-4 h-4 mr-1" />
             Settings
           </Button>
+        </div>
+      </div>
+
+      {/* AI Provider Filter */}
+      <div className="flex items-center gap-4 mb-6">
+        <span className="text-sm font-medium text-foreground">Filter by:</span>
+        <div className="inline-flex rounded-lg p-1">
+          <button className="inline-flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100">
+            <Star className="w-4 h-4" />
+            All Options
+          </button>
+          <button className="inline-flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm">
+            <Zap className="w-4 h-4" />
+            Free
+          </button>
+          <button className="inline-flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100">
+            <Shield className="w-4 h-4" />
+            Low Cost
+          </button>
+          <button className="inline-flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100">
+            <Info className="w-4 h-4" />
+            Premium
+          </button>
         </div>
       </div>
 

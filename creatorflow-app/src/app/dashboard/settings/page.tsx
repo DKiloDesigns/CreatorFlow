@@ -2,6 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 import { useUserSettings } from '@/hooks/useUserSettings';
+import { Label } from '@/components/ui/label';
+import { Button } from '@/components/ui/button';
 
 // Add type for settings
 interface Settings {
@@ -134,50 +136,36 @@ export default function SettingsPage() {
       <h1 className="text-xl sm:text-2xl font-bold mb-4 break-words">Settings</h1>
       {/* Notification Preferences Section */}
       <form className="mb-8" onSubmit={handleNotifPrefSave}>
-        <div className="mb-4 font-medium break-words">Notification Preferences</div>
-        {notifLoading ? (
-          <div>Loading...</div>
-        ) : notifError ? (
-          <div className="text-red-500 break-words">{notifError}</div>
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full border mb-4 text-sm">
-              <thead>
-                <tr>
-                  <th className="p-2 border text-left">Type</th>
-                  {NOTIF_CHANNELS.map(ch => (
-                    <th key={ch.key} className="p-2 border text-center">{ch.label}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {NOTIF_TYPES.map(type => (
-                  <tr key={type.key}>
-                    <td className="p-2 border break-words">{type.label}</td>
-                    {NOTIF_CHANNELS.map(ch => (
-                      <td key={ch.key} className="p-2 border text-center">
-                        <input
-                          type="checkbox"
-                          checked={!!notifPrefs[type.key]?.[ch.key]}
-                          onChange={e => handleNotifPrefChange(type.key, ch.key, e.target.checked)}
-                          aria-label={`${type.label} via ${ch.label}`}
-                          className="min-w-[44px] min-h-[44px]"
-                        />
-                      </td>
-                    ))}
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+        <div className="space-y-4">
+          <div>
+            <Label className="text-sm font-medium">Notification Preferences</Label>
+            <div className="grid grid-cols-2 gap-4 mt-2">
+              <div className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  id="email-notifications"
+                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                />
+                <Label htmlFor="email-notifications" className="text-sm">Email</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <input
+                  type="checkbox"
+                  id="in-app-notifications"
+                  className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                />
+                <Label htmlFor="in-app-notifications" className="text-sm">In-App</Label>
+              </div>
+            </div>
           </div>
-        )}
-        <button 
-          type="submit" 
-          className="bg-primary text-white px-4 py-2 rounded w-full sm:w-auto min-w-[44px] min-h-[44px]" 
-          disabled={notifLoading}
-        >
-          Save Notification Preferences
-        </button>
+          
+          <Button 
+            type="submit" 
+            className="w-full bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 border border-gray-300 dark:border-gray-600"
+          >
+            Save Notification Preferences
+          </Button>
+        </div>
         {notifSuccess && <div className="text-green-600 mt-2 break-words">Preferences saved!</div>}
         {notifError && <div className="text-red-500 mt-2 break-words">{notifError}</div>}
       </form>
@@ -255,14 +243,14 @@ export default function SettingsPage() {
           <div className="flex flex-col sm:flex-row gap-3">
             <button 
               type="button" 
-              className={`px-4 py-2 rounded min-h-[44px] break-words ${form.connected.google ? 'bg-green-200' : 'bg-gray-100'}`} 
+              className={`px-4 py-2 rounded min-h-[44px] break-words bg-gray-600 dark:bg-gray-800 text-white dark:text-white border border-gray-600 dark:border-gray-700 ${form.connected.google ? 'bg-green-600 dark:bg-green-700' : ''}`} 
               onClick={() => handleConnect('google')}
             >
               {form.connected.google ? 'Google Connected' : 'Connect Google'}
             </button>
             <button 
               type="button" 
-              className={`px-4 py-2 rounded min-h-[44px] break-words ${form.connected.twitter ? 'bg-green-200' : 'bg-gray-100'}`} 
+              className={`px-4 py-2 rounded min-h-[44px] break-words bg-gray-600 dark:bg-gray-800 text-white dark:text-white border border-gray-600 dark:border-gray-700 ${form.connected.twitter ? 'bg-green-600 dark:bg-green-700' : ''}`} 
               onClick={() => handleConnect('twitter')}
             >
               {form.connected.twitter ? 'Twitter Connected' : 'Connect Twitter'}
