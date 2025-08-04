@@ -7,6 +7,25 @@ import { TestimonialCard } from "@/components/TestimonialCard";
 import { useIsDarkMode } from "@/hooks/useIsDarkMode";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { Footer } from "@/components/Footer";
+import { 
+  Button, 
+  Container, 
+  Typography, 
+  Box, 
+  Grid, 
+  Card, 
+  CardContent, 
+  CardHeader,
+  AppBar,
+  Toolbar,
+  Chip
+} from '@mui/material';
+import { 
+  MuiButton,
+  MuiCard,
+  MuiCardHeader,
+  MuiCardContent
+} from '@/components/ui/mui-components';
 
 const PLANS = [
   {
@@ -37,156 +56,363 @@ const PLANS = [
 
 export default function Home() {
   const isDark = useIsDarkMode();
+  
   return (
-    <div className="min-h-screen flex flex-col bg-background overflow-x-hidden">
+    <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', bgcolor: 'background.default', overflowX: 'hidden' }}>
       {/* Header with Logo and Theme Toggle */}
-      <header className="w-full bg-white border-b border-gray-200 sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
+      <AppBar 
+        position="sticky" 
+        elevation={0}
+        sx={{ 
+          bgcolor: 'background.paper',
+          borderBottom: 1,
+          borderColor: 'divider',
+          zIndex: 40
+        }}
+      >
+        <Container maxWidth="xl">
+          <Toolbar sx={{ justifyContent: 'space-between', height: 64 }}>
             {/* Logo and Brand */}
-            <div className="flex items-center">
-              <Link href="/" className="flex items-center space-x-2 min-w-[44px] min-h-[44px]">
-                {/* No logo or gradient square */}
-                <span className="font-bold text-xl text-black">CreatorFlow</span>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 44, minHeight: 44, textDecoration: 'none' }}>
+                <Typography variant="h5" component="span" sx={{ fontWeight: 'bold', color: 'text.primary' }}>
+                  CreatorFlow
+                </Typography>
               </Link>
-            </div>
+            </Box>
 
             {/* Right side actions */}
-            <div className="flex items-center gap-4">
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
               {/* Theme Toggle */}
-              <div className="min-w-[44px] min-h-[44px] flex items-center justify-center">
+              <Box sx={{ minWidth: 44, minHeight: 44, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <ThemeToggle isLandingPage={true} />
-              </div>
+              </Box>
               
               {/* Sign In Link */}
-              <Link 
-                href="/auth" 
-                className="inline-flex items-center justify-center px-4 py-2 text-sm font-medium text-black hover:text-blue-600 transition-colors min-w-[44px] min-h-[44px] rounded-md hover:bg-gray-50"
+              <Button
+                component={Link}
+                href="/auth"
+                variant="text"
+                sx={{
+                  color: 'text.primary',
+                  '&:hover': {
+                    color: 'primary.main',
+                    bgcolor: 'action.hover'
+                  },
+                  minWidth: 44,
+                  minHeight: 44,
+                  borderRadius: 1
+                }}
               >
                 Sign In
-              </Link>
-            </div>
-          </div>
-        </div>
-      </header>
+              </Button>
+            </Box>
+          </Toolbar>
+        </Container>
+      </AppBar>
 
       {/* Hero Section */}
-      <header className="w-full flex flex-col items-center justify-center px-4 sm:px-6 py-12 sm:py-16 border-b border-border text-center gap-4 sm:gap-6">
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-foreground max-w-3xl">
-          Empower Your Content. <span className="text-primary">Grow Your Audience.</span> Monetize Your Passion.
-        </h1>
-        <p className="text-base sm:text-lg text-muted-foreground max-w-xl mx-auto">
+      <Box
+        component="header"
+        sx={{
+          width: '100%',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          px: { xs: 2, sm: 3 },
+          py: { xs: 6, sm: 8 },
+          borderBottom: 1,
+          borderColor: 'divider',
+          textAlign: 'center',
+          gap: { xs: 2, sm: 3 }
+        }}
+      >
+        <Typography 
+          variant="h2" 
+          component="h1"
+          sx={{
+            fontSize: { xs: '2rem', sm: '2.5rem', lg: '3rem' },
+            fontWeight: 800,
+            letterSpacing: '-0.025em',
+            color: 'text.primary',
+            maxWidth: 'lg',
+            mb: 2
+          }}
+        >
+          Empower Your Content.{' '}
+          <Box component="span" sx={{ color: 'primary.main' }}>
+            Grow Your Audience.
+          </Box>{' '}
+          Monetize Your Passion.
+        </Typography>
+        
+        <Typography 
+          variant="body1"
+          sx={{
+            fontSize: { xs: '1rem', sm: '1.125rem' },
+            color: 'text.secondary',
+            maxWidth: 'md',
+            mx: 'auto',
+            mb: 3
+          }}
+        >
           The all-in-one platform for creators to plan, publish, analyze, and get paid—everywhere.
-        </p>
-        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-center">
-          <Link href="/auth" className="inline-block bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-lg px-6 sm:px-8 py-2 sm:py-3 shadow hover:from-blue-600 hover:to-purple-700 transition text-sm sm:text-base w-full sm:w-auto">
-            Start Free
-          </Link>
-          <Link
-            href="#how-it-works"
-            className="relative inline-block font-semibold rounded-lg px-6 sm:px-8 py-2 sm:py-3 shadow transition text-sm sm:text-base overflow-hidden w-full sm:w-auto"
+        </Typography>
+        
+        <Box sx={{ 
+          display: 'flex', 
+          flexDirection: { xs: 'column', sm: 'row' }, 
+          gap: { xs: 1.5, sm: 2 },
+          justifyContent: 'center',
+          width: { xs: '100%', sm: 'auto' }
+        }}>
+          <Button
+            component={Link}
+            href="/auth"
+            variant="contained"
+            size="large"
+            sx={{
+              background: 'linear-gradient(45deg, #3B82F6 30%, #8B5CF6 90%)',
+              color: 'white',
+              fontWeight: 600,
+              borderRadius: 2,
+              px: { xs: 3, sm: 4 },
+              py: { xs: 1, sm: 1.5 },
+              fontSize: { xs: '0.875rem', sm: '1rem' },
+              width: { xs: '100%', sm: 'auto' },
+              '&:hover': {
+                background: 'linear-gradient(45deg, #2563EB 30%, #7C3AED 90%)'
+              }
+            }}
           >
-            {/* Gradient border */}
-            <span className="absolute inset-0 rounded-lg bg-gradient-to-r from-blue-500 to-purple-600 z-0" aria-hidden="true"></span>
-            {/* Inner background: auto-detect dark mode */}
-            <span
-              className="absolute inset-[4px] rounded-lg z-10"
-              style={{ background: isDark ? "black" : "white" }}
-              aria-hidden="true"
-            ></span>
-            {/* Text */}
-            <span className="relative z-20" style={{ color: isDark ? "white" : "black" }}>See CreatorFlow in Action</span>
-          </Link>
-        </div>
-      </header>
+            Start Free
+          </Button>
+          
+          <Button
+            component={Link}
+            href="#how-it-works"
+            variant="outlined"
+            size="large"
+            sx={{
+              fontWeight: 600,
+              borderRadius: 2,
+              px: { xs: 3, sm: 4 },
+              py: { xs: 1, sm: 1.5 },
+              fontSize: { xs: '0.875rem', sm: '1rem' },
+              width: { xs: '100%', sm: 'auto' },
+              position: 'relative',
+              overflow: 'hidden',
+              '&::before': {
+                content: '""',
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                background: 'linear-gradient(45deg, #3B82F6 30%, #8B5CF6 90%)',
+                borderRadius: 2,
+                zIndex: 0
+              },
+              '&::after': {
+                content: '""',
+                position: 'absolute',
+                top: 2,
+                left: 2,
+                right: 2,
+                bottom: 2,
+                background: isDark ? 'black' : 'white',
+                borderRadius: 1.5,
+                zIndex: 1
+              },
+              '& .MuiButton-label': {
+                position: 'relative',
+                zIndex: 2,
+                color: isDark ? 'white' : 'black'
+              }
+            }}
+          >
+            See CreatorFlow in Action
+          </Button>
+        </Box>
+      </Box>
 
       {/* Feature Highlights */}
-      <section className="w-full max-w-5xl mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 sm:gap-6 px-4 py-12 sm:py-16" id="features">
-        {FEATURES.map((feature) => (
-          <FeatureCard key={feature.title} {...feature} plan={feature.plan} />
-        ))}
-      </section>
+      <Container maxWidth="lg" sx={{ py: { xs: 6, sm: 8 } }} id="features">
+        <Grid container spacing={{ xs: 2, sm: 3 }} columns={{ xs: 1, sm: 2, lg: 5 }}>
+          {FEATURES.map((feature) => (
+            <Grid item xs={1} key={feature.title}>
+              <FeatureCard {...feature} plan={feature.plan} />
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
 
       {/* Plans Section */}
-      <section className="w-full max-w-5xl mx-auto px-4 py-12 sm:py-16" id="plans">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4">Choose Your Plan</h2>
-          <p className="text-lg text-muted-foreground">Start free, upgrade when you're ready</p>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <Container maxWidth="lg" sx={{ py: { xs: 6, sm: 8 } }} id="plans">
+        <Box sx={{ textAlign: 'center', mb: 6 }}>
+          <Typography variant="h3" component="h2" sx={{ mb: 2, fontSize: { xs: '1.875rem', sm: '2.25rem' }, fontWeight: 'bold' }}>
+            Choose Your Plan
+          </Typography>
+          <Typography variant="h6" sx={{ color: 'text.secondary' }}>
+            Start free, upgrade when you're ready
+          </Typography>
+        </Box>
+        
+        <Grid container spacing={4}>
           {PLANS.map((plan) => (
-            <div
-              key={plan.name}
-              className={`relative bg-[var(--card)] rounded-xl shadow-lg p-6 flex flex-col ${
-                plan.highlight ? 'ring-2 ring-primary scale-105' : ''
-              }`}
-            >
-              {plan.highlight && (
-                <span className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-blue-500 to-purple-600 text-white px-4 py-1 rounded-full text-sm font-semibold">
-                  Most Popular
-                </span>
-              )}
-              <h3 className="text-lg font-bold mb-2 text-[var(--card-foreground)]">{plan.name}</h3>
-              <p className="text-4xl font-bold mb-4 text-[var(--card-foreground)]">{plan.price}</p>
-              <ul className="mb-6 space-y-2">
-                {plan.features.map((feature, i) => (
-                  <li key={i} className="text-sm text-[var(--card-foreground)] flex items-center gap-2">
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-              <button className={`w-full py-2 px-4 rounded font-semibold shadow transition ${
-                plan.cta === "Start Free Trial" 
-                  ? "bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:from-blue-600 hover:to-purple-700" 
-                  : "bg-primary text-primary-foreground hover:bg-primary/90"
-              }`}>
-                {plan.cta}
-              </button>
-            </div>
+            <Grid item xs={12} md={4} key={plan.name}>
+              <MuiCard
+                sx={{
+                  position: 'relative',
+                  transform: plan.highlight ? 'scale(1.05)' : 'none',
+                  transition: 'transform 0.2s ease-in-out',
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column'
+                }}
+              >
+                {plan.highlight && (
+                  <Chip
+                    label="Most Popular"
+                    sx={{
+                      position: 'absolute',
+                      top: -12,
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      background: 'linear-gradient(45deg, #3B82F6 30%, #8B5CF6 90%)',
+                      color: 'white',
+                      fontWeight: 600,
+                      zIndex: 1
+                    }}
+                  />
+                )}
+                
+                <MuiCardHeader
+                  title={plan.name}
+                  titleTypographyProps={{ variant: 'h6', fontWeight: 'bold' }}
+                  sx={{ pb: 1 }}
+                />
+                
+                <MuiCardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
+                  <Typography variant="h4" component="div" sx={{ fontWeight: 'bold', mb: 2 }}>
+                    {plan.price}
+                  </Typography>
+                  
+                  <Box component="ul" sx={{ mb: 3, pl: 0, listStyle: 'none' }}>
+                    {plan.features.map((feature, i) => (
+                      <Box component="li" key={i} sx={{ 
+                        fontSize: '0.875rem', 
+                        color: 'text.primary',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 1,
+                        mb: 1
+                      }}>
+                        {feature}
+                      </Box>
+                    ))}
+                  </Box>
+                  
+                  <Button
+                    component={Link}
+                    href={plan.href}
+                    variant={plan.cta === "Start Free Trial" ? "contained" : "outlined"}
+                    fullWidth
+                    sx={{
+                      mt: 'auto',
+                      background: plan.cta === "Start Free Trial" 
+                        ? 'linear-gradient(45deg, #3B82F6 30%, #8B5CF6 90%)'
+                        : 'transparent',
+                      '&:hover': {
+                        background: plan.cta === "Start Free Trial"
+                          ? 'linear-gradient(45deg, #2563EB 30%, #7C3AED 90%)'
+                          : undefined
+                      }
+                    }}
+                  >
+                    {plan.cta}
+                  </Button>
+                </MuiCardContent>
+              </MuiCard>
+            </Grid>
           ))}
-        </div>
-      </section>
+        </Grid>
+      </Container>
 
       {/* How It Works */}
-      <section className="w-full max-w-5xl mx-auto px-4 py-12 sm:py-16" id="how-it-works">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4">How It Works</h2>
-          <p className="text-lg text-muted-foreground">Get started in minutes</p>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
+      <Container maxWidth="lg" sx={{ py: { xs: 6, sm: 8 } }} id="how-it-works">
+        <Box sx={{ textAlign: 'center', mb: 6 }}>
+          <Typography variant="h3" component="h2" sx={{ mb: 2, fontSize: { xs: '1.875rem', sm: '2.25rem' }, fontWeight: 'bold' }}>
+            How It Works
+          </Typography>
+          <Typography variant="h6" sx={{ color: 'text.secondary' }}>
+            Get started in minutes
+          </Typography>
+        </Box>
+        
+        <Grid container spacing={3}>
           {HOW_IT_WORKS.map((step, index) => (
-            <div key={index} className="text-center">
-              <div className="w-12 h-12 bg-primary text-primary-foreground rounded-full flex items-center justify-center mx-auto mb-4 font-bold">
-                {index + 1}
-              </div>
-              <p className="text-sm">{step}</p>
-            </div>
+            <Grid item xs={12} md={2.4} key={index}>
+              <Box sx={{ textAlign: 'center' }}>
+                <Box
+                  sx={{
+                    width: 48,
+                    height: 48,
+                    bgcolor: 'primary.main',
+                    color: 'primary.contrastText',
+                    borderRadius: '50%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    mx: 'auto',
+                    mb: 2,
+                    fontWeight: 'bold'
+                  }}
+                >
+                  {index + 1}
+                </Box>
+                <Typography variant="body2">{step}</Typography>
+              </Box>
+            </Grid>
           ))}
-        </div>
-      </section>
+        </Grid>
+      </Container>
 
       {/* Testimonials */}
-      <section className="w-full max-w-5xl mx-auto px-4 py-12 sm:py-16">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4">What Creators Say</h2>
-          <p className="text-lg text-muted-foreground">Join thousands of successful creators</p>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <Container maxWidth="lg" sx={{ py: { xs: 6, sm: 8 } }}>
+        <Box sx={{ textAlign: 'center', mb: 6 }}>
+          <Typography variant="h3" component="h2" sx={{ mb: 2, fontSize: { xs: '1.875rem', sm: '2.25rem' }, fontWeight: 'bold' }}>
+            What Creators Say
+          </Typography>
+          <Typography variant="h6" sx={{ color: 'text.secondary' }}>
+            Join thousands of successful creators
+          </Typography>
+        </Box>
+        
+        <Grid container spacing={3}>
           {TESTIMONIALS.map((testimonial) => (
-            <TestimonialCard key={testimonial.author} {...testimonial} />
+            <Grid item xs={12} md={4} key={testimonial.author}>
+              <TestimonialCard {...testimonial} />
+            </Grid>
           ))}
-        </div>
-      </section>
+        </Grid>
+      </Container>
 
       {/* Trust & Transparency */}
-      <section className="w-full max-w-2xl mx-auto px-4 py-12 flex flex-col items-center gap-4">
-        <h3 className="text-lg font-semibold text-foreground">Trust & Transparency</h3>
-        <p className="text-center text-muted-foreground">
-          No hidden fees. Your data, your way. <br />Built by creators, for creators.
-        </p>
-      </section>
+      <Container maxWidth="md" sx={{ py: { xs: 6, sm: 8 } }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
+          <Typography variant="h6" component="h3" sx={{ fontWeight: 600 }}>
+            Trust & Transparency
+          </Typography>
+          <Typography variant="body1" sx={{ textAlign: 'center', color: 'text.secondary' }}>
+            No hidden fees. Your data, your way. <br />
+            Built by creators, for creators.
+          </Typography>
+        </Box>
+      </Container>
 
       <Footer />
-    </div>
+    </Box>
   );
 }

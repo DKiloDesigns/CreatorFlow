@@ -7,7 +7,28 @@ import Link from "next/link"
 import { usePathname } from 'next/navigation';
 import { BarChart2, Users, FileText, Handshake, CreditCard, Menu, Bell, BarChart3, Target, MessageSquare, CalendarIcon, Activity, Shield, Settings, Sparkles, Building2, Smartphone, Plug, TestTube, Home, Calendar, Brain, HelpCircle, HardDrive } from 'lucide-react';
 import { useState, useEffect } from 'react';
-import { EnhancedNavigation, UserMenu, Breadcrumbs } from '@/components/ui/enhanced-nav';
+import { 
+  AppBar, 
+  Toolbar, 
+  Box, 
+  Typography, 
+  Button, 
+  IconButton, 
+  Badge, 
+  Container,
+  Drawer,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Divider,
+  Chip
+} from '@mui/material';
+import { 
+  MuiEnhancedNavigation,
+  MuiUserMenu,
+  MuiBreadcrumbs
+} from '@/components/ui/mui-components';
 import { NotificationCenter } from '@/components/notifications/notification-center';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import { ThemeToggle } from '@/components/theme-toggle';
@@ -51,269 +72,187 @@ export default function DashboardLayout({
     fetchUnread();
   }, []);
 
+  const navigationItems = [
+    { href: '/dashboard', label: 'Dashboard', icon: Home },
+    { href: '/dashboard/analytics', label: 'Analytics', icon: BarChart2 },
+    { href: '/dashboard/content', label: 'Content', icon: FileText },
+    { href: '/dashboard/accounts', label: 'Accounts', icon: Users },
+    { href: '/dashboard/scheduling', label: 'Scheduling', icon: Calendar },
+    { href: '/dashboard/ai-tools', label: 'AI Tools', icon: Brain },
+    { href: '/dashboard/collabs', label: 'Collabs', icon: Handshake },
+    { href: '/dashboard/teams', label: 'Teams', icon: Building2 },
+    { href: '/dashboard/mobile', label: 'Mobile', icon: Smartphone },
+    { href: '/dashboard/integrations', label: 'Integrations', icon: Plug },
+    { href: '/dashboard/testing', label: 'Testing', icon: TestTube },
+    { href: '/dashboard/advanced-integrations', label: 'Advanced', icon: Sparkles },
+    { href: '/dashboard/enterprise', label: 'Enterprise', icon: Building2 },
+    { href: '/dashboard/security', label: 'Security', icon: Shield },
+    { href: '/dashboard/settings', label: 'Settings', icon: Settings },
+    { href: '/dashboard/billing', label: 'Billing', icon: CreditCard },
+    { href: '/dashboard/support', label: 'Support', icon: HelpCircle },
+    { href: '/dashboard/notifications/enhanced', label: 'Notifications', icon: Bell },
+    { href: '/admin/campaign', label: 'Campaign', icon: Target },
+    { href: '/admin/feedback', label: 'Feedback', icon: MessageSquare },
+    { href: '/admin/performance', label: 'Performance', icon: HardDrive },
+  ];
+
   return (
     <MobileLayout>
       {/* Navigation */}
-      <nav className="bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 sticky top-0 z-40">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
+      <AppBar 
+        position="sticky" 
+        elevation={0}
+        sx={{ 
+          bgcolor: 'background.paper',
+          borderBottom: 1,
+          borderColor: 'divider',
+          zIndex: 40
+        }}
+      >
+        <Container maxWidth="xl">
+          <Toolbar sx={{ justifyContent: 'space-between', height: 64 }}>
             {/* Logo */}
-            <div className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-black rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">CF</span>
-              </div>
-              <span className="font-bold text-xl text-black dark:text-black">CreatorFlow</span>
-            </div>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Box sx={{ 
+                width: 32, 
+                height: 32, 
+                bgcolor: 'black', 
+                borderRadius: 1,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}>
+                <Typography sx={{ color: 'white', fontWeight: 'bold', fontSize: '0.875rem' }}>
+                  CF
+                </Typography>
+              </Box>
+              <Typography variant="h5" component="span" sx={{ fontWeight: 'bold', color: 'text.primary' }}>
+                CreatorFlow
+              </Typography>
+            </Box>
 
             {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center space-x-8">
-              <Link 
-                href="/dashboard" 
-                className={`text-sm font-medium transition-colors min-w-[44px] min-h-[44px] flex items-center ${
-                  pathname === '/dashboard' 
-                    ? 'text-blue-600 dark:text-blue-400' 
-                    : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400'
-                }`}
-              >
-                Dashboard
-              </Link>
-              <Link 
-                href="/dashboard/analytics" 
-                className={`text-sm font-medium transition-colors min-w-[44px] min-h-[44px] flex items-center ${
-                  pathname === '/dashboard/analytics' 
-                    ? 'text-blue-600 dark:text-blue-400' 
-                    : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400'
-                }`}
-              >
-                Analytics
-              </Link>
-              <Link 
-                href="/dashboard/content" 
-                className={`text-sm font-medium transition-colors min-w-[44px] min-h-[44px] flex items-center ${
-                  pathname === '/dashboard/content' 
-                    ? 'text-blue-600 dark:text-blue-400' 
-                    : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400'
-                }`}
-              >
-                Content
-              </Link>
-              <Link 
-                href="/dashboard/notifications/enhanced" 
-                className={`text-sm font-medium transition-colors min-w-[44px] min-h-[44px] flex items-center ${
-                  pathname === '/dashboard/notifications/enhanced' 
-                    ? 'text-blue-600 dark:text-blue-400' 
-                    : 'text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400'
-                }`}
-              >
-                Notifications
-              </Link>
-            </div>
+            <Box sx={{ display: { xs: 'none', lg: 'flex' }, alignItems: 'center', gap: 4 }}>
+              {navigationItems.slice(0, 8).map((item) => {
+                const Icon = item.icon;
+                return (
+                  <Button
+                    key={item.href}
+                    component={Link}
+                    href={item.href}
+                    variant="text"
+                    sx={{
+                      color: pathname === item.href 
+                        ? 'primary.main' 
+                        : 'text.secondary',
+                      '&:hover': {
+                        color: 'primary.main',
+                        bgcolor: 'action.hover'
+                      },
+                      minWidth: 44,
+                      minHeight: 44,
+                      fontSize: '0.875rem',
+                      fontWeight: 500
+                    }}
+                  >
+                    {item.label}
+                  </Button>
+                );
+              })}
+            </Box>
 
             {/* Tablet Navigation */}
-            <div className="hidden md:flex lg:hidden items-center justify-between w-full px-4 py-2 bg-background border-b">
-              <div className="flex items-center gap-4">
-                <Link href="/dashboard" className="text-foreground hover:text-foreground/80">
-                  <Home className="h-5 w-5" />
-                </Link>
-                <Link href="/dashboard/content" className="text-foreground hover:text-foreground/80">
-                  <FileText className="h-5 w-5" />
-                </Link>
-                <Link href="/dashboard/analytics" className="text-foreground hover:text-foreground/80">
-                  <BarChart3 className="h-5 w-5" />
-                </Link>
-                <Link href="/dashboard/accounts" className="text-foreground hover:text-foreground/80">
-                  <Users className="h-5 w-5" />
-                </Link>
-                <Link href="/dashboard/scheduling" className="text-foreground hover:text-foreground/80">
-                  <Calendar className="h-5 w-5" />
-                </Link>
-                <Link href="/dashboard/ai-tools" className="text-foreground hover:text-foreground/80">
-                  <Brain className="h-5 w-5" />
-                </Link>
-                <Link href="/dashboard/settings" className="text-foreground hover:text-foreground/80">
-                  <Settings className="h-5 w-5" />
-                </Link>
-                <Link href="/dashboard/billing" className="text-foreground hover:text-foreground/80">
-                  <CreditCard className="h-5 w-5" />
-                </Link>
-                <Link href="/dashboard/support" className="text-foreground hover:text-foreground/80">
-                  <HelpCircle className="h-5 w-5" />
-                </Link>
-                <Link href="/admin/campaign" className="text-foreground hover:text-foreground/80">
-                  <Target className="h-5 w-5" />
-                </Link>
-                <Link href="/admin/feedback" className="text-foreground hover:text-foreground/80">
-                  <MessageSquare className="h-5 w-5" />
-                </Link>
-                <Link href="/admin/performance" className="text-foreground hover:text-foreground/80">
-                  <HardDrive className="h-5 w-5" />
-                </Link>
-              </div>
-              <div className="flex items-center gap-2">
-                <UserMenu />
+            <Box sx={{ 
+              display: { xs: 'none', md: 'flex', lg: 'none' }, 
+              alignItems: 'center', 
+              justifyContent: 'space-between',
+              width: '100%',
+              px: 2,
+              py: 1,
+              bgcolor: 'background.default',
+              borderBottom: 1,
+              borderColor: 'divider'
+            }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                {navigationItems.slice(0, 8).map((item) => {
+                  const Icon = item.icon;
+                  return (
+                    <IconButton
+                      key={item.href}
+                      component={Link}
+                      href={item.href}
+                      sx={{
+                        color: pathname === item.href 
+                          ? 'primary.main' 
+                          : 'text.secondary',
+                        '&:hover': {
+                          color: 'primary.main',
+                          bgcolor: 'action.hover'
+                        }
+                      }}
+                    >
+                      <Icon sx={{ width: 20, height: 20 }} />
+                    </IconButton>
+                  );
+                })}
+              </Box>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <MuiUserMenu />
                 <NotificationCenter />
                 <ThemeToggle />
-              </div>
-            </div>
+              </Box>
+            </Box>
 
             {/* Right side actions */}
-            <div className="flex items-center gap-2 sm:gap-4">
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 1, sm: 2 } }}>
               {/* Theme Toggle */}
-              <div className="min-w-[44px] min-h-[44px] flex items-center justify-center">
+              <Box sx={{ minWidth: 44, minHeight: 44, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <ThemeToggle isLandingPage={false} />
-              </div>
+              </Box>
               
               {/* Notification Center - Only render on client */}
               {isClient && (
-                <div className="relative min-w-[44px] min-h-[44px] flex items-center justify-center">
+                <Box sx={{ position: 'relative', minWidth: 44, minHeight: 44, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <NotificationCenter />
                   {unreadCount > 0 && (
-                    <div className="absolute -top-1 -right-1 h-5 w-5 bg-red-500 rounded-full flex items-center justify-center">
-                      <span className="text-xs text-white font-medium">
-                        {unreadCount > 99 ? '99+' : unreadCount}
-                      </span>
-                    </div>
+                    <Badge
+                      badgeContent={unreadCount > 99 ? '99+' : unreadCount}
+                      color="error"
+                      sx={{
+                        '& .MuiBadge-badge': {
+                          fontSize: '0.75rem',
+                          fontWeight: 'bold'
+                        }
+                      }}
+                    />
                   )}
-                </div>
+                </Box>
               )}
               
               {/* Desktop User Menu - Only render on client */}
               {isClient && (
-                <div className="hidden lg:block">
-                  <UserMenu />
-                </div>
+                <Box sx={{ display: { xs: 'none', lg: 'block' } }}>
+                  <MuiUserMenu />
+                </Box>
               )}
               
               {/* Tablet User Menu - Only render on client */}
               {isClient && (
-                <div className="hidden md:block lg:hidden">
-                  <UserMenu />
-                </div>
+                <Box sx={{ display: { xs: 'none', md: 'block', lg: 'none' } }}>
+                  <MuiUserMenu />
+                </Box>
               )}
-              
-              {/* Mobile Navigation Toggle - REMOVED for bottom nav */}
-              {/* <div className="lg:hidden">
-                <EnhancedNavigation />
-              </div> */}
-            </div>
-          </div>
-        </div>
-      </nav>
+            </Box>
+          </Toolbar>
+        </Container>
+      </AppBar>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto py-4 sm:py-6 px-4 sm:px-6 lg:px-8 bg-background min-h-screen">
-        
-        <Breadcrumbs />
-        {/* Admin Navigation */}
-        {session?.user?.email === 'renee@creatorflow.com' && (
-          <div className="border-b pb-4 mb-4">
-            <h3 className="text-sm font-medium mb-2">Admin Tools</h3>
-            <div className="flex gap-2">
-              <Link 
-                href="/admin/analytics" 
-                className="flex items-center gap-2 px-3 py-2 text-sm rounded-md hover:bg-accent"
-              >
-                <BarChart3 className="h-4 w-4" />
-                Analytics
-              </Link>
-              <Link 
-                href="/admin/campaign" 
-                className="flex items-center gap-2 px-3 py-2 text-sm rounded-md hover:bg-accent"
-              >
-                <Target className="h-4 w-4" />
-                Campaign
-              </Link>
-              <Link 
-                href="/admin/feedback" 
-                className="flex items-center gap-2 px-3 py-2 text-sm rounded-md hover:bg-accent"
-              >
-                <MessageSquare className="h-4 w-4" />
-                Feedback
-              </Link>
-              <Link 
-                href="/scheduling" 
-                className="flex items-center gap-2 px-3 py-2 text-sm rounded-md hover:bg-accent"
-              >
-                <CalendarIcon className="h-4 w-4" />
-                Scheduling
-              </Link>
-              <Link 
-                href="/admin/performance" 
-                className="flex items-center gap-2 px-3 py-2 text-sm rounded-md hover:bg-accent"
-              >
-                <Activity className="h-4 w-4" />
-                Performance
-              </Link>
-              <Link 
-                href="/analytics" 
-                className="flex items-center gap-2 px-3 py-2 text-sm rounded-md hover:bg-accent"
-              >
-                <BarChart3 className="h-4 w-4" />
-                Analytics
-              </Link>
-              <Link 
-                href="/security" 
-                className="flex items-center gap-2 px-3 py-2 text-sm rounded-md hover:bg-accent"
-              >
-                <Shield className="h-4 w-4" />
-                Security
-              </Link>
-              <Link 
-                href="/integrations" 
-                className="flex items-center gap-2 px-3 py-2 text-sm rounded-md hover:bg-accent"
-              >
-                <Settings className="h-4 w-4" />
-                Integrations
-              </Link>
-              <Link 
-                href="/ai" 
-                className="flex items-center gap-2 px-3 py-2 text-sm rounded-md hover:bg-accent"
-              >
-                <Sparkles className="h-4 w-4" />
-                AI Features
-              </Link>
-              <Link 
-                href="/settings" 
-                className="flex items-center gap-2 px-3 py-2 text-sm rounded-md hover:bg-accent"
-              >
-                <Settings className="h-4 w-4" />
-                Settings
-              </Link>
-              <Link 
-                href="/enterprise" 
-                className="flex items-center gap-2 px-3 py-2 text-sm rounded-md hover:bg-accent"
-              >
-                <Building2 className="h-4 w-4" />
-                Enterprise
-              </Link>
-              <Link 
-                href="/mobile" 
-                className="flex items-center gap-2 px-3 py-2 text-sm rounded-md hover:bg-accent"
-              >
-                <Smartphone className="h-4 w-4" />
-                Mobile
-              </Link>
-              <Link 
-                href="/advanced-integrations" 
-                className="flex items-center gap-2 px-3 py-2 text-sm rounded-md hover:bg-accent"
-              >
-                <Plug className="h-4 w-4" />
-                Advanced Integrations
-              </Link>
-              <Link 
-                href="/testing" 
-                className="flex items-center gap-2 px-3 py-2 text-sm rounded-md hover:bg-accent"
-              >
-                <TestTube className="h-4 w-4" />
-                Testing
-              </Link>
-            </div>
-          </div>
-        )}
-        <div id="dashboard-main-content">
+      <Box component="main" sx={{ flexGrow: 1, py: 3 }}>
+        <Container maxWidth="xl">
           {children}
-        </div>
-      </main>
+        </Container>
+      </Box>
     </MobileLayout>
-  )
+  );
 } 

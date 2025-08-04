@@ -2,26 +2,23 @@
 import { useEffect, useState } from 'react';
 import Link from "next/link"
 import { useRouter } from 'next/navigation';
-import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
-import {
-  AlertDialog,
-  AlertDialogTrigger,
-  AlertDialogContent,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogFooter,
-  AlertDialogAction,
-  AlertDialogCancel,
-} from '@/components/ui/alert-dialog';
-import { Textarea } from '@/components/ui/textarea';
 import { useSession } from "next-auth/react";
-import { StatsCard } from '@/components/ui/stats-card';
-import { NotificationBadge } from '@/components/ui/notification-badge';
-import { LoadingSpinner } from '@/components/ui/loading-spinner';
-import { EmptyState } from '@/components/ui/empty-state';
-import { EnhancedNavigation, UserMenu, Breadcrumbs } from '@/components/ui/enhanced-nav';
+import { 
+  Box, 
+  Container, 
+  Typography, 
+  Grid, 
+  Button, 
+  TextField,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Alert,
+  Chip,
+  Divider,
+  Paper
+} from '@mui/material';
 import { 
   FileText, 
   Users, 
@@ -36,6 +33,27 @@ import {
   Brain,
   CreditCard
 } from 'lucide-react';
+import { 
+  MuiCard,
+  MuiCardHeader,
+  MuiCardContent,
+  MuiCardTitle,
+  MuiCardDescription,
+  MuiButton,
+  MuiStatsCard,
+  MuiEnhancedNavigation,
+  MuiDialog,
+  MuiDialogTitle,
+  MuiDialogContent,
+  MuiDialogActions,
+  MuiLoadingSpinner
+} from '@/components/ui/mui-components';
+import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
+import { Textarea } from '@/components/ui/textarea';
+import { NotificationBadge } from '@/components/ui/notification-badge';
+import { LoadingSpinner } from '@/components/ui/loading-spinner';
+import { EmptyState } from '@/components/ui/empty-state';
+import { EnhancedNavigation, UserMenu, Breadcrumbs } from '@/components/ui/enhanced-nav';
 import { AISetupReminder } from '@/components/ui/ai-setup-reminder';
 import { useAPIKey } from '@/hooks/use-api-key';
 import { FeedbackWidget } from '@/components/FeedbackWidget';
@@ -113,18 +131,40 @@ export default function DashboardPage() {
 
   return (
     <TooltipProvider>
-      <div className="space-y-6">
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
         {/* Enhanced Header */}
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div className="space-y-2">
-            <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground break-words">
+        <Box sx={{ 
+          display: 'flex', 
+          flexDirection: { xs: 'column', sm: 'row' }, 
+          alignItems: { sm: 'center' }, 
+          justifyContent: 'space-between', 
+          gap: 2 
+        }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+            <Typography 
+              variant="h4" 
+              component="h1" 
+              sx={{ 
+                fontWeight: 'bold', 
+                color: 'text.primary',
+                wordBreak: 'break-word',
+                fontSize: { xs: '1.25rem', sm: '1.5rem' }
+              }}
+            >
               Welcome back{session?.user?.name ? `, ${session.user.name}` : ''}!
-            </h1>
-            <p className="text-sm sm:text-base text-foreground break-words">
+            </Typography>
+            <Typography 
+              variant="body1" 
+              sx={{ 
+                color: 'text.primary',
+                wordBreak: 'break-word',
+                fontSize: { xs: '0.875rem', sm: '1rem' }
+              }}
+            >
               Here's what's happening with your content today.
-            </p>
-          </div>
-        </div>
+            </Typography>
+          </Box>
+        </Box>
 
         {/* AI Setup Reminder */}
         {!hasAPIKey && showAIReminder && (
@@ -135,243 +175,382 @@ export default function DashboardPage() {
         )}
 
         {/* Enhanced Stats Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-          <StatsCard
-            title="Total Posts"
-            value={stats.totalPosts}
-            description="Published this month"
-            icon={FileText}
-            trend={{ value: 12, isPositive: true, period: 'last month' }}
-            loading={isLoading}
-            onClick={() => router.push('/dashboard/content')}
-          />
-          <StatsCard
-            title="Connected Accounts"
-            value={stats.connectedAccounts}
-            description="Social platforms"
-            icon={Users}
-            variant="success"
-            loading={isLoading}
-            onClick={() => router.push('/dashboard/accounts')}
-            className="bg-gray-100 dark:bg-gray-800 border-green-500"
-          />
-          <StatsCard
-            title="Total Engagement"
-            value={stats.totalEngagement.toLocaleString()}
-            description="Likes, comments, shares"
-            icon={Heart}
-            trend={{ value: 8, isPositive: true, period: 'last week' }}
-            loading={isLoading}
-            onClick={() => router.push('/dashboard/analytics')}
-          />
-          <StatsCard
-            title="Scheduled Posts"
-            value={stats.scheduledPosts}
-            description="Ready to publish"
-            icon={Calendar}
-            variant="warning"
-            loading={isLoading}
-            onClick={() => router.push('/dashboard/content')}
-            className="bg-gray-100 dark:bg-gray-800 border-yellow-500"
-          />
-        </div>
+        <Grid container spacing={{ xs: 1.5, sm: 2 }} columns={{ xs: 1, sm: 2, lg: 4 }}>
+          <Grid item xs={1}>
+            <MuiStatsCard
+              title="Total Posts"
+              value={stats.totalPosts}
+              description="Published this month"
+              icon={FileText}
+              trend={{ value: 12, isPositive: true, period: 'last month' }}
+              loading={isLoading}
+              onClick={() => router.push('/dashboard/content')}
+            />
+          </Grid>
+          <Grid item xs={1}>
+            <MuiStatsCard
+              title="Connected Accounts"
+              value={stats.connectedAccounts}
+              description="Social platforms"
+              icon={Users}
+              variant="success"
+              loading={isLoading}
+              onClick={() => router.push('/dashboard/accounts')}
+              sx={{ bgcolor: 'grey.100', borderColor: 'success.main' }}
+            />
+          </Grid>
+          <Grid item xs={1}>
+            <MuiStatsCard
+              title="Total Engagement"
+              value={stats.totalEngagement.toLocaleString()}
+              description="Likes, comments, shares"
+              icon={Heart}
+              trend={{ value: 8, isPositive: true, period: 'last week' }}
+              loading={isLoading}
+              onClick={() => router.push('/dashboard/analytics')}
+            />
+          </Grid>
+          <Grid item xs={1}>
+            <MuiStatsCard
+              title="Scheduled Posts"
+              value={stats.scheduledPosts}
+              description="Ready to publish"
+              icon={Calendar}
+              variant="warning"
+              loading={isLoading}
+              onClick={() => router.push('/dashboard/content')}
+              sx={{ bgcolor: 'grey.100', borderColor: 'warning.main' }}
+            />
+          </Grid>
+        </Grid>
 
         {/* Quick Actions */}
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6">
+        <Grid container spacing={{ xs: 2, sm: 3 }} columns={{ xs: 1, lg: 3 }}>
           {/* Create Content */}
-          <Card className="lg:col-span-2 border-0">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-foreground break-words">
-                <Plus className="h-5 w-5 flex-shrink-0" />
-                Quick Actions
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3 sm:space-y-4">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3">
-                <Button 
-                  className="h-16 flex flex-col items-center justify-center gap-2 bg-white text-black hover:bg-gray-100 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700 min-w-[44px] min-h-[44px]"
-                  onClick={() => router.push('/dashboard/content')}
-                >
-                  <FileText className="h-6 w-6 flex-shrink-0" />
-                  <span className="text-sm break-words">Create Post</span>
-                </Button>
-                <Button 
-                  className="h-16 flex flex-col items-center justify-center gap-2 bg-white text-black hover:bg-gray-100 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700 min-w-[44px] min-h-[44px]"
-                  onClick={() => router.push('/dashboard/ai-tools')}
-                >
-                  <Brain className="h-6 w-6 flex-shrink-0" />
-                  <span className="text-sm break-words">AI Tools</span>
-                </Button>
-                <Button 
-                  className="h-16 flex flex-col items-center justify-center gap-2 bg-white text-black hover:bg-gray-100 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700 min-w-[44px] min-h-[44px]"
-                  onClick={() => router.push('/dashboard/accounts')}
-                >
-                  <Users className="h-6 w-6 flex-shrink-0" />
-                  <span className="text-sm break-words">Connect Account</span>
-                </Button>
-                <Button 
-                  className="h-16 flex flex-col items-center justify-center gap-2 bg-white text-black hover:bg-gray-100 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700 min-w-[44px] min-h-[44px]"
-                  onClick={() => router.push('/dashboard/scheduling')}
-                >
-                  <Calendar className="h-6 w-6 flex-shrink-0" />
-                  <span className="text-sm break-words">Schedule</span>
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
+          <Grid item xs={1} lg={2}>
+            <MuiCard sx={{ border: 0 }}>
+              <MuiCardHeader>
+                <MuiCardTitle sx={{ 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  gap: 1,
+                  color: 'text.primary',
+                  wordBreak: 'break-word'
+                }}>
+                  <Plus sx={{ width: 20, height: 20, flexShrink: 0 }} />
+                  Quick Actions
+                </MuiCardTitle>
+              </MuiCardHeader>
+              <MuiCardContent sx={{ display: 'flex', flexDirection: 'column', gap: { xs: 1.5, sm: 2 } }}>
+                <Grid container spacing={{ xs: 1, sm: 1.5 }}>
+                  <Grid item xs={12} sm={6}>
+                    <MuiButton 
+                      variant="outlined"
+                      fullWidth
+                      sx={{
+                        height: 64,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: 1,
+                        bgcolor: 'background.paper',
+                        color: 'text.primary',
+                        '&:hover': {
+                          bgcolor: 'action.hover'
+                        },
+                        minWidth: 44,
+                        minHeight: 44
+                      }}
+                      onClick={() => router.push('/dashboard/content')}
+                    >
+                      <FileText sx={{ width: 24, height: 24, flexShrink: 0 }} />
+                      <Typography variant="body2" sx={{ wordBreak: 'break-word' }}>
+                        Create Post
+                      </Typography>
+                    </MuiButton>
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <MuiButton 
+                      variant="outlined"
+                      fullWidth
+                      sx={{
+                        height: 64,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: 1,
+                        bgcolor: 'background.paper',
+                        color: 'text.primary',
+                        '&:hover': {
+                          bgcolor: 'action.hover'
+                        },
+                        minWidth: 44,
+                        minHeight: 44
+                      }}
+                      onClick={() => router.push('/dashboard/ai-tools')}
+                    >
+                      <Brain sx={{ width: 24, height: 24, flexShrink: 0 }} />
+                      <Typography variant="body2" sx={{ wordBreak: 'break-word' }}>
+                        AI Tools
+                      </Typography>
+                    </MuiButton>
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <MuiButton 
+                      variant="outlined"
+                      fullWidth
+                      sx={{
+                        height: 64,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: 1,
+                        bgcolor: 'background.paper',
+                        color: 'text.primary',
+                        '&:hover': {
+                          bgcolor: 'action.hover'
+                        },
+                        minWidth: 44,
+                        minHeight: 44
+                      }}
+                      onClick={() => router.push('/dashboard/analytics')}
+                    >
+                      <BarChart2 sx={{ width: 24, height: 24, flexShrink: 0 }} />
+                      <Typography variant="body2" sx={{ wordBreak: 'break-word' }}>
+                        View Analytics
+                      </Typography>
+                    </MuiButton>
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <MuiButton 
+                      variant="outlined"
+                      fullWidth
+                      sx={{
+                        height: 64,
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: 1,
+                        bgcolor: 'background.paper',
+                        color: 'text.primary',
+                        '&:hover': {
+                          bgcolor: 'action.hover'
+                        },
+                        minWidth: 44,
+                        minHeight: 44
+                      }}
+                      onClick={() => router.push('/dashboard/accounts')}
+                    >
+                      <Users sx={{ width: 24, height: 24, flexShrink: 0 }} />
+                      <Typography variant="body2" sx={{ wordBreak: 'break-word' }}>
+                        Manage Accounts
+                      </Typography>
+                    </MuiButton>
+                  </Grid>
+                </Grid>
+              </MuiCardContent>
+            </MuiCard>
+          </Grid>
 
-          {/* Welcome Message */}
-          <Card className="border-0">
-            <CardHeader>
-              <CardTitle className="text-foreground">Welcome back, Darrell Mayberry!</CardTitle>
-              <CardDescription className="text-foreground">
-                Here's what's happening with your content today.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 bg-green-500 rounded-full"></div>
-                  <span className="text-sm text-foreground">Post published</span>
-                </div>
-                <p className="text-xs text-muted-foreground">2 hours ago</p>
-              </div>
-              <div className="space-y-2">
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 bg-blue-500 rounded-full"></div>
-                  <span className="text-sm text-foreground">Account connected</span>
-                </div>
-                <p className="text-xs text-muted-foreground">1 day ago</p>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+          {/* Recent Activity */}
+          <Grid item xs={1}>
+            <MuiCard>
+              <MuiCardHeader>
+                <MuiCardTitle sx={{ color: 'text.primary' }}>
+                  Recent Activity
+                </MuiCardTitle>
+              </MuiCardHeader>
+              <MuiCardContent>
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                    <Box sx={{ 
+                      width: 8, 
+                      height: 8, 
+                      borderRadius: '50%', 
+                      bgcolor: 'success.main' 
+                    }} />
+                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                      Post published to Instagram
+                    </Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                    <Box sx={{ 
+                      width: 8, 
+                      height: 8, 
+                      borderRadius: '50%', 
+                      bgcolor: 'info.main' 
+                    }} />
+                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                      New comment on YouTube video
+                    </Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                    <Box sx={{ 
+                      width: 8, 
+                      height: 8, 
+                      borderRadius: '50%', 
+                      bgcolor: 'warning.main' 
+                    }} />
+                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                      Scheduled post ready
+                    </Typography>
+                  </Box>
+                </Box>
+              </MuiCardContent>
+            </MuiCard>
+          </Grid>
+        </Grid>
 
-        {/* Recent Activity */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
-          <Card className="border-0">
-            <CardHeader>
-              <CardTitle className="text-foreground">Recent Activity</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center">
-                    <FileText className="h-4 w-4 text-blue-600 dark:text-blue-400" />
-                  </div>
-                  <div className="flex-1">
-                    <p className="text-sm font-medium text-foreground">Post published</p>
-                    <p className="text-xs text-muted-foreground">2 hours ago</p>
-                  </div>
-                </div>
-                <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center">
-                    <Users className="h-4 w-4 text-green-600 dark:text-green-400" />
-                  </div>
-                  <div className="flex-1">
-                    <p className="text-sm font-medium text-foreground">Account connected</p>
-                    <p className="text-xs text-muted-foreground">1 day ago</p>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+        {/* Content Performance */}
+        <MuiCard>
+          <MuiCardHeader>
+            <MuiCardTitle sx={{ color: 'text.primary' }}>
+              Content Performance
+            </MuiCardTitle>
+            <MuiCardDescription>
+              Your top performing content this week
+            </MuiCardDescription>
+          </MuiCardHeader>
+          <MuiCardContent>
+            <Grid container spacing={2}>
+              <Grid item xs={12} md={6}>
+                <Paper sx={{ p: 2, display: 'flex', alignItems: 'center', gap: 2 }}>
+                  <Box sx={{ 
+                    width: 48, 
+                    height: 48, 
+                    borderRadius: 1, 
+                    bgcolor: 'primary.main',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}>
+                    <TrendingUp sx={{ color: 'white', width: 24, height: 24 }} />
+                  </Box>
+                  <Box sx={{ flexGrow: 1 }}>
+                    <Typography variant="subtitle2" sx={{ fontWeight: 'bold' }}>
+                      Instagram Reel
+                    </Typography>
+                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                      2.4k views • 156 likes
+                    </Typography>
+                  </Box>
+                  <Chip 
+                    label="+12%" 
+                    color="success" 
+                    size="small" 
+                    variant="outlined"
+                  />
+                </Paper>
+              </Grid>
+              <Grid item xs={12} md={6}>
+                <Paper sx={{ p: 2, display: 'flex', alignItems: 'center', gap: 2 }}>
+                  <Box sx={{ 
+                    width: 48, 
+                    height: 48, 
+                    borderRadius: 1, 
+                    bgcolor: 'secondary.main',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}>
+                    <MessageSquare sx={{ color: 'white', width: 24, height: 24 }} />
+                  </Box>
+                  <Box sx={{ flexGrow: 1 }}>
+                    <Typography variant="subtitle2" sx={{ fontWeight: 'bold' }}>
+                      YouTube Short
+                    </Typography>
+                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                      1.8k views • 89 comments
+                    </Typography>
+                  </Box>
+                  <Chip 
+                    label="+8%" 
+                    color="success" 
+                    size="small" 
+                    variant="outlined"
+                  />
+                </Paper>
+              </Grid>
+            </Grid>
+          </MuiCardContent>
+        </MuiCard>
 
-        {/* Welcome Modal */}
-        {showWelcome && (
-          <AlertDialog open={showWelcome} onOpenChange={setShowWelcome}>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Welcome to CreatorFlow! 🎉</AlertDialogTitle>
-              </AlertDialogHeader>
-              <div className="space-y-4">
-                <p className="text-muted-foreground">
-                  Get started in minutes. Here's your onboarding checklist:
-                </p>
-                <ul className="space-y-2 text-sm">
-                  <li className="flex items-center gap-2">
-                    <div className="h-2 w-2 rounded-full bg-primary" />
-                    Connect a social account
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="h-2 w-2 rounded-full bg-primary" />
-                    Schedule your first post
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="h-2 w-2 rounded-full bg-primary" />
-                    Explore analytics
-                  </li>
-                  <li className="flex items-center gap-2">
-                    <div className="h-2 w-2 rounded-full bg-primary" />
-                    Upgrade to Pro for more power
-                  </li>
-                </ul>
-              </div>
-              <AlertDialogFooter>
-                <AlertDialogAction onClick={handleClose}>
-                  Get Started
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
-        )}
+        {/* Welcome Dialog */}
+        <MuiDialog
+          open={showWelcome}
+          onClose={handleClose}
+          maxWidth="sm"
+          fullWidth
+        >
+          <MuiDialogTitle>
+            Welcome to CreatorFlow! 🎉
+          </MuiDialogTitle>
+          <MuiDialogContent>
+            <Typography variant="body1" sx={{ mb: 2 }}>
+              We're excited to help you grow your creator business. Here's what you can do to get started:
+            </Typography>
+            <Box component="ul" sx={{ pl: 2 }}>
+              <Typography component="li" variant="body2" sx={{ mb: 1 }}>
+                Connect your social media accounts
+              </Typography>
+              <Typography component="li" variant="body2" sx={{ mb: 1 }}>
+                Create your first post
+              </Typography>
+              <Typography component="li" variant="body2" sx={{ mb: 1 }}>
+                Explore AI tools for content creation
+              </Typography>
+              <Typography component="li" variant="body2">
+                Set up your monetization dashboard
+              </Typography>
+            </Box>
+          </MuiDialogContent>
+          <MuiDialogActions>
+            <MuiButton onClick={handleClose} variant="outlined">
+              Got it!
+            </MuiButton>
+            <MuiButton onClick={() => router.push('/dashboard/accounts')} variant="contained">
+              Connect Accounts
+            </MuiButton>
+          </MuiDialogActions>
+        </MuiDialog>
 
-        {/* Getting Started Modal */}
-        {showGettingStarted && (
-          <AlertDialog open={showGettingStarted} onOpenChange={setShowGettingStarted}>
-            <AlertDialogContent>
-              <AlertDialogHeader>
-                <AlertDialogTitle>Getting Started with CreatorFlow</AlertDialogTitle>
-              </AlertDialogHeader>
-              <div className="space-y-4">
-                <ol className="space-y-2 text-sm">
-                  <li className="flex items-start gap-2">
-                    <span className="flex-shrink-0 h-5 w-5 rounded-full bg-primary text-primary-foreground text-xs flex items-center justify-center font-medium">
-                      1
-                    </span>
-                    <span>Connect your first social account from the Accounts tab.</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="flex-shrink-0 h-5 w-5 rounded-full bg-primary text-primary-foreground text-xs flex items-center justify-center font-medium">
-                      2
-                    </span>
-                    <span>Schedule your first post using the Content dashboard.</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="flex-shrink-0 h-5 w-5 rounded-full bg-primary text-primary-foreground text-xs flex items-center justify-center font-medium">
-                      3
-                    </span>
-                    <span>Check your analytics to see your reach and engagement.</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="flex-shrink-0 h-5 w-5 rounded-full bg-primary text-primary-foreground text-xs flex items-center justify-center font-medium">
-                      4
-                    </span>
-                    <span>Upgrade to Pro or Business for more features and accounts.</span>
-                  </li>
-                </ol>
-              </div>
-              <AlertDialogFooter>
-                <AlertDialogAction onClick={() => setShowGettingStarted(false)}>
-                  Got it!
-                </AlertDialogAction>
-              </AlertDialogFooter>
-            </AlertDialogContent>
-          </AlertDialog>
-        )}
+        {/* Feedback Dialog */}
+        <MuiDialog
+          open={showGettingStarted}
+          onClose={() => setShowGettingStarted(false)}
+          maxWidth="sm"
+          fullWidth
+        >
+          <MuiDialogTitle>
+            How's CreatorFlow working for you?
+          </MuiDialogTitle>
+          <MuiDialogContent>
+            <TextField
+              fullWidth
+              multiline
+              rows={4}
+              placeholder="Share your feedback, suggestions, or report any issues..."
+              value={feedback}
+              onChange={(e) => setFeedback(e.target.value)}
+              sx={{ mt: 1 }}
+            />
+          </MuiDialogContent>
+          <MuiDialogActions>
+            <MuiButton onClick={() => setShowGettingStarted(false)} variant="outlined">
+              Cancel
+            </MuiButton>
+            <MuiButton onClick={handleFeedbackSubmit} variant="contained">
+              Submit Feedback
+            </MuiButton>
+          </MuiDialogActions>
+        </MuiDialog>
 
-        <div className="flex justify-center">
-          <Button 
-            variant="outline" 
-            onClick={() => setShowGettingStarted(true)}
-            className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-purple-600 text-white hover:from-blue-600 hover:to-purple-700"
-          >
-            <Calendar className="h-4 w-4" />
-            Getting Started Guide
-          </Button>
-        </div>
-      </div>
+        <FeedbackWidget />
+      </Box>
     </TooltipProvider>
   );
 } 
