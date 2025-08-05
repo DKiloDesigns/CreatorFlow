@@ -279,7 +279,7 @@ export default function SettingsPage() {
           </Grid>
 
           {/* Notification Settings */}
-          <Grid item xs={12} md={6}>
+          <Box>
             <Card>
               <CardHeader
                 title="Notification Preferences"
