@@ -175,8 +175,8 @@ export default function DashboardPage() {
         )}
 
         {/* Enhanced Stats Grid */}
-        <Grid container spacing={{ xs: 1.5, sm: 2 }} columns={{ xs: 1, sm: 2, lg: 4 }}>
-          <Grid item xs={1}>
+        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', lg: 'repeat(4, 1fr)' }, gap: { xs: 1.5, sm: 2 } }}>
+          <Box>
             <MuiStatsCard
               title="Total Posts"
               value={stats.totalPosts}
@@ -186,8 +186,8 @@ export default function DashboardPage() {
               loading={isLoading}
               onClick={() => router.push('/dashboard/content')}
             />
-          </Grid>
-          <Grid item xs={1}>
+          </Box>
+          <Box>
             <MuiStatsCard
               title="Connected Accounts"
               value={stats.connectedAccounts}
@@ -198,8 +198,8 @@ export default function DashboardPage() {
               onClick={() => router.push('/dashboard/accounts')}
               sx={{ bgcolor: 'grey.100', borderColor: 'success.main' }}
             />
-          </Grid>
-          <Grid item xs={1}>
+          </Box>
+          <Box>
             <MuiStatsCard
               title="Total Engagement"
               value={stats.totalEngagement.toLocaleString()}
@@ -209,8 +209,8 @@ export default function DashboardPage() {
               loading={isLoading}
               onClick={() => router.push('/dashboard/analytics')}
             />
-          </Grid>
-          <Grid item xs={1}>
+          </Box>
+          <Box>
             <MuiStatsCard
               title="Scheduled Posts"
               value={stats.scheduledPosts}
@@ -221,13 +221,13 @@ export default function DashboardPage() {
               onClick={() => router.push('/dashboard/content')}
               sx={{ bgcolor: 'grey.100', borderColor: 'warning.main' }}
             />
-          </Grid>
-        </Grid>
+          </Box>
+        </Box>
 
         {/* Quick Actions */}
-        <Grid container spacing={{ xs: 2, sm: 3 }} columns={{ xs: 1, lg: 3 }}>
+        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', lg: '2fr 1fr' }, gap: { xs: 2, sm: 3 } }}>
           {/* Create Content */}
-          <Grid item xs={1} lg={2}>
+          <Box>
             <MuiCard sx={{ border: 0 }}>
               <MuiCardHeader>
                 <MuiCardTitle sx={{ 
@@ -242,8 +242,8 @@ export default function DashboardPage() {
                 </MuiCardTitle>
               </MuiCardHeader>
               <MuiCardContent sx={{ display: 'flex', flexDirection: 'column', gap: { xs: 1.5, sm: 2 } }}>
-                <Grid container spacing={{ xs: 1, sm: 1.5 }}>
-                  <Grid item xs={12} sm={6}>
+                <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)' }, gap: { xs: 1, sm: 1.5 } }}>
+                  <Box>
                     <MuiButton 
                       variant="outlined"
                       fullWidth
@@ -351,13 +351,13 @@ export default function DashboardPage() {
                       </Typography>
                     </MuiButton>
                   </Grid>
-                </Grid>
+                </Box>
               </MuiCardContent>
             </MuiCard>
-          </Grid>
+          </Box>
 
           {/* Recent Activity */}
-          <Grid item xs={1}>
+          <Box>
             <MuiCard>
               <MuiCardHeader>
                 <MuiCardTitle sx={{ color: 'text.primary' }}>
@@ -402,8 +402,8 @@ export default function DashboardPage() {
                 </Box>
               </MuiCardContent>
             </MuiCard>
-          </Grid>
-        </Grid>
+          </Box>
+        </Box>
 
         {/* Content Performance */}
         <MuiCard>
@@ -416,8 +416,8 @@ export default function DashboardPage() {
             </MuiCardDescription>
           </MuiCardHeader>
           <MuiCardContent>
-            <Grid container spacing={2}>
-              <Grid item xs={12} md={6}>
+            <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 2 }}>
+              <Box>
                 <Paper sx={{ p: 2, display: 'flex', alignItems: 'center', gap: 2 }}>
                   <Box sx={{ 
                     width: 48, 
@@ -474,8 +474,8 @@ export default function DashboardPage() {
                     variant="outlined"
                   />
                 </Paper>
-              </Grid>
-            </Grid>
+              </Box>
+            </Box>
           </MuiCardContent>
         </MuiCard>
 
