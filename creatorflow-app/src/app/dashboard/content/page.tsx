@@ -423,8 +423,8 @@ export default function ContentPage() {
       </Box>
 
       {/* Overview Cards */}
-      <Grid container spacing={3}>
-        <Grid item xs={12} sm={6} md={3}>
+      <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(4, 1fr)' }, gap: 3 }}>
+        <Box>
           <Card>
             <CardHeader
               sx={{ 
@@ -446,9 +446,9 @@ export default function ContentPage() {
               </Typography>
             </CardContent>
           </Card>
-        </Grid>
+        </Box>
 
-        <Grid item xs={12} sm={6} md={3}>
+        <Box>
           <Card>
             <CardHeader
               sx={{ 
@@ -470,9 +470,9 @@ export default function ContentPage() {
               </Typography>
             </CardContent>
           </Card>
-        </Grid>
+        </Box>
 
-        <Grid item xs={12} sm={6} md={3}>
+        <Box>
           <Card>
             <CardHeader
               sx={{ 
@@ -494,9 +494,9 @@ export default function ContentPage() {
               </Typography>
             </CardContent>
           </Card>
-        </Grid>
+        </Box>
 
-        <Grid item xs={12} sm={6} md={3}>
+        <Box>
           <Card>
             <CardHeader
               sx={{ 
@@ -518,8 +518,8 @@ export default function ContentPage() {
               </Typography>
             </CardContent>
           </Card>
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
 
       {/* Quick Actions */}
       <Card>
@@ -527,8 +527,8 @@ export default function ContentPage() {
           <CardTitle>Quick Actions</CardTitle>
         </CardHeader>
         <CardContent>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={6} md={3}>
+          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(4, 1fr)' }, gap: 2 }}>
+            <Box>
               <MuiButton
                 variant="outline"
                 fullWidth
@@ -538,8 +538,8 @@ export default function ContentPage() {
               >
                 Upload Media
               </MuiButton>
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
+            </Box>
+            <Box>
               <MuiButton
                 variant="outline"
                 fullWidth
@@ -549,8 +549,8 @@ export default function ContentPage() {
               >
                 Create Video
               </MuiButton>
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
+            </Box>
+            <Box>
               <MuiButton
                 variant="outline"
                 fullWidth
@@ -560,8 +560,8 @@ export default function ContentPage() {
               >
                 Use Template
               </MuiButton>
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
+            </Box>
+            <Box>
               <MuiButton
                 variant="outline"
                 fullWidth
@@ -571,8 +571,8 @@ export default function ContentPage() {
               >
                 Bulk Schedule
               </MuiButton>
-            </Grid>
-          </Grid>
+            </Box>
+          </Box>
         </CardContent>
       </Card>
 
