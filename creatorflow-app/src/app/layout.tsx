@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "../globals.css";
 import { Providers } from "./providers";
 import { RealTimeNotificationProvider } from "@/components/notifications/real-time-provider";
+import { PerformanceMonitor } from "@/components/PerformanceMonitor";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,6 +23,7 @@ export default function RootLayout({
         <Providers>
           <RealTimeNotificationProvider>
             {children}
+            <PerformanceMonitor />
           </RealTimeNotificationProvider>
         </Providers>
       </body>

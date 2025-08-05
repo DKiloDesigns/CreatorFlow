@@ -77,7 +77,7 @@ import {
   Checkbox,
   Select,
   FormControlLabel as MuiFormControlLabel,
-} from '@/components/ui/mui-components';
+} from '@mui/material';
 import {
   Add,
   Edit,

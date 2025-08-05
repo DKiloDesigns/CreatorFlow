@@ -34,19 +34,19 @@ import {
   CreditCard
 } from 'lucide-react';
 import { 
-  MuiCard,
-  MuiCardHeader,
-  MuiCardContent,
-  MuiCardTitle,
-  MuiCardDescription,
-  MuiButton,
+  Card,
+  CardHeader,
+  CardContent,
+  CardTitle,
+  CardDescription,
+  Button as MuiButton,
   MuiStatsCard,
   MuiEnhancedNavigation,
-  MuiDialog,
-  MuiDialogTitle,
-  MuiDialogContent,
-  MuiDialogActions,
-  MuiLoadingSpinner
+  Dialog as MuiDialog,
+  DialogTitle as MuiDialogTitle,
+  DialogContent as MuiDialogContent,
+  DialogActions as MuiDialogActions,
+  LoadingSpinner as MuiLoadingSpinner
 } from '@/components/ui/mui-components';
 import { Tooltip } from '@mui/material';
 import { Textarea } from '@/components/ui/textarea';

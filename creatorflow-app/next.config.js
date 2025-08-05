@@ -13,6 +13,10 @@ const nextConfig = {
       }
     }
     return config
+  },
+  // Bundle analyzer configuration
+  experimental: {
+    bundlePagesExternals: true,
   }
 };
 
