@@ -1,18 +1,56 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import { Heading } from '@/components/ui/heading';
-import { Separator } from "@/components/ui/separator";
 import { toast } from 'sonner';
-import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { RefreshCw, AlertCircle, CheckCircle, Clock, XCircle, Globe, Twitter, Instagram, Youtube } from 'lucide-react';
-import { SocialAccountStatus } from '@/components/dashboard/social-account-status';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { 
+  Box, 
+  Typography, 
+  Button, 
+  Card, 
+  CardContent, 
+  CardHeader, 
+  CardTitle,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogActions,
+  TextField,
+  Container,
+  Grid,
+  Chip,
+  CircularProgress,
+  Alert,
+  AlertTitle,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemAvatar,
+  Avatar,
+  IconButton,
+  Tooltip,
+  Divider,
+  FormControl,
+  FormLabel,
+  FormGroup,
+  FormControlLabel,
+  Switch
+} from '@mui/material';
+import { 
+  RefreshCw, 
+  AlertCircle, 
+  CheckCircle, 
+  Clock, 
+  XCircle, 
+  Globe, 
+  Twitter, 
+  Instagram, 
+  Youtube,
+  Plus,
+  Trash2,
+  Settings,
+  Link,
+  ExternalLink
+} from 'lucide-react';
 
 const PROVIDERS = [
   // Social Media Platforms
@@ -68,12 +106,6 @@ type Account = {
   providerAccountId: string;
 };
 
-type AccountConnectButtonsProps = {
-  accounts: SocialAccount[];
-  onConnect: (provider: string, instance?: string) => void;
-  loading: boolean;
-};
-
 function MastodonInstanceDialog({ 
   isOpen, 
   onClose, 
@@ -112,246 +144,132 @@ function MastodonInstanceDialog({
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onClose={onClose} maxWidth="sm" fullWidth>
+      <DialogTitle>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Globe style={{ width: 20, height: 20 }} />
+          Connect Mastodon Instance
+        </Box>
+      </DialogTitle>
       <DialogContent>
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <Globe className="w-5 h-5" />
-            Connect Mastodon Instance
-          </DialogTitle>
-          <DialogDescription>
-            Enter your Mastodon instance URL (e.g., mastodon.social, hachyderm.io)
-          </DialogDescription>
-        </DialogHeader>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="instance">Instance URL</Label>
-            <Input
-              id="instance"
-              type="text"
-              placeholder="mastodon.social"
-              value={instance}
-              onChange={(e) => setInstance(e.target.value)}
-              disabled={isValidating}
-            />
-            <p className="text-xs text-muted-foreground">
-              Enter your Mastodon instance domain without https:// (e.g., mastodon.social)
-            </p>
-          </div>
-          <div className="flex gap-2 justify-end">
-            <Button type="button" variant="outline" onClick={onClose} disabled={isValidating}>
-              Cancel
-            </Button>
-            <Button type="submit" disabled={!instance.trim() || isValidating}>
-              {isValidating ? 'Validating...' : 'Connect'}
-            </Button>
-          </div>
-        </form>
+        <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2, pt: 1 }}>
+          <TextField
+            label="Instance URL"
+            type="text"
+            placeholder="mastodon.social"
+            value={instance}
+            onChange={(e) => setInstance(e.target.value)}
+            disabled={isValidating}
+            fullWidth
+            required
+            helperText="Enter your Mastodon instance domain without https:// (e.g., mastodon.social)"
+          />
+        </Box>
       </DialogContent>
+      <DialogActions>
+        <Button onClick={onClose} disabled={isValidating}>
+          Cancel
+        </Button>
+        <Button 
+          onClick={handleSubmit} 
+          variant="contained"
+          disabled={!instance.trim() || isValidating}
+        >
+          {isValidating ? 'Validating...' : 'Connect'}
+        </Button>
+      </DialogActions>
     </Dialog>
   );
 }
 
-function AccountConnectButtons({ accounts, onConnect, loading }: AccountConnectButtonsProps) {
-  const [mastodonDialogOpen, setMastodonDialogOpen] = useState(false);
-
-  const handleConnect = (provider: string) => {
-    const providerConfig = PROVIDERS.find(p => p.id === provider);
-    
-    if (providerConfig?.requiresInstance) {
-      setMastodonDialogOpen(true);
-    } else {
-      onConnect(provider);
-    }
-  };
-
-  const handleMastodonConnect = (instance: string) => {
-    onConnect('mastodon', instance);
-  };
-
-  return (
-    <div className="w-full">
-      <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-hide">
-        {PROVIDERS.map((p) => {
-          const connectedAccount = accounts.find((a: SocialAccount) => a.platform === p.id);
-          const isConnected = !!connectedAccount;
-          const isPending = connectedAccount?.status === 'pending';
-          const needsReauth = connectedAccount?.status === 'needs_reauth';
-          
-          return (
-            <div key={p.id} className="flex-shrink-0">
-              <button
-                onClick={() => handleConnect(p.id)}
-                disabled={loading || (isConnected && !needsReauth)}
-                className={`
-                  relative group flex flex-col items-center justify-center
-                  w-16 h-12 rounded-lg border-2 transition-all duration-200
-                  ${isConnected && !needsReauth
-                    ? 'border-green-500 bg-green-50 cursor-not-allowed' 
-                    : needsReauth
-                    ? 'border-orange-500 bg-orange-50 cursor-pointer'
-                    : 'border-gray-200 hover:border-gray-300 hover:shadow-md cursor-pointer'
-                  }
-                  ${loading ? 'opacity-50 cursor-not-allowed' : ''}
-                `}
-                style={{
-                  background: isConnected && !needsReauth 
-                    ? 'linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%)'
-                    : needsReauth
-                    ? 'linear-gradient(135deg, #fff7ed 0%, #fed7aa 100%)'
-                    : 'white'
-                }}
-              >
-                <div 
-                  className="text-2xl mb-1 transition-transform group-hover:scale-110"
-                  style={{ filter: isConnected && !needsReauth ? 'grayscale(0)' : 'grayscale(0)' }}
-                >
-                  {p.icon}
-                </div>
-                <div className={`
-                  text-xs font-medium text-center px-1
-                  ${isConnected && !needsReauth ? 'text-green-700' : needsReauth ? 'text-orange-700' : 'text-gray-600'}
-                `}>
-                  {p.name}
-                </div>
-                {isConnected && !needsReauth && (
-                  <div className="absolute -top-1 -right-1 w-5 h-5 bg-green-500 rounded-full flex items-center justify-center">
-                    <CheckCircle className="w-3 h-3 text-white" />
-                  </div>
-                )}
-                {needsReauth && (
-                  <div className="absolute -top-1 -right-1 w-5 h-5 bg-orange-500 rounded-full flex items-center justify-center">
-                    <AlertCircle className="w-3 h-3 text-white" />
-                  </div>
-                )}
-                {isPending && (
-                  <div className="absolute -top-1 -right-1 w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center">
-                    <Clock className="w-3 h-3 text-white" />
-                  </div>
-                )}
-              </button>
-            </div>
-          );
-        })}
-      </div>
-      <MastodonInstanceDialog
-        isOpen={mastodonDialogOpen}
-        onClose={() => setMastodonDialogOpen(false)}
-        onConnect={handleMastodonConnect}
-      />
-      <style jsx>{`
-        .scrollbar-hide {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-        .scrollbar-hide::-webkit-scrollbar {
-          display: none;
-        }
-      `}</style>
-    </div>
-  );
-}
-
-type ConnectedAccountCardProps = {
+function ConnectedAccountCard({ account, onDisconnect, onRefresh, onReauth, loading }: {
   account: SocialAccount;
   onDisconnect: (accountId: string) => void;
   onRefresh: (accountId: string) => void;
   onReauth: (platform: string) => void;
   loading: boolean;
-};
-
-function ConnectedAccountCard({ account, onDisconnect, onRefresh, onReauth, loading }: ConnectedAccountCardProps) {
-  const provider = PROVIDERS.find((p) => p.id === account.platform);
-  const isTokenExpired = account.tokenExpiresAt && new Date(account.tokenExpiresAt) < new Date();
-  const isExpiringSoon = account.tokenExpiresAt && 
-    new Date(account.tokenExpiresAt) < new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
-
+}) {
   const getStatusBadge = () => {
     switch (account.status) {
       case 'active':
-        return <Badge variant="default" className="bg-green-100 text-green-800">Active</Badge>;
+        return <Chip label="Active" color="success" size="small" />;
       case 'pending':
-        return <Badge variant="secondary" className="bg-blue-100 text-blue-800">Pending</Badge>;
+        return <Chip label="Pending" color="warning" size="small" />;
       case 'needs_reauth':
-        return <Badge variant="destructive" className="bg-orange-100 text-orange-800">Needs Re-auth</Badge>;
+        return <Chip label="Needs Re-auth" color="error" size="small" />;
       case 'error':
-        return <Badge variant="destructive" className="bg-red-100 text-red-800">Error</Badge>;
+        return <Chip label="Error" color="error" size="small" />;
       default:
-        return <Badge variant="outline">Unknown</Badge>;
+        return <Chip label="Unknown" color="default" size="small" />;
     }
   };
 
+  const provider = PROVIDERS.find(p => p.id === account.platform);
+
   return (
-    <Card className="relative">
-      <CardHeader className="pb-3">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3">
-            <div 
-              className="w-10 h-10 rounded-full flex items-center justify-center"
-              style={{ backgroundColor: provider?.color || '#eee' }}
-            >
-              <span className="text-xl">{provider?.icon}</span>
-            </div>
-            <div>
-              <CardTitle className="text-lg">{provider?.name}</CardTitle>
-              <CardDescription>@{account.username}</CardDescription>
-            </div>
-          </div>
-          {getStatusBadge()}
-        </div>
-      </CardHeader>
-      <CardContent className="space-y-3">
-        <div className="text-sm text-muted-foreground">
-          <p>Platform ID: {account.platformUserId}</p>
-          <p>Connected: {new Date(account.createdAt).toLocaleDateString()}</p>
-          {account.tokenExpiresAt && (
-            <p className={`${isTokenExpired ? 'text-red-600' : isExpiringSoon ? 'text-orange-600' : 'text-green-600'}`}>
-              Token expires: {new Date(account.tokenExpiresAt).toLocaleString()}
-            </p>
-          )}
-        </div>
-        
-        <div className="flex flex-col sm:flex-row gap-2">
-          {account.status === 'active' && (
-            <>
-              <Button
-                variant="outline"
-                size="sm"
+    <Card>
+      <CardHeader
+        title={
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+              {provider?.name || account.platform}
+            </Typography>
+            {getStatusBadge()}
+          </Box>
+        }
+        titleTypographyProps={{ variant: 'h6', fontWeight: 'bold' }}
+        avatar={
+          <Avatar sx={{ bgcolor: provider?.color || 'primary.main' }}>
+            {provider?.icon || '🔗'}
+          </Avatar>
+        }
+        action={
+          <Box sx={{ display: 'flex', gap: 1 }}>
+            <Tooltip title="Refresh">
+              <IconButton 
+                size="small"
                 onClick={() => onRefresh(account.id)}
                 disabled={loading}
-                className="flex items-center gap-1 w-full sm:w-auto min-w-[44px] min-h-[44px]"
               >
-                <RefreshCw className="w-4 h-4" />
-                <span className="sr-only sm:not-sr-only">Refresh</span>
-              </Button>
-            </>
+                <RefreshCw style={{ width: 16, height: 16 }} />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Re-authenticate">
+              <IconButton 
+                size="small"
+                onClick={() => onReauth(account.platform)}
+                disabled={loading}
+              >
+                <Settings style={{ width: 16, height: 16 }} />
+              </IconButton>
+            </Tooltip>
+            <Tooltip title="Disconnect">
+              <IconButton 
+                size="small" 
+                color="error"
+                onClick={() => onDisconnect(account.id)}
+                disabled={loading}
+              >
+                <Trash2 style={{ width: 16, height: 16 }} />
+              </IconButton>
+            </Tooltip>
+          </Box>
+        }
+      />
+      <CardContent>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+            Username: {account.username}
+          </Typography>
+          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+            Connected: {new Date(account.createdAt).toLocaleDateString()}
+          </Typography>
+          {account.tokenExpiresAt && (
+            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+              Expires: {new Date(account.tokenExpiresAt).toLocaleDateString()}
+            </Typography>
           )}
-          
-          {account.status === 'needs_reauth' && (
-            // SPECIAL COLOR BUTTON: Re-authorize (add color later)
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => onReauth(account.platform)}
-              disabled={loading}
-              className="flex items-center gap-1 text-orange-600 border-orange-200 hover:bg-orange-50 w-full sm:w-auto min-w-[44px] min-h-[44px]"
-            >
-              <AlertCircle className="w-4 h-4" />
-              <span className="sr-only sm:not-sr-only">Re-authorize</span>
-            </Button>
-          )}
-          
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => onDisconnect(account.id)}
-            disabled={loading}
-            className="flex items-center gap-1 bg-red-700 text-white border-red-700 hover:bg-red-800 hover:border-red-800 w-full sm:w-auto min-w-[44px] min-h-[44px]"
-          >
-            <XCircle className="w-4 h-4" />
-            <span className="sr-only sm:not-sr-only">Disconnect</span>
-          </Button>
-        </div>
+        </Box>
       </CardContent>
     </Card>
   );
@@ -360,377 +278,268 @@ function ConnectedAccountCard({ account, onDisconnect, onRefresh, onReauth, load
 export default function AccountsPage() {
   const [socialAccounts, setSocialAccounts] = useState<SocialAccount[]>([]);
   const [accounts, setAccounts] = useState<Account[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [action, setAction] = useState('');
-
-  // Agent API Key Management
   const [apiKeys, setApiKeys] = useState<any[]>([]);
-  const [apiKeyName, setApiKeyName] = useState('');
-  const [loadingKeys, setLoadingKeys] = useState(false);
-  const [creatingKey, setCreatingKey] = useState(false);
-  const [plan, setPlan] = useState('');
+  const [plan, setPlan] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+  const [connecting, setConnecting] = useState<string | null>(null);
+  const [showMastodonDialog, setShowMastodonDialog] = useState(false);
+  const [mastodonInstance, setMastodonInstance] = useState('');
 
-  const [ariaMessage, setAriaMessage] = useState('');
+  useEffect(() => {
+    fetchData();
+  }, []);
 
-  const fetchSocialAccounts = async () => {
+  const fetchData = async () => {
     setLoading(true);
     try {
-      const res = await fetch('/api/accounts', { method: 'GET' });
-      if (!res.ok) throw new Error('Failed to fetch social accounts');
-      const data = await res.json();
-      setSocialAccounts(data);
-    } catch (e) {
-      const msg = e instanceof Error ? e.message : String(e);
-      toast.error(msg);
+      await Promise.all([
+        fetchSocialAccounts(),
+        fetchAccounts(),
+        fetchKeys(),
+        fetchPlan(),
+      ]);
+    } catch (error) {
+      console.error('Error fetching data:', error);
     } finally {
       setLoading(false);
     }
   };
 
-  const fetchAccounts = async () => {
+  const fetchSocialAccounts = async () => {
     try {
-      const res = await fetch('/api/accounts', { method: 'POST' });
-      if (!res.ok) throw new Error('Failed to fetch accounts');
-      setAccounts(await res.json());
-    } catch (e) {
-      const msg = e instanceof Error ? e.message : String(e);
-      toast.error(msg);
+      const response = await fetch('/api/social-accounts');
+      if (response.ok) {
+        const data = await response.json();
+        setSocialAccounts(data);
+      }
+    } catch (error) {
+      console.error('Error fetching social accounts:', error);
     }
   };
 
-  useEffect(() => {
-    fetchSocialAccounts();
-    fetchAccounts();
-  }, []);
-
-  useEffect(() => {
-    // Fetch API keys and plan
-    const fetchKeys = async () => {
-      setLoadingKeys(true);
-      try {
-        const res = await fetch('/api/api-keys');
-        if (!res.ok) throw new Error('Failed to fetch API keys');
-        const keys = await res.json();
-        setApiKeys(keys);
-      } catch (e: any) {
-        toast.error(e.message);
-      } finally {
-        setLoadingKeys(false);
+  const fetchAccounts = async () => {
+    try {
+      const response = await fetch('/api/accounts');
+      if (response.ok) {
+        const data = await response.json();
+        setAccounts(data);
       }
-    };
-    const fetchPlan = async () => {
-      try {
-        const res = await fetch('/api/accounts/plan');
-        if (!res.ok) return;
-        const data = await res.json();
-        setPlan(data.plan);
-      } catch {}
-    };
-    fetchKeys();
-    fetchPlan();
-  }, []);
-
-  useEffect(() => {
-    if (action && action.toLowerCase().includes('error')) setAriaMessage(action);
-    else setAriaMessage('');
-  }, [action]);
-
-  // Handle OAuth callback messages
-  useEffect(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    const success = urlParams.get('success');
-    const error = urlParams.get('error');
-    const platform = urlParams.get('platform');
-
-    if (success === 'connected' && platform) {
-      toast.success(`Successfully connected to ${platform}!`);
-      fetchSocialAccounts(); // Refresh the list
-      // Clean up URL
-      window.history.replaceState({}, document.title, window.location.pathname);
-    } else if (error && platform) {
-      let errorMessage = 'Failed to connect account';
-      switch (error) {
-        case 'oauth_failed':
-          errorMessage = `OAuth authentication failed for ${platform}`;
-          break;
-        case 'no_code':
-          errorMessage = `No authorization code received from ${platform}`;
-          break;
-        case 'callback_failed':
-          errorMessage = `Failed to complete ${platform} connection`;
-          break;
-        default:
-          errorMessage = `Error connecting to ${platform}: ${error}`;
-      }
-      toast.error(errorMessage);
-      // Clean up URL
-      window.history.replaceState({}, document.title, window.location.pathname);
+    } catch (error) {
+      console.error('Error fetching accounts:', error);
     }
-  }, []);
+  };
+
+  const fetchKeys = async () => {
+    try {
+      const response = await fetch('/api/keys');
+      if (response.ok) {
+        const data = await response.json();
+        setApiKeys(data);
+      }
+    } catch (error) {
+      console.error('Error fetching API keys:', error);
+    }
+  };
+
+  const fetchPlan = async () => {
+    try {
+      const response = await fetch('/api/plan');
+      if (response.ok) {
+        const data = await response.json();
+        setPlan(data);
+      }
+    } catch (error) {
+      console.error('Error fetching plan:', error);
+    }
+  };
 
   const handleConnect = async (provider: string, instance?: string) => {
-    setAction(`Connecting to ${provider}...`);
+    setConnecting(provider);
     try {
-      const url = instance 
-        ? `/api/accounts/connect/${provider}?instance=${encodeURIComponent(instance)}`
-        : `/api/accounts/connect/${provider}`;
-      
-      const res = await fetch(url, { method: 'POST' });
-      const data = await res.json();
-      if (data.url) {
-        toast.success(`Redirecting to ${provider}...`);
-        window.location.href = data.url;
+      const response = await fetch('/api/social-accounts/connect', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ provider, instance }),
+      });
+
+      if (response.ok) {
+        toast.success(`Successfully connected to ${provider}`);
+        await fetchSocialAccounts();
       } else {
-        toast.error(data.error || 'Failed to get sign-in URL');
+        toast.error(`Failed to connect to ${provider}`);
       }
-    } catch (e) {
-      const msg = e instanceof Error ? e.message : String(e);
-      toast.error(msg);
+    } catch (error) {
+      toast.error(`Error connecting to ${provider}`);
     } finally {
-      setAction('');
+      setConnecting(null);
     }
   };
 
   const handleDisconnect = async (accountId: string) => {
-    if (!window.confirm('Are you sure you want to disconnect this account? This will remove all access.')) {
-      return;
-    }
-    
-    setAction('Disconnecting...');
     try {
-      const res = await fetch(`/api/accounts/${accountId}`, { method: 'DELETE' });
-      const data = await res.json();
-      if (data.success) {
-        toast.success('Disconnected successfully');
-        fetchSocialAccounts();
+      const response = await fetch(`/api/social-accounts/${accountId}`, {
+        method: 'DELETE',
+      });
+
+      if (response.ok) {
+        toast.success('Account disconnected successfully');
+        await fetchSocialAccounts();
       } else {
-        toast.error(data.error || 'Failed to disconnect');
+        toast.error('Failed to disconnect account');
       }
-    } catch (e) {
-      const msg = e instanceof Error ? e.message : String(e);
-      toast.error(msg);
-    } finally {
-      setAction('');
+    } catch (error) {
+      toast.error('Error disconnecting account');
     }
   };
 
   const handleRefresh = async (accountId: string) => {
-    setAction('Refreshing token...');
     try {
-      const res = await fetch(`/api/accounts/${accountId}/refresh`, { method: 'POST' });
-      const data = await res.json();
-      if (data.success) {
-        toast.success('Token refreshed successfully');
-        fetchSocialAccounts();
+      const response = await fetch(`/api/social-accounts/${accountId}/refresh`, {
+        method: 'POST',
+      });
+
+      if (response.ok) {
+        toast.success('Account refreshed successfully');
+        await fetchSocialAccounts();
       } else {
-        toast.error(data.error || 'Failed to refresh token');
+        toast.error('Failed to refresh account');
       }
-    } catch (e) {
-      const msg = e instanceof Error ? e.message : String(e);
-      toast.error(msg);
-    } finally {
-      setAction('');
+    } catch (error) {
+      toast.error('Error refreshing account');
     }
   };
 
   const handleReauth = async (platform: string) => {
-    setAction(`Re-authorizing ${platform}...`);
     try {
-      const res = await fetch(`/api/accounts/connect/${platform}`, { method: 'POST' });
-      const data = await res.json();
-      if (data.url) {
-        toast.success(`Redirecting to ${platform} for re-authorization...`);
-        window.location.href = data.url;
-      } else {
-        toast.error(data.error || 'Failed to get re-authorization URL');
-      }
-    } catch (e) {
-      const msg = e instanceof Error ? e.message : String(e);
-      toast.error(msg);
-    } finally {
-      setAction('');
-    }
-  };
-
-  const handleCreateKey = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setCreatingKey(true);
-    try {
-      const res = await fetch('/api/api-keys', {
+      const response = await fetch(`/api/social-accounts/${platform}/reauth`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: apiKeyName }),
       });
-      if (res.status === 402) {
-        toast.error('AI Agent API access requires a paid plan.');
-        setCreatingKey(false);
-        return;
+
+      if (response.ok) {
+        toast.success('Re-authentication initiated');
+        await fetchSocialAccounts();
+      } else {
+        toast.error('Failed to re-authenticate');
       }
-      if (!res.ok) throw new Error('Failed to create API key');
-      const key = await res.json();
-      setApiKeys(keys => [...keys, key]);
-      setApiKeyName('');
-      toast.success('API key created!');
-    } catch (e: any) {
-      toast.error(e.message);
-    } finally {
-      setCreatingKey(false);
+    } catch (error) {
+      toast.error('Error re-authenticating');
     }
   };
 
-  const handleRevokeKey = async (id: string) => {
-    if (!window.confirm('Revoke this API key? This cannot be undone.')) return;
-    try {
-      const res = await fetch('/api/api-keys', {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id }),
-      });
-      if (!res.ok) throw new Error('Failed to revoke API key');
-      setApiKeys(keys => keys.map(k => k.id === id ? { ...k, revokedAt: new Date().toISOString() } : k));
-      toast.success('API key revoked.');
-    } catch (e: any) {
-      toast.error(e.message);
-    }
-  };
+  if (loading) {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
-    <TooltipProvider>
-      <div className="space-y-6">
-        <h2 className="sr-only" id="accounts-dashboard-heading">Accounts Dashboard</h2>
-        <Heading
-          title="Connected Accounts"
-          description="Manage your connected social media accounts and add new ones."
-        />
+    <Container maxWidth="lg" sx={{ py: 3 }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+        {/* Header */}
+        <Box>
+          <Typography variant="h4" component="h1" sx={{ fontWeight: 'bold', mb: 1 }}>
+            Connected Accounts
+          </Typography>
+          <Typography variant="body1" sx={{ color: 'text.secondary' }}>
+            Manage your social media and platform connections
+          </Typography>
+        </Box>
 
-        {/* Section to Add New Accounts */}
-        <section>
-          <div className="flex gap-4" aria-label="Connect social accounts">
-            <AccountConnectButtons 
-              accounts={socialAccounts} 
-              onConnect={handleConnect} 
-              loading={loading} 
-            />
-          </div>
-        </section>
-
-        <Separator />
-
-        {/* Social Account Status Monitoring */}
-        <section>
-          <SocialAccountStatus 
-            accounts={socialAccounts}
-            onRefresh={handleRefresh}
-            onReauth={handleReauth}
+        {/* Connected Accounts */}
+        <Card>
+          <CardHeader
+            title="Connected Accounts"
+            titleTypographyProps={{ variant: 'h6', fontWeight: 'bold' }}
+            avatar={<Link style={{ width: 24, height: 24, color: '#3b82f6' }} />}
           />
-        </section>
-
-        <Separator />
-
-        {/* Section to Display Connected Accounts */}
-        <section>
-          <h3 className="text-lg font-medium mb-4">Your Connections</h3>
-          {loading ? (
-            <div className="flex items-center justify-center py-8">
-              <RefreshCw className="w-6 h-6 animate-spin" />
-              <span className="ml-2">Loading accounts...</span>
-            </div>
-          ) : socialAccounts.length === 0 ? (
-            <div className="text-center py-8 text-muted-foreground">
-              <p>No social accounts connected yet.</p>
-              <p className="text-sm">Connect your first account above to get started.</p>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {socialAccounts.map((account) => (
-                <ConnectedAccountCard
-                  key={account.id}
-                  account={account}
-                  onDisconnect={handleDisconnect}
-                  onRefresh={handleRefresh}
-                  onReauth={handleReauth}
-                  loading={loading}
-                />
-              ))}
-            </div>
-          )}
-        </section>
-
-        <section className="mt-10">
-          <h2 className="text-xl font-bold mb-2">Agent API Key Management</h2>
-          <p className="text-sm text-muted-foreground mb-4">Generate API keys for your AI agent to access CreatorFlow programmatically. <b>Requires a paid plan.</b></p>
-          {plan === 'Free' && (
-            <div className="bg-yellow-100 text-yellow-800 p-2 rounded mb-4">Upgrade to a paid plan to enable agent API access.</div>
-          )}
-          <form className="flex gap-2 mb-4" onSubmit={handleCreateKey}>
-            <input
-              type="text"
-              className="border rounded px-2 py-1"
-              placeholder="Key name (optional)"
-              value={apiKeyName}
-              onChange={e => setApiKeyName(e.target.value)}
-              disabled={plan === 'Free' || creatingKey}
-            />
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <button
-                  type="submit"
-                  className="bg-gray-600 dark:bg-gray-800 text-white px-4 py-1 rounded focus-visible:ring-2 focus-visible:ring-primary transition-colors"
-                  disabled={plan === 'Free' || creatingKey}
-                  aria-label="Create API Key"
-                >
-                  {creatingKey ? 'Creating...' : 'Create API Key'}
-                </button>
-              </TooltipTrigger>
-              <TooltipContent>{plan === 'Free' ? 'Upgrade to create API keys' : 'Create a new API key for agent access'}</TooltipContent>
-            </Tooltip>
-          </form>
-          <div className="overflow-x-auto">
-            <table className="min-w-full text-sm">
-              <thead>
-                <tr>
-                  <th className="text-left p-2 break-words">Key</th>
-                  <th className="text-left p-2 break-words">Name</th>
-                  <th className="text-left p-2 break-words">Created</th>
-                  <th className="text-left p-2 break-words">Revoked</th>
-                  <th className="text-left p-2 break-words">Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {loadingKeys ? (
-                  <tr><td colSpan={5} className="p-2 break-words">Loading...</td></tr>
-                ) : apiKeys.length === 0 ? (
-                  <tr><td colSpan={5} className="p-2 break-words">No API keys found.</td></tr>
-                ) : apiKeys.map((key: any) => (
-                  <tr key={key.id} className={key.revokedAt ? 'text-gray-400' : ''}>
-                    <td className="p-2 font-mono break-words">{key.key.slice(0, 8)}...{key.key.slice(-4)}</td>
-                    <td className="p-2 break-words">{key.name || '-'}</td>
-                    <td className="p-2 break-words">{new Date(key.createdAt).toLocaleDateString()}</td>
-                    <td className="p-2 break-words">{key.revokedAt ? new Date(key.revokedAt).toLocaleDateString() : '-'}</td>
-                    <td className="p-2">
-                      {!key.revokedAt && (
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <button 
-                              className="text-red-600 hover:underline focus-visible:ring-2 focus-visible:ring-primary transition-colors px-2 py-1 rounded min-w-[44px] min-h-[44px]" 
-                              onClick={() => handleRevokeKey(key.id)} 
-                              aria-label="Revoke API Key"
-                            >
-                              Revoke
-                            </button>
-                          </TooltipTrigger>
-                          <TooltipContent>Revoke this API key</TooltipContent>
-                        </Tooltip>
-                      )}
-                    </td>
-                  </tr>
+          <CardContent>
+            {socialAccounts.length > 0 ? (
+              <Grid container spacing={2}>
+                {socialAccounts.map((account) => (
+                  <Grid item xs={12} md={6} key={account.id}>
+                    <ConnectedAccountCard
+                      account={account}
+                      onDisconnect={handleDisconnect}
+                      onRefresh={handleRefresh}
+                      onReauth={handleReauth}
+                      loading={connecting === account.platform}
+                    />
+                  </Grid>
                 ))}
-              </tbody>
-            </table>
-          </div>
-        </section>
-        <div aria-live="polite" className="sr-only" id="accounts-dashboard-aria-live">{ariaMessage}</div>
-      </div>
-    </TooltipProvider>
+              </Grid>
+            ) : (
+              <Box sx={{ textAlign: 'center', py: 4 }}>
+                <Typography variant="h6" sx={{ mb: 1 }}>
+                  No connected accounts
+                </Typography>
+                <Typography variant="body2" sx={{ color: 'text.secondary', mb: 3 }}>
+                  Connect your social media accounts to get started
+                </Typography>
+              </Box>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Available Providers */}
+        <Card>
+          <CardHeader
+            title="Available Platforms"
+            titleTypographyProps={{ variant: 'h6', fontWeight: 'bold' }}
+            avatar={<Plus style={{ width: 24, height: 24, color: '#10b981' }} />}
+          />
+          <CardContent>
+            <Grid container spacing={2}>
+              {PROVIDERS.map((provider) => {
+                const isConnected = socialAccounts.some(acc => acc.platform === provider.id);
+                const isConnecting = connecting === provider.id;
+                
+                return (
+                  <Grid item xs={12} sm={6} md={4} lg={3} key={provider.id}>
+                    <Card variant="outlined">
+                      <CardContent sx={{ textAlign: 'center', py: 2 }}>
+                        <Typography variant="h4" sx={{ mb: 1 }}>
+                          {provider.icon}
+                        </Typography>
+                        <Typography variant="body2" sx={{ fontWeight: 'bold', mb: 1 }}>
+                          {provider.name}
+                        </Typography>
+                        {isConnected ? (
+                          <Chip label="Connected" color="success" size="small" />
+                        ) : (
+                          <Button
+                            variant="outlined"
+                            size="small"
+                            disabled={isConnecting}
+                            onClick={() => {
+                              if (provider.requiresInstance) {
+                                setShowMastodonDialog(true);
+                              } else {
+                                handleConnect(provider.id);
+                              }
+                            }}
+                            startIcon={isConnecting ? <CircularProgress size={16} /> : <Plus style={{ width: 16, height: 16 }} />}
+                          >
+                            {isConnecting ? 'Connecting...' : 'Connect'}
+                          </Button>
+                        )}
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                );
+              })}
+            </Grid>
+          </CardContent>
+        </Card>
+
+        {/* Mastodon Instance Dialog */}
+        <MastodonInstanceDialog
+          isOpen={showMastodonDialog}
+          onClose={() => setShowMastodonDialog(false)}
+          onConnect={(instance) => handleConnect('mastodon', instance)}
+        />
+      </Box>
+    </Container>
   );
 } 
