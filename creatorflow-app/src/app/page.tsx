@@ -20,11 +20,7 @@ import {
   Toolbar,
   Chip
 } from '@mui/material';
-import { 
-  MuiCard,
-  MuiCardHeader,
-  MuiCardContent
-} from '@/components/ui/mui-components';
+
 
 const PLANS = [
   {
@@ -261,7 +257,7 @@ export default function Home() {
         <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' }, gap: 4 }}>
           {PLANS.map((plan) => (
             <Box key={plan.name}>
-              <MuiCard
+              <Card
                 sx={{
                   position: 'relative',
                   transform: plan.highlight ? 'scale(1.05)' : 'none',
@@ -287,13 +283,13 @@ export default function Home() {
                   />
                 )}
                 
-                <MuiCardHeader
+                <CardHeader
                   title={plan.name}
                   titleTypographyProps={{ variant: 'h6', fontWeight: 'bold' }}
                   sx={{ pb: 1 }}
                 />
                 
-                <MuiCardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
+                <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
                   <Typography variant="h4" component="div" sx={{ fontWeight: 'bold', mb: 2 }}>
                     {plan.price}
                   </Typography>
@@ -332,8 +328,8 @@ export default function Home() {
                   >
                     {plan.cta}
                   </Button>
-                </MuiCardContent>
-              </MuiCard>
+                </CardContent>
+              </Card>
             </Box>
           ))}
         </Box>
