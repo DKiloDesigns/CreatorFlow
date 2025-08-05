@@ -246,9 +246,9 @@ export default function MuiDemoPage() {
         />
       </Box>
 
-      <Grid container spacing={3}>
+      <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 3 }}>
         {/* Basic Components */}
-        <Grid item xs={12} md={6}>
+        <Box>
           <Card>
             <CardHeader>
               <CardTitle>Basic Components</CardTitle>
@@ -687,8 +687,8 @@ export default function MuiDemoPage() {
               </Stack>
             </CardContent>
           </Card>
-        </Grid>
-      </Grid>
+        </Box>
+      </Box>
 
       {/* Dialogs and Menus */}
       <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>

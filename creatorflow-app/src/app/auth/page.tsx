@@ -312,28 +312,24 @@ export default function AuthPage() {
             </Divider>
 
             {/* OAuth Buttons */}
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <Button
-                  variant="outlined"
-                  fullWidth
-                  onClick={() => handleOAuthSignIn('google')}
-                  sx={{ height: 48 }}
-                >
-                  Continue with Google
-                </Button>
-              </Grid>
-              <Grid item xs={12}>
-                <Button
-                  variant="outlined"
-                  fullWidth
-                  onClick={() => handleOAuthSignIn('github')}
-                  sx={{ height: 48 }}
-                >
-                  Continue with GitHub
-                </Button>
-              </Grid>
-            </Grid>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+              <Button
+                variant="outlined"
+                fullWidth
+                onClick={() => handleOAuthSignIn('google')}
+                sx={{ height: 48 }}
+              >
+                Continue with Google
+              </Button>
+              <Button
+                variant="outlined"
+                fullWidth
+                onClick={() => handleOAuthSignIn('github')}
+                sx={{ height: 48 }}
+              >
+                Continue with GitHub
+              </Button>
+            </Box>
 
             {/* Terms */}
             <Typography variant="caption" sx={{ display: 'block', textAlign: 'center', mt: 2, color: 'text.secondary' }}>
