@@ -308,8 +308,8 @@ export default function MuiAdvancedDemo() {
             Loading States
           </Typography>
           
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={6}>
+          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 3 }}>
+            <Box>
               <Typography variant="h6" gutterBottom>
                 Loading Spinners
               </Typography>
@@ -319,9 +319,9 @@ export default function MuiAdvancedDemo() {
                 <LoadingSpinner size="large" message="Large spinner" />
                 <LoadingSpinner color="secondary" message="Secondary color" />
               </Stack>
-            </Grid>
+            </Box>
             
-            <Grid item xs={12} md={6}>
+            <Box>
               <Typography variant="h6" gutterBottom>
                 Loading Bars
               </Typography>
@@ -330,8 +330,8 @@ export default function MuiAdvancedDemo() {
                 <LoadingBar variant="determinate" value={75} message="75% complete" />
                 <LoadingBar color="secondary" message="Secondary color" />
               </Stack>
-            </Grid>
-          </Grid>
+            </Box>
+          </Box>
 
           <Divider sx={{ my: 3 }} />
 
@@ -360,8 +360,8 @@ export default function MuiAdvancedDemo() {
             Progress & Feedback
           </Typography>
           
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={6}>
+          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 3 }}>
+            <Box>
               <Typography variant="h6" gutterBottom>
                 Progress Indicator
               </Typography>
@@ -376,9 +376,9 @@ export default function MuiAdvancedDemo() {
                   showPercentage
                 />
               </Stack>
-            </Grid>
+            </Box>
             
-            <Grid item xs={12} md={6}>
+            <Box>
               <Typography variant="h6" gutterBottom>
                 Loading Overlay
               </Typography>
@@ -392,8 +392,8 @@ export default function MuiAdvancedDemo() {
                   Toggle Overlay
                 </Button>
               </Box>
-            </Grid>
-          </Grid>
+            </Box>
+          </Box>
         </Paper>
       )}
 
@@ -403,28 +403,28 @@ export default function MuiAdvancedDemo() {
             Skeleton Components
           </Typography>
           
-          <Grid container spacing={3}>
-            <Grid item xs={12} md={4}>
+          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' }, gap: 3 }}>
+            <Box>
               <Typography variant="h6" gutterBottom>
                 Card Skeletons
               </Typography>
               <SkeletonCard variant="card" count={2} />
-            </Grid>
+            </Box>
             
-            <Grid item xs={12} md={4}>
+            <Box>
               <Typography variant="h6" gutterBottom>
                 List Skeletons
               </Typography>
               <SkeletonCard variant="list" count={3} />
-            </Grid>
+            </Box>
             
-            <Grid item xs={12} md={4}>
+            <Box>
               <Typography variant="h6" gutterBottom>
                 Table Skeletons
               </Typography>
               <SkeletonCard variant="table" count={4} />
-            </Grid>
-          </Grid>
+            </Box>
+          </Box>
         </Paper>
       )}
     </Container>
