@@ -2,6 +2,35 @@
 
 import React, { useEffect, useState } from 'react';
 import { useUserNotifications } from '@/hooks/useUserNotifications';
+import { 
+  Box, 
+  Typography, 
+  Button, 
+  Card, 
+  CardContent, 
+  CardHeader, 
+  CardTitle,
+  Switch,
+  FormControlLabel,
+  FormGroup,
+  Container,
+  List,
+  ListItem,
+  ListItemText,
+  Chip,
+  CircularProgress,
+  Alert,
+  AlertTitle,
+  Divider
+} from '@mui/material';
+import { 
+  Bell, 
+  CheckCircle, 
+  AlertCircle, 
+  MessageSquare,
+  AtSign,
+  Settings
+} from 'lucide-react';
 
 interface NotifPrefs {
   mentions: boolean;
@@ -91,53 +120,248 @@ export default function NotificationsPage() {
 
   const unreadAnnouncements = announcements.filter(a => !a.readBy.some(u => u.id === userId));
 
-  if (isLoading) return <div className="p-8">Loading...</div>;
-  if (error) return <div className="p-8 text-red-500">{error.message || 'Error loading notifications.'}</div>;
+  if (isLoading) {
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (error) {
+    return (
+      <Container maxWidth="md" sx={{ py: 4 }}>
+        <Alert severity="error">
+          <AlertTitle>Error</AlertTitle>
+          {error.message || 'Error loading notifications.'}
+        </Alert>
+      </Container>
+    );
+  }
 
   return (
-    <div className="p-8 max-w-xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Notifications</h1>
-      {annLoading ? <div>Loading announcements...</div> : annError ? <div className="text-red-500">{annError}</div> : (
-        <div className="mb-6">
-          <h2 className="text-lg font-semibold mb-2">Admin Announcements {unreadAnnouncements.length > 0 && <span className="ml-2 bg-yellow-400 text-white px-2 py-0.5 rounded-full text-xs">{unreadAnnouncements.length} unread</span>}</h2>
-          {announcements.length === 0 ? <div className="text-gray-400">No announcements</div> : (
-            <ul className="space-y-4">
-              {announcements.map(a => (
-                <li key={a.id} className={`border rounded p-3 ${a.readBy.some(u => u.id === userId) ? 'bg-gray-50 text-gray-400' : 'bg-yellow-50'}`}>
-                  <div className="font-bold text-lg mb-1">{a.title}</div>
-                  <div className="mb-2 whitespace-pre-line">{a.body}</div>
-                  <div className="text-xs text-gray-500 mb-2">{a.publishedAt ? new Date(a.publishedAt).toLocaleString() : ''}</div>
-                  {!a.readBy.some(u => u.id === userId) && (
-                    <button className="px-3 py-1 bg-yellow-400 text-white rounded text-xs" disabled={marking === a.id} onClick={() => markAnnouncementRead(a.id)}>{marking === a.id ? 'Marking...' : 'Mark as read'}</button>
-                  )}
-                </li>
-              ))}
-            </ul>
-          )}
-        </div>
-      )}
-      <form className="space-y-6" onSubmit={handleSave}>
-        <div>
-          <label className="block font-medium mb-1">Notification Preferences</label>
-          <div className="flex flex-col gap-2">
-            <label><input type="checkbox" className="mr-2" checked={prefs.mentions} onChange={e => handlePrefChange('mentions', e.target.checked)} /> Mentions</label>
-            <label><input type="checkbox" className="mr-2" checked={prefs.comments} onChange={e => handlePrefChange('comments', e.target.checked)} /> Comments</label>
-            <label><input type="checkbox" className="mr-2" checked={prefs.system} onChange={e => handlePrefChange('system', e.target.checked)} /> System Alerts</label>
-          </div>
-        </div>
-        <button type="submit" className="bg-primary text-white px-4 py-2 rounded" disabled={updating}>{updating ? 'Saving...' : 'Save'}</button>
-        {updateError && <div className="text-red-500">{updateError}</div>}
-        {success && !updateError && <div className="text-green-600">Preferences saved!</div>}
-        <div>
-          <label className="block font-medium mb-1">Recent Notifications</label>
-          <ul className="list-disc ml-6 text-sm">
-            {notifications?.list && notifications.list.length > 0 ? notifications.list.map((n: any) => (
-              <li key={n.id} className={n.read ? 'text-gray-400' : ''}>{n.text}</li>
-            )) : <li className="text-gray-400">No notifications</li>}
-          </ul>
-          <button type="button" className="bg-primary text-white px-4 py-2 rounded mt-2" onClick={handleMarkAllRead} disabled={updating}>Mark All as Read</button>
-        </div>
-      </form>
-    </div>
+    <Container maxWidth="md" sx={{ py: 3 }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+        {/* Header */}
+        <Box>
+          <Typography variant="h4" component="h1" sx={{ fontWeight: 'bold', mb: 1 }}>
+            Notifications
+          </Typography>
+          <Typography variant="body1" sx={{ color: 'text.secondary' }}>
+            Manage your notification preferences and view announcements
+          </Typography>
+        </Box>
+
+        {/* Announcements */}
+        <Card>
+          <CardHeader
+            title={
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+                  Admin Announcements
+                </Typography>
+                {unreadAnnouncements.length > 0 && (
+                  <Chip 
+                    label={`${unreadAnnouncements.length} unread`} 
+                    color="warning" 
+                    size="small"
+                  />
+                )}
+              </Box>
+            }
+            titleTypographyProps={{ variant: 'h6', fontWeight: 'bold' }}
+            avatar={<Bell style={{ width: 24, height: 24, color: '#f59e0b' }} />}
+          />
+          <CardContent>
+            {annLoading ? (
+              <Box sx={{ display: 'flex', justifyContent: 'center', py: 2 }}>
+                <CircularProgress size={24} />
+              </Box>
+            ) : annError ? (
+              <Alert severity="error">
+                <AlertTitle>Error</AlertTitle>
+                {annError}
+              </Alert>
+            ) : announcements.length === 0 ? (
+              <Typography sx={{ color: 'text.secondary', textAlign: 'center', py: 2 }}>
+                No announcements
+              </Typography>
+            ) : (
+              <List>
+                {announcements.map((announcement) => {
+                  const isRead = announcement.readBy.some(u => u.id === userId);
+                  return (
+                    <ListItem 
+                      key={announcement.id} 
+                      divider
+                      sx={{ 
+                        bgcolor: isRead ? 'grey.50' : 'warning.50',
+                        borderRadius: 1,
+                        mb: 1
+                      }}
+                    >
+                      <ListItemText
+                        primary={
+                          <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 1 }}>
+                            {announcement.title}
+                          </Typography>
+                        }
+                        secondary={
+                          <Box>
+                            <Typography variant="body2" sx={{ mb: 1, whiteSpace: 'pre-line' }}>
+                              {announcement.body}
+                            </Typography>
+                            {announcement.publishedAt && (
+                              <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                                {new Date(announcement.publishedAt).toLocaleString()}
+                              </Typography>
+                            )}
+                          </Box>
+                        }
+                      />
+                      {!isRead && (
+                        <Button
+                          variant="contained"
+                          size="small"
+                          disabled={marking === announcement.id}
+                          onClick={() => markAnnouncementRead(announcement.id)}
+                          sx={{ ml: 2 }}
+                        >
+                          {marking === announcement.id ? 'Marking...' : 'Mark as read'}
+                        </Button>
+                      )}
+                    </ListItem>
+                  );
+                })}
+              </List>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Notification Preferences */}
+        <Card>
+          <CardHeader
+            title="Notification Preferences"
+            titleTypographyProps={{ variant: 'h6', fontWeight: 'bold' }}
+            avatar={<Settings style={{ width: 24, height: 24, color: '#3b82f6' }} />}
+          />
+          <CardContent>
+            <Box component="form" onSubmit={handleSave} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+              <FormGroup>
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={prefs.mentions}
+                      onChange={(e) => handlePrefChange('mentions', e.target.checked)}
+                    />
+                  }
+                  label={
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                      <AtSign style={{ width: 16, height: 16 }} />
+                      Mentions
+                    </Box>
+                  }
+                />
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={prefs.comments}
+                      onChange={(e) => handlePrefChange('comments', e.target.checked)}
+                    />
+                  }
+                  label={
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                      <MessageSquare style={{ width: 16, height: 16 }} />
+                      Comments
+                    </Box>
+                  }
+                />
+                <FormControlLabel
+                  control={
+                    <Switch
+                      checked={prefs.system}
+                      onChange={(e) => handlePrefChange('system', e.target.checked)}
+                    />
+                  }
+                  label={
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                      <AlertCircle style={{ width: 16, height: 16 }} />
+                      System Alerts
+                    </Box>
+                  }
+                />
+              </FormGroup>
+
+              {updateError && (
+                <Alert severity="error">
+                  <AlertTitle>Error</AlertTitle>
+                  {updateError}
+                </Alert>
+              )}
+
+              {success && !updateError && (
+                <Alert severity="success">
+                  <AlertTitle>Success</AlertTitle>
+                  Preferences saved!
+                </Alert>
+              )}
+
+              <Button
+                type="submit"
+                variant="contained"
+                disabled={updating}
+                sx={{ alignSelf: 'flex-start' }}
+              >
+                {updating ? 'Saving...' : 'Save Preferences'}
+              </Button>
+            </Box>
+          </CardContent>
+        </Card>
+
+        {/* Recent Notifications */}
+        <Card>
+          <CardHeader
+            title="Recent Notifications"
+            titleTypographyProps={{ variant: 'h6', fontWeight: 'bold' }}
+            avatar={<Bell style={{ width: 24, height: 24, color: '#8b5cf6' }} />}
+          />
+          <CardContent>
+            <List>
+              {notifications?.list && notifications.list.length > 0 ? (
+                notifications.list.map((n: any) => (
+                  <ListItem key={n.id} divider>
+                    <ListItemText
+                      primary={n.text}
+                      sx={{ 
+                        color: n.read ? 'text.secondary' : 'text.primary',
+                        textDecoration: n.read ? 'line-through' : 'none'
+                      }}
+                    />
+                  </ListItem>
+                ))
+              ) : (
+                <ListItem>
+                  <ListItemText
+                    primary="No notifications"
+                    sx={{ color: 'text.secondary', fontStyle: 'italic' }}
+                  />
+                </ListItem>
+              )}
+            </List>
+            
+            <Box sx={{ mt: 2 }}>
+              <Button
+                variant="outlined"
+                onClick={handleMarkAllRead}
+                disabled={updating}
+                startIcon={<CheckCircle style={{ width: 16, height: 16 }} />}
+              >
+                Mark All as Read
+              </Button>
+            </Box>
+          </CardContent>
+        </Card>
+      </Box>
+    </Container>
   );
 } 
