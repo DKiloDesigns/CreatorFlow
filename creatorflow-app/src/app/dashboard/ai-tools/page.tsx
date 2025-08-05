@@ -151,8 +151,8 @@ export default function AIToolsPage() {
             {/* Overview Tab */}
             <Box role="tabpanel" hidden={activeTab !== 'overview'} sx={{ pt: 3 }}>
               {activeTab === 'overview' && (
-                <Grid container spacing={3}>
-                  <Grid item xs={12} md={6}>
+                <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 3 }}>
+                  <Box>
                     <Card>
                       <CardHeader
                         title="Smart Caption Generator"
@@ -166,9 +166,9 @@ export default function AIToolsPage() {
                         <SmartCaptionGenerator />
                       </CardContent>
                     </Card>
-                  </Grid>
+                  </Box>
 
-                  <Grid item xs={12} md={6}>
+                  <Box>
                     <Card>
                       <CardHeader
                         title="Hashtag Recommender"
@@ -182,9 +182,9 @@ export default function AIToolsPage() {
                         <AdvancedHashtagRecommender />
                       </CardContent>
                     </Card>
-                  </Grid>
+                  </Box>
 
-                  <Grid item xs={12} md={6}>
+                  <Box>
                     <Card>
                       <CardHeader
                         title="Content Ideas"
@@ -198,9 +198,9 @@ export default function AIToolsPage() {
                         <ContentIdeasGenerator />
                       </CardContent>
                     </Card>
-                  </Grid>
+                  </Box>
 
-                  <Grid item xs={12} md={6}>
+                  <Box>
                     <Card>
                       <CardHeader
                         title="Posting Time Predictor"
@@ -214,16 +214,16 @@ export default function AIToolsPage() {
                         <OptimalPostingTimePredictor />
                       </CardContent>
                     </Card>
-                  </Grid>
-                </Grid>
+                  </Box>
+                </Box>
               )}
             </Box>
 
             {/* Content Creation Tab */}
             <Box role="tabpanel" hidden={activeTab !== 'content'} sx={{ pt: 3 }}>
               {activeTab === 'content' && (
-                <Grid container spacing={3}>
-                  <Grid item xs={12}>
+                <Box sx={{ display: 'grid', gridTemplateColumns: '1fr', gap: 3 }}>
+                  <Box>
                     <Card>
                       <CardHeader
                         title="Content Creation Tools"
@@ -234,29 +234,29 @@ export default function AIToolsPage() {
                         <Typography variant="body1" sx={{ mb: 2 }}>
                           Advanced AI tools for content creation and optimization
                         </Typography>
-                        <Grid container spacing={2}>
-                          <Grid item xs={12} md={6}>
+                        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 2 }}>
+                          <Box>
                             <SmartCaptionGenerator />
-                          </Grid>
-                          <Grid item xs={12} md={6}>
+                          </Box>
+                          <Box>
                             <AdvancedHashtagRecommender />
-                          </Grid>
-                          <Grid item xs={12}>
+                          </Box>
+                          <Box sx={{ gridColumn: '1 / -1' }}>
                             <ContentIdeasGenerator />
-                          </Grid>
-                        </Grid>
+                          </Box>
+                        </Box>
                       </CardContent>
                     </Card>
-                  </Grid>
-                </Grid>
+                  </Box>
+                </Box>
               )}
             </Box>
 
             {/* Analytics Tab */}
             <Box role="tabpanel" hidden={activeTab !== 'analytics'} sx={{ pt: 3 }}>
               {activeTab === 'analytics' && (
-                <Grid container spacing={3}>
-                  <Grid item xs={12}>
+                <Box sx={{ display: 'grid', gridTemplateColumns: '1fr', gap: 3 }}>
+                  <Box>
                     <Card>
                       <CardHeader
                         title="Performance Predictor"
@@ -270,16 +270,16 @@ export default function AIToolsPage() {
                         <ContentPerformancePredictor />
                       </CardContent>
                     </Card>
-                  </Grid>
-                </Grid>
+                  </Box>
+                </Box>
               )}
             </Box>
 
             {/* Optimization Tab */}
             <Box role="tabpanel" hidden={activeTab !== 'optimization'} sx={{ pt: 3 }}>
               {activeTab === 'optimization' && (
-                <Grid container spacing={3}>
-                  <Grid item xs={12} md={6}>
+                <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 3 }}>
+                  <Box>
                     <Card>
                       <CardHeader
                         title="Optimal Posting Times"
@@ -290,8 +290,8 @@ export default function AIToolsPage() {
                         <OptimalPostingTimePredictor />
                       </CardContent>
                     </Card>
-                  </Grid>
-                  <Grid item xs={12} md={6}>
+                  </Box>
+                  <Box>
                     <Card>
                       <CardHeader
                         title="Content Performance"
@@ -302,8 +302,8 @@ export default function AIToolsPage() {
                         <ContentPerformancePredictor />
                       </CardContent>
                     </Card>
-                  </Grid>
-                </Grid>
+                  </Box>
+                </Box>
               )}
             </Box>
           </Tabs>
