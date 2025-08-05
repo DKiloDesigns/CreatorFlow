@@ -48,7 +48,7 @@ import {
   MuiDialogActions,
   MuiLoadingSpinner
 } from '@/components/ui/mui-components';
-import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
+import { Tooltip } from '@mui/material';
 import { Textarea } from '@/components/ui/textarea';
 import { NotificationBadge } from '@/components/ui/notification-badge';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
@@ -130,8 +130,7 @@ export default function DashboardPage() {
   };
 
   return (
-    <TooltipProvider>
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
         {/* Enhanced Header */}
         <Box sx={{ 
           display: 'flex', 
@@ -551,6 +550,5 @@ export default function DashboardPage() {
 
         <FeedbackWidget />
       </Box>
-    </TooltipProvider>
   );
 } 
