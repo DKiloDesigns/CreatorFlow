@@ -1,12 +1,13 @@
 "use client";
 
 import React from 'react';
+import { Box } from '@mui/material';
 import { AnalyticsDashboard } from '@/components/analytics/AnalyticsDashboard';
 
 export default function AnalyticsPage() {
   return (
-    <div className="space-y-6">
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
       <AnalyticsDashboard />
-    </div>
+    </Box>
   );
 } 

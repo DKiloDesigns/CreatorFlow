@@ -1,10 +1,26 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { 
+  Box, 
+  Typography, 
+  Grid, 
+  Button, 
+  Chip, 
+  CircularProgress,
+  Paper,
+  Container
+} from '@mui/material';
+import { 
+  MuiCard,
+  MuiCardHeader,
+  MuiCardContent,
+  MuiCardTitle,
+  MuiButton,
+  MuiTabs,
+  MuiTab,
+  MuiTabPanel
+} from '@/components/ui/mui-components';
 import { 
   TrendingUp, 
   Users, 
@@ -74,7 +90,7 @@ export function AnalyticsDashboard() {
   const [insights, setInsights] = useState<UserInsights | null>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  const [activeTab, setActiveTab] = useState('overview');
+  const [activeTab, setActiveTab] = useState(0);
 
   useEffect(() => {
     loadAnalyticsData();
@@ -125,199 +141,262 @@ export function AnalyticsDashboard() {
   const getImpactColor = (impact: string) => {
     switch (impact) {
       case 'high':
-        return 'bg-red-100 text-red-800 border-red-200';
+        return 'error';
       case 'medium':
-        return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+        return 'warning';
       case 'low':
-        return 'bg-green-100 text-green-800 border-green-200';
+        return 'success';
       default:
-        return 'bg-gray-100 text-gray-800 border-gray-200';
+        return 'default';
     }
   };
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-      </div>
+      <Box sx={{ 
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'center', 
+        minHeight: 400 
+      }}>
+        <CircularProgress />
+      </Box>
     );
   }
 
   if (!analyticsData) {
     return (
-      <div className="text-center py-8">
-        <BarChart3 className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-        <h3 className="text-lg font-medium text-gray-900 mb-2">No Analytics Data</h3>
-        <p className="text-gray-500">Start creating content to see your analytics here.</p>
-      </div>
+      <Box sx={{ textAlign: 'center', py: 4 }}>
+        <BarChart3 sx={{ mx: 'auto', width: 48, height: 48, color: 'text.secondary', mb: 2 }} />
+        <Typography variant="h6" component="h3" sx={{ mb: 1, color: 'text.primary' }}>
+          No Analytics Data
+        </Typography>
+        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+          Start creating content to see your analytics here.
+        </Typography>
+      </Box>
     );
   }
 
   return (
-    <div className="space-y-6">
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white break-words">Analytics Dashboard</h1>
-          <p className="text-gray-600 dark:text-gray-300 mt-1 break-words">
+      <Box sx={{ 
+        display: 'flex', 
+        flexDirection: { xs: 'column', sm: 'row' }, 
+        alignItems: { sm: 'center' }, 
+        justifyContent: 'space-between', 
+        gap: 2 
+      }}>
+        <Box>
+          <Typography 
+            variant="h4" 
+            component="h1" 
+            sx={{ 
+              fontWeight: 'bold', 
+              color: 'text.primary',
+              wordBreak: 'break-word',
+              fontSize: { xs: '1.5rem', sm: '1.875rem' }
+            }}
+          >
+            Analytics Dashboard
+          </Typography>
+          <Typography 
+            variant="body2" 
+            sx={{ 
+              color: 'text.secondary', 
+              mt: 0.5,
+              wordBreak: 'break-word'
+            }}
+          >
             Last updated: {new Date(analyticsData.lastUpdated).toLocaleString()}
-          </p>
-        </div>
-        <div className="flex flex-col gap-2 w-full sm:w-auto sm:flex-row sm:items-center sm:justify-end sm:space-x-3">
-          <Button
-            variant="outline"
+          </Typography>
+        </Box>
+        <Box sx={{ 
+          display: 'flex', 
+          flexDirection: { xs: 'column', sm: 'row' }, 
+          gap: 1,
+          width: { xs: '100%', sm: 'auto' },
+          alignItems: { sm: 'center' }
+        }}>
+          <MuiButton
+            variant="outlined"
             onClick={loadAnalyticsData}
             disabled={refreshing}
-            className="w-full sm:w-auto min-w-[44px] min-h-[44px] bg-card"
+            sx={{ 
+              width: { xs: '100%', sm: 'auto' },
+              minWidth: 44,
+              minHeight: 44,
+              bgcolor: 'background.paper'
+            }}
           >
-            <RefreshCw className={`h-4 w-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} />
+            <RefreshCw sx={{ 
+              width: 16, 
+              height: 16, 
+              mr: 1,
+              animation: refreshing ? 'spin 1s linear infinite' : 'none'
+            }} />
             Refresh
-          </Button>
-          <Button
+          </MuiButton>
+          <MuiButton
             onClick={refreshInsights}
             disabled={refreshing}
-            className="w-full sm:w-auto min-w-[44px] min-h-[44px]"
+            sx={{ 
+              width: { xs: '100%', sm: 'auto' },
+              minWidth: 44,
+              minHeight: 44
+            }}
           >
-            <Lightbulb className="h-4 w-4 mr-2" />
+            <Lightbulb sx={{ width: 16, height: 16, mr: 1 }} />
             Generate Insights
-          </Button>
-        </div>
-      </div>
+          </MuiButton>
+        </Box>
+      </Box>
 
       {/* Overview Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium break-words">Total Posts</CardTitle>
-            <MessageSquare className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{analyticsData.overview.totalPosts}</div>
-            <p className="text-xs text-muted-foreground break-words">
-              +{analyticsData.overview.growthRate}% from last month
-            </p>
-          </CardContent>
-        </Card>
+      <Grid container spacing={{ xs: 2, sm: 3 }}>
+        <Grid item xs={12} sm={6} lg={3}>
+          <MuiCard>
+            <MuiCardHeader
+              sx={{ 
+                display: 'flex', 
+                flexDirection: 'row', 
+                alignItems: 'center', 
+                justifyContent: 'space-between',
+                pb: 1
+              }}
+            >
+              <MuiCardTitle sx={{ fontSize: '0.875rem', fontWeight: 500, wordBreak: 'break-word' }}>
+                Total Posts
+              </MuiCardTitle>
+              <MessageSquare sx={{ width: 16, height: 16, color: 'text.secondary', flexShrink: 0 }} />
+            </MuiCardHeader>
+            <MuiCardContent>
+              <Typography variant="h4" component="div" sx={{ fontWeight: 'bold' }}>
+                {analyticsData.overview.totalPosts}
+              </Typography>
+              <Typography variant="caption" sx={{ color: 'text.secondary', wordBreak: 'break-word' }}>
+                +{analyticsData.overview.growthRate}% from last month
+              </Typography>
+            </MuiCardContent>
+          </MuiCard>
+        </Grid>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium break-words">Total Engagement</CardTitle>
-            <Heart className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{analyticsData.overview.totalEngagement.toLocaleString()}</div>
-            <p className="text-xs text-muted-foreground break-words">
-              {analyticsData.overview.avgEngagementRate}% avg engagement rate
-            </p>
-          </CardContent>
-        </Card>
+        <Grid item xs={12} sm={6} lg={3}>
+          <MuiCard>
+            <MuiCardHeader
+              sx={{ 
+                display: 'flex', 
+                flexDirection: 'row', 
+                alignItems: 'center', 
+                justifyContent: 'space-between',
+                pb: 1
+              }}
+            >
+              <MuiCardTitle sx={{ fontSize: '0.875rem', fontWeight: 500, wordBreak: 'break-word' }}>
+                Total Engagement
+              </MuiCardTitle>
+              <Heart sx={{ width: 16, height: 16, color: 'text.secondary', flexShrink: 0 }} />
+            </MuiCardHeader>
+            <MuiCardContent>
+              <Typography variant="h4" component="div" sx={{ fontWeight: 'bold' }}>
+                {analyticsData.overview.totalEngagement.toLocaleString()}
+              </Typography>
+              <Typography variant="caption" sx={{ color: 'text.secondary', wordBreak: 'break-word' }}>
+                Likes, comments, shares
+              </Typography>
+            </MuiCardContent>
+          </MuiCard>
+        </Grid>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium break-words">Followers</CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{analyticsData.overview.followers.toLocaleString()}</div>
-            <p className="text-xs text-muted-foreground break-words">
-              +{analyticsData.overview.growthRate}% from last month
-            </p>
-          </CardContent>
-        </Card>
+        <Grid item xs={12} sm={6} lg={3}>
+          <MuiCard>
+            <MuiCardHeader
+              sx={{ 
+                display: 'flex', 
+                flexDirection: 'row', 
+                alignItems: 'center', 
+                justifyContent: 'space-between',
+                pb: 1
+              }}
+            >
+              <MuiCardTitle sx={{ fontSize: '0.875rem', fontWeight: 500, wordBreak: 'break-word' }}>
+                Avg Engagement Rate
+              </MuiCardTitle>
+              <TrendingUp sx={{ width: 16, height: 16, color: 'text.secondary', flexShrink: 0 }} />
+            </MuiCardHeader>
+            <MuiCardContent>
+              <Typography variant="h4" component="div" sx={{ fontWeight: 'bold' }}>
+                {analyticsData.overview.avgEngagementRate.toFixed(1)}%
+              </Typography>
+              <Typography variant="caption" sx={{ color: 'text.secondary', wordBreak: 'break-word' }}>
+                Per post average
+              </Typography>
+            </MuiCardContent>
+          </MuiCard>
+        </Grid>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium break-words">Growth Rate</CardTitle>
-            <TrendingUp className="h-4 w-4 text-muted-foreground flex-shrink-0" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">+{analyticsData.overview.growthRate}%</div>
-            <p className="text-xs text-muted-foreground break-words">
-              Monthly follower growth
-            </p>
-          </CardContent>
-        </Card>
-      </div>
+        <Grid item xs={12} sm={6} lg={3}>
+          <MuiCard>
+            <MuiCardHeader
+              sx={{ 
+                display: 'flex', 
+                flexDirection: 'row', 
+                alignItems: 'center', 
+                justifyContent: 'space-between',
+                pb: 1
+              }}
+            >
+              <MuiCardTitle sx={{ fontSize: '0.875rem', fontWeight: 500, wordBreak: 'break-word' }}>
+                Followers
+              </MuiCardTitle>
+              <Users sx={{ width: 16, height: 16, color: 'text.secondary', flexShrink: 0 }} />
+            </MuiCardHeader>
+            <MuiCardContent>
+              <Typography variant="h4" component="div" sx={{ fontWeight: 'bold' }}>
+                {analyticsData.overview.followers.toLocaleString()}
+              </Typography>
+              <Typography variant="caption" sx={{ color: 'text.secondary', wordBreak: 'break-word' }}>
+                Across all platforms
+              </Typography>
+            </MuiCardContent>
+          </MuiCard>
+        </Grid>
+      </Grid>
 
-      {/* Main Content Tabs */}
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4">
-          <TabsTrigger value="overview" className="text-xs sm:text-sm">Overview</TabsTrigger>
-          <TabsTrigger value="performance" className="text-xs sm:text-sm">Performance</TabsTrigger>
-          <TabsTrigger value="insights" className="text-xs sm:text-sm">AI Insights</TabsTrigger>
-          <TabsTrigger value="trends" className="text-xs sm:text-sm">Trends</TabsTrigger>
-        </TabsList>
+      {/* Tabs */}
+      <MuiTabs value={activeTab} onChange={(_, newValue) => setActiveTab(newValue)}>
+        <MuiTab label="Overview" />
+        <MuiTab label="Performance" />
+        <MuiTab label="Insights" />
+      </MuiTabs>
 
-        <TabsContent value="overview" className="space-y-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="break-words">Engagement Trend</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <EngagementChart data={analyticsData.trends.engagementTrend} />
-              </CardContent>
-            </Card>
+      {/* Tab Panels */}
+      <MuiTabPanel value={activeTab} index={0}>
+        <AnalyticsOverview data={analyticsData} />
+      </MuiTabPanel>
 
-            <Card>
-              <CardHeader>
-                <CardTitle className="break-words">Platform Breakdown</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <PlatformBreakdown data={analyticsData.performance.platformBreakdown} />
-              </CardContent>
-            </Card>
-          </div>
-        </TabsContent>
+      <MuiTabPanel value={activeTab} index={1}>
+        <Grid container spacing={3}>
+          <Grid item xs={12} lg={8}>
+            <EngagementChart data={analyticsData.trends} />
+          </Grid>
+          <Grid item xs={12} lg={4}>
+            <PlatformBreakdown data={analyticsData.performance.platformBreakdown} />
+          </Grid>
+          <Grid item xs={12}>
+            <TopPostsList posts={analyticsData.performance.topPosts} />
+          </Grid>
+        </Grid>
+      </MuiTabPanel>
 
-        <TabsContent value="performance" className="space-y-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="break-words">Top Performing Posts</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <TopPostsList posts={analyticsData.performance.topPosts} />
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="break-words">Performance Metrics</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <AnalyticsOverview data={analyticsData} />
-              </CardContent>
-            </Card>
-          </div>
-        </TabsContent>
-
-        <TabsContent value="insights" className="space-y-6">
-          <InsightsPanel insights={insights} onRefresh={refreshInsights} />
-        </TabsContent>
-
-        <TabsContent value="trends" className="space-y-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="break-words">Weekly Growth</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <EngagementChart data={analyticsData.trends.weeklyGrowth} />
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle className="break-words">Engagement Trends</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <EngagementChart data={analyticsData.trends.engagementTrend} />
-              </CardContent>
-            </Card>
-          </div>
-        </TabsContent>
-      </Tabs>
-    </div>
+      <MuiTabPanel value={activeTab} index={2}>
+        <InsightsPanel 
+          insights={insights?.insights || []} 
+          onRefresh={refreshInsights}
+          refreshing={refreshing}
+        />
+      </MuiTabPanel>
+    </Box>
   );
 } 
