@@ -208,9 +208,9 @@ export default function TeamsPage() {
         </Box>
 
         {/* Teams Grid */}
-        <Grid container spacing={3}>
+        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)' }, gap: 3 }}>
           {teams.map((team) => (
-            <Grid item xs={12} md={6} lg={4} key={team.id}>
+            <Box key={team.id}>
               <Card>
                 <CardHeader
                   title={team.name}
@@ -289,9 +289,9 @@ export default function TeamsPage() {
                   </Box>
                 </CardContent>
               </Card>
-            </Grid>
+            </Box>
           ))}
-        </Grid>
+        </Box>
 
         {/* Empty State */}
         {teams.length === 0 && (
