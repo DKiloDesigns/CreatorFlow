@@ -3,9 +3,6 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useSession, signOut } from 'next-auth/react';
 import {
-  AppBar,
-  Toolbar,
-  Button,
   IconButton,
   Drawer,
   List,
@@ -77,7 +74,7 @@ export function MuiEnhancedNavigation() {
   const isMobile = useMediaQuery(theme.breakpoints.down('lg'));
 
   const isActive = (href: string) => {
-    return pathname?.startsWith(href);
+    return pathname ? pathname.startsWith(href) : false;
   };
 
   const handleUserMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
@@ -150,7 +147,7 @@ export function MuiEnhancedNavigation() {
             }}
           />
           {item.badge && (
-            <Badge badgeContent={item.badge} color="error" size="small" />
+                              <Badge badgeContent={item.badge} color="error" />
           )}
         </ListItemButton>
       </ListItem>
@@ -350,7 +347,7 @@ export function MuiBreadcrumbs() {
   const pathname = usePathname();
   
   const generateBreadcrumbs = () => {
-    const segments = pathname.split('/').filter(Boolean);
+    const segments = pathname ? pathname.split('/').filter(Boolean) : [];
     const breadcrumbs = [];
     
     let currentPath = '';

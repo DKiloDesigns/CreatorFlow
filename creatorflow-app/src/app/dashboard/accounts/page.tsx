@@ -8,8 +8,7 @@ import {
   Button, 
   Card, 
   CardContent, 
-  CardHeader, 
-  CardTitle,
+  CardHeader,
   Dialog,
   DialogContent,
   DialogTitle,
@@ -456,9 +455,9 @@ export default function AccountsPage() {
           />
           <CardContent>
             {socialAccounts.length > 0 ? (
-              <Grid container spacing={2}>
+              <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 2 }}>
                 {socialAccounts.map((account) => (
-                  <Grid item xs={12} md={6} key={account.id}>
+                  <Box key={account.id}>
                     <ConnectedAccountCard
                       account={account}
                       onDisconnect={handleDisconnect}
@@ -466,9 +465,9 @@ export default function AccountsPage() {
                       onReauth={handleReauth}
                       loading={connecting === account.platform}
                     />
-                  </Grid>
+                  </Box>
                 ))}
-              </Grid>
+              </Box>
             ) : (
               <Box sx={{ textAlign: 'center', py: 4 }}>
                 <Typography variant="h6" sx={{ mb: 1 }}>
@@ -490,13 +489,13 @@ export default function AccountsPage() {
             avatar={<Plus style={{ width: 24, height: 24, color: '#10b981' }} />}
           />
           <CardContent>
-            <Grid container spacing={2}>
+            <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)', lg: 'repeat(4, 1fr)' }, gap: 2 }}>
               {PROVIDERS.map((provider) => {
                 const isConnected = socialAccounts.some(acc => acc.platform === provider.id);
                 const isConnecting = connecting === provider.id;
                 
                 return (
-                  <Grid item xs={12} sm={6} md={4} lg={3} key={provider.id}>
+                  <Box key={provider.id}>
                     <Card variant="outlined">
                       <CardContent sx={{ textAlign: 'center', py: 2 }}>
                         <Typography variant="h4" sx={{ mb: 1 }}>
@@ -526,10 +525,10 @@ export default function AccountsPage() {
                         )}
                       </CardContent>
                     </Card>
-                  </Grid>
+                  </Box>
                 );
               })}
-            </Grid>
+            </Box>
           </CardContent>
         </Card>
 

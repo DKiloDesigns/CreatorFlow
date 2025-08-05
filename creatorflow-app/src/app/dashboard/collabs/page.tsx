@@ -9,8 +9,7 @@ import {
   Button, 
   Card, 
   CardContent, 
-  CardHeader, 
-  CardTitle,
+  CardHeader,
   Dialog,
   DialogContent,
   DialogTitle,
@@ -226,10 +225,10 @@ export default function CollabsPage() {
         </Box>
 
         {/* Collaborations List */}
-        <Grid container spacing={3}>
+        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)' }, gap: 3 }}>
           {collabs && collabs.length > 0 ? (
             collabs.map((collab: any) => (
-              <Grid item xs={12} md={6} lg={4} key={collab.id}>
+              <Box key={collab.id}>
                 <Card>
                   <CardHeader
                     title={collab.name}
@@ -314,10 +313,10 @@ export default function CollabsPage() {
                     </Box>
                   </CardContent>
                 </Card>
-              </Grid>
+              </Box>
             ))
           ) : (
-            <Grid item xs={12}>
+            <Box sx={{ gridColumn: '1 / -1' }}>
               <Card>
                 <CardContent sx={{ textAlign: 'center', py: 6 }}>
                   <Users style={{ width: 48, height: 48, color: 'text.secondary', margin: '0 auto 16px' }} />
@@ -336,9 +335,9 @@ export default function CollabsPage() {
                   </Button>
                 </CardContent>
               </Card>
-            </Grid>
+            </Box>
           )}
-        </Grid>
+        </Box>
 
         {/* Report Section */}
         {selectedCollabId && report && (
@@ -359,38 +358,32 @@ export default function CollabsPage() {
                   Failed to load report
                 </Alert>
               ) : (
-                <Grid container spacing={3}>
-                  <Grid item xs={12} md={4}>
-                    <Box sx={{ textAlign: 'center', p: 2 }}>
-                      <Typography variant="h4" sx={{ fontWeight: 'bold', color: 'primary.main' }}>
-                        {report.totalPosts || 0}
-                      </Typography>
-                      <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                        Total Posts
-                      </Typography>
-                    </Box>
-                  </Grid>
-                  <Grid item xs={12} md={4}>
-                    <Box sx={{ textAlign: 'center', p: 2 }}>
-                      <Typography variant="h4" sx={{ fontWeight: 'bold', color: 'success.main' }}>
-                        {report.totalEngagement || 0}
-                      </Typography>
-                      <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                        Total Engagement
-                      </Typography>
-                    </Box>
-                  </Grid>
-                  <Grid item xs={12} md={4}>
-                    <Box sx={{ textAlign: 'center', p: 2 }}>
-                      <Typography variant="h4" sx={{ fontWeight: 'bold', color: 'warning.main' }}>
-                        {report.totalReach || 0}
-                      </Typography>
-                      <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                        Total Reach
-                      </Typography>
-                    </Box>
-                  </Grid>
-                </Grid>
+                <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' }, gap: 3 }}>
+                  <Box sx={{ textAlign: 'center', p: 2 }}>
+                    <Typography variant="h4" sx={{ fontWeight: 'bold', color: 'primary.main' }}>
+                      {report.totalPosts || 0}
+                    </Typography>
+                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                      Total Posts
+                    </Typography>
+                  </Box>
+                  <Box sx={{ textAlign: 'center', p: 2 }}>
+                    <Typography variant="h4" sx={{ fontWeight: 'bold', color: 'success.main' }}>
+                      {report.totalEngagement || 0}
+                    </Typography>
+                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                      Total Engagement
+                    </Typography>
+                  </Box>
+                  <Box sx={{ textAlign: 'center', p: 2 }}>
+                    <Typography variant="h4" sx={{ fontWeight: 'bold', color: 'warning.main' }}>
+                      {report.totalReach || 0}
+                    </Typography>
+                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                      Total Reach
+                    </Typography>
+                  </Box>
+                </Box>
               )}
             </CardContent>
           </Card>
