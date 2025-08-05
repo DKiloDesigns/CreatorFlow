@@ -21,7 +21,6 @@ import {
   Chip
 } from '@mui/material';
 import { 
-  MuiButton,
   MuiCard,
   MuiCardHeader,
   MuiCardContent
@@ -239,13 +238,13 @@ export default function Home() {
 
       {/* Feature Highlights */}
       <Container maxWidth="lg" sx={{ py: { xs: 6, sm: 8 } }} id="features">
-        <Grid container spacing={{ xs: 2, sm: 3 }} columns={{ xs: 1, sm: 2, lg: 5 }}>
+        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', lg: 'repeat(5, 1fr)' }, gap: { xs: 2, sm: 3 } }}>
           {FEATURES.map((feature) => (
-            <Grid item xs={1} key={feature.title}>
+            <Box key={feature.title}>
               <FeatureCard {...feature} plan={feature.plan} />
-            </Grid>
+            </Box>
           ))}
-        </Grid>
+        </Box>
       </Container>
 
       {/* Plans Section */}
@@ -259,9 +258,9 @@ export default function Home() {
           </Typography>
         </Box>
         
-        <Grid container spacing={4}>
+        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' }, gap: 4 }}>
           {PLANS.map((plan) => (
-            <Grid item xs={12} md={4} key={plan.name}>
+            <Box key={plan.name}>
               <MuiCard
                 sx={{
                   position: 'relative',
@@ -335,9 +334,9 @@ export default function Home() {
                   </Button>
                 </MuiCardContent>
               </MuiCard>
-            </Grid>
+            </Box>
           ))}
-        </Grid>
+        </Box>
       </Container>
 
       {/* How It Works */}
@@ -351,9 +350,9 @@ export default function Home() {
           </Typography>
         </Box>
         
-        <Grid container spacing={3}>
+        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(5, 1fr)' }, gap: 3 }}>
           {HOW_IT_WORKS.map((step, index) => (
-            <Grid item xs={12} md={2.4} key={index}>
+            <Box key={index}>
               <Box sx={{ textAlign: 'center' }}>
                 <Box
                   sx={{
@@ -374,9 +373,9 @@ export default function Home() {
                 </Box>
                 <Typography variant="body2">{step}</Typography>
               </Box>
-            </Grid>
+            </Box>
           ))}
-        </Grid>
+        </Box>
       </Container>
 
       {/* Testimonials */}
@@ -390,13 +389,13 @@ export default function Home() {
           </Typography>
         </Box>
         
-        <Grid container spacing={3}>
+        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' }, gap: 3 }}>
           {TESTIMONIALS.map((testimonial) => (
-            <Grid item xs={12} md={4} key={testimonial.author}>
+            <Box key={testimonial.author}>
               <TestimonialCard {...testimonial} />
-            </Grid>
+            </Box>
           ))}
-        </Grid>
+        </Box>
       </Container>
 
       {/* Trust & Transparency */}
