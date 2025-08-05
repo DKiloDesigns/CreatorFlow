@@ -206,26 +206,22 @@ export default function MuiFormsDemo() {
           
           <form onSubmit={handleSubmit}>
             <Stack spacing={3}>
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    fullWidth
-                    label="First Name"
-                    value={formData.firstName}
-                    onChange={(e) => handleInputChange('firstName', e.target.value)}
-                    required
-                  />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                  <TextField
-                    fullWidth
-                    label="Last Name"
-                    value={formData.lastName}
-                    onChange={(e) => handleInputChange('lastName', e.target.value)}
-                    required
-                  />
-                </Grid>
-              </Grid>
+              <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)' }, gap: 2 }}>
+                <TextField
+                  fullWidth
+                  label="First Name"
+                  value={formData.firstName}
+                  onChange={(e) => handleInputChange('firstName', e.target.value)}
+                  required
+                />
+                <TextField
+                  fullWidth
+                  label="Last Name"
+                  value={formData.lastName}
+                  onChange={(e) => handleInputChange('lastName', e.target.value)}
+                  required
+                />
+              </Box>
 
               <TextField
                 fullWidth
@@ -304,24 +300,20 @@ export default function MuiFormsDemo() {
           </Typography>
           
           <Stack spacing={3}>
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label="Company"
-                  value={formData.company}
-                  onChange={(e) => handleInputChange('company', e.target.value)}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label="Position"
-                  value={formData.position}
-                  onChange={(e) => handleInputChange('position', e.target.value)}
-                />
-              </Grid>
-            </Grid>
+            <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)' }, gap: 2 }}>
+              <TextField
+                fullWidth
+                label="Company"
+                value={formData.company}
+                onChange={(e) => handleInputChange('company', e.target.value)}
+              />
+              <TextField
+                fullWidth
+                label="Position"
+                value={formData.position}
+                onChange={(e) => handleInputChange('position', e.target.value)}
+              />
+            </Box>
 
             <Box>
               <Typography variant="subtitle2" gutterBottom>
