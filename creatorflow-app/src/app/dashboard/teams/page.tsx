@@ -3,14 +3,29 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Plus, Users2, Settings, Trash2, Mail, UserPlus } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
+import { 
+  Box, 
+  Typography, 
+  Button, 
+  Card, 
+  CardContent, 
+  CardHeader, 
+  CardTitle,
+  Chip,
+  Avatar,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogActions,
+  TextField,
+  Container,
+  Grid,
+  IconButton,
+  Tooltip,
+  CircularProgress,
+  Alert,
+  AlertTitle
+} from '@mui/material';
 import { useToast } from '@/hooks/use-toast';
 
 interface Team {
@@ -103,7 +118,7 @@ export default function TeamsPage() {
       }
 
       const newTeam = await response.json();
-      setTeams([...teams, newTeam]);
+      setTeams(prev => [...prev, newTeam]);
       setCreateDialogOpen(false);
       setNewTeamName('');
       setNewTeamDescription('');
@@ -124,165 +139,220 @@ export default function TeamsPage() {
     }
   };
 
+  const deleteTeam = async (teamId: string) => {
+    if (!confirm('Are you sure you want to delete this team?')) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/teams/${teamId}`, {
+        method: 'DELETE',
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to delete team');
+      }
+
+      setTeams(prev => prev.filter(team => team.id !== teamId));
+      toast({
+        title: "Success",
+        description: "Team deleted successfully",
+      });
+    } catch (error) {
+      console.error('Error deleting team:', error);
+      toast({
+        title: "Error",
+        description: "Failed to delete team",
+        variant: "destructive",
+      });
+    }
+  };
+
   const getInitials = (name: string) => {
-    return name.split(' ').map(n => n[0]).join('').toUpperCase();
+    return name
+      .split(' ')
+      .map(word => word[0])
+      .join('')
+      .toUpperCase()
+      .slice(0, 2);
   };
 
   if (loading) {
     return (
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <h1 className="text-3xl font-bold">Teams</h1>
-            <p className="text-muted-foreground">Manage your teams and collaborations</p>
-          </div>
-        </div>
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {[1, 2, 3].map((i) => (
-            <Card key={i} className="animate-pulse">
-              <CardHeader>
-                <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-                <div className="h-3 bg-gray-200 rounded w-1/2"></div>
-              </CardHeader>
-              <CardContent>
-                <div className="h-20 bg-gray-200 rounded"></div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      </div>
+      <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}>
+        <CircularProgress />
+      </Box>
     );
   }
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold">Teams</h1>
-          <p className="text-muted-foreground">Manage your teams and collaborations</p>
-        </div>
-        <Dialog open={createDialogOpen} onOpenChange={setCreateDialogOpen}>
-          <DialogTrigger asChild>
-            <Button>
-              <Plus className="h-4 w-4 mr-2" />
-              Create Team
-            </Button>
-          </DialogTrigger>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>Create New Team</DialogTitle>
-              <DialogDescription>
-                Create a new team to collaborate with others on content creation and management.
-              </DialogDescription>
-            </DialogHeader>
-            <div className="space-y-4">
-              <div>
-                <Label htmlFor="team-name">Team Name</Label>
-                <Input
-                  id="team-name"
-                  value={newTeamName}
-                  onChange={(e) => setNewTeamName(e.target.value)}
-                  placeholder="Enter team name"
-                />
-              </div>
-              <div>
-                <Label htmlFor="team-description">Description (Optional)</Label>
-                <Textarea
-                  id="team-description"
-                  value={newTeamDescription}
-                  onChange={(e) => setNewTeamDescription(e.target.value)}
-                  placeholder="Describe your team's purpose"
-                  rows={3}
-                />
-              </div>
-              <div className="flex justify-end space-x-2">
-                <Button variant="outline" onClick={() => setCreateDialogOpen(false)}>
-                  Cancel
-                </Button>
-                <Button onClick={createTeam} disabled={creating}>
-                  {creating ? 'Creating...' : 'Create Team'}
-                </Button>
-              </div>
-            </div>
-          </DialogContent>
-        </Dialog>
-      </div>
+    <Container maxWidth="lg" sx={{ py: 3 }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+        {/* Header */}
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 2 }}>
+          <Box>
+            <Typography variant="h4" component="h1" sx={{ fontWeight: 'bold', mb: 1 }}>
+              Teams
+            </Typography>
+            <Typography variant="body1" sx={{ color: 'text.secondary' }}>
+              Manage your team collaborations and permissions
+            </Typography>
+          </Box>
+          <Button
+            variant="contained"
+            startIcon={<Plus style={{ width: 16, height: 16 }} />}
+            onClick={() => setCreateDialogOpen(true)}
+          >
+            Create Team
+          </Button>
+        </Box>
 
-      {teams.length === 0 ? (
-        <Card>
-          <CardContent className="flex flex-col items-center justify-center py-12">
-            <Users2 className="h-12 w-12 text-muted-foreground mb-4" />
-            <h3 className="text-lg font-semibold mb-2">No teams yet</h3>
-            <p className="text-muted-foreground text-center mb-4">
-              Create your first team to start collaborating with others on content creation and management.
-            </p>
-            <Button onClick={() => setCreateDialogOpen(true)}>
-              <Plus className="h-4 w-4 mr-2" />
-              Create Your First Team
-            </Button>
-          </CardContent>
-        </Card>
-      ) : (
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {/* Teams Grid */}
+        <Grid container spacing={3}>
           {teams.map((team) => (
-            <Card key={team.id} className="hover:shadow-md transition-shadow">
-              <CardHeader>
-                <div className="flex items-start justify-between">
-                  <div className="flex-1">
-                    <CardTitle className="text-lg">{team.name}</CardTitle>
-                    <CardDescription className="mt-1">
-                      {team.description || 'No description'}
-                    </CardDescription>
-                  </div>
-                  <Badge variant="secondary">
-                    {(Array.isArray(team.members) ? team.members.length : 0)} member{(Array.isArray(team.members) ? team.members.length : 0) !== 1 ? 's' : ''}
-                  </Badge>
-                </div>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex items-center space-x-2">
-                  <div className="flex -space-x-2">
-                    {team.members?.slice(0, 3).map((member) => (
-                      <Avatar key={member.id} className="h-8 w-8 border-2 border-background">
-                        <AvatarImage src={member.user?.image || ''} />
-                        <AvatarFallback className="text-xs">
-                          {getInitials(member.user?.name || 'U')}
-                        </AvatarFallback>
-                      </Avatar>
-                    ))}
-                    {team.members.length > 3 && (
-                      <div className="h-8 w-8 rounded-full bg-muted flex items-center justify-center text-xs font-medium border-2 border-background">
-                        +{team.members.length - 3}
-                      </div>
+            <Grid item xs={12} md={6} lg={4} key={team.id}>
+              <Card>
+                <CardHeader
+                  title={team.name}
+                  titleTypographyProps={{ variant: 'h6', fontWeight: 'bold' }}
+                  avatar={
+                    <Avatar sx={{ bgcolor: 'primary.main' }}>
+                      {getInitials(team.name)}
+                    </Avatar>
+                  }
+                  action={
+                    <Box sx={{ display: 'flex', gap: 1 }}>
+                      <Tooltip title="Team Settings">
+                        <IconButton size="small">
+                          <Settings style={{ width: 16, height: 16 }} />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip title="Delete Team">
+                        <IconButton 
+                          size="small" 
+                          color="error"
+                          onClick={() => deleteTeam(team.id)}
+                        >
+                          <Trash2 style={{ width: 16, height: 16 }} />
+                        </IconButton>
+                      </Tooltip>
+                    </Box>
+                  }
+                />
+                <CardContent>
+                  {team.description && (
+                    <Typography variant="body2" sx={{ color: 'text.secondary', mb: 2 }}>
+                      {team.description}
+                    </Typography>
+                  )}
+                  
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
+                    <Users2 style={{ width: 16, height: 16, color: 'text.secondary' }} />
+                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                      {team.members.length} members
+                    </Typography>
+                  </Box>
+
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
+                    <Mail style={{ width: 16, height: 16, color: 'text.secondary' }} />
+                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                      {team.invitations.length} pending invitations
+                    </Typography>
+                  </Box>
+
+                  <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+                    <Chip 
+                      label="Owner" 
+                      size="small" 
+                      color="primary" 
+                      variant="outlined"
+                    />
+                    {team.members.length > 0 && (
+                      <Chip 
+                        label={`${team.members.length} members`} 
+                        size="small" 
+                        variant="outlined"
+                      />
                     )}
-                  </div>
-                </div>
+                  </Box>
 
-                {team.invitations.length > 0 && (
-                  <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                    <Mail className="h-4 w-4" />
-                    <span>{team.invitations.length} pending invitation{team.invitations.length !== 1 ? 's' : ''}</span>
-                  </div>
-                )}
-
-                <div className="flex space-x-2">
-                  <Button asChild variant="outline" size="sm" className="flex-1">
-                    <Link href={`/dashboard/teams/${team.id}`}>
-                      <Settings className="h-4 w-4 mr-2" />
-                      Manage
-                    </Link>
-                  </Button>
-                  <Button asChild variant="outline" size="sm">
-                    <Link href={`/dashboard/teams/${team.id}?tab=invite`}>
-                      <UserPlus className="h-4 w-4" />
-                    </Link>
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+                  <Box sx={{ mt: 2 }}>
+                    <Button
+                      component={Link}
+                      href={`/dashboard/teams/${team.id}`}
+                      variant="outlined"
+                      size="small"
+                      fullWidth
+                    >
+                      View Team
+                    </Button>
+                  </Box>
+                </CardContent>
+              </Card>
+            </Grid>
           ))}
-        </div>
-      )}
-    </div>
+        </Grid>
+
+        {/* Empty State */}
+        {teams.length === 0 && (
+          <Card>
+            <CardContent sx={{ textAlign: 'center', py: 6 }}>
+              <Users2 style={{ width: 48, height: 48, color: 'text.secondary', margin: '0 auto 16px' }} />
+              <Typography variant="h6" sx={{ mb: 1 }}>
+                No teams yet
+              </Typography>
+              <Typography variant="body2" sx={{ color: 'text.secondary', mb: 3 }}>
+                Create your first team to start collaborating with others
+              </Typography>
+              <Button
+                variant="contained"
+                startIcon={<Plus style={{ width: 16, height: 16 }} />}
+                onClick={() => setCreateDialogOpen(true)}
+              >
+                Create Your First Team
+              </Button>
+            </CardContent>
+          </Card>
+        )}
+
+        {/* Create Team Dialog */}
+        <Dialog open={createDialogOpen} onClose={() => setCreateDialogOpen(false)} maxWidth="sm" fullWidth>
+          <DialogTitle>Create New Team</DialogTitle>
+          <DialogContent>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, pt: 1 }}>
+              <TextField
+                label="Team Name"
+                value={newTeamName}
+                onChange={(e) => setNewTeamName(e.target.value)}
+                fullWidth
+                required
+                placeholder="Enter team name"
+              />
+              <TextField
+                label="Description (Optional)"
+                value={newTeamDescription}
+                onChange={(e) => setNewTeamDescription(e.target.value)}
+                fullWidth
+                multiline
+                rows={3}
+                placeholder="Describe what this team is for"
+              />
+            </Box>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setCreateDialogOpen(false)}>
+              Cancel
+            </Button>
+            <Button 
+              onClick={createTeam} 
+              variant="contained"
+              disabled={creating || !newTeamName.trim()}
+            >
+              {creating ? 'Creating...' : 'Create Team'}
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </Box>
+    </Container>
   );
 } 

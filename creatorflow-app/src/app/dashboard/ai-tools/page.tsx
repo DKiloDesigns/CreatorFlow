@@ -1,10 +1,24 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { 
+  Box, 
+  Typography, 
+  Button, 
+  Card, 
+  CardContent, 
+  CardHeader, 
+  CardTitle,
+  Chip,
+  Tabs,
+  Tab,
+  Container,
+  Grid,
+  CircularProgress,
+  Divider,
+  IconButton,
+  Tooltip
+} from '@mui/material';
 import { AIProviderSelector } from '@/components/ui/ai-provider-selector';
 import { AIProviderSetupModal } from '@/components/ui/ai-provider-setup-modal';
 import { SmartCaptionGenerator } from '@/components/ui/smart-caption-generator';
@@ -56,9 +70,9 @@ export default function AIToolsPage() {
 
   if (isChecking) {
     return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-      </div>
+      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: 400 }}>
+        <CircularProgress />
+      </Box>
     );
   }
 
@@ -67,260 +81,244 @@ export default function AIToolsPage() {
   }
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">AI Tools</h1>
-          <p className="text-gray-600 mt-2">
-            Supercharge your content creation with AI-powered tools
-          </p>
-        </div>
-        <div className="flex items-center gap-3">
-          <Badge variant="secondary" className="bg-green-100 text-green-800">
-            <Zap className="w-3 h-3 mr-1" />
-            AI Enabled
-          </Badge>
-          <Button variant="outline" size="sm">
-            <Settings className="w-4 h-4 mr-1" />
-            Settings
-          </Button>
-        </div>
-      </div>
+    <Container maxWidth="lg" sx={{ py: 3 }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+        {/* Header */}
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 2 }}>
+          <Box>
+            <Typography variant="h4" component="h1" sx={{ fontWeight: 'bold', mb: 1 }}>
+              AI Tools
+            </Typography>
+            <Typography variant="body1" sx={{ color: 'text.secondary' }}>
+              Supercharge your content creation with AI-powered tools
+            </Typography>
+          </Box>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <Chip
+              icon={<Zap style={{ width: 16, height: 16 }} />}
+              label="AI Enabled"
+              color="success"
+              variant="outlined"
+            />
+            <Button variant="outlined" size="small" startIcon={<Settings style={{ width: 16, height: 16 }} />}>
+              Settings
+            </Button>
+          </Box>
+        </Box>
 
-      {/* AI Provider Filter */}
-      <div className="flex items-center gap-4 mb-6">
-        <span className="text-sm font-medium text-foreground">Filter by:</span>
-        <div className="inline-flex rounded-lg p-1">
-          <button className="inline-flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100">
-            <Star className="w-4 h-4" />
-            All Options
-          </button>
-          <button className="inline-flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors bg-gray-200 dark:bg-gray-700 text-gray-900 dark:text-gray-100 shadow-sm">
-            <Zap className="w-4 h-4" />
-            Free
-          </button>
-          <button className="inline-flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100">
-            <Shield className="w-4 h-4" />
-            Low Cost
-          </button>
-          <button className="inline-flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100">
-            <Info className="w-4 h-4" />
-            Premium
-          </button>
-        </div>
-      </div>
+        {/* AI Provider Filter */}
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
+          <Typography variant="body2" sx={{ fontWeight: 500 }}>
+            Filter by:
+          </Typography>
+          <Box sx={{ display: 'flex', gap: 1 }}>
+            <Button
+              variant="text"
+              size="small"
+              startIcon={<Star style={{ width: 16, height: 16 }} />}
+              sx={{ textTransform: 'none' }}
+            >
+              All Options
+            </Button>
+            <Button
+              variant="contained"
+              size="small"
+              startIcon={<Zap style={{ width: 16, height: 16 }} />}
+              sx={{ textTransform: 'none' }}
+            >
+              Popular
+            </Button>
+          </Box>
+        </Box>
 
-      {/* Provider Selection */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Sparkles className="w-5 h-5" />
-            AI Provider
-          </CardTitle>
-          <CardDescription>
-            Choose your preferred AI provider for content generation
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <AIProviderSelector
-            selectedProvider={selectedProvider}
-            onProviderSelect={handleProviderSelect}
-            onSetupProvider={handleSetupProvider}
+        {/* Main Content */}
+        <Box sx={{ width: '100%' }}>
+          <Tabs value={activeTab} onChange={(e, newValue) => setActiveTab(newValue)}>
+            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+              <Tabs
+                value={activeTab}
+                onChange={(e, newValue) => setActiveTab(newValue)}
+                variant="scrollable"
+                scrollButtons="auto"
+              >
+                <Tab label="Overview" value="overview" />
+                <Tab label="Content Creation" value="content" />
+                <Tab label="Analytics" value="analytics" />
+                <Tab label="Optimization" value="optimization" />
+              </Tabs>
+            </Box>
+
+            {/* Overview Tab */}
+            <Box role="tabpanel" hidden={activeTab !== 'overview'} sx={{ pt: 3 }}>
+              {activeTab === 'overview' && (
+                <Grid container spacing={3}>
+                  <Grid item xs={12} md={6}>
+                    <Card>
+                      <CardHeader
+                        title="Smart Caption Generator"
+                        titleTypographyProps={{ variant: 'h6', fontWeight: 'bold' }}
+                        avatar={<Sparkles style={{ width: 24, height: 24, color: '#3b82f6' }} />}
+                      />
+                      <CardContent>
+                        <Typography variant="body2" sx={{ color: 'text.secondary', mb: 2 }}>
+                          Generate engaging captions for your content using AI
+                        </Typography>
+                        <SmartCaptionGenerator />
+                      </CardContent>
+                    </Card>
+                  </Grid>
+
+                  <Grid item xs={12} md={6}>
+                    <Card>
+                      <CardHeader
+                        title="Hashtag Recommender"
+                        titleTypographyProps={{ variant: 'h6', fontWeight: 'bold' }}
+                        avatar={<Hash style={{ width: 24, height: 24, color: '#8b5cf6' }} />}
+                      />
+                      <CardContent>
+                        <Typography variant="body2" sx={{ color: 'text.secondary', mb: 2 }}>
+                          Find the best hashtags to increase your reach
+                        </Typography>
+                        <AdvancedHashtagRecommender />
+                      </CardContent>
+                    </Card>
+                  </Grid>
+
+                  <Grid item xs={12} md={6}>
+                    <Card>
+                      <CardHeader
+                        title="Content Ideas"
+                        titleTypographyProps={{ variant: 'h6', fontWeight: 'bold' }}
+                        avatar={<Lightbulb style={{ width: 24, height: 24, color: '#f59e0b' }} />}
+                      />
+                      <CardContent>
+                        <Typography variant="body2" sx={{ color: 'text.secondary', mb: 2 }}>
+                          Get AI-powered content ideas based on your niche
+                        </Typography>
+                        <ContentIdeasGenerator />
+                      </CardContent>
+                    </Card>
+                  </Grid>
+
+                  <Grid item xs={12} md={6}>
+                    <Card>
+                      <CardHeader
+                        title="Posting Time Predictor"
+                        titleTypographyProps={{ variant: 'h6', fontWeight: 'bold' }}
+                        avatar={<Clock style={{ width: 24, height: 24, color: '#10b981' }} />}
+                      />
+                      <CardContent>
+                        <Typography variant="body2" sx={{ color: 'text.secondary', mb: 2 }}>
+                          Find the optimal times to post for maximum engagement
+                        </Typography>
+                        <OptimalPostingTimePredictor />
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                </Grid>
+              )}
+            </Box>
+
+            {/* Content Creation Tab */}
+            <Box role="tabpanel" hidden={activeTab !== 'content'} sx={{ pt: 3 }}>
+              {activeTab === 'content' && (
+                <Grid container spacing={3}>
+                  <Grid item xs={12}>
+                    <Card>
+                      <CardHeader
+                        title="Content Creation Tools"
+                        titleTypographyProps={{ variant: 'h6', fontWeight: 'bold' }}
+                        avatar={<Sparkles style={{ width: 24, height: 24, color: '#3b82f6' }} />}
+                      />
+                      <CardContent>
+                        <Typography variant="body1" sx={{ mb: 2 }}>
+                          Advanced AI tools for content creation and optimization
+                        </Typography>
+                        <Grid container spacing={2}>
+                          <Grid item xs={12} md={6}>
+                            <SmartCaptionGenerator />
+                          </Grid>
+                          <Grid item xs={12} md={6}>
+                            <AdvancedHashtagRecommender />
+                          </Grid>
+                          <Grid item xs={12}>
+                            <ContentIdeasGenerator />
+                          </Grid>
+                        </Grid>
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                </Grid>
+              )}
+            </Box>
+
+            {/* Analytics Tab */}
+            <Box role="tabpanel" hidden={activeTab !== 'analytics'} sx={{ pt: 3 }}>
+              {activeTab === 'analytics' && (
+                <Grid container spacing={3}>
+                  <Grid item xs={12}>
+                    <Card>
+                      <CardHeader
+                        title="Performance Predictor"
+                        titleTypographyProps={{ variant: 'h6', fontWeight: 'bold' }}
+                        avatar={<TrendingUp style={{ width: 24, height: 24, color: '#ef4444' }} />}
+                      />
+                      <CardContent>
+                        <Typography variant="body1" sx={{ mb: 2 }}>
+                          Predict how your content will perform before posting
+                        </Typography>
+                        <ContentPerformancePredictor />
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                </Grid>
+              )}
+            </Box>
+
+            {/* Optimization Tab */}
+            <Box role="tabpanel" hidden={activeTab !== 'optimization'} sx={{ pt: 3 }}>
+              {activeTab === 'optimization' && (
+                <Grid container spacing={3}>
+                  <Grid item xs={12} md={6}>
+                    <Card>
+                      <CardHeader
+                        title="Optimal Posting Times"
+                        titleTypographyProps={{ variant: 'h6', fontWeight: 'bold' }}
+                        avatar={<Clock style={{ width: 24, height: 24, color: '#10b981' }} />}
+                      />
+                      <CardContent>
+                        <OptimalPostingTimePredictor />
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                  <Grid item xs={12} md={6}>
+                    <Card>
+                      <CardHeader
+                        title="Content Performance"
+                        titleTypographyProps={{ variant: 'h6', fontWeight: 'bold' }}
+                        avatar={<BarChart3 style={{ width: 24, height: 24, color: '#8b5cf6' }} />}
+                      />
+                      <CardContent>
+                        <ContentPerformancePredictor />
+                      </CardContent>
+                    </Card>
+                  </Grid>
+                </Grid>
+              )}
+            </Box>
+          </Tabs>
+        </Box>
+
+        {/* AI Provider Setup Modal */}
+        {setupModalOpen && selectedProviderForSetup && (
+          <AIProviderSetupModal
+            provider={selectedProviderForSetup}
+            open={setupModalOpen}
+            onClose={() => setSetupModalOpen(false)}
+            onComplete={handleSetupComplete}
           />
-        </CardContent>
-      </Card>
-
-      {/* AI Tools */}
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4 sm:space-y-6">
-        <TabsList className="grid w-full grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-1">
-          <TabsTrigger value="overview" className="text-xs sm:text-sm">Overview</TabsTrigger>
-          <TabsTrigger value="caption" className="text-xs sm:text-sm">Caption Generator</TabsTrigger>
-          <TabsTrigger value="hashtags" className="text-xs sm:text-sm">Hashtag Recommender</TabsTrigger>
-          <TabsTrigger value="ideas" className="text-xs sm:text-sm">Content Ideas</TabsTrigger>
-          <TabsTrigger value="scheduling" className="text-xs sm:text-sm">Posting Times</TabsTrigger>
-          <TabsTrigger value="performance" className="text-xs sm:text-sm">Performance Predictor</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="overview" className="space-y-6">
-          {/* Quick Stats */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <Card>
-              <CardContent className="pt-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-gray-600">Total Generations</p>
-                    <p className="text-2xl font-bold text-gray-900">1,247</p>
-                  </div>
-                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <Sparkles className="w-6 h-6 text-blue-600" />
-                  </div>
-                </div>
-                <div className="flex items-center gap-2 mt-2">
-                  <TrendingUp className="w-4 h-4 text-green-500" />
-                  <span className="text-sm text-green-600">+23% this month</span>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardContent className="pt-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-gray-600">Time Saved</p>
-                    <p className="text-2xl font-bold text-gray-900">47h</p>
-                  </div>
-                  <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                    <Clock className="w-6 h-6 text-green-600" />
-                  </div>
-                </div>
-                <div className="flex items-center gap-2 mt-2">
-                  <TrendingUp className="w-4 h-4 text-green-500" />
-                  <span className="text-sm text-green-600">+15% efficiency</span>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardContent className="pt-6">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium text-gray-600">Engagement Boost</p>
-                    <p className="text-2xl font-bold text-gray-900">+34%</p>
-                  </div>
-                  <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                    <Users className="w-6 h-6 text-purple-600" />
-                  </div>
-                </div>
-                <div className="flex items-center gap-2 mt-2">
-                  <TrendingUp className="w-4 h-4 text-green-500" />
-                  <span className="text-sm text-green-600">+8% this week</span>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Quick Actions */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Quick Actions</CardTitle>
-              <CardDescription>
-                Generate content quickly with these AI-powered tools
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
-                <Button
-                  variant="outline"
-                  className="h-20 sm:h-24 flex flex-col items-center justify-center gap-1 sm:gap-2 text-xs sm:text-sm"
-                  onClick={() => setActiveTab('caption')}
-                >
-                  <Sparkles className="w-4 h-4 sm:w-6 sm:h-6" />
-                  <span>Generate Caption</span>
-                </Button>
-                <Button
-                  variant="outline"
-                  className="h-20 sm:h-24 flex flex-col items-center justify-center gap-1 sm:gap-2 text-xs sm:text-sm"
-                  onClick={() => setActiveTab('hashtags')}
-                >
-                  <Hash className="w-4 h-4 sm:w-6 sm:h-6" />
-                  <span>Find Hashtags</span>
-                </Button>
-                <Button
-                  variant="outline"
-                  className="h-24 flex flex-col items-center justify-center gap-2"
-                  onClick={() => setActiveTab('ideas')}
-                >
-                  <Lightbulb className="w-6 h-6" />
-                  <span>Get Ideas</span>
-                </Button>
-                <Button
-                  variant="outline"
-                  className="h-24 flex flex-col items-center justify-center gap-2"
-                  onClick={() => setActiveTab('scheduling')}
-                >
-                  <Clock className="w-6 h-6" />
-                  <span>Best Times</span>
-                </Button>
-                <Button
-                  variant="outline"
-                  className="h-24 flex flex-col items-center justify-center gap-2"
-                  onClick={() => setActiveTab('performance')}
-                >
-                  <TrendingUp className="w-6 h-6" />
-                  <span>Predict Performance</span>
-                </Button>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Recent Activity */}
-          <Card>
-            <CardHeader>
-              <CardTitle>Recent AI Activity</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {[
-                  { type: 'caption', content: 'Generated Instagram caption for travel post', time: '2 minutes ago', provider: 'CreatorFlow AI' },
-                  { type: 'hashtags', content: 'Found trending hashtags for #tech', time: '15 minutes ago', provider: 'DeepSeek' },
-                  { type: 'ideas', content: 'Generated 5 content ideas for fitness niche', time: '1 hour ago', provider: 'CreatorFlow AI' },
-                  { type: 'scheduling', content: 'Analyzed optimal posting times for LinkedIn', time: '2 hours ago', provider: 'CreatorFlow AI' },
-                  { type: 'performance', content: 'Predicted content performance with 92% confidence', time: '3 hours ago', provider: 'CreatorFlow AI' }
-                ].map((activity, index) => (
-                  <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center">
-                        {activity.type === 'caption' && <Sparkles className="w-4 h-4 text-blue-600" />}
-                        {activity.type === 'hashtags' && <Hash className="w-4 h-4 text-blue-600" />}
-                        {activity.type === 'ideas' && <Lightbulb className="w-4 h-4 text-blue-600" />}
-                        {activity.type === 'scheduling' && <Clock className="w-4 h-4 text-blue-600" />}
-                        {activity.type === 'performance' && <TrendingUp className="w-4 h-4 text-blue-600" />}
-                      </div>
-                      <div>
-                        <p className="text-sm font-medium text-gray-900">{activity.content}</p>
-                        <p className="text-xs text-gray-500">via {activity.provider}</p>
-                      </div>
-                    </div>
-                    <span className="text-xs text-gray-500">{activity.time}</span>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        <TabsContent value="caption">
-          <SmartCaptionGenerator provider={selectedProvider} />
-        </TabsContent>
-
-        <TabsContent value="hashtags">
-          <AdvancedHashtagRecommender provider={selectedProvider} />
-        </TabsContent>
-
-        <TabsContent value="ideas">
-          <ContentIdeasGenerator provider={selectedProvider} />
-        </TabsContent>
-
-        <TabsContent value="scheduling">
-          <OptimalPostingTimePredictor provider={selectedProvider} />
-        </TabsContent>
-
-        <TabsContent value="performance">
-          <ContentPerformancePredictor provider={selectedProvider} />
-        </TabsContent>
-      </Tabs>
-
-      {/* Provider Setup Modal */}
-      <AIProviderSetupModal
-        provider={selectedProviderForSetup}
-        isOpen={setupModalOpen}
-        onClose={() => {
-          setSetupModalOpen(false);
-          setSelectedProviderForSetup(null);
-        }}
-        onSetupComplete={handleSetupComplete}
-      />
-    </div>
+        )}
+      </Box>
+    </Container>
   );
 } 
