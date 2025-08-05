@@ -1,6 +1,6 @@
 // MUI Component Exports
 export { Button } from './mui-button';
-export { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, CardAction } from './mui-card';
+export { Card, CardHeader, CardContent, CardFooter } from './mui-card';
 export { Input } from './mui-input';
 export { MuiStatsCard } from './mui-stats-card';
 export { MuiEnhancedNavigation, MuiBreadcrumbs } from './mui-enhanced-nav';
@@ -8,7 +8,7 @@ export { Select as MuiSelect, SelectGroup, SelectValue, SelectTrigger, SelectCon
 export { Checkbox as MuiCheckbox } from './mui-checkbox';
 export { Switch as MuiSwitch } from './mui-switch';
 export { DataTable } from './mui-data-table';
-export { Dialog as MuiDialog, DialogContent as MuiDialogContent, DialogHeader as MuiDialogHeader, DialogFooter as MuiDialogFooter, DialogTitle as MuiDialogTitle, DialogDescription as MuiDialogDescription, DialogTrigger, DialogPortal, DialogClose, DialogOverlay } from './mui-dialog';
+export { Dialog as MuiDialog, DialogContent as MuiDialogContent, DialogFooter as MuiDialogFooter, DialogTitle as MuiDialogTitle, DialogDescription as MuiDialogDescription } from './mui-dialog';
 export { LoadingSpinner, LoadingBar, SkeletonCard, LoadingOverlay, LoadingState, ProgressIndicator } from './mui-loading';
 
 // Re-export common MUI components that we'll use directly
@@ -29,9 +29,6 @@ export {
   Alert,
   AlertTitle,
   Snackbar,
-  Dialog,
-  DialogTitle,
-  DialogContent,
   DialogActions,
   Drawer,
   AppBar,
@@ -78,9 +75,6 @@ export {
   ToggleButton,
   ToggleButtonGroup,
   // Card components
-  Card as MuiCard,
-  CardHeader as MuiCardHeader,
-  CardContent as MuiCardContent,
   CardActions as MuiCardActions,
 } from '@mui/material';
 
