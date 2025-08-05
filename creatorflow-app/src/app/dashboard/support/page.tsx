@@ -3,6 +3,23 @@
 import React, { useState } from 'react';
 import { useUserSupport } from '@/hooks/useUserSupport';
 import Link from 'next/link';
+import { 
+  Box, 
+  Typography, 
+  Button, 
+  Card, 
+  CardContent, 
+  TextField, 
+  Alert,
+  AlertTitle,
+  Grid,
+  Container,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Divider
+} from '@mui/material';
 import { FileText, Shield, Mail, MessageCircle, HelpCircle, Users, BarChart3 } from 'lucide-react';
 
 export default function SupportPage() {
@@ -18,114 +35,201 @@ export default function SupportPage() {
   };
 
   return (
-    <div className="p-8 max-w-4xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6">Support & Help Center</h1>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {/* Resources Section */}
-        <div className="space-y-6">
-          <div>
-            <h2 className="text-xl font-semibold mb-4 flex items-center gap-2 text-foreground">
-              <HelpCircle className="h-5 w-5 text-blue-600" />
-              Resources
-            </h2>
-            <ul className="space-y-3">
-              <li>
-                <a href="#" className="flex items-center gap-2 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 transition-colors">
-                  <FileText className="h-4 w-4" />
-                  FAQ / Knowledge Base
-                </a>
-              </li>
-              <li>
-                <a href="#" className="flex items-center gap-2 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 transition-colors">
-                  <BarChart3 className="h-4 w-4" />
-                  System Status
-                </a>
-              </li>
-              <li>
-                <a href="#" className="flex items-center gap-2 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 transition-colors">
-                  <Users className="h-4 w-4" />
-                  Community / Forum
-                </a>
-              </li>
-            </ul>
-          </div>
+    <Container maxWidth="lg" sx={{ py: 3 }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+        <Typography variant="h4" component="h1" sx={{ fontWeight: 'bold', mb: 2 }}>
+          Support & Help Center
+        </Typography>
+        
+        <Grid container spacing={3}>
+          {/* Resources Section */}
+          <Grid item xs={12} md={6}>
+            <Card>
+              <CardContent>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
+                  <HelpCircle style={{ width: 20, height: 20, color: '#2563eb' }} />
+                  <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+                    Resources
+                  </Typography>
+                </Box>
+                <List>
+                  <ListItem>
+                    <ListItemIcon>
+                      <FileText style={{ width: 16, height: 16 }} />
+                    </ListItemIcon>
+                    <ListItemText 
+                      primary={
+                        <Button 
+                          variant="text" 
+                          sx={{ color: 'primary.main', textTransform: 'none', p: 0, minWidth: 'auto' }}
+                        >
+                          FAQ / Knowledge Base
+                        </Button>
+                      }
+                    />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemIcon>
+                      <BarChart3 style={{ width: 16, height: 16 }} />
+                    </ListItemIcon>
+                    <ListItemText 
+                      primary={
+                        <Button 
+                          variant="text" 
+                          sx={{ color: 'primary.main', textTransform: 'none', p: 0, minWidth: 'auto' }}
+                        >
+                          System Status
+                        </Button>
+                      }
+                    />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemIcon>
+                      <Users style={{ width: 16, height: 16 }} />
+                    </ListItemIcon>
+                    <ListItemText 
+                      primary={
+                        <Button 
+                          variant="text" 
+                          sx={{ color: 'primary.main', textTransform: 'none', p: 0, minWidth: 'auto' }}
+                        >
+                          Community / Forum
+                        </Button>
+                      }
+                    />
+                  </ListItem>
+                </List>
+              </CardContent>
+            </Card>
 
-          {/* Contact Support Section */}
-          <div>
-            <h2 className="text-xl font-semibold mb-4 flex items-center gap-2 text-foreground">
-              <Mail className="h-5 w-5 text-green-600" />
-              Contact Support
-            </h2>
-            <div className="space-y-3">
-              <a 
-                href="mailto:support@creatorflow.com" 
-                className="inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors"
-              >
-                <Mail className="h-4 w-4" />
-                Email Support
-              </a>
-              <button 
-                className="inline-flex items-center gap-2 bg-gray-100 hover:bg-gray-200 dark:bg-gray-700 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-lg transition-colors ml-2" 
-                disabled
-              >
-                <MessageCircle className="h-4 w-4" />
-                Live Chat (Coming Soon)
-              </button>
-            </div>
-          </div>
-        </div>
+            {/* Contact Support Section */}
+            <Card sx={{ mt: 2 }}>
+              <CardContent>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
+                  <Mail style={{ width: 20, height: 20, color: '#16a34a' }} />
+                  <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+                    Contact Support
+                  </Typography>
+                </Box>
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                  <Button
+                    component="a"
+                    href="mailto:support@creatorflow.com"
+                    variant="contained"
+                    startIcon={<Mail style={{ width: 16, height: 16 }} />}
+                    sx={{ alignSelf: 'flex-start' }}
+                  >
+                    Email Support
+                  </Button>
+                  <Button
+                    variant="outlined"
+                    startIcon={<MessageCircle style={{ width: 16, height: 16 }} />}
+                    disabled
+                    sx={{ alignSelf: 'flex-start' }}
+                  >
+                    Live Chat (Coming Soon)
+                  </Button>
+                </Box>
+              </CardContent>
+            </Card>
+          </Grid>
 
-        {/* Legal & Feedback Section */}
-        <div className="space-y-6">
-          {/* Legal & Policies Section */}
-          <div>
-            <h2 className="text-xl font-semibold mb-4 flex items-center gap-2 text-foreground">
-              <Shield className="h-5 w-5 text-purple-600" />
-              Legal & Policies
-            </h2>
-            <div className="space-y-3">
-              <Link 
-                href="/terms" 
-                className="flex items-center gap-2 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
-              >
-                <FileText className="h-4 w-4" />
-                Terms of Service
-              </Link>
-              <Link 
-                href="/privacy" 
-                className="flex items-center gap-2 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
-              >
-                <Shield className="h-4 w-4" />
-                Privacy Policy
-              </Link>
-            </div>
-          </div>
+          {/* Legal & Feedback Section */}
+          <Grid item xs={12} md={6}>
+            {/* Legal & Policies Section */}
+            <Card>
+              <CardContent>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
+                  <Shield style={{ width: 20, height: 20, color: '#9333ea' }} />
+                  <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
+                    Legal & Policies
+                  </Typography>
+                </Box>
+                <List>
+                  <ListItem>
+                    <ListItemIcon>
+                      <FileText style={{ width: 16, height: 16 }} />
+                    </ListItemIcon>
+                    <ListItemText 
+                      primary={
+                        <Button 
+                          component={Link}
+                          href="/terms"
+                          variant="text" 
+                          sx={{ color: 'primary.main', textTransform: 'none', p: 0, minWidth: 'auto' }}
+                        >
+                          Terms of Service
+                        </Button>
+                      }
+                    />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemIcon>
+                      <Shield style={{ width: 16, height: 16 }} />
+                    </ListItemIcon>
+                    <ListItemText 
+                      primary={
+                        <Button 
+                          component={Link}
+                          href="/privacy"
+                          variant="text" 
+                          sx={{ color: 'primary.main', textTransform: 'none', p: 0, minWidth: 'auto' }}
+                        >
+                          Privacy Policy
+                        </Button>
+                      }
+                    />
+                  </ListItem>
+                </List>
+              </CardContent>
+            </Card>
 
-          {/* Feedback Section */}
-          <div>
-            <h2 className="text-xl font-semibold mb-4">Feedback</h2>
-            <form className="space-y-4" onSubmit={handleFeedback}>
-              <textarea 
-                className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100" 
-                placeholder="Your feedback helps us improve CreatorFlow..." 
-                rows={4} 
-                value={feedback} 
-                onChange={e => setFeedback(e.target.value)} 
-              />
-              <button 
-                type="submit" 
-                className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors disabled:opacity-50" 
-                disabled={loading}
-              >
-                {loading ? 'Submitting...' : 'Submit Feedback'}
-              </button>
-              {success && <div className="text-green-600 dark:text-green-400 text-sm">{success}</div>}
-              {error && <div className="text-red-500 dark:text-red-400 text-sm">{error}</div>}
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
+            {/* Feedback Section */}
+            <Card sx={{ mt: 2 }}>
+              <CardContent>
+                <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 2 }}>
+                  Send Feedback
+                </Typography>
+                
+                {success && (
+                  <Alert severity="success" sx={{ mb: 2 }}>
+                    <AlertTitle>Success</AlertTitle>
+                    {success}
+                  </Alert>
+                )}
+                
+                {error && (
+                  <Alert severity="error" sx={{ mb: 2 }}>
+                    <AlertTitle>Error</AlertTitle>
+                    {error}
+                  </Alert>
+                )}
+
+                <Box component="form" onSubmit={handleFeedback} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                  <TextField
+                    label="Your Feedback"
+                    multiline
+                    rows={4}
+                    value={feedback}
+                    onChange={(e) => setFeedback(e.target.value)}
+                    placeholder="Tell us what you think about CreatorFlow..."
+                    fullWidth
+                    required
+                  />
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    disabled={loading || !feedback.trim()}
+                    sx={{ alignSelf: 'flex-start' }}
+                  >
+                    {loading ? 'Sending...' : 'Send Feedback'}
+                  </Button>
+                </Box>
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
+      </Box>
+    </Container>
   );
 } 

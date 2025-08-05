@@ -2,6 +2,7 @@ import { getSession } from "@/auth";
 import { prisma } from '@/lib/prisma';
 import BillingClient from './BillingClient';
 import { Metadata } from "next";
+import { Box, Typography, Container } from '@mui/material';
 
 type BillingPageProps = {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
@@ -18,7 +19,13 @@ export default async function BillingPage({ searchParams }: BillingPageProps) {
   const resolvedSearchParams = await searchParams;
   
   if (!session?.user) {
-    return <div className="p-8 text-center">Please sign in to view billing information.</div>;
+    return (
+      <Container maxWidth="lg" sx={{ py: 4 }}>
+        <Box sx={{ textAlign: 'center' }}>
+          <Typography>Please sign in to view billing information.</Typography>
+        </Box>
+      </Container>
+    );
   }
 
   const user = await prisma.user.findUnique({
@@ -39,7 +46,13 @@ export default async function BillingPage({ searchParams }: BillingPageProps) {
   });
 
   if (!user) {
-    return <div className="p-8 text-center text-red-600">User not found. Please contact support.</div>;
+    return (
+      <Container maxWidth="lg" sx={{ py: 4 }}>
+        <Box sx={{ textAlign: 'center' }}>
+          <Typography color="error">User not found. Please contact support.</Typography>
+        </Box>
+      </Container>
+    );
   }
 
   // Fetch upcoming charges
@@ -84,8 +97,8 @@ export default async function BillingPage({ searchParams }: BillingPageProps) {
   };
 
   return (
-    <div>
+    <Container maxWidth="lg" sx={{ py: 3 }}>
       <BillingClient {...serializedData} />
-    </div>
+    </Container>
   );
 } 

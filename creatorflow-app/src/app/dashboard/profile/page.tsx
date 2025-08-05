@@ -1,8 +1,17 @@
 'use client';
 
 import { useSession } from 'next-auth/react';
-
-import { Button } from '@/components/ui/button';
+import { 
+  Box, 
+  Typography, 
+  Button, 
+  Card, 
+  CardContent, 
+  Avatar, 
+  Grid,
+  Container,
+  Divider
+} from '@mui/material';
 import { 
   Brain, 
   Users, 
@@ -20,11 +29,19 @@ export default function ProfilePage() {
   const { data: session, status } = useSession();
   
   if (status === 'loading') {
-    return <div className="p-8">Loading...</div>;
+    return (
+      <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}>
+        <Typography>Loading...</Typography>
+      </Box>
+    );
   }
   
   if (!session) {
-    return <div className="p-8">Please sign in to view your profile.</div>;
+    return (
+      <Box sx={{ py: 4 }}>
+        <Typography>Please sign in to view your profile.</Typography>
+      </Box>
+    );
   }
 
   const profileSections = [
@@ -53,62 +70,117 @@ export default function ProfilePage() {
   ];
 
   return (
-    <div className="space-y-6">
-      {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-bold">Profile & Settings</h1>
-          <p className="text-muted-foreground">Manage your account and preferences</p>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center">
-            <User className="h-5 w-5 text-primary" />
-          </div>
-          <div className="hidden sm:block">
-            <p className="font-medium">{session.user.name}</p>
-            <p className="text-sm text-muted-foreground">{session.user.email}</p>
-          </div>
-        </div>
-      </div>
+    <Container maxWidth="lg" sx={{ py: 3 }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+        {/* Header */}
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 2 }}>
+          <Box>
+            <Typography variant="h4" component="h1" sx={{ fontWeight: 'bold', mb: 1 }}>
+              Profile & Settings
+            </Typography>
+            <Typography variant="body1" sx={{ color: 'text.secondary' }}>
+              Manage your account and preferences
+            </Typography>
+          </Box>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+            <Avatar sx={{ bgcolor: 'primary.main', width: 40, height: 40 }}>
+              <User style={{ width: 20, height: 20 }} />
+            </Avatar>
+            <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+              <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                {session.user.name}
+              </Typography>
+              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                {session.user.email}
+              </Typography>
+            </Box>
+          </Box>
+        </Box>
 
-      {/* Profile Sections */}
-      <div className="grid gap-6">
-        {profileSections.map((section) => (
-          <div key={section.title}>
-            <h2 className="text-lg font-semibold mb-4">{section.title}</h2>
-            <div className="grid gap-3">
-              {section.items.map((item) => {
-                const Icon = item.icon;
-                return (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className="flex items-center gap-3 p-3 rounded-lg border hover:bg-muted/50 transition-colors"
-                  >
-                    <div className="h-10 w-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                      <Icon className="h-5 w-5 text-primary" />
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="font-medium">{item.label}</h3>
-                      <p className="text-sm text-muted-foreground">{item.description}</p>
-                    </div>
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
-        ))}
-      </div>
+        {/* Profile Sections */}
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+          {profileSections.map((section) => (
+            <Card key={section.title}>
+              <CardContent>
+                <Typography variant="h6" component="h2" sx={{ fontWeight: 'bold', mb: 2 }}>
+                  {section.title}
+                </Typography>
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                  {section.items.map((item) => {
+                    const Icon = item.icon;
+                    return (
+                      <Button
+                        key={item.href}
+                        component={Link}
+                        href={item.href}
+                        variant="text"
+                        fullWidth
+                        sx={{ 
+                          justifyContent: 'flex-start', 
+                          textAlign: 'left',
+                          p: 2,
+                          borderRadius: 1,
+                          '&:hover': {
+                            bgcolor: 'action.hover'
+                          }
+                        }}
+                      >
+                        <Box sx={{ 
+                          display: 'flex', 
+                          alignItems: 'center', 
+                          gap: 2, 
+                          width: '100%' 
+                        }}>
+                          <Box sx={{ 
+                            width: 40, 
+                            height: 40, 
+                            borderRadius: 1, 
+                            bgcolor: 'primary.main', 
+                            display: 'flex', 
+                            alignItems: 'center', 
+                            justifyContent: 'center' 
+                          }}>
+                            <Icon style={{ width: 20, height: 20, color: 'white' }} />
+                          </Box>
+                          <Box sx={{ flex: 1, textAlign: 'left' }}>
+                            <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                              {item.label}
+                            </Typography>
+                            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                              {item.description}
+                            </Typography>
+                          </Box>
+                        </Box>
+                      </Button>
+                    );
+                  })}
+                </Box>
+              </CardContent>
+            </Card>
+          ))}
+        </Box>
 
-      {/* Sign Out */}
-      <div>
-        <Button variant="outline" className="w-full bg-red-600 text-white border-red-600 hover:bg-red-700 hover:border-red-700" asChild>
-          <Link href="/api/auth/signout">
-            <LogOut className="mr-2 h-4 w-4" />
-            Sign Out
-          </Link>
-        </Button>
-      </div>
-    </div>
+        {/* Sign Out */}
+        <Card>
+          <CardContent>
+            <Button
+              component={Link}
+              href="/api/auth/signout"
+              variant="contained"
+              fullWidth
+              startIcon={<LogOut style={{ width: 16, height: 16 }} />}
+              sx={{ 
+                bgcolor: 'error.main',
+                '&:hover': {
+                  bgcolor: 'error.dark'
+                }
+              }}
+            >
+              Sign Out
+            </Button>
+          </CardContent>
+        </Card>
+      </Box>
+    </Container>
   );
 } 

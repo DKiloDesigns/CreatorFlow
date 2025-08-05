@@ -40,7 +40,6 @@ export {
   ListItem,
   ListItemText,
   ListItemIcon,
-  Menu,
   MenuItem,
   Select,
   FormControl,
@@ -78,6 +77,11 @@ export {
   ButtonGroup,
   ToggleButton,
   ToggleButtonGroup,
+  // Card components
+  Card as MuiCard,
+  CardHeader as MuiCardHeader,
+  CardContent as MuiCardContent,
+  CardActions as MuiCardActions,
 } from '@mui/material';
 
 // Re-export MUI icons
@@ -97,7 +101,7 @@ export {
   ArrowForward,
   ArrowUpward,
   ArrowDownward,
-  Menu as MenuIcon,
+  Menu,
   MoreVert,
   MoreHoriz,
   Settings,
