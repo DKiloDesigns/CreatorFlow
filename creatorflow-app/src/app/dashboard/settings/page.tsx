@@ -196,9 +196,9 @@ export default function SettingsPage() {
           </Typography>
         </Box>
 
-        <Grid container spacing={3}>
+        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 3 }}>
           {/* General Settings */}
-          <Grid item xs={12} md={6}>
+          <Box>
             <Card>
               <CardHeader
                 title="General Settings"
@@ -388,10 +388,10 @@ export default function SettingsPage() {
                 </Box>
               </CardContent>
             </Card>
-          </Grid>
+          </Box>
 
           {/* Connected Accounts */}
-          <Grid item xs={12}>
+          <Box sx={{ gridColumn: '1 / -1' }}>
             <Card>
               <CardHeader
                 title="Connected Accounts"
@@ -399,8 +399,8 @@ export default function SettingsPage() {
                 avatar={<Shield style={{ width: 20, height: 20 }} />}
               />
               <CardContent>
-                <Grid container spacing={2}>
-                  <Grid item xs={12} sm={6}>
+                <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)' }, gap: 2 }}>
+                  <Box>
                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', p: 2, border: 1, borderColor: 'divider', borderRadius: 1 }}>
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                         <Typography variant="body1" sx={{ fontWeight: 500 }}>
@@ -418,9 +418,9 @@ export default function SettingsPage() {
                         {form.connected.google ? 'Disconnect' : 'Connect'}
                       </Button>
                     </Box>
-                  </Grid>
+                  </Box>
                   
-                  <Grid item xs={12} sm={6}>
+                  <Box>
                     <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', p: 2, border: 1, borderColor: 'divider', borderRadius: 1 }}>
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                         <Typography variant="body1" sx={{ fontWeight: 500 }}>
@@ -438,12 +438,12 @@ export default function SettingsPage() {
                         {form.connected.twitter ? 'Disconnect' : 'Connect'}
                       </Button>
                     </Box>
-                  </Grid>
-                </Grid>
+                  </Box>
+                </Box>
               </CardContent>
             </Card>
-          </Grid>
-        </Grid>
+          </Box>
+        </Box>
       </Box>
     </Container>
   );
