@@ -41,9 +41,9 @@ export default function SupportPage() {
           Support & Help Center
         </Typography>
         
-        <Grid container spacing={3}>
+        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 3 }}>
           {/* Resources Section */}
-          <Grid item xs={12} md={6}>
+          <Box>
             <Card>
               <CardContent>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
@@ -132,10 +132,10 @@ export default function SupportPage() {
                 </Box>
               </CardContent>
             </Card>
-          </Grid>
+          </Box>
 
           {/* Legal & Feedback Section */}
-          <Grid item xs={12} md={6}>
+          <Box>
             {/* Legal & Policies Section */}
             <Card>
               <CardContent>
@@ -227,8 +227,8 @@ export default function SupportPage() {
                 </Box>
               </CardContent>
             </Card>
-          </Grid>
-        </Grid>
+          </Box>
+        </Box>
       </Box>
     </Container>
   );
