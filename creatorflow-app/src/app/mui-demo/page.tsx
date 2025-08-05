@@ -76,7 +76,6 @@ import {
   FormHelperText,
   Checkbox,
   Select,
-  FormControlLabel as MuiFormControlLabel,
 } from '@mui/material';
 import {
   Add,
@@ -312,10 +311,10 @@ export default function MuiDemoPage() {
               </Stack>
             </CardContent>
           </Card>
-        </Grid>
+        </Box>
 
         {/* Interactive Components */}
-        <Grid item xs={12} md={6}>
+        <Box>
           <Card>
             <CardHeader>
               <CardTitle>Interactive Components</CardTitle>
@@ -386,308 +385,308 @@ export default function MuiDemoPage() {
               </Stack>
             </CardContent>
           </Card>
-        </Grid>
-
-        {/* Data Display */}
-        <Grid item xs={12}>
-          <Card>
-            <CardHeader>
-              <CardTitle>Data Display Components</CardTitle>
-              <CardDescription>Tables, lists, and data visualization</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Tabs value={activeTab} onChange={handleTabChange}>
-                <Tab label="Table" />
-                <Tab label="List" />
-                <Tab label="Chips" />
-                <Tab label="Progress" />
-              </Tabs>
-
-              <Box sx={{ mt: 2 }}>
-                {activeTab === 0 && (
-                  <TableContainer component={Paper}>
-                    <Table>
-                      <TableHead>
-                        <TableRow>
-                          <TableCell>Name</TableCell>
-                          <TableCell>Email</TableCell>
-                          <TableCell>Role</TableCell>
-                          <TableCell>Status</TableCell>
-                        </TableRow>
-                      </TableHead>
-                      <TableBody>
-                        <TableRow>
-                          <TableCell>John Doe</TableCell>
-                          <TableCell>john@example.com</TableCell>
-                          <TableCell>Admin</TableCell>
-                          <TableCell>
-                            <Chip label="Active" color="success" size="small" />
-                          </TableCell>
-                        </TableRow>
-                        <TableRow>
-                          <TableCell>Jane Smith</TableCell>
-                          <TableCell>jane@example.com</TableCell>
-                          <TableCell>User</TableCell>
-                          <TableCell>
-                            <Chip label="Pending" color="warning" size="small" />
-                          </TableCell>
-                        </TableRow>
-                      </TableBody>
-                    </Table>
-                  </TableContainer>
-                )}
-
-                {activeTab === 1 && (
-                  <List>
-                    <ListItem>
-                      <ListItemIcon>
-                        <Person />
-                      </ListItemIcon>
-                      <ListItemText primary="User Profile" secondary="Manage your account settings" />
-                    </ListItem>
-                    <ListItem>
-                      <ListItemIcon>
-                        <Settings />
-                      </ListItemIcon>
-                      <ListItemText primary="Settings" secondary="Configure application preferences" />
-                    </ListItem>
-                    <ListItem>
-                      <ListItemIcon>
-                        <Security />
-                      </ListItemIcon>
-                      <ListItemText primary="Security" secondary="Update password and security settings" />
-                    </ListItem>
-                  </List>
-                )}
-
-                {activeTab === 2 && (
-                  <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-                    <Chip label="Default" />
-                    <Chip label="Primary" color="primary" />
-                    <Chip label="Secondary" color="secondary" />
-                    <Chip label="Success" color="success" />
-                    <Chip label="Warning" color="warning" />
-                    <Chip label="Error" color="error" />
-                    <Chip label="Deletable" onDelete={() => {}} />
-                    <Chip label="Clickable" onClick={() => {}} />
-                  </Stack>
-                )}
-
-                {activeTab === 3 && (
-                  <Stack spacing={2}>
-                    <Box>
-                      <Typography variant="body2" gutterBottom>
-                        Linear Progress
-                      </Typography>
-                      <LinearProgress variant="determinate" value={70} />
-                    </Box>
-                    <Box>
-                      <Typography variant="body2" gutterBottom>
-                        Circular Progress
-                      </Typography>
-                      <CircularProgress variant="determinate" value={70} />
-                    </Box>
-                    <Box>
-                      <Typography variant="body2" gutterBottom>
-                        Skeleton Loading
-                      </Typography>
-                      <Stack spacing={1}>
-                        <Skeleton variant="text" width="60%" />
-                        <Skeleton variant="text" width="40%" />
-                        <Skeleton variant="rectangular" height={60} />
-                      </Stack>
-                    </Box>
-                  </Stack>
-                )}
-              </Box>
-            </CardContent>
-          </Card>
-        </Grid>
-
-        {/* Navigation & Layout */}
-        <Grid item xs={12}>
-          <Card>
-            <CardHeader>
-              <CardTitle>Navigation & Layout</CardTitle>
-              <CardDescription>Menus, drawers, and navigation components</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Stack spacing={3}>
-                <Box>
-                  <Typography variant="h6" gutterBottom>
-                    Breadcrumbs
-                  </Typography>
-                  <Breadcrumbs>
-                    <Link href="#" color="inherit">
-                      Home
-                    </Link>
-                    <Link href="#" color="inherit">
-                      Dashboard
-                    </Link>
-                    <Typography color="text.primary">Current Page</Typography>
-                  </Breadcrumbs>
-                </Box>
-
-                <Box>
-                  <Typography variant="h6" gutterBottom>
-                    Toggle Buttons
-                  </Typography>
-                  <ToggleButtonGroup
-                    value={toggleValue}
-                    exclusive
-                    onChange={(event, newValue) => setToggleValue(newValue)}
-                  >
-                    <ToggleButton value="list">
-                      <ViewList />
-                    </ToggleButton>
-                    <ToggleButton value="grid">
-                      <GridView />
-                    </ToggleButton>
-                    <ToggleButton value="module">
-                      <ViewModule />
-                    </ToggleButton>
-                  </ToggleButtonGroup>
-                </Box>
-
-                <Box>
-                  <Typography variant="h6" gutterBottom>
-                    Stepper
-                  </Typography>
-                  <Stepper activeStep={activeStep} orientation="vertical">
-                    <Step>
-                      <StepLabel>Step 1</StepLabel>
-                      <StepContent>
-                        <Typography>This is step 1 content</Typography>
-                        <Box sx={{ mb: 2 }}>
-                          <Button variant="default" onClick={handleNext}>
-                            Continue
-                          </Button>
-                        </Box>
-                      </StepContent>
-                    </Step>
-                    <Step>
-                      <StepLabel>Step 2</StepLabel>
-                      <StepContent>
-                        <Typography>This is step 2 content</Typography>
-                        <Box sx={{ mb: 2 }}>
-                          <Button variant="default" onClick={handleNext}>
-                            Continue
-                          </Button>
-                          <Button variant="outline" onClick={handleBack}>
-                            Back
-                          </Button>
-                        </Box>
-                      </StepContent>
-                    </Step>
-                    <Step>
-                      <StepLabel>Step 3</StepLabel>
-                      <StepContent>
-                        <Typography>This is step 3 content</Typography>
-                        <Box sx={{ mb: 2 }}>
-                          <Button variant="outline" onClick={handleBack}>
-                            Back
-                          </Button>
-                          <Button variant="default" onClick={handleReset}>
-                            Reset
-                          </Button>
-                        </Box>
-                      </StepContent>
-                    </Step>
-                  </Stepper>
-                </Box>
-
-                <Box>
-                  <Typography variant="h6" gutterBottom>
-                    Accordion
-                  </Typography>
-                  <Accordion expanded={accordionExpanded === 'panel1'} onChange={handleAccordionChange('panel1')}>
-                    <AccordionSummary expandIcon={<ArrowDownward />}>
-                      <Typography>Accordion 1</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                      <Typography>
-                        This is the content of accordion 1.
-                      </Typography>
-                    </AccordionDetails>
-                  </Accordion>
-                  <Accordion expanded={accordionExpanded === 'panel2'} onChange={handleAccordionChange('panel2')}>
-                    <AccordionSummary expandIcon={<ArrowDownward />}>
-                      <Typography>Accordion 2</Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                      <Typography>
-                        This is the content of accordion 2.
-                      </Typography>
-                    </AccordionDetails>
-                  </Accordion>
-                </Box>
-              </Stack>
-            </CardContent>
-          </Card>
-        </Grid>
-
-        {/* Feedback Components */}
-        <Grid item xs={12}>
-          <Card>
-            <CardHeader>
-              <CardTitle>Feedback Components</CardTitle>
-              <CardDescription>Alerts, dialogs, and notifications</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Stack spacing={3}>
-                <Box>
-                  <Typography variant="h6" gutterBottom>
-                    Alerts
-                  </Typography>
-                  <Stack spacing={1}>
-                    <Alert severity="success">
-                      <AlertTitle>Success</AlertTitle>
-                      This is a success alert.
-                    </Alert>
-                    <Alert severity="info">
-                      <AlertTitle>Info</AlertTitle>
-                      This is an info alert.
-                    </Alert>
-                    <Alert severity="warning">
-                      <AlertTitle>Warning</AlertTitle>
-                      This is a warning alert.
-                    </Alert>
-                    <Alert severity="error">
-                      <AlertTitle>Error</AlertTitle>
-                      This is an error alert.
-                    </Alert>
-                  </Stack>
-                </Box>
-
-                <Box>
-                  <Typography variant="h6" gutterBottom>
-                    Buttons for Dialogs & Menus
-                  </Typography>
-                  <Stack direction="row" spacing={2}>
-                    <Button variant="default" onClick={() => setDialogOpen(true)}>
-                      Open Dialog
-                    </Button>
-                    <Button variant="outline" onClick={(event) => setMenuAnchor(event.currentTarget)}>
-                      Open Menu
-                    </Button>
-                    <Button variant="secondary" onClick={() => setSnackbarOpen(true)}>
-                      Show Snackbar
-                    </Button>
-                  </Stack>
-                </Box>
-
-                <Box>
-                  <Typography variant="h6" gutterBottom>
-                    Floating Action Button
-                  </Typography>
-                  <Fab color="primary" aria-label="add">
-                    <Add />
-                  </Fab>
-                </Box>
-              </Stack>
-            </CardContent>
-          </Card>
         </Box>
+      </Box>
+
+      {/* Data Display */}
+      <Box sx={{ mt: 4 }}>
+        <Card>
+          <CardHeader>
+            <CardTitle>Data Display Components</CardTitle>
+            <CardDescription>Tables, lists, and data visualization</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Tabs value={activeTab} onChange={handleTabChange}>
+              <Tab label="Table" />
+              <Tab label="List" />
+              <Tab label="Chips" />
+              <Tab label="Progress" />
+            </Tabs>
+
+            <Box sx={{ mt: 2 }}>
+              {activeTab === 0 && (
+                <TableContainer component={Paper}>
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>Name</TableCell>
+                        <TableCell>Email</TableCell>
+                        <TableCell>Role</TableCell>
+                        <TableCell>Status</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      <TableRow>
+                        <TableCell>John Doe</TableCell>
+                        <TableCell>john@example.com</TableCell>
+                        <TableCell>Admin</TableCell>
+                        <TableCell>
+                          <Chip label="Active" color="success" size="small" />
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell>Jane Smith</TableCell>
+                        <TableCell>jane@example.com</TableCell>
+                        <TableCell>User</TableCell>
+                        <TableCell>
+                          <Chip label="Pending" color="warning" size="small" />
+                        </TableCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              )}
+
+              {activeTab === 1 && (
+                <List>
+                  <ListItem>
+                    <ListItemIcon>
+                      <Person />
+                    </ListItemIcon>
+                    <ListItemText primary="User Profile" secondary="Manage your account settings" />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemIcon>
+                      <Settings />
+                    </ListItemIcon>
+                    <ListItemText primary="Settings" secondary="Configure application preferences" />
+                  </ListItem>
+                  <ListItem>
+                    <ListItemIcon>
+                      <Security />
+                    </ListItemIcon>
+                    <ListItemText primary="Security" secondary="Update password and security settings" />
+                  </ListItem>
+                </List>
+              )}
+
+              {activeTab === 2 && (
+                <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+                  <Chip label="Default" />
+                  <Chip label="Primary" color="primary" />
+                  <Chip label="Secondary" color="secondary" />
+                  <Chip label="Success" color="success" />
+                  <Chip label="Warning" color="warning" />
+                  <Chip label="Error" color="error" />
+                  <Chip label="Deletable" onDelete={() => {}} />
+                  <Chip label="Clickable" onClick={() => {}} />
+                </Stack>
+              )}
+
+              {activeTab === 3 && (
+                <Stack spacing={2}>
+                  <Box>
+                    <Typography variant="body2" gutterBottom>
+                      Linear Progress
+                    </Typography>
+                    <LinearProgress variant="determinate" value={70} />
+                  </Box>
+                  <Box>
+                    <Typography variant="body2" gutterBottom>
+                      Circular Progress
+                    </Typography>
+                    <CircularProgress variant="determinate" value={70} />
+                  </Box>
+                  <Box>
+                    <Typography variant="body2" gutterBottom>
+                      Skeleton Loading
+                    </Typography>
+                    <Stack spacing={1}>
+                      <Skeleton variant="text" width="60%" />
+                      <Skeleton variant="text" width="40%" />
+                      <Skeleton variant="rectangular" height={60} />
+                    </Stack>
+                  </Box>
+                </Stack>
+              )}
+            </Box>
+          </CardContent>
+        </Card>
+      </Box>
+
+      {/* Navigation & Layout */}
+      <Box sx={{ mt: 4 }}>
+        <Card>
+          <CardHeader>
+            <CardTitle>Navigation & Layout</CardTitle>
+            <CardDescription>Menus, drawers, and navigation components</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Stack spacing={3}>
+              <Box>
+                <Typography variant="h6" gutterBottom>
+                  Breadcrumbs
+                </Typography>
+                <Breadcrumbs>
+                  <Link href="#" color="inherit">
+                    Home
+                  </Link>
+                  <Link href="#" color="inherit">
+                    Dashboard
+                  </Link>
+                  <Typography color="text.primary">Current Page</Typography>
+                </Breadcrumbs>
+              </Box>
+
+              <Box>
+                <Typography variant="h6" gutterBottom>
+                  Toggle Buttons
+                </Typography>
+                <ToggleButtonGroup
+                  value={toggleValue}
+                  exclusive
+                  onChange={(event, newValue) => setToggleValue(newValue)}
+                >
+                  <ToggleButton value="list">
+                    <ViewList />
+                  </ToggleButton>
+                  <ToggleButton value="grid">
+                    <GridView />
+                  </ToggleButton>
+                  <ToggleButton value="module">
+                    <ViewModule />
+                  </ToggleButton>
+                </ToggleButtonGroup>
+              </Box>
+
+              <Box>
+                <Typography variant="h6" gutterBottom>
+                  Stepper
+                </Typography>
+                <Stepper activeStep={activeStep} orientation="vertical">
+                  <Step>
+                    <StepLabel>Step 1</StepLabel>
+                    <StepContent>
+                      <Typography>This is step 1 content</Typography>
+                      <Box sx={{ mb: 2 }}>
+                        <Button variant="default" onClick={handleNext}>
+                          Continue
+                        </Button>
+                      </Box>
+                    </StepContent>
+                  </Step>
+                  <Step>
+                    <StepLabel>Step 2</StepLabel>
+                    <StepContent>
+                      <Typography>This is step 2 content</Typography>
+                      <Box sx={{ mb: 2 }}>
+                        <Button variant="default" onClick={handleNext}>
+                          Continue
+                        </Button>
+                        <Button variant="outline" onClick={handleBack}>
+                          Back
+                        </Button>
+                      </Box>
+                    </StepContent>
+                  </Step>
+                  <Step>
+                    <StepLabel>Step 3</StepLabel>
+                    <StepContent>
+                      <Typography>This is step 3 content</Typography>
+                      <Box sx={{ mb: 2 }}>
+                        <Button variant="outline" onClick={handleBack}>
+                          Back
+                        </Button>
+                        <Button variant="default" onClick={handleReset}>
+                          Reset
+                        </Button>
+                      </Box>
+                    </StepContent>
+                  </Step>
+                </Stepper>
+              </Box>
+
+              <Box>
+                <Typography variant="h6" gutterBottom>
+                  Accordion
+                </Typography>
+                <Accordion expanded={accordionExpanded === 'panel1'} onChange={handleAccordionChange('panel1')}>
+                  <AccordionSummary expandIcon={<ArrowDownward />}>
+                    <Typography>Accordion 1</Typography>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    <Typography>
+                      This is the content of accordion 1.
+                    </Typography>
+                  </AccordionDetails>
+                </Accordion>
+                <Accordion expanded={accordionExpanded === 'panel2'} onChange={handleAccordionChange('panel2')}>
+                  <AccordionSummary expandIcon={<ArrowDownward />}>
+                    <Typography>Accordion 2</Typography>
+                  </AccordionSummary>
+                  <AccordionDetails>
+                    <Typography>
+                      This is the content of accordion 2.
+                    </Typography>
+                  </AccordionDetails>
+                </Accordion>
+              </Box>
+            </Stack>
+          </CardContent>
+        </Card>
+      </Box>
+
+      {/* Feedback Components */}
+      <Box sx={{ mt: 4 }}>
+        <Card>
+          <CardHeader>
+            <CardTitle>Feedback Components</CardTitle>
+            <CardDescription>Alerts, dialogs, and notifications</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Stack spacing={3}>
+              <Box>
+                <Typography variant="h6" gutterBottom>
+                  Alerts
+                </Typography>
+                <Stack spacing={1}>
+                  <Alert severity="success">
+                    <AlertTitle>Success</AlertTitle>
+                    This is a success alert.
+                  </Alert>
+                  <Alert severity="info">
+                    <AlertTitle>Info</AlertTitle>
+                    This is an info alert.
+                  </Alert>
+                  <Alert severity="warning">
+                    <AlertTitle>Warning</AlertTitle>
+                    This is a warning alert.
+                  </Alert>
+                  <Alert severity="error">
+                    <AlertTitle>Error</AlertTitle>
+                    This is an error alert.
+                  </Alert>
+                </Stack>
+              </Box>
+
+              <Box>
+                <Typography variant="h6" gutterBottom>
+                  Buttons for Dialogs & Menus
+                </Typography>
+                <Stack direction="row" spacing={2}>
+                  <Button variant="default" onClick={() => setDialogOpen(true)}>
+                    Open Dialog
+                  </Button>
+                  <Button variant="outline" onClick={(event) => setMenuAnchor(event.currentTarget)}>
+                    Open Menu
+                  </Button>
+                  <Button variant="secondary" onClick={() => setSnackbarOpen(true)}>
+                    Show Snackbar
+                  </Button>
+                </Stack>
+              </Box>
+
+              <Box>
+                <Typography variant="h6" gutterBottom>
+                  Floating Action Button
+                </Typography>
+                <Fab color="primary" aria-label="add">
+                  <Add />
+                </Fab>
+              </Box>
+            </Stack>
+          </CardContent>
+        </Card>
       </Box>
 
       {/* Dialogs and Menus */}

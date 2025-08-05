@@ -1,3 +1,5 @@
+import React from 'react';
+
 // Performance utilities for optimization
 
 // Debounce function for performance
@@ -87,7 +89,7 @@ export function analyzeBundleSize(): void {
   if (typeof window !== 'undefined') {
     const performance = window.performance;
     if (performance && performance.getEntriesByType) {
-      const resources = performance.getEntriesByType('resource');
+      const resources = performance.getEntriesByType('resource') as PerformanceResourceTiming[];
       const totalSize = resources.reduce((acc, resource) => {
         return acc + (resource.transferSize || 0);
       }, 0);
@@ -115,12 +117,9 @@ export function trackComponentPerformance(componentName: string) {
         console.log(`${componentName} render time: ${(endTime - startTime).toFixed(2)}ms`);
       });
       
-      return <Component {...props} />;
+      return React.createElement(Component, props);
     };
     
     return WrappedComponent as T;
   };
-}
-
-// Import React for the tracker
-import React from 'react'; 
+} 

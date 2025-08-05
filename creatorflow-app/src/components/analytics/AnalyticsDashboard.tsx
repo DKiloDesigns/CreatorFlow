@@ -1,43 +1,31 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { 
   Box, 
   Typography, 
-  Grid, 
   Button, 
-  Chip, 
-  CircularProgress,
-  Paper,
-  Container
+  Card, 
+  CardHeader, 
+  CardContent, 
+  Chip,
+  IconButton,
+  Tooltip,
+  CircularProgress
 } from '@mui/material';
 import { 
-  MuiCard,
-  MuiCardHeader,
-  MuiCardContent,
-  MuiCardTitle,
-  MuiButton,
-  MuiTabs,
-  MuiTab,
-  MuiTabPanel
-} from '@/components/ui/mui-components';
-import { 
   TrendingUp, 
-  Users, 
-  MessageSquare, 
+  TrendingDown, 
   Heart, 
-  Share2, 
-  BarChart3,
+  MessageSquare, 
+  Users, 
   Lightbulb,
   RefreshCw,
-  Calendar,
-  Target
+  BarChart3,
+  Target,
+  Zap
 } from 'lucide-react';
-import { AnalyticsOverview } from './AnalyticsOverview';
-import { EngagementChart } from './EngagementChart';
-import { PlatformBreakdown } from './PlatformBreakdown';
 import { InsightsPanel } from './InsightsPanel';
-import { TopPostsList } from './TopPostsList';
 
 interface AnalyticsData {
   userId: string;
@@ -219,7 +207,7 @@ export function AnalyticsDashboard() {
           width: { xs: '100%', sm: 'auto' },
           alignItems: { sm: 'center' }
         }}>
-          <MuiButton
+          <Button
             variant="outlined"
             onClick={loadAnalyticsData}
             disabled={refreshing}
@@ -237,8 +225,8 @@ export function AnalyticsDashboard() {
               animation: refreshing ? 'spin 1s linear infinite' : 'none'
             }} />
             Refresh
-          </MuiButton>
-          <MuiButton
+          </Button>
+          <Button
             onClick={refreshInsights}
             disabled={refreshing}
             sx={{ 
@@ -249,15 +237,15 @@ export function AnalyticsDashboard() {
           >
             <Lightbulb sx={{ width: 16, height: 16, mr: 1 }} />
             Generate Insights
-          </MuiButton>
+          </Button>
         </Box>
       </Box>
 
       {/* Overview Cards */}
-      <Grid container spacing={{ xs: 2, sm: 3 }}>
-        <Grid item xs={12} sm={6} lg={3}>
-          <MuiCard>
-            <MuiCardHeader
+      <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', lg: 'repeat(4, 1fr)' }, gap: { xs: 2, sm: 3 } }}>
+        <Box>
+          <Card>
+            <CardHeader
               sx={{ 
                 display: 'flex', 
                 flexDirection: 'row', 
@@ -266,25 +254,25 @@ export function AnalyticsDashboard() {
                 pb: 1
               }}
             >
-              <MuiCardTitle sx={{ fontSize: '0.875rem', fontWeight: 500, wordBreak: 'break-word' }}>
+              <Typography variant="h6" component="h3" sx={{ fontSize: '0.875rem', fontWeight: 500, wordBreak: 'break-word' }}>
                 Total Posts
-              </MuiCardTitle>
-              <MessageSquare sx={{ width: 16, height: 16, color: 'text.secondary', flexShrink: 0 }} />
-            </MuiCardHeader>
-            <MuiCardContent>
+              </Typography>
+              <MessageSquare style={{ width: 16, height: 16, color: 'var(--mui-palette-text-secondary)', flexShrink: 0 }} />
+            </CardHeader>
+            <CardContent>
               <Typography variant="h4" component="div" sx={{ fontWeight: 'bold' }}>
                 {analyticsData.overview.totalPosts}
               </Typography>
               <Typography variant="caption" sx={{ color: 'text.secondary', wordBreak: 'break-word' }}>
                 +{analyticsData.overview.growthRate}% from last month
               </Typography>
-            </MuiCardContent>
-          </MuiCard>
-        </Grid>
+            </CardContent>
+          </Card>
+        </Box>
 
-        <Grid item xs={12} sm={6} lg={3}>
-          <MuiCard>
-            <MuiCardHeader
+        <Box>
+          <Card>
+            <CardHeader
               sx={{ 
                 display: 'flex', 
                 flexDirection: 'row', 
@@ -293,25 +281,25 @@ export function AnalyticsDashboard() {
                 pb: 1
               }}
             >
-              <MuiCardTitle sx={{ fontSize: '0.875rem', fontWeight: 500, wordBreak: 'break-word' }}>
+              <Typography variant="h6" component="h3" sx={{ fontSize: '0.875rem', fontWeight: 500, wordBreak: 'break-word' }}>
                 Total Engagement
-              </MuiCardTitle>
-              <Heart sx={{ width: 16, height: 16, color: 'text.secondary', flexShrink: 0 }} />
-            </MuiCardHeader>
-            <MuiCardContent>
+              </Typography>
+              <Heart style={{ width: 16, height: 16, color: 'var(--mui-palette-text-secondary)', flexShrink: 0 }} />
+            </CardHeader>
+            <CardContent>
               <Typography variant="h4" component="div" sx={{ fontWeight: 'bold' }}>
                 {analyticsData.overview.totalEngagement.toLocaleString()}
               </Typography>
               <Typography variant="caption" sx={{ color: 'text.secondary', wordBreak: 'break-word' }}>
                 Likes, comments, shares
               </Typography>
-            </MuiCardContent>
-          </MuiCard>
-        </Grid>
+            </CardContent>
+          </Card>
+        </Box>
 
-        <Grid item xs={12} sm={6} lg={3}>
-          <MuiCard>
-            <MuiCardHeader
+        <Box>
+          <Card>
+            <CardHeader
               sx={{ 
                 display: 'flex', 
                 flexDirection: 'row', 
@@ -320,25 +308,25 @@ export function AnalyticsDashboard() {
                 pb: 1
               }}
             >
-              <MuiCardTitle sx={{ fontSize: '0.875rem', fontWeight: 500, wordBreak: 'break-word' }}>
+              <Typography variant="h6" component="h3" sx={{ fontSize: '0.875rem', fontWeight: 500, wordBreak: 'break-word' }}>
                 Avg Engagement Rate
-              </MuiCardTitle>
-              <TrendingUp sx={{ width: 16, height: 16, color: 'text.secondary', flexShrink: 0 }} />
-            </MuiCardHeader>
-            <MuiCardContent>
+              </Typography>
+              <TrendingUp style={{ width: 16, height: 16, color: 'var(--mui-palette-text-secondary)', flexShrink: 0 }} />
+            </CardHeader>
+            <CardContent>
               <Typography variant="h4" component="div" sx={{ fontWeight: 'bold' }}>
                 {analyticsData.overview.avgEngagementRate.toFixed(1)}%
               </Typography>
               <Typography variant="caption" sx={{ color: 'text.secondary', wordBreak: 'break-word' }}>
                 Per post average
               </Typography>
-            </MuiCardContent>
-          </MuiCard>
-        </Grid>
+            </CardContent>
+          </Card>
+        </Box>
 
-        <Grid item xs={12} sm={6} lg={3}>
-          <MuiCard>
-            <MuiCardHeader
+        <Box>
+          <Card>
+            <CardHeader
               sx={{ 
                 display: 'flex', 
                 flexDirection: 'row', 
@@ -347,56 +335,77 @@ export function AnalyticsDashboard() {
                 pb: 1
               }}
             >
-              <MuiCardTitle sx={{ fontSize: '0.875rem', fontWeight: 500, wordBreak: 'break-word' }}>
+              <Typography variant="h6" component="h3" sx={{ fontSize: '0.875rem', fontWeight: 500, wordBreak: 'break-word' }}>
                 Followers
-              </MuiCardTitle>
-              <Users sx={{ width: 16, height: 16, color: 'text.secondary', flexShrink: 0 }} />
-            </MuiCardHeader>
-            <MuiCardContent>
+              </Typography>
+              <Users style={{ width: 16, height: 16, color: 'var(--mui-palette-text-secondary)', flexShrink: 0 }} />
+            </CardHeader>
+            <CardContent>
               <Typography variant="h4" component="div" sx={{ fontWeight: 'bold' }}>
                 {analyticsData.overview.followers.toLocaleString()}
               </Typography>
               <Typography variant="caption" sx={{ color: 'text.secondary', wordBreak: 'break-word' }}>
                 Across all platforms
               </Typography>
-            </MuiCardContent>
-          </MuiCard>
-        </Grid>
-      </Grid>
+            </CardContent>
+          </Card>
+        </Box>
+      </Box>
 
-      {/* Tabs */}
-      <MuiTabs value={activeTab} onChange={(_, newValue) => setActiveTab(newValue)}>
-        <MuiTab label="Overview" />
-        <MuiTab label="Performance" />
-        <MuiTab label="Insights" />
-      </MuiTabs>
+      {/* Charts Section */}
+      <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', lg: '2fr 1fr' }, gap: 3, mt: 3 }}>
+        <Box>
+          <Card>
+            <CardHeader>
+              <Typography variant="h6" component="h3" sx={{ fontSize: '0.875rem', fontWeight: 500, wordBreak: 'break-word' }}>
+                Engagement Trends
+              </Typography>
+            </CardHeader>
+            <CardContent>
+              <Box sx={{ height: 300, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Typography variant="body2" color="text.secondary">
+                  Chart placeholder - Engagement trends over time
+                </Typography>
+              </Box>
+            </CardContent>
+          </Card>
+        </Box>
 
-      {/* Tab Panels */}
-      <MuiTabPanel value={activeTab} index={0}>
-        <AnalyticsOverview data={analyticsData} />
-      </MuiTabPanel>
+        <Box>
+          <Card>
+            <CardHeader>
+              <Typography variant="h6" component="h3" sx={{ fontSize: '0.875rem', fontWeight: 500, wordBreak: 'break-word' }}>
+                Platform Breakdown
+              </Typography>
+            </CardHeader>
+            <CardContent>
+              <Box sx={{ height: 300, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Typography variant="body2" color="text.secondary">
+                  Chart placeholder - Platform performance
+                </Typography>
+              </Box>
+            </CardContent>
+          </Card>
+        </Box>
+      </Box>
 
-      <MuiTabPanel value={activeTab} index={1}>
-        <Grid container spacing={3}>
-          <Grid item xs={12} lg={8}>
-            <EngagementChart data={analyticsData.trends} />
-          </Grid>
-          <Grid item xs={12} lg={4}>
-            <PlatformBreakdown data={analyticsData.performance.platformBreakdown} />
-          </Grid>
-          <Grid item xs={12}>
-            <TopPostsList posts={analyticsData.performance.topPosts} />
-          </Grid>
-        </Grid>
-      </MuiTabPanel>
-
-      <MuiTabPanel value={activeTab} index={2}>
-        <InsightsPanel 
-          insights={insights?.insights || []} 
-          onRefresh={refreshInsights}
-          refreshing={refreshing}
-        />
-      </MuiTabPanel>
+      {/* Insights Section */}
+      <Box sx={{ mt: 3 }}>
+        <Card>
+          <CardHeader>
+            <Typography variant="h6" component="h3" sx={{ fontSize: '0.875rem', fontWeight: 500, wordBreak: 'break-word' }}>
+              AI-Generated Insights
+            </Typography>
+          </CardHeader>
+          <CardContent>
+            <InsightsPanel 
+              insights={insights?.insights || []} 
+              onRefresh={refreshInsights}
+              refreshing={refreshing}
+            />
+          </CardContent>
+        </Card>
+      </Box>
     </Box>
   );
 } 

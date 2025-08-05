@@ -7,7 +7,6 @@ import {
   Box, 
   Container, 
   Typography, 
-  Grid, 
   Button, 
   TextField,
   Dialog,
@@ -17,8 +16,13 @@ import {
   Alert,
   Chip,
   Divider,
-  Paper
+  Paper,
+  Card,
+  CardHeader,
+  CardContent,
+  Tooltip
 } from '@mui/material';
+import { MuiStatsCard } from '@/components/ui/mui-stats-card';
 import { 
   FileText, 
   Users, 
@@ -33,22 +37,6 @@ import {
   Brain,
   CreditCard
 } from 'lucide-react';
-import { 
-  Card,
-  CardHeader,
-  CardContent,
-  CardTitle,
-  CardDescription,
-  Button as MuiButton,
-  MuiStatsCard,
-  MuiEnhancedNavigation,
-  Dialog as MuiDialog,
-  DialogTitle as MuiDialogTitle,
-  DialogContent as MuiDialogContent,
-  DialogActions as MuiDialogActions,
-  LoadingSpinner as MuiLoadingSpinner
-} from '@/components/ui/mui-components';
-import { Tooltip } from '@mui/material';
 import { Textarea } from '@/components/ui/textarea';
 import { NotificationBadge } from '@/components/ui/notification-badge';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
@@ -227,23 +215,27 @@ export default function DashboardPage() {
         <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', lg: '2fr 1fr' }, gap: { xs: 2, sm: 3 } }}>
           {/* Create Content */}
           <Box>
-            <MuiCard sx={{ border: 0 }}>
-              <MuiCardHeader>
-                <MuiCardTitle sx={{ 
-                  display: 'flex', 
-                  alignItems: 'center', 
-                  gap: 1,
-                  color: 'text.primary',
-                  wordBreak: 'break-word'
-                }}>
+            <Card sx={{ border: 0 }}>
+              <CardHeader>
+                <Typography 
+                  variant="h6" 
+                  component="h2" 
+                  sx={{ 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    gap: 1,
+                    color: 'text.primary',
+                    wordBreak: 'break-word'
+                  }}
+                >
                   <Plus sx={{ width: 20, height: 20, flexShrink: 0 }} />
                   Quick Actions
-                </MuiCardTitle>
-              </MuiCardHeader>
-              <MuiCardContent sx={{ display: 'flex', flexDirection: 'column', gap: { xs: 1.5, sm: 2 } }}>
+                </Typography>
+              </CardHeader>
+              <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: { xs: 1.5, sm: 2 } }}>
                 <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)' }, gap: { xs: 1, sm: 1.5 } }}>
                   <Box>
-                    <MuiButton 
+                    <Button 
                       variant="outlined"
                       fullWidth
                       sx={{
@@ -267,10 +259,10 @@ export default function DashboardPage() {
                       <Typography variant="body2" sx={{ wordBreak: 'break-word' }}>
                         Create Post
                       </Typography>
-                    </MuiButton>
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <MuiButton 
+                    </Button>
+                  </Box>
+                  <Box>
+                    <Button 
                       variant="outlined"
                       fullWidth
                       sx={{
@@ -294,10 +286,10 @@ export default function DashboardPage() {
                       <Typography variant="body2" sx={{ wordBreak: 'break-word' }}>
                         AI Tools
                       </Typography>
-                    </MuiButton>
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <MuiButton 
+                    </Button>
+                  </Box>
+                  <Box>
+                    <Button 
                       variant="outlined"
                       fullWidth
                       sx={{
@@ -321,10 +313,10 @@ export default function DashboardPage() {
                       <Typography variant="body2" sx={{ wordBreak: 'break-word' }}>
                         View Analytics
                       </Typography>
-                    </MuiButton>
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <MuiButton 
+                    </Button>
+                  </Box>
+                  <Box>
+                    <Button 
                       variant="outlined"
                       fullWidth
                       sx={{
@@ -348,22 +340,22 @@ export default function DashboardPage() {
                       <Typography variant="body2" sx={{ wordBreak: 'break-word' }}>
                         Manage Accounts
                       </Typography>
-                    </MuiButton>
-                  </Grid>
+                    </Button>
+                  </Box>
                 </Box>
-              </MuiCardContent>
-            </MuiCard>
+              </CardContent>
+            </Card>
           </Box>
 
           {/* Recent Activity */}
           <Box>
-            <MuiCard>
-              <MuiCardHeader>
-                <MuiCardTitle sx={{ color: 'text.primary' }}>
+            <Card>
+              <CardHeader>
+                <Typography variant="h6" component="h2" sx={{ color: 'text.primary' }}>
                   Recent Activity
-                </MuiCardTitle>
-              </MuiCardHeader>
-              <MuiCardContent>
+                </Typography>
+              </CardHeader>
+              <CardContent>
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                     <Box sx={{ 
@@ -399,22 +391,22 @@ export default function DashboardPage() {
                     </Typography>
                   </Box>
                 </Box>
-              </MuiCardContent>
-            </MuiCard>
+              </CardContent>
+            </Card>
           </Box>
         </Box>
 
         {/* Content Performance */}
-        <MuiCard>
-          <MuiCardHeader>
-            <MuiCardTitle sx={{ color: 'text.primary' }}>
+        <Card>
+          <CardHeader>
+            <Typography variant="h6" component="h2" sx={{ color: 'text.primary' }}>
               Content Performance
-            </MuiCardTitle>
-            <MuiCardDescription>
+            </Typography>
+            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
               Your top performing content this week
-            </MuiCardDescription>
-          </MuiCardHeader>
-          <MuiCardContent>
+            </Typography>
+          </CardHeader>
+          <CardContent>
             <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 2 }}>
               <Box>
                 <Paper sx={{ p: 2, display: 'flex', alignItems: 'center', gap: 2 }}>
@@ -444,8 +436,8 @@ export default function DashboardPage() {
                     variant="outlined"
                   />
                 </Paper>
-              </Grid>
-              <Grid item xs={12} md={6}>
+              </Box>
+              <Box>
                 <Paper sx={{ p: 2, display: 'flex', alignItems: 'center', gap: 2 }}>
                   <Box sx={{ 
                     width: 48, 
@@ -475,20 +467,20 @@ export default function DashboardPage() {
                 </Paper>
               </Box>
             </Box>
-          </MuiCardContent>
-        </MuiCard>
+          </CardContent>
+        </Card>
 
         {/* Welcome Dialog */}
-        <MuiDialog
+        <Dialog
           open={showWelcome}
           onClose={handleClose}
           maxWidth="sm"
           fullWidth
         >
-          <MuiDialogTitle>
+          <DialogTitle>
             Welcome to CreatorFlow! 🎉
-          </MuiDialogTitle>
-          <MuiDialogContent>
+          </DialogTitle>
+          <DialogContent>
             <Typography variant="body1" sx={{ mb: 2 }}>
               We're excited to help you grow your creator business. Here's what you can do to get started:
             </Typography>
@@ -506,28 +498,28 @@ export default function DashboardPage() {
                 Set up your monetization dashboard
               </Typography>
             </Box>
-          </MuiDialogContent>
-          <MuiDialogActions>
-            <MuiButton onClick={handleClose} variant="outlined">
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} variant="outlined">
               Got it!
-            </MuiButton>
-            <MuiButton onClick={() => router.push('/dashboard/accounts')} variant="contained">
+            </Button>
+            <Button onClick={() => router.push('/dashboard/accounts')} variant="contained">
               Connect Accounts
-            </MuiButton>
-          </MuiDialogActions>
-        </MuiDialog>
+            </Button>
+          </DialogActions>
+        </Dialog>
 
         {/* Feedback Dialog */}
-        <MuiDialog
+        <Dialog
           open={showGettingStarted}
           onClose={() => setShowGettingStarted(false)}
           maxWidth="sm"
           fullWidth
         >
-          <MuiDialogTitle>
+          <DialogTitle>
             How's CreatorFlow working for you?
-          </MuiDialogTitle>
-          <MuiDialogContent>
+          </DialogTitle>
+          <DialogContent>
             <TextField
               fullWidth
               multiline
@@ -537,16 +529,16 @@ export default function DashboardPage() {
               onChange={(e) => setFeedback(e.target.value)}
               sx={{ mt: 1 }}
             />
-          </MuiDialogContent>
-          <MuiDialogActions>
-            <MuiButton onClick={() => setShowGettingStarted(false)} variant="outlined">
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setShowGettingStarted(false)} variant="outlined">
               Cancel
-            </MuiButton>
-            <MuiButton onClick={handleFeedbackSubmit} variant="contained">
+            </Button>
+            <Button onClick={handleFeedbackSubmit} variant="contained">
               Submit Feedback
-            </MuiButton>
-          </MuiDialogActions>
-        </MuiDialog>
+            </Button>
+          </DialogActions>
+        </Dialog>
 
         <FeedbackWidget />
       </Box>

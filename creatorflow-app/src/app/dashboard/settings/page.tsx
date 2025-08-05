@@ -276,115 +276,50 @@ export default function SettingsPage() {
                 </Box>
               </CardContent>
             </Card>
-          </Grid>
+          </Box>
 
           {/* Notification Settings */}
           <Box>
             <Card>
               <CardHeader
-                title="Notification Preferences"
+                title="Notification Settings"
                 titleTypographyProps={{ variant: 'h6', fontWeight: 'bold' }}
                 avatar={<Bell style={{ width: 20, height: 20 }} />}
               />
               <CardContent>
-                <Box component="form" onSubmit={handleNotifPrefSave} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                  {/* Basic Notification Settings */}
-                  <FormGroup>
-                    <FormControlLabel
-                      control={
-                        <Switch
-                          checked={form.notifications.email}
-                          onChange={(e) => handleNotifChange('email', e.target.checked)}
-                        />
-                      }
-                      label="Email Notifications"
-                    />
-                    <FormControlLabel
-                      control={
-                        <Switch
-                          checked={form.notifications.push}
-                          onChange={(e) => handleNotifChange('push', e.target.checked)}
-                        />
-                      }
-                      label="Push Notifications"
-                    />
-                    <FormControlLabel
-                      control={
-                        <Switch
-                          checked={form.notifications.sms}
-                          onChange={(e) => handleNotifChange('sms', e.target.checked)}
-                        />
-                      }
-                      label="SMS Notifications"
-                    />
-                  </FormGroup>
-
-                  <Divider sx={{ my: 2 }} />
-
-                  {/* Detailed Notification Preferences */}
-                  {!notifLoading && (
-                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                      <Typography variant="subtitle2" sx={{ fontWeight: 'bold' }}>
-                        Notification Types
-                      </Typography>
-                      
-                      {NOTIF_TYPES.map((type) => (
-                        <Box key={type.key} sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-                          <Typography variant="body2" sx={{ fontWeight: 500 }}>
-                            {type.label}
-                          </Typography>
-                          <Box sx={{ display: 'flex', gap: 2 }}>
-                            {NOTIF_CHANNELS.map((channel) => (
-                              <FormControlLabel
-                                key={channel.key}
-                                control={
-                                  <Switch
-                                    size="small"
-                                    checked={notifPrefs[type.key]?.[channel.key] || false}
-                                    onChange={(e) => handleNotifPrefChange(type.key, channel.key, e.target.checked)}
-                                  />
-                                }
-                                label={channel.label}
-                                sx={{ minWidth: 100 }}
-                              />
-                            ))}
-                          </Box>
-                        </Box>
-                      ))}
-                    </Box>
-                  )}
-
-                  {/* Loading State */}
-                  {notifLoading && (
-                    <Box sx={{ display: 'flex', justifyContent: 'center', py: 2 }}>
-                      <CircularProgress size={24} />
-                    </Box>
-                  )}
-
-                  {/* Error/Success Messages */}
-                  {notifError && (
-                    <Alert severity="error">
-                      <AlertTitle>Error</AlertTitle>
-                      {notifError}
-                    </Alert>
-                  )}
-
-                  {notifSuccess && (
-                    <Alert severity="success">
-                      <AlertTitle>Success</AlertTitle>
-                      Notification preferences updated!
-                    </Alert>
-                  )}
-
-                  {/* Save Button */}
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    disabled={notifLoading}
-                    sx={{ mt: 2 }}
-                  >
-                    {notifLoading ? 'Saving...' : 'Save Notification Preferences'}
-                  </Button>
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                  <FormControl component="fieldset">
+                    <FormLabel component="legend">Notification Types</FormLabel>
+                    <FormGroup>
+                      <FormControlLabel
+                        control={
+                          <Switch
+                            checked={form.notifications.email}
+                            onChange={(e) => handleNotifChange('email', e.target.checked)}
+                          />
+                        }
+                        label="Email Notifications"
+                      />
+                      <FormControlLabel
+                        control={
+                          <Switch
+                            checked={form.notifications.push}
+                            onChange={(e) => handleNotifChange('push', e.target.checked)}
+                          />
+                        }
+                        label="Push Notifications"
+                      />
+                      <FormControlLabel
+                        control={
+                          <Switch
+                            checked={form.notifications.sms}
+                            onChange={(e) => handleNotifChange('sms', e.target.checked)}
+                          />
+                        }
+                        label="SMS Notifications"
+                      />
+                    </FormGroup>
+                  </FormControl>
                 </Box>
               </CardContent>
             </Card>

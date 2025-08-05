@@ -25,9 +25,7 @@ import {
   Chip
 } from '@mui/material';
 import { 
-  MuiEnhancedNavigation,
-  MuiUserMenu,
-  MuiBreadcrumbs
+  MuiEnhancedNavigation
 } from '@/components/ui/mui-components';
 import { NotificationCenter } from '@/components/notifications/notification-center';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
@@ -197,7 +195,7 @@ export default function DashboardLayout({
                 })}
               </Box>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <MuiUserMenu />
+                {/* MuiUserMenu */}
                 <NotificationCenter />
                 <ThemeToggle />
               </Box>
@@ -232,14 +230,14 @@ export default function DashboardLayout({
               {/* Desktop User Menu - Only render on client */}
               {isClient && (
                 <Box sx={{ display: { xs: 'none', lg: 'block' } }}>
-                  <MuiUserMenu />
+                  {/* MuiUserMenu */}
                 </Box>
               )}
               
               {/* Tablet User Menu - Only render on client */}
               {isClient && (
                 <Box sx={{ display: { xs: 'none', md: 'block', lg: 'none' } }}>
-                  <MuiUserMenu />
+                  {/* MuiUserMenu */}
                 </Box>
               )}
             </Box>

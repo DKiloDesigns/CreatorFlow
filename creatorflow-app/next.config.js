@@ -42,10 +42,6 @@ const nextConfig = {
     
     return config
   },
-  // Bundle analyzer configuration
-  experimental: {
-    bundlePagesRouterDependencies: true,
-  },
   // Performance optimizations
   compress: true,
   poweredByHeader: false,
