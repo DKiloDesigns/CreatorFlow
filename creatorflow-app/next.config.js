@@ -12,12 +12,44 @@ const nextConfig = {
         }
       }
     }
+    
+    // Bundle optimization
+    config.optimization = {
+      ...config.optimization,
+      splitChunks: {
+        chunks: 'all',
+        cacheGroups: {
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+            chunks: 'all',
+          },
+          mui: {
+            test: /[\\/]node_modules[\\/]@mui[\\/]/,
+            name: 'mui',
+            chunks: 'all',
+            priority: 20,
+          },
+          common: {
+            name: 'common',
+            minChunks: 2,
+            chunks: 'all',
+            priority: 10,
+          },
+        },
+      },
+    };
+    
     return config
   },
   // Bundle analyzer configuration
   experimental: {
-    bundlePagesExternals: true,
-  }
+    bundlePagesRouterDependencies: true,
+  },
+  // Performance optimizations
+  compress: true,
+  poweredByHeader: false,
+  generateEtags: false,
 };
 
 export default nextConfig;

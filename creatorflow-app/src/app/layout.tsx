@@ -4,6 +4,8 @@ import "../globals.css";
 import { Providers } from "./providers";
 import { RealTimeNotificationProvider } from "@/components/notifications/real-time-provider";
 import { PerformanceMonitor } from "@/components/PerformanceMonitor";
+import { ServiceWorkerRegistration } from "@/components/ServiceWorkerRegistration";
+import { CriticalCSS } from "@/components/CriticalCSS";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,11 +21,15 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <CriticalCSS />
+      </head>
       <body className={inter.className}>
         <Providers>
           <RealTimeNotificationProvider>
             {children}
             <PerformanceMonitor />
+            <ServiceWorkerRegistration />
           </RealTimeNotificationProvider>
         </Providers>
       </body>
