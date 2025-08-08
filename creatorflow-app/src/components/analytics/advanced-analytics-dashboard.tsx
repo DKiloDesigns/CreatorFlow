@@ -209,7 +209,7 @@ export function AdvancedAnalyticsDashboard({
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Posts</CardTitle>
+            <Typography variant="h6" className="text-sm font-medium">Total Posts</Typography>
             <BarChart3 className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -222,7 +222,7 @@ export function AdvancedAnalyticsDashboard({
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Engagement</CardTitle>
+            <Typography variant="h6" className="text-sm font-medium">Total Engagement</Typography>
             <Heart className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -235,7 +235,7 @@ export function AdvancedAnalyticsDashboard({
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Avg Engagement Rate</CardTitle>
+            <Typography variant="h6" className="text-sm font-medium">Avg Engagement Rate</Typography>
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -248,7 +248,7 @@ export function AdvancedAnalyticsDashboard({
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Reach</CardTitle>
+            <Typography variant="h6" className="text-sm font-medium">Total Reach</Typography>
             <Eye className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -273,7 +273,7 @@ export function AdvancedAnalyticsDashboard({
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
-                <CardTitle>Engagement Trends</CardTitle>
+                <Typography variant="h6">Engagement Trends</Typography>
                 <CardDescription>Your engagement over time</CardDescription>
               </CardHeader>
               <CardContent>
@@ -285,7 +285,7 @@ export function AdvancedAnalyticsDashboard({
 
             <Card>
               <CardHeader>
-                <CardTitle>Audience Growth</CardTitle>
+                <Typography variant="h6">Audience Growth</Typography>
                 <CardDescription>Follower growth and engagement</CardDescription>
               </CardHeader>
               <CardContent>
@@ -300,7 +300,7 @@ export function AdvancedAnalyticsDashboard({
         <TabsContent value="platforms" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>Platform Performance</CardTitle>
+              <Typography variant="h6">Platform Performance</Typography>
               <CardDescription>How your content performs across different platforms</CardDescription>
             </CardHeader>
             <CardContent>
@@ -331,7 +331,7 @@ export function AdvancedAnalyticsDashboard({
         <TabsContent value="performance" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>Recent Performance</CardTitle>
+              <Typography variant="h6">Recent Performance</Typography>
               <CardDescription>Daily performance metrics</CardDescription>
             </CardHeader>
             <CardContent>
@@ -366,7 +366,7 @@ export function AdvancedAnalyticsDashboard({
         <TabsContent value="top-posts" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>Top Performing Posts</CardTitle>
+              <Typography variant="h6">Top Performing Posts</Typography>
               <CardDescription>Your best performing content</CardDescription>
             </CardHeader>
             <CardContent>

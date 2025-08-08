@@ -277,7 +277,7 @@ export default function TestingPage() {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Tests</CardTitle>
+            <Typography variant="h6" className="text-sm font-medium">Total Tests</Typography>
             <TestTube className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -290,7 +290,7 @@ export default function TestingPage() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Passed Tests</CardTitle>
+            <Typography variant="h6" className="text-sm font-medium">Passed Tests</Typography>
             <CheckCircle className="h-4 w-4 text-green-600" />
           </CardHeader>
           <CardContent>
@@ -305,7 +305,7 @@ export default function TestingPage() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Success Rate</CardTitle>
+            <Typography variant="h6" className="text-sm font-medium">Success Rate</Typography>
             <TrendingUp className="h-4 w-4 text-blue-600" />
           </CardHeader>
           <CardContent>
@@ -320,7 +320,7 @@ export default function TestingPage() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Avg Duration</CardTitle>
+            <Typography variant="h6" className="text-sm font-medium">Avg Duration</Typography>
             <Clock className="h-4 w-4 text-purple-600" />
           </CardHeader>
           <CardContent>
@@ -347,10 +347,10 @@ export default function TestingPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
+                <Typography variant="h6" className="flex items-center gap-2">
                   <BarChart3 className="h-5 w-5" />
                   Test Categories
-                </CardTitle>
+                </Typography>
                 <CardDescription>
                   Distribution of test types and categories
                 </CardDescription>
@@ -380,10 +380,10 @@ export default function TestingPage() {
 
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
+                <Typography variant="h6" className="flex items-center gap-2">
                   <Activity className="h-5 w-5" />
                   Recent Test Results
-                </CardTitle>
+                </Typography>
                 <CardDescription>
                   Latest test executions and outcomes
                 </CardDescription>
@@ -428,10 +428,10 @@ export default function TestingPage() {
         <TabsContent value="suites" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+              <Typography variant="h6" className="flex items-center gap-2">
                 <TestTube className="h-5 w-5" />
                 Test Suites
-              </CardTitle>
+              </Typography>
               <CardDescription>
                 Manage and execute test suites
               </CardDescription>
@@ -482,10 +482,10 @@ export default function TestingPage() {
         <TabsContent value="results" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+              <Typography variant="h6" className="flex items-center gap-2">
                 <FileText className="h-5 w-5" />
                 Test Results
-              </CardTitle>
+              </Typography>
               <CardDescription>
                 Detailed test execution results and history
               </CardDescription>
@@ -534,10 +534,10 @@ export default function TestingPage() {
         <TabsContent value="performance" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+              <Typography variant="h6" className="flex items-center gap-2">
                 <Zap className="h-5 w-5" />
                 Performance Tests
-              </CardTitle>
+              </Typography>
               <CardDescription>
                 Performance testing results and benchmarks
               </CardDescription>
@@ -591,10 +591,10 @@ export default function TestingPage() {
         <TabsContent value="security" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+              <Typography variant="h6" className="flex items-center gap-2">
                 <Shield className="h-5 w-5" />
                 Security Tests
-              </CardTitle>
+              </Typography>
               <CardDescription>
                 Security testing results and vulnerability assessments
               </CardDescription>

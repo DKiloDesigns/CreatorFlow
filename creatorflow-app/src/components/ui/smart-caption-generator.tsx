@@ -359,10 +359,10 @@ Which tip resonates most with you? 🤔
       {/* Input Section */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
+          <Typography variant="h6" className="flex items-center gap-2">
             <Sparkles className="w-5 h-5" />
             Smart Caption Generator
-          </CardTitle>
+          </Typography>
           <CardDescription>
             Generate platform-optimized captions with AI-powered engagement analysis
           </CardDescription>
@@ -686,10 +686,10 @@ Which tip resonates most with you? 🤔
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <Card>
                     <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
+                      <Typography variant="h6" className="flex items-center gap-2">
                         <Brain className="w-5 h-5" />
                         Content Analysis
-                      </CardTitle>
+                      </Typography>
                     </CardHeader>
                     <CardContent className="space-y-4">
                       <div className="space-y-3">
@@ -729,10 +729,10 @@ Which tip resonates most with you? 🤔
 
                   <Card>
                     <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
+                      <Typography variant="h6" className="flex items-center gap-2">
                         <BarChart3 className="w-5 h-5" />
                         Performance Metrics
-                      </CardTitle>
+                      </Typography>
                     </CardHeader>
                     <CardContent className="space-y-4">
                       <div className="space-y-3">
@@ -766,10 +766,10 @@ Which tip resonates most with you? 🤔
             <TabsContent value="comparison" className="space-y-4">
               <Card>
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
+                  <Typography variant="h6" className="flex items-center gap-2">
                     <Target className="w-5 h-5" />
                     A/B Testing Comparison
-                  </CardTitle>
+                  </Typography>
                   <CardDescription>
                     Compare variants to choose the best performing option
                   </CardDescription>

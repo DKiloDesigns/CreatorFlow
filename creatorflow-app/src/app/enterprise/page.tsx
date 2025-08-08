@@ -193,7 +193,7 @@ export default function EnterprisePage() {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Teams</CardTitle>
+            <Typography variant="h6" className="text-sm font-medium">Total Teams</Typography>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -206,7 +206,7 @@ export default function EnterprisePage() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Team Members</CardTitle>
+            <Typography variant="h6" className="text-sm font-medium">Team Members</Typography>
             <Users2 className="h-4 w-4 text-blue-600" />
           </CardHeader>
           <CardContent>
@@ -221,7 +221,7 @@ export default function EnterprisePage() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Pending Approvals</CardTitle>
+            <Typography variant="h6" className="text-sm font-medium">Pending Approvals</Typography>
             <Clock className="h-4 w-4 text-yellow-600" />
           </CardHeader>
           <CardContent>
@@ -236,7 +236,7 @@ export default function EnterprisePage() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Approval Rate</CardTitle>
+            <Typography variant="h6" className="text-sm font-medium">Approval Rate</Typography>
             <TrendingUp className="h-4 w-4 text-green-600" />
           </CardHeader>
           <CardContent>
@@ -262,10 +262,10 @@ export default function EnterprisePage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
+                <Typography variant="h6" className="flex items-center gap-2">
                   <Users className="h-5 w-5" />
                   Recent Teams
-                </CardTitle>
+                </Typography>
                 <CardDescription>
                   Your most recently active teams
                 </CardDescription>
@@ -295,10 +295,10 @@ export default function EnterprisePage() {
 
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
+                <Typography variant="h6" className="flex items-center gap-2">
                   <CheckCircle className="h-5 w-5" />
                   Recent Approvals
-                </CardTitle>
+                </Typography>
                 <CardDescription>
                   Latest approval requests and decisions
                 </CardDescription>
@@ -335,10 +335,10 @@ export default function EnterprisePage() {
         <TabsContent value="teams" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+              <Typography variant="h6" className="flex items-center gap-2">
                 <Users className="h-5 w-5" />
                 Teams
-              </CardTitle>
+              </Typography>
               <CardDescription>
                 Manage your teams and team members
               </CardDescription>
@@ -387,10 +387,10 @@ export default function EnterprisePage() {
         <TabsContent value="approvals" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+              <Typography variant="h6" className="flex items-center gap-2">
                 <CheckCircle className="h-5 w-5" />
                 Approval Requests
-              </CardTitle>
+              </Typography>
               <CardDescription>
                 Review and manage content approval requests
               </CardDescription>
@@ -449,10 +449,10 @@ export default function EnterprisePage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
+                <Typography variant="h6" className="flex items-center gap-2">
                   <BarChart3 className="h-5 w-5" />
                   Team Performance
-                </CardTitle>
+                </Typography>
                 <CardDescription>
                   Key metrics and performance indicators
                 </CardDescription>
@@ -481,10 +481,10 @@ export default function EnterprisePage() {
 
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
+                <Typography variant="h6" className="flex items-center gap-2">
                   <TrendingUp className="h-5 w-5" />
                   Activity Trends
-                </CardTitle>
+                </Typography>
                 <CardDescription>
                   Recent activity and engagement trends
                 </CardDescription>

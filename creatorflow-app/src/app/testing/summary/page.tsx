@@ -329,10 +329,10 @@ export default function TestingSummaryPage() {
       {/* Overall Progress */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
+          <Typography variant="h6" className="flex items-center gap-2">
             <TrendingUp className="h-5 w-5" />
             Overall Project Progress
-          </CardTitle>
+          </Typography>
           <CardDescription>
             Complete feature development and testing status
           </CardDescription>
@@ -370,10 +370,10 @@ export default function TestingSummaryPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
+            <Typography variant="h6" className="flex items-center gap-2">
               <BarChart3 className="h-5 w-5" />
               Test Results by Category
-            </CardTitle>
+            </Typography>
             <CardDescription>
               Detailed breakdown of test results across all categories
             </CardDescription>
@@ -417,10 +417,10 @@ export default function TestingSummaryPage() {
 
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2">
+            <Typography variant="h6" className="flex items-center gap-2">
               <Activity className="h-5 w-5" />
               Feature Status Overview
-            </CardTitle>
+            </Typography>
             <CardDescription>
               Development and testing status of all major features
             </CardDescription>
@@ -468,10 +468,10 @@ export default function TestingSummaryPage() {
       {/* Quality Metrics */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
+          <Typography variant="h6" className="flex items-center gap-2">
             <Target className="h-5 w-5" />
             Quality Assurance Metrics
-          </CardTitle>
+          </Typography>
           <CardDescription>
             Key performance indicators and quality metrics
           </CardDescription>
@@ -506,10 +506,10 @@ export default function TestingSummaryPage() {
       {/* Final Recommendations */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
+          <Typography variant="h6" className="flex items-center gap-2">
             <CheckCircle className="h-5 w-5" />
             Final Recommendations
-          </CardTitle>
+          </Typography>
           <CardDescription>
             Quality assurance recommendations and next steps
           </CardDescription>

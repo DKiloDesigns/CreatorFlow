@@ -40,11 +40,7 @@ const StyledCardActions = styled(MuiCardActions)(({ theme }) => ({
   paddingTop: theme.spacing(1.5),
 }));
 
-// Styled Typography for titles
-const StyledCardTitle = styled(Typography)<TypographyProps>(({ theme }) => ({
-  fontWeight: 600,
-  lineHeight: 1.2,
-}));
+
 
 // Styled Typography for descriptions
 const StyledCardDescription = styled(Typography)<TypographyProps>(({ theme }) => ({
@@ -76,13 +72,7 @@ export function CardHeader({ className, children, ...props }: CardHeaderProps) {
   );
 }
 
-export function CardTitle({ className, children, ...props }: TypographyProps) {
-  return (
-    <StyledCardTitle variant="h6" className={className} {...props}>
-      {children}
-    </StyledCardTitle>
-  );
-}
+
 
 export function CardDescription({ className, children, ...props }: TypographyProps) {
   return (

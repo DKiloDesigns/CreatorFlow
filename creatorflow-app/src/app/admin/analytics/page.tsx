@@ -5,7 +5,7 @@ import {
   Card, 
   CardContent, 
   CardHeader, 
-  CardTitle,
+
   Button,
   Box,
   Typography,
@@ -72,12 +72,12 @@ export default function AdminAnalyticsPage() {
         </select>
       </div>
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-        <Card><CardHeader><CardTitle>Total Users</CardTitle></CardHeader><CardContent><div className="text-2xl font-bold">{data.totalUsers}</div></CardContent></Card>
-        <Card><CardHeader><CardTitle>New Users (7d)</CardTitle></CardHeader><CardContent><div className="text-2xl font-bold">{data.newUsersThisWeek}</div></CardContent></Card>
-        <Card><CardHeader><CardTitle>Total Feedback</CardTitle></CardHeader><CardContent><div className="text-2xl font-bold">{data.totalFeedback}</div></CardContent></Card>
-        <Card><CardHeader><CardTitle>New Feedback (7d)</CardTitle></CardHeader><CardContent><div className="text-2xl font-bold">{data.newFeedbackThisWeek}</div></CardContent></Card>
-        <Card><CardHeader><CardTitle>Total Posts</CardTitle></CardHeader><CardContent><div className="text-2xl font-bold">{data.totalPosts}</div></CardContent></Card>
-        <Card><CardHeader><CardTitle>New Posts (7d)</CardTitle></CardHeader><CardContent><div className="text-2xl font-bold">{data.newPostsThisWeek}</div></CardContent></Card>
+        <Card><CardHeader><Typography variant="h6">Total Users</Typography></CardHeader><CardContent><div className="text-2xl font-bold">{data.totalUsers}</div></CardContent></Card>
+        <Card><CardHeader><Typography variant="h6">New Users (7d)</Typography></CardHeader><CardContent><div className="text-2xl font-bold">{data.newUsersThisWeek}</div></CardContent></Card>
+        <Card><CardHeader><Typography variant="h6">Total Feedback</Typography></CardHeader><CardContent><div className="text-2xl font-bold">{data.totalFeedback}</div></CardContent></Card>
+        <Card><CardHeader><Typography variant="h6">New Feedback (7d)</Typography></CardHeader><CardContent><div className="text-2xl font-bold">{data.newFeedbackThisWeek}</div></CardContent></Card>
+        <Card><CardHeader><Typography variant="h6">Total Posts</Typography></CardHeader><CardContent><div className="text-2xl font-bold">{data.totalPosts}</div></CardContent></Card>
+        <Card><CardHeader><Typography variant="h6">New Posts (7d)</Typography></CardHeader><CardContent><div className="text-2xl font-bold">{data.newPostsThisWeek}</div></CardContent></Card>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
         <AnalyticsChart title="User Signups" data={toChartData(data.userSeries)} type="line" loading={loading} />
@@ -88,7 +88,7 @@ export default function AdminAnalyticsPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
         <AnalyticsChart title="Posts by Platform" data={toPieData(data.platformBreakdown)} type="pie" loading={loading} />
         <Card>
-          <CardHeader><CardTitle>Top Users by Posts</CardTitle></CardHeader>
+          <CardHeader><Typography variant="h6">Top Users by Posts</Typography></CardHeader>
           <CardContent>
             <ol className="list-decimal ml-6 space-y-1">
               {data.topUsers.map((u: any) => (
@@ -98,7 +98,7 @@ export default function AdminAnalyticsPage() {
           </CardContent>
         </Card>
         <Card>
-          <CardHeader><CardTitle>Top Users by Engagement</CardTitle></CardHeader>
+          <CardHeader><Typography variant="h6">Top Users by Engagement</Typography></CardHeader>
           <CardContent>
             <ol className="list-decimal ml-6 space-y-1">
               {data.topEngagementUsers.map((u: any) => (

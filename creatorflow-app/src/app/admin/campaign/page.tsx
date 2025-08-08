@@ -5,7 +5,7 @@ import {
   Card, 
   CardContent, 
   CardHeader, 
-  CardTitle,
+
   Button,
   Chip,
   Box,
@@ -155,7 +155,7 @@ export default function CampaignDashboard() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Campaign Usage</CardTitle>
+            <Typography variant="h6" className="text-sm font-medium">Campaign Usage</Typography>
             <Target className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -173,7 +173,7 @@ export default function CampaignDashboard() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Trial Users</CardTitle>
+            <Typography variant="h6" className="text-sm font-medium">Trial Users</Typography>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -186,7 +186,7 @@ export default function CampaignDashboard() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Conversions</CardTitle>
+            <Typography variant="h6" className="text-sm font-medium">Conversions</Typography>
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -199,7 +199,7 @@ export default function CampaignDashboard() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">User Engagement</CardTitle>
+            <Typography variant="h6" className="text-sm font-medium">User Engagement</Typography>
             <Activity className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -224,7 +224,7 @@ export default function CampaignDashboard() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
-                <CardTitle>Campaign Status</CardTitle>
+                <Typography variant="h6">Campaign Status</Typography>
                 <CardDescription>EARLYBIRD100 campaign details</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -251,7 +251,7 @@ export default function CampaignDashboard() {
 
             <Card>
               <CardHeader>
-                <CardTitle>Platform Usage</CardTitle>
+                <Typography variant="h6">Platform Usage</Typography>
                 <CardDescription>Social accounts connected by trial users</CardDescription>
               </CardHeader>
               <CardContent>
@@ -271,7 +271,7 @@ export default function CampaignDashboard() {
         <TabsContent value="users" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>Trial Users ({data.trialUsers.total})</CardTitle>
+              <Typography variant="h6">Trial Users ({data.trialUsers.total})</Typography>
               <CardDescription>Users who signed up with EARLYBIRD100</CardDescription>
             </CardHeader>
             <CardContent>
@@ -297,7 +297,7 @@ export default function CampaignDashboard() {
         <TabsContent value="conversions" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>Converted Users ({data.conversions.total})</CardTitle>
+              <Typography variant="h6">Converted Users ({data.conversions.total})</Typography>
               <CardDescription>Users who upgraded from trial to paid</CardDescription>
             </CardHeader>
             <CardContent>
@@ -322,7 +322,7 @@ export default function CampaignDashboard() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
-                <CardTitle>Daily Signups</CardTitle>
+                <Typography variant="h6">Daily Signups</Typography>
                 <CardDescription>New trial users per day</CardDescription>
               </CardHeader>
               <CardContent>
@@ -339,7 +339,7 @@ export default function CampaignDashboard() {
 
             <Card>
               <CardHeader>
-                <CardTitle>Monthly Revenue</CardTitle>
+                <Typography variant="h6">Monthly Revenue</Typography>
                 <CardDescription>Estimated revenue from conversions</CardDescription>
               </CardHeader>
               <CardContent>

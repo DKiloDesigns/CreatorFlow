@@ -594,10 +594,10 @@ export function OptimalPostingTimePredictor({ provider }: OptimalPostingTimePred
             <TabsContent value="behavior" className="space-y-4">
               <Card>
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
+                  <Typography variant="h6" className="flex items-center gap-2">
                     <Users className="w-5 h-5" />
                     Audience Behavior Analysis
-                  </CardTitle>
+                  </Typography>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">

@@ -196,7 +196,7 @@ export default function AnalyticsPage() {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Events</CardTitle>
+              <Typography variant="h6" className="text-sm font-medium">Total Events</Typography>
               <BarChart3 className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -209,7 +209,7 @@ export default function AnalyticsPage() {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Platform Usage</CardTitle>
+              <Typography variant="h6" className="text-sm font-medium">Platform Usage</Typography>
               <Zap className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -237,10 +237,10 @@ export default function AnalyticsPage() {
         <TabsContent value="insights" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+              <Typography variant="h6" className="flex items-center gap-2">
                 <Brain className="h-5 w-5" />
                 AI-Powered Insights
-              </CardTitle>
+              </Typography>
               <CardDescription>
                 Intelligent recommendations and trend analysis
               </CardDescription>
@@ -299,10 +299,10 @@ export default function AnalyticsPage() {
         <TabsContent value="predictive" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+              <Typography variant="h6" className="flex items-center gap-2">
                 <TrendingUp className="h-5 w-5" />
                 Predictive Analytics
-              </CardTitle>
+              </Typography>
               <CardDescription>
                 AI-powered predictions and trend forecasting
               </CardDescription>
@@ -345,10 +345,10 @@ export default function AnalyticsPage() {
         <TabsContent value="segments" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+              <Typography variant="h6" className="flex items-center gap-2">
                 <Users className="h-5 w-5" />
                 User Segments
-              </CardTitle>
+              </Typography>
               <CardDescription>
                 AI-identified user groups and behavior patterns
               </CardDescription>
@@ -411,10 +411,10 @@ export default function AnalyticsPage() {
         <TabsContent value="funnel" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+              <Typography variant="h6" className="flex items-center gap-2">
                 <Target className="h-5 w-5" />
                 Conversion Funnel
-              </CardTitle>
+              </Typography>
               <CardDescription>
                 User journey analysis and conversion optimization
               </CardDescription>

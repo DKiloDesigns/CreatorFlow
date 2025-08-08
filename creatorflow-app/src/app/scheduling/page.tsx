@@ -220,10 +220,10 @@ export default function SchedulingPage() {
               {/* Schedule Form */}
               <Card>
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
+                  <Typography variant="h6" className="flex items-center gap-2">
                     <Calendar className="h-5 w-5" />
                     Create Schedule
-                  </CardTitle>
+                  </Typography>
                   <CardDescription>
                     Schedule your content with AI-powered optimal timing
                   </CardDescription>
@@ -333,10 +333,10 @@ export default function SchedulingPage() {
               {/* Optimal Times Preview */}
               <Card>
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
+                  <Typography variant="h6" className="flex items-center gap-2">
                     <Activity className="h-5 w-5" />
                     Optimal Posting Times
-                  </CardTitle>
+                  </Typography>
                   <CardDescription>
                     AI-recommended times based on your audience engagement
                   </CardDescription>
@@ -367,7 +367,7 @@ export default function SchedulingPage() {
           <TabsContent value="scheduled" className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>Scheduled Posts</CardTitle>
+                <Typography variant="h6">Scheduled Posts</Typography>
                 <CardDescription>
                   Manage your scheduled content
                 </CardDescription>
@@ -420,7 +420,7 @@ export default function SchedulingPage() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Scheduled Posts</CardTitle>
+                    <Typography variant="h6" className="text-sm font-medium">Scheduled Posts</Typography>
                     <Calendar className="h-4 w-4 text-muted-foreground" />
                   </CardHeader>
                   <CardContent>
@@ -433,7 +433,7 @@ export default function SchedulingPage() {
 
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Published Posts</CardTitle>
+                    <Typography variant="h6" className="text-sm font-medium">Published Posts</Typography>
                     <Play className="h-4 w-4 text-muted-foreground" />
                   </CardHeader>
                   <CardContent>
@@ -446,7 +446,7 @@ export default function SchedulingPage() {
 
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Avg Engagement</CardTitle>
+                    <Typography variant="h6" className="text-sm font-medium">Avg Engagement</Typography>
                     <TrendingUp className="h-4 w-4 text-muted-foreground" />
                   </CardHeader>
                   <CardContent>
@@ -467,7 +467,7 @@ export default function SchedulingPage() {
           <TabsContent value="optimal" className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>Optimal Posting Times Analysis</CardTitle>
+                <Typography variant="h6">Optimal Posting Times Analysis</Typography>
                 <CardDescription>
                   AI-powered analysis of your best performing posting times
                 </CardDescription>

@@ -242,7 +242,7 @@ export default function AdvancedIntegrationsPage() {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Integrations</CardTitle>
+            <Typography variant="h6" className="text-sm font-medium">Total Integrations</Typography>
             <Plug className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -255,7 +255,7 @@ export default function AdvancedIntegrationsPage() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Integrations</CardTitle>
+            <Typography variant="h6" className="text-sm font-medium">Active Integrations</Typography>
             <CheckCircle className="h-4 w-4 text-green-600" />
           </CardHeader>
           <CardContent>
@@ -270,7 +270,7 @@ export default function AdvancedIntegrationsPage() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Success Rate</CardTitle>
+            <Typography variant="h6" className="text-sm font-medium">Success Rate</Typography>
             <TrendingUp className="h-4 w-4 text-blue-600" />
           </CardHeader>
           <CardContent>
@@ -285,7 +285,7 @@ export default function AdvancedIntegrationsPage() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Avg Response</CardTitle>
+            <Typography variant="h6" className="text-sm font-medium">Avg Response</Typography>
             <Activity className="h-4 w-4 text-purple-600" />
           </CardHeader>
           <CardContent>
@@ -312,10 +312,10 @@ export default function AdvancedIntegrationsPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
+                <Typography variant="h6" className="flex items-center gap-2">
                   <Activity className="h-5 w-5" />
                   Recent Events
-                </CardTitle>
+                </Typography>
                 <CardDescription>
                   Latest integration events and activities
                 </CardDescription>
@@ -349,10 +349,10 @@ export default function AdvancedIntegrationsPage() {
 
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
+                <Typography variant="h6" className="flex items-center gap-2">
                   <BarChart3 className="h-5 w-5" />
                   Integration Types
-                </CardTitle>
+                </Typography>
                 <CardDescription>
                   Distribution of integration types
                 </CardDescription>
@@ -385,10 +385,10 @@ export default function AdvancedIntegrationsPage() {
         <TabsContent value="integrations" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+              <Typography variant="h6" className="flex items-center gap-2">
                 <Plug className="h-5 w-5" />
                 Integrations
-              </CardTitle>
+              </Typography>
               <CardDescription>
                 Manage your third-party service integrations
               </CardDescription>
@@ -445,10 +445,10 @@ export default function AdvancedIntegrationsPage() {
         <TabsContent value="webhooks" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+              <Typography variant="h6" className="flex items-center gap-2">
                 <Webhook className="h-5 w-5" />
                 Webhook Management
-              </CardTitle>
+              </Typography>
               <CardDescription>
                 Monitor and manage webhook configurations
               </CardDescription>
@@ -495,10 +495,10 @@ export default function AdvancedIntegrationsPage() {
         <TabsContent value="sync" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+              <Typography variant="h6" className="flex items-center gap-2">
                 <RefreshCw className="h-5 w-5" />
                 Sync Management
-              </CardTitle>
+              </Typography>
               <CardDescription>
                 Monitor data synchronization status and schedules
               </CardDescription>
@@ -559,10 +559,10 @@ export default function AdvancedIntegrationsPage() {
         <TabsContent value="health" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+              <Typography variant="h6" className="flex items-center gap-2">
                 <Activity className="h-5 w-5" />
                 Health Monitoring
-              </CardTitle>
+              </Typography>
               <CardDescription>
                 Integration health status and performance metrics
               </CardDescription>

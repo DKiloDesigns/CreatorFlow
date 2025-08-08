@@ -160,10 +160,10 @@ export default function FeedbackDashboard() {
       {/* Filters */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
+          <Typography variant="h6" className="flex items-center gap-2">
             <Filter className="h-5 w-5" />
             Filters
-          </CardTitle>
+          </Typography>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -219,7 +219,7 @@ export default function FeedbackDashboard() {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Feedback</CardTitle>
+            <Typography variant="h6" className="text-sm font-medium">Total Feedback</Typography>
             <MessageSquare className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -232,7 +232,7 @@ export default function FeedbackDashboard() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Average Rating</CardTitle>
+            <Typography variant="h6" className="text-sm font-medium">Average Rating</Typography>
             <Star className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -247,7 +247,7 @@ export default function FeedbackDashboard() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Trial Users</CardTitle>
+            <Typography variant="h6" className="text-sm font-medium">Trial Users</Typography>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -262,7 +262,7 @@ export default function FeedbackDashboard() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Top Category</CardTitle>
+            <Typography variant="h6" className="text-sm font-medium">Top Category</Typography>
             <BarChart3 className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -290,7 +290,7 @@ export default function FeedbackDashboard() {
         <TabsContent value="all" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>Recent Feedback</CardTitle>
+              <Typography variant="h6">Recent Feedback</Typography>
               <CardDescription>Latest user feedback submissions</CardDescription>
             </CardHeader>
             <CardContent>
@@ -329,7 +329,7 @@ export default function FeedbackDashboard() {
         <TabsContent value="trial" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle>Trial User Feedback</CardTitle>
+              <Typography variant="h6">Trial User Feedback</Typography>
               <CardDescription>Feedback from EARLYBIRD100 campaign users</CardDescription>
             </CardHeader>
             <CardContent>
@@ -367,7 +367,7 @@ export default function FeedbackDashboard() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
-                <CardTitle>Average Ratings by Category</CardTitle>
+                <Typography variant="h6">Average Ratings by Category</Typography>
                 <CardDescription>User satisfaction across different areas</CardDescription>
               </CardHeader>
               <CardContent>
@@ -389,7 +389,7 @@ export default function FeedbackDashboard() {
 
             <Card>
               <CardHeader>
-                <CardTitle>Rating Distribution</CardTitle>
+                <Typography variant="h6">Rating Distribution</Typography>
                 <CardDescription>How users are rating their experience</CardDescription>
               </CardHeader>
               <CardContent>

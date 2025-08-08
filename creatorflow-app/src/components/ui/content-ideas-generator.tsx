@@ -313,10 +313,10 @@ export function ContentIdeasGenerator({ provider }: ContentIdeasGeneratorProps) 
       {/* Input Section */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
+          <Typography variant="h6" className="flex items-center gap-2">
             <Lightbulb className="w-5 h-5" />
             Content Ideas Generator
-          </CardTitle>
+          </Typography>
           <CardDescription>
             AI-powered content brainstorming with trend analysis, gap detection, and viral prediction
           </CardDescription>
@@ -601,10 +601,10 @@ export function ContentIdeasGenerator({ provider }: ContentIdeasGeneratorProps) 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   <Card>
                     <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
+                      <Typography variant="h6" className="flex items-center gap-2">
                         <BarChart3 className="w-5 h-5" />
                         Performance Analysis
-                      </CardTitle>
+                      </Typography>
                     </CardHeader>
                     <CardContent className="space-y-4">
                       <div className="space-y-3">
@@ -630,10 +630,10 @@ export function ContentIdeasGenerator({ provider }: ContentIdeasGeneratorProps) 
 
                   <Card>
                     <CardHeader>
-                      <CardTitle className="flex items-center gap-2">
+                      <Typography variant="h6" className="flex items-center gap-2">
                         <Target className="w-5 h-5" />
                         Monetization & Opportunities
-                      </CardTitle>
+                      </Typography>
                     </CardHeader>
                     <CardContent className="space-y-4">
                       <div>
@@ -665,10 +665,10 @@ export function ContentIdeasGenerator({ provider }: ContentIdeasGeneratorProps) 
             <TabsContent value="trends" className="space-y-4">
               <Card>
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
+                  <Typography variant="h6" className="flex items-center gap-2">
                     <TrendingUp className="w-5 h-5" />
                     Content Trend Analysis
-                  </CardTitle>
+                  </Typography>
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

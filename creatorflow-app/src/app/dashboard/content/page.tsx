@@ -434,9 +434,9 @@ export default function ContentPage() {
                 pb: 1
               }}
             >
-              <CardTitle sx={{ fontSize: '0.875rem', fontWeight: 500 }}>
+              <Typography variant="h6" sx={{ fontSize: '0.875rem', fontWeight: 500 }}>
                 Drafts
-              </CardTitle>
+              </Typography>
               <FileText style={{ width: 16, height: 16, color: 'text.secondary' }} />
             </CardHeader>
             <CardContent>
@@ -458,9 +458,9 @@ export default function ContentPage() {
                 pb: 1
               }}
             >
-              <CardTitle sx={{ fontSize: '0.875rem', fontWeight: 500 }}>
+              <Typography variant="h6" sx={{ fontSize: '0.875rem', fontWeight: 500 }}>
                 Scheduled
-              </CardTitle>
+              </Typography>
               <Clock style={{ width: 16, height: 16, color: 'text.secondary' }} />
             </CardHeader>
             <CardContent>
@@ -482,9 +482,9 @@ export default function ContentPage() {
                 pb: 1
               }}
             >
-              <CardTitle sx={{ fontSize: '0.875rem', fontWeight: 500 }}>
+              <Typography variant="h6" sx={{ fontSize: '0.875rem', fontWeight: 500 }}>
                 Published
-              </CardTitle>
+              </Typography>
               <TrendingUp style={{ width: 16, height: 16, color: 'text.secondary' }} />
             </CardHeader>
             <CardContent>
@@ -506,9 +506,9 @@ export default function ContentPage() {
                 pb: 1
               }}
             >
-              <CardTitle sx={{ fontSize: '0.875rem', fontWeight: 500 }}>
+              <Typography variant="h6" sx={{ fontSize: '0.875rem', fontWeight: 500 }}>
                 AI Insights
-              </CardTitle>
+              </Typography>
               <Brain style={{ width: 16, height: 16, color: 'text.secondary' }} />
             </CardHeader>
             <CardContent>
@@ -523,7 +523,7 @@ export default function ContentPage() {
       {/* Quick Actions */}
       <Card>
         <CardHeader>
-          <CardTitle>Quick Actions</CardTitle>
+          <Typography variant="h6">Quick Actions</Typography>
         </CardHeader>
         <CardContent>
           <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(4, 1fr)' }, gap: 2 }}>

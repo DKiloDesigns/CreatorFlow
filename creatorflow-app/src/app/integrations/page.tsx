@@ -207,7 +207,7 @@ export default function IntegrationsPage() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Integrations</CardTitle>
+            <Typography variant="h6" className="text-sm font-medium">Active Integrations</Typography>
             <CheckCircle className="h-4 w-4 text-green-600" />
           </CardHeader>
           <CardContent>
@@ -222,7 +222,7 @@ export default function IntegrationsPage() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Webhook Events</CardTitle>
+            <Typography variant="h6" className="text-sm font-medium">Webhook Events</Typography>
             <Webhook className="h-4 w-4 text-blue-600" />
           </CardHeader>
           <CardContent>
@@ -237,7 +237,7 @@ export default function IntegrationsPage() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Sync Success Rate</CardTitle>
+            <Typography variant="h6" className="text-sm font-medium">Sync Success Rate</Typography>
             <TrendingUp className="h-4 w-4 text-green-600" />
           </CardHeader>
           <CardContent>
@@ -263,10 +263,10 @@ export default function IntegrationsPage() {
         <TabsContent value="integrations" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+              <Typography variant="h6" className="flex items-center gap-2">
                 <Settings className="h-5 w-5" />
                 Connected Services
-              </CardTitle>
+              </Typography>
               <CardDescription>
                 Manage your third-party integrations and their status
               </CardDescription>
@@ -332,10 +332,10 @@ export default function IntegrationsPage() {
         <TabsContent value="webhooks" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+              <Typography variant="h6" className="flex items-center gap-2">
                 <Webhook className="h-5 w-5" />
                 Webhook Events
-              </CardTitle>
+              </Typography>
               <CardDescription>
                 Monitor webhook events and their processing status
               </CardDescription>
@@ -385,10 +385,10 @@ export default function IntegrationsPage() {
         <TabsContent value="syncs" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+              <Typography variant="h6" className="flex items-center gap-2">
                 <Database className="h-5 w-5" />
                 Sync History
-              </CardTitle>
+              </Typography>
               <CardDescription>
                 Track data synchronization between services
               </CardDescription>

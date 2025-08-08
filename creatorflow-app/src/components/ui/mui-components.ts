@@ -1,6 +1,6 @@
 // MUI Component Exports
 export { Button } from './mui-button';
-export { Card, CardHeader, CardContent, CardFooter, CardTitle, CardDescription } from './mui-card';
+export { Card, CardHeader, CardContent, CardFooter, CardDescription } from './mui-card';
 export { Input } from './mui-input';
 export { MuiStatsCard } from './mui-stats-card';
 export { MuiEnhancedNavigation, MuiBreadcrumbs } from './mui-enhanced-nav';

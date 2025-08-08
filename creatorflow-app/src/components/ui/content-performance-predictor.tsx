@@ -320,10 +320,10 @@ export function ContentPerformancePredictor({ provider }: ContentPerformancePred
       {/* Input Section */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
+          <Typography variant="h6" className="flex items-center gap-2">
             <TrendingUp className="w-5 h-5" />
             Content Performance Predictor
-          </CardTitle>
+          </Typography>
           <CardDescription>
             AI-powered content performance forecasting with engagement predictions and optimization insights
           </CardDescription>
@@ -586,7 +586,7 @@ export function ContentPerformancePredictor({ provider }: ContentPerformancePred
               {/* Performance Factors */}
               <Card>
                 <CardHeader>
-                  <CardTitle>Performance Factors</CardTitle>
+                  <Typography variant="h6">Performance Factors</Typography>
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -631,7 +631,7 @@ export function ContentPerformancePredictor({ provider }: ContentPerformancePred
             <TabsContent value="predictions" className="space-y-4">
               <Card>
                 <CardHeader>
-                  <CardTitle>Detailed Performance Predictions</CardTitle>
+                  <Typography variant="h6">Detailed Performance Predictions</Typography>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-6">
@@ -690,7 +690,7 @@ export function ContentPerformancePredictor({ provider }: ContentPerformancePred
             <TabsContent value="optimization" className="space-y-4">
               <Card>
                 <CardHeader>
-                  <CardTitle>Optimization Recommendations</CardTitle>
+                  <Typography variant="h6">Optimization Recommendations</Typography>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-6">
@@ -760,10 +760,10 @@ export function ContentPerformancePredictor({ provider }: ContentPerformancePred
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <Card>
                   <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
+                    <Typography variant="h6" className="flex items-center gap-2">
                       <BarChart3 className="w-5 h-5" />
                       Competitive Analysis
-                    </CardTitle>
+                    </Typography>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="space-y-3">
@@ -785,10 +785,10 @@ export function ContentPerformancePredictor({ provider }: ContentPerformancePred
 
                 <Card>
                   <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
+                    <Typography variant="h6" className="flex items-center gap-2">
                       <TrendingUp className="w-5 h-5" />
                       Seasonal Factors
-                    </CardTitle>
+                    </Typography>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="space-y-3">

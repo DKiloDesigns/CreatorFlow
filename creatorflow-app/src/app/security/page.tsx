@@ -213,7 +213,7 @@ export default function SecurityPage() {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Events</CardTitle>
+              <Typography variant="h6" className="text-sm font-medium">Total Events</Typography>
               <Activity className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -226,7 +226,7 @@ export default function SecurityPage() {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Critical Events</CardTitle>
+              <Typography variant="h6" className="text-sm font-medium">Critical Events</Typography>
               <AlertTriangle className="h-4 w-4 text-red-600" />
             </CardHeader>
             <CardContent>
@@ -241,7 +241,7 @@ export default function SecurityPage() {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Active Threats</CardTitle>
+              <Typography variant="h6" className="text-sm font-medium">Active Threats</Typography>
               <Shield className="h-4 w-4 text-orange-600" />
             </CardHeader>
             <CardContent>
@@ -256,7 +256,7 @@ export default function SecurityPage() {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Security Score</CardTitle>
+              <Typography variant="h6" className="text-sm font-medium">Security Score</Typography>
               <Lock className="h-4 w-4 text-green-600" />
             </CardHeader>
             <CardContent>
@@ -279,10 +279,10 @@ export default function SecurityPage() {
         <TabsContent value="events" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+              <Typography variant="h6" className="flex items-center gap-2">
                 <Eye className="h-5 w-5" />
                 Security Events
-              </CardTitle>
+              </Typography>
               <CardDescription>
                 Real-time security event monitoring and logging
               </CardDescription>
@@ -328,10 +328,10 @@ export default function SecurityPage() {
         <TabsContent value="threats" className="space-y-4">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+              <Typography variant="h6" className="flex items-center gap-2">
                 <AlertTriangle className="h-5 w-5" />
                 Threat Detection
-              </CardTitle>
+              </Typography>
               <CardDescription>
                 AI-powered threat detection and response
               </CardDescription>
@@ -409,10 +409,10 @@ export default function SecurityPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
+                <Typography variant="h6" className="flex items-center gap-2">
                   <TrendingUp className="h-5 w-5" />
                   Event Trends
-                </CardTitle>
+                </Typography>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
@@ -449,10 +449,10 @@ export default function SecurityPage() {
 
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
+                <Typography variant="h6" className="flex items-center gap-2">
                   <Zap className="h-5 w-5" />
                   Security Metrics
-                </CardTitle>
+                </Typography>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">

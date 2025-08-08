@@ -460,10 +460,10 @@ export default function TeamDetailPage() {
           <div className="grid gap-6 md:grid-cols-2">
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center">
+                <Typography variant="h6" className="flex items-center">
                   <Users2 className="h-5 w-5 mr-2" />
                   Team Info
-                </CardTitle>
+                </Typography>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
@@ -502,10 +502,10 @@ export default function TeamDetailPage() {
 
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center">
+                <Typography variant="h6" className="flex items-center">
                   <Mail className="h-5 w-5 mr-2" />
                   Quick Actions
-                </CardTitle>
+                </Typography>
               </CardHeader>
               <CardContent className="space-y-3">
                 {isOwner && (
