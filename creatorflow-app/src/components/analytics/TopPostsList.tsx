@@ -1,18 +1,14 @@
 'use client';
 
 import React from 'react';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { 
-  Instagram, 
-  Twitter, 
-  Linkedin, 
-  Youtube, 
-  TrendingUp,
-  Heart,
-  MessageSquare,
-  Share2
-} from 'lucide-react';
+  Card, 
+  CardContent, 
+  Box,
+  Typography,
+  Grid
+} from '@mui/material';
+import { TrendingUp, Activity, Heart, MessageSquare, Share2, Instagram, Twitter, Linkedin, Youtube } from 'lucide-react';
 
 interface Post {
   id: string;

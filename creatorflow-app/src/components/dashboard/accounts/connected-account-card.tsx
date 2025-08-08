@@ -1,10 +1,17 @@
 'use client';
 
-import React from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
-import { Trash2 } from 'lucide-react';
+import React, { useState } from 'react';
+import { 
+  Button,
+  Card, 
+  CardContent, 
+  CardHeader, 
+  Box,
+  Typography,
+  Grid,
+  Chip
+} from '@mui/material';
+import { CheckCircle, Activity, Trash2 } from 'lucide-react';
 import { SiInstagram, SiTiktok, SiYoutube, SiX } from "react-icons/si";
 
 // Define the shape of the account data we expect
@@ -54,7 +61,7 @@ export default function ConnectedAccountCard({ account, onDisconnect, isDisconne
           ) : (
             <div className="w-6 h-6 bg-muted rounded-sm" /> // Fallback if no icon
           )}
-          <CardTitle className="text-lg font-medium">{account.username}</CardTitle>
+          <Typography variant="h6" className="text-lg font-medium">{account.username}</Typography>
         </div>
         {/* Maybe add a status indicator here based on account.status */}
       </CardHeader>

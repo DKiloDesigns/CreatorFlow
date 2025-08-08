@@ -10,7 +10,6 @@ import {
   Card, 
   CardContent, 
   CardHeader, 
-  CardTitle,
   Chip,
   Avatar,
   Dialog,

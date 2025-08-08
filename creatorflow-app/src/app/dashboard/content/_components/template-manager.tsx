@@ -1,7 +1,14 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogCancel } from '@/components/ui/alert-dialog';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import { Button } from '@/components/ui/button';
+import { 
+  Button,
+  Box,
+  Typography,
+  Grid,
+  Tabs,
+  Tab
+} from '@mui/material';
+import { FileText, Activity } from 'lucide-react';
+
 import { toast } from 'sonner';
 import { Star, Pin, Eye, Share2, Users } from 'lucide-react';
 import dynamic from 'next/dynamic';

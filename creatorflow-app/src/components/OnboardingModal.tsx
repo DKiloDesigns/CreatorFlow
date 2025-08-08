@@ -1,22 +1,15 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
-import { Badge } from '@/components/ui/badge';
 import { 
-  CheckCircle,
-  ArrowRight,
-  ArrowLeft,
-  X,
-  Sparkles,
-  Users,
-  Calendar,
-  BarChart3,
-  Settings,
-  Zap
-} from 'lucide-react';
+  Button,
+  Box,
+  Typography,
+  Grid,
+  Chip,
+  LinearProgress
+} from '@mui/material';
+import { Rocket, Activity, Sparkles, Users, Zap, Calendar, BarChart3, Settings } from 'lucide-react';
 
 interface OnboardingStep {
   id: string;

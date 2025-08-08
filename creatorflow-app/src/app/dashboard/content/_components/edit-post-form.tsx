@@ -1,10 +1,15 @@
-import React, { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Checkbox } from '@/components/ui/checkbox';
+import { 
+  Button,
+  TextField,
+  Box,
+  Typography,
+  Grid,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel
+} from '@mui/material';
+import { Save, Activity } from 'lucide-react';
 
 interface Post {
   id: string;

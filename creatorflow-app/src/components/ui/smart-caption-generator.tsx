@@ -1,46 +1,18 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './card';
-import { Button } from './button';
-import { Input } from './input';
-import { Label } from './label';
-import { Textarea } from './textarea';
-import { Badge } from './badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from './tabs';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './select';
-import { Slider } from './slider';
-import { Switch } from './switch';
+import React, { useState } from 'react';
 import { 
-  Sparkles, 
-  Copy, 
-  RefreshCw, 
-  Target, 
-  TrendingUp, 
-  Users, 
-  Hash, 
-  MessageSquare,
-  Zap,
-  Eye,
-  BarChart3,
-  Palette,
-  Clock,
-  Globe,
-  Star,
-  Heart,
-  ThumbsUp,
-  Share2,
-  Bookmark,
-  Send,
-  Settings,
-  Wand2,
-  Brain,
-  Lightbulb,
-  Sparkle,
-  CheckCircle,
-  AlertCircle,
-  Info
-} from 'lucide-react';
+  Card, 
+  CardContent, 
+  CardHeader, 
+  Button,
+  TextField,
+  Box,
+  Typography,
+  Grid,
+  Chip
+} from '@mui/material';
+import { MessageSquare, Activity } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface CaptionVariant {

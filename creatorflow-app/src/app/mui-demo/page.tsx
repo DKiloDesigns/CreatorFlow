@@ -250,8 +250,10 @@ export default function MuiDemoPage() {
         <Box>
           <Card>
             <CardHeader>
-              <CardTitle>Basic Components</CardTitle>
-              <CardDescription>Essential MUI components</CardDescription>
+              <Typography variant="h6" gutterBottom>
+                Basic Components
+              </Typography>
+              <Typography variant="body2">Essential MUI components</Typography>
             </CardHeader>
             <CardContent>
               <Stack spacing={2}>
@@ -317,8 +319,10 @@ export default function MuiDemoPage() {
         <Box>
           <Card>
             <CardHeader>
-              <CardTitle>Interactive Components</CardTitle>
-              <CardDescription>Components with state</CardDescription>
+              <Typography variant="h6" gutterBottom>
+                Interactive Components
+              </Typography>
+              <Typography variant="body2">Components with state</Typography>
             </CardHeader>
             <CardContent>
               <Stack spacing={3}>
@@ -392,8 +396,10 @@ export default function MuiDemoPage() {
       <Box sx={{ mt: 4 }}>
         <Card>
           <CardHeader>
-            <CardTitle>Data Display Components</CardTitle>
-            <CardDescription>Tables, lists, and data visualization</CardDescription>
+            <Typography variant="h6" gutterBottom>
+              Data Display Components
+            </Typography>
+            <Typography variant="body2">Tables, lists, and data visualization</Typography>
           </CardHeader>
           <CardContent>
             <Tabs value={activeTab} onChange={handleTabChange}>
@@ -508,8 +514,10 @@ export default function MuiDemoPage() {
       <Box sx={{ mt: 4 }}>
         <Card>
           <CardHeader>
-            <CardTitle>Navigation & Layout</CardTitle>
-            <CardDescription>Menus, drawers, and navigation components</CardDescription>
+            <Typography variant="h6" gutterBottom>
+              Navigation & Layout
+            </Typography>
+            <Typography variant="body2">Menus, drawers, and navigation components</Typography>
           </CardHeader>
           <CardContent>
             <Stack spacing={3}>
@@ -630,8 +638,10 @@ export default function MuiDemoPage() {
       <Box sx={{ mt: 4 }}>
         <Card>
           <CardHeader>
-            <CardTitle>Feedback Components</CardTitle>
-            <CardDescription>Alerts, dialogs, and notifications</CardDescription>
+            <Typography variant="h6" gutterBottom>
+              Feedback Components
+            </Typography>
+            <Typography variant="body2">Alerts, dialogs, and notifications</Typography>
           </CardHeader>
           <CardContent>
             <Stack spacing={3}>

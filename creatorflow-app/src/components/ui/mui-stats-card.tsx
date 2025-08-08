@@ -1,6 +1,6 @@
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from './mui-card';
-import { Box, Typography, Skeleton, Chip, Stack } from '@mui/material';
+import { Card, CardContent, CardHeader } from './mui-card';
+import { Typography, Skeleton, Chip, Stack } from '@mui/material';
 import { TrendingUp, TrendingDown } from 'lucide-react';
 import { LucideIcon } from 'lucide-react';
 
@@ -72,7 +72,8 @@ export function MuiStatsCard({
           pb: 1,
         }}
       >
-        <CardTitle
+        <Typography
+          variant="h6"
           sx={{
             fontSize: '0.875rem',
             fontWeight: 500,
@@ -80,7 +81,7 @@ export function MuiStatsCard({
           }}
         >
           {title}
-        </CardTitle>
+        </Typography>
         {Icon && (
           <Icon 
             className="h-4 w-4"
@@ -124,7 +125,7 @@ export function MuiStatsCard({
             )}
             
             {trend && (
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+              <Stack direction="row" spacing={0.5} alignItems="center">
                 {trend.isPositive ? (
                   <TrendingUp className="h-3 w-3" style={{ color: getTrendColor() }} />
                 ) : (
@@ -149,7 +150,7 @@ export function MuiStatsCard({
                 >
                   vs {trend.period}
                 </Typography>
-              </Box>
+              </Stack>
             )}
           </Stack>
         )}

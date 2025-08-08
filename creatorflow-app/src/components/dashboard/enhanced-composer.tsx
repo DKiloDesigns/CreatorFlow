@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -32,6 +32,7 @@ import {
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 import AiSuggestModal from '@/app/dashboard/content/_components/ai-suggest-modal';
+import { Typography } from '@mui/material';
 
 interface Platform {
   id: string;
@@ -267,7 +268,7 @@ export function EnhancedComposer({ onSubmit, className }: EnhancedComposerProps)
   return (
     <Card className={className}>
       <CardHeader>
-        <CardTitle className="flex items-center justify-between">
+        <Typography variant="h5" className="flex items-center justify-between">
           <span>Create Content</span>
           <div className="flex items-center gap-2">
             <Button
@@ -279,7 +280,7 @@ export function EnhancedComposer({ onSubmit, className }: EnhancedComposerProps)
               {showPreview ? 'Hide Preview' : 'Preview'}
             </Button>
           </div>
-        </CardTitle>
+        </Typography>
         
         {/* Action Buttons - Right below the header */}
         <div className="flex flex-col sm:flex-row flex-wrap gap-2 mt-4">

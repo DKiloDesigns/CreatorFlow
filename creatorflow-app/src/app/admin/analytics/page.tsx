@@ -1,8 +1,17 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { AnalyticsChart } from '@/components/dashboard/analytics-chart';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { 
+  Card, 
+  CardContent, 
+  CardHeader, 
+  CardTitle,
+  Button,
+  Box,
+  Typography,
+  Grid
+} from '@mui/material';
+import { BarChart3, TrendingUp, Users, Activity } from 'lucide-react';
 
 interface AnalyticsData {
   totalUsers: number;

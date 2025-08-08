@@ -2,12 +2,19 @@
 
 import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { ArrowLeft, Lock, Eye, EyeOff } from 'lucide-react';
+import { 
+  Card, 
+  CardContent, 
+  CardHeader, 
+  Button,
+  TextField,
+  Box,
+  Typography,
+  Grid,
+  Alert,
+  AlertTitle
+} from '@mui/material';
+import { Lock, Activity } from 'lucide-react';
 import Link from 'next/link';
 
 function ResetPasswordForm() {
@@ -128,7 +135,7 @@ function ResetPasswordForm() {
         <div className="max-w-md w-full space-y-8">
           <Card>
             <CardHeader>
-              <CardTitle className="text-2xl font-bold text-center">Invalid Reset Link</CardTitle>
+              <Typography variant="h4" className="text-2xl font-bold text-center">Invalid Reset Link</Typography>
               <CardDescription className="text-center">
                 This password reset link is invalid or has expired.
               </CardDescription>
@@ -158,7 +165,7 @@ function ResetPasswordForm() {
               <Link href="/auth" className="text-gray-500 hover:text-gray-700">
                 <ArrowLeft className="h-4 w-4" />
               </Link>
-              <CardTitle className="text-2xl font-bold">Reset Password</CardTitle>
+              <Typography variant="h4" className="text-2xl font-bold">Reset Password</Typography>
             </div>
             <CardDescription>
               Enter your new password below.

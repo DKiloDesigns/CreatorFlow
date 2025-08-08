@@ -1,6 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogCancel } from '@/components/ui/alert-dialog';
-import { Button } from '@/components/ui/button';
+import React, { useState, useEffect } from 'react';
+import { 
+  Button,
+  Box,
+  Typography,
+  Grid
+} from '@mui/material';
+import { Share2, Activity } from 'lucide-react';
 
 const PERMISSIONS = [
   { key: 'view', label: 'View' },

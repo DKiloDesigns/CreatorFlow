@@ -1,66 +1,20 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Switch } from '@/components/ui/switch';
-import { Label } from '@/components/ui/label';
-import { Progress } from '@/components/ui/progress';
 import { 
-  Plug,
-  Webhook,
-  Key,
-  RefreshCw,
-  CheckCircle,
-  AlertTriangle,
-  XCircle,
-  Clock,
-  Activity,
-  Settings,
-  Plus,
-  Eye,
-  Edit,
-  Trash2,
-  Zap,
-  Shield,
-  Database,
-  Globe,
-  Lock,
-  Unlock,
-  TrendingUp,
-  BarChart3,
-  Calendar,
-  Users,
-  FileText,
-  MessageSquare,
-  Bell,
-  Wifi,
-  Server,
-  Cpu,
-  HardDrive,
-  Network,
-  DatabaseIcon,
-  GlobeIcon,
-  LockIcon,
-  UnlockIcon,
-  TrendingUpIcon,
-  BarChart3Icon,
-  CalendarIcon,
-  UsersIcon,
-  FileTextIcon,
-  MessageSquareIcon,
-  BellIcon,
-  WifiIcon,
-  ServerIcon,
-  CpuIcon,
-  HardDriveIcon,
-  NetworkIcon
-} from 'lucide-react';
+  Card, 
+  CardContent, 
+  CardHeader, 
+  Button,
+  Chip,
+  Box,
+  Typography,
+  Grid,
+  Tabs,
+  Tab,
+  TextField
+} from '@mui/material';
+import { Settings, Zap, Code, Database, Cloud, Shield, Activity } from 'lucide-react';
 
 interface Integration {
   id: string;
@@ -256,11 +210,11 @@ export default function AdvancedIntegrationsPage() {
 
   const getTypeIcon = (type: string) => {
     switch (type) {
-      case 'api': return <Globe className="h-4 w-4" />;
-      case 'webhook': return <Webhook className="h-4 w-4" />;
-      case 'oauth': return <Lock className="h-4 w-4" />;
+      case 'api': return <Cloud className="h-4 w-4" />;
+      case 'webhook': return <Code className="h-4 w-4" />;
+      case 'oauth': return <Shield className="h-4 w-4" />;
       case 'sdk': return <Zap className="h-4 w-4" />;
-      default: return <Plug className="h-4 w-4" />;
+      default: return <Cloud className="h-4 w-4" />;
     }
   };
 
@@ -271,7 +225,7 @@ export default function AdvancedIntegrationsPage() {
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold flex items-center gap-2">
-            <Plug className="h-8 w-8" />
+            <Cloud className="h-8 w-8" />
             Advanced Integrations
           </h1>
           <p className="text-muted-foreground">Comprehensive third-party service integration management</p>

@@ -1,5 +1,12 @@
-import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { 
+  Card, 
+  CardContent, 
+  CardHeader, 
+  Box,
+  Typography,
+  Grid
+} from '@mui/material';
+import { TrendingUp, Activity } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface DataPoint {
@@ -25,10 +32,10 @@ export function AnalyticsChart({
 }: AnalyticsChartProps) {
   if (loading) {
     return (
-      <Card className={className}>
-        <CardHeader>
-          <CardTitle className="text-lg">{title}</CardTitle>
-        </CardHeader>
+          <Card className={className}>
+      <CardHeader>
+        <Typography variant="h6" className="text-lg">{title}</Typography>
+      </CardHeader>
         <CardContent>
           <div className="h-64 bg-muted animate-pulse rounded" />
         </CardContent>
@@ -42,7 +49,7 @@ export function AnalyticsChart({
   return (
     <Card className={className}>
       <CardHeader>
-        <CardTitle className="text-lg">{title}</CardTitle>
+        <Typography variant="h6" className="text-lg">{title}</Typography>
       </CardHeader>
       <CardContent>
         {type === 'bar' && (

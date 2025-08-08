@@ -1,28 +1,23 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { 
-  Shield,
-  AlertTriangle,
-  Eye,
-  Activity,
-  Lock,
-  Users,
-  RefreshCw,
-  Download,
-  Filter,
-  CheckCircle,
-  XCircle,
-  Clock,
-  TrendingUp,
-  TrendingDown,
-  Zap
-} from 'lucide-react';
+  Card, 
+  CardContent, 
+  CardHeader, 
+  Button,
+  Box,
+  Typography,
+  Grid,
+  Tabs,
+  Tab,
+  Chip,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel
+} from '@mui/material';
+import { Shield, Activity } from 'lucide-react';
 
 interface SecurityEvent {
   id: string;

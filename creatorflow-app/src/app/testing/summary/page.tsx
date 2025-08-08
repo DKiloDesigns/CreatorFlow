@@ -1,64 +1,18 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
 import { 
-  CheckCircle,
-  XCircle,
-  AlertTriangle,
-  Clock,
-  TestTube,
-  Zap,
-  Shield,
-  Database,
-  Globe,
-  Lock,
-  Unlock,
-  TrendingUp,
-  Activity,
-  BarChart3,
-  FileText,
-  Download,
-  Upload,
-  Target,
-  Bug,
-  Code,
-  Monitor,
-  Smartphone,
-  Server,
-  Cpu,
-  HardDrive,
-  Network,
-  Plug,
-  Settings,
-  Sparkles,
-  Building2,
-  Users,
-  MessageSquare,
-  Calendar,
-  Bell,
-  Wifi,
-  GlobeIcon,
-  LockIcon,
-  UnlockIcon,
-  TrendingUpIcon,
-  BarChart3Icon,
-  FileTextIcon,
-  DownloadIcon,
-  UploadIcon,
-  TargetIcon,
-  BugIcon,
-  CodeIcon,
-  MonitorIcon,
-  SmartphoneIcon,
-  ServerIcon,
-  CpuIcon,
-  HardDriveIcon,
-  NetworkIcon
-} from 'lucide-react';
+  Card, 
+  CardContent, 
+  CardHeader, 
+  Button,
+  Box,
+  Typography,
+  Grid,
+  Chip,
+  LinearProgress
+} from '@mui/material';
+import { TestTube, Activity } from 'lucide-react';
 
 interface TestSummary {
   category: string;

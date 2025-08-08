@@ -2,8 +2,18 @@
 
 import React, { useEffect, useState } from 'react';
 import { NotificationToast } from '@/components/ui/notification-badge';
-import { Loader2, LogOut, Info } from 'lucide-react';
-import { TooltipProvider, Tooltip, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
+import { 
+  Card, 
+  CardContent, 
+  CardHeader, 
+  Button,
+  Chip,
+  Box,
+  Typography,
+  Grid,
+  Tooltip
+} from '@mui/material';
+import { Users, Clock, Activity, Eye, Trash2 } from 'lucide-react';
 
 interface Session {
   id: string;

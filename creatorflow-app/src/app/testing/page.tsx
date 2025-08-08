@@ -1,16 +1,22 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Progress } from '@/components/ui/progress';
 import { 
-  TestTube,
+  Card, 
+  CardContent, 
+  CardHeader, 
+  Button,
+  TextField,
+  Box,
+  Typography,
+  Grid,
+  Tabs,
+  Tab,
+  Chip
+} from '@mui/material';
+import { TestTube, Activity } from 'lucide-react';
+
+import { 
   Play,
   CheckCircle,
   XCircle,
@@ -23,7 +29,6 @@ import {
   Trash2,
   RefreshCw,
   TrendingUp,
-  Activity,
   Zap,
   Shield,
   Database,

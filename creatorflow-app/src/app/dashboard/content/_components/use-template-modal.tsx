@@ -1,31 +1,19 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
-import { toast } from 'sonner';
 import { 
-  Search,
-  Filter,
-  Star,
-  Download,
-  Edit,
-  Copy,
-  Heart,
-  Share2,
-  Calendar,
-  Hash,
-  Image as ImageIcon,
-  Video as VideoIcon,
-  FileText,
-  Sparkles
-} from 'lucide-react';
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  Button,
+  TextField,
+  Box,
+  Typography,
+  Grid
+} from '@mui/material';
+import { FileText, Activity } from 'lucide-react';
+import { toast } from 'sonner';
 
 interface Template {
   id: string;
@@ -251,8 +239,8 @@ export function UseTemplateModal({ open, onOpenChange, onTemplateUsed }: UseTemp
             <div className="flex flex-col sm:flex-row gap-4 mb-6">
               <div className="flex-1">
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <Input
+                  <Activity className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <TextField
                     placeholder="Search templates..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
@@ -302,7 +290,7 @@ export function UseTemplateModal({ open, onOpenChange, onTemplateUsed }: UseTemp
                     {/* Template Preview */}
                     <div className="aspect-video bg-gray-100 rounded-lg mb-3 flex items-center justify-center">
                       <div className="text-center">
-                        <Sparkles className="h-8 w-8 text-gray-400 mx-auto mb-2" />
+                        <Activity className="h-8 w-8 text-gray-400 mx-auto mb-2" />
                         <p className="text-sm text-gray-500">Template Preview</p>
                       </div>
                     </div>
@@ -369,7 +357,7 @@ export function UseTemplateModal({ open, onOpenChange, onTemplateUsed }: UseTemp
                 {/* Template Preview */}
                 <div className="aspect-video bg-gray-100 rounded-lg flex items-center justify-center">
                   <div className="text-center">
-                    <Sparkles className="h-8 w-8 text-gray-400 mx-auto mb-2" />
+                    <Activity className="h-8 w-8 text-gray-400 mx-auto mb-2" />
                     <p className="text-sm text-gray-500">Live Preview</p>
                   </div>
                 </div>

@@ -1,27 +1,23 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { 
-  TrendingUp,
-  TrendingDown,
-  Users,
-  BarChart3,
-  Target,
-  Lightbulb,
-  AlertTriangle,
-  Activity,
-  RefreshCw,
-  Download,
-  Filter,
-  Eye,
-  Brain,
-  Zap
-} from 'lucide-react';
+  Card, 
+  CardContent, 
+  CardHeader, 
+  Button,
+  Chip,
+  Box,
+  Typography,
+  Grid,
+  Tabs,
+  Tab,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel
+} from '@mui/material';
+import { BarChart3, TrendingUp, Activity, Settings } from 'lucide-react';
 
 interface AnalyticsInsight {
   type: 'trend' | 'anomaly' | 'opportunity' | 'risk' | 'segment' | 'funnel';
@@ -174,7 +170,7 @@ export default function AnalyticsPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Active Users</CardTitle>
+                              <Typography variant="subtitle2" className="text-sm font-medium">Active Users</Typography>
               <Activity className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -187,7 +183,7 @@ export default function AnalyticsPage() {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">New Users</CardTitle>
+                              <Typography variant="subtitle2" className="text-sm font-medium">New Users</Typography>
               <Users className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>

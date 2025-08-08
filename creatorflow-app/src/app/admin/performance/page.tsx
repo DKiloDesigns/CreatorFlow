@@ -1,25 +1,19 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
-  Activity,
-  AlertTriangle,
-  TrendingUp,
-  TrendingDown,
-  Cpu,
-  HardDrive,
-  Database,
-  Zap,
-  Clock,
-  BarChart3,
-  RefreshCw,
-  Settings,
-  Lightbulb
-} from 'lucide-react';
+  Card, 
+  CardContent, 
+  CardHeader, 
+  Button,
+  Chip,
+  Box,
+  Typography,
+  Grid,
+  Tabs,
+  Tab
+} from '@mui/material';
+import { Activity, TrendingUp, Clock, Zap, BarChart3, Settings } from 'lucide-react';
 
 interface SystemHealth {
   cpu: number;
@@ -103,9 +97,9 @@ export default function PerformancePage() {
   };
 
   const getHealthBadge = (score: number) => {
-    if (score >= 80) return <Badge variant="default" className="bg-green-100 text-green-800">Healthy</Badge>;
-    if (score >= 60) return <Badge variant="secondary">Warning</Badge>;
-    return <Badge variant="destructive">Critical</Badge>;
+    if (score >= 80) return <Chip label="Healthy" variant="outlined" />;
+    if (score >= 60) return <Chip label="Warning" variant="outlined" />;
+    return <Chip label="Critical" variant="outlined" />;
   };
 
   const getAlertColor = (type: string) => {
@@ -126,272 +120,304 @@ export default function PerformancePage() {
           <h1 className="text-3xl font-bold">Performance Monitoring</h1>
           <p className="text-muted-foreground">System health and optimization insights</p>
         </div>
-        <Button onClick={refreshData} disabled={refreshing} variant="outline">
-          <RefreshCw className={`h-4 w-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} />
+        <Button onClick={refreshData} disabled={refreshing} variant="outlined">
+          <Activity className={`h-4 w-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} />
           Refresh
         </Button>
       </div>
 
       {/* System Health Overview */}
       {systemHealth && (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-6 gap-6">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Overall Health</CardTitle>
-              <Activity className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className={`text-2xl font-bold ${getHealthColor(systemHealth.overall)}`}>
-                {systemHealth.overall}%
-              </div>
-              <div className="mt-2">
-                {getHealthBadge(systemHealth.overall)}
-              </div>
-            </CardContent>
-          </Card>
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={6} lg={2}>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <Typography variant="subtitle2" component="div">Overall Health</Typography>
+                <Activity className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <Box sx={{ display: 'flex', alignItems: 'baseline' }}>
+                  <Typography variant="h4" component="div" className={`font-bold ${getHealthColor(systemHealth.overall)}`}>
+                    {systemHealth.overall}%
+                  </Typography>
+                  {getHealthBadge(systemHealth.overall)}
+                </Box>
+              </CardContent>
+            </Card>
+          </Grid>
 
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">CPU Usage</CardTitle>
-              <Cpu className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className={`text-2xl font-bold ${getHealthColor(systemHealth.cpu)}`}>
-                {systemHealth.cpu}%
-              </div>
-              <div className="mt-2">
-                {getHealthBadge(systemHealth.cpu)}
-              </div>
-            </CardContent>
-          </Card>
+          <Grid item xs={12} md={6} lg={2}>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <Typography variant="subtitle2" component="div">CPU Usage</Typography>
+                <Activity className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <Box sx={{ display: 'flex', alignItems: 'baseline' }}>
+                  <Typography variant="h4" component="div" className={`font-bold ${getHealthColor(systemHealth.cpu)}`}>
+                    {systemHealth.cpu}%
+                  </Typography>
+                  {getHealthBadge(systemHealth.cpu)}
+                </Box>
+              </CardContent>
+            </Card>
+          </Grid>
 
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Memory Usage</CardTitle>
-              <HardDrive className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className={`text-2xl font-bold ${getHealthColor(systemHealth.memory)}`}>
-                {systemHealth.memory}%
-              </div>
-              <div className="mt-2">
-                {getHealthBadge(systemHealth.memory)}
-              </div>
-            </CardContent>
-          </Card>
+          <Grid item xs={12} md={6} lg={2}>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <Typography variant="subtitle2" component="div">Memory Usage</Typography>
+                <Activity className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <Box sx={{ display: 'flex', alignItems: 'baseline' }}>
+                  <Typography variant="h4" component="div" className={`font-bold ${getHealthColor(systemHealth.memory)}`}>
+                    {systemHealth.memory}%
+                  </Typography>
+                  {getHealthBadge(systemHealth.memory)}
+                </Box>
+              </CardContent>
+            </Card>
+          </Grid>
 
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Database</CardTitle>
-              <Database className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className={`text-2xl font-bold ${getHealthColor(systemHealth.database)}`}>
-                {systemHealth.database}%
-              </div>
-              <div className="mt-2">
-                {getHealthBadge(systemHealth.database)}
-              </div>
-            </CardContent>
-          </Card>
+          <Grid item xs={12} md={6} lg={2}>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <Typography variant="subtitle2" component="div">Database</Typography>
+                <Activity className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <Box sx={{ display: 'flex', alignItems: 'baseline' }}>
+                  <Typography variant="h4" component="div" className={`font-bold ${getHealthColor(systemHealth.database)}`}>
+                    {systemHealth.database}%
+                  </Typography>
+                  {getHealthBadge(systemHealth.database)}
+                </Box>
+              </CardContent>
+            </Card>
+          </Grid>
 
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Cache</CardTitle>
-              <Zap className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className={`text-2xl font-bold ${getHealthColor(systemHealth.cache)}`}>
-                {systemHealth.cache}%
-              </div>
-              <div className="mt-2">
-                {getHealthBadge(systemHealth.cache)}
-              </div>
-            </CardContent>
-          </Card>
+          <Grid item xs={12} md={6} lg={2}>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <Typography variant="subtitle2" component="div">Cache</Typography>
+                <Activity className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <Box sx={{ display: 'flex', alignItems: 'baseline' }}>
+                  <Typography variant="h4" component="div" className={`font-bold ${getHealthColor(systemHealth.cache)}`}>
+                    {systemHealth.cache}%
+                  </Typography>
+                  {getHealthBadge(systemHealth.cache)}
+                </Box>
+              </CardContent>
+            </Card>
+          </Grid>
 
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">API</CardTitle>
-              <BarChart3 className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className={`text-2xl font-bold ${getHealthColor(systemHealth.api)}`}>
-                {systemHealth.api}%
-              </div>
-              <div className="mt-2">
-                {getHealthBadge(systemHealth.api)}
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+          <Grid item xs={12} md={6} lg={2}>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <Typography variant="subtitle2" component="div">API</Typography>
+                <Activity className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <Box sx={{ display: 'flex', alignItems: 'baseline' }}>
+                  <Typography variant="h4" component="div" className={`font-bold ${getHealthColor(systemHealth.api)}`}>
+                    {systemHealth.api}%
+                  </Typography>
+                  {getHealthBadge(systemHealth.api)}
+                </Box>
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
       )}
 
-      <Tabs defaultValue="alerts" className="space-y-6">
-        <TabsList>
-          <TabsTrigger value="alerts">Alerts</TabsTrigger>
-          <TabsTrigger value="metrics">Metrics</TabsTrigger>
-          <TabsTrigger value="recommendations">Optimizations</TabsTrigger>
-        </TabsList>
+      <Tabs value="alerts" className="space-y-6">
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <Tab label="Alerts" />
+          <Tab label="Metrics" />
+          <Tab label="Optimizations" />
+        </Box>
 
-        <TabsContent value="alerts" className="space-y-4">
+        <TabPanel value="alerts">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <AlertTriangle className="h-5 w-5" />
+              <Typography variant="h6" component="div" className="flex items-center gap-2">
+                <Activity className="h-5 w-5" />
                 Performance Alerts
-              </CardTitle>
-              <CardDescription>
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
                 Recent performance issues and warnings
-              </CardDescription>
+              </Typography>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                 {alerts.length === 0 ? (
-                  <div className="text-center py-8 text-muted-foreground">
+                  <Typography variant="body2" color="text.secondary" align="center" py={8}>
                     No performance alerts
-                  </div>
+                  </Typography>
                 ) : (
                   alerts.map((alert) => (
-                    <div key={alert.id} className={`p-4 border rounded-lg ${getAlertColor(alert.type)}`}>
-                      <div className="flex justify-between items-start">
-                        <div>
-                          <div className="font-medium">{alert.message}</div>
-                          <div className="text-sm mt-1">
+                    <Box key={alert.id} sx={{ p: 2, borderRadius: 1, border: 1, borderColor: getAlertColor(alert.type) }}>
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                        <Box>
+                          <Typography variant="body2" fontWeight="medium">{alert.message}</Typography>
+                          <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
                             {alert.metric}: {alert.value} (threshold: {alert.threshold})
-                          </div>
-                          <div className="text-xs mt-1">
+                          </Typography>
+                          <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
                             {new Date(alert.timestamp).toLocaleString()}
-                          </div>
-                        </div>
-                        <Badge variant={alert.type === 'critical' ? 'destructive' : alert.type === 'error' ? 'secondary' : 'outline'}>
-                          {alert.type.toUpperCase()}
-                        </Badge>
-                      </div>
-                    </div>
+                          </Typography>
+                        </Box>
+                        <Chip label={alert.type.toUpperCase()} variant={alert.type === 'critical' ? 'filled' : alert.type === 'error' ? 'outlined' : 'outlined'} />
+                      </Box>
+                    </Box>
                   ))
                 )}
-              </div>
+              </Box>
             </CardContent>
           </Card>
-        </TabsContent>
+        </TabPanel>
 
-        <TabsContent value="metrics" className="space-y-4">
+        <TabPanel value="metrics">
           {performanceStats && (
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <BarChart3 className="h-5 w-5" />
-                    API Performance
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-2">
-                    <div className="flex justify-between">
-                      <span>Total Requests:</span>
-                      <span className="font-medium">{performanceStats.api?.count || 0}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Avg Response Time:</span>
-                      <span className="font-medium">{performanceStats.api?.avgResponseTime?.toFixed(2) || 0}ms</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Max Response Time:</span>
-                      <span className="font-medium">{performanceStats.api?.maxResponseTime?.toFixed(2) || 0}ms</span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+            <Grid container spacing={3}>
+              <Grid item xs={12} md={4}>
+                <Card>
+                  <CardHeader>
+                    <Typography variant="h6" component="div" className="flex items-center gap-2">
+                      <Activity className="h-5 w-5" />
+                      API Performance
+                    </Typography>
+                  </CardHeader>
+                  <CardContent>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <Typography variant="body2">Total Requests:</Typography>
+                        <Typography variant="body2" fontWeight="medium">{performanceStats.api?.count || 0}</Typography>
+                      </Box>
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <Typography variant="body2">Avg Response Time:</Typography>
+                        <Typography variant="body2" fontWeight="medium">{performanceStats.api?.avgResponseTime?.toFixed(2) || 0}ms</Typography>
+                      </Box>
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <Typography variant="body2">Max Response Time:</Typography>
+                        <Typography variant="body2" fontWeight="medium">{performanceStats.api?.maxResponseTime?.toFixed(2) || 0}ms</Typography>
+                      </Box>
+                    </Box>
+                  </CardContent>
+                </Card>
+              </Grid>
 
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Database className="h-5 w-5" />
-                    Database Performance
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-2">
-                    <div className="flex justify-between">
-                      <span>Total Queries:</span>
-                      <span className="font-medium">{performanceStats.database?.count || 0}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Avg Query Time:</span>
-                      <span className="font-medium">{performanceStats.database?.avgQueryTime?.toFixed(2) || 0}ms</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Max Query Time:</span>
-                      <span className="font-medium">{performanceStats.database?.maxQueryTime?.toFixed(2) || 0}ms</span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
+              <Grid item xs={12} md={4}>
+                <Card>
+                  <CardHeader>
+                    <Typography variant="h6" component="div" className="flex items-center gap-2">
+                      <Activity className="h-5 w-5" />
+                      Database Performance
+                    </Typography>
+                  </CardHeader>
+                  <CardContent>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <Typography variant="body2">Total Queries:</Typography>
+                        <Typography variant="body2" fontWeight="medium">{performanceStats.database?.count || 0}</Typography>
+                      </Box>
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <Typography variant="body2">Avg Query Time:</Typography>
+                        <Typography variant="body2" fontWeight="medium">{performanceStats.database?.avgQueryTime?.toFixed(2) || 0}ms</Typography>
+                      </Box>
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <Typography variant="body2">Max Query Time:</Typography>
+                        <Typography variant="body2" fontWeight="medium">{performanceStats.database?.maxQueryTime?.toFixed(2) || 0}ms</Typography>
+                      </Box>
+                    </Box>
+                  </CardContent>
+                </Card>
+              </Grid>
 
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Zap className="h-5 w-5" />
-                    Cache Performance
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-2">
-                    <div className="flex justify-between">
-                      <span>Total Operations:</span>
-                      <span className="font-medium">{performanceStats.cache?.total || 0}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Cache Hits:</span>
-                      <span className="font-medium">{performanceStats.cache?.hits || 0}</span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span>Hit Rate:</span>
-                      <span className="font-medium">{performanceStats.cache?.hitRate?.toFixed(1) || 0}%</span>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
+              <Grid item xs={12} md={4}>
+                <Card>
+                  <CardHeader>
+                    <Typography variant="h6" component="div" className="flex items-center gap-2">
+                      <Activity className="h-5 w-5" />
+                      Cache Performance
+                    </Typography>
+                  </CardHeader>
+                  <CardContent>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <Typography variant="body2">Total Operations:</Typography>
+                        <Typography variant="body2" fontWeight="medium">{performanceStats.cache?.total || 0}</Typography>
+                      </Box>
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <Typography variant="body2">Cache Hits:</Typography>
+                        <Typography variant="body2" fontWeight="medium">{performanceStats.cache?.hits || 0}</Typography>
+                      </Box>
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                        <Typography variant="body2">Hit Rate:</Typography>
+                        <Typography variant="body2" fontWeight="medium">{performanceStats.cache?.hitRate?.toFixed(1) || 0}%</Typography>
+                      </Box>
+                    </Box>
+                  </CardContent>
+                </Card>
+              </Grid>
+            </Grid>
           )}
-        </TabsContent>
+        </TabPanel>
 
-        <TabsContent value="recommendations" className="space-y-4">
+        <TabPanel value="recommendations">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Lightbulb className="h-5 w-5" />
+              <Typography variant="h6" component="div" className="flex items-center gap-2">
+                <Activity className="h-5 w-5" />
                 Optimization Recommendations
-              </CardTitle>
-              <CardDescription>
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
                 AI-powered suggestions to improve system performance
-              </CardDescription>
+              </Typography>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                 {recommendations.length === 0 ? (
-                  <div className="text-center py-8 text-muted-foreground">
+                  <Typography variant="body2" color="text.secondary" align="center" py={8}>
                     No optimization recommendations at this time
-                  </div>
+                  </Typography>
                 ) : (
                   recommendations.map((recommendation, index) => (
-                    <div key={index} className="flex items-start gap-3 p-4 border rounded-lg">
-                      <Lightbulb className="h-5 w-5 text-blue-600 mt-0.5" />
-                      <div className="flex-1">
-                        <p className="text-sm">{recommendation}</p>
-                      </div>
-                      <Button variant="outline" size="sm">
+                    <Box key={index} sx={{ display: 'flex', alignItems: 'center', gap: 2, p: 2, borderRadius: 1 }}>
+                      <Activity className="h-5 w-5 text-blue-600" />
+                      <Box sx={{ flexGrow: 1 }}>
+                        <Typography variant="body2">{recommendation}</Typography>
+                      </Box>
+                      <Button variant="outlined" size="small">
                         <Settings className="h-4 w-4" />
                       </Button>
-                    </div>
+                    </Box>
                   ))
                 )}
-              </div>
+              </Box>
             </CardContent>
           </Card>
-        </TabsContent>
+        </TabPanel>
       </Tabs>
+    </div>
+  );
+}
+
+function TabPanel(props: { children?: React.ReactNode; index: number; value: string }) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
     </div>
   );
 } 

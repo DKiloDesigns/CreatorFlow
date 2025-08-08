@@ -8,7 +8,6 @@ import {
   Card, 
   CardContent, 
   CardHeader, 
-  CardTitle,
   Chip,
   Tabs,
   Tab,

@@ -1,65 +1,18 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './card';
-import { Button } from './button';
-import { Input } from './input';
-import { Label } from './label';
-import { Textarea } from './textarea';
-import { Badge } from './badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from './tabs';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './select';
-import { Switch } from './switch';
+import React, { useState } from 'react';
 import { 
-  Lightbulb, 
-  TrendingUp, 
-  Target, 
-  Users, 
-  BarChart3, 
-  Search, 
-  Copy, 
-  RefreshCw,
-  Zap,
-  Eye,
-  Clock,
-  Globe,
-  Star,
-  Heart,
-  MessageSquare,
-  Share2,
-  Bookmark,
-  AlertTriangle,
-  CheckCircle,
-  Info,
-  Sparkles,
-  Brain,
-  Calendar,
-  TrendingDown,
-  ArrowUpRight,
-  ArrowDownRight,
-  Minus,
-  Video,
-  Image,
-  FileText,
-  Mic,
-  Play,
-  Camera,
-  Edit3,
-  Hash,
-  MapPin,
-  CalendarDays,
-  Clock3,
-  Rocket,
-  Crown,
-  Trophy,
-  Medal,
-  Activity,
-  PieChart,
-  LineChart,
-  BarChart,
-  TrendingUp as TrendingUpIcon,
-  DollarSign
-} from 'lucide-react';
+  Card, 
+  CardContent, 
+  CardHeader, 
+  Button,
+  TextField,
+  Box,
+  Typography,
+  Grid,
+  Chip
+} from '@mui/material';
+import { TrendingUp, Activity, Crown, Trophy, Medal, Star, TrendingDown, Minus } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface PerformancePrediction {

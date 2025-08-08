@@ -1,21 +1,17 @@
 'use client';
 
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
 import { 
-  Lightbulb, 
-  TrendingUp, 
-  Clock, 
-  MessageSquare, 
-  Heart, 
-  Target,
-  RefreshCw,
-  CheckCircle,
-  AlertCircle,
-  Info
-} from 'lucide-react';
+  Card, 
+  CardContent, 
+  CardHeader, 
+  Button,
+  Box,
+  Typography,
+  Grid,
+  Chip
+} from '@mui/material';
+import { TrendingUp, Activity } from 'lucide-react';
 
 interface Insight {
   id: string;
@@ -47,15 +43,15 @@ export function InsightsPanel({ insights, onRefresh }: InsightsPanelProps) {
       case 'performance':
         return <TrendingUp className="h-5 w-5" />;
       case 'timing':
-        return <Clock className="h-5 w-5" />;
+        return <Activity className="h-5 w-5" />;
       case 'content':
-        return <MessageSquare className="h-5 w-5" />;
+        return <Activity className="h-5 w-5" />;
       case 'engagement':
-        return <Heart className="h-5 w-5" />;
+        return <Activity className="h-5 w-5" />;
       case 'growth':
-        return <Target className="h-5 w-5" />;
+        return <Activity className="h-5 w-5" />;
       default:
-        return <Lightbulb className="h-5 w-5" />;
+        return <Activity className="h-5 w-5" />;
     }
   };
 
@@ -81,11 +77,11 @@ export function InsightsPanel({ insights, onRefresh }: InsightsPanelProps) {
   if (!insights) {
     return (
       <div className="text-center py-8">
-        <Lightbulb className="mx-auto h-12 w-12 text-gray-400 mb-4" />
+        <Activity className="mx-auto h-12 w-12 text-gray-400 mb-4" />
         <h3 className="text-lg font-medium text-gray-900 mb-2">No Insights Available</h3>
         <p className="text-gray-500 mb-4">Generate AI-powered insights to get personalized recommendations.</p>
         <Button onClick={onRefresh}>
-          <Lightbulb className="h-4 w-4 mr-2" />
+          <Activity className="h-4 w-4 mr-2" />
           Generate Insights
         </Button>
       </div>
@@ -103,7 +99,7 @@ export function InsightsPanel({ insights, onRefresh }: InsightsPanelProps) {
           </p>
         </div>
         <Button onClick={onRefresh} variant="outline">
-          <RefreshCw className="h-4 w-4 mr-2" />
+          <Activity className="h-4 w-4 mr-2" />
           Refresh
         </Button>
       </div>
@@ -119,7 +115,7 @@ export function InsightsPanel({ insights, onRefresh }: InsightsPanelProps) {
                     {getInsightIcon(insight.type)}
                   </div>
                   <div>
-                    <CardTitle className="text-lg">{insight.title}</CardTitle>
+                    <Typography variant="h6" className="text-lg">{insight.title}</Typography>
                     <div className="flex items-center space-x-2 mt-1">
                       <Badge className={getImpactColor(insight.impact)}>
                         {insight.impact} impact
@@ -177,7 +173,7 @@ export function InsightsPanel({ insights, onRefresh }: InsightsPanelProps) {
               We couldn't generate insights yet. This usually means you need more content data.
             </p>
             <Button onClick={onRefresh}>
-              <RefreshCw className="h-4 w-4 mr-2" />
+              <Activity className="h-4 w-4 mr-2" />
               Try Again
             </Button>
           </CardContent>

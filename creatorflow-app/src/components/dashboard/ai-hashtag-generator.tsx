@@ -1,12 +1,17 @@
 import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
-import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { 
-  Hash, 
+  Card, 
+  CardContent, 
+  CardHeader, 
+  Button,
+  TextField,
+  Box,
+  Typography,
+  Grid,
+  Chip
+} from '@mui/material';
+import { Hash, Activity } from 'lucide-react';
+import { 
   Copy, 
   Check, 
   RefreshCw,
@@ -115,68 +120,66 @@ export function AIHashtagGenerator({ onHashtagsSelect, className }: AIHashtagGen
   return (
     <Card className={className}>
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
+        <Typography variant="h5" component="div" className="flex items-center gap-2">
           <Hash className="h-5 w-5 text-blue-600" />
           AI Hashtag Generator
-        </CardTitle>
+        </Typography>
       </CardHeader>
       <CardContent className="space-y-4">
         {/* Input Fields */}
-        <div className="space-y-3">
-          <div>
-            <label className="text-sm font-medium mb-2 block">Content Description</label>
-            <Textarea
-              placeholder="Describe your content to get relevant hashtags..."
-              value={content}
-              onChange={(e) => setContent(e.target.value)}
-              className="min-h-[80px]"
-            />
-          </div>
+        <Box sx={{ '& .MuiTextField-root': { m: 1, width: '100%' } }}>
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <TextField
+                label="Content Description"
+                multiline
+                rows={4}
+                placeholder="Describe your content to get relevant hashtags..."
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+                fullWidth
+              />
+            </Grid>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-            <div>
-              <label className="text-sm font-medium mb-2 block">Platform</label>
-              <Select value={platform} onValueChange={setPlatform}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {platforms.map((p) => (
-                    <SelectItem key={p.value} value={p.value}>
-                      {p.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label="Platform"
+                select
+                value={platform}
+                onChange={(e) => setPlatform(e.target.value as string)}
+                fullWidth
+              >
+                {platforms.map((p) => (
+                  <Chip key={p.value} label={p.label} value={p.value} />
+                ))}
+              </TextField>
+            </Grid>
 
-            <div>
-              <label className="text-sm font-medium mb-2 block">Industry</label>
-              <Select value={industry} onValueChange={setIndustry}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select industry" />
-                </SelectTrigger>
-                <SelectContent>
-                  {industries.map((i) => (
-                    <SelectItem key={i.value} value={i.value}>
-                      {i.label}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-        </div>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                label="Industry"
+                select
+                value={industry}
+                onChange={(e) => setIndustry(e.target.value as string)}
+                fullWidth
+              >
+                {industries.map((i) => (
+                  <Chip key={i.value} label={i.label} value={i.value} />
+                ))}
+              </TextField>
+            </Grid>
+          </Grid>
+        </Box>
 
         {/* Generate Button */}
         <Button
           onClick={generateHashtags}
           disabled={(!content.trim() && !industry) || isGenerating}
-          className="w-full"
+          fullWidth
         >
           {isGenerating ? (
             <>
-              <LoadingSpinner size="sm" className="mr-2" />
+              <Activity className="h-4 w-4 mr-2" />
               Generating Hashtags...
             </>
           ) : (
@@ -189,113 +192,97 @@ export function AIHashtagGenerator({ onHashtagsSelect, className }: AIHashtagGen
 
         {/* Generated Hashtags */}
         {hashtags.length > 0 && (
-          <div className="space-y-3">
-            <div className="flex items-center justify-between">
-              <h3 className="font-medium text-sm text-muted-foreground">
+          <Box sx={{ mt: 2 }}>
+            <Typography variant="h6" component="div" className="flex items-center justify-between">
+              <Typography variant="subtitle1" component="span">
                 Generated Hashtags ({hashtags.length})
-              </h3>
+              </Typography>
               {selectedHashtags.length > 0 && (
-                <div className="flex items-center gap-2">
-                  <span className="text-xs text-muted-foreground">
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <Typography variant="body2" component="span" color="text.secondary">
                     {selectedHashtags.length} selected
-                  </span>
+                  </Typography>
                   <Button
-                    variant="outline"
-                    size="sm"
+                    variant="outlined"
+                    size="small"
                     onClick={copyAllSelected}
-                    className="h-6 px-2 text-xs"
+                    startIcon={<Copy className="h-3 w-3" />}
                   >
-                    <Copy className="h-3 w-3 mr-1" />
                     Copy All
                   </Button>
                   <Button
-                    size="sm"
+                    size="small"
                     onClick={useSelectedHashtags}
-                    className="h-6 px-2 text-xs"
+                    startIcon={<Zap className="h-3 w-3" />}
                   >
-                    <Zap className="h-3 w-3 mr-1" />
                     Use Selected
                   </Button>
-                </div>
+                </Box>
               )}
-            </div>
+            </Typography>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+            <Grid container spacing={1} sx={{ mt: 1 }}>
               {hashtags.map((hashtag, index) => (
-                <div
-                  key={index}
-                  className={`p-3 border rounded-lg cursor-pointer transition-all ${
-                    selectedHashtags.includes(hashtag.hashtag)
-                      ? 'border-blue-500 bg-blue-50 dark:bg-blue-950/20'
-                      : 'hover:border-gray-300'
-                  }`}
-                  onClick={() => toggleHashtagSelection(hashtag.hashtag)}
-                >
-                  <div className="flex items-center justify-between">
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2 mb-1">
-                        <span className="font-medium text-sm">{hashtag.hashtag}</span>
+                <Grid item xs={12} key={index}>
+                  <Chip
+                    label={
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <Typography variant="body2" component="span">{hashtag.hashtag}</Typography>
                         {hashtag.trending && (
-                          <Badge variant="destructive" className="text-xs">
-                            <TrendingUp className="h-3 w-3 mr-1" />
-                            Trending
-                          </Badge>
+                          <Chip
+                            label="Trending"
+                            size="small"
+                            icon={<TrendingUp className="h-3 w-3" />}
+                            variant="outlined"
+                            color="error"
+                          />
                         )}
-                      </div>
-                      <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                        <span>Relevance: {hashtag.relevance}%</span>
-                        <span>Reach: {hashtag.reach.toLocaleString()}</span>
-                      </div>
-                    </div>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        copyToClipboard(hashtag.hashtag, index);
-                      }}
-                      className="h-6 w-6 p-0"
-                    >
-                      {copiedIndex === index ? (
+                      </Box>
+                    }
+                    variant={selectedHashtags.includes(hashtag.hashtag) ? 'filled' : 'outlined'}
+                    onClick={() => toggleHashtagSelection(hashtag.hashtag)}
+                    onDelete={() => toggleHashtagSelection(hashtag.hashtag)}
+                    deleteIcon={
+                      copiedIndex === index ? (
                         <Check className="h-3 w-3 text-green-600" />
                       ) : (
                         <Copy className="h-3 w-3" />
-                      )}
-                    </Button>
-                  </div>
-                </div>
+                      )
+                    }
+                  />
+                </Grid>
               ))}
-            </div>
+            </Grid>
             
             <Button
-              variant="outline"
+              variant="outlined"
               onClick={generateHashtags}
               disabled={isGenerating}
-              className="w-full"
+              fullWidth
+              startIcon={<RefreshCw className={`h-4 w-4 mr-2 ${isGenerating ? 'animate-spin' : ''}`} />}
             >
-              <RefreshCw className={`h-4 w-4 mr-2 ${isGenerating ? 'animate-spin' : ''}`} />
               Generate More
             </Button>
-          </div>
+          </Box>
         )}
 
         {/* Selected Hashtags Preview */}
         {selectedHashtags.length > 0 && (
-          <div className="p-3 bg-blue-50 dark:bg-blue-900/60 rounded-lg">
-            <h4 className="font-medium text-sm mb-2">Selected Hashtags:</h4>
-            <div className="flex flex-wrap gap-1">
+          <Box sx={{ mt: 2, p: 2, bgcolor: 'info.light', borderRadius: 1 }}>
+            <Typography variant="subtitle2" component="h4" gutterBottom>
+              Selected Hashtags:
+            </Typography>
+            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
               {selectedHashtags.map((hashtag, index) => (
-                <Badge
+                <Chip
                   key={index}
-                  variant="secondary"
-                  className="cursor-pointer hover:bg-blue-200"
+                  label={hashtag}
+                  variant="outlined"
                   onClick={() => toggleHashtagSelection(hashtag)}
-                >
-                  {hashtag}
-                </Badge>
+                />
               ))}
-            </div>
-          </div>
+            </Box>
+          </Box>
         )}
       </CardContent>
     </Card>

@@ -1,16 +1,22 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Slider } from '@/components/ui/slider';
-import { Switch } from '@/components/ui/switch';
-import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
+import { 
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  Button,
+  TextField,
+  Box,
+  Typography,
+  Grid,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel
+} from '@mui/material';
+import { Video, Activity, Upload } from 'lucide-react';
 import { toast } from 'sonner';
 import { 
   Play, 
@@ -246,16 +252,19 @@ export function CreateVideoModal({ open, onOpenChange, onVideoCreated }: CreateV
               </Button>
               
               <div className="flex-1">
-                <Slider
-                  value={[currentTime]}
+                {/* Slider component was removed, so this will be a placeholder */}
+                <input
+                  type="range"
+                  min="0"
                   max={totalDuration}
-                  step={0.1}
-                  onValueChange={([value]) => {
+                  value={currentTime}
+                  onChange={(e) => {
                     if (videoRef.current) {
-                      videoRef.current.currentTime = value;
-                      setCurrentTime(value);
+                      videoRef.current.currentTime = parseFloat(e.target.value);
+                      setCurrentTime(parseFloat(e.target.value));
                     }
                   }}
+                  className="w-full"
                 />
               </div>
               
@@ -267,20 +276,28 @@ export function CreateVideoModal({ open, onOpenChange, onVideoCreated }: CreateV
             {/* Video Settings */}
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="title">Video Title</Label>
-                <Input
+                {/* Label component was removed, so this will be a placeholder */}
+                <label htmlFor="title" className="text-sm font-medium">Video Title</label>
+                <input
                   id="title"
+                  type="text"
                   value={videoTitle}
                   onChange={(e) => setVideoTitle(e.target.value)}
                   placeholder="Enter video title"
+                  className="w-full p-2 border rounded-md text-sm"
                 />
               </div>
               
               <div>
-                <Label htmlFor="aspectRatio">Aspect Ratio</Label>
-                <Select value={aspectRatio} onValueChange={setAspectRatio}>
-                  <SelectTrigger>
-                    <SelectValue />
+                {/* Label component was removed, so this will be a placeholder */}
+                <label htmlFor="aspectRatio" className="text-sm font-medium">Aspect Ratio</label>
+                <Select
+                  value={aspectRatio}
+                  onValueChange={setAspectRatio}
+                  className="w-full"
+                >
+                  <SelectTrigger className="w-full text-sm">
+                    <SelectValue placeholder="Select aspect ratio" />
                   </SelectTrigger>
                   <SelectContent>
                     <SelectItem value="16:9">16:9 (Landscape)</SelectItem>
@@ -404,27 +421,33 @@ export function CreateVideoModal({ open, onOpenChange, onVideoCreated }: CreateV
                           {selectedClip === clip.id && (
                             <div className="space-y-2 mt-2">
                               <div>
-                                <Label className="text-xs">Duration</Label>
-                                <Slider
-                                  value={[clip.duration]}
-                                  min={1}
-                                  max={30}
-                                  step={0.5}
-                                  onValueChange={([value]) => 
-                                    handleUpdateClip(clip.id, { duration: value })
+                                {/* Label component was removed, so this will be a placeholder */}
+                                <label className="text-xs">Duration</label>
+                                <input
+                                  type="range"
+                                  min="1"
+                                  max="30"
+                                  step="0.5"
+                                  value={clip.duration}
+                                  onChange={(e) => 
+                                    handleUpdateClip(clip.id, { duration: parseFloat(e.target.value) })
                                   }
+                                  className="w-full"
                                 />
                               </div>
                               
                               <div>
-                                <Label className="text-xs">Volume</Label>
-                                <Slider
-                                  value={[clip.volume * 100]}
-                                  min={0}
-                                  max={100}
-                                  onValueChange={([value]) => 
-                                    handleUpdateClip(clip.id, { volume: value / 100 })
+                                {/* Label component was removed, so this will be a placeholder */}
+                                <label className="text-xs">Volume</label>
+                                <input
+                                  type="range"
+                                  min="0"
+                                  max="100"
+                                  value={clip.volume * 100}
+                                  onChange={(e) => 
+                                    handleUpdateClip(clip.id, { volume: parseFloat(e.target.value) / 100 })
                                   }
+                                  className="w-full"
                                 />
                               </div>
                             </div>
@@ -468,49 +491,56 @@ export function CreateVideoModal({ open, onOpenChange, onVideoCreated }: CreateV
                           {selectedOverlay === overlay.id && (
                             <div className="space-y-2 mt-2">
                               <div>
-                                <Label className="text-xs">Text</Label>
-                                <Textarea
+                                {/* Label component was removed, so this will be a placeholder */}
+                                <label className="text-xs">Text</label>
+                                <textarea
                                   value={overlay.text}
                                   onChange={(e) => handleUpdateOverlay(overlay.id, { text: e.target.value })}
-                                  className="text-xs"
+                                  className="w-full p-2 border rounded-md text-xs"
                                   rows={2}
                                 />
                               </div>
                               
                               <div className="grid grid-cols-2 gap-2">
                                 <div>
-                                  <Label className="text-xs">Font Size</Label>
-                                  <Slider
-                                    value={[overlay.fontSize]}
-                                    min={12}
-                                    max={72}
-                                    onValueChange={([value]) => 
-                                      handleUpdateOverlay(overlay.id, { fontSize: value })
+                                  {/* Label component was removed, so this will be a placeholder */}
+                                  <label className="text-xs">Font Size</label>
+                                  <input
+                                    type="range"
+                                    min="12"
+                                    max="72"
+                                    value={overlay.fontSize}
+                                    onChange={(e) => 
+                                      handleUpdateOverlay(overlay.id, { fontSize: parseFloat(e.target.value) })
                                     }
+                                    className="w-full"
                                   />
                                 </div>
                                 
                                 <div>
-                                  <Label className="text-xs">Color</Label>
-                                  <Input
+                                  {/* Label component was removed, so this will be a placeholder */}
+                                  <label className="text-xs">Color</label>
+                                  <input
                                     type="color"
                                     value={overlay.color}
                                     onChange={(e) => handleUpdateOverlay(overlay.id, { color: e.target.value })}
-                                    className="h-8"
+                                    className="h-8 w-full"
                                   />
                                 </div>
                               </div>
                               
                               <div>
-                                <Label className="text-xs">Animation</Label>
+                                {/* Label component was removed, so this will be a placeholder */}
+                                <label className="text-xs">Animation</label>
                                 <Select
                                   value={overlay.animation}
                                   onValueChange={(value: any) => 
                                     handleUpdateOverlay(overlay.id, { animation: value })
                                   }
+                                  className="w-full text-xs"
                                 >
-                                  <SelectTrigger className="text-xs">
-                                    <SelectValue />
+                                  <SelectTrigger className="w-full text-xs">
+                                    <SelectValue placeholder="Select animation" />
                                   </SelectTrigger>
                                   <SelectContent>
                                     <SelectItem value="none">None</SelectItem>

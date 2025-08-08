@@ -1,12 +1,17 @@
 'use client';
 
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { ArrowLeft, Mail } from 'lucide-react';
+import { 
+  Card, 
+  CardContent, 
+  CardHeader, 
+  Button,
+  TextField,
+  Box,
+  Typography,
+  Grid
+} from '@mui/material';
+import { Mail, Activity } from 'lucide-react';
 import Link from 'next/link';
 
 export default function ForgotPasswordPage() {
@@ -59,50 +64,65 @@ export default function ForgotPasswordPage() {
           <CardHeader className="space-y-1">
             <div className="flex items-center space-x-2">
               <Link href="/auth" className="text-gray-500 hover:text-gray-700">
-                <ArrowLeft className="h-4 w-4" />
+                <Activity className="h-4 w-4" />
               </Link>
-              <CardTitle className="text-2xl font-bold">Forgot Password</CardTitle>
+              <Typography variant="h5" component="h1" className="text-2xl font-bold">
+                Forgot Password
+              </Typography>
             </div>
-            <CardDescription>
+            <Typography variant="body2" color="text.secondary">
               Enter your email address and we'll send you a link to reset your password.
-            </CardDescription>
+            </Typography>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <div className="relative">
-                  <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                  <Input
-                    id="email"
+            <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
+              <Grid container spacing={2}>
+                <Grid item xs={12}>
+                  <TextField
+                    label="Email"
                     type="email"
                     placeholder="Enter your email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    className="pl-10"
+                    fullWidth
                     required
+                    InputProps={{
+                      startAdornment: (
+                        <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+                      ),
+                    }}
                   />
-                </div>
-              </div>
+                </Grid>
 
-              {message && (
-                <Alert className={message.type === 'error' ? 'border-red-200 bg-red-50' : 'border-green-200 bg-green-50'}>
-                  <AlertDescription className={message.type === 'error' ? 'text-red-800' : 'text-green-800'}>
-                    {message.text}
-                  </AlertDescription>
-                </Alert>
-              )}
+                {message && (
+                  <Grid item xs={12}>
+                    <Box
+                      sx={{
+                        ...(message.type === 'error' ? { border: 1, borderColor: 'red.200', bgcolor: 'red.50' } : { border: 1, borderColor: 'green.200', bgcolor: 'green.50' }),
+                      }}
+                    >
+                      <Typography variant="body2" color={message.type === 'error' ? 'red.800' : 'green.800'}>
+                        {message.text}
+                      </Typography>
+                    </Box>
+                  </Grid>
+                )}
 
-              <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? 'Sending...' : 'Send Reset Link'}
-              </Button>
+                <Grid item xs={12}>
+                  <Button type="submit" fullWidth variant="contained" disabled={isLoading}>
+                    {isLoading ? 'Sending...' : 'Send Reset Link'}
+                  </Button>
+                </Grid>
 
-              <div className="text-center">
-                <Link href="/auth" className="text-sm text-blue-600 hover:text-blue-500">
-                  Back to Sign In
-                </Link>
-              </div>
-            </form>
+                <Grid item xs={12}>
+                  <Typography variant="body2" align="center">
+                    <Link href="/auth" className="text-sm text-blue-600 hover:text-blue-500">
+                      Back to Sign In
+                    </Link>
+                  </Typography>
+                </Grid>
+              </Grid>
+            </Box>
           </CardContent>
         </Card>
       </div>

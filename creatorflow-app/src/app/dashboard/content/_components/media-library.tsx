@@ -1,17 +1,24 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { 
+  Card, 
+  CardContent, 
+  CardHeader, 
+  Button,
+  TextField,
+  Box,
+  Typography,
+  Grid,
+  Chip
+} from '@mui/material';
+import { Image, Activity } from 'lucide-react';
+
 import { toast } from 'sonner';
 import { 
   Search, 
   Filter, 
-  Grid, 
+  Grid as GridIcon, 
   List, 
   Eye, 
   Download, 
@@ -254,7 +261,7 @@ export function MediaLibrary({ onSelect, selectedMedia = [], multiple = false }:
             size="sm"
             onClick={() => setViewMode(viewMode === 'grid' ? 'list' : 'grid')}
           >
-            {viewMode === 'grid' ? <List className="h-4 w-4" /> : <Grid className="h-4 w-4" />}
+            {viewMode === 'grid' ? <List className="h-4 w-4" /> : <GridIcon className="h-4 w-4" />}
           </Button>
         </div>
       </div>
@@ -263,11 +270,17 @@ export function MediaLibrary({ onSelect, selectedMedia = [], multiple = false }:
       <div className="flex flex-col sm:flex-row gap-4">
         <div className="relative flex-1">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-          <Input
+          <TextField
             placeholder="Search media..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
             className="pl-10"
+            fullWidth
+            InputProps={{
+              startAdornment: (
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+              ),
+            }}
           />
         </div>
         

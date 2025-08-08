@@ -1,9 +1,15 @@
 import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
-import { LoadingSpinner } from '@/components/ui/loading-spinner';
+import { 
+  Card, 
+  CardContent, 
+  CardHeader, 
+  Button,
+  Box,
+  Typography,
+  Grid,
+  Chip
+} from '@mui/material';
+
 import { 
   Clock, 
   Calendar,
@@ -76,10 +82,10 @@ export function AIPostingTimes({ className }: AIPostingTimesProps) {
   return (
     <Card className={className}>
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Clock className="h-5 w-5 text-green-600" />
-          AI Optimal Posting Times
-        </CardTitle>
+        <Typography variant="h6" className="flex items-center gap-2">
+          <Clock className="h-5 w-5" />
+          AI Posting Times
+        </Typography>
       </CardHeader>
       <CardContent className="space-y-4">
         {/* Input Fields */}

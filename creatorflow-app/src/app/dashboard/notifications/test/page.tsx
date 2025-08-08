@@ -1,10 +1,17 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Bell, Send, Zap, AlertTriangle, Info, CheckCircle } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import { 
+  Card, 
+  CardContent, 
+  CardHeader, 
+  Button,
+  Box,
+  Typography,
+  Grid,
+  Chip
+} from '@mui/material';
+import { Bell, Activity, Settings } from 'lucide-react';
 import { NotificationToast } from '@/components/ui/notification-badge';
 
 export default function NotificationTestPage() {
@@ -121,19 +128,19 @@ export default function NotificationTestPage() {
     <div className="space-y-6">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold">Notification Test Center</h1>
-        <p className="text-gray-600 dark:text-gray-300">
+        <Typography variant="h4" className="font-bold">Notification Test Center</Typography>
+        <Typography variant="body1" className="text-gray-600 dark:text-gray-300">
           Test the notification system by sending various types of notifications
-        </p>
+        </Typography>
       </div>
 
       {/* Send All Button */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
+          <Typography variant="h6" className="flex items-center gap-2">
             <Bell className="h-5 w-5" />
             Send All Test Notifications
-          </CardTitle>
+          </Typography>
           <CardDescription>
             Send all test notifications at once to verify the system is working
           </CardDescription>
@@ -160,7 +167,7 @@ export default function NotificationTestPage() {
                   <div className={notification.color}>
                     {notification.icon}
                   </div>
-                  <CardTitle className="text-lg">{notification.title}</CardTitle>
+                  <Typography variant="h6" className="text-lg">{notification.title}</Typography>
                 </div>
                 <div className="flex gap-1">
                   <Badge variant="secondary" className="text-xs">
@@ -193,7 +200,7 @@ export default function NotificationTestPage() {
       {/* Instructions */}
       <Card>
         <CardHeader>
-          <CardTitle>How to Test</CardTitle>
+          <Typography variant="h6">How to Test</Typography>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">

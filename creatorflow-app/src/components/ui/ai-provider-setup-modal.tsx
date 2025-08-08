@@ -1,13 +1,18 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from './dialog';
-import { Button } from './button';
-import { Input } from './input';
-import { Label } from './label';
-import { Badge } from './badge';
-import { Card, CardContent } from './card';
-import { Check, ExternalLink, AlertCircle, Copy, Eye, EyeOff } from 'lucide-react';
+import { 
+  Card, 
+  CardContent, 
+  CardHeader, 
+  Button,
+  TextField,
+  Box,
+  Typography,
+  Grid,
+  Chip
+} from '@mui/material';
+import { Brain, Activity } from 'lucide-react';
 import { AIProvider } from '@/lib/ai-providers';
 
 interface AIProviderSetupModalProps {

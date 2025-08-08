@@ -1,42 +1,25 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Calendar } from '@/components/ui/calendar';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { toast } from 'sonner';
 import { 
-  Calendar as CalendarIcon,
-  Clock,
-  Upload,
-  Plus,
-  Trash2,
-  Copy,
-  Edit,
-  Eye,
-  Check,
-  X,
-  Instagram,
-  Facebook,
-  Twitter,
-  Linkedin,
-  Youtube,
-  Hash,
-  Image as ImageIcon,
-  Video as VideoIcon,
-  FileText,
-  Settings,
-  Download,
-  Share2
-} from 'lucide-react';
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  Button,
+  TextField,
+  Box,
+  Typography,
+  Grid,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Checkbox,
+  FormControlLabel
+} from '@mui/material';
+import { Calendar, Activity, Clock, Upload } from 'lucide-react';
+import { toast } from 'sonner';
 import { format } from 'date-fns';
 
 interface ScheduledPost {
@@ -72,11 +55,11 @@ export function BulkScheduleModal({ open, onOpenChange, onBulkScheduled }: BulkS
   const [currentStep, setCurrentStep] = useState(1);
 
   const platforms = [
-    { id: 'instagram', name: 'Instagram', icon: Instagram, color: 'text-pink-500' },
-    { id: 'facebook', name: 'Facebook', icon: Facebook, color: 'text-blue-600' },
-    { id: 'twitter', name: 'Twitter', icon: Twitter, color: 'text-blue-400' },
-    { id: 'linkedin', name: 'LinkedIn', icon: Linkedin, color: 'text-blue-700' },
-    { id: 'youtube', name: 'YouTube', icon: Youtube, color: 'text-red-600' }
+    { id: 'instagram', name: 'Instagram', icon: 'Instagram', color: 'text-pink-500' },
+    { id: 'facebook', name: 'Facebook', icon: 'Facebook', color: 'text-blue-600' },
+    { id: 'twitter', name: 'Twitter', icon: 'Twitter', color: 'text-blue-400' },
+    { id: 'linkedin', name: 'LinkedIn', icon: 'Linkedin', color: 'text-blue-700' },
+    { id: 'youtube', name: 'YouTube', icon: 'Youtube', color: 'text-red-600' }
   ];
 
   const frequencies = [

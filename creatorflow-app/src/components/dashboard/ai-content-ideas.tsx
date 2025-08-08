@@ -1,9 +1,15 @@
 import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
-import { LoadingSpinner } from '@/components/ui/loading-spinner';
+import { 
+  Card, 
+  CardContent, 
+  CardHeader, 
+  Button,
+  Box,
+  Typography,
+  Grid,
+  Chip
+} from '@mui/material';
+
 import { 
   Lightbulb, 
   Copy, 
@@ -122,17 +128,17 @@ export function AIContentIdeas({ onIdeaSelect, className }: AIContentIdeasProps)
   return (
     <Card className={className}>
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
+        <Typography variant="h5" component="div" className="flex items-center gap-2">
           <Lightbulb className="h-5 w-5 text-yellow-600" />
           AI Content Ideas
-        </CardTitle>
+        </Typography>
       </CardHeader>
       <CardContent className="space-y-4">
         {/* Input Fields */}
-        <div className="space-y-3">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-            <div>
-              <label className="text-sm font-medium mb-2 block">Platform</label>
+        <Box sx={{ width: '100%' }}>
+          <Grid container spacing={2}>
+            <Grid item xs={12} md={4}>
+              <Typography variant="body2" component="label" sx={{ display: 'block', mb: 0.5 }}>Platform</Typography>
               <Select value={platform} onValueChange={setPlatform}>
                 <SelectTrigger>
                   <SelectValue />
@@ -145,10 +151,10 @@ export function AIContentIdeas({ onIdeaSelect, className }: AIContentIdeasProps)
                   ))}
                 </SelectContent>
               </Select>
-            </div>
+            </Grid>
 
-            <div>
-              <label className="text-sm font-medium mb-2 block">Industry</label>
+            <Grid item xs={12} md={4}>
+              <Typography variant="body2" component="label" sx={{ display: 'block', mb: 0.5 }}>Industry</Typography>
               <Select value={industry} onValueChange={setIndustry}>
                 <SelectTrigger>
                   <SelectValue placeholder="Select industry" />
@@ -161,10 +167,10 @@ export function AIContentIdeas({ onIdeaSelect, className }: AIContentIdeasProps)
                   ))}
                 </SelectContent>
               </Select>
-            </div>
+            </Grid>
 
-            <div>
-              <label className="text-sm font-medium mb-2 block">Target Audience</label>
+            <Grid item xs={12} md={4}>
+              <Typography variant="body2" component="label" sx={{ display: 'block', mb: 0.5 }}>Target Audience</Typography>
               <Select value={targetAudience} onValueChange={setTargetAudience}>
                 <SelectTrigger>
                   <SelectValue placeholder="Select audience" />
@@ -177,9 +183,9 @@ export function AIContentIdeas({ onIdeaSelect, className }: AIContentIdeasProps)
                   ))}
                 </SelectContent>
               </Select>
-            </div>
-          </div>
-        </div>
+            </Grid>
+          </Grid>
+        </Box>
 
         {/* Generate Button */}
         <Button
@@ -202,64 +208,70 @@ export function AIContentIdeas({ onIdeaSelect, className }: AIContentIdeasProps)
 
         {/* Generated Ideas */}
         {ideas.length > 0 && (
-          <div className="space-y-3">
-            <h3 className="font-medium text-sm text-muted-foreground">
+          <Box sx={{ width: '100%' }}>
+            <Typography variant="body2" component="h6" sx={{ fontWeight: 'medium', fontSize: '0.875rem', color: 'text.muted' }}>
               Content Ideas ({ideas.length})
-            </h3>
+            </Typography>
             {ideas.map((idea, index) => (
-              <div
+              <Box
                 key={index}
-                className="p-4 border rounded-lg hover:border-gray-300 transition-colors"
+                sx={{
+                  p: 2,
+                  borderRadius: 1,
+                  border: '1px solid',
+                  borderColor: 'divider',
+                  '&:hover': {
+                    borderColor: 'divider',
+                  },
+                }}
               >
-                <div className="flex items-start justify-between gap-3">
-                  <div className="flex-1">
-                    <div className="flex items-center gap-2 mb-2">
-                      <h4 className="font-medium">{idea.title}</h4>
+                <Grid container spacing={1}>
+                  <Grid item xs={12} md={8}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 0.5 }}>
+                      <Typography variant="subtitle2" component="h4">{idea.title}</Typography>
                       <Badge variant="outline" className="text-xs">
                         {getContentTypeIcon(idea.content_type)}
                         <span className="ml-1 capitalize">{idea.content_type}</span>
                       </Badge>
-                    </div>
-                    <p className="text-sm text-muted-foreground mb-3">
-                      {idea.description}
-                    </p>
+                    </Box>
+                    <Typography variant="body2" sx={{ color: 'text.muted' }}>{idea.description}</Typography>
                     
-                    <div className="space-y-2">
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs font-medium">Platforms:</span>
-                        <div className="flex gap-1">
+                    <Box sx={{ mt: 1, display: 'flex', flexDirection: 'column', gap: 0.5 }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                        <Typography variant="body2" sx={{ fontWeight: 'medium' }}>Platforms:</Typography>
+                        <Box sx={{ display: 'flex', gap: 0.5 }}>
                           {idea.platforms.map((platform, pIndex) => (
                             <Badge key={pIndex} variant="secondary" className="text-xs">
                               {platform}
                             </Badge>
                           ))}
-                        </div>
-                      </div>
+                        </Box>
+                      </Box>
                       
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs font-medium">Suggested Hashtags:</span>
-                        <div className="flex flex-wrap gap-1">
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                        <Typography variant="body2" sx={{ fontWeight: 'medium' }}>Suggested Hashtags:</Typography>
+                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                           {idea.hashtags.slice(0, 3).map((hashtag, hIndex) => (
                             <Badge key={hIndex} variant="outline" className="text-xs">
                               {hashtag}
                             </Badge>
                           ))}
                           {idea.hashtags.length > 3 && (
-                            <span className="text-xs text-muted-foreground">
+                            <Typography variant="body2" sx={{ color: 'text.muted' }}>
                               +{idea.hashtags.length - 3} more
-                            </span>
+                            </Typography>
                           )}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                        </Box>
+                      </Box>
+                    </Box>
+                  </Grid>
                   
-                  <div className="flex items-center gap-1">
+                  <Grid item xs={12} md={4} sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                     <Button
                       variant="ghost"
-                      size="sm"
+                      size="small"
                       onClick={() => copyToClipboard(`${idea.title}: ${idea.description}`, index)}
-                      className="h-8 w-8 p-0"
+                      sx={{ p: 0, minWidth: 40 }}
                     >
                       {copiedIndex === index ? (
                         <Check className="h-4 w-4 text-green-600" />
@@ -269,15 +281,15 @@ export function AIContentIdeas({ onIdeaSelect, className }: AIContentIdeasProps)
                     </Button>
                     <Button
                       variant="ghost"
-                      size="sm"
+                      size="small"
                       onClick={() => useIdea(idea)}
-                      className="h-8 w-8 p-0"
+                      sx={{ p: 0, minWidth: 40 }}
                     >
                       <Calendar className="h-4 w-4" />
                     </Button>
-                  </div>
-                </div>
-              </div>
+                  </Grid>
+                </Grid>
+              </Box>
             ))}
             
             <Button
@@ -289,22 +301,22 @@ export function AIContentIdeas({ onIdeaSelect, className }: AIContentIdeasProps)
               <RefreshCw className={`h-4 w-4 mr-2 ${isGenerating ? 'animate-spin' : ''}`} />
               Generate More Ideas
             </Button>
-          </div>
+          </Box>
         )}
 
         {/* Quick Tips */}
-        <div className="p-3 bg-yellow-50 dark:bg-yellow-900/60 rounded-lg">
-          <h4 className="font-medium text-sm mb-2 flex items-center gap-2">
+        <Box sx={{ p: 2, backgroundColor: 'yellow.50', borderRadius: 1, border: '1px solid', borderColor: 'divider' }}>
+          <Typography variant="subtitle2" component="h6" sx={{ fontWeight: 'medium', display: 'flex', alignItems: 'center', gap: 0.5, mb: 0.5 }}>
             <Lightbulb className="h-4 w-4 text-yellow-600" />
             Content Creation Tips
-          </h4>
-          <ul className="text-xs text-muted-foreground space-y-1">
-            <li>• Mix educational, entertaining, and promotional content</li>
-            <li>• Use high-quality visuals and engaging captions</li>
-            <li>• Post consistently and at optimal times</li>
-            <li>• Engage with your audience through comments and stories</li>
+          </Typography>
+          <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+            <li style={{ marginBottom: '0.25rem' }}>• Mix educational, entertaining, and promotional content</li>
+            <li style={{ marginBottom: '0.25rem' }}>• Use high-quality visuals and engaging captions</li>
+            <li style={{ marginBottom: '0.25rem' }}>• Post consistently and at optimal times</li>
+            <li style={{ marginBottom: '0.25rem' }}>• Engage with your audience through comments and stories</li>
           </ul>
-        </div>
+        </Box>
       </CardContent>
     </Card>
   );

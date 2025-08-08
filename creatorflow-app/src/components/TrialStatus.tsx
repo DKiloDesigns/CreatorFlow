@@ -1,10 +1,17 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
-import { Clock, Crown, AlertTriangle } from 'lucide-react';
+import React from 'react';
+import { 
+  Card, 
+  CardContent, 
+  CardHeader, 
+  Box,
+  Typography,
+  Grid,
+  Chip,
+  LinearProgress
+} from '@mui/material';
+import { Clock, Activity } from 'lucide-react';
 
 interface TrialStatusProps {
   trialStartDate: Date;
@@ -13,16 +20,16 @@ interface TrialStatusProps {
 }
 
 export function TrialStatus({ trialStartDate, trialEndDate, className }: TrialStatusProps) {
-  const [timeLeft, setTimeLeft] = useState<{
+  const [timeLeft, setTimeLeft] = React.useState<{
     days: number;
     hours: number;
     minutes: number;
     seconds: number;
   }>({ days: 0, hours: 0, minutes: 0, seconds: 0 });
 
-  const [progress, setProgress] = useState(0);
+  const [progress, setProgress] = React.useState(0);
 
-  useEffect(() => {
+  React.useEffect(() => {
     const calculateTimeLeft = () => {
       const now = new Date().getTime();
       const end = new Date(trialEndDate).getTime();
@@ -59,68 +66,86 @@ export function TrialStatus({ trialStartDate, trialEndDate, className }: TrialSt
   return (
     <Card className={className}>
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Crown className="h-5 w-5 text-yellow-600" />
-          Pro Trial Status
-        </CardTitle>
-        <CardDescription>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Activity className="h-5 w-5 text-yellow-600" />
+          <Typography variant="h6">Pro Trial Status</Typography>
+        </Box>
+        <Typography variant="body2">
           Your trial period details and remaining time
-        </CardDescription>
+        </Typography>
       </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="flex items-center justify-between">
-          <span className="text-sm font-medium">Trial Progress</span>
-          <Badge variant={isExpired ? "destructive" : isExpiringSoon ? "secondary" : "default"}>
-            {isExpired ? "Expired" : isExpiringSoon ? "Expiring Soon" : "Active"}
-          </Badge>
-        </div>
+      <CardContent>
+        <Grid container spacing={2} alignItems="center">
+          <Grid item xs={12}>
+            <Typography variant="body2" sx={{ fontWeight: 'medium' }}>Trial Progress</Typography>
+            <Chip
+              label={isExpired ? "Expired" : isExpiringSoon ? "Expiring Soon" : "Active"}
+              variant={isExpired ? "filled" : isExpiringSoon ? "outlined" : "default"}
+              color={isExpired ? "error" : isExpiringSoon ? "warning" : "default"}
+            />
+          </Grid>
 
-        <Progress value={progress} className="h-2" />
+          <Grid item xs={12}>
+            <LinearProgress variant="determinate" value={progress} sx={{ height: 8 }} />
+          </Grid>
 
-        {!isExpired ? (
-          <div className="grid grid-cols-4 gap-2 text-center">
-            <div className="bg-gray-50 p-2 rounded">
-              <div className="text-lg font-bold text-gray-900">{timeLeft.days}</div>
-              <div className="text-xs text-gray-500">Days</div>
-            </div>
-            <div className="bg-gray-50 p-2 rounded">
-              <div className="text-lg font-bold text-gray-900">{timeLeft.hours}</div>
-              <div className="text-xs text-gray-500">Hours</div>
-            </div>
-            <div className="bg-gray-50 p-2 rounded">
-              <div className="text-lg font-bold text-gray-900">{timeLeft.minutes}</div>
-              <div className="text-xs text-gray-500">Minutes</div>
-            </div>
-            <div className="bg-gray-50 p-2 rounded">
-              <div className="text-lg font-bold text-gray-900">{timeLeft.seconds}</div>
-              <div className="text-xs text-gray-500">Seconds</div>
-            </div>
-          </div>
-        ) : (
-          <div className="flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded-md">
-            <AlertTriangle className="h-5 w-5 text-red-600" />
-            <div>
-              <p className="text-sm font-medium text-red-800">Trial Expired</p>
-              <p className="text-xs text-red-600">
-                Upgrade to Pro to continue using all features
-              </p>
-            </div>
-          </div>
-        )}
+          {!isExpired ? (
+            <Grid container spacing={1} justifyContent="center">
+              <Grid item xs={3}>
+                <Box sx={{ bgcolor: 'background.paper', p: 2, borderRadius: 1 }}>
+                  <Typography variant="h6" color="text.primary">{timeLeft.days}</Typography>
+                  <Typography variant="body2" color="text.secondary">Days</Typography>
+                </Box>
+              </Grid>
+              <Grid item xs={3}>
+                <Box sx={{ bgcolor: 'background.paper', p: 2, borderRadius: 1 }}>
+                  <Typography variant="h6" color="text.primary">{timeLeft.hours}</Typography>
+                  <Typography variant="body2" color="text.secondary">Hours</Typography>
+                </Box>
+              </Grid>
+              <Grid item xs={3}>
+                <Box sx={{ bgcolor: 'background.paper', p: 2, borderRadius: 1 }}>
+                  <Typography variant="h6" color="text.primary">{timeLeft.minutes}</Typography>
+                  <Typography variant="body2" color="text.secondary">Minutes</Typography>
+                </Box>
+              </Grid>
+              <Grid item xs={3}>
+                <Box sx={{ bgcolor: 'background.paper', p: 2, borderRadius: 1 }}>
+                  <Typography variant="h6" color="text.primary">{timeLeft.seconds}</Typography>
+                  <Typography variant="body2" color="text.secondary">Seconds</Typography>
+                </Box>
+              </Grid>
+            </Grid>
+          ) : (
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, p: 2, bgcolor: 'error.light', borderRadius: 1 }}>
+              <Activity className="h-5 w-5 text-red-600" />
+              <Box>
+                <Typography variant="body2" color="error.dark" sx={{ fontWeight: 'medium' }}>Trial Expired</Typography>
+                <Typography variant="body2" color="error.main">
+                  Upgrade to Pro to continue using all features
+                </Typography>
+              </Box>
+            </Box>
+          )}
 
-        <div className="text-xs text-gray-500 space-y-1">
-          <div>Started: {new Date(trialStartDate).toLocaleDateString()}</div>
-          <div>Ends: {new Date(trialEndDate).toLocaleDateString()}</div>
-        </div>
+          <Grid item xs={12}>
+            <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+              <div>Started: {new Date(trialStartDate).toLocaleDateString()}</div>
+              <div>Ends: {new Date(trialEndDate).toLocaleDateString()}</div>
+            </Typography>
+          </Grid>
 
-        {isExpiringSoon && !isExpired && (
-          <div className="flex items-center gap-2 p-3 bg-yellow-50 border border-yellow-200 rounded-md">
-            <Clock className="h-4 w-4 text-yellow-600" />
-            <p className="text-sm text-yellow-800">
-              Your trial expires soon! Upgrade to Pro to keep all features.
-            </p>
-          </div>
-        )}
+          {isExpiringSoon && !isExpired && (
+            <Grid item xs={12}>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, p: 2, bgcolor: 'warning.light', borderRadius: 1 }}>
+                <Clock className="h-4 w-4 text-yellow-600" />
+                <Typography variant="body2" color="warning.dark">
+                  Your trial expires soon! Upgrade to Pro to keep all features.
+                </Typography>
+              </Box>
+            </Grid>
+          )}
+        </Grid>
       </CardContent>
     </Card>
   );

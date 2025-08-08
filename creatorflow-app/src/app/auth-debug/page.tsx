@@ -2,11 +2,18 @@
 
 import { useState } from 'react';
 import { signIn } from 'next-auth/react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Alert, AlertDescription } from '@/components/ui/alert';
+import { 
+  Card, 
+  CardContent, 
+  CardHeader, 
+  Button,
+  TextField,
+  Box,
+  Typography,
+  Alert,
+  AlertTitle
+} from '@mui/material';
+import { Shield, Key, Activity } from 'lucide-react';
 
 export default function AuthDebugPage() {
   const [email, setEmail] = useState('');
@@ -111,7 +118,7 @@ export default function AuthDebugPage() {
         {/* Auth Form */}
         <Card>
           <CardHeader>
-            <CardTitle>Auth Debug</CardTitle>
+                          <Typography variant="h6">Auth Debug</Typography>
             <CardDescription>Test the auth flow step by step</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
@@ -177,7 +184,7 @@ export default function AuthDebugPage() {
         {/* Debug Info */}
         <Card>
           <CardHeader>
-            <CardTitle>Debug Information</CardTitle>
+                          <Typography variant="h6">Debug Information</Typography>
             <CardDescription>Step-by-step execution log</CardDescription>
           </CardHeader>
           <CardContent>

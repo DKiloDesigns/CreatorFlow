@@ -1,7 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
+/* MUI-Compatible Global Styles */
 :root {
   --font-sans: var(--font-inter);
   --font-mono: monospace;
@@ -80,29 +77,6 @@
   --sidebar-ring: #737373;
 }
 
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-}
-
-/* Force white text in dark mode for dashboard elements */
-.dark .text-gray-900 {
-  color: white !important;
-}
-
-.dark h1.text-gray-900,
-.dark p.text-gray-900,
-.dark .text-sm.font-medium.text-gray-900,
-.dark .text-base.font-semibold.text-gray-900 {
-  color: white !important;
-}
-
-/* All global rules that forcibly set gradients on .bg-primary, .btn, .button, button, .primary, .rounded-lg.px-8.py-3.shadow, .font-semibold, etc. have been removed. Tailwind utility classes now control the background. */
-
 /* FullCalendar Customizations */
 .fc-button {
   background-color: black !important;
@@ -144,31 +118,41 @@
 
 /* FullCalendar Layout */
 .fc .fc-toolbar.fc-header-toolbar {
-  @apply mb-4;
+  margin-bottom: 1rem;
 }
 .fc .fc-toolbar-title {
-  @apply text-lg font-semibold text-foreground;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--foreground);
 }
 
 /* FullCalendar Headers */
 .fc .fc-col-header-cell-cushion {
-  @apply text-sm font-medium text-muted-foreground;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--muted-foreground);
 }
 
 /* FullCalendar Grid */
 .fc table, .fc th, .fc td {
-  @apply border-border;
+  border-color: var(--border);
 }
 
 /* FullCalendar Events */
 .fc-daygrid-event {
-  @apply bg-primary text-primary-foreground border-0 rounded px-2 py-1 text-xs;
+  background-color: var(--primary);
+  color: var(--primary-foreground);
+  border: 0;
+  border-radius: 0.25rem;
+  padding: 0.125rem 0.5rem;
+  font-size: 0.75rem;
 }
 .fc-event {
-  @apply border-0;
+  border: 0;
 }
 .dark .fc-event {
-  @apply bg-primary text-primary-foreground;
+  background-color: var(--primary);
+  color: var(--primary-foreground);
 }
 
 /* Utility Classes */

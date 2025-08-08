@@ -1,12 +1,20 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Bell, Settings, Filter, Search, RefreshCw } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Badge } from '@/components/ui/badge';
+import { 
+  Card, 
+  CardContent, 
+  CardHeader, 
+  Button,
+  TextField,
+  Box,
+  Typography,
+  Grid,
+  Tabs,
+  Tab,
+  Chip
+} from '@mui/material';
+import { Bell, Activity, Settings } from 'lucide-react';
 import { NotificationCenter } from '@/components/notifications/notification-center';
 import { NotificationPreferences } from '@/components/notifications/notification-preferences';
 import { useRealTimeNotifications } from '@/components/notifications/real-time-provider';
@@ -65,7 +73,7 @@ export default function EnhancedNotificationsPage() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Notifications</CardTitle>
+            <Typography variant="subtitle2" className="text-sm font-medium">Total Notifications</Typography>
             <Bell className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -78,7 +86,7 @@ export default function EnhancedNotificationsPage() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Critical Alerts</CardTitle>
+            <Typography variant="subtitle2" className="text-sm font-medium">Critical Alerts</Typography>
             <Badge variant="destructive" className="text-xs">
               {stats.bySeverity.critical}
             </Badge>
@@ -93,7 +101,7 @@ export default function EnhancedNotificationsPage() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Security Alerts</CardTitle>
+            <Typography variant="subtitle2" className="text-sm font-medium">Security Alerts</Typography>
             <Badge variant="secondary" className="text-xs">
               {stats.byCategory.security}
             </Badge>
@@ -108,7 +116,7 @@ export default function EnhancedNotificationsPage() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Content Updates</CardTitle>
+            <Typography variant="subtitle2" className="text-sm font-medium">Content Updates</Typography>
             <Badge variant="secondary" className="text-xs">
               {stats.byCategory.content}
             </Badge>
@@ -140,7 +148,7 @@ export default function EnhancedNotificationsPage() {
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div>
-                  <CardTitle>All Notifications</CardTitle>
+                  <Typography variant="h6">All Notifications</Typography>
                   <CardDescription>
                     View and manage your notifications
                   </CardDescription>

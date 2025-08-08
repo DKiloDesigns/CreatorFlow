@@ -1,11 +1,18 @@
 'use client';
 
 import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Loader2, Gift, CheckCircle, XCircle } from 'lucide-react';
+import { 
+  Card, 
+  CardContent, 
+  CardHeader, 
+  Button,
+  TextField,
+  Box,
+  Typography,
+  Grid,
+  Chip
+} from '@mui/material';
+import { Gift, CheckCircle, XCircle, Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface PromoCodeInputProps {
@@ -57,18 +64,18 @@ export function PromoCodeInput({ onSuccess, className }: PromoCodeInputProps) {
   return (
     <Card className={className}>
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <Gift className="h-5 w-5 text-green-600" />
-          Have a Promo Code?
-        </CardTitle>
-        <CardDescription>
+                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+           <Gift className="h-5 w-5 text-green-600" />
+           <Typography variant="h6">Have a Promo Code?</Typography>
+         </Box>
+        <Typography variant="body2" color="text.secondary">
           Enter your promo code to unlock special offers and trials
-        </CardDescription>
+        </Typography>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="flex gap-2">
-            <Input
+          <Box sx={{ display: 'flex', gap: 2 }}>
+            <TextField
               type="text"
               placeholder="Enter promo code"
               value={promoCode}
@@ -83,34 +90,30 @@ export function PromoCodeInput({ onSuccess, className }: PromoCodeInputProps) {
                 'Apply'
               )}
             </Button>
-          </div>
+          </Box>
 
           {isValid === true && trialInfo && (
-            <div className="flex items-center gap-2 p-3 bg-green-50 border border-green-200 rounded-md">
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, p: 3, bgcolor: 'success.light', border: '1px solid', borderColor: 'success.main', borderRadius: 2 }}>
               <CheckCircle className="h-5 w-5 text-green-600" />
-              <div className="flex-1">
-                <p className="text-sm font-medium text-green-800">
+              <Box sx={{ flexGrow: 1 }}>
+                <Typography variant="body2" fontWeight="medium" color="success.dark">
                   Trial Activated!
-                </p>
-                <p className="text-xs text-green-600">
+                </Typography>
+                <Typography variant="body2" color="success.main">
                   {trialInfo.message} • Code: {trialInfo.promoCode}
-                </p>
-              </div>
-              <Badge variant="secondary" className="bg-green-100 text-green-800">
-                {trialInfo.trialEndDate && 
-                  `Expires ${new Date(trialInfo.trialEndDate).toLocaleDateString()}`
-                }
-              </Badge>
-            </div>
+                </Typography>
+              </Box>
+              <Chip label={`Expires ${new Date(trialInfo.trialEndDate).toLocaleDateString()}`} variant="outlined" color="success" />
+            </Box>
           )}
 
           {isValid === false && (
-            <div className="flex items-center gap-2 p-3 bg-red-50 border border-red-200 rounded-md">
-              <XCircle className="h-5 w-5 text-red-600" />
-              <p className="text-sm text-red-800">
+            <Box sx={{ p: 3, bgcolor: 'error.light', border: '1px solid', borderColor: 'error.main', borderRadius: 2 }}>
+              <Typography variant="body2" fontWeight="medium" color="error.dark">Invalid promo code</Typography>
+              <Typography variant="body2" color="error.main">
                 Invalid promo code. Please check and try again.
-              </p>
-            </div>
+              </Typography>
+            </Box>
           )}
         </form>
       </CardContent>

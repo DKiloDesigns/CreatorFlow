@@ -1,14 +1,20 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Settings, Bell, Mail, Smartphone, Globe, Clock, Save } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Switch } from '@/components/ui/switch';
-import { Label } from '@/components/ui/label';
-import { Separator } from '@/components/ui/separator';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { 
+  Card, 
+  CardContent, 
+  CardHeader, 
+  Button,
+  Box,
+  Typography,
+  Grid,
+  Chip,
+  Tabs,
+  Tab
+} from '@mui/material';
+import { Bell, Activity } from 'lucide-react';
+
 import type { NotificationPreferences, NotificationType, NotificationCategory, NotificationChannel } from '@/lib/notifications/types';
 import { NotificationToast } from '@/components/ui/notification-badge';
 
@@ -60,10 +66,10 @@ const NOTIFICATION_CATEGORIES: { key: NotificationCategory; label: string; descr
 
 const NOTIFICATION_CHANNELS: { key: NotificationChannel; label: string; description: string; icon: React.ReactNode }[] = [
   { key: 'in_app', label: 'In-App', description: 'Notifications within the application', icon: <Bell className="h-4 w-4" /> },
-  { key: 'email', label: 'Email', description: 'Email notifications', icon: <Mail className="h-4 w-4" /> },
-  { key: 'push', label: 'Push', description: 'Browser push notifications', icon: <Smartphone className="h-4 w-4" /> },
-  { key: 'sms', label: 'SMS', description: 'Text message notifications', icon: <Smartphone className="h-4 w-4" /> },
-  { key: 'webhook', label: 'Webhook', description: 'Webhook notifications', icon: <Globe className="h-4 w-4" /> },
+  { key: 'email', label: 'Email', description: 'Email notifications', icon: <Activity className="h-4 w-4" /> },
+  { key: 'push', label: 'Push', description: 'Browser push notifications', icon: <Activity className="h-4 w-4" /> },
+  { key: 'sms', label: 'SMS', description: 'Text message notifications', icon: <Activity className="h-4 w-4" /> },
+  { key: 'webhook', label: 'Webhook', description: 'Webhook notifications', icon: <Activity className="h-4 w-4" /> },
 ];
 
 export function NotificationPreferences({ className }: NotificationPreferencesProps) {
@@ -210,7 +216,7 @@ export function NotificationPreferences({ className }: NotificationPreferencesPr
           </p>
         </div>
         <Button onClick={savePreferences} disabled={isSaving}>
-          <Save className="h-4 w-4 mr-2" />
+          <Activity className="h-4 w-4 mr-2" />
           {isSaving ? 'Saving...' : 'Save Preferences'}
         </Button>
       </div>
@@ -226,13 +232,13 @@ export function NotificationPreferences({ className }: NotificationPreferencesPr
         <TabsContent value="global" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Settings className="h-5 w-5" />
+              <Typography variant="h5" component="div" className="flex items-center gap-2">
+                <Activity className="h-5 w-5" />
                 Global Settings
-              </CardTitle>
-              <CardDescription>
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
                 Configure general notification settings
-              </CardDescription>
+              </Typography>
             </CardHeader>
             <CardContent className="space-y-6">
               {/* Global Enable/Disable */}
@@ -254,26 +260,32 @@ export function NotificationPreferences({ className }: NotificationPreferencesPr
               <div>
                 <Label className="text-base font-medium">Default Channels</Label>
                 <p className="text-sm text-gray-500 mb-3">Choose which channels to use by default</p>
-                <div className="grid grid-cols-2 gap-3">
+                <Grid container spacing={1}>
                   {NOTIFICATION_CHANNELS.map((channel) => (
-                    <div key={channel.key} className="flex items-center space-x-2">
-                      <Switch
-                        checked={preferences.global.channels.includes(channel.key)}
-                        onCheckedChange={(checked) => {
-                          const currentChannels = preferences.global.channels;
-                          const newChannels = checked
-                            ? [...currentChannels, channel.key]
-                            : currentChannels.filter(c => c !== channel.key);
-                          updateGlobalSettings('channels', newChannels);
-                        }}
+                    <Grid item xs={6} key={channel.key}>
+                      <FormControlLabel
+                        control={
+                          <Switch
+                            checked={preferences.global.channels.includes(channel.key)}
+                            onChange={(e) => {
+                              const currentChannels = preferences.global.channels;
+                              const newChannels = e.target.checked
+                                ? [...currentChannels, channel.key]
+                                : currentChannels.filter(c => c !== channel.key);
+                              updateGlobalSettings('channels', newChannels);
+                            }}
+                          />
+                        }
+                        label={
+                          <Box display="flex" alignItems="center">
+                            {channel.icon}
+                            <span className="ml-1">{channel.label}</span>
+                          </Box>
+                        }
                       />
-                      <Label className="flex items-center gap-2 text-sm">
-                        {channel.icon}
-                        {channel.label}
-                      </Label>
-                    </div>
+                    </Grid>
                   ))}
-                </div>
+                </Grid>
               </div>
 
               <Separator />
@@ -294,8 +306,8 @@ export function NotificationPreferences({ className }: NotificationPreferencesPr
                 </div>
                 
                 {preferences.global.quietHours.enabled && (
-                  <div className="grid grid-cols-3 gap-4">
-                    <div>
+                  <Grid container spacing={2}>
+                    <Grid item xs={4}>
                       <Label htmlFor="quiet-start">Start Time</Label>
                       <input
                         id="quiet-start"
@@ -306,8 +318,8 @@ export function NotificationPreferences({ className }: NotificationPreferencesPr
                         }
                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                       />
-                    </div>
-                    <div>
+                    </Grid>
+                    <Grid item xs={4}>
                       <Label htmlFor="quiet-end">End Time</Label>
                       <input
                         id="quiet-end"
@@ -318,8 +330,8 @@ export function NotificationPreferences({ className }: NotificationPreferencesPr
                         }
                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                       />
-                    </div>
-                    <div>
+                    </Grid>
+                    <Grid item xs={4}>
                       <Label htmlFor="quiet-timezone">Timezone</Label>
                       <select
                         id="quiet-timezone"
@@ -335,8 +347,8 @@ export function NotificationPreferences({ className }: NotificationPreferencesPr
                         <option value="America/Denver">Mountain Time</option>
                         <option value="America/Los_Angeles">Pacific Time</option>
                       </select>
-                    </div>
-                  </div>
+                    </Grid>
+                  </Grid>
                 )}
               </div>
             </CardContent>
@@ -346,10 +358,12 @@ export function NotificationPreferences({ className }: NotificationPreferencesPr
         <TabsContent value="types" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Notification Types</CardTitle>
-              <CardDescription>
+              <Typography variant="h5" component="div">
+                Notification Types
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
                 Configure preferences for specific notification types
-              </CardDescription>
+              </Typography>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
@@ -361,13 +375,13 @@ export function NotificationPreferences({ className }: NotificationPreferencesPr
                         <div className="flex items-center gap-3">
                           <span className="text-2xl">{type.icon}</span>
                           <div>
-                            <h4 className="font-medium">{type.label}</h4>
-                            <p className="text-sm text-gray-500">{type.description}</p>
+                            <Typography variant="subtitle1">{type.label}</Typography>
+                            <Typography variant="body2" color="text.secondary">{type.description}</Typography>
                           </div>
                         </div>
                         <Switch
                           checked={typePrefs?.enabled || false}
-                          onCheckedChange={(checked) => updateTypePreferences(type.key, 'enabled', checked)}
+                          onChange={(e) => updateTypePreferences(type.key, 'enabled', e.target.checked)}
                         />
                       </div>
                       
@@ -416,10 +430,12 @@ export function NotificationPreferences({ className }: NotificationPreferencesPr
         <TabsContent value="categories" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Notification Categories</CardTitle>
-              <CardDescription>
+              <Typography variant="h5" component="div">
+                Notification Categories
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
                 Configure preferences for notification categories
-              </CardDescription>
+              </Typography>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
@@ -431,13 +447,13 @@ export function NotificationPreferences({ className }: NotificationPreferencesPr
                         <div className="flex items-center gap-3">
                           <span className="text-2xl">{category.icon}</span>
                           <div>
-                            <h4 className="font-medium">{category.label}</h4>
-                            <p className="text-sm text-gray-500">{category.description}</p>
+                            <Typography variant="subtitle1">{category.label}</Typography>
+                            <Typography variant="body2" color="text.secondary">{category.description}</Typography>
                           </div>
                         </div>
                         <Switch
                           checked={categoryPrefs?.enabled || false}
-                          onCheckedChange={(checked) => updateCategoryPreferences(category.key, 'enabled', checked)}
+                          onChange={(e) => updateCategoryPreferences(category.key, 'enabled', e.target.checked)}
                         />
                       </div>
                       
@@ -486,10 +502,12 @@ export function NotificationPreferences({ className }: NotificationPreferencesPr
         <TabsContent value="channels" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle>Notification Channels</CardTitle>
-              <CardDescription>
+              <Typography variant="h5" component="div">
+                Notification Channels
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
                 Configure how notifications are delivered
-              </CardDescription>
+              </Typography>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
@@ -500,12 +518,12 @@ export function NotificationPreferences({ className }: NotificationPreferencesPr
                         {channel.icon}
                       </div>
                       <div className="flex-1">
-                        <h4 className="font-medium">{channel.label}</h4>
-                        <p className="text-sm text-gray-500">{channel.description}</p>
+                        <Typography variant="subtitle1">{channel.label}</Typography>
+                        <Typography variant="body2" color="text.secondary">{channel.description}</Typography>
                       </div>
-                      <Badge variant="secondary">
-                        {preferences.global.channels.includes(channel.key) ? 'Enabled' : 'Disabled'}
-                      </Badge>
+                        <Badge variant="secondary">
+                          {preferences.global.channels.includes(channel.key) ? 'Enabled' : 'Disabled'}
+                        </Badge>
                     </div>
                   </div>
                 ))}

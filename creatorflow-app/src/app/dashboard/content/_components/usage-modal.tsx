@@ -1,6 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogCancel } from '@/components/ui/alert-dialog';
-import { Button } from '@/components/ui/button';
+import React, { useState } from 'react';
+import { 
+  Button,
+  Box,
+  Typography,
+  Grid
+} from '@mui/material';
+import { Activity } from 'lucide-react';
 
 export default function UsageModal({ open, onOpenChange, template, type }: {
   open: boolean;

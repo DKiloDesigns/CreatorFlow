@@ -1,35 +1,23 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
 import { 
-  Sparkles,
-  TrendingUp,
-  Lightbulb,
-  Target,
-  Clock,
-  Calendar,
-  Hash,
-  Users,
-  BarChart3,
-  RefreshCw,
-  Copy,
-  CheckCircle,
-  AlertTriangle,
-  Brain,
-  Zap,
-  MessageSquare,
-  Image,
-  Video,
-  Music,
-  FileText
-} from 'lucide-react';
+  Card, 
+  CardContent, 
+  CardHeader, 
+  Button,
+  Chip,
+  Box,
+  Typography,
+  Grid,
+  Tabs,
+  Tab,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel
+} from '@mui/material';
+import { Brain, Sparkles, Zap, Activity, Settings } from 'lucide-react';
 
 interface AISuggestion {
   type: 'content' | 'timing' | 'hashtag' | 'audience' | 'platform';
@@ -156,12 +144,12 @@ export default function AIPage() {
 
   const getSuggestionIcon = (type: string) => {
     switch (type) {
-      case 'content': return <FileText className="h-4 w-4" />;
-      case 'timing': return <Clock className="h-4 w-4" />;
-      case 'hashtag': return <Hash className="h-4 w-4" />;
-      case 'audience': return <Users className="h-4 w-4" />;
-      case 'platform': return <Target className="h-4 w-4" />;
-      default: return <Lightbulb className="h-4 w-4" />;
+      case 'content': return <Activity className="h-4 w-4" />;
+      case 'timing': return <Activity className="h-4 w-4" />;
+      case 'hashtag': return <Activity className="h-4 w-4" />;
+      case 'audience': return <Activity className="h-4 w-4" />;
+      case 'platform': return <Activity className="h-4 w-4" />;
+      default: return <Activity className="h-4 w-4" />;
     }
   };
 
@@ -177,7 +165,7 @@ export default function AIPage() {
         </div>
         <div className="flex gap-2">
           <Button onClick={getSuggestions} disabled={loading} variant="outline">
-            <Lightbulb className="h-4 w-4 mr-2" />
+            <Brain className="h-4 w-4 mr-2" />
             Get Suggestions
           </Button>
         </div>
@@ -187,420 +175,382 @@ export default function AIPage() {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Content Generated</CardTitle>
-            <FileText className="h-4 w-4 text-muted-foreground" />
+            <Typography variant="subtitle2" component="h3">Content Generated</Typography>
+            <Activity className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">24</div>
-            <p className="text-xs text-muted-foreground">
+            <Typography variant="h4" component="div">24</Typography>
+            <Typography variant="caption" color="text.secondary">
               This week
-            </p>
+            </Typography>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Optimizations</CardTitle>
+            <Typography variant="subtitle2" component="h3">Optimizations</Typography>
             <Zap className="h-4 w-4 text-yellow-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-yellow-600">12</div>
-            <p className="text-xs text-muted-foreground">
+            <Typography variant="h4" component="div" color="text.primary">12</Typography>
+            <Typography variant="caption" color="text.secondary">
               Performance improved
-            </p>
+            </Typography>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">AI Suggestions</CardTitle>
+            <Typography variant="subtitle2" component="h3">AI Suggestions</Typography>
             <Brain className="h-4 w-4 text-blue-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-blue-600">8</div>
-            <p className="text-xs text-muted-foreground">
+            <Typography variant="h4" component="div" color="text.primary">8</Typography>
+            <Typography variant="caption" color="text.secondary">
               High impact
-            </p>
+            </Typography>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Time Saved</CardTitle>
-            <Clock className="h-4 w-4 text-green-600" />
+            <Typography variant="subtitle2" component="h3">Time Saved</Typography>
+            <Activity className="h-4 w-4 text-green-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-green-600">6.5h</div>
-            <p className="text-xs text-muted-foreground">
+            <Typography variant="h4" component="div" color="text.primary">6.5h</Typography>
+            <Typography variant="caption" color="text.secondary">
               This week
-            </p>
+            </Typography>
           </CardContent>
         </Card>
       </div>
 
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="generate" className="flex items-center gap-2">
-            <FileText className="h-4 w-4" />
-            Generate
-          </TabsTrigger>
-          <TabsTrigger value="optimize" className="flex items-center gap-2">
-            <Zap className="h-4 w-4" />
-            Optimize
-          </TabsTrigger>
-          <TabsTrigger value="suggestions" className="flex items-center gap-2">
-            <Lightbulb className="h-4 w-4" />
-            Suggestions
-          </TabsTrigger>
-          <TabsTrigger value="insights" className="flex items-center gap-2">
-            <BarChart3 className="h-4 w-4" />
-            Insights
-          </TabsTrigger>
-        </TabsList>
+      <Tabs value={activeTab} onChange={(event, newValue) => setActiveTab(newValue)} className="space-y-6">
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <Tabs value={activeTab} onChange={handleChange} aria-label="basic tabs example">
+            <Tab label="Generate" icon={<Activity />} />
+            <Tab label="Optimize" icon={<Zap />} />
+            <Tab label="Suggestions" icon={<Brain />} />
+            <Tab label="Insights" icon={<Settings />} />
+          </Tabs>
+        </Box>
 
-        <TabsContent value="generate" className="space-y-6">
+        <TabPanel value={activeTab} index="generate">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+              <Typography variant="h5" component="h2" display="flex" alignItems="center" gap={1}>
                 <Sparkles className="h-5 w-5" />
                 AI Content Generation
-              </CardTitle>
-              <CardDescription>
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
                 Generate engaging content for any platform with AI assistance
-              </CardDescription>
+              </Typography>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-4">
-                  <div>
-                    <label className="text-sm font-medium">Content Type</label>
-                    <Select 
+              <Grid container spacing={2}>
+                <Grid item xs={12} md={6}>
+                  <FormControl fullWidth>
+                    <InputLabel id="content-type-label">Content Type</InputLabel>
+                    <Select
+                      labelId="content-type-label"
                       value={contentRequest.type} 
-                      onValueChange={(value) => setContentRequest({...contentRequest, type: value as any})}
+                      label="Content Type"
+                      onChange={(event) => setContentRequest({...contentRequest, type: event.target.value as any})}
                     >
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="post">Post</SelectItem>
-                        <SelectItem value="caption">Caption</SelectItem>
-                        <SelectItem value="hashtag">Hashtags</SelectItem>
-                        <SelectItem value="bio">Bio</SelectItem>
-                        <SelectItem value="ad_copy">Ad Copy</SelectItem>
-                      </SelectContent>
+                      <MenuItem value="post">Post</MenuItem>
+                      <MenuItem value="caption">Caption</MenuItem>
+                      <MenuItem value="hashtag">Hashtags</MenuItem>
+                      <MenuItem value="bio">Bio</MenuItem>
+                      <MenuItem value="ad_copy">Ad Copy</MenuItem>
                     </Select>
-                  </div>
+                  </FormControl>
 
-                  <div>
-                    <label className="text-sm font-medium">Platform</label>
-                    <Select 
+                  <FormControl fullWidth>
+                    <InputLabel id="platform-label">Platform</InputLabel>
+                    <Select
+                      labelId="platform-label"
                       value={contentRequest.platform} 
-                      onValueChange={(value) => setContentRequest({...contentRequest, platform: value as any})}
+                      label="Platform"
+                      onChange={(event) => setContentRequest({...contentRequest, platform: event.target.value as any})}
                     >
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="instagram">Instagram</SelectItem>
-                        <SelectItem value="tiktok">TikTok</SelectItem>
-                        <SelectItem value="youtube">YouTube</SelectItem>
-                        <SelectItem value="twitter">Twitter</SelectItem>
-                      </SelectContent>
+                      <MenuItem value="instagram">Instagram</MenuItem>
+                      <MenuItem value="tiktok">TikTok</MenuItem>
+                      <MenuItem value="youtube">YouTube</MenuItem>
+                      <MenuItem value="twitter">Twitter</MenuItem>
                     </Select>
-                  </div>
+                  </FormControl>
 
-                  <div>
-                    <label className="text-sm font-medium">Topic</label>
-                    <Input 
-                      placeholder="What's your content about?"
+                  <FormControl fullWidth>
+                    <InputLabel id="topic-label">Topic</InputLabel>
+                    <Select
+                      labelId="topic-label"
                       value={contentRequest.topic}
-                      onChange={(e) => setContentRequest({...contentRequest, topic: e.target.value})}
-                    />
-                  </div>
+                      label="Topic"
+                      onChange={(event) => setContentRequest({...contentRequest, topic: event.target.value})}
+                    >
+                      <MenuItem value="What's your content about?">What's your content about?</MenuItem>
+                    </Select>
+                  </FormControl>
 
-                  <div>
-                    <label className="text-sm font-medium">Tone</label>
-                    <Select 
+                  <FormControl fullWidth>
+                    <InputLabel id="tone-label">Tone</InputLabel>
+                    <Select
+                      labelId="tone-label"
                       value={contentRequest.tone} 
-                      onValueChange={(value) => setContentRequest({...contentRequest, tone: value as any})}
+                      label="Tone"
+                      onChange={(event) => setContentRequest({...contentRequest, tone: event.target.value as any})}
                     >
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="professional">Professional</SelectItem>
-                        <SelectItem value="casual">Casual</SelectItem>
-                        <SelectItem value="funny">Funny</SelectItem>
-                        <SelectItem value="inspirational">Inspirational</SelectItem>
-                      </SelectContent>
+                      <MenuItem value="professional">Professional</MenuItem>
+                      <MenuItem value="casual">Casual</MenuItem>
+                      <MenuItem value="funny">Funny</MenuItem>
+                      <MenuItem value="inspirational">Inspirational</MenuItem>
                     </Select>
-                  </div>
+                  </FormControl>
 
-                  <div>
-                    <label className="text-sm font-medium">Length</label>
-                    <Select 
+                  <FormControl fullWidth>
+                    <InputLabel id="length-label">Length</InputLabel>
+                    <Select
+                      labelId="length-label"
                       value={contentRequest.length} 
-                      onValueChange={(value) => setContentRequest({...contentRequest, length: value as any})}
+                      label="Length"
+                      onChange={(event) => setContentRequest({...contentRequest, length: event.target.value as any})}
                     >
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="short">Short</SelectItem>
-                        <SelectItem value="medium">Medium</SelectItem>
-                        <SelectItem value="long">Long</SelectItem>
-                      </SelectContent>
+                      <MenuItem value="short">Short</MenuItem>
+                      <MenuItem value="medium">Medium</MenuItem>
+                      <MenuItem value="long">Long</MenuItem>
                     </Select>
-                  </div>
+                  </FormControl>
 
-                  <div>
-                    <label className="text-sm font-medium">Target Audience</label>
-                    <Input 
-                      placeholder="Who is your target audience?"
+                  <FormControl fullWidth>
+                    <InputLabel id="target-audience-label">Target Audience</InputLabel>
+                    <Select
+                      labelId="target-audience-label"
                       value={contentRequest.targetAudience}
-                      onChange={(e) => setContentRequest({...contentRequest, targetAudience: e.target.value})}
-                    />
-                  </div>
+                      label="Target Audience"
+                      onChange={(event) => setContentRequest({...contentRequest, targetAudience: event.target.value})}
+                    >
+                      <MenuItem value="Who is your target audience?">Who is your target audience?</MenuItem>
+                    </Select>
+                  </FormControl>
 
                   <Button onClick={generateContent} disabled={loading} className="w-full">
                     {loading ? (
-                      <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
+                      <Activity className="h-4 w-4 mr-2 animate-spin" />
                     ) : (
                       <Sparkles className="h-4 w-4 mr-2" />
                     )}
                     Generate Content
                   </Button>
-                </div>
+                </Grid>
 
-                <div className="space-y-4">
-                  <div>
-                    <label className="text-sm font-medium">Generated Content</label>
-                    <div className="relative">
-                      <Textarea 
-                        value={generatedContent}
-                        onChange={(e) => setGeneratedContent(e.target.value)}
-                        placeholder="AI-generated content will appear here..."
-                        className="min-h-[200px]"
-                      />
-                      {generatedContent && (
-                        <Button 
-                          size="sm" 
-                          variant="outline" 
-                          className="absolute top-2 right-2"
-                          onClick={() => copyToClipboard(generatedContent)}
-                        >
-                          <Copy className="h-3 w-3" />
-                        </Button>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
+                <Grid item xs={12} md={6}>
+                  <FormControl fullWidth>
+                    <InputLabel id="generated-content-label">Generated Content</InputLabel>
+                    <Select
+                      labelId="generated-content-label"
+                      value={generatedContent}
+                      label="Generated Content"
+                      onChange={(event) => setGeneratedContent(event.target.value)}
+                      fullWidth
+                    >
+                      <MenuItem value="AI-generated content will appear here...">AI-generated content will appear here...</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+              </Grid>
             </CardContent>
           </Card>
-        </TabsContent>
+        </TabPanel>
 
-        <TabsContent value="optimize" className="space-y-6">
+        <TabPanel value={activeTab} index="optimize">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+              <Typography variant="h5" component="h2" display="flex" alignItems="center" gap={1}>
                 <Zap className="h-5 w-5" />
                 Content Optimization
-              </CardTitle>
-              <CardDescription>
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
                 Optimize your content for better performance and engagement
-              </CardDescription>
+              </Typography>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-4">
-                  <div>
-                    <label className="text-sm font-medium">Original Content</label>
-                    <Textarea 
-                      placeholder="Paste your content here..."
+              <Grid container spacing={2}>
+                <Grid item xs={12} md={6}>
+                  <FormControl fullWidth>
+                    <InputLabel id="original-content-label">Original Content</InputLabel>
+                    <Select
+                      labelId="original-content-label"
                       value={optimizationRequest.content}
-                      onChange={(e) => setOptimizationRequest({...optimizationRequest, content: e.target.value})}
-                      className="min-h-[150px]"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="text-sm font-medium">Platform</label>
-                    <Select 
-                      value={optimizationRequest.platform} 
-                      onValueChange={(value) => setOptimizationRequest({...optimizationRequest, platform: value})}
+                      label="Original Content"
+                      onChange={(event) => setOptimizationRequest({...optimizationRequest, content: event.target.value})}
+                      fullWidth
+                      multiline
+                      rows={4}
                     >
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="instagram">Instagram</SelectItem>
-                        <SelectItem value="tiktok">TikTok</SelectItem>
-                        <SelectItem value="youtube">YouTube</SelectItem>
-                        <SelectItem value="twitter">Twitter</SelectItem>
-                      </SelectContent>
+                      <MenuItem value="Paste your content here...">Paste your content here...</MenuItem>
                     </Select>
-                  </div>
+                  </FormControl>
+
+                  <FormControl fullWidth>
+                    <InputLabel id="platform-label">Platform</InputLabel>
+                    <Select
+                      labelId="platform-label"
+                      value={optimizationRequest.platform} 
+                      label="Platform"
+                      onChange={(event) => setOptimizationRequest({...optimizationRequest, platform: event.target.value})}
+                    >
+                      <MenuItem value="instagram">Instagram</MenuItem>
+                      <MenuItem value="tiktok">TikTok</MenuItem>
+                      <MenuItem value="youtube">YouTube</MenuItem>
+                      <MenuItem value="twitter">Twitter</MenuItem>
+                    </Select>
+                  </FormControl>
 
                   <Button onClick={optimizeContent} disabled={loading} className="w-full">
                     {loading ? (
-                      <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
+                      <Activity className="h-4 w-4 mr-2 animate-spin" />
                     ) : (
                       <Zap className="h-4 w-4 mr-2" />
                     )}
                     Optimize Content
                   </Button>
-                </div>
+                </Grid>
 
-                <div className="space-y-4">
-                  <div>
-                    <label className="text-sm font-medium">Optimized Content</label>
-                    <div className="relative">
-                      <Textarea 
-                        value={optimizedContent}
-                        onChange={(e) => setOptimizedContent(e.target.value)}
-                        placeholder="Optimized content will appear here..."
-                        className="min-h-[150px]"
-                      />
-                      {optimizedContent && (
-                        <Button 
-                          size="sm" 
-                          variant="outline" 
-                          className="absolute top-2 right-2"
-                          onClick={() => copyToClipboard(optimizedContent)}
-                        >
-                          <Copy className="h-3 w-3" />
-                        </Button>
-                      )}
-                    </div>
-                  </div>
-                </div>
-              </div>
+                <Grid item xs={12} md={6}>
+                  <FormControl fullWidth>
+                    <InputLabel id="optimized-content-label">Optimized Content</InputLabel>
+                    <Select
+                      labelId="optimized-content-label"
+                      value={optimizedContent}
+                      label="Optimized Content"
+                      onChange={(event) => setOptimizedContent(event.target.value)}
+                      fullWidth
+                      multiline
+                      rows={4}
+                    >
+                      <MenuItem value="Optimized content will appear here...">Optimized content will appear here...</MenuItem>
+                    </Select>
+                  </FormControl>
+                </Grid>
+              </Grid>
             </CardContent>
           </Card>
-        </TabsContent>
+        </TabPanel>
 
-        <TabsContent value="suggestions" className="space-y-6">
+        <TabPanel value={activeTab} index="suggestions">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Lightbulb className="h-5 w-5" />
+              <Typography variant="h5" component="h2" display="flex" alignItems="center" gap={1}>
+                <Brain className="h-5 w-5" />
                 AI Suggestions
-              </CardTitle>
-              <CardDescription>
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
                 Get personalized suggestions to improve your content strategy
-              </CardDescription>
+              </Typography>
             </CardHeader>
             <CardContent>
               {suggestions.length === 0 ? (
-                <div className="text-center py-8 text-muted-foreground">
-                  <Lightbulb className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                  <p>No suggestions yet. Click "Get Suggestions" to receive AI-powered recommendations.</p>
-                </div>
+                <Box sx={{ textAlign: 'center', py: 8, color: 'text.secondary' }}>
+                  <Brain className="h-12 w-12 mx-auto mb-4" />
+                  <Typography variant="body2">No suggestions yet. Click "Get Suggestions" to receive AI-powered recommendations.</Typography>
+                </Box>
               ) : (
-                <div className="space-y-4">
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                   {suggestions.map((suggestion, index) => (
-                    <div key={index} className="p-4 border rounded-lg">
-                      <div className="flex items-start justify-between">
-                        <div className="flex items-start gap-3">
+                    <Box key={index} sx={{ p: 2, border: '1px solid', borderRadius: 1, borderColor: 'divider' }}>
+                      <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+                        <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1 }}>
                           {getSuggestionIcon(suggestion.type)}
-                          <div className="flex-1">
-                            <div className="flex items-center gap-2 mb-2">
-                              <h3 className="font-semibold">{suggestion.title}</h3>
-                              <Badge className={getImpactColor(suggestion.impact)}>
-                                {suggestion.impact} impact
-                              </Badge>
-                              <Badge variant="outline">
-                                {Math.round(suggestion.confidence * 100)}% confidence
-                              </Badge>
-                            </div>
-                            <p className="text-sm text-muted-foreground mb-2">
-                              {suggestion.description}
-                            </p>
-                            <div className="text-xs">
-                              <strong>Implementation:</strong> {suggestion.implementation}
-                            </div>
-                          </div>
-                        </div>
-                        <Button size="sm" variant="outline">
-                          <CheckCircle className="h-3 w-3" />
+                          <Box sx={{ flex: 1 }}>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 0.5 }}>
+                              <Typography variant="subtitle2">{suggestion.title}</Typography>
+                              <Chip label={`${suggestion.impact} impact`} size="small" className={getImpactColor(suggestion.impact)} />
+                              <Chip label={`${Math.round(suggestion.confidence * 100)}% confidence`} size="small" variant="outlined" />
+                            </Box>
+                            <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>{suggestion.description}</Typography>
+                            <Typography variant="body2" sx={{ fontWeight: 'bold' }}>Implementation:</Typography> {suggestion.implementation}
+                          </Box>
+                        </Box>
+                        <Button size="small" variant="outlined">
+                          <Activity className="h-3 w-3" />
                         </Button>
-                      </div>
-                    </div>
+                      </Box>
+                    </Box>
                   ))}
-                </div>
+                </Box>
               )}
             </CardContent>
           </Card>
-        </TabsContent>
+        </TabPanel>
 
-        <TabsContent value="insights" className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <TrendingUp className="h-5 w-5" />
-                  Content Performance
-                </CardTitle>
-                <CardDescription>
-                  AI-powered insights about your content performance
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm">Engagement Rate</span>
-                    <span className="font-semibold text-green-600">+12.5%</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm">Reach Growth</span>
-                    <span className="font-semibold text-blue-600">+8.3%</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm">Best Posting Time</span>
-                    <span className="font-semibold">6-8 PM</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm">Top Performing Content</span>
-                    <span className="font-semibold">Video Posts</span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+        <TabPanel value={activeTab} index="insights">
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={6}>
+              <Card>
+                <CardHeader>
+                  <Typography variant="h5" component="h2" display="flex" alignItems="center" gap={1}>
+                    <Activity className="h-5 w-5" />
+                    Content Performance
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    AI-powered insights about your content performance
+                  </Typography>
+                </CardHeader>
+                <CardContent>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 0.5 }}>
+                    <Typography variant="body2">Engagement Rate</Typography>
+                    <Typography variant="body2" color="text.primary" sx={{ fontWeight: 'semibold' }}>+12.5%</Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 0.5 }}>
+                    <Typography variant="body2">Reach Growth</Typography>
+                    <Typography variant="body2" color="text.primary" sx={{ fontWeight: 'semibold' }}>+8.3%</Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 0.5 }}>
+                    <Typography variant="body2">Best Posting Time</Typography>
+                    <Typography variant="body2" sx={{ fontWeight: 'semibold' }}>6-8 PM</Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 0.5 }}>
+                    <Typography variant="body2">Top Performing Content</Typography>
+                    <Typography variant="body2" sx={{ fontWeight: 'semibold' }}>Video Posts</Typography>
+                  </Box>
+                </CardContent>
+              </Card>
+            </Grid>
 
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Users className="h-5 w-5" />
-                  Audience Insights
-                </CardTitle>
-                <CardDescription>
-                  AI analysis of your audience behavior and preferences
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm">Primary Audience</span>
-                    <span className="font-semibold">18-34 years</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm">Top Interests</span>
-                    <span className="font-semibold">Tech, Fitness</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm">Active Hours</span>
-                    <span className="font-semibold">Evening</span>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm">Engagement Type</span>
-                    <span className="font-semibold">Comments</span>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </TabsContent>
+            <Grid item xs={12} md={6}>
+              <Card>
+                <CardHeader>
+                  <Typography variant="h5" component="h2" display="flex" alignItems="center" gap={1}>
+                    <Activity className="h-5 w-5" />
+                    Audience Insights
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    AI analysis of your audience behavior and preferences
+                  </Typography>
+                </CardHeader>
+                <CardContent>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 0.5 }}>
+                    <Typography variant="body2">Primary Audience</Typography>
+                    <Typography variant="body2" sx={{ fontWeight: 'semibold' }}>18-34 years</Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 0.5 }}>
+                    <Typography variant="body2">Top Interests</Typography>
+                    <Typography variant="body2" sx={{ fontWeight: 'semibold' }}>Tech, Fitness</Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 0.5 }}>
+                    <Typography variant="body2">Active Hours</Typography>
+                    <Typography variant="body2" sx={{ fontWeight: 'semibold' }}>Evening</Typography>
+                  </Box>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 0.5 }}>
+                    <Typography variant="body2">Engagement Type</Typography>
+                    <Typography variant="body2" sx={{ fontWeight: 'semibold' }}>Comments</Typography>
+                  </Box>
+                </CardContent>
+              </Card>
+            </Grid>
+          </Grid>
+        </TabPanel>
       </Tabs>
     </div>
   );

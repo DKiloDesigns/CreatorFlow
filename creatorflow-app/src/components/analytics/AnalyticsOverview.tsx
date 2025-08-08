@@ -1,16 +1,14 @@
 'use client';
 
 import React from 'react';
-import { Card, CardContent } from '@/components/ui/card';
-import { Progress } from '@/components/ui/progress';
 import { 
-  TrendingUp, 
-  TrendingDown, 
-  Target,
-  BarChart3,
-  Users,
-  MessageSquare
-} from 'lucide-react';
+  Card, 
+  CardContent, 
+  Box,
+  Typography,
+  Grid
+} from '@mui/material';
+import { TrendingUp, Activity } from 'lucide-react';
 
 interface AnalyticsData {
   userId: string;
@@ -60,28 +58,28 @@ export function AnalyticsOverview({ data }: AnalyticsOverviewProps) {
       label: 'Avg Engagement Rate',
       value: `${data.overview.avgEngagementRate}%`,
       trend: engagementGrowth,
-      icon: <Target className="h-4 w-4" />,
+      icon: <Activity className="h-4 w-4" />,
       color: 'text-blue-600',
     },
     {
       label: 'Posts per Platform',
       value: avgPostsPerPlatform.toFixed(1),
       trend: data.overview.growthRate,
-      icon: <MessageSquare className="h-4 w-4" />,
+      icon: <Activity className="h-4 w-4" />,
       color: 'text-green-600',
     },
     {
       label: 'Active Platforms',
       value: totalPlatforms.toString(),
       trend: 0,
-      icon: <Users className="h-4 w-4" />,
+      icon: <Activity className="h-4 w-4" />,
       color: 'text-purple-600',
     },
     {
       label: 'Content Performance',
       value: `${Math.round((data.overview.totalEngagement / data.overview.totalPosts))}`,
       trend: engagementGrowth,
-      icon: <BarChart3 className="h-4 w-4" />,
+      icon: <Activity className="h-4 w-4" />,
       color: 'text-orange-600',
     },
   ];
@@ -110,7 +108,7 @@ export function AnalyticsOverview({ data }: AnalyticsOverviewProps) {
                   </div>
                 ) : metric.trend < 0 ? (
                   <div className="flex items-center text-red-600">
-                    <TrendingDown className="h-4 w-4 mr-1" />
+                    <TrendingUp className="h-4 w-4 mr-1" />
                     <span className="text-sm font-medium">{metric.trend.toFixed(1)}%</span>
                   </div>
                 ) : (

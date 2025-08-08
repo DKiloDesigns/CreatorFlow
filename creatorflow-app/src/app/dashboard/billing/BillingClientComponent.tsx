@@ -2,7 +2,8 @@
 import Link from "next/link";
 import { format } from 'date-fns';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader } from '@/components/ui/card';
+import { Typography } from '@mui/material';
 import { createPortalSession } from './actions';
 import { ArrowRight, CreditCard, History, TrendingUp, BarChart3, Users, Zap, Download, FileText, BarChart2 } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -181,7 +182,7 @@ export default function BillingClientComponent({ user, searchParams, upcomingCha
           {/* Current Plan Section */}
           <Card>
             <CardHeader>
-              <CardTitle>Current Plan</CardTitle>
+              <Typography variant="h5">Current Plan</Typography>
               <CardDescription>Your current subscription details</CardDescription>
             </CardHeader>
             <CardContent>
@@ -222,7 +223,7 @@ export default function BillingClientComponent({ user, searchParams, upcomingCha
           {/* Usage Statistics */}
           <Card>
             <CardHeader>
-              <CardTitle>Usage Statistics</CardTitle>
+              <Typography variant="h5">Usage Statistics</Typography>
               <CardDescription>Your current usage and limits</CardDescription>
             </CardHeader>
             <CardContent>
@@ -257,7 +258,7 @@ export default function BillingClientComponent({ user, searchParams, upcomingCha
           {upcomingCharges && (
             <Card>
               <CardHeader>
-                <CardTitle>Upcoming Charges</CardTitle>
+                <Typography variant="h5">Upcoming Charges</Typography>
                 <CardDescription>Your next billing details</CardDescription>
               </CardHeader>
               <CardContent>
@@ -282,7 +283,7 @@ export default function BillingClientComponent({ user, searchParams, upcomingCha
           {paymentHistory && (
             <Card>
               <CardHeader>
-                <CardTitle>Payment History</CardTitle>
+                <Typography variant="h5">Payment History</Typography>
                 <CardDescription>Your recent transactions</CardDescription>
               </CardHeader>
               <CardContent>
@@ -318,7 +319,7 @@ export default function BillingClientComponent({ user, searchParams, upcomingCha
 
         <TabsContent value="usage" className="space-y-6">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold">Usage Analytics</h2>
+            <Typography variant="h4">Usage Analytics</Typography>
             <div className="flex gap-2">
               <Button variant="outline" size="sm" onClick={() => window.print()}>
                 <FileText className="h-4 w-4 mr-2" />
@@ -352,7 +353,7 @@ export default function BillingClientComponent({ user, searchParams, upcomingCha
 
           <Card>
             <CardHeader>
-              <CardTitle>Content Performance</CardTitle>
+              <Typography variant="h5">Content Performance</Typography>
               <CardDescription>Track your content engagement and reach</CardDescription>
             </CardHeader>
             <CardContent>
@@ -415,7 +416,7 @@ export default function BillingClientComponent({ user, searchParams, upcomingCha
 
         <TabsContent value="plans" className="space-y-6">
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold">Subscription Plans</h2>
+            <Typography variant="h4">Subscription Plans</Typography>
             <div className="flex items-center space-x-4">
               <span className="text-sm font-medium">Billing:</span>
               <div className="flex items-center space-x-2 bg-muted p-1 rounded-md">
@@ -444,7 +445,7 @@ export default function BillingClientComponent({ user, searchParams, upcomingCha
                   </div>
                 )}
                 <CardHeader>
-                  <CardTitle>{tier.name}</CardTitle>
+                  <Typography variant="h5">{tier.name}</Typography>
                   <CardDescription>{tier.description}</CardDescription>
                   <div className="mt-4">
                     <p className="text-3xl font-bold">

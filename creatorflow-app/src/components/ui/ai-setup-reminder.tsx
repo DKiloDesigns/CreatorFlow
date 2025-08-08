@@ -1,14 +1,13 @@
-import React, { useState } from 'react';
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import { 
-  Brain, 
-  Sparkles, 
-  X, 
-  ArrowRight,
-  Zap
-} from 'lucide-react';
+  Card, 
+  CardContent, 
+  Button,
+  Box,
+  Typography,
+  Grid,
+  Chip
+} from '@mui/material';
+import { Sparkles, Activity } from 'lucide-react';
 
 interface AISetupReminderProps {
   onSetup?: () => void;

@@ -1,27 +1,21 @@
 'use client';
 
 import React, { useState, useCallback, useRef } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
-import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { toast } from 'sonner';
 import { 
-  Upload, 
-  X, 
-  Image as ImageIcon, 
-  Video, 
-  File, 
-  Trash2, 
-  Eye,
-  Download,
-  Copy,
-  Check,
-  AlertCircle
-} from 'lucide-react';
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  Button,
+  TextField,
+  Box,
+  Typography,
+  Grid,
+  LinearProgress,
+  Chip
+} from '@mui/material';
+import { Upload, Activity, Image, Video } from 'lucide-react';
+import { toast } from 'sonner';
 
 interface MediaFile {
   id: string;
@@ -366,19 +360,13 @@ export function UploadMediaModal({ open, onOpenChange, onUploadComplete }: Uploa
                       
                       {file.status === 'success' && (
                         <div className="absolute top-2 right-2">
-                          <Badge variant="secondary" className="bg-green-100 text-green-800">
-                            <Check className="h-3 w-3 mr-1" />
-                            Uploaded
-                          </Badge>
+                          <Chip label="Uploaded" variant="outlined" color="success" />
                         </div>
                       )}
                       
                       {file.status === 'error' && (
                         <div className="absolute top-2 right-2">
-                          <Badge variant="destructive">
-                            <AlertCircle className="h-3 w-3 mr-1" />
-                            Error
-                          </Badge>
+                          <Chip label="Error" variant="outlined" color="error" />
                         </div>
                       )}
                     </div>

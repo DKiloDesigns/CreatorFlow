@@ -1,23 +1,36 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { 
-  Users, 
+  Card, 
+  CardContent, 
+  CardHeader, 
+  CardTitle,
+  Button,
+  Chip,
+  Box,
+  Typography,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel,
+  Tabs,
+  Tab
+} from '@mui/material';
+import { 
+  Target, 
   TrendingUp, 
-  DollarSign, 
+  Users, 
   Calendar,
-  Target,
   Activity,
   Download,
-  RefreshCw,
+  Share2,
+  Eye,
+  Heart,
+  MessageSquare,
   BarChart3,
-  PieChart,
-  LineChart
+  Settings,
+  Plus
 } from 'lucide-react';
 
 interface CampaignData {

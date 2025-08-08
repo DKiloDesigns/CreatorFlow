@@ -1,6 +1,12 @@
-import React from 'react';
-import { Button } from '@/components/ui/button';
-import { FileText, Edit, Trash2, Copy } from 'lucide-react';
+import { 
+  Button,
+  Box,
+  Typography,
+  Chip,
+  IconButton,
+  Tooltip
+} from '@mui/material';
+import { Eye, Edit, Trash2, Activity } from 'lucide-react';
 
 interface Post {
   id: string;

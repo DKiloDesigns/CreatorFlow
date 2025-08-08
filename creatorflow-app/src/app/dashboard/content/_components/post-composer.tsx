@@ -1,22 +1,27 @@
 'use client'; // Need this for useState
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Button } from '@/components/ui/button';
-// Placeholders for date/time picker components
-import { Popover, PopoverTrigger, PopoverContent } from "@/components/ui/popover"
-import { Calendar } from "@/components/ui/calendar"
+import { 
+  Card, 
+  CardContent, 
+  CardHeader, 
+  Button,
+  TextField,
+  Box,
+  Typography,
+  Grid,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel
+} from '@mui/material';
+import { Edit, Activity } from 'lucide-react';
 import { Calendar as CalendarIcon, Loader2, UploadCloud, X, Image as ImageIcon } from "lucide-react"
 import { format } from "date-fns"
 import { cn } from "@/lib/utils"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { toast } from "sonner"
 import { useDropzone, FileWithPath } from 'react-dropzone';
 import Image from 'next/image';
-import { Tooltip, TooltipProvider, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
 import TemplateManager from './template-manager';
 import { PostStatus } from '@prisma/client';
 
@@ -315,7 +320,7 @@ export default function PostComposer({ platforms: propPlatforms }: { platforms?:
       <TemplateManager onInsert={handleInsertTemplate} />
       <Card>
         <CardHeader>
-          <CardTitle>Create Post</CardTitle>
+          <Typography variant="h6">Create Post</Typography>
           <CardDescription>Draft your content and schedule it for your connected platforms.</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">

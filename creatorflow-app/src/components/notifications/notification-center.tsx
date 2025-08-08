@@ -1,17 +1,25 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { Bell, X, Check, Trash2, Filter, Settings, RefreshCw } from 'lucide-react';
+import { 
+  Card, 
+  CardContent, 
+  CardHeader, 
+  Button,
+  Box,
+  Typography,
+  Grid,
+  Chip,
+  Switch,
+  FormControlLabel,
+  Tabs,
+  Tab
+} from '@mui/material';
+import { Bell, Activity, X, Check, Trash2, Filter, Settings, RefreshCw } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Notification, NotificationType, NotificationSeverity, NotificationCategory } from '@/lib/notifications/types';
 import { NotificationToast } from '@/components/ui/notification-badge';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Switch } from '@/components/ui/switch';
-import { Label } from '@/components/ui/label';
+
 import { Separator } from '@/components/ui/separator';
 
 interface NotificationCenterProps {

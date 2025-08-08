@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
+import { 
+  Button,
+  Box,
+  Typography,
+  Grid
+} from '@mui/material';
+import { Code, Activity } from 'lucide-react';
 
 export const COMMON_VARIABLES = [
   { key: 'username', label: 'Username' },

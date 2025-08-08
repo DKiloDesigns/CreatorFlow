@@ -2,13 +2,22 @@
 
 import Link from "next/link";
 import { format } from 'date-fns';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { 
+  Card, 
+  CardContent, 
+  CardHeader, 
+  Button,
+  Box,
+  Typography,
+  Grid,
+  Tabs,
+  Tab,
+  LinearProgress
+} from '@mui/material';
+import { CreditCard, Activity, Settings } from 'lucide-react';
 import { createPortalSession } from './actions';
-import { ArrowRight, CreditCard, History, TrendingUp, BarChart3, Users, Zap, Download, FileText, BarChart2 } from 'lucide-react';
+import { ArrowRight, History, TrendingUp, BarChart3, Users, Zap, Download, FileText, BarChart2 } from 'lucide-react';
 import { PromoCodeInput } from '@/components/PromoCodeInput';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Progress } from '@/components/ui/progress';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
@@ -506,7 +515,7 @@ export default function BillingClient({ user, searchParams, upcomingCharges, pay
             {tiers.map((tier, index) => (
               <Card key={`${tier.name}-${index}`} className={tier.mostPopular ? 'border-primary' : ''}>
                 <CardHeader>
-                  <CardTitle className="text-lg sm:text-xl">{tier.name}</CardTitle>
+                  <Typography variant="h6" className="text-lg sm:text-xl">{tier.name}</Typography>
                   <CardDescription className="text-sm">{tier.description}</CardDescription>
                   {tier.mostPopular && (
                     <div className="mt-2">

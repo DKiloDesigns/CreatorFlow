@@ -1,28 +1,23 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { 
-  Link,
-  Settings,
-  Activity,
-  CheckCircle,
-  XCircle,
-  AlertTriangle,
-  RefreshCw,
-  Plus,
-  Zap,
-  Webhook,
-  Database,
-  Shield,
-  TrendingUp,
-  Clock,
-  Eye
-} from 'lucide-react';
+  Card, 
+  CardContent, 
+  CardHeader, 
+  Button,
+  Box,
+  Typography,
+  Grid,
+  Tabs,
+  Tab,
+  Chip,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel
+} from '@mui/material';
+import { Plug, Activity, Settings } from 'lucide-react';
 
 interface Integration {
   id: string;
@@ -137,18 +132,18 @@ export default function IntegrationsPage() {
 
   const getProviderIcon = (provider: string) => {
     switch (provider.toLowerCase()) {
-      case 'stripe': return <Zap className="h-5 w-5" />;
-      case 'slack': return <Webhook className="h-5 w-5" />;
-      case 'google': return <Database className="h-5 w-5" />;
+      case 'stripe': return <Plug className="h-5 w-5" />;
+      case 'slack': return <Plug className="h-5 w-5" />;
+      case 'google': return <Plug className="h-5 w-5" />;
       default: return <Settings className="h-5 w-5" />;
     }
   };
 
   const getHealthIcon = (healthy: boolean) => {
     return healthy ? (
-      <CheckCircle className="h-5 w-5 text-green-600" />
+      <Activity className="h-5 w-5 text-green-600" />
     ) : (
-      <AlertTriangle className="h-5 w-5 text-red-600" />
+      <Plug className="h-5 w-5 text-red-600" />
     );
   };
 
@@ -199,7 +194,7 @@ export default function IntegrationsPage() {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Integrations</CardTitle>
+                            <Typography variant="subtitle2" className="text-sm font-medium">Total Integrations</Typography>
             <Settings className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>

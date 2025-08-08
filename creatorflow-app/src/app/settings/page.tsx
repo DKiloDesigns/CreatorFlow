@@ -1,29 +1,25 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Switch } from '@/components/ui/switch';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Label } from '@/components/ui/label';
-import { Separator } from '@/components/ui/separator';
 import { 
-  Settings,
-  Eye,
-  Volume2,
-  Smartphone,
-  Palette,
-  Type,
-  Accessibility,
-  Bell,
-  Shield,
-  Database,
-  Download,
-  Trash2,
-  Save,
-  RefreshCw
-} from 'lucide-react';
+  Card, 
+  CardContent, 
+  CardHeader, 
+  Button,
+  Box,
+  Typography,
+  Grid,
+  Tabs,
+  Tab,
+  Chip,
+  Switch,
+  FormControlLabel,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel
+} from '@mui/material';
+import { Settings, Activity } from 'lucide-react';
 
 interface UXConfig {
   animations: boolean;
@@ -159,7 +155,7 @@ export default function SettingsPage() {
   if (loading) {
     return (
       <div className="p-8 flex items-center justify-center">
-        <RefreshCw className="h-6 w-6 animate-spin" />
+        <Activity className="h-6 w-6 animate-spin" />
       </div>
     );
   }
@@ -175,330 +171,318 @@ export default function SettingsPage() {
           <p className="text-muted-foreground">Manage your preferences and account settings</p>
         </div>
         <Button onClick={saveAllPreferences} disabled={saving}>
-          {saving ? <RefreshCw className="h-4 w-4 mr-2 animate-spin" /> : <Save className="h-4 w-4 mr-2" />}
+          {saving ? <Activity className="h-4 w-4 mr-2 animate-spin" /> : <Settings className="h-4 w-4 mr-2" />}
           Save Changes
         </Button>
       </div>
 
       <Tabs defaultValue="accessibility" className="space-y-6">
-        <TabsList>
-          <TabsTrigger value="accessibility" className="flex items-center gap-2">
-            <Accessibility className="h-4 w-4" />
-            Accessibility
-          </TabsTrigger>
-          <TabsTrigger value="notifications" className="flex items-center gap-2">
-            <Bell className="h-4 w-4" />
-            Notifications
-          </TabsTrigger>
-          <TabsTrigger value="privacy" className="flex items-center gap-2">
-            <Shield className="h-4 w-4" />
-            Privacy
-          </TabsTrigger>
-          <TabsTrigger value="data" className="flex items-center gap-2">
-            <Database className="h-4 w-4" />
-            Data
-          </TabsTrigger>
-        </TabsList>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <Tab label="Accessibility" value="accessibility" />
+          <Tab label="Notifications" value="notifications" />
+          <Tab label="Privacy" value="privacy" />
+          <Tab label="Data" value="data" />
+        </Box>
 
-        <TabsContent value="accessibility" className="space-y-6">
+        <TabPanel value="accessibility" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Accessibility className="h-5 w-5" />
+              <Typography variant="h5" component="div" className="flex items-center gap-2">
+                <Activity className="h-5 w-5" />
                 Accessibility Settings
-              </CardTitle>
-              <CardDescription>
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
                 Customize your experience for better accessibility
-              </CardDescription>
+              </Typography>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-0.5">
-                      <Label>Animations</Label>
-                      <p className="text-sm text-muted-foreground">
+              <Grid container spacing={2}>
+                <Grid item xs={12} md={6}>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                      <InputLabel>Animations</InputLabel>
+                      <Typography variant="body2" color="text.secondary">
                         Enable smooth animations and transitions
-                      </p>
-                    </div>
+                      </Typography>
+                    </Box>
                     <Switch
                       checked={accessibility.animations}
-                      onCheckedChange={(checked) => updateAccessibility('animations', checked)}
+                      onChange={(event) => updateAccessibility('animations', event.target.checked)}
                     />
-                  </div>
+                  </Box>
 
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-0.5">
-                      <Label>Sound Effects</Label>
-                      <p className="text-sm text-muted-foreground">
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                      <InputLabel>Sound Effects</InputLabel>
+                      <Typography variant="body2" color="text.secondary">
                         Play sound effects for interactions
-                      </p>
-                    </div>
+                      </Typography>
+                    </Box>
                     <Switch
                       checked={accessibility.soundEffects}
-                      onCheckedChange={(checked) => updateAccessibility('soundEffects', checked)}
+                      onChange={(event) => updateAccessibility('soundEffects', event.target.checked)}
                     />
-                  </div>
+                  </Box>
 
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-0.5">
-                      <Label>Haptic Feedback</Label>
-                      <p className="text-sm text-muted-foreground">
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                      <InputLabel>Haptic Feedback</InputLabel>
+                      <Typography variant="body2" color="text.secondary">
                         Vibrate on mobile devices for feedback
-                      </p>
-                    </div>
+                      </Typography>
+                    </Box>
                     <Switch
                       checked={accessibility.hapticFeedback}
-                      onCheckedChange={(checked) => updateAccessibility('hapticFeedback', checked)}
+                      onChange={(event) => updateAccessibility('hapticFeedback', event.target.checked)}
                     />
-                  </div>
-                </div>
+                  </Box>
+                </Grid>
 
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-0.5">
-                      <Label>Reduced Motion</Label>
-                      <p className="text-sm text-muted-foreground">
+                <Grid item xs={12} md={6}>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                      <InputLabel>Reduced Motion</InputLabel>
+                      <Typography variant="body2" color="text.secondary">
                         Minimize animations for motion sensitivity
-                      </p>
-                    </div>
+                      </Typography>
+                    </Box>
                     <Switch
                       checked={accessibility.reducedMotion}
-                      onCheckedChange={(checked) => updateAccessibility('reducedMotion', checked)}
+                      onChange={(event) => updateAccessibility('reducedMotion', event.target.checked)}
                     />
-                  </div>
+                  </Box>
 
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-0.5">
-                      <Label>High Contrast</Label>
-                      <p className="text-sm text-muted-foreground">
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                      <InputLabel>High Contrast</InputLabel>
+                      <Typography variant="body2" color="text.secondary">
                         Increase contrast for better visibility
-                      </p>
-                    </div>
+                      </Typography>
+                    </Box>
                     <Switch
                       checked={accessibility.highContrast}
-                      onCheckedChange={(checked) => updateAccessibility('highContrast', checked)}
+                      onChange={(event) => updateAccessibility('highContrast', event.target.checked)}
                     />
-                  </div>
+                  </Box>
 
-                  <div className="space-y-2">
-                    <Label>Font Size</Label>
-                    <Select
-                      value={accessibility.fontSize}
-                      onValueChange={(value) => updateAccessibility('fontSize', value)}
-                    >
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="small">Small</SelectItem>
-                        <SelectItem value="medium">Medium</SelectItem>
-                        <SelectItem value="large">Large</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-              </div>
+                  <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                    <InputLabel>Font Size</InputLabel>
+                    <FormControl fullWidth>
+                      <Select
+                        value={accessibility.fontSize}
+                        onChange={(event) => updateAccessibility('fontSize', event.target.value as 'small' | 'medium' | 'large')}
+                      >
+                        <MenuItem value="small">Small</MenuItem>
+                        <MenuItem value="medium">Medium</MenuItem>
+                        <MenuItem value="large">Large</MenuItem>
+                      </Select>
+                    </FormControl>
+                  </Box>
+                </Grid>
+              </Grid>
 
-              <Separator />
-
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <Label>Theme</Label>
-                  <Select
-                    value={accessibility.theme}
-                    onValueChange={(value) => updateAccessibility('theme', value)}
-                  >
-                    <SelectTrigger>
-                      <SelectValue />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="light">Light</SelectItem>
-                      <SelectItem value="dark">Dark</SelectItem>
-                      <SelectItem value="auto">Auto (System)</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
+              <Typography variant="h6" component="div" sx={{ mt: 2 }}>
+                Theme
+              </Typography>
+              <FormControl fullWidth>
+                <Select
+                  value={accessibility.theme}
+                  onChange={(event) => updateAccessibility('theme', event.target.value as 'light' | 'dark' | 'auto')}
+                >
+                  <MenuItem value="light">Light</MenuItem>
+                  <MenuItem value="dark">Dark</MenuItem>
+                  <MenuItem value="auto">Auto (System)</MenuItem>
+                </Select>
+              </FormControl>
             </CardContent>
           </Card>
-        </TabsContent>
+        </TabPanel>
 
-        <TabsContent value="notifications" className="space-y-6">
+        <TabPanel value="notifications" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Bell className="h-5 w-5" />
+              <Typography variant="h5" component="div" className="flex items-center gap-2">
+                <Activity className="h-5 w-5" />
                 Notification Preferences
-              </CardTitle>
-              <CardDescription>
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
                 Control how and when you receive notifications
-              </CardDescription>
+              </Typography>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div className="space-y-0.5">
-                    <Label>Email Notifications</Label>
-                    <p className="text-sm text-muted-foreground">
-                      Receive notifications via email
-                    </p>
-                  </div>
-                  <Switch defaultChecked />
-                </div>
+              <Grid container spacing={2}>
+                <Grid item xs={12} md={6}>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                      <InputLabel>Email Notifications</InputLabel>
+                      <Typography variant="body2" color="text.secondary">
+                        Receive notifications via email
+                      </Typography>
+                    </Box>
+                    <Switch defaultChecked />
+                  </Box>
 
-                <div className="flex items-center justify-between">
-                  <div className="space-y-0.5">
-                    <Label>Push Notifications</Label>
-                    <p className="text-sm text-muted-foreground">
-                      Receive push notifications in browser
-                    </p>
-                  </div>
-                  <Switch defaultChecked />
-                </div>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                      <InputLabel>Push Notifications</InputLabel>
+                      <Typography variant="body2" color="text.secondary">
+                        Receive push notifications in browser
+                      </Typography>
+                    </Box>
+                    <Switch defaultChecked />
+                  </Box>
 
-                <div className="flex items-center justify-between">
-                  <div className="space-y-0.5">
-                    <Label>Post Reminders</Label>
-                    <p className="text-sm text-muted-foreground">
-                      Get reminded about scheduled posts
-                    </p>
-                  </div>
-                  <Switch defaultChecked />
-                </div>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                      <InputLabel>Post Reminders</InputLabel>
+                      <Typography variant="body2" color="text.secondary">
+                        Get reminded about scheduled posts
+                      </Typography>
+                    </Box>
+                    <Switch defaultChecked />
+                  </Box>
 
-                <div className="flex items-center justify-between">
-                  <div className="space-y-0.5">
-                    <Label>Analytics Updates</Label>
-                    <p className="text-sm text-muted-foreground">
-                      Weekly performance summaries
-                    </p>
-                  </div>
-                  <Switch />
-                </div>
-              </div>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                      <InputLabel>Analytics Updates</InputLabel>
+                      <Typography variant="body2" color="text.secondary">
+                        Weekly performance summaries
+                      </Typography>
+                    </Box>
+                    <Switch />
+                  </Box>
+                </Grid>
+              </Grid>
             </CardContent>
           </Card>
-        </TabsContent>
+        </TabPanel>
 
-        <TabsContent value="privacy" className="space-y-6">
+        <TabPanel value="privacy" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Shield className="h-5 w-5" />
+              <Typography variant="h5" component="div" className="flex items-center gap-2">
+                <Activity className="h-5 w-5" />
                 Privacy & Security
-              </CardTitle>
-              <CardDescription>
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
                 Manage your privacy and security settings
-              </CardDescription>
+              </Typography>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div className="space-y-0.5">
-                    <Label>Two-Factor Authentication</Label>
-                    <p className="text-sm text-muted-foreground">
-                      Add an extra layer of security
-                    </p>
-                  </div>
-                  <Button variant="outline" size="sm">
-                    Enable
-                  </Button>
-                </div>
+              <Grid container spacing={2}>
+                <Grid item xs={12} md={6}>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                      <InputLabel>Two-Factor Authentication</InputLabel>
+                      <Typography variant="body2" color="text.secondary">
+                        Add an extra layer of security
+                      </Typography>
+                    </Box>
+                    <Button variant="outlined" size="small">
+                      Enable
+                    </Button>
+                  </Box>
 
-                <div className="flex items-center justify-between">
-                  <div className="space-y-0.5">
-                    <Label>Data Collection</Label>
-                    <p className="text-sm text-muted-foreground">
-                      Allow analytics and usage data collection
-                    </p>
-                  </div>
-                  <Switch defaultChecked />
-                </div>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                      <InputLabel>Data Collection</InputLabel>
+                      <Typography variant="body2" color="text.secondary">
+                        Allow analytics and usage data collection
+                      </Typography>
+                    </Box>
+                    <Switch defaultChecked />
+                  </Box>
 
-                <div className="flex items-center justify-between">
-                  <div className="space-y-0.5">
-                    <Label>Social Media Integration</Label>
-                    <p className="text-sm text-muted-foreground">
-                      Allow access to connected social accounts
-                    </p>
-                  </div>
-                  <Switch defaultChecked />
-                </div>
-              </div>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                      <InputLabel>Social Media Integration</InputLabel>
+                      <Typography variant="body2" color="text.secondary">
+                        Allow access to connected social accounts
+                      </Typography>
+                    </Box>
+                    <Switch defaultChecked />
+                  </Box>
+                </Grid>
+              </Grid>
 
-              <Separator />
-
-              <div className="space-y-4">
-                <h3 className="text-lg font-semibold">Account Actions</h3>
-                <div className="space-y-2">
-                  <Button variant="outline" className="w-full justify-start">
+              <Typography variant="h6" component="div" sx={{ mt: 2 }}>
+                Account Actions
+              </Typography>
+              <Grid container spacing={1}>
+                <Grid item xs={12}>
+                  <Button variant="outlined" fullWidth>
                     Change Password
                   </Button>
-                  <Button variant="outline" className="w-full justify-start">
+                </Grid>
+                <Grid item xs={12}>
+                  <Button variant="outlined" fullWidth>
                     Update Email
                   </Button>
-                  <Button variant="outline" className="w-full justify-start">
+                </Grid>
+                <Grid item xs={12}>
+                  <Button variant="outlined" fullWidth>
                     Manage Connected Accounts
                   </Button>
-                </div>
-              </div>
+                </Grid>
+              </Grid>
             </CardContent>
           </Card>
-        </TabsContent>
+        </TabPanel>
 
-        <TabsContent value="data" className="space-y-6">
+        <TabPanel value="data" className="space-y-6">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Database className="h-5 w-5" />
+              <Typography variant="h5" component="div" className="flex items-center gap-2">
+                <Activity className="h-5 w-5" />
                 Data Management
-              </CardTitle>
-              <CardDescription>
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
                 Export your data or manage your account
-              </CardDescription>
+              </Typography>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div className="space-y-0.5">
-                    <Label>Export Data</Label>
-                    <p className="text-sm text-muted-foreground">
-                      Download all your data and content
-                    </p>
-                  </div>
-                  <Button variant="outline" onClick={exportData}>
-                    <Download className="h-4 w-4 mr-2" />
-                    Export
-                  </Button>
-                </div>
+              <Grid container spacing={2}>
+                <Grid item xs={12} md={6}>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                      <InputLabel>Export Data</InputLabel>
+                      <Typography variant="body2" color="text.secondary">
+                        Download all your data and content
+                      </Typography>
+                    </Box>
+                    <Button variant="outlined" onClick={exportData}>
+                      <Activity className="h-4 w-4 mr-2" />
+                      Export
+                    </Button>
+                  </Box>
 
-                <div className="flex items-center justify-between">
-                  <div className="space-y-0.5">
-                    <Label>Delete Account</Label>
-                    <p className="text-sm text-muted-foreground">
-                      Permanently delete your account and all data
-                    </p>
-                  </div>
-                  <Button variant="destructive" onClick={deleteAccount}>
-                    <Trash2 className="h-4 w-4 mr-2" />
-                    Delete
-                  </Button>
-                </div>
-              </div>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                      <InputLabel>Delete Account</InputLabel>
+                      <Typography variant="body2" color="text.secondary">
+                        Permanently delete your account and all data
+                      </Typography>
+                    </Box>
+                    <Button variant="outlined" color="error" onClick={deleteAccount}>
+                      <Activity className="h-4 w-4 mr-2" />
+                      Delete
+                    </Button>
+                  </Box>
+                </Grid>
+              </Grid>
 
-              <Separator />
-
-              <div className="bg-yellow-50 p-4 rounded-lg">
-                <h4 className="font-semibold text-yellow-800 mb-2">Important Notice</h4>
-                <p className="text-sm text-yellow-700">
+              <Typography variant="h6" component="div" sx={{ mt: 2 }}>
+                Important Notice
+              </Typography>
+              <Box sx={{ bgcolor: 'warning.light', p: 2, borderRadius: 1 }}>
+                <Typography variant="body2" color="warning.dark">
                   Deleting your account will permanently remove all your data, posts, and settings. 
                   This action cannot be undone. Please export your data before deletion if needed.
-                </p>
-              </div>
+                </Typography>
+              </Box>
             </CardContent>
           </Card>
-        </TabsContent>
+        </TabPanel>
       </Tabs>
     </div>
   );

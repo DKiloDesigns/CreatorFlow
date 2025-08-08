@@ -20,7 +20,8 @@ import {
   Card,
   CardHeader,
   CardContent,
-  Tooltip
+  Tooltip,
+  CircularProgress
 } from '@mui/material';
 import { MuiStatsCard } from '@/components/ui/mui-stats-card';
 import { 
@@ -39,7 +40,7 @@ import {
 } from 'lucide-react';
 import { Textarea } from '@/components/ui/textarea';
 import { NotificationBadge } from '@/components/ui/notification-badge';
-import { LoadingSpinner } from '@/components/ui/loading-spinner';
+
 import { EmptyState } from '@/components/ui/empty-state';
 import { EnhancedNavigation, UserMenu, Breadcrumbs } from '@/components/ui/enhanced-nav';
 import { AISetupReminder } from '@/components/ui/ai-setup-reminder';

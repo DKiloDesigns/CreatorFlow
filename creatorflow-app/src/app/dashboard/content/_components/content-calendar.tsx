@@ -9,9 +9,16 @@ import { EventInput } from '@fullcalendar/core'; // Import EventInput type
 import { FaInstagram, FaTiktok, FaYoutube, FaXTwitter } from "react-icons/fa6"; // Import specific icons
 import { toast } from "sonner"; // For error reporting
 import { Loader2, AlertCircle } from 'lucide-react'; // For loading/error states
-import { Button } from '@/components/ui/button';
-import { Tooltip, TooltipProvider, TooltipTrigger, TooltipContent } from '@/components/ui/tooltip';
+
 import { PostStatus } from '@prisma/client';
+import { 
+  Button,
+  Box,
+  Typography,
+  Grid,
+  Tooltip
+} from '@mui/material';
+import { Calendar, Activity } from 'lucide-react';
 
 // Type for the data fetched from API
 interface FetchedPost {

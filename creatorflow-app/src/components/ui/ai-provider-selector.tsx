@@ -1,10 +1,17 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './card';
-import { Badge } from './badge';
-import { Button } from './button';
-import { Check, ExternalLink, Zap, Shield, Star, Info } from 'lucide-react';
+import { 
+  Card, 
+  CardContent, 
+  CardHeader, 
+  Button,
+  Box,
+  Typography,
+  Grid,
+  Chip
+} from '@mui/material';
+import { Brain, Activity } from 'lucide-react';
 import { AI_PROVIDERS, AIProvider } from '@/lib/ai-providers';
 
 interface AIProviderSelectorProps {
@@ -32,22 +39,22 @@ export function AIProviderSelector({
 
   const getPricingBadge = (provider: AIProvider) => {
     if (provider.pricing.model === 'free') {
-      return <Badge variant="secondary" className="bg-green-100 text-green-800">Free</Badge>;
+      return <Chip label="Free" variant="outlined" className="bg-green-100 text-green-800" />;
     }
     if (provider.pricing.costPerRequest && provider.pricing.costPerRequest < 0.005) {
-      return <Badge variant="secondary" className="bg-blue-100 text-blue-800">Low Cost</Badge>;
+      return <Chip label="Low Cost" variant="outlined" className="bg-blue-100 text-blue-800" />;
     }
-    return <Badge variant="secondary" className="bg-purple-100 text-purple-800">Premium</Badge>;
+    return <Chip label="Premium" variant="outlined" className="bg-purple-100 text-purple-800" />;
   };
 
   const getStatusBadge = (provider: AIProvider) => {
     switch (provider.status) {
       case 'available':
-        return <Badge variant="default" className="bg-green-500">Available</Badge>;
+        return <Chip label="Available" variant="outlined" className="bg-green-500" />;
       case 'beta':
-        return <Badge variant="secondary" className="bg-yellow-100 text-yellow-800">Beta</Badge>;
+        return <Chip label="Beta" variant="outlined" className="bg-yellow-100 text-yellow-800" />;
       case 'coming_soon':
-        return <Badge variant="outline" className="border-gray-300 text-gray-600">Coming Soon</Badge>;
+        return <Chip label="Coming Soon" variant="outlined" className="border-gray-300 text-gray-600" />;
       default:
         return null;
     }
@@ -67,12 +74,12 @@ export function AIProviderSelector({
       <div className="flex justify-center">
         <div className="inline-flex rounded-lg bg-gray-100 p-1">
           {[
-            { key: 'all', label: 'All Options', icon: Star },
-            { key: 'free', label: 'Free', icon: Zap },
-            { key: 'low-cost', label: 'Low Cost', icon: Shield },
-            { key: 'premium', label: 'Premium', icon: Info }
+            { key: 'all', label: 'All Options', icon: Brain },
+            { key: 'free', label: 'Free', icon: Activity },
+            { key: 'low-cost', label: 'Low Cost', icon: Brain },
+            { key: 'premium', label: 'Premium', icon: Activity }
           ].map(({ key, label, icon: Icon }) => (
-            <button
+            <Button
               key={key}
               onClick={() => setFilter(key as any)}
               className={`inline-flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
@@ -83,7 +90,7 @@ export function AIProviderSelector({
             >
               <Icon className="w-4 h-4" />
               {label}
-            </button>
+            </Button>
           ))}
         </div>
       </div>
@@ -108,10 +115,10 @@ export function AIProviderSelector({
                     {provider.icon}
                   </div>
                   <div>
-                    <CardTitle className="text-lg">{provider.name}</CardTitle>
-                    <CardDescription className="text-sm">
+                    <Typography variant="h6">{provider.name}</Typography>
+                    <Typography variant="body2">
                       {provider.description}
-                    </CardDescription>
+                    </Typography>
                   </div>
                 </div>
                 <div className="flex flex-col gap-1">
@@ -125,61 +132,55 @@ export function AIProviderSelector({
               {/* Pricing Info */}
               <div className="bg-gray-50 rounded-lg p-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-sm font-medium text-gray-700">Pricing</span>
+                  <Typography variant="body2" className="text-gray-700 font-medium">Pricing</Typography>
                   {provider.pricing.costPerRequest === 0 ? (
-                    <span className="text-green-600 font-semibold">Free</span>
+                    <Typography variant="body2" className="text-green-600 font-semibold">Free</Typography>
                   ) : (
-                    <span className="text-gray-900 font-semibold">
+                    <Typography variant="body2" className="text-gray-900 font-semibold">
                       ${provider.pricing.costPerRequest?.toFixed(3)}/request
-                    </span>
+                    </Typography>
                   )}
                 </div>
-                <p className="text-xs text-gray-600 mt-1">{provider.pricing.details}</p>
+                <Typography variant="body2" className="text-gray-600 mt-1">{provider.pricing.details}</Typography>
                 {provider.pricing.monthlyLimit && (
-                  <p className="text-xs text-gray-500 mt-1">
+                  <Typography variant="body2" className="text-gray-500 mt-1">
                     {provider.pricing.monthlyLimit} requests/month included
-                  </p>
+                  </Typography>
                 )}
               </div>
 
               {/* Features */}
               <div>
-                <h4 className="text-sm font-medium text-gray-700 mb-2">Key Features</h4>
+                <Typography variant="body2" className="text-gray-700 font-medium mb-2">Key Features</Typography>
                 <div className="space-y-1">
                   {provider.features.slice(0, 3).map((feature, index) => (
                     <div key={index} className="flex items-center gap-2 text-sm text-gray-600">
-                      <Check className="w-3 h-3 text-green-500 flex-shrink-0" />
+                      <Chip label={<Brain className="w-3 h-3 text-green-500 flex-shrink-0" />} />
                       {feature}
                     </div>
                   ))}
                   {provider.features.length > 3 && (
-                    <div className="text-xs text-gray-500 mt-1">
+                    <Typography variant="body2" className="text-gray-500 mt-1">
                       +{provider.features.length - 3} more features
-                    </div>
+                    </Typography>
                   )}
                 </div>
               </div>
 
               {/* Setup Requirements */}
               <div className="flex items-center justify-between pt-2 border-t">
-                <div className="text-xs text-gray-500">
+                <Typography variant="body2" className="text-gray-500">
                   {provider.setupRequired ? (
-                    <span className="flex items-center gap-1">
-                      <Info className="w-3 h-3" />
-                      Setup required
-                    </span>
+                    <Chip label="Setup required" variant="outlined" className="flex items-center gap-1" />
                   ) : (
-                    <span className="flex items-center gap-1 text-green-600">
-                      <Check className="w-3 h-3" />
-                      Ready to use
-                    </span>
+                    <Chip label="Ready to use" variant="outlined" className="flex items-center gap-1 text-green-600" />
                   )}
-                </div>
+                </Typography>
                 
                 {provider.status === 'available' && (
                   <Button
-                    size="sm"
-                    variant={selectedProvider === provider.id ? "default" : "outline"}
+                    size="small"
+                    variant={selectedProvider === provider.id ? "contained" : "outlined"}
                     onClick={(e) => {
                       e.stopPropagation();
                       if (provider.setupRequired) {
@@ -191,18 +192,15 @@ export function AIProviderSelector({
                   >
                     {selectedProvider === provider.id ? (
                       <>
-                        <Check className="w-4 h-4 mr-1" />
-                        Selected
+                        <Chip label="Selected" variant="outlined" className="flex items-center gap-1" />
                       </>
                     ) : provider.setupRequired ? (
                       <>
-                        <ExternalLink className="w-4 h-4 mr-1" />
-                        Setup
+                        <Chip label="Setup" variant="outlined" className="flex items-center gap-1" />
                       </>
                     ) : (
                       <>
-                        <Zap className="w-4 h-4 mr-1" />
-                        Select
+                        <Chip label="Select" variant="outlined" className="flex items-center gap-1" />
                       </>
                     )}
                   </Button>
@@ -215,21 +213,27 @@ export function AIProviderSelector({
 
       {/* Recommendations */}
       <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-3">💡 Recommendations</h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
-          <div className="space-y-2">
-            <h4 className="font-medium text-gray-800">🎯 For Beginners</h4>
-            <p className="text-gray-600">Start with <strong>CreatorFlow AI</strong> or <strong>DeepSeek</strong> - both free and easy to use.</p>
-          </div>
-          <div className="space-y-2">
-            <h4 className="font-medium text-gray-800">💰 For Budget-Conscious</h4>
-            <p className="text-gray-600">Try <strong>Google AI</strong> or <strong>Hugging Face</strong> - excellent quality at low cost.</p>
-          </div>
-          <div className="space-y-2">
-            <h4 className="font-medium text-gray-800">🔒 For Privacy</h4>
-            <p className="text-gray-600">Use <strong>Local AI (Ollama)</strong> - runs completely on your device.</p>
-          </div>
-        </div>
+        <Typography variant="h6" className="text-lg font-semibold text-gray-900 mb-3">💡 Recommendations</Typography>
+        <Grid container spacing={2}>
+          <Grid item xs={12} md={4}>
+            <Box className="space-y-2">
+              <Typography variant="subtitle1" className="font-medium text-gray-800">🎯 For Beginners</Typography>
+              <Typography variant="body2" className="text-gray-600">Start with <strong>CreatorFlow AI</strong> or <strong>DeepSeek</strong> - both free and easy to use.</Typography>
+            </Box>
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <Box className="space-y-2">
+              <Typography variant="subtitle1" className="font-medium text-gray-800">💰 For Budget-Conscious</Typography>
+              <Typography variant="body2" className="text-gray-600">Try <strong>Google AI</strong> or <strong>Hugging Face</strong> - excellent quality at low cost.</Typography>
+            </Box>
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <Box className="space-y-2">
+              <Typography variant="subtitle1" className="font-medium text-gray-800">🔒 For Privacy</Typography>
+              <Typography variant="body2" className="text-gray-600">Use <strong>Local AI (Ollama)</strong> - runs completely on your device.</Typography>
+            </Box>
+          </Grid>
+        </Grid>
       </div>
     </div>
   );

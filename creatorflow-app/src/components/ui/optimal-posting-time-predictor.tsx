@@ -1,62 +1,18 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './card';
-import { Button } from './button';
-import { Input } from './input';
-import { Label } from './label';
-import { Badge } from './badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from './tabs';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './select';
-import { Switch } from './switch';
+import React, { useState } from 'react';
 import { 
-  Lightbulb, 
-  TrendingUp, 
-  Target, 
-  Users, 
-  BarChart3, 
-  Search, 
-  Copy, 
-  RefreshCw,
-  Zap,
-  Eye,
-  Clock,
-  Globe,
-  Star,
-  Heart,
-  MessageSquare,
-  Share2,
-  Bookmark,
-  AlertTriangle,
-  CheckCircle,
-  Info,
-  Sparkles,
-  Brain,
-  Calendar,
-  TrendingDown,
-  ArrowUpRight,
-  ArrowDownRight,
-  Minus,
-  Video,
-  Image,
-  FileText,
-  Mic,
-  Play,
-  Camera,
-  Edit3,
-  Hash,
-  MapPin,
-  CalendarDays,
-  Clock3,
-  Rocket,
-  Crown,
-  Trophy,
-  Medal,
-  Sun,
-  Briefcase,
-  Home,
-  Moon
-} from 'lucide-react';
+  Card, 
+  CardContent, 
+  CardHeader, 
+  Button,
+  TextField,
+  Box,
+  Typography,
+  Grid,
+  Chip
+} from '@mui/material';
+import { Clock, Activity, Crown, Trophy, Medal, Star, Sun, Briefcase, Home, Moon } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface OptimalTime {
@@ -348,10 +304,10 @@ export function OptimalPostingTimePredictor({ provider }: OptimalPostingTimePred
       {/* Input Section */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Clock className="w-5 h-5" />
-            Optimal Posting Time Predictor
-          </CardTitle>
+          <Typography variant="h6" className="flex items-center gap-2">
+            <Clock className="h-5 w-5" />
+            Optimal Posting Times
+          </Typography>
           <CardDescription>
             AI-powered posting time optimization with audience behavior analysis and platform-specific insights
           </CardDescription>
@@ -668,10 +624,10 @@ export function OptimalPostingTimePredictor({ provider }: OptimalPostingTimePred
             <TabsContent value="analysis" className="space-y-4">
               <Card>
                 <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <BarChart3 className="w-5 h-5" />
-                    Platform Performance Analysis
-                  </CardTitle>
+                  <Typography variant="h6" className="flex items-center gap-2">
+                    <Clock className="h-5 w-5" />
+                    Time Analysis
+                  </Typography>
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

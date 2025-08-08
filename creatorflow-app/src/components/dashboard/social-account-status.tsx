@@ -1,9 +1,19 @@
 "use client";
 
 import React, { useEffect, useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { 
+  Card, 
+  CardContent, 
+  CardHeader, 
+  Button,
+  Box,
+  Typography,
+  Grid,
+  Chip,
+  LinearProgress
+} from '@mui/material';
 import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+import { Button as UiButton } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { 
@@ -164,11 +174,11 @@ export function SocialAccountStatus({ accounts, onRefresh, onReauth }: SocialAcc
     return (
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2">
+          <Typography variant="h5" component="div" className="flex items-center gap-2">
             <Activity className="w-5 h-5" />
             Account Status
-          </CardTitle>
-          <CardDescription>Monitor the health of your connected social accounts</CardDescription>
+          </Typography>
+          <Typography variant="body2" color="text.secondary">Monitor the health of your connected social accounts</Typography>
         </CardHeader>
         <CardContent>
           <Alert>
@@ -189,17 +199,17 @@ export function SocialAccountStatus({ accounts, onRefresh, onReauth }: SocialAcc
   return (
     <Card>
       <CardHeader>
-        <div className="flex items-center justify-between">
-          <div>
-            <CardTitle className="flex items-center gap-2">
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Box>
+            <Typography variant="h5" component="div" className="flex items-center gap-2">
               <Activity className="w-5 h-5" />
               Account Status
-            </CardTitle>
-            <CardDescription>Monitor the health of your connected social accounts</CardDescription>
-          </div>
+            </Typography>
+            <Typography variant="body2" color="text.secondary">Monitor the health of your connected social accounts</Typography>
+          </Box>
           <Button
-            variant="outline"
-            size="sm"
+            variant="outlined"
+            size="small"
             onClick={checkAllHealth}
             disabled={loading}
             className="flex items-center gap-2"
@@ -207,178 +217,192 @@ export function SocialAccountStatus({ accounts, onRefresh, onReauth }: SocialAcc
             <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
             {loading ? 'Checking...' : 'Check Health'}
           </Button>
-        </div>
+        </Box>
       </CardHeader>
       <CardContent className="space-y-4">
         {/* Overall Health Summary */}
-        <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-          <div className="flex items-center gap-3">
-            <div className="flex items-center gap-2">
-              {healthPercentage >= 80 ? (
-                <CheckCircle className="w-5 h-5 text-green-600" />
-              ) : healthPercentage >= 50 ? (
-                <AlertCircle className="w-5 h-5 text-orange-600" />
-              ) : (
-                <XCircle className="w-5 h-5 text-red-600" />
-              )}
-              <span className="font-medium">Overall Health</span>
-            </div>
-          </div>
-          <div className="flex items-center gap-4">
-            <div className="text-right">
-              <div className="text-2xl font-bold">{healthyAccounts}/{totalAccounts}</div>
-              <div className="text-sm text-muted-foreground">Healthy Accounts</div>
-            </div>
-            <div className="w-20">
-              <Progress value={healthPercentage} className="h-2" />
-            </div>
-          </div>
-        </div>
+        <Box sx={{ p: 2, bgcolor: 'grey.50', borderRadius: 1 }}>
+          <Grid container alignItems="center" spacing={2}>
+            <Grid item xs={12} sm={6}>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                {healthPercentage >= 80 ? (
+                  <CheckCircle className="w-5 h-5 text-green-600" />
+                ) : healthPercentage >= 50 ? (
+                  <AlertCircle className="w-5 h-5 text-orange-600" />
+                ) : (
+                  <XCircle className="w-5 h-5 text-red-600" />
+                )}
+                <Typography variant="subtitle1" component="span" fontWeight="medium">Overall Health</Typography>
+              </Box>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 2 }}>
+                <Box sx={{ textAlign: 'right' }}>
+                  <Typography variant="h5" fontWeight="bold">{healthyAccounts}/{totalAccounts}</Typography>
+                  <Typography variant="body2" color="text.secondary">Healthy Accounts</Typography>
+                </Box>
+                <Box sx={{ width: 100 }}>
+                  <LinearProgress variant="determinate" value={healthPercentage} />
+                </Box>
+              </Box>
+            </Grid>
+          </Grid>
+        </Box>
 
         {/* Individual Account Status */}
-        <div className="space-y-3">
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           {accounts.map((account) => {
             const health = accountHealth.find(h => h.accountId === account.id);
             const tokenStatus = getTokenExpiryStatus(account);
             const isChecking = checkingHealth.includes(account.id);
             
             return (
-              <div key={account.id} className="border rounded-lg p-4">
-                <div className="flex items-center justify-between mb-3">
-                  <div className="flex items-center gap-3">
-                    {getStatusIcon(account.status)}
-                    <div>
-                      <div className="font-medium">{account.platform}</div>
-                      <div className="text-sm text-muted-foreground">@{account.username}</div>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    {health && getHealthIcon(health.isHealthy)}
-                    <Badge variant={account.status === 'active' ? 'default' : 'secondary'}>
-                      {account.status}
-                    </Badge>
-                  </div>
-                </div>
+              <Box key={account.id} sx={{ border: '1px solid', borderRadius: 1, p: 2 }}>
+                <Grid container alignItems="center" justifyContent="space-between" spacing={1}>
+                  <Grid item xs={12} sm={6} md={7}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                      {getStatusIcon(account.status)}
+                      <Box>
+                        <Typography variant="subtitle2">{account.platform}</Typography>
+                        <Typography variant="body2" color="text.secondary">@{account.username}</Typography>
+                      </Box>
+                    </Box>
+                  </Grid>
+                  <Grid item xs={12} sm={6} md={5}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                      {health && getHealthIcon(health.isHealthy)}
+                      <Chip label={account.status} variant={account.status === 'active' ? 'filled' : 'outlined'} />
+                    </Box>
+                  </Grid>
+                </Grid>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+                <Grid container spacing={2} sx={{ mt: 1 }}>
                   {/* Token Status */}
-                  <div>
-                    <div className="font-medium mb-1">Token Status</div>
-                    <div className="flex items-center gap-2">
-                      <div className={`w-2 h-2 rounded-full ${
-                        tokenStatus.status === 'good' ? 'bg-green-500' :
-                        tokenStatus.status === 'warning' ? 'bg-orange-500' :
-                        tokenStatus.status === 'critical' ? 'bg-red-500' : 'bg-gray-500'
-                      }`} />
-                      <span className={`
-                        ${tokenStatus.status === 'good' ? 'text-green-600' :
-                          tokenStatus.status === 'warning' ? 'text-orange-600' :
-                          tokenStatus.status === 'critical' ? 'text-red-600' : 'text-gray-600'}
-                      `}>
+                  <Grid item xs={12} md={4}>
+                    <Typography variant="subtitle2" gutterBottom>Token Status</Typography>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                      <Box sx={{ width: 10, height: 10, borderRadius: '50%', bgcolor: 
+                        tokenStatus.status === 'good' ? 'green.500' :
+                        tokenStatus.status === 'warning' ? 'orange.500' :
+                        tokenStatus.status === 'critical' ? 'red.500' : 'gray.500'
+                      }} />
+                      <Typography variant="body2" color={
+                        tokenStatus.status === 'good' ? 'green.600' :
+                          tokenStatus.status === 'warning' ? 'orange.600' :
+                          tokenStatus.status === 'critical' ? 'red.600' : 'gray.600'
+                      }>
                         {tokenStatus.text}
-                      </span>
-                    </div>
+                      </Typography>
+                    </Box>
                     {tokenStatus.percentage !== undefined && (
-                      <Progress value={tokenStatus.percentage} className="h-1 mt-1" />
+                      <LinearProgress variant="determinate" value={tokenStatus.percentage} sx={{ mt: 0.5 }} />
                     )}
-                  </div>
+                  </Grid>
 
                   {/* Health Status */}
-                  <div>
-                    <div className="font-medium mb-1">Health Status</div>
+                  <Grid item xs={12} md={4}>
+                    <Typography variant="subtitle2" gutterBottom>Health Status</Typography>
                     {health ? (
-                      <div className="flex items-center gap-2">
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                         {getHealthIcon(health.isHealthy)}
-                        <span className={health.isHealthy ? 'text-green-600' : 'text-red-600'}>
+                        <Typography variant="body2" color={health.isHealthy ? 'green.600' : 'red.600'}>
                           {health.isHealthy ? 'Healthy' : 'Issues Detected'}
-                        </span>
-                      </div>
+                        </Typography>
+                      </Box>
                     ) : (
-                      <div className="flex items-center gap-2">
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                         <Clock className="w-4 h-4 text-gray-600" />
-                        <span className="text-gray-600">Checking...</span>
-                      </div>
+                        <Typography variant="body2" color="text.secondary">Checking...</Typography>
+                      </Box>
                     )}
                     {health?.lastChecked && (
-                      <div className="text-xs text-muted-foreground mt-1">
+                      <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
                         Last checked: {new Date(health.lastChecked).toLocaleTimeString()}
-                      </div>
+                      </Typography>
                     )}
-                  </div>
+                  </Grid>
 
                   {/* Actions */}
-                  <div>
-                    <div className="font-medium mb-1">Actions</div>
-                    <div className="flex gap-2">
+                  <Grid item xs={12} md={4}>
+                    <Typography variant="subtitle2" gutterBottom>Actions</Typography>
+                    <Box sx={{ display: 'flex', gap: 1 }}>
                       {account.status === 'active' && (
-                        <Button
-                          variant="outline"
-                          size="sm"
+                        <UiButton
+                          variant="outlined"
+                          size="small"
                           onClick={() => onRefresh(account.id)}
                           disabled={isChecking}
                           className="flex items-center gap-1"
                         >
                           <RefreshCw className={`w-4 h-4 ${isChecking ? 'animate-spin' : ''}`} />
                           Refresh
-                        </Button>
+                        </UiButton>
                       )}
                       {account.status === 'needs_reauth' && (
-                        <Button
-                          variant="outline"
-                          size="sm"
+                        <UiButton
+                          variant="outlined"
+                          size="small"
                           onClick={() => onReauth(account.platform)}
                           className="flex items-center gap-1 text-orange-600 border-orange-200 hover:bg-orange-50"
                         >
                           <AlertCircle className="w-4 h-4" />
                           Re-auth
-                        </Button>
+                        </UiButton>
                       )}
-                    </div>
-                  </div>
-                </div>
+                    </Box>
+                  </Grid>
+                </Grid>
 
                 {/* Health Issues */}
                 {health && health.issues.length > 0 && (
-                  <div className="mt-3 p-3 bg-red-50 border border-red-200 rounded-lg">
-                    <div className="font-medium text-red-800 mb-1">Issues Detected:</div>
-                    <ul className="text-sm text-red-700 space-y-1">
+                  <Box sx={{ mt: 2, p: 2, bgcolor: 'red.50', border: '1px solid', borderColor: 'red.200', borderRadius: 1 }}>
+                    <Typography variant="subtitle2" color="red.800" gutterBottom>Issues Detected:</Typography>
+                    <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
                       {health.issues.map((issue, index) => (
-                        <li key={index} className="flex items-center gap-2">
+                        <li key={index} style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 5 }}>
                           <XCircle className="w-3 h-3" />
-                          {issue}
+                          <Typography variant="body2" color="red.700">{issue}</Typography>
                         </li>
                       ))}
                     </ul>
-                  </div>
+                  </Box>
                 )}
 
                 {/* Metrics */}
                 {health?.metrics && (
-                  <div className="mt-3 grid grid-cols-3 gap-4 p-3 bg-blue-50 border border-blue-200 rounded-lg">
-                    {health.metrics.followers !== undefined && (
-                      <div className="text-center">
-                        <div className="text-lg font-bold text-blue-800">{health.metrics.followers.toLocaleString()}</div>
-                        <div className="text-xs text-blue-600">Followers</div>
-                      </div>
-                    )}
-                    {health.metrics.engagement !== undefined && (
-                      <div className="text-center">
-                        <div className="text-lg font-bold text-blue-800">{health.metrics.engagement}%</div>
-                        <div className="text-xs text-blue-600">Engagement</div>
-                      </div>
-                    )}
-                    {health.metrics.reach !== undefined && (
-                      <div className="text-center">
-                        <div className="text-lg font-bold text-blue-800">{health.metrics.reach.toLocaleString()}</div>
-                        <div className="text-xs text-blue-600">Reach</div>
-                      </div>
-                    )}
-                  </div>
+                  <Box sx={{ mt: 2, p: 2, bgcolor: 'blue.50', border: '1px solid', borderColor: 'blue.200', borderRadius: 1 }}>
+                    <Grid container spacing={2}>
+                      {health.metrics.followers !== undefined && (
+                        <Grid item xs={12} sm={4}>
+                          <Box sx={{ textAlign: 'center' }}>
+                            <Typography variant="h6" fontWeight="bold" color="blue.800">{health.metrics.followers.toLocaleString()}</Typography>
+                            <Typography variant="body2" color="blue.600">Followers</Typography>
+                          </Box>
+                        </Grid>
+                      )}
+                      {health.metrics.engagement !== undefined && (
+                        <Grid item xs={12} sm={4}>
+                          <Box sx={{ textAlign: 'center' }}>
+                            <Typography variant="h6" fontWeight="bold" color="blue.800">{health.metrics.engagement}%</Typography>
+                            <Typography variant="body2" color="blue.600">Engagement</Typography>
+                          </Box>
+                        </Grid>
+                      )}
+                      {health.metrics.reach !== undefined && (
+                        <Grid item xs={12} sm={4}>
+                          <Box sx={{ textAlign: 'center' }}>
+                            <Typography variant="h6" fontWeight="bold" color="blue.800">{health.metrics.reach.toLocaleString()}</Typography>
+                            <Typography variant="body2" color="blue.600">Reach</Typography>
+                          </Box>
+                        </Grid>
+                      )}
+                    </Grid>
+                  </Box>
                 )}
-              </div>
+              </Box>
             );
           })}
-        </div>
+        </Box>
       </CardContent>
     </Card>
   );

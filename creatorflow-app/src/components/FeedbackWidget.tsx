@@ -1,12 +1,18 @@
 'use client';
 
-import React, { useState } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Badge } from '@/components/ui/badge';
-import { Star, MessageSquare, Send, CheckCircle } from 'lucide-react';
+import { useState } from 'react';
+import { 
+  Card, 
+  CardContent, 
+  CardHeader, 
+  Button,
+  TextField,
+  Box,
+  Typography,
+  Grid,
+  Chip
+} from '@mui/material';
+import { Send, Star } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface FeedbackWidgetProps {
@@ -101,9 +107,9 @@ export function FeedbackWidget({
     return (
       <Card className={className}>
         <CardContent className="p-6 text-center">
-          <CheckCircle className="h-12 w-12 text-green-500 mx-auto mb-4" />
-          <h3 className="text-lg font-semibold mb-2">Thank You!</h3>
-          <p className="text-muted-foreground">Your feedback has been submitted successfully.</p>
+          <Chip icon={<Star className="h-12 w-12 text-green-500" />} label="Thank You!" />
+          <Typography variant="h6" component="h3" className="mt-2 mb-1">Thank You!</Typography>
+          <Typography variant="body2" color="text.secondary">Your feedback has been submitted successfully.</Typography>
         </CardContent>
       </Card>
     );
@@ -113,10 +119,10 @@ export function FeedbackWidget({
     return (
       <Button
         onClick={() => setIsOpen(true)}
-        variant="outline"
+        variant="outlined"
         className={`${className} gap-2`}
       >
-        <MessageSquare className="h-4 w-4" />
+        <Star className="h-4 w-4" />
         Share Feedback
       </Button>
     );
@@ -125,22 +131,22 @@ export function FeedbackWidget({
   return (
     <Card className={className}>
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
-          <MessageSquare className="h-5 w-5" />
+        <Typography variant="h5" component="h2" className="flex items-center gap-2">
+          <Star className="h-5 w-5" />
           {showTitle ? 'Share Your Feedback' : 'Feedback'}
-        </CardTitle>
-        <CardDescription>
+        </Typography>
+        <Typography variant="body2" color="text.secondary">
           Help us improve CreatorFlow by sharing your experience
-        </CardDescription>
+        </Typography>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-4">
           {/* Rating */}
           <div className="space-y-2">
-            <label className="text-sm font-medium">How would you rate your experience?</label>
-            <div className="flex gap-1">
+            <Typography variant="body2" className="text-sm font-medium">How would you rate your experience?</Typography>
+            <Box className="flex gap-1">
               {[1, 2, 3, 4, 5].map((star) => (
-                <button
+                <Button
                   key={star}
                   type="button"
                   onClick={() => handleRatingClick(star)}
@@ -149,62 +155,75 @@ export function FeedbackWidget({
                   }`}
                 >
                   <Star className="h-6 w-6 fill-current" />
-                </button>
+                </Button>
               ))}
-            </div>
-            <div className="text-xs text-muted-foreground">
+            </Box>
+            <Typography variant="body2" color="text.secondary">
               {rating === 0 && 'Click to rate'}
               {rating === 1 && 'Poor'}
               {rating === 2 && 'Fair'}
               {rating === 3 && 'Good'}
               {rating === 4 && 'Very Good'}
               {rating === 5 && 'Excellent'}
-            </div>
+            </Typography>
           </div>
 
           {/* Category */}
           <div className="space-y-2">
-            <label className="text-sm font-medium">Category</label>
-            <Select value={category} onValueChange={setCategory}>
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                {FEEDBACK_CATEGORIES.map((cat) => (
-                  <SelectItem key={cat.value} value={cat.value}>
-                    {cat.label}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <Typography variant="body2" className="text-sm font-medium">Category</Typography>
+            <Grid container spacing={1}>
+              <Grid item xs={12}>
+                <TextField
+                  select
+                  fullWidth
+                  label="Category"
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value as string)}
+                >
+                  {FEEDBACK_CATEGORIES.map((cat) => (
+                    <MenuItem key={cat.value} value={cat.value}>
+                      {cat.label}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </Grid>
+            </Grid>
           </div>
 
           {/* Feature (optional) */}
           <div className="space-y-2">
-            <label className="text-sm font-medium">Feature (optional)</label>
-            <Select value={feature} onValueChange={setFeature}>
-              <SelectTrigger>
-                <SelectValue placeholder="Select a feature" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="">No specific feature</SelectItem>
-                {FEATURES.map((feat) => (
-                  <SelectItem key={feat} value={feat}>
-                    {feat}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <Typography variant="body2" className="text-sm font-medium">Feature (optional)</Typography>
+            <Grid container spacing={1}>
+              <Grid item xs={12}>
+                <TextField
+                  select
+                  fullWidth
+                  label="Feature"
+                  value={feature}
+                  onChange={(e) => setFeature(e.target.value as string)}
+                >
+                  <MenuItem value="">No specific feature</MenuItem>
+                  {FEATURES.map((feat) => (
+                    <MenuItem key={feat} value={feat}>
+                      {feat}
+                    </MenuItem>
+                  ))}
+                </TextField>
+              </Grid>
+            </Grid>
           </div>
 
           {/* Feedback text */}
           <div className="space-y-2">
-            <label className="text-sm font-medium">Your feedback</label>
-            <Textarea
+            <Typography variant="body2" className="text-sm font-medium">Your feedback</Typography>
+            <TextField
               value={feedback}
               onChange={(e) => setFeedback(e.target.value)}
-              placeholder="Tell us about your experience, suggestions, or any issues you encountered..."
+              multiline
               rows={4}
+              fullWidth
+              label="Your feedback"
+              variant="outlined"
               required
             />
           </div>
@@ -230,7 +249,7 @@ export function FeedbackWidget({
             </Button>
             <Button
               type="button"
-              variant="outline"
+              variant="outlined"
               onClick={() => setIsOpen(false)}
               disabled={isSubmitting}
             >

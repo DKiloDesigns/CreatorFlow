@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
-import { AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogCancel } from '@/components/ui/alert-dialog';
-import { Button } from '@/components/ui/button';
+import { 
+  Button,
+  Box,
+  Typography,
+  Grid
+} from '@mui/material';
+import { Sparkles, Activity } from 'lucide-react';
 
 const USE_CASES = [
   { key: 'promotion', label: 'Promotion' },

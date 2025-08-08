@@ -1,8 +1,16 @@
 'use client'; // This component will need client-side logic for fetching user state and handling clicks
 
 import React, { useState, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { 
+  Button,
+  Card, 
+  CardContent, 
+  CardHeader, 
+  Box,
+  Typography,
+  Grid
+} from '@mui/material';
+import { Plus, Activity } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { SiInstagram, SiTiktok, SiYoutube, SiX, SiLinkedin } from "react-icons/si"; // Platform icons
 import { toast } from "sonner";
@@ -99,7 +107,7 @@ export default function AccountConnectButtons() {
   if (isLoading) {
     return (
         <Card>
-          <CardHeader><CardTitle>Connect New Account</CardTitle></CardHeader>
+          <CardHeader><Typography variant="h6">Connect New Account</Typography></CardHeader>
           <CardContent>
              {/* Add Skeleton loaders for buttons */} 
              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -113,7 +121,7 @@ export default function AccountConnectButtons() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Connect New Account</CardTitle>
+        <Typography variant="h6">Connect New Account</Typography>
       </CardHeader>
       <CardContent className="space-y-4">
         {limitReached && (

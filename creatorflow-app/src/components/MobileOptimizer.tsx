@@ -1,44 +1,23 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Switch } from '@/components/ui/switch';
-import { Label } from '@/components/ui/label';
-import { Progress } from '@/components/ui/progress';
 import { 
-  Smartphone,
-  Tablet,
-  Monitor,
-  Touch,
-  Wifi,
-  Battery,
-  Zap,
-  Settings,
-  Eye,
-  Shield,
-  TrendingUp,
-  Activity,
-  SmartphoneIcon,
-  WifiOff,
-  WifiIcon,
-  BatteryCharging,
-  Gauge,
-  SmartphoneIcon as PhoneIcon,
-  TabletIcon,
-  MonitorIcon,
-  TouchIcon,
-  WifiIcon as WifiIcon2,
-  BatteryIcon,
-  ZapIcon,
-  SettingsIcon,
-  EyeIcon,
-  ShieldIcon,
-  TrendingUpIcon,
-  ActivityIcon
-} from 'lucide-react';
+  Card, 
+  CardContent, 
+  CardHeader, 
+  Button,
+  TextField,
+  Box,
+  Typography,
+  Grid,
+  Chip,
+  Switch,
+  FormControlLabel,
+  Tabs,
+  Tab,
+  LinearProgress
+} from '@mui/material';
+import { Smartphone, Activity } from 'lucide-react';
 
 interface MobileCapabilities {
   isMobile: boolean;
@@ -189,26 +168,26 @@ export default function MobileOptimizer() {
   };
 
   const getDeviceIcon = () => {
-    if (!capabilities) return <Monitor className="h-6 w-6" />;
-    if (capabilities.isTablet) return <Tablet className="h-6 w-6" />;
+    if (!capabilities) return <Smartphone className="h-6 w-6" />;
+    if (capabilities.isTablet) return <Smartphone className="h-6 w-6" />;
     if (capabilities.isMobile) return <Smartphone className="h-6 w-6" />;
-    return <Monitor className="h-6 w-6" />;
+    return <Smartphone className="h-6 w-6" />;
   };
 
   const getConnectionIcon = () => {
-    if (!network) return <WifiIcon className="h-4 w-4" />;
-    if (network.connectionType === '4g') return <WifiIcon className="h-4 w-4 text-green-600" />;
-    if (network.connectionType === '3g') return <WifiIcon className="h-4 w-4 text-yellow-600" />;
-    if (network.connectionType === '2g') return <WifiIcon className="h-4 w-4 text-red-600" />;
-    return <WifiOff className="h-4 w-4 text-gray-600" />;
+    if (!network) return <Chip label="No Data" />;
+    if (network.connectionType === '4g') return <Chip label="4G" color="success" />;
+    if (network.connectionType === '3g') return <Chip label="3G" color="warning" />;
+    if (network.connectionType === '2g') return <Chip label="2G" color="error" />;
+    return <Chip label="Offline" color="default" />;
   };
 
   const getBatteryIcon = () => {
-    if (!metrics) return <Battery className="h-4 w-4" />;
+    if (!metrics) return <Chip label="No Data" />;
     const level = metrics.performance.batteryLevel;
-    if (level > 80) return <BatteryCharging className="h-4 w-4 text-green-600" />;
-    if (level > 50) return <Battery className="h-4 w-4 text-yellow-600" />;
-    return <Battery className="h-4 w-4 text-red-600" />;
+    if (level > 80) return <Chip label={`${level}%`} color="success" />;
+    if (level > 50) return <Chip label={`${level}%`} color="warning" />;
+    return <Chip label={`${level}%`} color="error" />;
   };
 
   if (loading) return <div className="p-8">Loading mobile optimization data...</div>;
@@ -233,7 +212,7 @@ export default function MobileOptimizer() {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Device Type</CardTitle>
+            <Typography variant="subtitle2" component="div">Device Type</Typography>
             {getDeviceIcon()}
           </CardHeader>
           <CardContent>
@@ -248,8 +227,8 @@ export default function MobileOptimizer() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Viewport</CardTitle>
-            <Monitor className="h-4 w-4 text-muted-foreground" />
+            <Typography variant="subtitle2" component="div">Viewport</Typography>
+            <Chip label="Viewport" color="info" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
@@ -263,7 +242,7 @@ export default function MobileOptimizer() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Network</CardTitle>
+            <Typography variant="subtitle2" component="div">Network</Typography>
             {getConnectionIcon()}
           </CardHeader>
           <CardContent>
@@ -278,7 +257,7 @@ export default function MobileOptimizer() {
 
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Battery</CardTitle>
+            <Typography variant="subtitle2" component="div">Battery</Typography>
             {getBatteryIcon()}
           </CardHeader>
           <CardContent>
@@ -292,39 +271,41 @@ export default function MobileOptimizer() {
         </Card>
       </div>
 
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-        <TabsList>
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="performance">Performance</TabsTrigger>
-          <TabsTrigger value="accessibility">Accessibility</TabsTrigger>
-          <TabsTrigger value="network">Network</TabsTrigger>
-          <TabsTrigger value="metrics">Metrics</TabsTrigger>
-        </TabsList>
+      <Tabs value={activeTab} onChange={(event, newValue) => setActiveTab(newValue)} className="space-y-6">
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <Tabs value={activeTab} onChange={(event, newValue) => setActiveTab(newValue)} aria-label="mobile optimization tabs">
+            <Tab label="Overview" />
+            <Tab label="Performance" />
+            <Tab label="Accessibility" />
+            <Tab label="Network" />
+            <Tab label="Metrics" />
+          </Tabs>
+        </Box>
 
-        <TabsContent value="overview" className="space-y-6">
+        <TabPanel value={activeTab} index="overview">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Touch className="h-5 w-5" />
+                <Typography variant="subtitle2" component="div" className="flex items-center gap-2">
+                  <Smartphone className="h-5 w-5" />
                   Touch Optimization
-                </CardTitle>
-                <CardDescription>
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
                   Touch-friendly interface settings
-                </CardDescription>
+                </Typography>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
-                    <span className="text-sm">Minimum Touch Size</span>
-                    <Badge variant="outline">{touch?.minSize}px</Badge>
+                    <Typography variant="body2">Minimum Touch Size</Typography>
+                    <Chip label={touch?.minSize} variant="outlined" />
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-sm">Touch Spacing</span>
-                    <Badge variant="outline">{touch?.spacing}px</Badge>
+                    <Typography variant="body2">Touch Spacing</Typography>
+                    <Chip label={touch?.spacing} variant="outlined" />
                   </div>
                   <div className="space-y-2">
-                    <span className="text-sm font-medium">Recommendations:</span>
+                    <Typography variant="body2" fontWeight="medium">Recommendations:</Typography>
                     <ul className="text-xs text-muted-foreground space-y-1">
                       {touch?.recommendations.map((rec, index) => (
                         <li key={index}>• {rec}</li>
@@ -337,194 +318,181 @@ export default function MobileOptimizer() {
 
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Zap className="h-5 w-5" />
+                <Typography variant="subtitle2" component="div" className="flex items-center gap-2">
+                  <Chip label="Performance" color="info" />
                   Performance Optimizations
-                </CardTitle>
-                <CardDescription>
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
                   Active performance optimizations
-                </CardDescription>
+                </Typography>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <span className="text-sm">Image Optimization</span>
-                    <Badge className={performance?.imageOptimization ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}>
-                      {performance?.imageOptimization ? 'Enabled' : 'Disabled'}
-                    </Badge>
+                    <Typography variant="body2">Image Optimization</Typography>
+                    <Chip label={performance?.imageOptimization ? 'Enabled' : 'Disabled'} variant="outlined" />
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-sm">Lazy Loading</span>
-                    <Badge className={performance?.lazyLoading ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}>
-                      {performance?.lazyLoading ? 'Enabled' : 'Disabled'}
-                    </Badge>
+                    <Typography variant="body2">Lazy Loading</Typography>
+                    <Chip label={performance?.lazyLoading ? 'Enabled' : 'Disabled'} variant="outlined" />
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-sm">Code Splitting</span>
-                    <Badge className={performance?.codeSplitting ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}>
-                      {performance?.codeSplitting ? 'Enabled' : 'Disabled'}
-                    </Badge>
+                    <Typography variant="body2">Code Splitting</Typography>
+                    <Chip label={performance?.codeSplitting ? 'Enabled' : 'Disabled'} variant="outlined" />
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-sm">Caching</span>
-                    <Badge className={performance?.caching ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}>
-                      {performance?.caching ? 'Enabled' : 'Disabled'}
-                    </Badge>
+                    <Typography variant="body2">Caching</Typography>
+                    <Chip label={performance?.caching ? 'Enabled' : 'Disabled'} variant="outlined" />
                   </div>
                 </div>
               </CardContent>
             </Card>
           </div>
-        </TabsContent>
+        </TabPanel>
 
-        <TabsContent value="performance" className="space-y-6">
+        <TabPanel value={activeTab} index="performance">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
+              <Typography variant="subtitle2" component="div" className="flex items-center gap-2">
                 <Activity className="h-5 w-5" />
                 Performance Metrics
-              </CardTitle>
-              <CardDescription>
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
                 Real-time performance monitoring
-              </CardDescription>
+              </Typography>
             </CardHeader>
             <CardContent>
               <div className="space-y-6">
                 <div>
                   <div className="flex justify-between items-center mb-2">
-                    <span className="text-sm font-medium">Load Time</span>
-                    <span className="text-sm text-muted-foreground">
+                    <Typography variant="body2" fontWeight="medium">Load Time</Typography>
+                    <Typography variant="body2" color="text.secondary">
                       {metrics?.performance.loadTime ? `${Math.round(metrics.performance.loadTime)}ms` : 'N/A'}
-                    </span>
+                    </Typography>
                   </div>
-                  <Progress value={Math.min((metrics?.performance.loadTime || 0) / 3000 * 100, 100)} className="h-2" />
+                  <LinearProgress variant="determinate" value={Math.min((metrics?.performance.loadTime || 0) / 3000 * 100, 100)} />
                 </div>
 
                 <div>
                   <div className="flex justify-between items-center mb-2">
-                    <span className="text-sm font-medium">Render Time</span>
-                    <span className="text-sm text-muted-foreground">
+                    <Typography variant="body2" fontWeight="medium">Render Time</Typography>
+                    <Typography variant="body2" color="text.secondary">
                       {metrics?.performance.renderTime ? `${Math.round(metrics.performance.renderTime)}ms` : 'N/A'}
-                    </span>
+                    </Typography>
                   </div>
-                  <Progress value={Math.min((metrics?.performance.renderTime || 0) / 1000 * 100, 100)} className="h-2" />
+                  <LinearProgress variant="determinate" value={Math.min((metrics?.performance.renderTime || 0) / 1000 * 100, 100)} />
                 </div>
 
                 <div>
                   <div className="flex justify-between items-center mb-2">
-                    <span className="text-sm font-medium">Memory Usage</span>
-                    <span className="text-sm text-muted-foreground">
+                    <Typography variant="body2" fontWeight="medium">Memory Usage</Typography>
+                    <Typography variant="body2" color="text.secondary">
                       {metrics?.performance.memoryUsage ? `${Math.round(metrics.performance.memoryUsage / 1024 / 1024)}MB` : 'N/A'}
-                    </span>
+                    </Typography>
                   </div>
-                  <Progress value={Math.min((metrics?.performance.memoryUsage || 0) / (100 * 1024 * 1024) * 100, 100)} className="h-2" />
+                  <LinearProgress variant="determinate" value={Math.min((metrics?.performance.memoryUsage || 0) / (100 * 1024 * 1024) * 100, 100)} />
                 </div>
 
                 <div>
                   <div className="flex justify-between items-center mb-2">
-                    <span className="text-sm font-medium">Battery Level</span>
-                    <span className="text-sm text-muted-foreground">
+                    <Typography variant="body2" fontWeight="medium">Battery Level</Typography>
+                    <Typography variant="body2" color="text.secondary">
                       {metrics?.performance.batteryLevel || 100}%
-                    </span>
+                    </Typography>
                   </div>
-                  <Progress value={metrics?.performance.batteryLevel || 100} className="h-2" />
+                  <LinearProgress variant="determinate" value={metrics?.performance.batteryLevel || 100} />
                 </div>
               </div>
             </CardContent>
           </Card>
-        </TabsContent>
+        </TabPanel>
 
-        <TabsContent value="accessibility" className="space-y-6">
+        <TabPanel value={activeTab} index="accessibility">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Eye className="h-5 w-5" />
+              <Typography variant="subtitle2" component="div" className="flex items-center gap-2">
+                <Chip label="Accessibility" color="info" />
                 Accessibility Settings
-              </CardTitle>
-              <CardDescription>
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
                 Mobile accessibility optimizations
-              </CardDescription>
+              </Typography>
             </CardHeader>
             <CardContent>
               <div className="space-y-6">
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
-                    <Label>High Contrast</Label>
-                    <p className="text-xs text-muted-foreground">Enhanced color contrast for better visibility</p>
+                    <FormControlLabel control={<Switch checked={accessibility?.highContrast} />} label="High Contrast" />
+                    <Typography variant="body2" color="text.secondary">Enhanced color contrast for better visibility</Typography>
                   </div>
-                  <Switch checked={accessibility?.highContrast} />
                 </div>
 
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
-                    <Label>Reduced Motion</Label>
-                    <p className="text-xs text-muted-foreground">Minimize animations for motion sensitivity</p>
+                    <FormControlLabel control={<Switch checked={accessibility?.reducedMotion} />} label="Reduced Motion" />
+                    <Typography variant="body2" color="text.secondary">Minimize animations for motion sensitivity</Typography>
                   </div>
-                  <Switch checked={accessibility?.reducedMotion} />
                 </div>
 
                 <div className="flex items-center justify-between">
                   <div className="space-y-0.5">
-                    <Label>Touch Friendly</Label>
-                    <p className="text-xs text-muted-foreground">Optimize interface for touch interaction</p>
+                    <FormControlLabel control={<Switch checked={accessibility?.touchFriendly} />} label="Touch Friendly" />
+                    <Typography variant="body2" color="text.secondary">Optimize interface for touch interaction</Typography>
                   </div>
-                  <Switch checked={accessibility?.touchFriendly} />
                 </div>
 
                 <div>
-                  <Label>Font Size</Label>
+                  <Typography variant="body2" fontWeight="medium">Font Size</Typography>
                   <div className="flex items-center gap-2 mt-2">
-                    <span className="text-xs text-muted-foreground">Small</span>
-                    <Progress value={(accessibility?.fontSize || 16) / 24 * 100} className="flex-1 h-2" />
-                    <span className="text-xs text-muted-foreground">Large</span>
+                    <Typography variant="body2" color="text.secondary">Small</Typography>
+                    <LinearProgress variant="determinate" value={(accessibility?.fontSize || 16) / 24 * 100} />
+                    <Typography variant="body2" color="text.secondary">Large</Typography>
                   </div>
-                  <p className="text-xs text-muted-foreground mt-1">
+                  <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
                     Current: {accessibility?.fontSize}px
-                  </p>
+                  </Typography>
                 </div>
               </div>
             </CardContent>
           </Card>
-        </TabsContent>
+        </TabPanel>
 
-        <TabsContent value="network" className="space-y-6">
+        <TabPanel value={activeTab} index="network">
           <Card>
             <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Wifi className="h-5 w-5" />
+              <Typography variant="subtitle2" component="div" className="flex items-center gap-2">
+                <Chip label="Network" color="info" />
                 Network Optimization
-              </CardTitle>
-              <CardDescription>
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
                 Network performance and recommendations
-              </CardDescription>
+              </Typography>
             </CardHeader>
             <CardContent>
               <div className="space-y-6">
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <span className="text-sm font-medium">Connection Type</span>
-                    <div className="text-2xl font-bold mt-1">{network?.connectionType.toUpperCase()}</div>
+                    <Typography variant="body2" fontWeight="medium">Connection Type</Typography>
+                    <Typography variant="h6" sx={{ mt: 0.5 }}>{network?.connectionType.toUpperCase()}</Typography>
                   </div>
                   <div>
-                    <span className="text-sm font-medium">Bandwidth</span>
-                    <div className="text-2xl font-bold mt-1">{network?.bandwidth} Mbps</div>
+                    <Typography variant="body2" fontWeight="medium">Bandwidth</Typography>
+                    <Typography variant="h6" sx={{ mt: 0.5 }}>{network?.bandwidth} Mbps</Typography>
                   </div>
                   <div>
-                    <span className="text-sm font-medium">Latency</span>
-                    <div className="text-2xl font-bold mt-1">{network?.latency}ms</div>
+                    <Typography variant="body2" fontWeight="medium">Latency</Typography>
+                    <Typography variant="h6" sx={{ mt: 0.5 }}>{network?.latency}ms</Typography>
                   </div>
                   <div>
-                    <span className="text-sm font-medium">Status</span>
-                    <div className="text-2xl font-bold mt-1">
-                      <Badge className={metrics?.network.offline ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'}>
-                        {metrics?.network.offline ? 'Offline' : 'Online'}
-                      </Badge>
-                    </div>
+                    <Typography variant="body2" fontWeight="medium">Status</Typography>
+                    <Typography variant="h6" sx={{ mt: 0.5 }}>
+                      <Chip label={metrics?.network.offline ? 'Offline' : 'Online'} color={metrics?.network.offline ? 'error' : 'success'} />
+                    </Typography>
                   </div>
                 </div>
 
                 <div>
-                  <span className="text-sm font-medium">Network Recommendations</span>
+                  <Typography variant="body2" fontWeight="medium">Network Recommendations</Typography>
                   <ul className="text-sm text-muted-foreground space-y-1 mt-2">
                     {network?.recommendations.map((rec, index) => (
                       <li key={index}>• {rec}</li>
@@ -534,37 +502,37 @@ export default function MobileOptimizer() {
               </div>
             </CardContent>
           </Card>
-        </TabsContent>
+        </TabPanel>
 
-        <TabsContent value="metrics" className="space-y-6">
+        <TabPanel value={activeTab} index="metrics">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <TrendingUp className="h-5 w-5" />
+                <Typography variant="subtitle2" component="div" className="flex items-center gap-2">
+                  <Chip label="Metrics" color="info" />
                   Interaction Metrics
-                </CardTitle>
-                <CardDescription>
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
                   User interaction tracking
-                </CardDescription>
+                </Typography>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">
-                    <span className="text-sm">Touch Events</span>
-                    <span className="font-semibold">{metrics?.interaction.touchEvents || 0}</span>
+                    <Typography variant="body2">Touch Events</Typography>
+                    <Typography variant="h6" fontWeight="semibold">{metrics?.interaction.touchEvents || 0}</Typography>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-sm">Scroll Events</span>
-                    <span className="font-semibold">{metrics?.interaction.scrollEvents || 0}</span>
+                    <Typography variant="body2">Scroll Events</Typography>
+                    <Typography variant="h6" fontWeight="semibold">{metrics?.interaction.scrollEvents || 0}</Typography>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-sm">Gesture Events</span>
-                    <span className="font-semibold">{metrics?.interaction.gestureEvents || 0}</span>
+                    <Typography variant="body2">Gesture Events</Typography>
+                    <Typography variant="h6" fontWeight="semibold">{metrics?.interaction.gestureEvents || 0}</Typography>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-sm">Errors</span>
-                    <span className="font-semibold text-red-600">{metrics?.interaction.errors || 0}</span>
+                    <Typography variant="body2">Errors</Typography>
+                    <Typography variant="h6" color="error">{metrics?.interaction.errors || 0}</Typography>
                   </div>
                 </div>
               </CardContent>
@@ -572,44 +540,60 @@ export default function MobileOptimizer() {
 
             <Card>
               <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Gauge className="h-5 w-5" />
+                <Typography variant="subtitle2" component="div" className="flex items-center gap-2">
+                  <Chip label="Performance" color="info" />
                   Performance Score
-                </CardTitle>
-                <CardDescription>
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
                   Overall mobile performance rating
-                </CardDescription>
+                </Typography>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
                   <div className="text-center">
-                    <div className="text-4xl font-bold text-green-600">95</div>
-                    <p className="text-sm text-muted-foreground">Performance Score</p>
+                    <Typography variant="h4" fontWeight="bold" color="success">95</Typography>
+                    <Typography variant="body2" color="text.secondary">Performance Score</Typography>
                   </div>
                   <div className="space-y-2">
                     <div className="flex justify-between text-sm">
-                      <span>Load Speed</span>
-                      <span className="text-green-600">Excellent</span>
+                      <Typography variant="body2">Load Speed</Typography>
+                      <Typography variant="body2" color="success">Excellent</Typography>
                     </div>
                     <div className="flex justify-between text-sm">
-                      <span>Touch Response</span>
-                      <span className="text-green-600">Excellent</span>
+                      <Typography variant="body2">Touch Response</Typography>
+                      <Typography variant="body2" color="success">Excellent</Typography>
                     </div>
                     <div className="flex justify-between text-sm">
-                      <span>Battery Usage</span>
-                      <span className="text-yellow-600">Good</span>
+                      <Typography variant="body2">Battery Usage</Typography>
+                      <Typography variant="body2" color="warning">Good</Typography>
                     </div>
                     <div className="flex justify-between text-sm">
-                      <span>Network</span>
-                      <span className="text-green-600">Excellent</span>
+                      <Typography variant="body2">Network</Typography>
+                      <Typography variant="body2" color="success">Excellent</Typography>
                     </div>
                   </div>
                 </div>
               </CardContent>
             </Card>
           </div>
-        </TabsContent>
+        </TabPanel>
       </Tabs>
+    </div>
+  );
+}
+
+function TabPanel(props: { children?: React.ReactNode; index: string; value: string }) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`mobile-optimization-tabpanel-${index}`}
+      aria-labelledby={`mobile-optimization-tab-${index}`}
+      {...other}
+    >
+      {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
     </div>
   );
 } 
