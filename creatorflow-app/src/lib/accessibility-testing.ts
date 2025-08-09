@@ -40,6 +40,7 @@ export interface AccessibilityTestResult {
     orientationAngle: number;
     orientationType: string;
   };
+  colorContrastReport?: string;
 }
 
 /**
@@ -80,6 +81,16 @@ export class SACAAccessibilityTester {
       reporter: 'v2'
     });
 
+    // Generate color contrast report
+    let colorContrastReport = '';
+    try {
+      const { generateContrastReport } = await import('./color-contrast');
+      colorContrastReport = generateContrastReport();
+    } catch (error) {
+      console.warn('Failed to generate color contrast report:', error);
+      colorContrastReport = 'Color contrast report unavailable';
+    }
+
     this.testResults = {
       violations: results.violations,
       passes: results.passes,
@@ -100,7 +111,8 @@ export class SACAAccessibilityTester {
         windowHeight: window.innerHeight,
         orientationAngle: (screen as any).orientation?.angle || 0,
         orientationType: (screen as any).orientation?.type || 'landscape-primary'
-      }
+      },
+      colorContrastReport
     };
 
     return this.testResults;
@@ -132,6 +144,16 @@ export class SACAAccessibilityTester {
     const focusViolations = this.checkFocusIndicators();
     violations.push(...focusViolations);
 
+    // Generate color contrast report
+    let colorContrastReport = '';
+    try {
+      const { generateContrastReport } = await import('./color-contrast');
+      colorContrastReport = generateContrastReport();
+    } catch (error) {
+      console.warn('Failed to generate color contrast report:', error);
+      colorContrastReport = 'Color contrast report unavailable';
+    }
+
     this.testResults = {
       violations,
       passes: [],
@@ -152,7 +174,8 @@ export class SACAAccessibilityTester {
         windowHeight: window.innerHeight,
         orientationAngle: (screen as any).orientation?.angle || 0,
         orientationType: (screen as any).orientation?.type || 'landscape-primary'
-      }
+      },
+      colorContrastReport
     };
 
     return this.testResults;
@@ -255,38 +278,127 @@ export class SACAAccessibilityTester {
   }
 
   /**
-   * Check for color contrast compliance
+   * Check for color contrast compliance using enhanced color contrast utility
    */
   private checkColorContrast(): AccessibilityViolation[] {
     const violations: AccessibilityViolation[] = [];
     
-    // This is a simplified check - in practice, you'd use a color contrast library
-    const textElements = document.querySelectorAll('p, span, div, h1, h2, h3, h4, h5, h6');
-    
-    textElements.forEach((element) => {
-      const style = window.getComputedStyle(element);
-      const color = style.color;
-      const backgroundColor = style.backgroundColor;
+    // Import color contrast utilities dynamically
+    import('./color-contrast').then(({ calculateContrastRatio, checkWCAGCompliance }) => {
+      const textElements = document.querySelectorAll('p, span, div, h1, h2, h3, h4, h5, h6, button, a, input, textarea, select, label');
       
-      // Simplified contrast check (would need actual color contrast calculation)
-      if (color === backgroundColor) {
-        violations.push({
-          id: 'color-contrast',
-          impact: 'serious',
-          description: 'Insufficient color contrast',
-          help: 'Ensure text has sufficient contrast with its background',
-          helpUrl: 'https://dequeuniversity.com/rules/axe/4.7/color-contrast',
-          tags: ['wcag2aa', 'wcag143'],
-          nodes: [{
-            html: element.outerHTML,
-            target: [element.tagName.toLowerCase()],
-            failureSummary: 'Text color matches background color'
-          }]
-        });
-      }
+      textElements.forEach((element) => {
+        const style = window.getComputedStyle(element);
+        const color = style.color;
+        const backgroundColor = style.backgroundColor;
+        
+        // Skip if colors are transparent or invalid
+        if (!color || !backgroundColor || color === 'transparent' || backgroundColor === 'transparent') {
+          return;
+        }
+        
+        try {
+          // Convert CSS color values to hex for contrast calculation
+          const hexColor = this.cssColorToHex(color);
+          const hexBackground = this.cssColorToHex(backgroundColor);
+          
+          if (hexColor && hexBackground) {
+            const result = checkWCAGCompliance(hexColor, hexBackground);
+            
+            if (result.status === 'fail') {
+              const impact = result.ratio < 2.0 ? 'critical' : 
+                           result.ratio < 3.0 ? 'serious' : 
+                           result.ratio < 4.0 ? 'moderate' : 'minor';
+              
+              violations.push({
+                id: 'color-contrast',
+                impact,
+                description: `Insufficient color contrast: ${result.ratio.toFixed(2)}:1 (required: ${result.ratio < 3.0 ? '3.0:1' : '4.5:1})`,
+                help: result.recommendation || 'Ensure text has sufficient contrast with its background',
+                helpUrl: 'https://dequeuniversity.com/rules/axe/4.7/color-contrast',
+                tags: ['wcag2aa', 'wcag143'],
+                nodes: [{
+                  html: element.outerHTML,
+                  target: [element.tagName.toLowerCase()],
+                  failureSummary: `Color contrast ratio ${result.ratio.toFixed(2)}:1 does not meet WCAG 2.1 AA standards`
+                }]
+              });
+            }
+          }
+        } catch (error) {
+          console.warn('Error checking color contrast for element:', element, error);
+        }
+      });
+    }).catch(error => {
+      console.warn('Failed to load color contrast utilities:', error);
     });
 
     return violations;
+  }
+
+  /**
+   * Convert CSS color values to hex format
+   */
+  private cssColorToHex(cssColor: string): string | null {
+    try {
+      // Handle named colors
+      const namedColors: { [key: string]: string } = {
+        'black': '#000000',
+        'white': '#ffffff',
+        'red': '#ff0000',
+        'green': '#00ff00',
+        'blue': '#0000ff',
+        'yellow': '#ffff00',
+        'cyan': '#00ffff',
+        'magenta': '#ff00ff',
+        'gray': '#808080',
+        'grey': '#808080',
+        'silver': '#c0c0c0',
+        'maroon': '#800000',
+        'olive': '#808000',
+        'navy': '#000080',
+        'purple': '#800080',
+        'teal': '#008080',
+        'orange': '#ffa500',
+        'pink': '#ffc0cb',
+        'brown': '#a52a2a',
+        'lime': '#00ff00',
+        'aqua': '#00ffff',
+        'fuchsia': '#ff00ff'
+      };
+      
+      if (namedColors[cssColor.toLowerCase()]) {
+        return namedColors[cssColor.toLowerCase()];
+      }
+      
+      // Handle hex colors
+      if (cssColor.startsWith('#')) {
+        return cssColor;
+      }
+      
+      // Handle rgb/rgba colors
+      if (cssColor.startsWith('rgb')) {
+        const match = cssColor.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*[\d.]+)?\)/);
+        if (match) {
+          const r = parseInt(match[1]);
+          const g = parseInt(match[2]);
+          const b = parseInt(match[3]);
+          return `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+        }
+      }
+      
+      // Handle hsl/hsla colors
+      if (cssColor.startsWith('hsl')) {
+        // This is a simplified conversion - in production you'd want a more robust HSL to RGB converter
+        console.warn('HSL color conversion not implemented:', cssColor);
+        return null;
+      }
+      
+      return null;
+    } catch (error) {
+      console.warn('Error converting CSS color to hex:', cssColor, error);
+      return null;
+    }
   }
 
   /**
