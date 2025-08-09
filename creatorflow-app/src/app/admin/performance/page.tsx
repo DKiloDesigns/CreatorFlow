@@ -7,13 +7,13 @@ import {
   CardHeader, 
   Button,
   Chip,
-  Box,
   Typography,
-  Grid,
   Tabs,
-  Tab
+  Tab,
+  Grid,
+  Box
 } from '@mui/material';
-import { Activity, TrendingUp, Clock, Zap, BarChart3, Settings } from 'lucide-react';
+import { Activity, Settings } from 'lucide-react';
 
 interface SystemHealth {
   cpu: number;

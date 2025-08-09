@@ -15,6 +15,8 @@ import {
   Chip
 } from '@mui/material';
 import { TestTube, Activity } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { TabsContent } from '@/components/ui/tabs';
 
 import { 
   Play,

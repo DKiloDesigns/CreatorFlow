@@ -28,6 +28,8 @@ import {
   Zap,
   Activity
 } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { TabsContent } from '@/components/ui/tabs';
 
 interface AnalyticsData {
   totalPosts: number;

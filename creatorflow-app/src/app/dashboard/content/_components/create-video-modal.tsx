@@ -2,10 +2,6 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { 
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
   Button,
   TextField,
   Box,
@@ -18,6 +14,7 @@ import {
 } from '@mui/material';
 import { Video, Activity, Upload } from 'lucide-react';
 import { toast } from 'sonner';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { 
   Play, 
   Pause, 

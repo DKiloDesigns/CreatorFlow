@@ -1,19 +1,20 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import { Card, CardContent, CardHeader } from '@/components/ui/mui-card';
+import { Typography, Button, Box, Grid, FormControlLabel } from '@mui/material';
 import { 
-  Card, 
-  CardContent, 
-  CardHeader, 
-  Button,
-  Box,
-  Typography,
-  Grid,
-  Chip,
-  Tabs,
-  Tab
-} from '@mui/material';
-import { Bell, Activity } from 'lucide-react';
+  Bell, 
+  Settings, 
+  Save, 
+  RefreshCw,
+  Activity
+} from 'lucide-react';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
+import { Separator } from '@/components/ui/separator';
+import { Badge } from '@/components/ui/badge';
 
 import type { NotificationPreferences, NotificationType, NotificationCategory, NotificationChannel } from '@/lib/notifications/types';
 import { NotificationToast } from '@/components/ui/notification-badge';

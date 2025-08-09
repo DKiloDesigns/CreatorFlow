@@ -1,19 +1,38 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Card, CardContent, CardHeader } from '@/components/ui/mui-card';
+import { Typography, Button, Slider, FormControl, FormControlLabel, FormGroup } from '@mui/material';
 import { 
-  Card, 
-  CardContent, 
-  CardHeader, 
-  Button,
-  TextField,
-  Box,
-  Typography,
-  Grid,
-  Chip
-} from '@mui/material';
-import { MessageSquare, Activity } from 'lucide-react';
+  Star, 
+  TrendingUp, 
+  CheckCircle, 
+  AlertCircle, 
+  Sparkles, 
+  RefreshCw, 
+  Wand2, 
+  Copy, 
+  Hash, 
+  Brain, 
+  Target,
+  Settings,
+  Users,
+  Eye,
+  DollarSign,
+  AlertTriangle,
+  Info,
+  Zap,
+  Crown,
+  BarChart3
+} from 'lucide-react';
 import { toast } from 'sonner';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
+import { Input } from '@/components/ui/input';
+import { Switch } from '@/components/ui/switch';
+import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 
 interface CaptionVariant {
   id: string;
@@ -363,9 +382,9 @@ Which tip resonates most with you? 🤔
             <Sparkles className="w-5 h-5" />
             Smart Caption Generator
           </Typography>
-          <CardDescription>
+          <Typography variant="body2" color="text.secondary">
             Generate platform-optimized captions with AI-powered engagement analysis
-          </CardDescription>
+          </Typography>
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Basic Settings */}
@@ -439,7 +458,7 @@ Which tip resonates most with you? 🤔
           {/* Advanced Settings */}
           <div className="space-y-4">
             <Button
-              variant="outline"
+              variant="outlined"
               onClick={() => setShowAdvanced(!showAdvanced)}
               className="w-full"
             >
@@ -613,8 +632,8 @@ Which tip resonates most with you? 🤔
                       </div>
                       <div className="flex items-center gap-2">
                         <Button
-                          variant="ghost"
-                          size="sm"
+                          variant="text"
+                          size="small"
                           onClick={(e) => {
                             e.stopPropagation();
                             regenerateVariant(variant.id);
@@ -623,8 +642,8 @@ Which tip resonates most with you? 🤔
                           <RefreshCw className="w-4 h-4" />
                         </Button>
                         <Button
-                          variant="ghost"
-                          size="sm"
+                          variant="text"
+                          size="small"
                           onClick={(e) => {
                             e.stopPropagation();
                             copyToClipboard(variant.text);
@@ -770,9 +789,9 @@ Which tip resonates most with you? 🤔
                     <Target className="w-5 h-5" />
                     A/B Testing Comparison
                   </Typography>
-                  <CardDescription>
+                  <Typography variant="body2" color="text.secondary">
                     Compare variants to choose the best performing option
-                  </CardDescription>
+                  </Typography>
                 </CardHeader>
                 <CardContent>
                   <div className="overflow-x-auto">

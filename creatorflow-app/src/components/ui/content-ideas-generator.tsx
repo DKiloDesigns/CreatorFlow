@@ -1,19 +1,28 @@
 'use client';
 
 import React, { useState } from 'react';
+import { Card, CardContent, CardHeader } from '@/components/ui/mui-card';
+import { Typography, Button } from '@mui/material';
 import { 
-  Card, 
-  CardContent, 
-  CardHeader, 
-  Button,
-  TextField,
-  Box,
-  Typography,
-  Grid,
-  Chip
-} from '@mui/material';
-import { Lightbulb, Activity } from 'lucide-react';
+  RefreshCw, 
+  Sparkles, 
+  Crown, 
+  Trophy, 
+  Medal, 
+  Star, 
+  Brain,
+  BarChart3,
+  Target,
+  TrendingUp,
+  Copy
+} from 'lucide-react';
 import { toast } from 'sonner';
+import { Label } from '@/components/ui/label';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
+import { Input } from '@/components/ui/input';
+import { Switch } from '@/components/ui/switch';
+import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 
 interface ContentIdea {
   id: string;
@@ -54,13 +63,13 @@ interface ContentIdeasGeneratorProps {
 }
 
 const CONTENT_TYPES = [
-  { id: 'video', name: 'Video', icon: Activity, platforms: ['YouTube', 'TikTok', 'Instagram', 'LinkedIn'] },
-  { id: 'image', name: 'Image Post', icon: Activity, platforms: ['Instagram', 'Facebook', 'LinkedIn', 'Pinterest'] },
-  { id: 'carousel', name: 'Carousel', icon: Activity, platforms: ['Instagram', 'LinkedIn', 'Facebook'] },
-  { id: 'story', name: 'Story/Reel', icon: Activity, platforms: ['Instagram', 'Facebook', 'Snapchat'] },
-  { id: 'article', name: 'Article', icon: Activity, platforms: ['LinkedIn', 'Medium', 'Blog'] },
-  { id: 'podcast', name: 'Podcast', icon: Activity, platforms: ['Spotify', 'Apple Podcasts', 'YouTube'] },
-  { id: 'live', name: 'Live Stream', icon: Activity, platforms: ['Instagram', 'Facebook', 'YouTube', 'Twitch'] }
+  { id: 'video', name: 'Video', icon: Brain, platforms: ['YouTube', 'TikTok', 'Instagram', 'LinkedIn'] },
+  { id: 'image', name: 'Image Post', icon: Brain, platforms: ['Instagram', 'Facebook', 'LinkedIn', 'Pinterest'] },
+  { id: 'carousel', name: 'Carousel', icon: Brain, platforms: ['Instagram', 'LinkedIn', 'Facebook'] },
+  { id: 'story', name: 'Story/Reel', icon: Brain, platforms: ['Instagram', 'Facebook', 'Snapchat'] },
+  { id: 'article', name: 'Article', icon: Brain, platforms: ['LinkedIn', 'Medium', 'Blog'] },
+  { id: 'podcast', name: 'Podcast', icon: Brain, platforms: ['Spotify', 'Apple Podcasts', 'YouTube'] },
+  { id: 'live', name: 'Live Stream', icon: Brain, platforms: ['Instagram', 'Facebook', 'YouTube', 'Twitch'] }
 ];
 
 const INDUSTRIES = [
@@ -314,12 +323,10 @@ export function ContentIdeasGenerator({ provider }: ContentIdeasGeneratorProps) 
       <Card>
         <CardHeader>
           <Typography variant="h6" className="flex items-center gap-2">
-            <Lightbulb className="w-5 h-5" />
+            <Sparkles className="w-5 h-5" />
             Content Ideas Generator
           </Typography>
-          <CardDescription>
-            AI-powered content brainstorming with trend analysis, gap detection, and viral prediction
-          </CardDescription>
+          {/* CardDescription is not defined in the original file, removing it */}
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Basic Input */}

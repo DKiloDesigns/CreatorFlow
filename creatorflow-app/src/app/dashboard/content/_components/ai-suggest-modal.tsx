@@ -6,6 +6,7 @@ import {
   Grid
 } from '@mui/material';
 import { Sparkles, Activity } from 'lucide-react';
+import { AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogCancel } from '@/components/ui/alert-dialog';
 
 const USE_CASES = [
   { key: 'promotion', label: 'Promotion' },
@@ -65,7 +66,7 @@ export default function AiSuggestModal({ open, onOpenChange, type, onInsert, onS
         />
         <div className="mb-2 flex flex-wrap gap-2">
           {USE_CASES.map(u => (
-            <Button key={u.key} size="sm" variant={useCase === u.key ? 'default' : 'outline'} onClick={() => setUseCase(u.key)} disabled={loading}>{u.label}</Button>
+            <Button key={u.key} size="small" variant={useCase === u.key ? 'contained' : 'outlined'} onClick={() => setUseCase(u.key)} disabled={loading}>{u.label}</Button>
           ))}
         </div>
         <Button onClick={handleSuggest} disabled={loading || (!prompt && !useCase)} aria-label="Get suggestions">Suggest</Button>
@@ -79,8 +80,8 @@ export default function AiSuggestModal({ open, onOpenChange, type, onInsert, onS
               <li key={i} className="mb-2 p-2 border rounded flex flex-col gap-2">
                 <span>{s}</span>
                 <div className="flex gap-2">
-                  {onInsert && <Button size="sm" onClick={() => onInsert(s)} aria-label="Insert">Insert</Button>}
-                  {onSave && <Button size="sm" variant="outline" onClick={() => {
+                  {onInsert && <Button size="small" onClick={() => onInsert(s)} aria-label="Insert">Insert</Button>}
+                  {onSave && <Button size="small" variant="outlined" onClick={() => {
                     const name = window.prompt('Template name?', 'AI Suggestion');
                     if (name) onSave(name, s);
                   }} aria-label="Save as template">Save</Button>}
@@ -92,7 +93,7 @@ export default function AiSuggestModal({ open, onOpenChange, type, onInsert, onS
       </div>
       <div className="flex justify-end mt-4">
         <AlertDialogCancel asChild>
-          <Button variant="ghost" onClick={() => onOpenChange(false)}>Close</Button>
+          <Button variant="text" onClick={() => onOpenChange(false)}>Close</Button>
         </AlertDialogCancel>
       </div>
     </AlertDialogContent>

@@ -5,7 +5,7 @@ import {
   Typography,
   Grid
 } from '@mui/material';
-import { Code, Activity } from 'lucide-react';
+import { Code, Activity, Edit } from 'lucide-react';
 
 export const COMMON_VARIABLES = [
   { key: 'username', label: 'Username' },
@@ -88,7 +88,7 @@ export default function SnippetManager({ open, onOpenChange, onInsert }: { open:
       <div className="bg-white rounded shadow-lg p-6 w-full max-w-lg">
         <div className="flex justify-between items-center mb-2">
           <h2 className="text-lg font-bold">Snippet Manager</h2>
-          <Button variant="ghost" onClick={() => onOpenChange(false)}>Close</Button>
+          <Button variant="text" onClick={() => onOpenChange(false)}>Close</Button>
         </div>
         <div className="mb-4">
           <input value={newName} onChange={e => setNewName(e.target.value)} placeholder="Snippet name" className="border rounded px-2 py-1 mr-2" />

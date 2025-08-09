@@ -1,23 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Card, CardContent, CardHeader } from '@/components/ui/mui-card';
+import { Typography, Button } from '@mui/material';
 import { 
-  Card, 
-  CardContent, 
-  CardHeader, 
-  Button,
-  Box,
-  Typography,
-  Grid,
-  Chip
-} from '@mui/material';
-
-import { 
+  Calendar, 
   Clock, 
-  Calendar,
-  TrendingUp,
+  TrendingUp, 
+  Users, 
+  Eye,
   Target,
-  Zap,
-  Info
+  Info,
+  Zap
 } from 'lucide-react';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
+import { Badge } from '@/components/ui/badge';
+import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { PostingTimeSuggestion } from '@/lib/ai-service';
 
 interface AIPostingTimesProps {
@@ -218,8 +214,8 @@ export function AIPostingTimes({ className }: AIPostingTimesProps) {
         {/* Quick Actions */}
         <div className="flex gap-2">
           <Button
-            variant="outline"
-            size="sm"
+            variant="outlined"
+            size="small"
             className="flex-1"
             onClick={() => {
               setPlatform('Instagram');
@@ -230,8 +226,8 @@ export function AIPostingTimes({ className }: AIPostingTimesProps) {
             Instagram Times
           </Button>
           <Button
-            variant="outline"
-            size="sm"
+            variant="outlined"
+            size="small"
             className="flex-1"
             onClick={() => {
               setPlatform('LinkedIn');

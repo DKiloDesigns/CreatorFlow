@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { NotificationToast } from '@/components/ui/notification-badge';
-import { Loader2, Info, User, UserCheck } from 'lucide-react';
+import { Loader2, Info, UserCheck } from 'lucide-react';
 
 interface AuditLogEntry {
   id: string;

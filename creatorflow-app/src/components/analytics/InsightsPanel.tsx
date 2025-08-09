@@ -1,17 +1,11 @@
 'use client';
 
 import React from 'react';
-import { 
-  Card, 
-  CardContent, 
-  CardHeader, 
-  Button,
-  Box,
-  Typography,
-  Grid,
-  Chip
-} from '@mui/material';
-import { TrendingUp, Activity } from 'lucide-react';
+import { Card, CardContent, CardHeader } from '@/components/ui/mui-card';
+import { Button } from '@mui/material';
+import { Typography } from '@mui/material';
+import { Badge } from '@/components/ui/badge';
+import { Activity, CheckCircle, Info, Clock } from 'lucide-react';
 
 interface Insight {
   id: string;
@@ -41,7 +35,7 @@ export function InsightsPanel({ insights, onRefresh }: InsightsPanelProps) {
   const getInsightIcon = (type: string) => {
     switch (type) {
       case 'performance':
-        return <TrendingUp className="h-5 w-5" />;
+        return <Activity className="h-5 w-5" />;
       case 'timing':
         return <Activity className="h-5 w-5" />;
       case 'content':
@@ -107,7 +101,7 @@ export function InsightsPanel({ insights, onRefresh }: InsightsPanelProps) {
       {/* Insights Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {insights.insights.map((insight) => (
-          <Card key={insight.id} className="hover:shadow-md transition-shadow">
+          <Card key={insight.id} className="hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1">
             <CardHeader className="pb-3">
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2">
@@ -165,14 +159,14 @@ export function InsightsPanel({ insights, onRefresh }: InsightsPanelProps) {
 
       {/* Empty State */}
       {insights.insights.length === 0 && (
-        <Card>
+        <Card className="border-2 border-dashed border-gray-300">
           <CardContent className="text-center py-8">
             <Info className="mx-auto h-12 w-12 text-gray-400 mb-4" />
             <h3 className="text-lg font-medium text-gray-900 mb-2">No Insights Generated</h3>
             <p className="text-gray-500 mb-4">
               We couldn't generate insights yet. This usually means you need more content data.
             </p>
-            <Button onClick={onRefresh}>
+            <Button onClick={onRefresh} variant="outlined">
               <Activity className="h-4 w-4 mr-2" />
               Try Again
             </Button>

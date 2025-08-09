@@ -5,20 +5,11 @@ import {
   Card, 
   CardContent, 
   CardHeader, 
-
-  Button,
-  Box,
-  Typography,
-  Grid
+  Typography
 } from '@mui/material';
-import { BarChart3, TrendingUp, Users, Activity } from 'lucide-react';
+import { AnalyticsChart } from '@/components/dashboard/analytics-chart';
 
-interface AnalyticsData {
-  totalUsers: number;
-  newUsersThisWeek: number;
-  totalFeedback: number;
-  newFeedbackThisWeek: number;
-}
+
 
 const RANGE_OPTIONS = [
   { label: '7 days', value: '7d' },

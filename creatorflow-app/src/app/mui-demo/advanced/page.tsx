@@ -36,7 +36,7 @@ import {
   DialogFooter,
   DialogTitle,
   DialogDescription,
-} from '@/components/ui/mui-dialog';
+} from '@/components/ui/dialog';
 import {
   LoadingSpinner,
   LoadingBar,
@@ -109,8 +109,8 @@ export default function MuiAdvancedDemo() {
   };
 
   const renderSimpleDialog = () => (
-    <Dialog open={dialogOpen} onClose={handleDialogClose}>
-      <DialogHeader onClose={handleDialogClose}>
+    <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+      <DialogHeader>
         <DialogTitle>Simple Dialog</DialogTitle>
       </DialogHeader>
       <DialogContent>
@@ -128,8 +128,8 @@ export default function MuiAdvancedDemo() {
   );
 
   const renderFormDialog = () => (
-    <Dialog open={dialogOpen} onClose={handleDialogClose} maxWidth="sm" fullWidth>
-      <DialogHeader onClose={handleDialogClose}>
+    <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+      <DialogHeader>
         <DialogTitle>User Settings</DialogTitle>
       </DialogHeader>
       <DialogContent>
@@ -199,8 +199,8 @@ export default function MuiAdvancedDemo() {
   );
 
   const renderConfirmDialog = () => (
-    <Dialog open={dialogOpen} onClose={handleDialogClose}>
-      <DialogHeader onClose={handleDialogClose}>
+    <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+      <DialogHeader>
         <DialogTitle>Confirm Action</DialogTitle>
       </DialogHeader>
       <DialogContent>

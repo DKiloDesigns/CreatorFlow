@@ -2,10 +2,6 @@
 
 import React, { useState, useCallback, useRef } from 'react';
 import { 
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
   Button,
   TextField,
   Box,
@@ -16,6 +12,7 @@ import {
 } from '@mui/material';
 import { Upload, Activity, Image, Video } from 'lucide-react';
 import { toast } from 'sonner';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 
 interface MediaFile {
   id: string;

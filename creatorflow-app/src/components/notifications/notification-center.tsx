@@ -11,9 +11,7 @@ import {
   Grid,
   Chip,
   Switch,
-  FormControlLabel,
-  Tabs,
-  Tab
+  FormControlLabel
 } from '@mui/material';
 import { Bell, Activity, X, Check, Trash2, Filter, Settings, RefreshCw } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -21,6 +19,10 @@ import { Notification, NotificationType, NotificationSeverity, NotificationCateg
 import { NotificationToast } from '@/components/ui/notification-badge';
 
 import { Separator } from '@/components/ui/separator';
+import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
+import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { ScrollArea } from '@/components/ui/scroll-area';
 
 interface NotificationCenterProps {
   className?: string;

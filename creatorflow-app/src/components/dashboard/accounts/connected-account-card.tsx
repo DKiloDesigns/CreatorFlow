@@ -3,9 +3,6 @@
 import React, { useState } from 'react';
 import { 
   Button,
-  Card, 
-  CardContent, 
-  CardHeader, 
   Box,
   Typography,
   Grid,
@@ -13,6 +10,8 @@ import {
 } from '@mui/material';
 import { CheckCircle, Activity, Trash2 } from 'lucide-react';
 import { SiInstagram, SiTiktok, SiYoutube, SiX } from "react-icons/si";
+import { Card, CardContent, CardHeader, CardFooter, CardDescription } from '@/components/ui/mui-components';
+import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogCancel, AlertDialogAction } from '@/components/ui/alert-dialog';
 
 // Define the shape of the account data we expect
 interface ConnectedAccount {
@@ -74,7 +73,7 @@ export default function ConnectedAccountCard({ account, onDisconnect, isDisconne
       <CardFooter>
          <AlertDialog>
           <AlertDialogTrigger asChild>
-             <Button variant="destructive" size="sm" disabled={isDisconnecting}>
+             <Button variant="contained" color="error" size="small" disabled={isDisconnecting}>
               <Trash2 className="mr-2 h-4 w-4" />
               Disconnect
             </Button>

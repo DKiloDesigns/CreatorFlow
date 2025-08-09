@@ -6,7 +6,7 @@ import {
   IconButton,
   Tooltip
 } from '@mui/material';
-import { Eye, Edit, Trash2, Activity } from 'lucide-react';
+import { Eye, Edit, Trash2, Activity, Copy } from 'lucide-react';
 
 interface Post {
   id: string;
@@ -90,8 +90,8 @@ export default function ContentTable({ posts, loading, error, onEdit, onDelete, 
               <td className="px-2 sm:px-4 py-3">
                 <div className="flex flex-col sm:flex-row gap-1 sm:gap-2">
                   <Button
-                    variant="ghost"
-                    size="sm"
+                    variant="text"
+                    size="small"
                     onClick={() => onEdit(post)}
                     className="h-8 w-8 sm:h-8 sm:w-auto p-0 sm:px-2 sm:py-1 min-w-[44px] min-h-[44px]"
                   >
@@ -99,8 +99,8 @@ export default function ContentTable({ posts, loading, error, onEdit, onDelete, 
                     <span className="sr-only sm:not-sr-only sm:ml-1">Edit</span>
                   </Button>
                   <Button
-                    variant="ghost"
-                    size="sm"
+                    variant="text"
+                    size="small"
                     onClick={() => onDuplicate(post)}
                     className="h-8 w-8 sm:h-8 sm:w-auto p-0 sm:px-2 sm:py-1 min-w-[44px] min-h-[44px]"
                   >
@@ -108,8 +108,8 @@ export default function ContentTable({ posts, loading, error, onEdit, onDelete, 
                     <span className="sr-only sm:not-sr-only sm:ml-1">Duplicate</span>
                   </Button>
                   <Button
-                    variant="ghost"
-                    size="sm"
+                    variant="text"
+                    size="small"
                     onClick={() => onDelete(post)}
                     className="h-8 w-8 sm:h-8 sm:w-auto p-0 sm:px-2 sm:py-1 min-w-[44px] min-h-[44px] text-red-600 hover:text-red-700"
                   >

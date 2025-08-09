@@ -10,11 +10,12 @@ import {
   Box,
   Typography,
   Grid,
-  Tabs,
   Tab,
   TextField
 } from '@mui/material';
-import { Settings, Zap, Code, Database, Cloud, Shield, Activity } from 'lucide-react';
+import { Settings, Zap, Code, Database, Cloud, Shield, Activity, RefreshCw, Plus, Plug, CheckCircle, TrendingUp, Eye, BarChart3 } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 
 interface Integration {
   id: string;

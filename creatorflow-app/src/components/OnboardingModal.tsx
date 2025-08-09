@@ -9,7 +9,10 @@ import {
   Chip,
   LinearProgress
 } from '@mui/material';
-import { Rocket, Activity, Sparkles, Users, Zap, Calendar, BarChart3, Settings } from 'lucide-react';
+import { Rocket, Activity, Sparkles, Users, Zap, Calendar, BarChart3, Settings, X, CheckCircle, ArrowRight } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Progress } from '@/components/ui/progress';
+import { Badge } from '@/components/ui/badge';
 
 interface OnboardingStep {
   id: string;
@@ -138,7 +141,7 @@ export default function OnboardingModal({ isOpen, onClose, onComplete }: Onboard
             <DialogTitle className="text-xl font-bold">
               Welcome to CreatorFlow
             </DialogTitle>
-            <Button variant="ghost" size="sm" onClick={onClose}>
+            <Button variant="text" size="small" onClick={onClose}>
               <X className="h-4 w-4" />
             </Button>
           </div>
@@ -248,7 +251,7 @@ export default function OnboardingModal({ isOpen, onClose, onComplete }: Onboard
                 </Button>
               ) : (
                 <>
-                  <Button variant="outline" onClick={skipStep}>
+                  <Button variant="outlined" onClick={skipStep}>
                     Skip
                   </Button>
                   <Button onClick={() => completeStep(currentStepData.id)} disabled={loading}>

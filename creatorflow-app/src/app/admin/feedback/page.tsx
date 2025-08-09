@@ -6,12 +6,12 @@ import {
   CardContent, 
   CardHeader, 
   Button,
-  Chip,
-  Box,
-  Typography,
-  Grid
+  Typography
 } from '@mui/material';
-import { MessageSquare, Star, ThumbsUp, ThumbsDown, AlertCircle } from 'lucide-react';
+import { MessageSquare, Star, RefreshCw, Download, Filter, Users, BarChart3 } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { TabsContent, Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 
 interface FeedbackData {
   feedback: Array<{
@@ -148,10 +148,10 @@ export default function FeedbackDashboard() {
           <p className="text-muted-foreground">Analyze user feedback and insights</p>
         </div>
         <div className="flex gap-2">
-          <Button onClick={refreshData} disabled={refreshing} variant="outline" size="sm">
+          <Button onClick={refreshData} disabled={refreshing} variant="outlined" size="small">
             <RefreshCw className={`h-4 w-4 ${refreshing ? 'animate-spin' : ''}`} />
           </Button>
-          <Button onClick={exportData} variant="outline" size="sm">
+          <Button onClick={exportData} variant="outlined" size="small">
             <Download className="h-4 w-4" />
           </Button>
         </div>
@@ -291,7 +291,7 @@ export default function FeedbackDashboard() {
           <Card>
             <CardHeader>
               <Typography variant="h6">Recent Feedback</Typography>
-              <CardDescription>Latest user feedback submissions</CardDescription>
+                              <Typography variant="body2" color="text.secondary">Latest user feedback submissions</Typography>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
@@ -330,7 +330,7 @@ export default function FeedbackDashboard() {
           <Card>
             <CardHeader>
               <Typography variant="h6">Trial User Feedback</Typography>
-              <CardDescription>Feedback from EARLYBIRD100 campaign users</CardDescription>
+                              <Typography variant="body2" color="text.secondary">Feedback from EARLYBIRD100 campaign users</Typography>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
@@ -368,7 +368,7 @@ export default function FeedbackDashboard() {
             <Card>
               <CardHeader>
                 <Typography variant="h6">Average Ratings by Category</Typography>
-                <CardDescription>User satisfaction across different areas</CardDescription>
+                <Typography variant="body2" color="text.secondary">User satisfaction across different areas</Typography>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
@@ -390,7 +390,7 @@ export default function FeedbackDashboard() {
             <Card>
               <CardHeader>
                 <Typography variant="h6">Rating Distribution</Typography>
-                <CardDescription>How users are rating their experience</CardDescription>
+                <Typography variant="body2" color="text.secondary">How users are rating their experience</Typography>
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">

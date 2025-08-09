@@ -1,18 +1,29 @@
 'use client';
 
 import React, { useState } from 'react';
+import { Card, CardContent, CardHeader } from '@/components/ui/mui-card';
+import { Typography, Button } from '@mui/material';
 import { 
-  Card, 
-  CardContent, 
-  CardHeader, 
-  Button,
-  TextField,
-  Box,
-  Typography,
-  Grid,
-  Chip
-} from '@mui/material';
-import { Clock, Activity, Crown, Trophy, Medal, Star, Sun, Briefcase, Home, Moon } from 'lucide-react';
+  RefreshCw, 
+  Sparkles, 
+  Brain, 
+  Users,
+  Crown,
+  Trophy,
+  Medal,
+  Star,
+  Sun,
+  Briefcase,
+  Home,
+  Moon,
+  Clock
+} from 'lucide-react';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
+import { Switch } from '@/components/ui/switch';
+import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { toast } from 'sonner';
 
 interface OptimalTime {
@@ -308,9 +319,9 @@ export function OptimalPostingTimePredictor({ provider }: OptimalPostingTimePred
             <Clock className="h-5 w-5" />
             Optimal Posting Times
           </Typography>
-          <CardDescription>
+          <Typography variant="body2" color="text.secondary">
             AI-powered posting time optimization with audience behavior analysis and platform-specific insights
-          </CardDescription>
+          </Typography>
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Basic Input */}

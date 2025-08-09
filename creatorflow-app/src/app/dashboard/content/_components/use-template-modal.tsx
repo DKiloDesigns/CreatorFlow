@@ -2,10 +2,6 @@
 
 import React, { useState } from 'react';
 import { 
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
   Button,
   TextField,
   Box,
@@ -14,6 +10,8 @@ import {
 } from '@mui/material';
 import { FileText, Activity } from 'lucide-react';
 import { toast } from 'sonner';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 
 interface Template {
   id: string;

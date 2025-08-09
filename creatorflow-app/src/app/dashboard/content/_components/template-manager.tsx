@@ -7,7 +7,10 @@ import {
   Tabs,
   Tab
 } from '@mui/material';
-import { FileText, Activity } from 'lucide-react';
+import { FileText, Activity, Edit } from 'lucide-react';
+import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogCancel } from '@/components/ui/alert-dialog';
+import { Badge } from '@/components/ui/badge';
+import { TabsContent } from '@/components/ui/tabs';
 
 import { toast } from 'sonner';
 import { Star, Pin, Eye, Share2, Users } from 'lucide-react';

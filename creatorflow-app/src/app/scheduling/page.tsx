@@ -17,6 +17,8 @@ import {
 } from '@mui/material';
 import { Calendar, Activity } from 'lucide-react';
 import { format, addDays, addWeeks, addMonths } from 'date-fns';
+import { Badge } from '@/components/ui/badge';
+import { TabsContent } from '@/components/ui/tabs';
 
 interface ScheduledPost {
   id: string;

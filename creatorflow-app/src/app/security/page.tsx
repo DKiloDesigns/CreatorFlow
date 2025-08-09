@@ -17,7 +17,9 @@ import {
   FormControl,
   InputLabel
 } from '@mui/material';
-import { Shield, Activity } from 'lucide-react';
+import { Shield, Activity, RefreshCw } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { TabsContent } from '@/components/ui/tabs';
 
 interface SecurityEvent {
   id: string;

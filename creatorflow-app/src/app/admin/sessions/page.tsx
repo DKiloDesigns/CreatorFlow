@@ -3,14 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { NotificationToast } from '@/components/ui/notification-badge';
 import { 
-  Card, 
-  CardContent, 
-  CardHeader, 
-  Button,
-  Chip,
-  Box,
   Typography,
-  Grid,
   Tooltip
 } from '@mui/material';
 import { Users, Clock, Activity, Eye, Trash2 } from 'lucide-react';

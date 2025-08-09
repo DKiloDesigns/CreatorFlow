@@ -106,41 +106,59 @@ export default function DashboardLayout({
           borderColor: 'divider',
           zIndex: 40
         }}
+        role="banner"
+        aria-label="Main navigation"
       >
         <Container maxWidth="xl">
           <Toolbar sx={{ justifyContent: 'space-between', height: 64 }}>
             {/* Logo */}
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-              <Box sx={{ 
-                width: 32, 
-                height: 32, 
-                bgcolor: 'black', 
-                borderRadius: 1,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}>
+              <Box 
+                sx={{ 
+                  width: 32, 
+                  height: 32, 
+                  bgcolor: 'black', 
+                  borderRadius: 1,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }}
+                role="img"
+                aria-label="CreatorFlow logo"
+              >
                 <Typography sx={{ color: 'white', fontWeight: 'bold', fontSize: '0.875rem' }}>
                   CF
                 </Typography>
               </Box>
-              <Typography variant="h5" component="span" sx={{ fontWeight: 'bold', color: 'text.primary' }}>
+              <Typography 
+                variant="h5" 
+                component="span" 
+                sx={{ fontWeight: 'bold', color: 'text.primary' }}
+                aria-label="CreatorFlow"
+              >
                 CreatorFlow
               </Typography>
             </Box>
 
             {/* Desktop Navigation */}
-            <Box sx={{ display: { xs: 'none', lg: 'flex' }, alignItems: 'center', gap: 4 }}>
+            <Box 
+              sx={{ display: { xs: 'none', lg: 'flex' }, alignItems: 'center', gap: 4 }}
+              role="navigation"
+              aria-label="Main navigation"
+            >
               {navigationItems.slice(0, 8).map((item) => {
                 const Icon = item.icon;
+                const isActive = pathname === item.href;
                 return (
                   <Button
                     key={item.href}
                     component={Link}
                     href={item.href}
                     variant="text"
+                    aria-current={isActive ? 'page' : undefined}
+                    aria-label={`Navigate to ${item.label}`}
                     sx={{
-                      color: pathname === item.href 
+                      color: isActive 
                         ? 'primary.main' 
                         : 'text.secondary',
                       '&:hover': {
@@ -150,7 +168,12 @@ export default function DashboardLayout({
                       minWidth: 44,
                       minHeight: 44,
                       fontSize: '0.875rem',
-                      fontWeight: 500
+                      fontWeight: 500,
+                      '&:focus-visible': {
+                        outline: '2px solid',
+                        outlineColor: 'primary.main',
+                        outlineOffset: '2px'
+                      }
                     }}
                   >
                     {item.label}
@@ -160,36 +183,48 @@ export default function DashboardLayout({
             </Box>
 
             {/* Tablet Navigation */}
-            <Box sx={{ 
-              display: { xs: 'none', md: 'flex', lg: 'none' }, 
-              alignItems: 'center', 
-              justifyContent: 'space-between',
-              width: '100%',
-              px: 2,
-              py: 1,
-              bgcolor: 'background.default',
-              borderBottom: 1,
-              borderColor: 'divider'
-            }}>
+            <Box 
+              sx={{ 
+                display: { xs: 'none', md: 'flex', lg: 'none' }, 
+                alignItems: 'center', 
+                justifyContent: 'space-between',
+                width: '100%',
+                px: 2,
+                py: 1,
+                bgcolor: 'background.default',
+                borderBottom: 1,
+                borderColor: 'divider'
+              }}
+              role="navigation"
+              aria-label="Tablet navigation"
+            >
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                 {navigationItems.slice(0, 8).map((item) => {
                   const Icon = item.icon;
+                  const isActive = pathname === item.href;
                   return (
                     <IconButton
                       key={item.href}
                       component={Link}
                       href={item.href}
+                      aria-current={isActive ? 'page' : undefined}
+                      aria-label={`Navigate to ${item.label}`}
                       sx={{
-                        color: pathname === item.href 
+                        color: isActive 
                           ? 'primary.main' 
                           : 'text.secondary',
                         '&:hover': {
                           color: 'primary.main',
                           bgcolor: 'action.hover'
+                        },
+                        '&:focus-visible': {
+                          outline: '2px solid',
+                          outlineColor: 'primary.main',
+                          outlineOffset: '2px'
                         }
                       }}
                     >
-                      <Icon sx={{ width: 20, height: 20 }} />
+                      <Icon className="w-5 h-5" />
                     </IconButton>
                   );
                 })}
@@ -216,6 +251,7 @@ export default function DashboardLayout({
                     <Badge
                       badgeContent={unreadCount > 99 ? '99+' : unreadCount}
                       color="error"
+                      aria-label={`${unreadCount} unread notifications`}
                       sx={{
                         '& .MuiBadge-badge': {
                           fontSize: '0.75rem',

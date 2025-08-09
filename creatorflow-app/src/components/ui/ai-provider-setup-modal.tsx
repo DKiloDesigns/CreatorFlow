@@ -1,18 +1,20 @@
 'use client';
 
 import React, { useState } from 'react';
+import { Card, CardContent } from '@/components/ui/mui-card';
+import { Typography, Button } from '@mui/material';
 import { 
-  Card, 
-  CardContent, 
-  CardHeader, 
-  Button,
-  TextField,
-  Box,
-  Typography,
-  Grid,
-  Chip
-} from '@mui/material';
-import { Brain, Activity } from 'lucide-react';
+  Eye, 
+  EyeOff, 
+  Copy, 
+  Check, 
+  ExternalLink, 
+  AlertCircle 
+} from 'lucide-react';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from '@/components/ui/dialog';
 import { AIProvider } from '@/lib/ai-providers';
 
 interface AIProviderSetupModalProps {
@@ -188,8 +190,8 @@ export function AIProviderSetupModal({
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-semibold text-gray-900">{instructions.title}</h3>
                 <Button
-                  variant="outline"
-                  size="sm"
+                  variant="outlined"
+                  size="small"
                   onClick={() => window.open(instructions.link, '_blank')}
                 >
                   <ExternalLink className="w-4 h-4 mr-1" />
@@ -233,16 +235,16 @@ export function AIProviderSetupModal({
                 <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center gap-1">
                   <Button
                     type="button"
-                    variant="ghost"
-                    size="sm"
+                    variant="text"
+                    size="small"
                     onClick={() => setShowApiKey(!showApiKey)}
                   >
                     {showApiKey ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </Button>
                   <Button
                     type="button"
-                    variant="ghost"
-                    size="sm"
+                    variant="text"
+                    size="small"
                     onClick={() => navigator.clipboard.writeText(apiKey)}
                     disabled={!apiKey}
                   >
@@ -257,7 +259,7 @@ export function AIProviderSetupModal({
 
             {/* Action Buttons */}
             <div className="flex justify-end gap-3">
-              <Button variant="outline" onClick={onClose}>
+              <Button variant="outlined" onClick={onClose}>
                 Cancel
               </Button>
               <Button

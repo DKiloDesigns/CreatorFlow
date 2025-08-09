@@ -12,7 +12,9 @@ import {
   Chip,
   LinearProgress
 } from '@mui/material';
-import { TestTube, Activity } from 'lucide-react';
+import { TestTube, Activity, Download, TrendingUp, BarChart3, Target, CheckCircle } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Progress } from '@/components/ui/progress';
 
 interface TestSummary {
   category: string;

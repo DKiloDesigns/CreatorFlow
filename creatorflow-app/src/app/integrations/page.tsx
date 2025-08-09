@@ -17,7 +17,9 @@ import {
   FormControl,
   InputLabel
 } from '@mui/material';
-import { Plug, Activity, Settings } from 'lucide-react';
+import { Plug, Activity, Settings, RefreshCw } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { TabsContent } from '@/components/ui/tabs';
 
 interface Integration {
   id: string;

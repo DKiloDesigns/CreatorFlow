@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Button,
   Box,
@@ -6,6 +6,7 @@ import {
   Grid
 } from '@mui/material';
 import { Activity } from 'lucide-react';
+import { AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogCancel } from '@/components/ui/alert-dialog';
 
 export default function UsageModal({ open, onOpenChange, template, type }: {
   open: boolean;
@@ -62,7 +63,7 @@ export default function UsageModal({ open, onOpenChange, template, type }: {
       )}
       <div className="flex justify-end mt-4">
         <AlertDialogCancel asChild>
-          <Button variant="ghost" onClick={() => onOpenChange(false)}>Close</Button>
+          <Button variant="text" onClick={() => onOpenChange(false)}>Close</Button>
         </AlertDialogCancel>
       </div>
     </AlertDialogContent>

@@ -13,9 +13,10 @@ import {
   Grid,
   Chip
 } from '@mui/material';
-import { Users, Activity, Settings } from 'lucide-react';
+import { Users, Activity, Settings, Edit, ArrowLeft } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useSession } from 'next-auth/react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger } from '@/components/ui/dialog';
 
 interface Team {
   id: string;

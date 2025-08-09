@@ -5,33 +5,21 @@ import {
   Card, 
   CardContent, 
   CardHeader, 
-
   Button,
-  Chip,
-  Box,
   Typography,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel,
-  Tabs,
-  Tab
+  Tabs
 } from '@mui/material';
 import { 
   Target, 
   TrendingUp, 
   Users, 
-  Calendar,
   Activity,
   Download,
-  Share2,
-  Eye,
-  Heart,
-  MessageSquare,
-  BarChart3,
-  Settings,
-  Plus
+  RefreshCw
 } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 
 interface CampaignData {
   campaign: {
@@ -225,7 +213,7 @@ export default function CampaignDashboard() {
             <Card>
               <CardHeader>
                 <Typography variant="h6">Campaign Status</Typography>
-                <CardDescription>EARLYBIRD100 campaign details</CardDescription>
+                <Typography variant="body2" color="text.secondary">EARLYBIRD100 campaign details</Typography>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="flex justify-between">
@@ -252,7 +240,7 @@ export default function CampaignDashboard() {
             <Card>
               <CardHeader>
                 <Typography variant="h6">Platform Usage</Typography>
-                <CardDescription>Social accounts connected by trial users</CardDescription>
+                <Typography variant="body2" color="text.secondary">Social accounts connected by trial users</Typography>
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
@@ -272,7 +260,7 @@ export default function CampaignDashboard() {
           <Card>
             <CardHeader>
               <Typography variant="h6">Trial Users ({data.trialUsers.total})</Typography>
-              <CardDescription>Users who signed up with EARLYBIRD100</CardDescription>
+                              <Typography variant="body2" color="text.secondary">Users who signed up with EARLYBIRD100</Typography>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
@@ -298,7 +286,7 @@ export default function CampaignDashboard() {
           <Card>
             <CardHeader>
               <Typography variant="h6">Converted Users ({data.conversions.total})</Typography>
-              <CardDescription>Users who upgraded from trial to paid</CardDescription>
+                              <Typography variant="body2" color="text.secondary">Users who upgraded from trial to paid</Typography>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
@@ -323,7 +311,7 @@ export default function CampaignDashboard() {
             <Card>
               <CardHeader>
                 <Typography variant="h6">Daily Signups</Typography>
-                <CardDescription>New trial users per day</CardDescription>
+                <Typography variant="body2" color="text.secondary">New trial users per day</Typography>
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
@@ -340,7 +328,7 @@ export default function CampaignDashboard() {
             <Card>
               <CardHeader>
                 <Typography variant="h6">Monthly Revenue</Typography>
-                <CardDescription>Estimated revenue from conversions</CardDescription>
+                <Typography variant="body2" color="text.secondary">Estimated revenue from conversions</Typography>
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">

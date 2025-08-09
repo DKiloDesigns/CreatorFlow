@@ -21,10 +21,10 @@ import {
   CardHeader,
   CardContent,
   Button as MuiButton,
-  Dialog as MuiDialog,
-  DialogTitle as MuiDialogTitle,
-  DialogContent as MuiDialogContent,
-  DialogActions as MuiDialogActions
+  MuiDialog,
+  MuiDialogTitle,
+  MuiDialogContent,
+  DialogActions
 } from '@/components/ui/mui-components';
 import { Plus, Calendar, FileText, Image, Video, Upload, Clock, Brain, TrendingUp, Lightbulb, Target } from 'lucide-react';
 import { toast } from 'sonner';
@@ -644,14 +644,14 @@ export default function ContentPage() {
             Are you sure you want to delete "{postToDelete?.title}"? This action cannot be undone.
           </Typography>
         </MuiDialogContent>
-        <MuiDialogActions>
+        <DialogActions>
           <MuiButton onClick={() => setDeleteDialogOpen(false)} variant="outlined">
             Cancel
           </MuiButton>
           <MuiButton onClick={handleDeleteConfirm} variant="contained" color="error">
             Delete
           </MuiButton>
-        </MuiDialogActions>
+        </DialogActions>
       </MuiDialog>
 
       {/* AI Onboarding */}

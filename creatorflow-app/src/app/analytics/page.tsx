@@ -6,7 +6,6 @@ import {
   CardContent, 
   CardHeader, 
   Button,
-  Chip,
   Box,
   Typography,
   Grid,
@@ -17,7 +16,9 @@ import {
   FormControl,
   InputLabel
 } from '@mui/material';
-import { BarChart3, TrendingUp, Activity, Settings } from 'lucide-react';
+import { BarChart3, TrendingUp, Activity, Settings, RefreshCw, AlertTriangle, Eye, Users, Target, Lightbulb } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { TabsContent } from '@/components/ui/tabs';
 
 interface AnalyticsInsight {
   type: 'trend' | 'anomaly' | 'opportunity' | 'risk' | 'segment' | 'funnel';

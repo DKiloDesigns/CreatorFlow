@@ -1,18 +1,29 @@
 'use client';
 
 import React, { useState } from 'react';
+import { Card, CardContent, CardHeader } from '@/components/ui/mui-card';
+import { Typography, Button } from '@mui/material';
 import { 
-  Card, 
-  CardContent, 
-  CardHeader, 
-  Button,
-  TextField,
-  Box,
-  Typography,
-  Grid,
-  Chip
-} from '@mui/material';
-import { TrendingUp, Activity, Crown, Trophy, Medal, Star, TrendingDown, Minus } from 'lucide-react';
+  RefreshCw, 
+  Sparkles, 
+  CheckCircle, 
+  AlertTriangle, 
+  Info, 
+  Users, 
+  Eye, 
+  DollarSign, 
+  Zap, 
+  Target, 
+  BarChart3 
+} from 'lucide-react';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
+import { Input } from '@/components/ui/input';
+import { Switch } from '@/components/ui/switch';
+import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { TrendingUp, Activity, Crown, Trophy, Medal, Star, TrendingDown, Minus, Brain } from 'lucide-react';
 import { toast } from 'sonner';
 
 interface PerformancePrediction {
@@ -324,9 +335,9 @@ export function ContentPerformancePredictor({ provider }: ContentPerformancePred
             <TrendingUp className="w-5 h-5" />
             Content Performance Predictor
           </Typography>
-          <CardDescription>
+          <Typography variant="body2" color="text.secondary">
             AI-powered content performance forecasting with engagement predictions and optimization insights
-          </CardDescription>
+          </Typography>
         </CardHeader>
         <CardContent className="space-y-6">
           {/* Basic Input */}

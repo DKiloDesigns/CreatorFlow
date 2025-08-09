@@ -52,6 +52,7 @@ export function NotificationBadge({
           variantStyles[variant],
           className
         )}
+        aria-label={count > 0 ? `${count} notifications` : 'Notifications'}
       >
         {count > 0 ? (
           <span className="font-medium">
@@ -78,6 +79,7 @@ interface NotificationToastProps {
   onClose?: () => void;
   autoClose?: boolean;
   duration?: number;
+  priority?: 'low' | 'medium' | 'high';
 }
 
 export function NotificationToast({
@@ -86,7 +88,8 @@ export function NotificationToast({
   variant = 'info',
   onClose,
   autoClose = true,
-  duration = 5000
+  duration = 5000,
+  priority = 'medium'
 }: NotificationToastProps) {
   const [isVisible, setIsVisible] = React.useState(true);
 
@@ -116,34 +119,69 @@ export function NotificationToast({
 
   const Icon = icons[variant];
 
+  // ARIA live region for screen reader announcements
+  const getAriaLive = () => {
+    switch (priority) {
+      case 'high': return 'assertive';
+      case 'medium': return 'polite';
+      case 'low': return 'polite';
+      default: return 'polite';
+    }
+  };
+
+  const getAriaLabel = () => {
+    const variantText = variant.charAt(0).toUpperCase() + variant.slice(1);
+    return `${variantText} notification: ${title}${message ? ` - ${message}` : ''}`;
+  };
+
   if (!isVisible) return null;
 
   return (
-    <div className={cn(
-      'fixed top-4 right-4 z-50 max-w-sm w-full p-4 rounded-lg border shadow-lg transition-all duration-300',
-      variantStyles[variant],
-      isVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
-    )}>
-      <div className="flex items-start gap-3">
-        <Icon className="h-5 w-5 mt-0.5 flex-shrink-0" />
-        <div className="flex-1 min-w-0">
-          <h4 className="font-medium">{title}</h4>
-          {message && (
-            <p className="mt-1 text-sm opacity-90">{message}</p>
+    <>
+      {/* ARIA Live Region for Screen Reader Announcements */}
+      <div
+        aria-live={getAriaLive()}
+        aria-atomic="true"
+        className="sr-only"
+        role="status"
+        aria-label={getAriaLabel()}
+      >
+        {getAriaLabel()}
+      </div>
+      
+      {/* Visual Toast Notification */}
+      <div 
+        className={cn(
+          'fixed top-4 right-4 z-50 max-w-sm w-full p-4 rounded-lg border shadow-lg transition-all duration-300',
+          variantStyles[variant],
+          isVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
+        )}
+        role="alert"
+        aria-labelledby="toast-title"
+        aria-describedby={message ? "toast-message" : undefined}
+      >
+        <div className="flex items-start gap-3">
+          <Icon className="h-5 w-5 mt-0.5 flex-shrink-0" aria-hidden="true" />
+          <div className="flex-1 min-w-0">
+            <h4 id="toast-title" className="font-medium">{title}</h4>
+            {message && (
+              <p id="toast-message" className="mt-1 text-sm opacity-90">{message}</p>
+            )}
+          </div>
+          {onClose && (
+            <button
+              onClick={() => {
+                setIsVisible(false);
+                setTimeout(() => onClose(), 300);
+              }}
+              className="ml-2 p-1 rounded hover:bg-black/10 transition-colors"
+              aria-label="Close notification"
+            >
+              <X className="h-4 w-4" aria-hidden="true" />
+            </button>
           )}
         </div>
-        {onClose && (
-          <button
-            onClick={() => {
-              setIsVisible(false);
-              setTimeout(() => onClose(), 300);
-            }}
-            className="ml-2 p-1 rounded hover:bg-black/10 transition-colors"
-          >
-            <X className="h-4 w-4" />
-          </button>
-        )}
       </div>
-    </div>
+    </>
   );
 } 
