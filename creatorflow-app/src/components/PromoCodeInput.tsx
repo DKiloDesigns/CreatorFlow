@@ -64,28 +64,28 @@ export function PromoCodeInput({ onSuccess, className }: PromoCodeInputProps) {
   return (
     <Card className={className}>
       <CardHeader>
-                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-           <Gift className="h-5 w-5 text-green-600" />
-           <Typography variant="h6">Have a Promo Code?</Typography>
-         </Box>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Gift style={{ height: 20, width: 20, color: '#2e7d32' }} />
+          <Typography variant="h6">Have a Promo Code?</Typography>
+        </Box>
         <Typography variant="body2" color="text.secondary">
           Enter your promo code to unlock special offers and trials
         </Typography>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
           <Box sx={{ display: 'flex', gap: 2 }}>
             <TextField
               type="text"
               placeholder="Enter promo code"
               value={promoCode}
               onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
-              className="flex-1"
+              sx={{ flexGrow: 1 }}
               disabled={isLoading}
             />
             <Button type="submit" disabled={isLoading || !promoCode.trim()}>
               {isLoading ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
+                <Loader2 style={{ height: 16, width: 16, animation: 'spin 1s linear infinite' }} />
               ) : (
                 'Apply'
               )}
@@ -94,7 +94,7 @@ export function PromoCodeInput({ onSuccess, className }: PromoCodeInputProps) {
 
           {isValid === true && trialInfo && (
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, p: 3, bgcolor: 'success.light', border: '1px solid', borderColor: 'success.main', borderRadius: 2 }}>
-              <CheckCircle className="h-5 w-5 text-green-600" />
+              <CheckCircle style={{ height: 20, width: 20, color: '#2e7d32' }} />
               <Box sx={{ flexGrow: 1 }}>
                 <Typography variant="body2" fontWeight="medium" color="success.dark">
                   Trial Activated!
@@ -115,7 +115,7 @@ export function PromoCodeInput({ onSuccess, className }: PromoCodeInputProps) {
               </Typography>
             </Box>
           )}
-        </form>
+        </Box>
       </CardContent>
     </Card>
   );

@@ -3,7 +3,6 @@ import { Inter } from "next/font/google";
 import "../globals.css";
 import { Providers } from "./providers";
 import { RealTimeNotificationProvider } from "@/components/notifications/real-time-provider";
-import { PerformanceMonitor } from "@/components/PerformanceMonitor";
 import { ServiceWorkerRegistration } from "@/components/ServiceWorkerRegistration";
 import { CriticalCSS } from "@/components/CriticalCSS";
 
@@ -28,7 +27,6 @@ export default function RootLayout({
         <Providers>
           <RealTimeNotificationProvider>
             {children}
-            <PerformanceMonitor />
             <ServiceWorkerRegistration />
           </RealTimeNotificationProvider>
         </Providers>

@@ -817,7 +817,7 @@ TWITCH_DEFAULT_CHANNEL=your_channel_name
 ```env
 SLACK_CLIENT_ID=your_slack_client_id
 SLACK_CLIENT_SECRET=your_slack_client_secret
-SLACK_DEFAULT_CHANNEL=your_channel_id
+
 ```
 
 **Notes:**

@@ -51,7 +51,7 @@ export const accessibleColorPalette: ColorPalette = {
     },
     {
       name: 'Muted Text',
-      foreground: '#737373',
+      foreground: '#525252', // Updated: Better contrast than #737373
       background: '#f5f5f5',
       contrastRatio: 4.6,
       wcagAA: true,

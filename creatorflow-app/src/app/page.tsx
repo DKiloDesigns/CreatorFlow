@@ -116,7 +116,8 @@ export default function Home() {
           alignItems: 'center',
           justifyContent: 'center',
           px: { xs: 2, sm: 3 },
-          py: { xs: 6, sm: 8 },
+          py: { xs: 8, sm: 10 }, // Increased top padding for mobile
+          mt: { xs: 2, sm: 0 }, // Added top margin for mobile
           borderBottom: 1,
           borderColor: 'divider',
           textAlign: 'center',
@@ -196,34 +197,12 @@ export default function Home() {
               py: { xs: 1, sm: 1.5 },
               fontSize: { xs: '0.875rem', sm: '1rem' },
               width: { xs: '100%', sm: 'auto' },
-              position: 'relative',
-              overflow: 'hidden',
-              '&::before': {
-                content: '""',
-                position: 'absolute',
-                top: 0,
-                left: 0,
-                right: 0,
-                bottom: 0,
-                background: 'linear-gradient(45deg, #3B82F6 30%, #8B5CF6 90%)',
-                borderRadius: 2,
-                zIndex: 0
-              },
-              '&::after': {
-                content: '""',
-                position: 'absolute',
-                top: 2,
-                left: 2,
-                right: 2,
-                bottom: 2,
-                background: isDark ? 'black' : 'white',
-                borderRadius: 1.5,
-                zIndex: 1
-              },
-              '& .MuiButton-label': {
-                position: 'relative',
-                zIndex: 2,
-                color: isDark ? 'white' : 'black'
+              borderColor: 'primary.main',
+              color: 'primary.main',
+              '&:hover': {
+                borderColor: 'primary.dark',
+                color: 'primary.dark',
+                bgcolor: 'primary.50'
               }
             }}
           >
@@ -238,98 +217,6 @@ export default function Home() {
           {FEATURES.map((feature) => (
             <Box key={feature.title}>
               <FeatureCard {...feature} plan={feature.plan} />
-            </Box>
-          ))}
-        </Box>
-      </Container>
-
-      {/* Plans Section */}
-      <Container maxWidth="lg" sx={{ py: { xs: 6, sm: 8 } }} id="plans">
-        <Box sx={{ textAlign: 'center', mb: 6 }}>
-          <Typography variant="h3" component="h2" sx={{ mb: 2, fontSize: { xs: '1.875rem', sm: '2.25rem' }, fontWeight: 'bold' }}>
-            Choose Your Plan
-          </Typography>
-          <Typography variant="h6" sx={{ color: 'text.secondary' }}>
-            Start free, upgrade when you're ready
-          </Typography>
-        </Box>
-        
-        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' }, gap: 4 }}>
-          {PLANS.map((plan) => (
-            <Box key={plan.name}>
-              <Card
-                sx={{
-                  position: 'relative',
-                  transform: plan.highlight ? 'scale(1.05)' : 'none',
-                  transition: 'transform 0.2s ease-in-out',
-                  height: '100%',
-                  display: 'flex',
-                  flexDirection: 'column'
-                }}
-              >
-                {plan.highlight && (
-                  <Chip
-                    label="Most Popular"
-                    sx={{
-                      position: 'absolute',
-                      top: -12,
-                      left: '50%',
-                      transform: 'translateX(-50%)',
-                      background: 'linear-gradient(45deg, #3B82F6 30%, #8B5CF6 90%)',
-                      color: 'white',
-                      fontWeight: 600,
-                      zIndex: 1
-                    }}
-                  />
-                )}
-                
-                <CardHeader
-                  title={plan.name}
-                  titleTypographyProps={{ variant: 'h6', fontWeight: 'bold' }}
-                  sx={{ pb: 1 }}
-                />
-                
-                <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
-                  <Typography variant="h4" component="div" sx={{ fontWeight: 'bold', mb: 2 }}>
-                    {plan.price}
-                  </Typography>
-                  
-                  <Box component="ul" sx={{ mb: 3, pl: 0, listStyle: 'none' }}>
-                    {plan.features.map((feature, i) => (
-                      <Box component="li" key={i} sx={{ 
-                        fontSize: '0.875rem', 
-                        color: 'text.primary',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: 1,
-                        mb: 1
-                      }}>
-                        {feature}
-                      </Box>
-                    ))}
-                  </Box>
-                  
-                  <Button
-                    component={Link}
-                    href={plan.href}
-                    variant={plan.cta === "Start Free Trial" ? "contained" : "outlined"}
-                    fullWidth
-                    sx={{
-                      mt: 'auto',
-                      background: plan.cta === "Start Free Trial" 
-                        ? 'linear-gradient(45deg, #3B82F6 30%, #8B5CF6 90%)'
-                        : 'transparent',
-                      '&:hover': {
-                        background: plan.cta === "Start Free Trial"
-                          ? 'linear-gradient(45deg, #2563EB 30%, #7C3AED 90%)'
-                          : undefined
-                      }
-                    }}
-                  >
-                    {plan.cta}
-                  </Button>
-                </CardContent>
-              </Card>
             </Box>
           ))}
         </Box>
@@ -404,6 +291,123 @@ export default function Home() {
             No hidden fees. Your data, your way. <br />
             Built by creators, for creators.
           </Typography>
+        </Box>
+      </Container>
+
+      {/* Plans Section - Moved above footer */}
+      <Container maxWidth="lg" sx={{ py: { xs: 6, sm: 8 } }} id="plans">
+        <Box sx={{ textAlign: 'center', mb: 6 }}>
+          <Typography variant="h3" component="h2" sx={{ mb: 2, fontSize: { xs: '1.875rem', sm: '2.25rem' }, fontWeight: 'bold' }}>
+            Choose Your Plan
+          </Typography>
+          <Typography variant="h6" sx={{ color: 'text.secondary' }}>
+            Start free, upgrade when you're ready
+          </Typography>
+        </Box>
+        
+        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' }, gap: 4 }}>
+          {PLANS.map((plan) => (
+            <Box key={plan.name}>
+              <Card
+                sx={{
+                  position: 'relative',
+                  transform: plan.highlight ? 'scale(1.05)' : 'none',
+                  transition: 'transform 0.2s ease-in-out',
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  minHeight: 400
+                }}
+              >
+                {plan.highlight && (
+                  <Chip
+                    label="Most Popular"
+                    sx={{
+                      position: 'absolute',
+                      top: -12,
+                      left: '50%',
+                      transform: 'translateX(-50%)',
+                      background: 'linear-gradient(45deg, #3B82F6 30%, #8B5CF6 90%)',
+                      color: 'white',
+                      fontWeight: 600,
+                      zIndex: 1
+                    }}
+                  />
+                )}
+                
+                <CardHeader
+                  title={plan.name}
+                  titleTypographyProps={{ 
+                    variant: 'h5', 
+                    fontWeight: 'bold',
+                    sx: { fontSize: { xs: '1.25rem', sm: '1.5rem' } }
+                  }}
+                  sx={{ pb: 2, pt: plan.highlight ? 3 : 2 }}
+                />
+                
+                <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', pt: 0 }}>
+                  <Typography 
+                    variant="h4" 
+                    component="div" 
+                    sx={{ 
+                      fontWeight: 'bold', 
+                      mb: 3,
+                      fontSize: { xs: '1.75rem', sm: '2rem' }
+                    }}
+                  >
+                    {plan.price}
+                  </Typography>
+                  
+                  <Box component="ul" sx={{ mb: 4, pl: 0, listStyle: 'none', flexGrow: 1 }}>
+                    {plan.features.map((feature, i) => (
+                      <Box component="li" key={i} sx={{ 
+                        fontSize: '0.875rem', 
+                        color: 'text.primary',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 1,
+                        mb: 1.5,
+                        lineHeight: 1.4
+                      }}>
+                        <Box 
+                          component="span" 
+                          sx={{ 
+                            color: 'success.main',
+                            fontSize: '1.25rem',
+                            lineHeight: 1
+                          }}
+                        >
+                          ✓
+                        </Box>
+                        {feature}
+                      </Box>
+                    ))}
+                  </Box>
+                  
+                  <Button
+                    component={Link}
+                    href={plan.href}
+                    variant={plan.cta === "Start Free Trial" ? "contained" : "outlined"}
+                    fullWidth
+                    size="large"
+                    sx={{
+                      mt: 'auto',
+                      background: plan.cta === "Start Free Trial" 
+                        ? 'linear-gradient(45deg, #3B82F6 30%, #8B5CF6 90%)'
+                        : 'transparent',
+                      '&:hover': {
+                        background: plan.cta === "Start Free Trial"
+                          ? 'linear-gradient(45deg, #2563EB 30%, #7C3AED 90%)'
+                          : undefined
+                      }
+                    }}
+                  >
+                    {plan.cta}
+                  </Button>
+                </CardContent>
+              </Card>
+            </Box>
+          ))}
         </Box>
       </Container>
 

@@ -2,8 +2,8 @@
 
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
-import { Moon, Sun, Monitor } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { IconButton, Tooltip } from '@mui/material';
+import { DarkMode, LightMode, Monitor } from '@mui/icons-material';
 
 interface ThemeToggleProps {
   isLandingPage?: boolean;
@@ -19,7 +19,14 @@ export function ThemeToggle({ isLandingPage = false }: ThemeToggleProps) {
   }, []);
 
   if (!mounted) {
-    return <Sun className="h-4 w-4 text-black" />;
+    return (
+      <IconButton
+        size="large"
+        sx={{ minWidth: 44, minHeight: 44 }}
+      >
+        <LightMode />
+      </IconButton>
+    );
   }
 
   const toggleTheme = () => {
@@ -35,11 +42,11 @@ export function ThemeToggle({ isLandingPage = false }: ThemeToggleProps) {
   const getIcon = () => {
     switch (theme) {
       case 'light':
-        return <Sun className="h-4 w-4" />;
+        return <LightMode />;
       case 'dark':
-        return <Moon className="h-4 w-4" />;
+        return <DarkMode />;
       default:
-        return <Monitor className="h-4 w-4" />;
+        return <Monitor />;
     }
   };
 
@@ -54,24 +61,22 @@ export function ThemeToggle({ isLandingPage = false }: ThemeToggleProps) {
     }
   };
 
-  const getTextColor = () => {
-    // Always use high contrast colors for visibility
-    if (theme === 'dark') {
-      return 'text-black'; // Black icon on dark background
-    }
-    return 'text-black'; // Black icon on light background
-  };
-
   return (
-    <button
-      onClick={toggleTheme}
-      title={getTitle()}
-      className={cn(
-        "h-11 w-11 min-w-[44px] min-h-[44px] flex items-center justify-center transition-colors",
-        getTextColor()
-      )}
-    >
-      {getIcon()}
-    </button>
+    <Tooltip title={getTitle()} arrow>
+      <IconButton
+        onClick={toggleTheme}
+        size="large"
+        sx={{
+          minWidth: 44,
+          minHeight: 44,
+          color: 'text.primary',
+          '&:hover': {
+            bgcolor: 'action.hover'
+          }
+        }}
+      >
+        {getIcon()}
+      </IconButton>
+    </Tooltip>
   );
 } 
