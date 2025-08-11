@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardHeader } from '@/components/ui/mui-card';
-import { Typography, Button, Slider, FormControl, FormControlLabel, FormGroup } from '@mui/material';
+import { Typography, Button, Slider } from '@mui/material';
 import { 
   Star, 
   TrendingUp, 
@@ -16,13 +16,6 @@ import {
   Brain, 
   Target,
   Settings,
-  Users,
-  Eye,
-  DollarSign,
-  AlertTriangle,
-  Info,
-  Zap,
-  Crown,
   BarChart3
 } from 'lucide-react';
 import { toast } from 'sonner';

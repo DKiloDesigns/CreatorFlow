@@ -40,7 +40,7 @@ export function MotionAware({
         scrollBehavior: disableScrollBehavior,
       });
     }
-  }, [motionConfig.enabled, disableAnimations, disableTransitions, disableTransforms, disableScrollBehavior]);
+  }, [motionConfig.enabled, disableAnimations, disableTransitions, disableTransforms, disableScrollBehavior, motionConfig]);
 
   return (
     <div ref={ref} className={finalClassName} style={finalStyle}>
@@ -61,7 +61,7 @@ export function MotionAwareButton({
   reducedMotionClassName = 'motion-reduce-transitions',
   ...props
 }: MotionAwareButtonProps) {
-  const motionConfig = useMotionReduction();
+  const _motionConfig = useMotionReduction();
   const finalClassName = getMotionAwareClassName(className, reducedMotionClassName);
 
   return (
@@ -82,7 +82,7 @@ export function MotionAwareCard({
   className = '',
   reducedMotionClassName = 'motion-reduce-transitions',
 }: MotionAwareCardProps) {
-  const motionConfig = useMotionReduction();
+  const _motionConfig = useMotionReduction();
   const finalClassName = getMotionAwareClassName(className, reducedMotionClassName);
 
   return (
@@ -105,7 +105,7 @@ export function MotionAwareAnimation({
   animationClassName = '',
   reducedMotionClassName = 'motion-reduce-animations',
 }: MotionAwareAnimationProps) {
-  const motionConfig = useMotionReduction();
+  const _motionConfig = useMotionReduction();
   const finalClassName = getMotionAwareClassName(
     `${className} ${animationClassName}`.trim(),
     reducedMotionClassName

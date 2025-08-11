@@ -1,9 +1,19 @@
 'use client';
 
 import React, { forwardRef } from 'react';
-import { cn } from '@/lib/utils';
+import { 
+  Card as MuiCard, 
+  CardProps as MuiCardProps,
+  CardContent,
+  CardHeader,
+  CardActions,
+  Box,
+  Skeleton,
+  Typography
+} from '@mui/material';
+import { styled } from '@mui/material/styles';
 
-export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface CardProps extends Omit<MuiCardProps, 'variant'> {
   variant?: 'default' | 'elevated' | 'outlined' | 'interactive' | 'highlight';
   padding?: 'none' | 'sm' | 'md' | 'lg' | 'xl';
   hover?: boolean;
@@ -18,10 +28,85 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
   };
 }
 
+// Custom styled MUI Card
+const StyledCard = styled(MuiCard, {
+  shouldForwardProp: (prop) => !['variant', 'hover', 'clickable', 'loading'].includes(prop as string),
+})<CardProps>(({ theme, variant = 'default', hover = false, clickable = false, loading = false }) => ({
+  transition: 'all 0.2s ease-in-out',
+  
+  // Variant styles
+  ...(variant === 'default' && {
+    boxShadow: theme.shadows[1],
+  }),
+  ...(variant === 'elevated' && {
+    boxShadow: theme.shadows[8],
+  }),
+  ...(variant === 'outlined' && {
+    boxShadow: 'none',
+    border: `2px solid ${theme.palette.divider}`,
+  }),
+  ...(variant === 'interactive' && {
+    boxShadow: theme.shadows[1],
+    cursor: 'pointer',
+    '&:hover': {
+      boxShadow: theme.shadows[4],
+      borderColor: theme.palette.primary.main + '33',
+    },
+    '&:focus': {
+      outline: 'none',
+      boxShadow: `0 0 0 2px ${theme.palette.primary.main}40`,
+    },
+  }),
+  ...(variant === 'highlight' && {
+    boxShadow: theme.shadows[4],
+    border: `2px solid ${theme.palette.primary.main}4D`,
+    '&::before': {
+      content: '""',
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      borderRadius: 'inherit',
+      border: `2px solid ${theme.palette.primary.main}33`,
+      pointerEvents: 'none',
+    },
+  }),
+  
+  // Hover effects
+  ...(hover && {
+    '&:hover': {
+      boxShadow: theme.shadows[4],
+      transform: 'scale(1.02)',
+    },
+  }),
+  
+  // Clickable state
+  ...(clickable && {
+    cursor: 'pointer',
+    userSelect: 'none',
+  }),
+  
+  // Loading state
+  ...(loading && {
+    '& .MuiCardContent-root': {
+      animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+    },
+  }),
+  
+  '@keyframes pulse': {
+    '0%, 100%': {
+      opacity: 1,
+    },
+    '50%': {
+      opacity: 0.5,
+    },
+  },
+}));
+
 const Card = forwardRef<HTMLDivElement, CardProps>(
   (
     {
-      className,
       variant = 'default',
       padding = 'md',
       hover = false,
@@ -35,97 +120,104 @@ const Card = forwardRef<HTMLDivElement, CardProps>(
     },
     ref
   ) => {
-    const baseClasses = cn(
-      // Base styles
-      'bg-card text-card-foreground border border-border',
-      'transition-all duration-200',
-      
-      // Variant styles
-      variant === 'default' && 'shadow-sm',
-      variant === 'elevated' && 'shadow-lg',
-      variant === 'outlined' && 'shadow-none border-2',
-      variant === 'interactive' && [
-        'shadow-sm cursor-pointer',
-        'hover:shadow-md hover:border-primary/20',
-        'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2'
-      ],
-      variant === 'highlight' && [
-        'shadow-md ring-2 ring-primary/20',
-        'border-primary/30'
-      ],
-      
-      // Hover effects
-      hover && 'hover:shadow-md hover:scale-[1.02]',
-      
-      // Clickable state
-      clickable && 'cursor-pointer select-none',
-      
-      // Loading state
-      loading && 'animate-pulse',
-      
-      className
-    );
-
-    const paddingClasses = cn(
-      padding === 'none' && 'p-0',
-      padding === 'sm' && 'p-3',
-      padding === 'md' && 'p-6',
-      padding === 'lg' && 'p-8',
-      padding === 'xl' && 'p-10'
-    );
-
-    const contentClasses = cn(
-      'flex flex-col',
-      paddingClasses
-    );
+    // Map custom variant to MUI variant
+    const muiVariant = variant === 'outlined' ? 'outlined' : 'elevation';
+    
+    // Map custom padding to MUI spacing
+    const paddingMap = {
+      none: 0,
+      sm: 1.5,
+      md: 3,
+      lg: 4,
+      xl: 5,
+    };
 
     return (
-      <div
+      <StyledCard
         ref={ref}
-        className={baseClasses}
+        variant={muiVariant}
+        hover={hover}
+        clickable={clickable}
+        loading={loading}
         {...props}
       >
-        {/* Header */}
-        {header && (
-          <div className="px-6 pt-6 pb-0 border-b border-border">
-            {header}
-          </div>
-        )}
-        
         {/* Top Image */}
         {image?.position !== 'bottom' && image && (
-          <div className="relative">
-            <img
-              src={image.src}
-              alt={image.alt}
-              className="w-full h-48 object-cover rounded-t-lg"
-            />
-          </div>
+          <Box
+            component="img"
+            src={image.src}
+            alt={image.alt}
+            sx={{
+              width: '100%',
+              height: 192,
+              objectFit: 'cover',
+              borderTopLeftRadius: (theme) => theme.shape.borderRadius,
+              borderTopRightRadius: (theme) => theme.shape.borderRadius,
+            }}
+          />
+        )}
+        
+        {/* Header */}
+        {header && (
+          <CardHeader
+            title={header}
+            sx={{
+              px: 3,
+              pt: 3,
+              pb: 0,
+              borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
+            }}
+          />
         )}
         
         {/* Content */}
-        <div className={contentClasses}>
-          {children}
-        </div>
+        <CardContent
+          sx={{
+            p: paddingMap[padding],
+            pt: header ? 0 : paddingMap[padding],
+          }}
+        >
+          {loading ? (
+            <Box>
+              <Skeleton variant="text" width="60%" height={32} />
+              <Skeleton variant="text" width="100%" height={24} />
+              <Skeleton variant="text" width="80%" height={24} />
+            </Box>
+          ) : (
+            children
+          )}
+        </CardContent>
         
         {/* Bottom Image */}
         {image?.position === 'bottom' && image && (
-          <div className="relative">
-            <img
-              src={image.src}
-              alt={image.alt}
-              className="w-full h-48 object-cover rounded-b-lg"
-            />
-          </div>
+          <Box
+            component="img"
+            src={image.src}
+            alt={image.alt}
+            sx={{
+              width: '100%',
+              height: 192,
+              objectFit: 'cover',
+              borderBottomLeftRadius: (theme) => theme.shape.borderRadius,
+              borderBottomRightRadius: (theme) => theme.shape.borderRadius,
+            }}
+          />
         )}
         
         {/* Footer */}
         {footer && (
-          <div className="px-6 pb-6 pt-0 border-t border-border">
+          <CardActions
+            sx={{
+              px: 3,
+              pb: 3,
+              pt: 0,
+              borderTop: (theme) => `1px solid ${theme.palette.divider}`,
+            }}
+          >
             {footer}
-          </div>
+          </CardActions>
         )}
-      </div>
+      </StyledCard>
     );
   }
 );
@@ -137,21 +229,33 @@ export const CardHeader = forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <div
+  <Box
     ref={ref}
-    className={cn('flex flex-col space-y-1.5', className)}
+    sx={{
+      display: 'flex',
+      flexDirection: 'column',
+      gap: 0.75,
+    }}
+    className={className}
     {...props}
   />
 ));
 CardHeader.displayName = 'CardHeader';
 
 export const CardTitle = forwardRef<
-  HTMLParagraphElement,
+  HTMLHeadingElement,
   React.HTMLAttributes<HTMLHeadingElement>
 >(({ className, ...props }, ref) => (
-  <h3
+  <Typography
     ref={ref}
-    className={cn('text-lg font-semibold leading-none tracking-tight', className)}
+    variant="h6"
+    component="h3"
+    sx={{
+      fontWeight: 600,
+      lineHeight: 1,
+      letterSpacing: '-0.025em',
+    }}
+    className={className}
     {...props}
   />
 ));
@@ -161,9 +265,11 @@ export const CardDescription = forwardRef<
   HTMLParagraphElement,
   React.HTMLAttributes<HTMLParagraphElement>
 >(({ className, ...props }, ref) => (
-  <p
+  <Typography
     ref={ref}
-    className={cn('text-sm text-muted-foreground', className)}
+    variant="body2"
+    color="text.secondary"
+    className={className}
     {...props}
   />
 ));
@@ -173,7 +279,7 @@ export const CardContent = forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn('pt-0', className)} {...props} />
+  <Box ref={ref} sx={{ pt: 0 }} className={className} {...props} />
 ));
 CardContent.displayName = 'CardContent';
 
@@ -181,9 +287,14 @@ export const CardFooter = forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <div
+  <Box
     ref={ref}
-    className={cn('flex items-center pt-0', className)}
+    sx={{
+      display: 'flex',
+      alignItems: 'center',
+      pt: 0,
+    }}
+    className={className}
     {...props}
   />
 ));

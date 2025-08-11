@@ -5,12 +5,10 @@ import { Switch } from '@mui/material';
 import { Box, Typography, FormControl, InputLabel, Select, MenuItem, Chip, Alert } from '@mui/material';
 import { 
   Visibility, 
-  VisibilityOff, 
   Contrast, 
   Palette,
   CheckCircle,
-  Warning,
-  Error
+  Warning
 } from '@mui/icons-material';
 
 interface HighContrastModeProps {
@@ -75,7 +73,7 @@ export default function HighContrastMode({
     if (savedEnabled === 'true') {
       applyHighContrastMode();
     }
-  }, []);
+  }, [applyHighContrastMode]);
 
   useEffect(() => {
     // Save preferences to localStorage
@@ -91,7 +89,7 @@ export default function HighContrastMode({
     }
 
     onToggle?.(enabled);
-  }, [enabled, contrastLevel, themeAdjustment]);
+  }, [enabled, contrastLevel, themeAdjustment, onToggle]);
 
   const applyHighContrastMode = () => {
     const root = document.documentElement;
@@ -222,7 +220,7 @@ export default function HighContrastMode({
     onThemeAdjustment?.(adjustment);
   };
 
-  const getCurrentContrastLevel = () => {
+  const _getCurrentContrastLevel = () => {
     return contrastLevels.find(l => l.name.toLowerCase() === contrastLevel);
   };
 

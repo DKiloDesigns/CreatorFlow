@@ -129,7 +129,7 @@ export default function PerformancePage() {
       {/* System Health Overview */}
       {systemHealth && (
         <Grid container spacing={3}>
-          <Grid item xs={12} md={6} lg={2}>
+          <Grid xs={12} md={6} lg={2}>
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <Typography variant="subtitle2" component="div">Overall Health</Typography>
@@ -406,7 +406,7 @@ export default function PerformancePage() {
   );
 }
 
-function TabPanel(props: { children?: React.ReactNode; index: number; value: string }) {
+function TabPanel(props: { children?: React.ReactNode; index: number; value: number }) {
   const { children, value, index, ...other } = props;
 
   return (

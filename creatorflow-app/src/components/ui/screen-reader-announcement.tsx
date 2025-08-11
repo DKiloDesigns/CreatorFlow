@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { useScreenReaderAnnouncements, announceUtils, AnnouncementConfig } from '@/lib/screen-reader-announcements';
+import { useScreenReaderAnnouncements, announceUtils } from '@/lib/screen-reader-announcements';
 
 interface ScreenReaderAnnouncementProps {
   message: string;

@@ -155,11 +155,11 @@ export default function AnalyticsPage() {
               <SelectItem value="90">90 days</SelectItem>
             </SelectContent>
           </Select>
-          <Button onClick={refreshData} disabled={refreshing} variant="outline">
+          <Button onClick={refreshData} disabled={refreshing} variant="outlined">
             <RefreshCw className={`h-4 w-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} />
             Refresh
           </Button>
-          <Button onClick={exportInsights} variant="outline">
+          <Button onClick={exportInsights} variant="outlined">
             <Download className="h-4 w-4 mr-2" />
             Export
           </Button>

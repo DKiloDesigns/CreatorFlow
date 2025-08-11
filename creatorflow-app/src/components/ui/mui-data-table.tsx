@@ -23,9 +23,7 @@ import {
   Edit,
   Delete,
   Visibility,
-  MoreVert,
   Search,
-  FilterList,
 } from '@mui/icons-material';
 
 export interface Column<T> {
@@ -33,7 +31,7 @@ export interface Column<T> {
   label: string;
   minWidth?: number;
   align?: 'left' | 'right' | 'center';
-  format?: (value: any) => React.ReactNode;
+  _format?: (value: any) => React.ReactNode;
   sortable?: boolean;
   filterable?: boolean;
 }
@@ -169,8 +167,8 @@ export function DataTable<T extends { id?: string | number }>({
   const renderCell = (row: T, column: Column<T>) => {
     const value = row[column.id];
     
-    if (column.format) {
-      return column.format(value);
+    if (column._format) {
+      return column._format(value);
     }
     
     // Default formatting for common data types

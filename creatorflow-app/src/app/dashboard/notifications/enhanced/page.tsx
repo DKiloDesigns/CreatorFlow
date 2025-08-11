@@ -6,15 +6,13 @@ import {
   CardContent, 
   CardHeader, 
   Button,
-  TextField,
-  Box,
-  Typography,
-  Grid,
-  Tabs,
-  Tab,
-  Chip
+  Typography
 } from '@mui/material';
-import { Bell, Activity, Settings } from 'lucide-react';
+import { Bell, Activity, Settings, Search, RefreshCw } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { CardDescription } from '@/components/ui/base/Card';
+import { Input } from '@/components/ui/input';
 import { NotificationCenter } from '@/components/notifications/notification-center';
 import { NotificationPreferences } from '@/components/notifications/notification-preferences';
 import { useRealTimeNotifications } from '@/components/notifications/real-time-provider';
@@ -131,7 +129,7 @@ export default function EnhancedNotificationsPage() {
       </div>
 
       {/* Main Content */}
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
+      <Tabs defaultValue={activeTab} value={activeTab} onValueChange={setActiveTab} className="space-y-4">
         <TabsList className="grid w-full grid-cols-2">
           <TabsTrigger value="notifications" className="flex items-center gap-2">
             <Bell className="h-4 w-4" />
@@ -164,14 +162,13 @@ export default function EnhancedNotificationsPage() {
                     />
                   </div>
                   <Button
-                    variant="outline"
-                    size="icon"
+                    variant="outlined"
                     onClick={() => window.location.reload()}
                   >
                     <RefreshCw className="h-4 w-4" />
                   </Button>
                   {unreadCount > 0 && (
-                    <Button onClick={markAllAsRead} variant="outline">
+                    <Button onClick={markAllAsRead} variant="outlined">
                       Mark all read
                     </Button>
                   )}

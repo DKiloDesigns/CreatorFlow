@@ -6,13 +6,12 @@ import {
   CardHeader, 
   Button,
   TextField,
-  Box,
   Typography,
   Grid,
-  Chip,
-  CircularProgress
+  Chip
 } from '@mui/material';
 import { Key, Activity } from 'lucide-react';
+import { LoadingSpinner } from './loading-spinner';
 
 
 interface APIKeySetupProps {
@@ -122,22 +121,20 @@ export function APIKeySetup({ onKeyAdded, className }: APIKeySetupProps) {
             <Typography variant="h6" component="div">Get Your OpenAI API Key</Typography>
           </div>
           
-          <Box sx={{ p: 2, bgcolor: 'info.light', borderRadius: 2 }}>
-            <Grid container alignItems="center" spacing={1}>
-              <Grid item>
-                <Key className="h-5 w-5 text-blue-600" />
-              </Grid>
-              <Grid item xs>
-                <Typography variant="body2">Don't have an API key?</Typography>
-                <ol className="text-sm text-muted-foreground space-y-1">
-                  <li>1. Visit <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline inline-flex items-center gap-1">OpenAI Platform <span className="h-3 w-3">↗</span></a></li>
-                  <li>2. Sign in or create an account</li>
-                  <li>3. Click "Create new secret key"</li>
-                  <li>4. Copy the generated key (starts with "sk-")</li>
-                </ol>
-              </Grid>
+          <Grid container alignItems="center" spacing={1}>
+            <Grid item>
+              <Key className="h-5 w-5 text-blue-600" />
             </Grid>
-          </Box>
+            <Grid item xs>
+              <Typography variant="body2">Don&apos;t have an API key?</Typography>
+              <ol className="text-sm text-muted-foreground space-y-1">
+                <li>1. Visit <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline inline-flex items-center gap-1">OpenAI Platform <span className="h-3 w-3">↗</span></a></li>
+                <li>2. Sign in or create an account</li>
+                <li>3. Click &quot;Create new secret key&quot;</li>
+                <li>4. Copy the generated key (starts with &quot;sk-&quot;)</li>
+              </ol>
+            </Grid>
+          </Grid>
         </div>
 
         {/* Step 2: Enter API Key */}
@@ -147,19 +144,19 @@ export function APIKeySetup({ onKeyAdded, className }: APIKeySetupProps) {
             <Typography variant="h6" component="div">Enter Your API Key</Typography>
           </div>
           
-          <Box sx={{ mt: 2 }}>
-            <TextField
-              label="OpenAI API Key"
-              type={showKey ? 'text' : 'password'}
-              placeholder="sk-..."
-              value={apiKey}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleKeyChange(e.target.value)}
-              fullWidth
-              error={!!error}
-              helperText={error}
-              InputProps={{
-                endAdornment: (
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <TextField
+            label="OpenAI API Key"
+            type={showKey ? 'text' : 'password'}
+            placeholder="sk-..."
+            value={apiKey}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleKeyChange(e.target.value)}
+            fullWidth
+            error={!!error}
+            helperText={error}
+            InputProps={{
+              endAdornment: (
+                <Grid container alignItems="center" spacing={1}>
+                  <Grid item>
                     <Button
                       variant="text"
                       onClick={() => setShowKey(!showKey)}
@@ -167,6 +164,8 @@ export function APIKeySetup({ onKeyAdded, className }: APIKeySetupProps) {
                     >
                       {showKey ? <span className="h-3 w-3">🙈</span> : <span className="h-3 w-3">👁️</span>}
                     </Button>
+                  </Grid>
+                  <Grid item>
                     {apiKey && (
                       <Button
                         variant="text"
@@ -176,33 +175,45 @@ export function APIKeySetup({ onKeyAdded, className }: APIKeySetupProps) {
                         <span className="h-3 w-3">📋</span>
                       </Button>
                     )}
-                  </Box>
-                ),
-              }}
-            />
-            
-            {/* Validation Status */}
-            {isValidating && (
-              <Box sx={{ mt: 1, display: 'flex', alignItems: 'center', gap: 1, color: 'text.secondary', fontSize: '0.875rem' }}>
+                  </Grid>
+                </Grid>
+              ),
+            }}
+          />
+          
+          {/* Validation Status */}
+          {isValidating && (
+            <Grid container alignItems="center" spacing={1} sx={{ mt: 1, color: 'text.secondary', fontSize: '0.875rem' }}>
+              <Grid item>
                 <LoadingSpinner size="sm" />
+              </Grid>
+              <Grid item>
                 Validating API key...
-              </Box>
-            )}
-            
-            {isValid && (
-              <Box sx={{ mt: 1, display: 'flex', alignItems: 'center', gap: 1, color: 'text.success', fontSize: '0.875rem' }}>
+              </Grid>
+            </Grid>
+          )}
+          
+          {isValid && (
+            <Grid container alignItems="center" spacing={1} sx={{ mt: 1, color: 'text.success', fontSize: '0.875rem' }}>
+              <Grid item>
                 <span className="h-4 w-4">✓</span>
+              </Grid>
+              <Grid item>
                 API key is valid!
-              </Box>
-            )}
-            
-            {error && (
-              <Box sx={{ mt: 1, display: 'flex', alignItems: 'center', gap: 1, color: 'text.error', fontSize: '0.875rem' }}>
+              </Grid>
+            </Grid>
+          )}
+          
+          {error && (
+            <Grid container alignItems="center" spacing={1} sx={{ mt: 1, color: 'text.error', fontSize: '0.875rem' }}>
+              <Grid item>
                 <span className="h-4 w-4">⚠️</span>
+              </Grid>
+              <Grid item>
                 {error}
-              </Box>
-            )}
-          </Box>
+              </Grid>
+            </Grid>
+          )}
         </div>
 
         {/* Step 3: Save Key */}
@@ -237,23 +248,21 @@ export function APIKeySetup({ onKeyAdded, className }: APIKeySetupProps) {
         {/* The AlertDialog component was removed, so this section is removed. */}
 
         {/* Pricing Info */}
-        <Box sx={{ p: 2, bgcolor: 'warning.light', borderRadius: 2 }}>
-          <Grid container alignItems="center" spacing={1}>
-            <Grid item>
-              <span className="h-4 w-4 text-yellow-600">⚡</span>
-            </Grid>
-            <Grid item xs>
-              <Typography variant="body2">
-                <Typography variant="subtitle2" component="span" fontWeight="medium">Usage Costs</Typography>
-                <br />
-                OpenAI charges per API call. Typical costs are $0.002-0.02 per request. 
-                <a href="https://openai.com/pricing" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline ml-1">
-                  View pricing <span className="h-3 w-3 inline">↗</span>
-                </a>
-              </Typography>
-            </Grid>
+        <Grid container alignItems="center" spacing={1} sx={{ p: 2, bgcolor: 'warning.light', borderRadius: 2 }}>
+          <Grid item>
+            <span className="h-4 w-4 text-yellow-600">⚡</span>
           </Grid>
-        </Box>
+          <Grid item xs>
+            <Typography variant="body2">
+              <Typography variant="subtitle2" component="span" fontWeight="medium">Usage Costs</Typography>
+              <br />
+              OpenAI charges per API call. Typical costs are $0.002-0.02 per request. 
+              <a href="https://openai.com/pricing" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline ml-1">
+                View pricing <span className="h-3 w-3 inline">↗</span>
+              </a>
+            </Typography>
+          </Grid>
+        </Grid>
       </CardContent>
     </Card>
   );

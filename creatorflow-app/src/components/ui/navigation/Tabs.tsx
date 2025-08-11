@@ -102,7 +102,7 @@ export interface TabsListProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const TabsList = forwardRef<HTMLDivElement, TabsListProps>(
-  ({ className, fullWidth = false, children, ...props }, ref) => {
+  ({ className, _fullWidth = false, children, ...props }, ref) => {
     const { orientation } = useTabsContext();
     
     return (
@@ -133,7 +133,7 @@ export interface TabsTriggerProps extends React.ButtonHTMLAttributes<HTMLButtonE
 }
 
 const TabsTrigger = forwardRef<HTMLButtonElement, TabsTriggerProps>(
-  ({ className, value, disabled = false, fullWidth = false, children, ...props }, ref) => {
+  ({ className, value, disabled = false, _fullWidth = false, children, ...props }, ref) => {
     const { value: selectedValue, onValueChange, orientation, variant } = useTabsContext();
     const isSelected = value === selectedValue;
     

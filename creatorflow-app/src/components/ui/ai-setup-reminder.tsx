@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/mui-card';
-import { Typography, Button } from '@mui/material';
+import { Button } from '@mui/material';
 import { 
   Brain, 
   Zap, 
@@ -55,15 +55,15 @@ export function AISetupReminder({ onSetup, onDismiss, className }: AISetupRemind
                   Set Up AI Tools
                   <ArrowRight className="h-4 w-4" />
                 </Button>
-                <Button variant="ghost" size="sm" onClick={handleDismiss}>
+                <Button variant="text" size="small" onClick={handleDismiss}>
                   Maybe Later
                 </Button>
               </div>
             </div>
           </div>
           <Button
-            variant="ghost"
-            size="sm"
+            variant="text"
+            size="small"
             onClick={handleDismiss}
             className="h-8 w-8 p-0"
           >

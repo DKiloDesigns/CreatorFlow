@@ -197,7 +197,7 @@ export default function OnboardingModal({ isOpen, onClose, onComplete }: Onboard
             {currentStepData.id === 'welcome' && (
               <div className="bg-blue-50 p-4 rounded-lg">
                 <p className="text-sm text-blue-800">
-                  Let's get you started with CreatorFlow! We'll guide you through the essential features to help you create and manage your social media content effectively.
+                  Let&apos;s get you started with CreatorFlow! We&apos;ll guide you through the essential features to help you create and manage your social media content effectively.
                 </p>
               </div>
             )}

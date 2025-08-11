@@ -245,6 +245,29 @@ export default function MuiDemoPage() {
         />
       </Box>
 
+      {/* Navigation to Demo Pages */}
+      <Box sx={{ mb: 4 }}>
+        <Typography variant="h5" gutterBottom>
+          Demo Pages
+        </Typography>
+        <Stack direction="row" spacing={2} flexWrap="wrap" useFlexGap>
+          <Button 
+            variant="outlined" 
+            component={Link} 
+            href="/mui-demo/advanced"
+          >
+            Advanced Components
+          </Button>
+          <Button 
+            variant="outlined" 
+            component={Link} 
+            href="/stack-demo"
+          >
+            Stack Layout Component
+          </Button>
+        </Stack>
+      </Box>
+
       <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 3 }}>
         {/* Basic Components */}
         <Box>

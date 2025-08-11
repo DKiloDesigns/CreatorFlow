@@ -9,7 +9,6 @@ import {
   IconButton,
   Box,
   Typography,
-  Divider,
 } from "@mui/material";
 import { Close } from "@mui/icons-material";
 import { styled } from "@mui/material/styles";
@@ -56,7 +55,7 @@ export function Dialog({
   onClose,
   ...props
 }: DialogProps) {
-  const handleClose = (event: any, reason: string) => {
+  const handleClose = (event: any, reason: 'backdropClick' | 'escapeKeyDown') => {
     onClose?.(event, reason);
     onOpenChange?.(false);
   };
@@ -90,19 +89,19 @@ export function DialogContent({ children, className }: DialogContentProps) {
 export interface DialogHeaderProps {
   children: React.ReactNode;
   className?: string;
-  onClose?: () => void;
+  _onClose?: () => void;
 }
 
-export function DialogHeader({ children, className, onClose }: DialogHeaderProps) {
+export function DialogHeader({ children, className, _onClose }: DialogHeaderProps) {
   return (
     <Box sx={{ position: 'relative' }}>
       <StyledDialogTitle className={className}>
         {children}
       </StyledDialogTitle>
-      {onClose && (
+      {_onClose && (
         <IconButton
           aria-label="close"
-          onClick={onClose}
+          onClick={_onClose}
           sx={{
             position: 'absolute',
             right: 8,

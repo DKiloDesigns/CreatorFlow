@@ -26,7 +26,7 @@ export function TestimonialCard({ quote, author }: { quote: string; author: stri
           lineHeight: 1.6
         }}
       >
-        "{quote}"
+        &quot;{quote}&quot;
       </Typography>
       <Typography 
         component="footer" 

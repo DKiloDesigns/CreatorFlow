@@ -36,7 +36,7 @@ const Breadcrumb = forwardRef<HTMLElement, BreadcrumbProps>(
     homeLabel = 'Home',
     homeHref = '/',
     maxItems,
-    collapsed = false,
+    _collapsed = false,
     variant = 'default',
     size = 'md',
     fullWidth = false,

@@ -4,7 +4,6 @@ import { useState } from 'react';
 import {
   Box,
   Container,
-  Stack,
   Typography,
   Paper,
   Divider,
@@ -45,6 +44,7 @@ import {
   LoadingState,
   ProgressIndicator,
 } from '@/components/ui/mui-loading';
+import { Stack } from '@mui/material';
 import {
   Add,
   Edit,
@@ -232,6 +232,7 @@ export default function MuiAdvancedDemo() {
         <Tab label="Loading States" />
         <Tab label="Progress & Feedback" />
         <Tab label="Skeletons" />
+        <Tab label="Stack Layout" />
       </Tabs>
 
       {activeTab === 0 && (
@@ -245,7 +246,7 @@ export default function MuiAdvancedDemo() {
               <Typography variant="h6" gutterBottom>
                 Dialog Types
               </Typography>
-              <Stack direction="row" spacing={2}>
+              <Stack spacing={2}>
                 <Button
                   variant="outlined"
                   onClick={() => handleDialogOpen('simple')}
@@ -308,7 +309,7 @@ export default function MuiAdvancedDemo() {
             Loading States
           </Typography>
           
-          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 3 }}>
+          <Stack spacing={3}>
             <Box>
               <Typography variant="h6" gutterBottom>
                 Loading Spinners
@@ -331,7 +332,7 @@ export default function MuiAdvancedDemo() {
                 <LoadingBar color="secondary" message="Secondary color" />
               </Stack>
             </Box>
-          </Box>
+          </Stack>
 
           <Divider sx={{ my: 3 }} />
 
@@ -360,7 +361,7 @@ export default function MuiAdvancedDemo() {
             Progress & Feedback
           </Typography>
           
-          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 3 }}>
+          <Stack spacing={3}>
             <Box>
               <Typography variant="h6" gutterBottom>
                 Progress Indicator
@@ -393,7 +394,7 @@ export default function MuiAdvancedDemo() {
                 </Button>
               </Box>
             </Box>
-          </Box>
+          </Stack>
         </Paper>
       )}
 
@@ -403,7 +404,7 @@ export default function MuiAdvancedDemo() {
             Skeleton Components
           </Typography>
           
-          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' }, gap: 3 }}>
+          <Stack spacing={3}>
             <Box>
               <Typography variant="h6" gutterBottom>
                 Card Skeletons
@@ -424,7 +425,307 @@ export default function MuiAdvancedDemo() {
               </Typography>
               <SkeletonCard variant="table" count={4} />
             </Box>
-          </Box>
+          </Stack>
+        </Paper>
+      )}
+
+      {activeTab === 4 && (
+        <Paper sx={{ p: 3 }}>
+          <Typography variant="h5" gutterBottom>
+            MUI Stack Layout Component
+          </Typography>
+          
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+            Our custom Stack component provides flexible layout capabilities with responsive spacing, alignment, and direction options.
+          </Typography>
+
+          <Stack spacing={4}>
+            {/* Basic Stack Examples */}
+            <Box>
+              <Typography variant="h6" gutterBottom>
+                Basic Stack Examples
+              </Typography>
+              <Stack spacing={2}>
+                <Paper sx={{ p: 2, textAlign: 'center' }}>
+                  <Typography variant="body2">Vertical Stack (default)</Typography>
+                </Paper>
+                <Paper sx={{ p: 2, textAlign: 'center' }}>
+                  <Typography variant="body2">With spacing</Typography>
+                </Paper>
+                <Paper sx={{ p: 2, textAlign: 'center' }}>
+                  <Typography variant="body2">And alignment</Typography>
+                </Paper>
+              </Stack>
+            </Box>
+
+            {/* Horizontal Stack */}
+            <Box>
+              <Typography variant="h6" gutterBottom>
+                Horizontal Stack
+              </Typography>
+              <Stack spacing={2}>
+                <Paper sx={{ p: 2, textAlign: 'center', minWidth: 80 }}>
+                  <Typography variant="body2">Left</Typography>
+                </Paper>
+                <Paper sx={{ p: 2, textAlign: 'center', minWidth: 80 }}>
+                  <Typography variant="body2">Center</Typography>
+                </Paper>
+                <Paper sx={{ p: 2, textAlign: 'center', minWidth: 80 }}>
+                  <Typography variant="body2">Right</Typography>
+                </Paper>
+              </Stack>
+            </Box>
+          </Stack>
+
+          <Divider sx={{ my: 3 }} />
+
+          {/* Advanced Stack Features */}
+          <Stack spacing={3}>
+            <Typography variant="h6" gutterBottom>
+              Advanced Features
+            </Typography>
+            
+            <Stack spacing={3}>
+              {/* Responsive Spacing */}
+              <Box>
+                <Typography variant="subtitle1" gutterBottom>
+                  Responsive Spacing
+                </Typography>
+                <Stack spacing={2}>
+                  <Paper sx={{ p: 2, textAlign: 'center' }}>
+                    <Typography variant="body2">Small on mobile</Typography>
+                  </Paper>
+                  <Paper sx={{ p: 2, textAlign: 'center' }}>
+                    <Typography variant="body2">Larger on desktop</Typography>
+                  </Paper>
+                </Stack>
+              </Box>
+
+              {/* Alignment Options */}
+              <Box>
+                <Typography variant="subtitle1" gutterBottom>
+                  Alignment Options
+                </Typography>
+                <Stack spacing={2} alignItems="center">
+                  <Paper sx={{ p: 1, textAlign: 'center', minHeight: 40 }}>
+                    <Typography variant="caption">Short</Typography>
+                  </Paper>
+                  <Paper sx={{ p: 3, textAlign: 'center', minHeight: 80 }}>
+                    <Typography variant="body2">Tall</Typography>
+                  </Paper>
+                  <Paper sx={{ p: 2, textAlign: 'center', minHeight: 60 }}>
+                    <Typography variant="body2">Medium</Typography>
+                  </Paper>
+                </Stack>
+              </Box>
+            </Stack>
+          </Stack>
+
+          <Divider sx={{ my: 3 }} />
+
+          {/* Interactive Demo */}
+          <Stack spacing={3}>
+            <Typography variant="h6" gutterBottom>
+              Interactive Demo
+            </Typography>
+            
+            <Stack spacing={3}>
+              {/* Stack with Dividers */}
+              <Box>
+                <Typography variant="subtitle1" gutterBottom>
+                  Stack with Dividers
+                </Typography>
+                <Stack spacing={2}>
+                  <Paper sx={{ p: 2, textAlign: 'center' }}>
+                    <Typography variant="body2">Section 1</Typography>
+                  </Paper>
+                  <Paper sx={{ p: 2, textAlign: 'center' }}>
+                    <Typography variant="body2">Section 2</Typography>
+                  </Paper>
+                  <Paper sx={{ p: 2, textAlign: 'center' }}>
+                    <Typography variant="body2">Section 3</Typography>
+                  </Paper>
+                </Stack>
+              </Box>
+
+              {/* Centered Stack */}
+              <Box>
+                <Typography variant="subtitle1" gutterBottom>
+                  Centered Stack
+                </Typography>
+                <Stack spacing={2} sx={{ alignItems: 'center' }}>
+                  <Paper sx={{ p: 2, textAlign: 'center', width: '100%' }}>
+                    <Typography variant="body2">Centered Content</Typography>
+                  </Paper>
+                  <Paper sx={{ p: 2, textAlign: 'center', width: '100%' }}>
+                    <Typography variant="body2">With full width</Typography>
+                  </Paper>
+                </Stack>
+              </Box>
+            </Stack>
+          </Stack>
+
+          <Divider sx={{ my: 3 }} />
+
+          {/* Stack Layout Demo */}
+          <Stack spacing={3}>
+            <Typography variant="h6" gutterBottom>
+              Stack Layout Options
+            </Typography>
+            
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
+              MUI Stack provides flexible layout control with spacing and alignment options.
+            </Typography>
+
+            <Stack spacing={3}>
+              {/* Flex Properties */}
+              <Box>
+                <Typography variant="subtitle1" gutterBottom>
+                  Flex Properties
+                </Typography>
+                <Stack spacing={2}>
+                  <Paper sx={{ p: 2, textAlign: 'center', minWidth: 60 }}>
+                    <Typography variant="caption">Fixed</Typography>
+                  </Paper>
+                  <Paper sx={{ p: 2, textAlign: 'center' }}>
+                    <Typography variant="body2">Flexible (grows)</Typography>
+                  </Paper>
+                  <Paper sx={{ p: 2, textAlign: 'center', minWidth: 60 }}>
+                    <Typography variant="caption">Fixed</Typography>
+                  </Paper>
+                </Stack>
+              </Box>
+
+              {/* Centered Items */}
+              <Box>
+                <Typography variant="subtitle1" gutterBottom>
+                  Centered Items
+                </Typography>
+                <Stack spacing={2}>
+                  <Paper sx={{ p: 2, textAlign: 'center', minWidth: 80, minHeight: 60 }}>
+                    <Typography variant="body2">Centered</Typography>
+                  </Paper>
+                  <Paper sx={{ p: 2, textAlign: 'center', minWidth: 80, minHeight: 60 }}>
+                    <Typography variant="body2">Centered</Typography>
+                  </Paper>
+                </Stack>
+              </Box>
+            </Stack>
+          </Stack>
+
+          <Divider sx={{ my: 3 }} />
+
+          {/* Direction and Reverse Demo */}
+          <Stack spacing={3}>
+            <Typography variant="h6" gutterBottom>
+              Direction and Reverse
+            </Typography>
+            
+            <Stack spacing={3}>
+              {/* Reverse Direction */}
+              <Box>
+                <Typography variant="subtitle1" gutterBottom>
+                  Reverse Direction
+                </Typography>
+                <Stack direction="column-reverse" spacing={2}>
+                  <Paper sx={{ p: 2, textAlign: 'center' }}>
+                    <Typography variant="body2">First (rendered last)</Typography>
+                  </Paper>
+                  <Paper sx={{ p: 2, textAlign: 'center' }}>
+                    <Typography variant="body2">Second</Typography>
+                  </Paper>
+                  <Paper sx={{ p: 2, textAlign: 'center' }}>
+                    <Typography variant="body2">Last (rendered first)</Typography>
+                  </Paper>
+                </Stack>
+              </Box>
+
+              {/* Horizontal Reverse */}
+              <Box>
+                <Typography variant="subtitle1" gutterBottom>
+                  Horizontal Reverse
+                </Typography>
+                <Stack direction="row-reverse" spacing={2}>
+                  <Paper sx={{ p: 2, textAlign: 'center', minWidth: 60 }}>
+                    <Typography variant="caption">Right</Typography>
+                  </Paper>
+                  <Paper sx={{ p: 2, textAlign: 'center', minWidth: 60 }}>
+                    <Typography variant="caption">Center</Typography>
+                  </Paper>
+                  <Paper sx={{ p: 2, textAlign: 'center', minWidth: 60 }}>
+                    <Typography variant="caption">Left</Typography>
+                  </Paper>
+                </Stack>
+              </Box>
+            </Stack>
+          </Stack>
+
+          <Divider sx={{ my: 3 }} />
+
+          {/* Justification Demo */}
+          <Stack spacing={3}>
+            <Typography variant="h6" gutterBottom>
+              Justification Options
+            </Typography>
+            
+            <Stack spacing={3}>
+              <Box>
+                <Typography variant="subtitle2" gutterBottom>
+                  justify="start" (default)
+                </Typography>
+                <Stack spacing={2} justifyContent="start">
+                  <Paper sx={{ p: 1, textAlign: 'center', minWidth: 40 }}>
+                    <Typography variant="caption">1</Typography>
+                  </Paper>
+                  <Paper sx={{ p: 1, textAlign: 'center', minWidth: 40 }}>
+                    <Typography variant="caption">2</Typography>
+                  </Paper>
+                </Stack>
+              </Box>
+
+              <Box>
+                <Typography variant="subtitle2" gutterBottom>
+                  justify="center"
+                </Typography>
+                <Stack spacing={2} justifyContent="center">
+                  <Paper sx={{ p: 1, textAlign: 'center', minWidth: 40 }}>
+                    <Typography variant="caption">1</Typography>
+                  </Paper>
+                  <Paper sx={{ p: 1, textAlign: 'center', minWidth: 40 }}>
+                    <Typography variant="caption">2</Typography>
+                  </Paper>
+                </Stack>
+              </Box>
+
+              <Box>
+                <Typography variant="subtitle2" gutterBottom>
+                  justify="between"
+                </Typography>
+                <Stack spacing={2} justifyContent="space-between">
+                  <Paper sx={{ p: 1, textAlign: 'center', minWidth: 40 }}>
+                    <Typography variant="caption">1</Typography>
+                  </Paper>
+                  <Paper sx={{ p: 1, textAlign: 'center', minWidth: 40 }}>
+                    <Typography variant="caption">2</Typography>
+                  </Paper>
+                </Stack>
+              </Box>
+
+              <Box>
+                <Typography variant="subtitle2" gutterBottom>
+                  justify="evenly"
+                </Typography>
+                <Stack spacing={2} justifyContent="space-evenly">
+                  <Paper sx={{ p: 1, textAlign: 'center', minWidth: 40 }}>
+                    <Typography variant="caption">1</Typography>
+                  </Paper>
+                  <Paper sx={{ p: 1, textAlign: 'center', minWidth: 40 }}>
+                    <Typography variant="caption">2</Typography>
+                  </Paper>
+                </Stack>
+              </Box>
+            </Stack>
+          </Stack>
         </Paper>
       )}
     </Container>

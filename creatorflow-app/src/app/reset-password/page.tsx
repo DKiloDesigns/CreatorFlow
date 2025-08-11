@@ -7,15 +7,12 @@ import {
   CardContent, 
   CardHeader, 
   Button,
-  TextField,
-  Box,
   Typography,
-  Grid,
-  Alert,
-  AlertTitle
+  Alert
 } from '@mui/material';
-import { Lock, Activity } from 'lucide-react';
+import { Lock, Activity, ArrowLeft, Eye, EyeOff } from 'lucide-react';
 import Link from 'next/link';
+import { CardDescription, Label, Input, AlertDescription } from '@/components/ui';
 
 function ResetPasswordForm() {
   const searchParams = useSearchParams();
@@ -49,7 +46,7 @@ function ResetPasswordForm() {
         } else {
           setIsValidToken(false);
         }
-      } catch (error) {
+      } catch (_error) {
         setIsValidToken(false);
       } finally {
         setIsValidating(false);
@@ -107,7 +104,7 @@ function ResetPasswordForm() {
           text: data.error || 'Failed to reset password. Please try again.'
         });
       }
-    } catch (error) {
+    } catch (_error) {
       setMessage({
         type: 'error',
         text: 'An error occurred. Please try again.'

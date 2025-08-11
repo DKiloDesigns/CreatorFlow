@@ -38,7 +38,7 @@ export default function TestDarkModePage() {
       <div className="mt-8 p-4 bg-white text-gray-900 dark:bg-gray-800 dark:text-white rounded-lg border">
         <h3 className="font-semibold mb-2">Instructions:</h3>
         <ol className="list-decimal list-inside space-y-1 text-base">
-          <li>Make sure you're in dark mode (click the theme toggle in the navigation or above)</li>
+          <li>Make sure you&apos;re in dark mode (click the theme toggle in the navigation or above)</li>
           <li>Check if the cards above have darker, more visible backgrounds</li>
           <li>The backgrounds should be distinct from the page background</li>
         </ol>

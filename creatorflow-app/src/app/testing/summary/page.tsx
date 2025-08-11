@@ -6,15 +6,12 @@ import {
   CardContent, 
   CardHeader, 
   Button,
-  Box,
-  Typography,
-  Grid,
-  Chip,
-  LinearProgress
+  Typography
 } from '@mui/material';
 import { TestTube, Activity, Download, TrendingUp, BarChart3, Target, CheckCircle } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
+import { CardDescription } from '@/components/ui/base/Card/index';
 
 interface TestSummary {
   category: string;
@@ -317,10 +314,10 @@ export default function TestingSummaryPage() {
           <p className="text-muted-foreground">Comprehensive testing results and quality assurance report</p>
         </div>
         <div className="flex gap-2">
-          <Button variant="outline">
-            <Download className="h-4 w-4 mr-2" />
-            Export Report
-          </Button>
+                          <Button variant="outlined">
+                  <Download className="h-4 w-4 mr-2" />
+                  Export Report
+                </Button>
           <Button>
             <TestTube className="h-4 w-4 mr-2" />
             Run All Tests

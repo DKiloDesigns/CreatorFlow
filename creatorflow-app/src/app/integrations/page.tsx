@@ -8,18 +8,29 @@ import {
   Button,
   Box,
   Typography,
-  Grid,
   Tabs,
   Tab,
   Chip,
   Select,
   MenuItem,
   FormControl,
-  InputLabel
+  InputLabel,
+  Paper,
+  Stack,
+  Container
 } from '@mui/material';
-import { Plug, Activity, Settings, RefreshCw } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
-import { TabsContent } from '@/components/ui/tabs';
+import { 
+  Plug, 
+  Activity, 
+  Settings, 
+  RefreshCw, 
+  Plus, 
+  CheckCircle, 
+  Webhook, 
+  TrendingUp, 
+  Eye, 
+  Database 
+} from 'lucide-react';
 
 interface Integration {
   id: string;
@@ -65,6 +76,7 @@ export default function IntegrationsPage() {
   const [refreshing, setRefreshing] = useState(false);
   const [statusFilter, setStatusFilter] = useState('all');
   const [providerFilter, setProviderFilter] = useState('all');
+  const [activeTab, setActiveTab] = useState(0);
 
   useEffect(() => {
     fetchIntegrationsData();
@@ -125,319 +137,440 @@ export default function IntegrationsPage() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'active': return 'bg-green-100 text-green-800';
-      case 'inactive': return 'bg-gray-100 text-gray-800';
-      case 'error': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case 'active': return 'success';
+      case 'inactive': return 'default';
+      case 'error': return 'error';
+      default: return 'default';
     }
   };
 
   const getProviderIcon = (provider: string) => {
     switch (provider.toLowerCase()) {
-      case 'stripe': return <Plug className="h-5 w-5" />;
-      case 'slack': return <Plug className="h-5 w-5" />;
-      case 'google': return <Plug className="h-5 w-5" />;
-      default: return <Settings className="h-5 w-5" />;
+      case 'stripe': return <Plug style={{ width: 20, height: 20 }} />;
+      case 'slack': return <Plug style={{ width: 20, height: 20 }} />;
+      case 'google': return <Plug style={{ width: 20, height: 20 }} />;
+      default: return <Settings style={{ width: 20, height: 20 }} />;
     }
   };
 
   const getHealthIcon = (healthy: boolean) => {
     return healthy ? (
-      <Activity className="h-5 w-5 text-green-600" />
+      <Activity style={{ width: 20, height: 20, color: 'var(--mui-palette-success-main)' }} />
     ) : (
-      <Plug className="h-5 w-5 text-red-600" />
+      <Plug style={{ width: 20, height: 20, color: 'var(--mui-palette-error-main)' }} />
     );
   };
 
-  if (loading) return <div className="p-8">Loading integrations data...</div>;
+  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
+    setActiveTab(newValue);
+  };
+
+  if (loading) return (
+    <Box sx={{ p: 8, textAlign: 'center' }}>
+      <Typography variant="h6">Loading integrations data...</Typography>
+    </Box>
+  );
 
   return (
-    <div className="p-8 space-y-8">
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold">Integrations</h1>
-          <p className="text-muted-foreground">Manage third-party services and webhooks</p>
-        </div>
-        <div className="flex gap-2">
-          <Select value={statusFilter} onValueChange={setStatusFilter}>
-            <SelectTrigger className="w-40">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Status</SelectItem>
-              <SelectItem value="active">Active</SelectItem>
-              <SelectItem value="inactive">Inactive</SelectItem>
-              <SelectItem value="error">Error</SelectItem>
-            </SelectContent>
-          </Select>
-          <Select value={providerFilter} onValueChange={setProviderFilter}>
-            <SelectTrigger className="w-40">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Providers</SelectItem>
-              <SelectItem value="stripe">Stripe</SelectItem>
-              <SelectItem value="slack">Slack</SelectItem>
-              <SelectItem value="google">Google</SelectItem>
-            </SelectContent>
-          </Select>
-          <Button onClick={refreshData} disabled={refreshing} variant="outline">
-            <RefreshCw className={`h-4 w-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} />
-            Refresh
-          </Button>
-          <Button>
-            <Plus className="h-4 w-4 mr-2" />
-            Add Integration
-          </Button>
-        </div>
-      </div>
+    <Container maxWidth="xl" sx={{ py: 4 }}>
+      <Stack spacing={4}>
+        {/* Header Section */}
+        <Box sx={{ 
+          display: 'flex', 
+          flexDirection: { xs: 'column', md: 'row' }, 
+          justifyContent: 'space-between', 
+          alignItems: { xs: 'flex-start', md: 'center' },
+          gap: 2
+        }}>
+          <Box>
+            <Typography variant="h3" component="h1" sx={{ fontWeight: 'bold', mb: 1 }}>
+              Integrations
+            </Typography>
+            <Typography variant="body1" color="text.secondary">
+              Manage third-party services and webhooks
+            </Typography>
+          </Box>
+          
+          <Box sx={{ 
+            display: 'flex', 
+            flexDirection: { xs: 'column', sm: 'row' }, 
+            gap: 2,
+            width: { xs: '100%', md: 'auto' }
+          }}>
+            <FormControl size="small" sx={{ minWidth: 160 }}>
+              <InputLabel>Status Filter</InputLabel>
+              <Select
+                value={statusFilter}
+                label="Status Filter"
+                onChange={(e) => setStatusFilter(e.target.value)}
+              >
+                <MenuItem value="all">All Status</MenuItem>
+                <MenuItem value="active">Active</MenuItem>
+                <MenuItem value="inactive">Inactive</MenuItem>
+                <MenuItem value="error">Error</MenuItem>
+              </Select>
+            </FormControl>
+            
+            <FormControl size="small" sx={{ minWidth: 160 }}>
+              <InputLabel>Provider Filter</InputLabel>
+              <Select
+                value={providerFilter}
+                label="Provider Filter"
+                onChange={(e) => setProviderFilter(e.target.value)}
+              >
+                <MenuItem value="all">All Providers</MenuItem>
+                <MenuItem value="stripe">Stripe</MenuItem>
+                <MenuItem value="slack">Slack</MenuItem>
+                <MenuItem value="google">Google</MenuItem>
+              </Select>
+            </FormControl>
+            
+            <Button 
+              onClick={refreshData} 
+              disabled={refreshing} 
+              variant="outlined"
+              startIcon={<RefreshCw style={{ 
+                width: 16, 
+                height: 16,
+                animation: refreshing ? 'spin 1s linear infinite' : 'none'
+              }} />}
+            >
+              Refresh
+            </Button>
+            
+            <Button
+              variant="contained"
+              startIcon={<Plus style={{ width: 16, height: 16 }} />}
+            >
+              Add Integration
+            </Button>
+          </Box>
+        </Box>
 
-      {/* Integration Overview */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                            <Typography variant="subtitle2" className="text-sm font-medium">Total Integrations</Typography>
-            <Settings className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{integrations.length}</div>
-            <p className="text-xs text-muted-foreground">
-              Connected services
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <Typography variant="h6" className="text-sm font-medium">Active Integrations</Typography>
-            <CheckCircle className="h-4 w-4 text-green-600" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-green-600">
-              {integrations.filter(i => i.status === 'active').length}
-            </div>
-            <p className="text-xs text-muted-foreground">
-              Working properly
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <Typography variant="h6" className="text-sm font-medium">Webhook Events</Typography>
-            <Webhook className="h-4 w-4 text-blue-600" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-blue-600">
-              {webhookEvents.length}
-            </div>
-            <p className="text-xs text-muted-foreground">
-              Last 24 hours
-            </p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <Typography variant="h6" className="text-sm font-medium">Sync Success Rate</Typography>
-            <TrendingUp className="h-4 w-4 text-green-600" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-green-600">
-              {syncs.length > 0 
-                ? Math.round((syncs.filter(s => s.status === 'completed').length / syncs.length) * 100)
-                : 0}%
-            </div>
-            <p className="text-xs text-muted-foreground">
-              Successful syncs
-            </p>
-          </CardContent>
-        </Card>
-      </div>
-
-      <Tabs defaultValue="integrations" className="space-y-6">
-        <TabsList>
-          <TabsTrigger value="integrations">Integrations</TabsTrigger>
-          <TabsTrigger value="webhooks">Webhooks</TabsTrigger>
-          <TabsTrigger value="syncs">Syncs</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="integrations" className="space-y-4">
+        {/* Integration Overview Cards */}
+        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(4, 1fr)' }, gap: 3 }}>
           <Card>
-            <CardHeader>
-              <Typography variant="h6" className="flex items-center gap-2">
-                <Settings className="h-5 w-5" />
-                Connected Services
-              </Typography>
-              <CardDescription>
-                Manage your third-party integrations and their status
-              </CardDescription>
-            </CardHeader>
+            <CardHeader
+              title={
+                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <Typography variant="subtitle2" sx={{ fontWeight: 500 }}>
+                    Total Integrations
+                  </Typography>
+                  <Settings style={{ width: 16, height: 16, color: 'var(--mui-palette-text-secondary)' }} />
+                </Box>
+              }
+              sx={{ pb: 1 }}
+            />
             <CardContent>
-              <div className="space-y-4">
-                {integrations.length === 0 ? (
-                  <div className="text-center py-8 text-muted-foreground">
-                    No integrations found
-                  </div>
-                ) : (
-                  integrations.map((integration) => (
-                    <div key={integration.id} className="p-4 border rounded-lg">
-                      <div className="flex items-start justify-between">
-                        <div className="flex items-start gap-3">
-                          {getProviderIcon(integration.provider)}
-                          <div className="flex-1">
-                            <div className="flex items-center gap-2 mb-2">
-                              <h3 className="font-semibold">{integration.name}</h3>
-                              <Badge className={getStatusColor(integration.status)}>
-                                {integration.status}
-                              </Badge>
-                              {getHealthIcon(integration.health.healthy)}
-                            </div>
-                            <p className="text-sm text-muted-foreground mb-2">
-                              {integration.provider} • {integration.type}
-                            </p>
-                            <div className="text-xs space-y-1">
-                              <div>Error Count: {integration.errorCount}</div>
-                              {integration.lastSync && (
-                                <div>Last Sync: {new Date(integration.lastSync).toLocaleString()}</div>
-                              )}
-                              {integration.health.issues.length > 0 && (
-                                <div className="text-red-600">
-                                  Issues: {integration.health.issues.join(', ')}
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                        </div>
-                        <div className="flex gap-2">
-                          <Button 
-                            size="sm" 
-                            variant="outline"
-                            onClick={() => startSync(integration.id)}
-                          >
-                            <RefreshCw className="h-3 w-3 mr-1" />
-                            Sync
-                          </Button>
-                          <Button size="sm" variant="outline">
-                            <Settings className="h-3 w-3" />
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-                  ))
-                )}
-              </div>
+              <Typography variant="h4" component="div" sx={{ fontWeight: 'bold', mb: 0.5 }}>
+                {integrations.length}
+              </Typography>
+              <Typography variant="caption" color="text.secondary">
+                Connected services
+              </Typography>
             </CardContent>
           </Card>
-        </TabsContent>
 
-        <TabsContent value="webhooks" className="space-y-4">
           <Card>
-            <CardHeader>
-              <Typography variant="h6" className="flex items-center gap-2">
-                <Webhook className="h-5 w-5" />
-                Webhook Events
-              </Typography>
-              <CardDescription>
-                Monitor webhook events and their processing status
-              </CardDescription>
-            </CardHeader>
+            <CardHeader
+              title={
+                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <Typography variant="subtitle2" sx={{ fontWeight: 500 }}>
+                    Active Integrations
+                  </Typography>
+                  <CheckCircle style={{ width: 16, height: 16, color: 'var(--mui-palette-success-main)' }} />
+                </Box>
+              }
+              sx={{ pb: 1 }}
+            />
             <CardContent>
-              <div className="space-y-4">
-                {webhookEvents.length === 0 ? (
-                  <div className="text-center py-8 text-muted-foreground">
-                    No webhook events found
-                  </div>
-                ) : (
-                  webhookEvents.map((event) => (
-                    <div key={event.id} className="p-4 border rounded-lg">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <div className="flex items-center gap-2 mb-1">
-                            <h3 className="font-semibold">{event.eventType}</h3>
-                            <Badge variant={event.status === 'completed' ? 'default' : event.status === 'failed' ? 'destructive' : 'secondary'}>
-                              {event.status}
-                            </Badge>
-                          </div>
-                          <div className="text-xs text-muted-foreground">
-                            Integration: {event.integrationId} • 
-                            Time: {new Date(event.timestamp).toLocaleString()} • 
-                            Retries: {event.retryCount}
-                          </div>
-                        </div>
-                        <div className="flex gap-2">
-                          <Button size="sm" variant="outline">
-                            <Eye className="h-3 w-3" />
-                          </Button>
-                          {event.status === 'failed' && (
-                            <Button size="sm" variant="outline">
-                              <RefreshCw className="h-3 w-3" />
+              <Typography variant="h4" component="div" sx={{ fontWeight: 'bold', color: 'success.main', mb: 0.5 }}>
+                {integrations.filter(i => i.status === 'active').length}
+              </Typography>
+              <Typography variant="caption" color="text.secondary">
+                Working properly
+              </Typography>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader
+              title={
+                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <Typography variant="subtitle2" sx={{ fontWeight: 500 }}>
+                    Webhook Events
+                  </Typography>
+                  <Webhook style={{ width: 16, height: 16, color: 'var(--mui-palette-primary-main)' }} />
+                </Box>
+              }
+              sx={{ pb: 1 }}
+            />
+            <CardContent>
+              <Typography variant="h4" component="div" sx={{ fontWeight: 'bold', color: 'primary.main', mb: 0.5 }}>
+                {webhookEvents.length}
+              </Typography>
+              <Typography variant="caption" color="text.secondary">
+                Last 24 hours
+              </Typography>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader
+              title={
+                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <Typography variant="subtitle2" sx={{ fontWeight: 500 }}>
+                    Sync Success Rate
+                  </Typography>
+                  <TrendingUp style={{ width: 16, height: 16, color: 'var(--mui-palette-success-main)' }} />
+                </Box>
+              }
+              sx={{ pb: 1 }}
+            />
+            <CardContent>
+              <Typography variant="h4" component="div" sx={{ fontWeight: 'bold', color: 'success.main', mb: 0.5 }}>
+                {syncs.length > 0 
+                  ? Math.round((syncs.filter(s => s.status === 'completed').length / syncs.length) * 100)
+                  : 0}%
+              </Typography>
+              <Typography variant="caption" color="text.secondary">
+                Successful syncs
+              </Typography>
+            </CardContent>
+          </Card>
+        </Box>
+
+        {/* Tabs Section */}
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <Tabs value={activeTab} onChange={handleTabChange} aria-label="Integration tabs">
+            <Tab label="Integrations" />
+            <Tab label="Webhooks" />
+            <Tab label="Syncs" />
+          </Tabs>
+        </Box>
+
+        {/* Tab Content */}
+        <Box role="tabpanel" hidden={activeTab !== 0}>
+          {activeTab === 0 && (
+            <Card>
+              <CardHeader
+                title={
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <Settings style={{ width: 20, height: 20 }} />
+                    <Typography variant="h6">Connected Services</Typography>
+                  </Box>
+                }
+                subheader="Manage your third-party integrations and their status"
+              />
+              <CardContent>
+                <Stack spacing={2}>
+                  {integrations.length === 0 ? (
+                    <Box sx={{ textAlign: 'center', py: 4 }}>
+                      <Typography color="text.secondary">No integrations found</Typography>
+                    </Box>
+                  ) : (
+                    integrations.map((integration) => (
+                      <Paper key={integration.id} variant="outlined" sx={{ p: 3 }}>
+                        <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+                          <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2, flex: 1 }}>
+                            {getProviderIcon(integration.provider)}
+                            <Box sx={{ flex: 1 }}>
+                              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
+                                <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                                  {integration.name}
+                                </Typography>
+                                <Chip 
+                                  label={integration.status} 
+                                  color={getStatusColor(integration.status)}
+                                  size="small"
+                                />
+                                {getHealthIcon(integration.health.healthy)}
+                              </Box>
+                              <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                                {integration.provider} • {integration.type}
+                              </Typography>
+                              <Stack spacing={0.5}>
+                                <Typography variant="caption" color="text.secondary">
+                                  Error Count: {integration.errorCount}
+                                </Typography>
+                                {integration.lastSync && (
+                                  <Typography variant="caption" color="text.secondary">
+                                    Last Sync: {new Date(integration.lastSync).toLocaleString()}
+                                  </Typography>
+                                )}
+                                {integration.health.issues.length > 0 && (
+                                  <Typography variant="caption" color="error.main">
+                                    Issues: {integration.health.issues.join(', ')}
+                                  </Typography>
+                                )}
+                              </Stack>
+                            </Box>
+                          </Box>
+                          <Box sx={{ display: 'flex', gap: 1 }}>
+                            <Button 
+                              size="small" 
+                              variant="outlined"
+                              onClick={() => startSync(integration.id)}
+                              startIcon={<RefreshCw style={{ width: 14, height: 14 }} />}
+                            >
+                              Sync
                             </Button>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  ))
-                )}
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
+                            <Button size="small" variant="outlined">
+                              <Settings style={{ width: 14, height: 14 }} />
+                            </Button>
+                          </Box>
+                        </Box>
+                      </Paper>
+                    ))
+                  )}
+                </Stack>
+              </CardContent>
+            </Card>
+          )}
+        </Box>
 
-        <TabsContent value="syncs" className="space-y-4">
-          <Card>
-            <CardHeader>
-              <Typography variant="h6" className="flex items-center gap-2">
-                <Database className="h-5 w-5" />
-                Sync History
-              </Typography>
-              <CardDescription>
-                Track data synchronization between services
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {syncs.length === 0 ? (
-                  <div className="text-center py-8 text-muted-foreground">
-                    No sync history found
-                  </div>
-                ) : (
-                  syncs.map((sync) => (
-                    <div key={sync.id} className="p-4 border rounded-lg">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <div className="flex items-center gap-2 mb-1">
-                            <h3 className="font-semibold">{sync.syncType} Sync</h3>
-                            <Badge variant={sync.status === 'completed' ? 'default' : sync.status === 'failed' ? 'destructive' : 'secondary'}>
-                              {sync.status}
-                            </Badge>
-                          </div>
-                          <div className="text-xs text-muted-foreground space-y-1">
-                            <div>Integration: {sync.integrationId}</div>
-                            <div>Records: {sync.recordsProcessed}</div>
-                            <div>Started: {new Date(sync.startTime).toLocaleString()}</div>
-                            {sync.endTime && (
-                              <div>Ended: {new Date(sync.endTime).toLocaleString()}</div>
+        <Box role="tabpanel" hidden={activeTab !== 1}>
+          {activeTab === 1 && (
+            <Card>
+              <CardHeader
+                title={
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <Webhook style={{ width: 20, height: 20 }} />
+                    <Typography variant="h6">Webhook Events</Typography>
+                  </Box>
+                }
+                subheader="Monitor webhook events and their processing status"
+              />
+              <CardContent>
+                <Stack spacing={2}>
+                  {webhookEvents.length === 0 ? (
+                    <Box sx={{ textAlign: 'center', py: 4 }}>
+                      <Typography color="text.secondary">No webhook events found</Typography>
+                    </Box>
+                  ) : (
+                    webhookEvents.map((event) => (
+                      <Paper key={event.id} variant="outlined" sx={{ p: 3 }}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                          <Box>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
+                              <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                                {event.eventType}
+                              </Typography>
+                              <Chip 
+                                label={event.status} 
+                                color={
+                                  event.status === 'completed' ? 'success' : 
+                                  event.status === 'failed' ? 'error' : 'default'
+                                }
+                                size="small"
+                              />
+                            </Box>
+                            <Typography variant="caption" color="text.secondary">
+                              Integration: {event.integrationId} • 
+                              Time: {new Date(event.timestamp).toLocaleString()} • 
+                              Retries: {event.retryCount}
+                            </Typography>
+                          </Box>
+                          <Box sx={{ display: 'flex', gap: 1 }}>
+                            <Button size="small" variant="outlined">
+                              <Eye style={{ width: 14, height: 14 }} />
+                            </Button>
+                            {event.status === 'failed' && (
+                              <Button size="small" variant="outlined">
+                                <RefreshCw style={{ width: 14, height: 14 }} />
+                              </Button>
                             )}
-                            {sync.error && (
-                              <div className="text-red-600">Error: {sync.error}</div>
-                            )}
-                          </div>
-                        </div>
-                        <div className="flex gap-2">
-                          <Button size="sm" variant="outline">
-                            <Eye className="h-3 w-3" />
-                          </Button>
-                        </div>
-                      </div>
-                    </div>
-                  ))
-                )}
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-      </Tabs>
-    </div>
+                          </Box>
+                        </Box>
+                      </Paper>
+                    ))
+                  )}
+                </Stack>
+              </CardContent>
+            </Card>
+          )}
+        </Box>
+
+        <Box role="tabpanel" hidden={activeTab !== 2}>
+          {activeTab === 2 && (
+            <Card>
+              <CardHeader
+                title={
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <Database style={{ width: 20, height: 20 }} />
+                    <Typography variant="h6">Sync History</Typography>
+                  </Box>
+                }
+                subheader="Track data synchronization between services"
+              />
+              <CardContent>
+                <Stack spacing={2}>
+                  {syncs.length === 0 ? (
+                    <Box sx={{ textAlign: 'center', py: 4 }}>
+                      <Typography color="text.secondary">No sync history found</Typography>
+                    </Box>
+                  ) : (
+                    syncs.map((sync) => (
+                      <Paper key={sync.id} variant="outlined" sx={{ p: 3 }}>
+                        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                          <Box>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
+                              <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                                {sync.syncType} Sync
+                              </Typography>
+                              <Chip 
+                                label={sync.status} 
+                                color={
+                                  sync.status === 'completed' ? 'success' : 
+                                  sync.status === 'failed' ? 'error' : 'default'
+                                }
+                                size="small"
+                              />
+                            </Box>
+                            <Stack spacing={0.5}>
+                              <Typography variant="caption" color="text.secondary">
+                                Integration: {sync.integrationId}
+                              </Typography>
+                              <Typography variant="caption" color="text.secondary">
+                                Records: {sync.recordsProcessed}
+                              </Typography>
+                              <Typography variant="caption" color="text.secondary">
+                                Started: {new Date(sync.startTime).toLocaleString()}
+                              </Typography>
+                              {sync.endTime && (
+                                <Typography variant="caption" color="text.secondary">
+                                  Ended: {new Date(sync.endTime).toLocaleString()}
+                                </Typography>
+                              )}
+                              {sync.error && (
+                                <Typography variant="caption" color="error.main">
+                                  Error: {sync.error}
+                                </Typography>
+                              )}
+                            </Stack>
+                          </Box>
+                          <Box sx={{ display: 'flex', gap: 1 }}>
+                            <Button size="small" variant="outlined">
+                              <Eye style={{ width: 14, height: 14 }} />
+                            </Button>
+                          </Box>
+                        </Box>
+                      </Paper>
+                    ))
+                  )}
+                </Stack>
+              </CardContent>
+            </Card>
+          )}
+        </Box>
+      </Stack>
+
+      <style jsx>{`
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+      `}</style>
+    </Container>
   );
 } 

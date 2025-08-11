@@ -10,41 +10,37 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Badge,
   Avatar,
   Menu,
   MenuItem,
-  Divider,
-  Badge,
   Box,
   Typography,
-  Stack,
-  Chip,
   useTheme,
   useMediaQuery,
+  Divider,
+  Chip,
+  Stack,
 } from '@mui/material';
 import {
-  BarChart2,
+  Menu as MenuIcon,
+  FileText,
   Users,
   Users2,
-  FileText,
+  BarChart2,
   Handshake,
   CreditCard,
-  Menu as MenuIcon,
-  X,
-  ChevronDown,
   Settings,
   LogOut,
   User,
   Bell,
   Brain,
-  LifeBuoy,
-  Shield,
-  Upload,
   Home,
   TrendingUp,
   MessageSquare,
-  Calendar,
   HelpCircle,
+  X,
+  ChevronDown,
 } from 'lucide-react';
 
 interface NavItem {
@@ -71,7 +67,7 @@ export function MuiEnhancedNavigation() {
   const [notificationsAnchor, setNotificationsAnchor] = useState<null | HTMLElement>(null);
   const { data: session } = useSession();
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('lg'));
+  const _isMobile = useMediaQuery(theme.breakpoints.down('lg'));
 
   const isActive = (href: string) => {
     return pathname ? pathname.startsWith(href) : false;
@@ -374,7 +370,7 @@ export function MuiBreadcrumbs() {
         />
       </Link>
       
-      {breadcrumbs.map((breadcrumb, index) => (
+      {breadcrumbs.map((breadcrumb, _index) => (
         <Box key={breadcrumb.href} sx={{ display: 'flex', alignItems: 'center' }}>
           <ChevronDown className="h-4 w-4" style={{ transform: 'rotate(-90deg)' }} />
           <Link href={breadcrumb.href} style={{ textDecoration: 'none' }}>

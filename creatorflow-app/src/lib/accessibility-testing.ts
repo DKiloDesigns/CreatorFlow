@@ -137,7 +137,7 @@ export class SACAAccessibilityTester {
     violations.push(...keyboardViolations);
 
     // Test 4: Check for color contrast
-    const contrastViolations = this.checkColorContrast();
+    const contrastViolations = await this.checkColorContrast();
     violations.push(...contrastViolations);
 
     // Test 5: Check for focus indicators
@@ -280,11 +280,12 @@ export class SACAAccessibilityTester {
   /**
    * Check for color contrast compliance using enhanced color contrast utility
    */
-  private checkColorContrast(): AccessibilityViolation[] {
+  private async checkColorContrast(): Promise<AccessibilityViolation[]> {
     const violations: AccessibilityViolation[] = [];
     
-    // Import color contrast utilities dynamically
-    import('./color-contrast').then(({ calculateContrastRatio, checkWCAGCompliance }) => {
+    try {
+      // Import color contrast utilities dynamically
+      const { calculateContrastRatio, checkWCAGCompliance } = await import('./color-contrast');
       const textElements = document.querySelectorAll('p, span, div, h1, h2, h3, h4, h5, h6, button, a, input, textarea, select, label');
       
       textElements.forEach((element) => {
@@ -313,7 +314,7 @@ export class SACAAccessibilityTester {
               violations.push({
                 id: 'color-contrast',
                 impact,
-                description: `Insufficient color contrast: ${result.ratio.toFixed(2)}:1 (required: ${result.ratio < 3.0 ? '3.0:1' : '4.5:1})`,
+                description: `Insufficient color contrast: ${result.ratio.toFixed(2)}:1 (required: ${result.ratio < 3.0 ? '3.0:1' : '4.5:1'})`,
                 help: result.recommendation || 'Ensure text has sufficient contrast with its background',
                 helpUrl: 'https://dequeuniversity.com/rules/axe/4.7/color-contrast',
                 tags: ['wcag2aa', 'wcag143'],
@@ -329,9 +330,9 @@ export class SACAAccessibilityTester {
           console.warn('Error checking color contrast for element:', element, error);
         }
       });
-    }).catch(error => {
+    } catch (error) {
       console.warn('Failed to load color contrast utilities:', error);
-    });
+    }
 
     return violations;
   }

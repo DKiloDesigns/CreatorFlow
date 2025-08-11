@@ -85,7 +85,7 @@ const TIMEZONES = [
   'UTC', 'EST', 'PST', 'CST', 'MST', 'GMT', 'CET', 'JST', 'AEST', 'IST'
 ];
 
-const DAYS_OF_WEEK = [
+const _DAYS_OF_WEEK = [
   'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'
 ];
 
@@ -422,7 +422,7 @@ export function OptimalPostingTimePredictor({ provider }: OptimalPostingTimePred
           {/* Advanced Settings */}
           <div className="space-y-4">
             <Button
-              variant="outline"
+              variant="outlined"
               onClick={() => setShowAdvanced(!showAdvanced)}
               className="w-full"
             >
@@ -487,7 +487,7 @@ export function OptimalPostingTimePredictor({ provider }: OptimalPostingTimePred
             onClick={analyzePostingTimes}
             disabled={isAnalyzing || (!targetAudience.trim() && !industry.trim())}
             className="w-full"
-            size="lg"
+            size="large"
           >
             {isAnalyzing ? (
               <>

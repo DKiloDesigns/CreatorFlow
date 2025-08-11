@@ -24,7 +24,7 @@ const Skeleton = forwardRef<HTMLDivElement, SkeletonProps>(
     width,
     height,
     lines = 1,
-    lineHeight = 1.5,
+    _lineHeight = 1.5,
     spacing = 0.5,
     animated = true,
     fullWidth = false,

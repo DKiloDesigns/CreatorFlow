@@ -1,10 +1,14 @@
 'use client';
 
 import React, { forwardRef } from 'react';
-import { cn } from '@/lib/utils';
-import { Loader2 } from 'lucide-react';
+import { 
+  Button as MuiButton, 
+  ButtonProps as MuiButtonProps,
+  CircularProgress
+} from '@mui/material';
+import { styled } from '@mui/material/styles';
 
-export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps extends Omit<MuiButtonProps, 'variant' | 'size'> {
   variant?: 'primary' | 'secondary' | 'outline' | 'ghost' | 'destructive' | 'link';
   size?: 'sm' | 'md' | 'lg' | 'xl';
   loading?: boolean;
@@ -14,10 +18,114 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
   rounded?: 'sm' | 'md' | 'lg' | 'full';
 }
 
+// Custom styled MUI Button
+const StyledButton = styled(MuiButton, {
+  shouldForwardProp: (prop) => !['rounded'].includes(prop as string),
+})<ButtonProps>(({ theme, variant, size, rounded = 'md' }) => ({
+  // Base styles
+  transition: 'all 0.2s ease-in-out',
+  '&:active': {
+    transform: 'scale(0.95)',
+  },
+  
+  // Border radius
+  borderRadius: rounded === 'sm' ? theme.shape.borderRadius * 0.5 : 
+               rounded === 'md' ? theme.shape.borderRadius : 
+               rounded === 'lg' ? theme.shape.borderRadius * 1.5 : 
+               '50px',
+  
+  // Size variants
+  ...(size === 'sm' && {
+    padding: theme.spacing(1, 1.5),
+    fontSize: theme.typography.body2.fontSize,
+  }),
+  ...(size === 'md' && {
+    padding: theme.spacing(1.5, 2),
+    fontSize: theme.typography.body2.fontSize,
+  }),
+  ...(size === 'lg' && {
+    padding: theme.spacing(2, 3),
+    fontSize: theme.typography.body1.fontSize,
+  }),
+  ...(size === 'xl' && {
+    padding: theme.spacing(2.5, 4),
+    fontSize: theme.typography.h6.fontSize,
+  }),
+  
+  // Variant styles
+  ...(variant === 'primary' && {
+    backgroundColor: theme.palette.primary.main,
+    color: theme.palette.primary.contrastText,
+    '&:hover': {
+      backgroundColor: theme.palette.primary.dark,
+      boxShadow: theme.shadows[4],
+    },
+    '&:focus': {
+      boxShadow: `0 0 0 2px ${theme.palette.primary.main}40`,
+    },
+  }),
+  ...(variant === 'secondary' && {
+    backgroundColor: theme.palette.secondary.main,
+    color: theme.palette.secondary.contrastText,
+    '&:hover': {
+      backgroundColor: theme.palette.secondary.dark,
+      boxShadow: theme.shadows[4],
+    },
+    '&:focus': {
+      boxShadow: `0 0 0 2px ${theme.palette.secondary.main}40`,
+    },
+  }),
+  ...(variant === 'outline' && {
+    backgroundColor: 'transparent',
+    color: theme.palette.text.primary,
+    border: `1px solid ${theme.palette.divider}`,
+    '&:hover': {
+      backgroundColor: theme.palette.action.hover,
+      borderColor: theme.palette.primary.main,
+    },
+    '&:focus': {
+      boxShadow: `0 0 0 2px ${theme.palette.primary.main}40`,
+    },
+  }),
+  ...(variant === 'ghost' && {
+    backgroundColor: 'transparent',
+    color: theme.palette.text.primary,
+    '&:hover': {
+      backgroundColor: theme.palette.action.hover,
+    },
+    '&:focus': {
+      boxShadow: `0 0 0 2px ${theme.palette.primary.main}40`,
+    },
+  }),
+  ...(variant === 'destructive' && {
+    backgroundColor: theme.palette.error.main,
+    color: theme.palette.error.contrastText,
+    '&:hover': {
+      backgroundColor: theme.palette.error.dark,
+      boxShadow: theme.shadows[4],
+    },
+    '&:focus': {
+      boxShadow: `0 0 0 2px ${theme.palette.error.main}40`,
+    },
+  }),
+  ...(variant === 'link' && {
+    backgroundColor: 'transparent',
+    color: theme.palette.primary.main,
+    textDecoration: 'underline',
+    textUnderlineOffset: '4px',
+    '&:hover': {
+      textDecoration: 'underline',
+      backgroundColor: 'transparent',
+    },
+    '&:focus': {
+      boxShadow: `0 0 0 2px ${theme.palette.primary.main}40`,
+    },
+  }),
+}));
+
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
   (
     {
-      className,
       variant = 'primary',
       size = 'md',
       loading = false,
@@ -31,88 +139,36 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     },
     ref
   ) => {
-    const baseClasses = cn(
-      // Base styles
-      'inline-flex items-center justify-center font-medium transition-all duration-200',
-      'focus:outline-none focus:ring-2 focus:ring-offset-2',
-      'disabled:opacity-50 disabled:cursor-not-allowed',
-      'active:scale-95',
-      
-      // Size variants
-      size === 'sm' && 'px-3 py-1.5 text-sm',
-      size === 'md' && 'px-4 py-2 text-sm',
-      size === 'lg' && 'px-6 py-3 text-base',
-      size === 'xl' && 'px-8 py-4 text-lg',
-      
-      // Width
-      fullWidth && 'w-full',
-      
-      // Border radius
-      rounded === 'sm' && 'rounded',
-      rounded === 'md' && 'rounded-md',
-      rounded === 'lg' && 'rounded-lg',
-      rounded === 'full' && 'rounded-full',
-      
-      // Variant styles
-      variant === 'primary' && [
-        'bg-primary text-primary-foreground hover:bg-primary-dark',
-        'focus:ring-primary shadow-sm hover:shadow-md',
-        'border border-transparent'
-      ],
-      variant === 'secondary' && [
-        'bg-secondary text-secondary-foreground hover:bg-secondary-dark',
-        'focus:ring-secondary shadow-sm hover:shadow-md',
-        'border border-transparent'
-      ],
-      variant === 'outline' && [
-        'bg-transparent text-foreground border border-border',
-        'hover:bg-accent hover:text-accent-foreground',
-        'focus:ring-border'
-      ],
-      variant === 'ghost' && [
-        'bg-transparent text-foreground hover:bg-accent hover:text-accent-foreground',
-        'focus:ring-border'
-      ],
-      variant === 'destructive' && [
-        'bg-error text-error-foreground hover:bg-error-dark',
-        'focus:ring-error shadow-sm hover:shadow-md',
-        'border border-transparent'
-      ],
-      variant === 'link' && [
-        'bg-transparent text-primary underline-offset-4 hover:underline',
-        'focus:ring-primary'
-      ],
-      
-      className
-    );
+    // Map custom variants to MUI variants
+    const muiVariant = variant === 'outline' ? 'outlined' : 
+                       variant === 'ghost' ? 'text' : 
+                       variant === 'link' ? 'text' : 'contained';
+    
+    // Map custom sizes to MUI sizes
+    const muiSize = size === 'sm' ? 'small' : 
+                    size === 'md' ? 'medium' : 
+                    size === 'lg' ? 'large' : 'large';
 
     return (
-      <button
-        className={baseClasses}
+      <StyledButton
         ref={ref}
+        variant={muiVariant}
+        size={muiSize}
         disabled={disabled || loading}
+        fullWidth={fullWidth}
+        rounded={rounded}
+        startIcon={!loading && leftIcon}
+        endIcon={!loading && rightIcon}
         {...props}
       >
         {loading && (
-          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+          <CircularProgress 
+            size={size === 'sm' ? 16 : size === 'md' ? 20 : 24} 
+            sx={{ mr: 1 }} 
+          />
         )}
-        
-        {!loading && leftIcon && (
-          <span className="mr-2 flex items-center">
-            {leftIcon}
-          </span>
-        )}
-        
-        <span className="flex items-center">
-          {children}
-        </span>
-        
-        {!loading && rightIcon && (
-          <span className="ml-2 flex items-center">
-            {rightIcon}
-          </span>
-        )}
-      </button>
+        {children}
+      </StyledButton>
     );
   }
 );

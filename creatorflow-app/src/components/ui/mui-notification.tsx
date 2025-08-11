@@ -7,9 +7,7 @@ import {
   IconButton,
   Box,
   Typography,
-  Collapse,
   Paper,
-  Stack,
   Chip,
   Badge,
   List,
@@ -24,8 +22,6 @@ import {
   Error,
   Warning,
   Info,
-  Notifications,
-  NotificationsActive,
   NotificationsNone,
 } from '@mui/icons-material';
 
@@ -179,10 +175,10 @@ export function ToastNotification({ notification, onClose }: ToastNotificationPr
 interface NotificationCenterProps {
   open: boolean;
   onClose: () => void;
-  anchorEl?: HTMLElement | null;
+  _anchorEl?: HTMLElement | null;
 }
 
-export function NotificationCenter({ open, onClose, anchorEl }: NotificationCenterProps) {
+export function NotificationCenter({ open, onClose, _anchorEl }: NotificationCenterProps) {
   const { notifications, removeNotification, markAsRead, clearAll, unreadCount } = useNotifications();
 
   const handleNotificationClick = (notification: Notification) => {
@@ -215,8 +211,8 @@ export function NotificationCenter({ open, onClose, anchorEl }: NotificationCent
     <Paper
       sx={{
         position: 'absolute',
-        top: anchorEl ? anchorEl.offsetTop + anchorEl.offsetHeight + 8 : 0,
-        right: anchorEl ? 0 : 'auto',
+        top: _anchorEl ? _anchorEl.offsetTop + _anchorEl.offsetHeight + 8 : 0,
+        right: _anchorEl ? 0 : 'auto',
         width: 400,
         maxHeight: 500,
         overflow: 'hidden',

@@ -1,10 +1,23 @@
 'use client';
 
-import React, { forwardRef } from 'react';
-import { cn } from '@/lib/utils';
-import { Eye, EyeOff, Search, X } from 'lucide-react';
+import React, { forwardRef, useState } from 'react';
+import { 
+  TextField, 
+  TextFieldProps as MuiTextFieldProps,
+  InputAdornment,
+  IconButton,
+  FormHelperText,
+  Box
+} from '@mui/material';
+import { styled } from '@mui/material/styles';
+import { 
+  Visibility, 
+  VisibilityOff, 
+  Search, 
+  Clear 
+} from '@mui/icons-material';
 
-export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+export interface InputProps extends Omit<MuiTextFieldProps, 'variant' | 'size' | 'color'> {
   variant?: 'default' | 'outlined' | 'filled' | 'minimal';
   size?: 'sm' | 'md' | 'lg' | 'xl';
   state?: 'default' | 'success' | 'warning' | 'error';
@@ -19,10 +32,116 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
   errorText?: string;
 }
 
-const Input = forwardRef<HTMLInputElement, InputProps>(
+// Custom styled MUI TextField
+const StyledTextField = styled(TextField, {
+  shouldForwardProp: (prop) => !['variant', 'state', 'size'].includes(prop as string),
+})<InputProps>(({ theme, variant = 'default', state = 'default', size = 'md' }) => ({
+  // Size variants
+  ...(size === 'sm' && {
+    '& .MuiInputBase-root': {
+      fontSize: theme.typography.body2.fontSize,
+      padding: theme.spacing(1, 1.5),
+    },
+  }),
+  ...(size === 'md' && {
+    '& .MuiInputBase-root': {
+      fontSize: theme.typography.body2.fontSize,
+      padding: theme.spacing(1.5, 2),
+    },
+  }),
+  ...(size === 'lg' && {
+    '& .MuiInputBase-root': {
+      fontSize: theme.typography.body1.fontSize,
+      padding: theme.spacing(2, 2.5),
+    },
+  }),
+  ...(size === 'xl' && {
+    '& .MuiInputBase-root': {
+      fontSize: theme.typography.h6.fontSize,
+      padding: theme.spacing(2.5, 3),
+    },
+  }),
+  
+  // Variant styles
+  ...(variant === 'default' && {
+    '& .MuiOutlinedInput-root': {
+      '&:hover .MuiOutlinedInput-notchedOutline': {
+        borderColor: theme.palette.primary.main + '80',
+      },
+    },
+  }),
+  ...(variant === 'outlined' && {
+    '& .MuiOutlinedInput-root': {
+      '& .MuiOutlinedInput-notchedOutline': {
+        borderWidth: '2px',
+      },
+      '&:hover .MuiOutlinedInput-notchedOutline': {
+        borderColor: theme.palette.primary.main + '80',
+      },
+    },
+  }),
+  ...(variant === 'filled' && {
+    '& .MuiFilledInput-root': {
+      backgroundColor: theme.palette.action.hover,
+      '&:hover': {
+        backgroundColor: theme.palette.action.hover + 'CC',
+      },
+      '&.Mui-focused': {
+        backgroundColor: theme.palette.background.paper,
+      },
+    },
+  }),
+  ...(variant === 'minimal' && {
+    '& .MuiOutlinedInput-root': {
+      borderRadius: 0,
+      border: 'none',
+      borderBottom: `2px solid ${theme.palette.divider}`,
+      '&:hover': {
+        borderBottomColor: theme.palette.primary.main + '80',
+      },
+      '&.Mui-focused': {
+        borderBottomColor: theme.palette.primary.main,
+        boxShadow: 'none',
+      },
+    },
+  }),
+  
+  // State styles
+  ...(state === 'success' && {
+    '& .MuiOutlinedInput-root': {
+      '& .MuiOutlinedInput-notchedOutline': {
+        borderColor: theme.palette.success.main,
+      },
+      '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+        borderColor: theme.palette.success.main,
+      },
+    },
+  }),
+  ...(state === 'warning' && {
+    '& .MuiOutlinedInput-root': {
+      '& .MuiOutlinedInput-notchedOutline': {
+        borderColor: theme.palette.warning.main,
+      },
+      '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+        borderColor: theme.palette.warning.main,
+      },
+    },
+  }),
+  ...(state === 'error' && {
+    '& .MuiOutlinedInput-root': {
+      '& .MuiOutlinedInput-notchedOutline': {
+        borderColor: theme.palette.error.main,
+      },
+      '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+        borderColor: theme.palette.error.main,
+      },
+    },
+  }),
+}));
+
+const Input = forwardRef<HTMLDivElement, InputProps>(
   (
     {
-      className,
       variant = 'default',
       size = 'md',
       state = 'default',
@@ -42,9 +161,8 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     },
     ref
   ) => {
-    const [showPassword, setShowPassword] = React.useState(false);
-    const [inputValue, setInputValue] = React.useState(value || '');
-    const [isFocused, setIsFocused] = React.useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [inputValue, setInputValue] = useState(value || '');
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       setInputValue(e.target.value);
@@ -59,157 +177,79 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
       onChange?.(event);
     };
 
-    const baseClasses = cn(
-      // Base styles
-      'w-full border bg-background text-foreground',
-      'placeholder:text-muted-foreground',
-      'focus:outline-none focus:ring-2 focus:ring-offset-2',
-      'disabled:opacity-50 disabled:cursor-not-allowed',
-      'transition-all duration-200',
-      
-      // Size variants
-      size === 'sm' && 'px-3 py-1.5 text-sm',
-      size === 'md' && 'px-4 py-2 text-sm',
-      size === 'lg' && 'px-4 py-3 text-base',
-      size === 'xl' && 'px-5 py-4 text-lg',
-      
-      // Width
-      fullWidth && 'w-full',
-      
-      // Variant styles
-      variant === 'default' && [
-        'border-border rounded-md',
-        'focus:border-primary focus:ring-primary',
-        'hover:border-primary/50'
-      ],
-      variant === 'outlined' && [
-        'border-2 border-border rounded-md',
-        'focus:border-primary focus:ring-primary',
-        'hover:border-primary/50'
-      ],
-      variant === 'filled' && [
-        'border-transparent bg-muted rounded-md',
-        'focus:bg-background focus:border-primary focus:ring-primary',
-        'hover:bg-muted/80'
-      ],
-      variant === 'minimal' && [
-        'border-transparent border-b-2 border-border rounded-none',
-        'focus:border-primary focus:ring-0',
-        'hover:border-primary/50'
-      ],
-      
-      // State styles
-      state === 'success' && [
-        'border-success focus:ring-success',
-        'focus:border-success'
-      ],
-      state === 'warning' && [
-        'border-warning focus:ring-warning',
-        'focus:border-warning'
-      ],
-      state === 'error' && [
-        'border-error focus:ring-error',
-        'focus:border-error'
-      ],
-      
-      // Focus state
-      isFocused && 'ring-2 ring-primary ring-offset-2',
-      
-      className
-    );
+    // Map custom variant to MUI variant
+    const muiVariant = variant === 'filled' ? 'filled' : 'outlined';
+    
+    // Map custom size to MUI size
+    const muiSize = size === 'sm' ? 'small' : 
+                    size === 'md' ? 'medium' : 'large';
 
+    // Determine input type
     const inputType = password && showPassword ? 'text' : type || 'text';
 
+    // Build start adornment (left icon)
+    const startAdornment = leftIcon ? (
+      <InputAdornment position="start">
+        {leftIcon}
+      </InputAdornment>
+    ) : undefined;
+
+    // Build end adornment (right icons)
+    const endAdornment = (
+      <InputAdornment position="end">
+        {searchable && <Search color="action" />}
+        {password && (
+          <IconButton
+            onClick={() => setShowPassword(!showPassword)}
+            edge="end"
+            size="small"
+          >
+            {showPassword ? <VisibilityOff /> : <Visibility />}
+          </IconButton>
+        )}
+        {clearable && inputValue && (
+          <IconButton
+            onClick={handleClear}
+            edge="end"
+            size="small"
+          >
+            <Clear />
+          </IconButton>
+        )}
+        {rightIcon && !clearable && !password && !searchable && rightIcon}
+      </InputAdornment>
+    );
+
     return (
-      <div className={cn('space-y-2', fullWidth && 'w-full')}>
-        {/* Label */}
-        {label && (
-          <label className="text-sm font-medium text-foreground">
-            {label}
-          </label>
+      <Box sx={{ width: fullWidth ? '100%' : 'auto' }}>
+        <StyledTextField
+          ref={ref}
+          variant={muiVariant}
+          size={muiSize}
+          fullWidth={fullWidth}
+          label={label}
+          value={inputValue}
+          onChange={handleChange}
+          type={inputType}
+          error={state === 'error' || !!errorText}
+          InputProps={{
+            startAdornment,
+            endAdornment,
+          }}
+          variant={muiVariant}
+          state={state}
+          size={size}
+          {...props}
+        />
+        {(helperText || errorText) && (
+          <FormHelperText 
+            error={!!errorText}
+            sx={{ mt: 0.5 }}
+          >
+            {errorText || helperText}
+          </FormHelperText>
         )}
-        
-        {/* Input Container */}
-        <div className="relative">
-          {/* Left Icon */}
-          {leftIcon && (
-            <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground">
-              {leftIcon}
-            </div>
-          )}
-          
-          {/* Input Element */}
-          <input
-            ref={ref}
-            type={inputType}
-            value={inputValue}
-            onChange={handleChange}
-            onFocus={() => setIsFocused(true)}
-            onBlur={() => setIsFocused(false)}
-            className={cn(
-              baseClasses,
-              leftIcon && 'pl-10',
-              (rightIcon || clearable || password || searchable) && 'pr-10'
-            )}
-            {...props}
-          />
-          
-          {/* Right Icons Container */}
-          <div className="absolute right-3 top-1/2 transform -translate-y-1/2 flex items-center space-x-1">
-            {/* Search Icon */}
-            {searchable && (
-              <Search className="h-4 w-4 text-muted-foreground" />
-            )}
-            
-            {/* Password Toggle */}
-            {password && (
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="text-muted-foreground hover:text-foreground transition-colors"
-              >
-                {showPassword ? (
-                  <EyeOff className="h-4 w-4" />
-                ) : (
-                  <Eye className="h-4 w-4" />
-                )}
-              </button>
-            )}
-            
-            {/* Clear Button */}
-            {clearable && inputValue && (
-              <button
-                type="button"
-                onClick={handleClear}
-                className="text-muted-foreground hover:text-foreground transition-colors"
-              >
-                <X className="h-4 w-4" />
-              </button>
-            )}
-            
-            {/* Custom Right Icon */}
-            {rightIcon && !clearable && !password && !searchable && (
-              <div className="text-muted-foreground">
-                {rightIcon}
-              </div>
-            )}
-          </div>
-        </div>
-        
-        {/* Helper Text */}
-        {helperText && !errorText && (
-          <p className="text-sm text-muted-foreground">
-            {helperText}
-          </p>
-        )}
-        
-        {/* Error Text */}
-        {errorText && (
-          <p className="text-sm text-error">
-            {errorText}
-          </p>
-        )}
-      </div>
+      </Box>
     );
   }
 );

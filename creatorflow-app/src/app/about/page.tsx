@@ -17,7 +17,7 @@ export default function AboutPage() {
             Empowering Creators Worldwide
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-300 mb-8">
-            We're building the future of content creation, one creator at a time.
+            We&apos;re building the future of content creation, one creator at a time.
           </p>
         </div>
       </section>

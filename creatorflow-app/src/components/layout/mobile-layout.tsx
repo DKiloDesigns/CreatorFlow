@@ -2,6 +2,7 @@
 
 import { ReactNode } from 'react';
 import { BottomNavigation } from '@/components/navigation/bottom-nav';
+import { Box } from '@mui/material';
 
 interface MobileLayoutProps {
   children: ReactNode;
@@ -9,14 +10,22 @@ interface MobileLayoutProps {
 
 export function MobileLayout({ children }: MobileLayoutProps) {
   return (
-    <div className="min-h-screen bg-background">
+    <Box sx={{ 
+      minHeight: '100vh', 
+      bgcolor: 'background.default',
+      display: 'flex',
+      flexDirection: 'column'
+    }}>
       {/* Top navigation and main content */}
-      <div className="pb-20 md:pb-0">
+      <Box sx={{ 
+        flexGrow: 1,
+        pb: { xs: 20, md: 0 } // 20 = 80px for bottom nav on mobile, 0 on desktop
+      }}>
         {children}
-      </div>
+      </Box>
       
       {/* Bottom navigation - only shows on mobile (hidden on md and up) */}
       <BottomNavigation />
-    </div>
+    </Box>
   );
 } 

@@ -13,9 +13,11 @@ import {
   Tab,
   TextField
 } from '@mui/material';
-import { Settings, Zap, Code, Database, Cloud, Shield, Activity, RefreshCw, Plus, Plug, CheckCircle, TrendingUp, Eye, BarChart3 } from 'lucide-react';
+import { CardDescription } from '@/components/ui/base/Card';
+import { Settings, Zap, Code, Database, Cloud, Shield, Activity, RefreshCw, Plus, Plug, CheckCircle, TrendingUp, Eye, BarChart3, Webhook, Edit } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Label, Input } from '@/components/ui';
 
 interface Integration {
   id: string;
@@ -338,7 +340,7 @@ export default function AdvancedIntegrationsPage() {
                             </span>
                           </div>
                         </div>
-                        <Button size="sm" variant="outline">
+                        <Button size="sm" variant="outlined">
                           <Eye className="h-3 w-3" />
                         </Button>
                       </div>
@@ -424,13 +426,13 @@ export default function AdvancedIntegrationsPage() {
                           </div>
                         </div>
                         <div className="flex gap-2">
-                          <Button size="sm" variant="outline" onClick={() => checkHealth(integration.id)}>
+                          <Button size="sm" variant="outlined" onClick={() => checkHealth(integration.id)}>
                             <Activity className="h-3 w-3" />
                           </Button>
-                          <Button size="sm" variant="outline" onClick={() => startSync(integration.id)}>
+                          <Button size="sm" variant="outlined" onClick={() => startSync(integration.id)}>
                             <RefreshCw className="h-3 w-3" />
                           </Button>
-                          <Button size="sm" variant="outline">
+                          <Button size="sm" variant="outlined">
                             <Settings className="h-3 w-3" />
                           </Button>
                         </div>
@@ -477,10 +479,10 @@ export default function AdvancedIntegrationsPage() {
                           </div>
                         </div>
                         <div className="flex gap-2">
-                          <Button size="sm" variant="outline">
+                          <Button size="small" variant="outlined">
                             <Eye className="h-3 w-3" />
                           </Button>
-                          <Button size="sm" variant="outline">
+                          <Button size="small" variant="outlined">
                             <Edit className="h-3 w-3" />
                           </Button>
                         </div>
@@ -542,10 +544,10 @@ export default function AdvancedIntegrationsPage() {
                         </div>
                       </div>
                       <div className="flex gap-2">
-                        <Button size="sm" variant="outline" onClick={() => startSync(integration.id, 'incremental')}>
+                        <Button size="small" variant="outlined" onClick={() => startSync(integration.id, 'incremental')}>
                           <RefreshCw className="h-3 w-3" />
                         </Button>
-                        <Button size="sm" variant="outline" onClick={() => startSync(integration.id, 'full')}>
+                        <Button size="small" variant="outlined" onClick={() => startSync(integration.id, 'full')}>
                           <Database className="h-3 w-3" />
                         </Button>
                       </div>

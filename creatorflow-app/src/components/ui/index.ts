@@ -24,8 +24,7 @@ export type { ContainerProps } from './layout/Container';
 export { Grid, GridItem } from './layout/Grid';
 export type { GridProps } from './layout/Grid';
 
-export { Stack, VStack, HStack, StackItem } from './layout/Stack';
-export type { StackProps } from './layout/Stack';
+
 
 export { Divider } from './layout/Divider';
 export type { DividerProps } from './layout/Divider';
@@ -54,9 +53,13 @@ export { Pagination } from './navigation/Pagination';
 export type { PaginationProps } from './navigation/Pagination';
 
 // Data Display Components
-export { Table } from './data-display/Table';
-export type { TableProps } from './data-display/Table';
+// export { Table } from './data-display/Table';
+// export type { TableProps } from './data-display/Table';
 
 // Overlay Components
-export { Modal } from './overlay/Modal';
-export type { ModalProps } from './overlay/Modal';
+// export { Modal } from './overlay/Modal';
+// export type { ModalProps } from './overlay/Modal';
+
+// Additional Components
+export { Label } from './label';
+export { Select, SelectGroup, SelectValue, SelectTrigger, SelectContent, SelectLabel, SelectItem, SelectSeparator, SelectScrollUpButton, SelectScrollDownButton } from './select';

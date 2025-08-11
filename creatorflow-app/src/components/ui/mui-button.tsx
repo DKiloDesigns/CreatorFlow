@@ -135,7 +135,7 @@ const StyledButton = styled(MuiButton, {
 export interface ButtonProps extends Omit<MuiButtonProps, 'variant' | 'size'> {
   variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link';
   size?: 'default' | 'sm' | 'lg' | 'icon';
-  asChild?: boolean;
+  _asChild?: boolean;
   /** SACA: ARIA label for screen readers */
   ariaLabel?: string;
   /** SACA: ARIA describedby for additional context */
@@ -152,7 +152,7 @@ export function Button({
   className,
   variant = 'default',
   size = 'default',
-  asChild = false,
+  _asChild = false,
   children,
   ariaLabel,
   ariaDescribedBy,

@@ -16,7 +16,7 @@ export default function TailwindStatusPage() {
       
       <div style={{ padding: '1rem', backgroundColor: '#fee2e2', borderLeft: '4px solid #ef4444', marginBottom: '1rem' }}>
         <h2 style={{ fontSize: '1.25rem', fontWeight: 'bold', marginBottom: '0.5rem', color: '#b91c1c' }}>Tailwind CSS is NOT working</h2>
-        <p>If you can see this message with red styling, but don't see the blue box below with Tailwind styling, then Tailwind CSS is not processing correctly.</p>
+        <p>If you can see this message with red styling, but don&apos;t see the blue box below with Tailwind styling, then Tailwind CSS is not processing correctly.</p>
       </div>
       
       <div className="mt-4 p-4 bg-blue-100 border-l-4 border-blue-500 text-blue-700">

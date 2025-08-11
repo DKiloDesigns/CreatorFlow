@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, CardContent, CardHeader } from './mui-card';
-import { Typography, Skeleton, Chip, Stack } from '@mui/material';
+import { Typography, Skeleton, Stack } from '@mui/material';
 import { TrendingUp, TrendingDown } from 'lucide-react';
 import { LucideIcon } from 'lucide-react';
 

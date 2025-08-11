@@ -71,7 +71,7 @@ export default function ForgotPasswordPage() {
               </Typography>
             </div>
             <Typography variant="body2" color="text.secondary">
-              Enter your email address and we'll send you a link to reset your password.
+              Enter your email address and we&apos;ll send you a link to reset your password.
             </Typography>
           </CardHeader>
           <CardContent>

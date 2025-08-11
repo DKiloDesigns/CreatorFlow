@@ -164,7 +164,7 @@ export default function AIPage() {
           <p className="text-muted-foreground">Generate, optimize, and enhance your content with AI</p>
         </div>
         <div className="flex gap-2">
-          <Button onClick={getSuggestions} disabled={loading} variant="outline">
+          <Button onClick={getSuggestions} disabled={loading} variant="outlined">
             <Brain className="h-4 w-4 mr-2" />
             Get Suggestions
           </Button>

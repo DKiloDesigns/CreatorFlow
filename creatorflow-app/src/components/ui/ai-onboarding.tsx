@@ -75,7 +75,7 @@ export function AIOnboarding({ onComplete, className }: AIOnboardingProps) {
             </div>
             <h2 className="text-2xl font-bold mb-2">Setup Complete!</h2>
             <p className="text-muted-foreground">
-              Your AI features are now ready to use. Let's get started!
+              Your AI features are now ready to use. Let&apos;s get started!
             </p>
           </div>
           <Button onClick={onComplete} className="w-full">

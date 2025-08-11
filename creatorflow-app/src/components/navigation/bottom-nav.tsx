@@ -11,7 +11,15 @@ import {
   User,
   Upload
 } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { 
+  Box, 
+  Paper, 
+  IconButton, 
+  Typography, 
+  Button,
+  Avatar,
+  Badge
+} from '@mui/material';
 import { useState, useRef } from 'react';
 
 const navItems = [
@@ -106,70 +114,143 @@ function ProfilePicture({ session, isActive }: { session: any; isActive: boolean
   };
 
   return (
-    <div className="relative">
+    <Box sx={{ position: 'relative' }}>
       <input
         ref={fileInputRef}
         type="file"
         accept="image/*"
         onChange={handleFileUpload}
-        className="hidden"
+        style={{ display: 'none' }}
       />
       
-      <button
+      <Button
         onClick={handleImageClick}
         disabled={isUploading}
-        className={cn(
-          "flex flex-col items-center justify-center w-20 h-16 rounded-lg transition-all duration-200 min-w-[44px] min-h-[44px] relative group",
-          isActive 
-            ? "text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20" 
-            : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800/50"
-        )}
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: 80,
+          height: 64,
+          borderRadius: 2,
+          minWidth: 44,
+          minHeight: 44,
+          position: 'relative',
+          color: isActive ? 'primary.main' : 'text.secondary',
+          bgcolor: isActive ? 'primary.50' : 'transparent',
+          '&:hover': {
+            bgcolor: isActive ? 'primary.100' : 'action.hover'
+          },
+          '&:disabled': {
+            opacity: 0.6
+          }
+        }}
       >
         {userImage ? (
-          <div className="relative">
-            <img 
+          <Box sx={{ position: 'relative' }}>
+            <Avatar 
               src={userImage} 
               alt={userName}
-              className="w-8 h-8 rounded-full object-cover border-2 border-current"
+              sx={{ 
+                width: 32, 
+                height: 32, 
+                border: 2, 
+                borderColor: 'currentColor' 
+              }}
             />
             {isUploading && (
-              <div className="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center">
-                <Upload className="w-4 h-4 text-white animate-pulse" />
-              </div>
+              <Box sx={{
+                position: 'absolute',
+                inset: 0,
+                bgcolor: 'rgba(0,0,0,0.5)',
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}>
+                <Upload size={16} style={{ color: 'white' }} />
+              </Box>
             )}
             {/* Upload indicator */}
-            <div className="absolute -top-1 -right-1 w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-              <Upload className="w-2.5 h-2.5 text-white" />
-            </div>
-          </div>
+            <Box sx={{
+              position: 'absolute',
+              top: -4,
+              right: -4,
+              width: 16,
+              height: 16,
+              bgcolor: 'primary.main',
+              borderRadius: '50%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              opacity: 0,
+              '&:hover': { opacity: 1 },
+              transition: 'opacity 0.2s'
+            }}>
+              <Upload size={10} style={{ color: 'white' }} />
+            </Box>
+          </Box>
         ) : (
-          <div className="relative">
-            <div className={cn(
-              "w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold border-2 border-current",
-              isActive ? "text-blue-600 dark:text-blue-400" : "text-gray-600 dark:text-gray-400"
-            )}>
+          <Box sx={{ position: 'relative' }}>
+            <Avatar sx={{ 
+              width: 32, 
+              height: 32, 
+              bgcolor: 'transparent',
+              border: 2, 
+              borderColor: 'currentColor',
+              color: 'inherit',
+              fontSize: '0.875rem',
+              fontWeight: 'bold'
+            }}>
               {getInitials(userName)}
-            </div>
+            </Avatar>
             {isUploading && (
-              <div className="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center">
-                <Upload className="w-4 h-4 text-white animate-pulse" />
-              </div>
+              <Box sx={{
+                position: 'absolute',
+                inset: 0,
+                bgcolor: 'rgba(0,0,0,0.5)',
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}>
+                <Upload size={16} style={{ color: 'white' }} />
+              </Box>
             )}
             {/* Upload indicator */}
-            <div className="absolute -top-1 -right-1 w-4 h-4 bg-blue-500 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-              <Upload className="w-2.5 h-2.5 text-white" />
-            </div>
-          </div>
+            <Box sx={{
+              position: 'absolute',
+              top: -4,
+              right: -4,
+              width: 16,
+              height: 16,
+              bgcolor: 'primary.main',
+              borderRadius: '50%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              opacity: 0,
+              '&:hover': { opacity: 1 },
+              transition: 'opacity 0.2s'
+            }}>
+              <Upload size={10} style={{ color: 'white' }} />
+            </Box>
+          </Box>
         )}
         
-        <span className={cn(
-          "text-xs mt-1 font-medium transition-colors duration-200",
-          isActive ? "text-blue-600 dark:text-blue-400" : "text-gray-600 dark:text-gray-400"
-        )}>
+        <Typography 
+          variant="caption" 
+          sx={{ 
+            mt: 0.5, 
+            fontWeight: 500,
+            color: 'inherit'
+          }}
+        >
           Profile
-        </span>
-      </button>
-    </div>
+        </Typography>
+      </Button>
+    </Box>
   );
 }
 
@@ -178,8 +259,28 @@ export function BottomNavigation() {
   const { data: session } = useSession();
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 md:hidden shadow-lg">
-      <div className="flex items-center justify-around px-2 py-4">
+    <Paper
+      component="nav"
+      elevation={8}
+      sx={{
+        position: 'fixed',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        zIndex: 50,
+        bgcolor: 'background.paper',
+        borderTop: 1,
+        borderColor: 'divider',
+        display: { xs: 'block', md: 'none' }
+      }}
+    >
+      <Box sx={{ 
+        display: 'flex', 
+        alignItems: 'center', 
+        justifyContent: 'space-around', 
+        px: 2, 
+        py: 2 
+      }}>
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = pathname ? item.activePattern.test(pathname) : false;
@@ -190,7 +291,7 @@ export function BottomNavigation() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="block"
+                style={{ textDecoration: 'none' }}
               >
                 <ProfilePicture session={session} isActive={isActive} />
               </Link>
@@ -201,30 +302,49 @@ export function BottomNavigation() {
             <Link
               key={item.href}
               href={item.href}
-              className={cn(
-                "flex flex-col items-center justify-center w-20 h-16 rounded-lg transition-all duration-200 min-w-[44px] min-h-[44px]",
-                isActive 
-                  ? "text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20" 
-                  : "text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-800/50"
-              )}
+              style={{ textDecoration: 'none' }}
             >
-              <Icon 
-                size={22} 
-                className={cn(
-                  "transition-colors duration-200",
-                  isActive ? "text-blue-600 dark:text-blue-400" : "text-gray-600 dark:text-gray-400"
-                )} 
-              />
-              <span className={cn(
-                "text-xs mt-1 font-medium transition-colors duration-200",
-                isActive ? "text-blue-600 dark:text-blue-400" : "text-gray-600 dark:text-gray-400"
-              )}>
-                {item.label}
-              </span>
+              <Button
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  width: 80,
+                  height: 64,
+                  borderRadius: 2,
+                  minWidth: 44,
+                  minHeight: 44,
+                  color: isActive ? 'primary.main' : 'text.secondary',
+                  bgcolor: isActive ? 'primary.50' : 'transparent',
+                  '&:hover': {
+                    bgcolor: isActive ? 'primary.100' : 'action.hover'
+                  }
+                }}
+              >
+                <Icon 
+                  size={22} 
+                  style={{ 
+                    color: 'inherit',
+                    transition: 'color 0.2s'
+                  }} 
+                />
+                <Typography 
+                  variant="caption" 
+                  sx={{ 
+                    mt: 0.5, 
+                    fontWeight: 500,
+                    color: 'inherit',
+                    transition: 'color 0.2s'
+                  }}
+                >
+                  {item.label}
+                </Typography>
+              </Button>
             </Link>
           );
         })}
-      </div>
-    </nav>
+      </Box>
+    </Paper>
   );
 } 

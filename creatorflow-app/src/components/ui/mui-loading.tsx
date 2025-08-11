@@ -7,10 +7,8 @@ import {
   Typography,
   Paper,
   Stack,
-  Grid,
   Card,
   CardContent,
-  Avatar,
 } from '@mui/material';
 
 interface LoadingSpinnerProps {

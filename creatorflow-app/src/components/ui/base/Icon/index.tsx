@@ -1,16 +1,125 @@
 'use client';
 
 import React, { forwardRef } from 'react';
-import { cn } from '@/lib/utils';
+import { 
+  Icon as MuiIcon, 
+  IconProps as MuiIconProps,
+  IconButton as MuiIconButton,
+  IconButtonProps as MuiIconButtonProps,
+  Box,
+  Typography
+} from '@mui/material';
+import { styled } from '@mui/material/styles';
 import * as LucideIcons from 'lucide-react';
 
-export interface IconProps extends React.HTMLAttributes<HTMLSpanElement> {
+export interface IconProps extends Omit<MuiIconProps, 'color'> {
   name: keyof typeof LucideIcons;
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl' | '3xl' | '4xl';
   color?: 'default' | 'muted' | 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'info' | 'inherit';
   weight?: 'thin' | 'light' | 'normal' | 'medium' | 'semibold' | 'bold';
   className?: string;
 }
+
+// Custom styled MUI Icon
+const StyledIcon = styled(MuiIcon, {
+  shouldForwardProp: (prop) => !['size', 'color', 'weight'].includes(prop as string),
+})<IconProps>(({ theme, size = 'md', color = 'default', weight = 'normal' }) => ({
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  transition: 'color 0.2s ease-in-out',
+  
+  // Size variants
+  ...(size === 'xs' && {
+    fontSize: '0.75rem', // 12px
+    width: '0.75rem',
+    height: '0.75rem',
+  }),
+  ...(size === 'sm' && {
+    fontSize: '1rem', // 16px
+    width: '1rem',
+    height: '1rem',
+  }),
+  ...(size === 'md' && {
+    fontSize: '1.25rem', // 20px
+    width: '1.25rem',
+    height: '1.25rem',
+  }),
+  ...(size === 'lg' && {
+    fontSize: '1.5rem', // 24px
+    width: '1.5rem',
+    height: '1.5rem',
+  }),
+  ...(size === 'xl' && {
+    fontSize: '2rem', // 32px
+    width: '2rem',
+    height: '2rem',
+  }),
+  ...(size === '2xl' && {
+    fontSize: '2.5rem', // 40px
+    width: '2.5rem',
+    height: '2.5rem',
+  }),
+  ...(size === '3xl' && {
+    fontSize: '3rem', // 48px
+    width: '3rem',
+    height: '3rem',
+  }),
+  ...(size === '4xl' && {
+    fontSize: '4rem', // 64px
+    width: '4rem',
+    height: '4rem',
+  }),
+  
+  // Color variants
+  ...(color === 'default' && {
+    color: theme.palette.text.primary,
+  }),
+  ...(color === 'muted' && {
+    color: theme.palette.text.secondary,
+  }),
+  ...(color === 'primary' && {
+    color: theme.palette.primary.main,
+  }),
+  ...(color === 'secondary' && {
+    color: theme.palette.secondary.main,
+  }),
+  ...(color === 'success' && {
+    color: theme.palette.success.main,
+  }),
+  ...(color === 'warning' && {
+    color: theme.palette.warning.main,
+  }),
+  ...(color === 'error' && {
+    color: theme.palette.error.main,
+  }),
+  ...(color === 'info' && {
+    color: theme.palette.info.main,
+  }),
+  ...(color === 'inherit' && {
+    color: 'inherit',
+  }),
+  
+  // Weight variants (stroke width for Lucide icons)
+  ...(weight === 'thin' && {
+    strokeWidth: 1,
+  }),
+  ...(weight === 'light' && {
+    strokeWidth: 1.5,
+  }),
+  ...(weight === 'normal' && {
+    strokeWidth: 2,
+  }),
+  ...(weight === 'medium' && {
+    strokeWidth: 2.5,
+  }),
+  ...(weight === 'semibold' && {
+    strokeWidth: 3,
+  }),
+  ...(weight === 'bold' && {
+    strokeWidth: 3.5,
+  }),
+}));
 
 const Icon = forwardRef<HTMLSpanElement, IconProps>(
   (
@@ -31,65 +140,27 @@ const Icon = forwardRef<HTMLSpanElement, IconProps>(
       return null;
     }
 
-    const sizeClasses = {
-      xs: 'w-3 h-3',
-      sm: 'w-4 h-4',
-      md: 'w-5 h-5',
-      lg: 'w-6 h-6',
-      xl: 'w-8 h-8',
-      '2xl': 'w-10 h-10',
-      '3xl': 'w-12 h-12',
-      '4xl': 'w-16 h-16',
-    };
-
-    const colorClasses = {
-      default: 'text-foreground',
-      muted: 'text-muted-foreground',
-      primary: 'text-primary',
-      secondary: 'text-secondary',
-      success: 'text-success',
-      warning: 'text-warning',
-      error: 'text-error',
-      info: 'text-info',
-      inherit: 'text-inherit',
-    };
-
-    const weightClasses = {
-      thin: 'stroke-[1]',
-      light: 'stroke-[1.5]',
-      normal: 'stroke-[2]',
-      medium: 'stroke-[2.5]',
-      semibold: 'stroke-[3]',
-      bold: 'stroke-[3.5]',
-    };
-
-    const baseClasses = cn(
-      'inline-flex items-center justify-center',
-      'transition-colors duration-200',
-      sizeClasses[size],
-      colorClasses[color],
-      weightClasses[weight],
-      className
-    );
-
     return (
-      <span
+      <StyledIcon
         ref={ref}
-        className={baseClasses}
+        size={size}
+        color={color}
+        weight={weight}
+        className={className}
         {...props}
       >
         <LucideIcon />
-      </span>
+      </StyledIcon>
     );
   }
 );
 
 Icon.displayName = 'Icon';
 
-// Convenience components for common icons
+// Icon Button component
 export const IconButton = forwardRef<
   HTMLButtonElement,
-  IconProps & React.ButtonHTMLAttributes<HTMLButtonElement> & {
+  IconProps & Omit<MuiIconButtonProps, 'color'> & {
     variant?: 'ghost' | 'outline' | 'solid';
     rounded?: 'sm' | 'md' | 'lg' | 'full';
   }
@@ -106,49 +177,68 @@ export const IconButton = forwardRef<
     },
     ref
   ) => {
-    const sizeClasses = {
-      xs: 'p-1',
-      sm: 'p-1.5',
-      md: 'p-2',
-      lg: 'p-2.5',
-      xl: 'p-3',
-      '2xl': 'p-4',
-      '3xl': 'p-5',
-      '4xl': 'p-6',
-    };
+    // Map custom size to MUI size
+    const muiSize = size === 'xs' ? 'small' : 
+                    size === 'sm' ? 'small' : 
+                    size === 'md' ? 'medium' : 'large';
 
-    const variantClasses = {
-      ghost: 'hover:bg-accent hover:text-accent-foreground',
-      outline: 'border border-border hover:bg-accent hover:text-accent-foreground',
-      solid: 'bg-primary text-primary-foreground hover:bg-primary-dark',
-    };
+    // Map custom rounded to MUI rounded
+    const muiRounded = rounded === 'sm' ? 'small' : 
+                       rounded === 'md' ? 'medium' : 
+                       rounded === 'lg' ? 'large' : 'large';
 
-    const roundedClasses = {
-      sm: 'rounded',
-      md: 'rounded-md',
-      lg: 'rounded-lg',
-      full: 'rounded-full',
-    };
-
-    const baseClasses = cn(
-      'inline-flex items-center justify-center',
-      'transition-all duration-200',
-      'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary',
-      'disabled:opacity-50 disabled:cursor-not-allowed',
-      sizeClasses[size],
-      variantClasses[variant],
-      roundedClasses[rounded],
-      className
-    );
+    // Custom styled IconButton
+    const StyledIconButton = styled(MuiIconButton, {
+      shouldForwardProp: (prop) => !['variant', 'rounded'].includes(prop as string),
+    })<{ variant: string; rounded: string }>(({ theme, variant, rounded }) => ({
+      // Variant styles
+      ...(variant === 'ghost' && {
+        '&:hover': {
+          backgroundColor: theme.palette.action.hover,
+          color: theme.palette.action.active,
+        },
+      }),
+      ...(variant === 'outline' && {
+        border: `1px solid ${theme.palette.divider}`,
+        '&:hover': {
+          backgroundColor: theme.palette.action.hover,
+          borderColor: theme.palette.primary.main,
+        },
+      }),
+      ...(variant === 'solid' && {
+        backgroundColor: theme.palette.primary.main,
+        color: theme.palette.primary.contrastText,
+        '&:hover': {
+          backgroundColor: theme.palette.primary.dark,
+        },
+      }),
+      
+      // Rounded styles
+      ...(rounded === 'sm' && {
+        borderRadius: theme.shape.borderRadius * 0.5,
+      }),
+      ...(rounded === 'md' && {
+        borderRadius: theme.shape.borderRadius,
+      }),
+      ...(rounded === 'lg' && {
+        borderRadius: theme.shape.borderRadius * 1.5,
+      }),
+      ...(rounded === 'full' && {
+        borderRadius: '50%',
+      }),
+    }));
 
     return (
-      <button
+      <StyledIconButton
         ref={ref}
-        className={baseClasses}
+        size={muiSize}
+        variant={variant}
+        rounded={muiRounded}
+        className={className}
         {...props}
       >
         <Icon name={name} size={size} color={color} />
-      </button>
+      </StyledIconButton>
     );
   }
 );
@@ -177,32 +267,32 @@ export const IconText = forwardRef<
     },
     ref
   ) => {
-    const spacingClasses = {
-      sm: 'gap-1',
-      md: 'gap-2',
-      lg: 'gap-3',
+    // Map custom spacing to MUI spacing
+    const spacingMap = {
+      sm: 0.5,
+      md: 1,
+      lg: 1.5,
     };
 
-    const baseClasses = cn(
-      'inline-flex items-center',
-      spacingClasses[spacing],
-      className
-    );
-
     return (
-      <span
+      <Box
         ref={ref}
-        className={baseClasses}
+        sx={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: spacingMap[spacing],
+        }}
+        className={className}
         {...props}
       >
         {position === 'left' && (
           <Icon name={name} size={size} color={color} />
         )}
-        <span>{text}</span>
+        <Typography variant="body2">{text}</Typography>
         {position === 'right' && (
           <Icon name={name} size={size} color={color} />
         )}
-      </span>
+      </Box>
     );
   }
 );

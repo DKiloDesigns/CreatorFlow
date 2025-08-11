@@ -1,70 +1,76 @@
 'use client';
 
-import { useTheme } from 'next-themes';
-import { useEffect, useState } from 'react';
 import { IconButton, Tooltip } from '@mui/material';
-import { DarkMode, LightMode, Monitor } from '@mui/icons-material';
+import { DarkMode, LightMode } from '@mui/icons-material';
+import { useAppTheme } from '@/components/providers/mui-theme-provider';
+import { useState, useEffect } from 'react';
 
 interface ThemeToggleProps {
-  isLandingPage?: boolean;
+  _isLandingPage?: boolean;
 }
 
-export function ThemeToggle({ isLandingPage = false }: ThemeToggleProps) {
-  const [mounted, setMounted] = useState(false);
-  const { theme, setTheme } = useTheme();
-
-  // Avoid hydration mismatch
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) {
-    return (
-      <IconButton
-        size="large"
-        sx={{ minWidth: 44, minHeight: 44 }}
-      >
-        <LightMode />
-      </IconButton>
-    );
+export function ThemeToggle({ _isLandingPage = false }: ThemeToggleProps) {
+  const [fallbackTheme, setFallbackTheme] = useState<'light' | 'dark'>('light');
+  const [isContextAvailable, setIsContextAvailable] = useState(false);
+  
+  // Try to use the theme context, but fall back gracefully if not available
+  let theme: 'light' | 'dark' = fallbackTheme;
+  let toggleTheme: (() => void) | undefined;
+  
+  try {
+    const context = useAppTheme();
+    theme = context.theme;
+    toggleTheme = context.toggleTheme;
+    if (!isContextAvailable) setIsContextAvailable(true);
+  } catch (_error) {
+    // Context not available, use fallback
+    if (isContextAvailable) setIsContextAvailable(false);
   }
 
-  const toggleTheme = () => {
-    if (theme === 'light') {
-      setTheme('dark');
-    } else if (theme === 'dark') {
-      setTheme('system');
-    } else {
-      setTheme('light');
+  // Fallback theme toggle function
+  const handleFallbackToggle = () => {
+    const newTheme = fallbackTheme === 'light' ? 'dark' : 'light';
+    setFallbackTheme(newTheme);
+    // Store in localStorage for persistence
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('fallback-theme', newTheme);
     }
   };
 
-  const getIcon = () => {
-    switch (theme) {
-      case 'light':
-        return <LightMode />;
-      case 'dark':
-        return <DarkMode />;
-      default:
-        return <Monitor />;
+  // Initialize fallback theme from localStorage
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const stored = localStorage.getItem('fallback-theme');
+      if (stored === 'dark' || stored === 'light') {
+        setFallbackTheme(stored);
+      } else {
+        // Default to system preference
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        setFallbackTheme(prefersDark ? 'dark' : 'light');
+      }
     }
+  }, []);
+
+  const getIcon = () => {
+    return theme === 'dark' ? <LightMode /> : <DarkMode />;
   };
 
   const getTitle = () => {
-    switch (theme) {
-      case 'light':
-        return 'Switch to dark mode';
-      case 'dark':
-        return 'Switch to system preference';
-      default:
-        return 'Switch to light mode';
+    return theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode';
+  };
+
+  const handleClick = () => {
+    if (toggleTheme) {
+      toggleTheme();
+    } else {
+      handleFallbackToggle();
     }
   };
 
   return (
     <Tooltip title={getTitle()} arrow>
       <IconButton
-        onClick={toggleTheme}
+        onClick={handleClick}
         size="large"
         sx={{
           minWidth: 44,

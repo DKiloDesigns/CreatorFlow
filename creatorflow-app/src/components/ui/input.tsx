@@ -27,7 +27,7 @@ export interface InputProps
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ 
     className, 
-    type, 
+    _type, 
     ariaLabel,
     ariaDescribedBy,
     ariaInvalid,

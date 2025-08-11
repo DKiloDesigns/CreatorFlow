@@ -6,69 +6,12 @@ import {
   CardContent, 
   CardHeader, 
   Button,
-  TextField,
-  Box,
-  Typography,
-  Grid,
-  Tabs,
-  Tab,
-  Chip
+  Typography
 } from '@mui/material';
 import { TestTube, Activity } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import { TabsContent } from '@/components/ui/tabs';
-
-import { 
-  Play,
-  CheckCircle,
-  XCircle,
-  Clock,
-  AlertTriangle,
-  Plus,
-  Settings,
-  Eye,
-  Edit,
-  Trash2,
-  RefreshCw,
-  TrendingUp,
-  Zap,
-  Shield,
-  Database,
-  Globe,
-  Lock,
-  Unlock,
-  BarChart3,
-  FileText,
-  Download,
-  Upload,
-  Target,
-  Bug,
-  Code,
-  Monitor,
-  Smartphone,
-  Server,
-  Cpu,
-  HardDrive,
-  Network,
-  DatabaseIcon,
-  GlobeIcon,
-  LockIcon,
-  UnlockIcon,
-  TrendingUpIcon,
-  BarChart3Icon,
-  FileTextIcon,
-  DownloadIcon,
-  UploadIcon,
-  TargetIcon,
-  BugIcon,
-  CodeIcon,
-  MonitorIcon,
-  SmartphoneIcon,
-  ServerIcon,
-  CpuIcon,
-  HardDriveIcon,
-  NetworkIcon
-} from 'lucide-react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { CardDescription, Input, Textarea, Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui';
 
 interface TestSuite {
   id: string;

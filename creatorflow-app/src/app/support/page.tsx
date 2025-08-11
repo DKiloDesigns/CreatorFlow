@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { FileText, Shield, Mail, MessageCircle, HelpCircle, Users, BarChart3, Search, BookOpen, MessageSquare, Phone } from 'lucide-react';
+import { FileText, Shield, Mail, Users, BarChart3, Search, BookOpen, MessageSquare, Phone } from 'lucide-react';
 import { PublicHeader } from '@/components/PublicHeader';
 import { Footer } from '@/components/Footer';
 
@@ -256,7 +256,7 @@ export default function SupportPage() {
             Still Need Help?
           </h2>
           <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
-            Can't find what you're looking for? Our support team is here to help.
+            Can&apos;t find what you&apos;re looking for? Our support team is here to help.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link 

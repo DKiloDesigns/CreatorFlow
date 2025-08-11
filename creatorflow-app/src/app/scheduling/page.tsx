@@ -7,18 +7,15 @@ import {
   CardHeader, 
   Button,
   TextField,
-  Box,
   Typography,
-  Grid,
   Select,
-  MenuItem,
-  FormControl,
-  InputLabel
+  MenuItem
 } from '@mui/material';
-import { Calendar, Activity } from 'lucide-react';
-import { format, addDays, addWeeks, addMonths } from 'date-fns';
+import { Calendar, Activity, Edit, Trash2, Play, TrendingUp } from 'lucide-react';
+import { format } from 'date-fns';
 import { Badge } from '@/components/ui/badge';
-import { TabsContent } from '@/components/ui/tabs';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { CardDescription } from '@/components/ui/base/Card';
 
 interface ScheduledPost {
   id: string;
@@ -99,7 +96,7 @@ export default function SchedulingPage() {
       });
       if (response.ok) {
         const data = await response.json();
-        setAnalytics(data.analytics);
+        setAnalytics(data.analytics || {});
       }
     } catch (error) {
       console.error('Failed to fetch analytics:', error);
@@ -109,48 +106,42 @@ export default function SchedulingPage() {
   };
 
   const handleCreateSchedule = async () => {
-    if (!content || platforms.length === 0) {
+    if (!content || platforms.length === 0 || !scheduledAt) {
       alert('Please fill in all required fields');
       return;
     }
 
     try {
-      const scheduleData = scheduleType === 'single' ? {
-        scheduledAt: scheduledAt?.toISOString()
-      } : {
-        frequency,
-        startDate: startDate?.toISOString(),
-        endDate: endDate?.toISOString(),
-        times: optimalTimes.map(time => ({ hour: time.hour, minute: 0 }))
-      };
-
       const response = await fetch('/api/scheduling', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           action: 'create_schedule',
           data: {
-            content: { text: content },
+            content,
             platforms,
+            scheduledAt: scheduledAt.toISOString(),
             scheduleType,
-            scheduleData,
-            metadata: { createdVia: 'dashboard' }
+            frequency: scheduleType === 'recurring' ? frequency : undefined,
+            startDate: scheduleType === 'recurring' ? startDate?.toISOString() : undefined,
+            endDate: scheduleType === 'recurring' ? endDate?.toISOString() : undefined,
           }
         }),
       });
 
       if (response.ok) {
-        const result = await response.json();
-        alert(`Successfully scheduled ${result.count} posts`);
-        fetchScheduledPosts();
+        alert('Schedule created successfully!');
         setContent('');
         setPlatforms([]);
+        setScheduledAt(undefined);
+        fetchScheduledPosts();
       } else {
-        alert('Failed to create schedule');
+        const error = await response.json();
+        alert(`Failed to create schedule: ${error.message}`);
       }
     } catch (error) {
       console.error('Failed to create schedule:', error);
-      alert('Failed to create schedule');
+      alert('Failed to create schedule. Please try again.');
     }
   };
 
@@ -168,14 +159,15 @@ export default function SchedulingPage() {
       });
 
       if (response.ok) {
-        alert('Schedule deleted successfully');
+        alert('Schedule deleted successfully!');
         fetchScheduledPosts();
       } else {
-        alert('Failed to delete schedule');
+        const error = await response.json();
+        alert(`Failed to delete schedule: ${error.message}`);
       }
     } catch (error) {
       console.error('Failed to delete schedule:', error);
-      alert('Failed to delete schedule');
+      alert('Failed to delete schedule. Please try again.');
     }
   };
 
@@ -187,36 +179,42 @@ export default function SchedulingPage() {
     );
   };
 
-  if (loading) return <div className="p-8">Loading scheduling data...</div>;
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <Activity className="h-8 w-8 animate-spin mx-auto mb-4" />
+          <Typography>Loading scheduling data...</Typography>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="p-8 space-y-8">
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold">Advanced Scheduling</h1>
-          <p className="text-muted-foreground">AI-powered content scheduling with optimal timing</p>
-        </div>
-        <Button onClick={() => setActiveTab('schedule')} className="gap-2">
+    <div className="container mx-auto px-4 py-8">
+      <div className="flex justify-between items-center mb-8">
+        <Typography variant="h4" className="text-2xl font-bold">
+          Content Scheduling
+        </Typography>
+        <Button variant="contained" onClick={handleCreateSchedule} className="flex items-center gap-2">
           <Calendar className="h-4 w-4" />
           New Schedule
         </Button>
       </div>
 
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-            <Tabs value={activeTab} onChange={(event, newValue) => setActiveTab(newValue)} className="space-y-6">
-              <TabsList className="grid w-full grid-cols-4">
-                <TabsTrigger value="schedule">Schedule</TabsTrigger>
-                <TabsTrigger value="scheduled">Scheduled</TabsTrigger>
-                <TabsTrigger value="analytics">Analytics</TabsTrigger>
-                <TabsTrigger value="optimal">Optimal Times</TabsTrigger>
-              </TabsList>
-            </Tabs>
-          </Box>
-        </Grid>
+      <div className="space-y-6">
+        <div>
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+            <TabsList className="grid w-full grid-cols-4">
+              <TabsTrigger value="schedule">Schedule</TabsTrigger>
+              <TabsTrigger value="scheduled">Scheduled</TabsTrigger>
+              <TabsTrigger value="analytics">Analytics</TabsTrigger>
+              <TabsTrigger value="optimal">Optimal Times</TabsTrigger>
+            </TabsList>
+          </Tabs>
+        </div>
 
-        <Grid item xs={12}>
+        <div>
           <TabsContent value="schedule" className="space-y-6">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Schedule Form */}
@@ -303,69 +301,81 @@ export default function SchedulingPage() {
                         </Select>
                       </div>
 
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <label className="text-sm font-medium">Start Date</label>
-                          <Calendar
-                            mode="single"
-                            selected={startDate}
-                            onSelect={setStartDate}
-                            className="rounded-md border"
-                          />
-                        </div>
-                        <div>
-                          <label className="text-sm font-medium">End Date</label>
-                          <Calendar
-                            mode="single"
-                            selected={endDate}
-                            onSelect={setEndDate}
-                            className="rounded-md border"
-                          />
-                        </div>
+                      <div>
+                        <label className="text-sm font-medium">Start Date</label>
+                        <Calendar
+                          mode="single"
+                          selected={startDate}
+                          onSelect={setStartDate}
+                          className="rounded-md border"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="text-sm font-medium">End Date</label>
+                        <Calendar
+                          mode="single"
+                          selected={endDate}
+                          onSelect={setEndDate}
+                          className="rounded-md border"
+                        />
                       </div>
                     </div>
                   )}
 
-                  <Button onClick={handleCreateSchedule} className="w-full">
+                  <Button 
+                    variant="contained" 
+                    onClick={handleCreateSchedule}
+                    className="w-full"
+                    disabled={!content || platforms.length === 0 || !scheduledAt}
+                  >
                     Create Schedule
                   </Button>
                 </CardContent>
               </Card>
 
-              {/* Optimal Times Preview */}
+              {/* Schedule Preview */}
               <Card>
                 <CardHeader>
-                  <Typography variant="h6" className="flex items-center gap-2">
-                    <Activity className="h-5 w-5" />
-                    Optimal Posting Times
-                  </Typography>
+                  <Typography variant="h6">Schedule Preview</Typography>
                   <CardDescription>
-                    AI-recommended times based on your audience engagement
+                    Preview your scheduled content
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-3">
-                    {optimalTimes.map((time, index) => (
-                      <div key={index} className="flex justify-between items-center p-3 border rounded">
-                        <div className="flex items-center gap-2">
-                          <Calendar className="h-4 w-4 text-muted-foreground" />
-                          <span className="font-medium">
-                            {format(new Date().setHours(time.hour, 0, 0, 0), 'h:mm a')}
-                          </span>
-                        </div>
-                        <Badge variant="secondary">
-                          {time.engagement}% engagement
-                        </Badge>
+                  {content ? (
+                    <div className="space-y-4">
+                      <div>
+                        <Typography variant="subtitle2" className="text-gray-600">Content:</Typography>
+                        <Typography className="text-sm">{content}</Typography>
                       </div>
-                    ))}
-                  </div>
+                      <div>
+                        <Typography variant="subtitle2" className="text-gray-600">Platforms:</Typography>
+                        <div className="flex flex-wrap gap-2 mt-1">
+                          {platforms.map(platform => (
+                            <Badge key={platform} variant="secondary">
+                              {platform}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                      {scheduledAt && (
+                        <div>
+                          <Typography variant="subtitle2" className="text-gray-600">Scheduled for:</Typography>
+                          <Typography className="text-sm">{format(scheduledAt, 'PPP p')}</Typography>
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <Typography className="text-gray-500 text-center py-8">
+                      Fill in the form to see a preview
+                    </Typography>
+                  )}
                 </CardContent>
               </Card>
             </div>
           </TabsContent>
-        </Grid>
 
-        <Grid item xs={12}>
           <TabsContent value="scheduled" className="space-y-6">
             <Card>
               <CardHeader>
@@ -375,133 +385,144 @@ export default function SchedulingPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
-                  {scheduledPosts.map((post) => (
-                    <div key={post.id} className="flex justify-between items-center p-4 border rounded">
-                      <div className="flex-1">
-                        <div className="font-medium">{post.content.text}</div>
-                        <div className="text-sm text-muted-foreground">
-                          {format(new Date(post.scheduledAt), 'PPP p')}
+                {scheduledPosts.length === 0 ? (
+                  <Typography className="text-gray-500 text-center py-8">
+                    No scheduled posts found
+                  </Typography>
+                ) : (
+                  <div className="space-y-4">
+                    {scheduledPosts.map((post) => (
+                      <div key={post.id} className="flex items-center justify-between p-4 border rounded-lg">
+                        <div className="flex-1">
+                          <Typography variant="subtitle1" className="font-medium">
+                            {post.content.substring(0, 100)}...
+                          </Typography>
+                          <div className="flex items-center gap-2 mt-2">
+                            <Typography variant="caption" className="text-gray-600">
+                              {format(new Date(post.scheduledAt), 'PPP p')}
+                            </Typography>
+                            <div className="flex gap-1">
+                              {post.platforms.map(platform => (
+                                <Badge key={platform} variant="outline" className="text-xs">
+                                  {platform}
+                                </Badge>
+                              ))}
+                            </div>
+                          </div>
                         </div>
-                        <div className="flex gap-1 mt-2">
-                          {post.platforms.map((platform: string) => (
-                            <Badge key={platform} variant="outlined">
-                              {platform}
-                            </Badge>
-                          ))}
+                        <div className="flex gap-2">
+                          <Button size="small" variant="outlined">
+                            <Edit className="h-3 w-3" />
+                          </Button>
+                          <Button 
+                            size="small" 
+                            variant="outlined" 
+                            color="error"
+                            onClick={() => handleDeleteSchedule(post.id)}
+                          >
+                            <Trash2 className="h-3 w-3" />
+                          </Button>
                         </div>
                       </div>
-                      <div className="flex gap-2">
-                        <Button variant="outlined" size="small">
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                        <Button 
-                          variant="outlined" 
-                          size="small"
-                          onClick={() => handleDeleteSchedule(post.id)}
-                        >
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </div>
-                  ))}
-                  {scheduledPosts.length === 0 && (
-                    <div className="text-center py-8 text-muted-foreground">
-                      No scheduled posts found
-                    </div>
-                  )}
-                </div>
+                    ))}
+                  </div>
+                )}
               </CardContent>
             </Card>
           </TabsContent>
-        </Grid>
 
-        <Grid item xs={12}>
           <TabsContent value="analytics" className="space-y-6">
-            {analytics && (
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <Card>
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <Typography variant="h6" className="text-sm font-medium">Scheduled Posts</Typography>
-                    <Calendar className="h-4 w-4 text-muted-foreground" />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">{analytics.scheduled?.total || 0}</div>
-                    <p className="text-xs text-muted-foreground">
-                      Total scheduled posts
-                    </p>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <Typography variant="h6" className="text-sm font-medium">Published Posts</Typography>
-                    <Play className="h-4 w-4 text-muted-foreground" />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">{analytics.published?.total || 0}</div>
-                    <p className="text-xs text-muted-foreground">
-                      Successfully published
-                    </p>
-                  </CardContent>
-                </Card>
-
-                <Card>
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <Typography variant="h6" className="text-sm font-medium">Avg Engagement</Typography>
-                    <TrendingUp className="h-4 w-4 text-muted-foreground" />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">
-                      {analytics.published?.averageEngagement?.toFixed(1) || 0}%
-                    </div>
-                    <p className="text-xs text-muted-foreground">
-                      Across all platforms
-                    </p>
-                  </CardContent>
-                </Card>
-              </div>
-            )}
-          </TabsContent>
-        </Grid>
-
-        <Grid item xs={12}>
-          <TabsContent value="optimal" className="space-y-6">
             <Card>
               <CardHeader>
-                <Typography variant="h6">Optimal Posting Times Analysis</Typography>
+                <Typography variant="h6">Schedule Analytics</Typography>
                 <CardDescription>
-                  AI-powered analysis of your best performing posting times
+                  Track your scheduling performance
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
-                  {optimalTimes.map((time, index) => (
-                    <div key={index} className="flex justify-between items-center p-4 border rounded">
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white font-bold">
-                          {index + 1}
-                        </div>
-                        <div>
-                          <div className="font-medium">
-                            {format(new Date().setHours(time.hour, 0, 0, 0), 'h:mm a')}
-                          </div>
-                          <div className="text-sm text-muted-foreground">
-                            {time.engagement}% engagement rate
-                          </div>
-                        </div>
-                      </div>
-                      <Button variant="outlined" size="small">
-                        Use This Time
-                      </Button>
+                {analytics ? (
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div className="text-center p-4 border rounded-lg">
+                      <Typography variant="h4" className="text-blue-600">
+                        {analytics.totalScheduled || 0}
+                      </Typography>
+                      <Typography variant="body2" className="text-gray-600">
+                        Total Scheduled
+                      </Typography>
                     </div>
-                  ))}
-                </div>
+                    <div className="text-center p-4 border rounded-lg">
+                      <Typography variant="h4" className="text-green-600">
+                        {analytics.completedPosts || 0}
+                      </Typography>
+                      <Typography variant="body2" className="text-gray-600">
+                        Completed Posts
+                      </Typography>
+                    </div>
+                    <div className="text-center p-4 border rounded-lg">
+                      <Typography variant="h4" className="text-orange-600">
+                        {analytics.pendingPosts || 0}
+                      </Typography>
+                      <Typography variant="body2" className="text-gray-600">
+                        Pending Posts
+                      </Typography>
+                    </div>
+                  </div>
+                ) : (
+                  <Typography className="text-gray-500 text-center py-8">
+                    No analytics data available
+                  </Typography>
+                )}
               </CardContent>
             </Card>
           </TabsContent>
-        </Grid>
-      </Grid>
+
+          <TabsContent value="optimal" className="space-y-6">
+            <Card>
+              <CardHeader>
+                <Typography variant="h6">Optimal Posting Times</Typography>
+                <CardDescription>
+                  AI-recommended times for maximum engagement
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                {optimalTimes.length > 0 ? (
+                  <div className="space-y-4">
+                    {optimalTimes.map((time, index) => (
+                      <div key={index} className="flex items-center justify-between p-4 border rounded-lg">
+                        <div className="flex items-center gap-3">
+                          <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                            <Play className="h-5 w-5 text-blue-600" />
+                          </div>
+                          <div>
+                            <Typography variant="subtitle1" className="font-medium">
+                              {time.hour}:00
+                            </Typography>
+                            <Typography variant="body2" className="text-gray-600">
+                              {time.hour < 12 ? 'AM' : 'PM'}
+                            </Typography>
+                          </div>
+                        </div>
+                        <div className="text-right">
+                          <Typography variant="h6" className="text-green-600">
+                            {time.engagement}%
+                          </Typography>
+                          <Typography variant="caption" className="text-gray-600">
+                            Engagement Rate
+                          </Typography>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <Typography className="text-gray-500 text-center py-8">
+                    No optimal time data available
+                  </Typography>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </div>
+      </div>
     </div>
   );
 } 
