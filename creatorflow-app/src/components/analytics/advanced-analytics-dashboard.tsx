@@ -6,30 +6,22 @@ import {
   CardContent, 
   CardHeader, 
   Button,
-  Box,
-  Typography,
-  Grid,
-  Chip,
-  Tabs,
-  Tab
+  Typography
 } from '@mui/material';
 
 import { 
   BarChart3, 
   TrendingUp, 
-  Users, 
   Eye, 
   Heart, 
-  MessageCircle, 
-  Share2,
   Calendar,
-  Clock,
-  Target,
   Zap,
   Activity
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import { TabsContent } from '@/components/ui/tabs';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
+import { CardDescription } from '@/components/ui/base/Card';
 
 interface AnalyticsData {
   totalPosts: number;
@@ -200,7 +192,7 @@ export function AdvancedAnalyticsDashboard({
               <SelectItem value="youtube">YouTube</SelectItem>
             </SelectContent>
           </Select>
-          <Button onClick={fetchAnalyticsData} variant="outline" size="sm">
+          <Button onClick={fetchAnalyticsData} variant="outlined" size="small">
             <Zap className="h-4 w-4 mr-2" />
             Refresh
           </Button>
@@ -264,11 +256,11 @@ export function AdvancedAnalyticsDashboard({
 
       {/* Detailed Analytics Tabs */}
       <Tabs defaultValue="overview" className="space-y-4">
-        <TabsList>
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="platforms">Platform Breakdown</TabsTrigger>
-          <TabsTrigger value="performance">Performance</TabsTrigger>
-          <TabsTrigger value="top-posts">Top Posts</TabsTrigger>
+        <TabsList role="tablist" aria-label="Analytics dashboard tabs">
+          <TabsTrigger value="overview" role="tab" tabIndex={0}>Overview</TabsTrigger>
+          <TabsTrigger value="platforms" role="tab" tabIndex={0}>Platform Breakdown</TabsTrigger>
+          <TabsTrigger value="performance" role="tab" tabIndex={0}>Performance</TabsTrigger>
+          <TabsTrigger value="top-posts" role="tab" tabIndex={0}>Top Posts</TabsTrigger>
         </TabsList>
 
         <TabsContent value="overview" className="space-y-4">

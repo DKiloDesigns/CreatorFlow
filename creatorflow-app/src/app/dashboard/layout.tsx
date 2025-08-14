@@ -5,7 +5,7 @@ export const dynamic = 'force-dynamic';
 import { signOut } from "next-auth/react"
 import Link from "next/link"
 import { usePathname } from 'next/navigation';
-import { BarChart2, Users, FileText, Handshake, CreditCard, Menu, Bell, BarChart3, Target, MessageSquare, CalendarIcon, Activity, Shield, Settings, Sparkles, Building2, Smartphone, Plug, TestTube, Home, Calendar, Brain, HelpCircle, HardDrive } from 'lucide-react';
+import { BarChart2, Users, FileText, Handshake, CreditCard, Menu, Bell, BarChart3, Target, MessageSquare, CalendarIcon, Activity, Shield, Settings, Sparkles, Star, Building2, Smartphone, Plug, TestTube, Home, Calendar, Brain, HelpCircle, HardDrive, Bot, Zap } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { 
   AppBar, 
@@ -72,21 +72,29 @@ export default function DashboardLayout({
 
   const navigationItems = [
     { href: '/dashboard', label: 'Dashboard', icon: Home },
-    { href: '/dashboard/analytics', label: 'Analytics', icon: BarChart2 },
+    { href: '/dashboard/phase2-hub', label: 'Phase 2 Hub', icon: Brain },
+    { href: '/dashboard/phase3-hub', label: 'Phase 3 Hub', icon: Bot },
+            { href: '/dashboard/ai-api-test', label: 'AI API Test', icon: TestTube },
+            { href: '/dashboard/phase5-test', label: 'Phase 5 Test', icon: Star },
+        { href: '/dashboard/phase4-test', label: 'Phase 4 Test', icon: BarChart3 },
+        { href: '/dashboard/phase6-test', label: 'Phase 6 Test', icon: Zap },
+        { href: '/dashboard/phase7-test', label: 'Phase 7 Test', icon: Settings },
+        { href: '/dashboard/analytics', label: 'Analytics', icon: BarChart2 },
     { href: '/dashboard/content', label: 'Content', icon: FileText },
     { href: '/dashboard/accounts', label: 'Accounts', icon: Users },
     { href: '/dashboard/scheduling', label: 'Scheduling', icon: Calendar },
     { href: '/dashboard/ai-tools', label: 'AI Tools', icon: Brain },
     { href: '/dashboard/collabs', label: 'Collabs', icon: Handshake },
-    { href: '/dashboard/teams', label: 'Teams', icon: Building2 },
+    { href: '/dashboard/team', label: 'Team', icon: Building2 },
     { href: '/dashboard/mobile', label: 'Mobile', icon: Smartphone },
     { href: '/dashboard/integrations', label: 'Integrations', icon: Plug },
+    { href: '/dashboard/api', label: 'API', icon: Plug },
     { href: '/dashboard/testing', label: 'Testing', icon: TestTube },
     { href: '/dashboard/advanced-integrations', label: 'Advanced', icon: Sparkles },
     { href: '/dashboard/enterprise', label: 'Enterprise', icon: Building2 },
     { href: '/dashboard/security', label: 'Security', icon: Shield },
     { href: '/dashboard/settings', label: 'Settings', icon: Settings },
-    { href: '/dashboard/billing', label: 'Billing', icon: CreditCard },
+
     { href: '/dashboard/support', label: 'Support', icon: HelpCircle },
     { href: '/dashboard/notifications/enhanced', label: 'Notifications', icon: Bell },
     { href: '/admin/campaign', label: 'Campaign', icon: Target },
@@ -240,7 +248,7 @@ export default function DashboardLayout({
             <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 1, sm: 2 } }}>
               {/* Theme Toggle */}
               <Box sx={{ minWidth: 44, minHeight: 44, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <ThemeToggle isLandingPage={false} />
+                <ThemeToggle _isLandingPage={false} />
               </Box>
               
               {/* Notification Center - Only render on client */}

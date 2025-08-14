@@ -3,12 +3,9 @@
 import React from 'react';
 import { 
   Card, 
-  CardContent, 
-  Box,
-  Typography,
-  Grid
+  CardContent
 } from '@mui/material';
-import { TrendingUp, Activity, Heart, MessageSquare, Share2, Instagram, Twitter, Linkedin, Youtube } from 'lucide-react';
+import { TrendingUp, Instagram, Twitter, Linkedin, Youtube, Heart, MessageSquare, Share2 } from 'lucide-react';
 
 interface Post {
   id: string;

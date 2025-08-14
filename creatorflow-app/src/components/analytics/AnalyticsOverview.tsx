@@ -2,13 +2,11 @@
 
 import React from 'react';
 import { 
-  Card, 
-  CardContent, 
-  Box,
-  Typography,
-  Grid
+  Card,
+  CardContent
 } from '@mui/material';
-import { TrendingUp, Activity } from 'lucide-react';
+import { Activity, TrendingUp, BarChart3 } from 'lucide-react';
+import { Progress } from '@/components/ui/feedback/Progress';
 
 interface AnalyticsData {
   userId: string;
