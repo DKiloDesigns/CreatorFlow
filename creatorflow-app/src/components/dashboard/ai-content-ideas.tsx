@@ -6,9 +6,10 @@ import {
   Button,
   Box,
   Typography,
-  Grid,
-  Chip
+  Grid
 } from '@mui/material';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
+import { Badge } from '@/components/ui/badge';
 
 import { 
   Lightbulb, 
@@ -96,6 +97,13 @@ export function AIContentIdeas({ onIdeaSelect, className }: AIContentIdeasProps)
     }
   };
 
+  const handleUseIdea = (idea: ContentIdea) => {
+    if (onIdeaSelect) {
+      onIdeaSelect(idea);
+    }
+    // You can add additional logic here like opening a modal or navigating to a form
+  };
+
   const copyToClipboard = async (text: string, index: number) => {
     try {
       await navigator.clipboard.writeText(text);
@@ -106,22 +114,18 @@ export function AIContentIdeas({ onIdeaSelect, className }: AIContentIdeasProps)
     }
   };
 
-  const useIdea = (idea: ContentIdea) => {
-    onIdeaSelect?.(idea);
-  };
-
   const getContentTypeIcon = (type: string) => {
     switch (type) {
       case 'image':
-        return <Image className="h-4 w-4" />;
+        return <Image className="h-4 w-4" aria-label="Image content type" />;
       case 'video':
-        return <Video className="h-4 w-4" />;
+        return <Video className="h-4 w-4" aria-label="Video content type" />;
       case 'carousel':
-        return <Layers className="h-4 w-4" />;
+        return <Layers className="h-4 w-4" aria-label="Carousel content type" />;
       case 'story':
-        return <BookOpen className="h-4 w-4" />;
+        return <BookOpen className="h-4 w-4" aria-label="Story content type" />;
       default:
-        return <Image className="h-4 w-4" />;
+        return <Image className="h-4 w-4" aria-label="Default content type" />;
     }
   };
 
@@ -137,7 +141,7 @@ export function AIContentIdeas({ onIdeaSelect, className }: AIContentIdeasProps)
         {/* Input Fields */}
         <Box sx={{ width: '100%' }}>
           <Grid container spacing={2}>
-            <Grid item xs={12} md={4}>
+            <Grid xs={12} md={4}>
               <Typography variant="body2" component="label" sx={{ display: 'block', mb: 0.5 }}>Platform</Typography>
               <Select value={platform} onValueChange={setPlatform}>
                 <SelectTrigger>
@@ -153,11 +157,11 @@ export function AIContentIdeas({ onIdeaSelect, className }: AIContentIdeasProps)
               </Select>
             </Grid>
 
-            <Grid item xs={12} md={4}>
+            <Grid xs={12} md={4}>
               <Typography variant="body2" component="label" sx={{ display: 'block', mb: 0.5 }}>Industry</Typography>
               <Select value={industry} onValueChange={setIndustry}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Select industry" />
+                  <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
                   {industries.map((i) => (
@@ -169,11 +173,11 @@ export function AIContentIdeas({ onIdeaSelect, className }: AIContentIdeasProps)
               </Select>
             </Grid>
 
-            <Grid item xs={12} md={4}>
+            <Grid xs={12} md={4}>
               <Typography variant="body2" component="label" sx={{ display: 'block', mb: 0.5 }}>Target Audience</Typography>
               <Select value={targetAudience} onValueChange={setTargetAudience}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Select audience" />
+                  <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
                   {audiences.map((a) => (
@@ -185,41 +189,32 @@ export function AIContentIdeas({ onIdeaSelect, className }: AIContentIdeasProps)
               </Select>
             </Grid>
           </Grid>
-        </Box>
 
-        {/* Generate Button */}
-        <Button
-          onClick={generateIdeas}
-          disabled={isGenerating}
-          className="w-full"
-        >
-          {isGenerating ? (
-            <>
-              <LoadingSpinner size="sm" className="mr-2" />
-              Generating Ideas...
-            </>
-          ) : (
-            <>
-              <Lightbulb className="h-4 w-4 mr-2" />
-              Generate Content Ideas
-            </>
-          )}
-        </Button>
+          <Button
+            variant="contained"
+            onClick={generateIdeas}
+            disabled={isGenerating}
+            sx={{ mt: 2 }}
+            className="w-full"
+          >
+            <RefreshCw className={`h-4 w-4 mr-2 ${isGenerating ? 'animate-spin' : ''}`} />
+            {isGenerating ? 'Generating Ideas...' : 'Generate Content Ideas'}
+          </Button>
+        </Box>
 
         {/* Generated Ideas */}
         {ideas.length > 0 && (
-          <Box sx={{ width: '100%' }}>
-            <Typography variant="body2" component="h6" sx={{ fontWeight: 'medium', fontSize: '0.875rem', color: 'text.muted' }}>
-              Content Ideas ({ideas.length})
-            </Typography>
+          <Box className="space-y-3">
+            <Typography variant="h6" component="h3">Generated Ideas</Typography>
+            
             {ideas.map((idea, index) => (
               <Box
                 key={index}
                 sx={{
                   p: 2,
-                  borderRadius: 1,
                   border: '1px solid',
                   borderColor: 'divider',
+                  borderRadius: 1,
                   '&:hover': {
                     borderColor: 'divider',
                   },
@@ -268,7 +263,7 @@ export function AIContentIdeas({ onIdeaSelect, className }: AIContentIdeasProps)
                   
                   <Grid item xs={12} md={4} sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
                     <Button
-                      variant="ghost"
+                      variant="text"
                       size="small"
                       onClick={() => copyToClipboard(`${idea.title}: ${idea.description}`, index)}
                       sx={{ p: 0, minWidth: 40 }}
@@ -280,9 +275,9 @@ export function AIContentIdeas({ onIdeaSelect, className }: AIContentIdeasProps)
                       )}
                     </Button>
                     <Button
-                      variant="ghost"
+                      variant="text"
                       size="small"
-                      onClick={() => useIdea(idea)}
+                      onClick={() => handleUseIdea(idea)}
                       sx={{ p: 0, minWidth: 40 }}
                     >
                       <Calendar className="h-4 w-4" />
@@ -293,7 +288,7 @@ export function AIContentIdeas({ onIdeaSelect, className }: AIContentIdeasProps)
             ))}
             
             <Button
-              variant="outline"
+              variant="outlined"
               onClick={generateIdeas}
               disabled={isGenerating}
               className="w-full"

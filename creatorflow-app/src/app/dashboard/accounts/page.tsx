@@ -538,6 +538,12 @@ export default function AccountsPage() {
           onClose={() => setShowMastodonDialog(false)}
           onConnect={(instance) => handleConnect('mastodon', instance)}
         />
+
+        {/* Bottom Spacer to Clear Bottom Navigation */}
+        <Box sx={{
+          height: { xs: '120px', sm: '40px' },
+          width: '100%'
+        }} />
       </Box>
     </Container>
   );

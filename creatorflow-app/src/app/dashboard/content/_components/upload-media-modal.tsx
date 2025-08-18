@@ -10,9 +10,13 @@ import {
   LinearProgress,
   Chip
 } from '@mui/material';
-import { Upload, Activity, Image, Video } from 'lucide-react';
+import { Upload, Activity, Image, Video, File, X, Copy } from 'lucide-react';
 import { toast } from 'sonner';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Progress } from '@/components/ui/feedback/Progress';
 
 interface MediaFile {
   id: string;

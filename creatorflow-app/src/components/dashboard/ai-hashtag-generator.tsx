@@ -7,8 +7,8 @@ import {
   TextField,
   Box,
   Typography,
-  Grid,
-  Chip
+  Chip,
+  MenuItem
 } from '@mui/material';
 import { Hash, Activity } from 'lucide-react';
 import { 
@@ -16,7 +16,6 @@ import {
   Check, 
   RefreshCw,
   TrendingUp,
-  Target,
   Zap
 } from 'lucide-react';
 import { HashtagSuggestion } from '@/lib/ai-service';
@@ -127,48 +126,48 @@ export function AIHashtagGenerator({ onHashtagsSelect, className }: AIHashtagGen
       </CardHeader>
       <CardContent className="space-y-4">
         {/* Input Fields */}
-        <Box sx={{ '& .MuiTextField-root': { m: 1, width: '100%' } }}>
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <TextField
-                label="Content Description"
-                multiline
-                rows={4}
-                placeholder="Describe your content to get relevant hashtags..."
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-                fullWidth
-              />
-            </Grid>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+          <TextField
+            label="Content Description"
+            multiline
+            rows={4}
+            placeholder="Describe your content to get relevant hashtags..."
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
+            fullWidth
+          />
 
-            <Grid item xs={12} sm={6}>
-              <TextField
-                label="Platform"
-                select
-                value={platform}
-                onChange={(e) => setPlatform(e.target.value as string)}
-                fullWidth
-              >
-                {platforms.map((p) => (
-                  <Chip key={p.value} label={p.label} value={p.value} />
-                ))}
-              </TextField>
-            </Grid>
+          <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+            <TextField
+              sx={{ minWidth: 200, flex: 1 }}
+              label="Platform"
+              select
+              value={platform}
+              onChange={(e) => setPlatform(e.target.value as string)}
+              fullWidth
+            >
+              {platforms.map((p) => (
+                <MenuItem key={p.value} value={p.value}>
+                  {p.label}
+                </MenuItem>
+              ))}
+            </TextField>
 
-            <Grid item xs={12} sm={6}>
-              <TextField
-                label="Industry"
-                select
-                value={industry}
-                onChange={(e) => setIndustry(e.target.value as string)}
-                fullWidth
-              >
-                {industries.map((i) => (
-                  <Chip key={i.value} label={i.label} value={i.value} />
-                ))}
-              </TextField>
-            </Grid>
-          </Grid>
+            <TextField
+              sx={{ minWidth: 200, flex: 1 }}
+              label="Industry"
+              select
+              value={industry}
+              onChange={(e) => setIndustry(e.target.value as string)}
+              fullWidth
+            >
+              {industries.map((i) => (
+                <MenuItem key={i.value} value={i.value}>
+                  {i.label}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Box>
         </Box>
 
         {/* Generate Button */}
@@ -221,9 +220,9 @@ export function AIHashtagGenerator({ onHashtagsSelect, className }: AIHashtagGen
               )}
             </Typography>
 
-            <Grid container spacing={1} sx={{ mt: 1 }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, mt: 1 }}>
               {hashtags.map((hashtag, index) => (
-                <Grid item xs={12} key={index}>
+                <Box key={index}>
                   <Chip
                     label={
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -250,9 +249,9 @@ export function AIHashtagGenerator({ onHashtagsSelect, className }: AIHashtagGen
                       )
                     }
                   />
-                </Grid>
+                </Box>
               ))}
-            </Grid>
+            </Box>
             
             <Button
               variant="outlined"

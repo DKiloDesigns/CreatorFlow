@@ -7,18 +7,15 @@ import {
   Home, 
   PenTool, 
   BarChart3, 
-  DollarSign, 
   User,
   Upload
 } from 'lucide-react';
 import { 
   Box, 
   Paper, 
-  IconButton, 
   Typography, 
   Button,
-  Avatar,
-  Badge
+  Avatar
 } from '@mui/material';
 import { useState, useRef } from 'react';
 
@@ -41,12 +38,7 @@ const navItems = [
     label: 'Analytics',
     activePattern: /^\/dashboard\/analytics/
   },
-  {
-    href: '/dashboard/billing',
-    icon: DollarSign,
-    label: 'Money',
-    activePattern: /^\/dashboard\/billing/
-  },
+
   {
     href: '/dashboard/profile',
     icon: User,
@@ -55,7 +47,7 @@ const navItems = [
   }
 ];
 
-function ProfilePicture({ session, isActive }: { session: any; isActive: boolean }) {
+function ProfilePicture({ session, isActive }: { session: { user?: { image?: string | null; name?: string } } | null; isActive: boolean }) {
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   

@@ -4,15 +4,8 @@ import React, { useState, useEffect } from 'react';
 import { 
   Card, 
   CardContent, 
-  CardHeader, 
-  Button,
-  TextField,
-  Box,
-  Typography,
-  Grid,
-  Chip
+  Button
 } from '@mui/material';
-import { Image, Activity } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 import { toast } from 'sonner';

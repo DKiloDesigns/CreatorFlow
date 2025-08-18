@@ -1,37 +1,43 @@
 'use client';
 import { useEffect, useState } from 'react';
-import Link from "next/link"
 import { useRouter } from 'next/navigation';
 import { useSession } from "next-auth/react";
 import { 
   Box, 
-  Container, 
   Typography, 
   Button, 
-  TextField,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Alert,
   Chip,
-  Divider,
   Paper,
   Card,
   CardHeader,
   CardContent,
   Tooltip,
-  CircularProgress,
   Accordion,
   AccordionSummary,
   AccordionDetails,
-  IconButton
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+  IconButton,
+  Badge,
+  Divider,
+  CircularProgress,
+  Alert,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Switch,
+  FormControlLabel
 } from '@mui/material';
 import { 
   ExpandMore as ExpandMoreIcon,
   ExpandLess as ExpandLessIcon,
   VisibilityOff as HideIcon,
-  DragIndicator as DragIcon
+  DragIndicator as DragIcon,
+  AutoAwesome
 } from '@mui/icons-material';
 import {
   DndContext,
@@ -42,6 +48,7 @@ import {
   useSensors,
   DragEndEvent,
 } from '@dnd-kit/core';
+import { Plug } from 'lucide-react';
 import {
   arrayMove,
   SortableContext,
@@ -65,16 +72,14 @@ import {
   Heart,
   Share2,
   Brain,
-  CreditCard
+  CreditCard,
+  Sparkles,
+  Rocket,
+  Shield
 } from 'lucide-react';
-import { Textarea } from '@/components/ui/textarea';
-import { NotificationBadge } from '@/components/ui/notification-badge';
-
-import { EmptyState } from '@/components/ui/empty-state';
-import { EnhancedNavigation, UserMenu, Breadcrumbs } from '@/components/ui/enhanced-nav';
-import { AISetupReminder } from '@/components/ui/ai-setup-reminder';
 import { useAPIKey } from '@/hooks/use-api-key';
 import { FeedbackWidget } from '@/components/FeedbackWidget';
+import { AISetupReminder } from '@/components/ui/ai-setup-reminder';
 
 // Sortable Collapsible Section Component
 interface SortableCollapsibleSectionProps {
@@ -153,20 +158,25 @@ const SortableCollapsibleSection: React.FC<SortableCollapsibleSectionProps> = ({
         >
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <Tooltip title="Drag to reorder">
-              <IconButton
-                size="small"
+              <Box
+                component="div"
                 {...attributes}
                 {...listeners}
                 sx={{
                   color: 'text.secondary',
                   cursor: 'grab',
                   '&:active': { cursor: 'grabbing' },
-                  '&:hover': { color: 'primary.main' }
+                  '&:hover': { color: 'primary.main' },
+                  p: 0.5,
+                  borderRadius: 1,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
                 }}
                 onClick={(e) => e.stopPropagation()}
               >
                 <DragIcon fontSize="small" />
-              </IconButton>
+              </Box>
             </Tooltip>
             <Typography
               variant="h6"
@@ -181,19 +191,25 @@ const SortableCollapsibleSection: React.FC<SortableCollapsibleSectionProps> = ({
           </Box>
           {onHide && (
             <Tooltip title="Hide section">
-              <IconButton
-                size="small"
+              <Box
+                component="div"
                 onClick={(e) => {
                   e.stopPropagation();
                   handleHide();
                 }}
                 sx={{
                   color: 'text.secondary',
-                  '&:hover': { color: 'error.main' }
+                  '&:hover': { color: 'error.main' },
+                  p: 0.5,
+                  borderRadius: 1,
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
                 }}
               >
                 <HideIcon fontSize="small" />
-              </IconButton>
+              </Box>
             </Tooltip>
           )}
         </AccordionSummary>
@@ -220,7 +236,10 @@ export default function DashboardPage() {
   const [sectionOrder, setSectionOrder] = useState<string[]>([
     'stats-grid',
     'quick-actions', 
-    'content-performance'
+    'ai-intelligence-preview',
+    'content-performance',
+    'phase5-preview',
+    'phase6-preview'
   ]);
   
   const [stats, setStats] = useState({
@@ -317,68 +336,92 @@ export default function DashboardPage() {
   };
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-        {/* Enhanced Header */}
-        <Box sx={{ 
-          display: 'flex', 
-          flexDirection: { xs: 'column', sm: 'row' }, 
-          alignItems: { sm: 'center' }, 
-          justifyContent: 'space-between', 
-          gap: 2 
-        }}>
-          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-            <Typography 
-              variant="h4" 
-              component="h1" 
-              sx={{ 
-                fontWeight: 'bold', 
-                color: 'text.primary',
-                wordBreak: 'break-word',
-                fontSize: { xs: '1.25rem', sm: '1.5rem' }
-              }}
-            >
-              Welcome back{session?.user?.name ? `, ${session.user.name}` : ''}!
-            </Typography>
-            <Typography 
-              variant="body1" 
-              sx={{ 
-                color: 'text.primary',
-                wordBreak: 'break-word',
-                fontSize: { xs: '0.875rem', sm: '1rem' }
-              }}
-            >
-              Here's what's happening with your content today.
-            </Typography>
-          </Box>
-          
-          {/* Dashboard Controls */}
-          <Box sx={{ display: 'flex', gap: 1 }}>
-            {hiddenSections.length > 0 && (
-              <Button
-                variant="outlined"
-                size="small"
-                onClick={() => setHiddenSections([])}
-                sx={{ 
-                  fontSize: '0.75rem',
-                  minWidth: 'auto',
-                  px: 2
-                }}
-              >
-                Restore Hidden ({hiddenSections.length})
-              </Button>
-            )}
-          </Box>
+    <Box sx={{ pb: { xs: 8, sm: 4 } }}>
+      {/* Welcome Header */}
+      <Box sx={{ mb: 4 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+          <Typography 
+            variant="h4" 
+            component="h1" 
+            sx={{ 
+              fontWeight: 'bold', 
+              color: 'text.primary',
+              wordBreak: 'break-word',
+              fontSize: { xs: '1.25rem', sm: '1.5rem' }
+            }}
+          >
+            Welcome back{session?.user?.name ? `, ${session.user.name}` : ''}!
+          </Typography>
+          <Typography 
+            variant="body1" 
+            sx={{ 
+              color: 'text.primary',
+              wordBreak: 'break-word',
+              fontSize: { xs: '0.875rem', sm: '1rem' }
+            }}
+          >
+            Here's what's happening with your content today.
+          </Typography>
         </Box>
+        
+        {/* Dashboard Controls */}
+        <Box sx={{ display: 'flex', gap: 1 }}>
+          {hiddenSections.length > 0 && (
+            <Button
+              variant="outlined"
+              size="small"
+              onClick={() => setHiddenSections([])}
+              sx={{ 
+                fontSize: '0.75rem',
+                minWidth: 'auto',
+                px: 2
+              }}
+            >
+              Restore Hidden ({hiddenSections.length})
+            </Button>
+          )}
+        </Box>
+      </Box>
 
-        {/* AI Setup Reminder */}
-        {!hasAPIKey && showAIReminder && (
-          <AISetupReminder
-            onSetup={() => router.push('/dashboard/ai-tools')}
-            onDismiss={() => setShowAIReminder(false)}
-          />
-        )}
+      {/* AI Setup Reminder */}
+      {!hasAPIKey && showAIReminder && (
+        <AISetupReminder
+          onSetup={() => router.push('/dashboard/enhanced')}
+          onDismiss={() => setShowAIReminder(false)}
+        />
+      )}
 
-        {/* Drag & Drop Dashboard Sections */}
+      {/* Enhanced Dashboard Promotion */}
+      <Card sx={{ bgcolor: 'primary.50', border: '2px solid', borderColor: 'primary.main' }}>
+        <CardContent sx={{ textAlign: 'center', py: 3 }}>
+          <Typography variant="h5" component="h2" gutterBottom color="primary.main">
+            🚀 Try Our Enhanced AI-Powered Dashboard!
+          </Typography>
+          <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
+            Experience the next generation of content creation intelligence with Phase 2 features
+          </Typography>
+          <Button 
+            variant="contained" 
+            size="large"
+            onClick={() => router.push('/dashboard/enhanced')}
+            startIcon={<AutoAwesome />}
+            sx={{ mr: 2 }}
+          >
+            Launch Enhanced Dashboard
+          </Button>
+          <Button 
+            variant="outlined" 
+            size="large"
+            onClick={() => router.push('/dashboard/phase2-hub')}
+            startIcon={<Rocket />}
+          >
+            Phase 2 Hub
+          </Button>
+        </CardContent>
+      </Card>
+
+      {/* Drag & Drop Dashboard Sections */}
+      <Box sx={{ pb: { xs: 12, sm: 8 } }}>
         <DndContext
           sensors={sensors}
           collisionDetection={closestCenter}
@@ -399,7 +442,7 @@ export default function DashboardPage() {
                       defaultExpanded={true}
                       onHide={handleHideSection}
                     >
-                      <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', lg: 'repeat(4, 1fr)' }, gap: { xs: 1.5, sm: 2 } }}>
+                      <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', lg: 'repeat(4, 1fr)' }, gap: { xs: 1.5, sm: 2 }, mb: 3 }}>
                         <Box>
                           <MuiStatsCard
                             title="Total Posts"
@@ -409,6 +452,7 @@ export default function DashboardPage() {
                             trend={{ value: 12, isPositive: true, period: 'last month' }}
                             loading={isLoading}
                             onClick={() => router.push('/dashboard/content')}
+                            aria-label="View total posts statistics"
                           />
                         </Box>
                         <Box>
@@ -420,7 +464,6 @@ export default function DashboardPage() {
                             variant="success"
                             loading={isLoading}
                             onClick={() => router.push('/dashboard/accounts')}
-                            sx={{ bgcolor: 'grey.100', borderColor: 'success.main' }}
                           />
                         </Box>
                         <Box>
@@ -431,7 +474,7 @@ export default function DashboardPage() {
                             icon={Heart}
                             trend={{ value: 8, isPositive: true, period: 'last week' }}
                             loading={isLoading}
-                            onClick={() => router.push('/dashboard/analytics')}
+                            onClick={() => router.push('/dashboard/enhanced')}
                           />
                         </Box>
                         <Box>
@@ -443,7 +486,6 @@ export default function DashboardPage() {
                             variant="warning"
                             loading={isLoading}
                             onClick={() => router.push('/dashboard/content')}
-                            sx={{ bgcolor: 'grey.100', borderColor: 'warning.main' }}
                           />
                         </Box>
                       </Box>
@@ -459,350 +501,504 @@ export default function DashboardPage() {
                       defaultExpanded={true}
                       onHide={handleHideSection}
                     >
-            <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', lg: '2fr 1fr' }, gap: { xs: 2, sm: 3 } }}>
-              {/* Create Content */}
-              <Box>
-                <Card sx={{ border: 0 }}>
-                  <CardHeader>
-                    <Typography 
-                      variant="h6" 
-                      component="h2" 
-                      sx={{ 
-                        display: 'flex', 
-                        alignItems: 'center', 
-                        gap: 1,
-                        color: 'text.primary',
-                        wordBreak: 'break-word'
-                      }}
+                      <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', lg: '2fr 1fr' }, gap: { xs: 2, sm: 3 } }}>
+                        {/* Create Content */}
+                        <Box>
+                          <Card sx={{ border: 0 }}>
+                            <CardHeader>
+                              <Typography 
+                                variant="h6" 
+                                component="h2" 
+                                sx={{ 
+                                  display: 'flex', 
+                                  alignItems: 'center', 
+                                  gap: 1,
+                                  color: 'text.primary',
+                                  wordBreak: 'break-word'
+                                }}
+                              >
+                                <Plus width={20} height={20} />
+                                Quick Actions
+                              </Typography>
+                            </CardHeader>
+                            <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: { xs: 1.5, sm: 2 } }}>
+                              <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)' }, gap: { xs: 1, sm: 1.5 } }}>
+                                <Box>
+                                  <Button 
+                                    variant="outlined"
+                                    fullWidth
+                                    sx={{
+                                      height: 64,
+                                      display: 'flex',
+                                      flexDirection: 'column',
+                                      alignItems: 'center',
+                                      justifyContent: 'center',
+                                      gap: 1,
+                                      bgcolor: 'background.paper',
+                                      color: 'text.primary',
+                                      '&:hover': {
+                                        bgcolor: 'action.hover'
+                                      },
+                                      minWidth: 44,
+                                      minHeight: 44
+                                    }}
+                                    onClick={() => router.push('/dashboard/content')}
+                                  >
+                                    <FileText width={24} height={24} />
+                                    <Typography variant="body2" sx={{ wordBreak: 'break-word' }}>
+                                      Create Post
+                                    </Typography>
+                                  </Button>
+                                </Box>
+                                <Box>
+                                  <Button 
+                                    variant="outlined"
+                                    fullWidth
+                                    sx={{
+                                      height: 64,
+                                      display: 'flex',
+                                      flexDirection: 'column',
+                                      alignItems: 'center',
+                                      justifyContent: 'center',
+                                      gap: 1,
+                                      bgcolor: 'background.paper',
+                                      color: 'text.primary',
+                                      '&:hover': {
+                                        bgcolor: 'action.hover'
+                                      },
+                                      minWidth: 44,
+                                      minHeight: 44
+                                    }}
+                                    onClick={() => router.push('/dashboard/enhanced')}
+                                  >
+                                    <Brain width={24} height={24} />
+                                    <Typography variant="body2" sx={{ wordBreak: 'break-word' }}>
+                                      AI Intelligence
+                                    </Typography>
+                                  </Button>
+                                </Box>
+                                <Box>
+                                  <Button 
+                                    variant="outlined"
+                                    fullWidth
+                                    sx={{
+                                      height: 64,
+                                      display: 'flex',
+                                      flexDirection: 'column',
+                                      alignItems: 'center',
+                                      justifyContent: 'center',
+                                      gap: 1,
+                                      bgcolor: 'background.paper',
+                                      color: 'text.primary',
+                                      '&:hover': {
+                                        bgcolor: 'action.hover'
+                                      },
+                                      minWidth: 44,
+                                      minHeight: 44
+                                    }}
+                                    onClick={() => router.push('/dashboard/enhanced')}
+                                  >
+                                    <BarChart2 width={24} height={24} />
+                                    <Typography variant="body2" sx={{ wordBreak: 'break-word' }}>
+                                      Live Analytics
+                                    </Typography>
+                                  </Button>
+                                </Box>
+                                <Box>
+                                  <Button 
+                                    variant="outlined"
+                                    fullWidth
+                                    sx={{
+                                      height: 64,
+                                      display: 'flex',
+                                      flexDirection: 'column',
+                                      alignItems: 'center',
+                                      justifyContent: 'center',
+                                      gap: 1,
+                                      bgcolor: 'background.paper',
+                                      color: 'text.primary',
+                                      '&:hover': {
+                                        bgcolor: 'action.hover'
+                                      },
+                                      minWidth: 44,
+                                      minHeight: 44
+                                    }}
+                                    onClick={() => router.push('/dashboard/enhanced')}
+                                  >
+                                    <Sparkles width={24} height={24} />
+                                    <Typography variant="body2" sx={{ wordBreak: 'break-word' }}>
+                                      Smart Workflow
+                                    </Typography>
+                                  </Button>
+                                </Box>
+                                                             <Box>
+                                   <Button
+                                     variant="outlined"
+                                     fullWidth
+                                     sx={{
+                                       height: 64,
+                                       display: 'flex',
+                                       flexDirection: 'column',
+                                       alignItems: 'center',
+                                       justifyContent: 'center',
+                                       gap: 1,
+                                       bgcolor: 'background.paper',
+                                       color: 'text.primary',
+                                       borderColor: 'secondary.main',
+                                       '&:hover': {
+                                         bgcolor: 'secondary.50',
+                                         borderColor: 'secondary.dark'
+                                       },
+                                       minWidth: 44,
+                                       minHeight: 44
+                                     }}
+                                     onClick={() => router.push('/dashboard/unified-demo')}
+                                   >
+                                     <AutoAwesome width={24} height={24} />
+                                     <Typography variant="body2" sx={{ wordBreak: 'break-word' }}>
+                                       New Design
+                                     </Typography>
+                                   </Button>
+                                 </Box>
+                                 <Box>
+                                   <Button
+                                     variant="contained"
+                                     fullWidth
+                                     sx={{
+                                       height: 64,
+                                       display: 'flex',
+                                       flexDirection: 'column',
+                                       alignItems: 'center',
+                                       justifyContent: 'center',
+                                       gap: 1,
+                                       background: 'linear-gradient(90deg, #3B82F6, #8B5CF6)',
+                                       color: 'white',
+                                       borderColor: 'secondary.main',
+                                       '&:hover': {
+                                         background: 'linear-gradient(90deg, #2563EB, #7C3AED)'
+                                       },
+                                       minWidth: 44,
+                                       minHeight: 44
+                                     }}
+                                     onClick={() => router.push('/dashboard/phase2-hub')}
+                                   >
+                                     <Brain width={24} height={24} />
+                                     <Typography variant="body2" sx={{ wordBreak: 'break-word' }}>
+                                       Phase 2 Hub
+                                     </Typography>
+                                   </Button>
+                                 </Box>
+                                <Box>
+                                  <Button 
+                                    variant="outlined"
+                                    fullWidth
+                                    sx={{
+                                      height: 64,
+                                      display: 'flex',
+                                      flexDirection: 'column',
+                                      alignItems: 'center',
+                                      justifyContent: 'center',
+                                      gap: 1,
+                                      bgcolor: 'background.paper',
+                                      color: 'text.primary',
+                                      '&:hover': {
+                                        bgcolor: 'action.hover'
+                                      },
+                                      minWidth: 44,
+                                      minHeight: 44
+                                    }}
+                                    onClick={() => router.push('/dashboard/enhanced')}
+                                  >
+                                    <Rocket width={24} height={24} />
+                                    <Typography variant="body2" sx={{ wordBreak: 'break-word' }}>
+                                      Phase 2 Hub
+                                    </Typography>
+                                  </Button>
+                                </Box>
+                                <Box>
+                                  <Button 
+                                    variant="outlined"
+                                    fullWidth
+                                    sx={{
+                                      height: 64,
+                                      display: 'flex',
+                                      flexDirection: 'column',
+                                      alignItems: 'center',
+                                      justifyContent: 'center',
+                                      gap: 1,
+                                      bgcolor: 'background.paper',
+                                      color: 'text.primary',
+                                      '&:hover': {
+                                        bgcolor: 'action.hover'
+                                      },
+                                      minWidth: 44,
+                                      minHeight: 44
+                                    }}
+                                    onClick={() => router.push('/dashboard/enhanced')}
+                                  >
+                                    <AutoAwesome width={24} height={24} />
+                                    <Typography variant="body2" sx={{ wordBreak: 'break-word' }}>
+                                      Enhanced Dashboard
+                                    </Typography>
+                                  </Button>
+                                </Box>
+                              </Box>
+                            </CardContent>
+                          </Card>
+                        </Box>
+                      </Box>
+                    </SortableCollapsibleSection>
+                  );
+
+                case 'content-performance':
+                  return (
+                    <SortableCollapsibleSection
+                      key={sectionId}
+                      id={sectionId}
+                      title="Content Performance"
+                      defaultExpanded={true}
+                      onHide={handleHideSection}
                     >
-                      <Plus sx={{ width: 20, height: 20, flexShrink: 0 }} />
-                      Quick Actions
-                    </Typography>
-                  </CardHeader>
-                  <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: { xs: 1.5, sm: 2 } }}>
-                    <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)' }, gap: { xs: 1, sm: 1.5 } }}>
-                      <Box>
-                        <Button 
-                          variant="outlined"
-                          fullWidth
-                          sx={{
-                            height: 64,
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            gap: 1,
-                            bgcolor: 'background.paper',
-                            color: 'text.primary',
-                            '&:hover': {
-                              bgcolor: 'action.hover'
-                            },
-                            minWidth: 44,
-                            minHeight: 44
-                          }}
-                          onClick={() => router.push('/dashboard/content')}
-                        >
-                          <FileText sx={{ width: 24, height: 24, flexShrink: 0 }} />
-                          <Typography variant="body2" sx={{ wordBreak: 'break-word' }}>
-                            Create Post
+                      <Card>
+                        <CardContent>
+                          <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
+                            Your content is performing well! Check out the enhanced dashboard for detailed analytics.
                           </Typography>
-                        </Button>
-                      </Box>
-                      <Box>
-                        <Button 
-                          variant="outlined"
-                          fullWidth
-                          sx={{
-                            height: 64,
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            gap: 1,
-                            bgcolor: 'background.paper',
-                            color: 'text.primary',
-                            '&:hover': {
-                              bgcolor: 'action.hover'
-                            },
-                            minWidth: 44,
-                            minHeight: 44
-                          }}
-                          onClick={() => router.push('/dashboard/ai-tools')}
-                        >
-                          <Brain sx={{ width: 24, height: 24, flexShrink: 0 }} />
-                          <Typography variant="body2" sx={{ wordBreak: 'break-word' }}>
-                            AI Tools
-                          </Typography>
-                        </Button>
-                      </Box>
-                      <Box>
-                        <Button 
-                          variant="outlined"
-                          fullWidth
-                          sx={{
-                            height: 64,
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            gap: 1,
-                            bgcolor: 'background.paper',
-                            color: 'text.primary',
-                            '&:hover': {
-                              bgcolor: 'action.hover'
-                            },
-                            minWidth: 44,
-                            minHeight: 44
-                          }}
-                          onClick={() => router.push('/dashboard/analytics')}
-                        >
-                          <BarChart2 sx={{ width: 24, height: 24, flexShrink: 0 }} />
-                          <Typography variant="body2" sx={{ wordBreak: 'break-word' }}>
-                            View Analytics
-                          </Typography>
-                        </Button>
-                      </Box>
-                      <Box>
-                        <Button 
-                          variant="outlined"
-                          fullWidth
-                          sx={{
-                            height: 64,
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            gap: 1,
-                            bgcolor: 'background.paper',
-                            color: 'text.primary',
-                            '&:hover': {
-                              bgcolor: 'action.hover'
-                            },
-                            minWidth: 44,
-                            minHeight: 44
-                          }}
-                          onClick={() => router.push('/dashboard/accounts')}
-                        >
-                          <Users sx={{ width: 24, height: 24, flexShrink: 0 }} />
-                          <Typography variant="body2" sx={{ wordBreak: 'break-word' }}>
-                            Manage Accounts
-                          </Typography>
-                        </Button>
-                      </Box>
-                    </Box>
-                  </CardContent>
-                </Card>
-              </Box>
+                          <Button 
+                            variant="contained"
+                            onClick={() => router.push('/dashboard/enhanced')}
+                            startIcon={<TrendingUp />}
+                          >
+                            View Enhanced Analytics
+                          </Button>
+                        </CardContent>
+                      </Card>
+                    </SortableCollapsibleSection>
+                  );
 
-              {/* Recent Activity */}
-              <Box>
-                <Card>
-                  <CardHeader>
-                    <Typography variant="h6" component="h2" sx={{ color: 'text.primary' }}>
-                      Recent Activity
-                    </Typography>
-                  </CardHeader>
-                  <CardContent>
-                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                        <Box sx={{ 
-                          width: 8, 
-                          height: 8, 
-                          borderRadius: '50%', 
-                          bgcolor: 'success.main' 
-                        }} />
-                        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                          Post published to Instagram
-                        </Typography>
-                      </Box>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                        <Box sx={{ 
-                          width: 8, 
-                          height: 8, 
-                          borderRadius: '50%', 
-                          bgcolor: 'info.main' 
-                        }} />
-                        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                          New comment on YouTube video
-                        </Typography>
-                      </Box>
-                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                        <Box sx={{ 
-                          width: 8, 
-                          height: 8, 
-                          borderRadius: '50%', 
-                          bgcolor: 'warning.main' 
-                        }} />
-                        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                          Scheduled post ready
-                        </Typography>
-                      </Box>
-                    </Box>
-                  </CardContent>
-                </Card>
-              </Box>
-            </Box>
-          </SortableCollapsibleSection>
-        )}
+                case 'phase5-preview':
+                  return (
+                    <SortableCollapsibleSection
+                      key={sectionId}
+                      id={sectionId}
+                      title="🚀 Phase 5: Advanced AI & Automation"
+                      defaultExpanded={true}
+                      onHide={handleHideSection}
+                    >
+                      <Card>
+                        <CardContent>
+                          <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
+                            Experience the future of content creation with our advanced AI-powered features:
+                          </Typography>
+                          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 2, mb: 3 }}>
+                            <Box>
+                              <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 1 }}>
+                                🤖 AI Content Optimizer
+                              </Typography>
+                              <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                                Advanced content performance prediction and optimization
+                              </Typography>
+                              <Button 
+                                variant="outlined"
+                                size="small"
+                                onClick={() => router.push('/dashboard/content')}
+                                startIcon={<Brain />}
+                              >
+                                Try AI Optimization
+                              </Button>
+                            </Box>
+                            <Box>
+                              <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 1 }}>
+                                📊 Predictive Analytics
+                              </Typography>
+                              <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                                ML-powered forecasting and trend analysis
+                              </Typography>
+                              <Button 
+                                variant="outlined"
+                                size="small"
+                                onClick={() => router.push('/dashboard/analytics')}
+                                startIcon={<TrendingUp />}
+                              >
+                                View Predictions
+                              </Button>
+                            </Box>
+                          </Box>
+                          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 2 }}>
+                            <Box>
+                              <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 1 }}>
+                                ⚡ Automated Publisher
+                              </Typography>
+                              <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                                Smart scheduling and cross-platform automation
+                              </Typography>
+                              <Button 
+                                variant="outlined"
+                                size="small"
+                                onClick={() => router.push('/dashboard/content')}
+                                startIcon={<Rocket />}
+                              >
+                                Setup Automation
+                              </Button>
+                            </Box>
+                            <Box>
+                              <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 1 }}>
+                                🔗 Integration Hub
+                              </Typography>
+                              <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                                Advanced third-party platform integrations
+                              </Typography>
+                              <Button 
+                                variant="outlined"
+                                size="small"
+                                onClick={() => router.push('/dashboard/integrations')}
+                                startIcon={<Plug />}
+                              >
+                                Manage Integrations
+                              </Button>
+                            </Box>
+                          </Box>
+                        </CardContent>
+                      </Card>
+                    </SortableCollapsibleSection>
+                  );
 
-        {/* Content Performance */}
-        {!isSectionHidden('content-performance') && (
-          <SortableCollapsibleSection
-            id="content-performance"
-            title="Content Performance"
-            defaultExpanded={false}
-            onHide={handleHideSection}
-          >
-            <Card>
-              <CardHeader>
-                <Typography variant="h6" component="h2" sx={{ color: 'text.primary' }}>
-                  Content Performance
-                </Typography>
-                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                  Your top performing content this week
-                </Typography>
-              </CardHeader>
-              <CardContent>
-                <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 2 }}>
-                  <Box>
-                    <Paper sx={{ p: 2, display: 'flex', alignItems: 'center', gap: 2 }}>
-                      <Box sx={{ 
-                        width: 48, 
-                        height: 48, 
-                        borderRadius: 1, 
-                        bgcolor: 'primary.main',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                      }}>
-                        <TrendingUp sx={{ color: 'white', width: 24, height: 24 }} />
-                      </Box>
-                      <Box sx={{ flexGrow: 1 }}>
-                        <Typography variant="subtitle2" sx={{ fontWeight: 'bold' }}>
-                          Instagram Reel
-                        </Typography>
-                        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                          2.4k views • 156 likes
-                        </Typography>
-                      </Box>
-                      <Chip 
-                        label="+12%" 
-                        color="success" 
-                        size="small" 
-                        variant="outlined"
-                      />
-                    </Paper>
-                  </Box>
-                  <Box>
-                    <Paper sx={{ p: 2, display: 'flex', alignItems: 'center', gap: 2 }}>
-                      <Box sx={{ 
-                        width: 48, 
-                        height: 48, 
-                        borderRadius: 1, 
-                        bgcolor: 'secondary.main',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                      }}>
-                        <MessageSquare sx={{ color: 'white', width: 24, height: 24 }} />
-                      </Box>
-                      <Box sx={{ flexGrow: 1 }}>
-                        <Typography variant="subtitle2" sx={{ fontWeight: 'bold' }}>
-                          YouTube Short
-                        </Typography>
-                        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                          1.8k views • 89 comments
-                        </Typography>
-                      </Box>
-                      <Chip 
-                        label="+8%" 
-                        color="success" 
-                        size="small" 
-                        variant="outlined"
-                      />
-                    </Paper>
-                  </Box>
-                </Box>
-              </CardContent>
-            </Card>
-          </SortableCollapsibleSection>
-        );
-      }
-    })}
+                case 'phase6-preview':
+                  return (
+                    <SortableCollapsibleSection
+                      key={sectionId}
+                      id={sectionId}
+                      title="🏢 Phase 6: Enterprise Features & Scaling"
+                      defaultExpanded={true}
+                      onHide={handleHideSection}
+                    >
+                      <Card>
+                        <CardContent>
+                          <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
+                            Scale your content creation with enterprise-grade features for teams and organizations:
+                          </Typography>
+                          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 2, mb: 3 }}>
+                            <Box>
+                              <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 1 }}>
+                                👥 Team Management
+                              </Typography>
+                              <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                                Multi-user collaboration, roles, permissions, and departments
+                              </Typography>
+                              <Button 
+                                variant="outlined"
+                                size="small"
+                                onClick={() => router.push('/dashboard/team')}
+                                startIcon={<Users />}
+                              >
+                                Manage Team
+                              </Button>
+                            </Box>
+                            <Box>
+                              <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 1 }}>
+                                📊 Enterprise Analytics
+                              </Typography>
+                              <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                                Custom dashboards, automated reports, and white-label solutions
+                              </Typography>
+                              <Button 
+                                variant="outlined"
+                                size="small"
+                                onClick={() => router.push('/dashboard/analytics')}
+                                startIcon={<BarChart2 />}
+                              >
+                                View Analytics
+                              </Button>
+                            </Box>
+                          </Box>
+                          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 2 }}>
+                            <Box>
+                              <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 1 }}>
+                                🔌 API Management
+                              </Typography>
+                              <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                                Developer tools, webhooks, rate limiting, and integrations
+                              </Typography>
+                              <Button 
+                                variant="outlined"
+                                size="small"
+                                onClick={() => router.push('/dashboard/api')}
+                                startIcon={<Plug />}
+                              >
+                                Manage APIs
+                              </Button>
+                            </Box>
+                            <Box>
+                              <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 1 }}>
+                                🔒 Advanced Security
+                              </Typography>
+                              <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                                Enterprise-grade security, compliance, and threat intelligence
+                              </Typography>
+                              <Button 
+                                variant="outlined"
+                                size="small"
+                                onClick={() => router.push('/dashboard/security')}
+                                startIcon={<Shield />}
+                              >
+                                Security Dashboard
+                              </Button>
+                            </Box>
+                          </Box>
+                        </CardContent>
+                      </Card>
+                    </SortableCollapsibleSection>
+                  );
+
+                default:
+                  return null;
+              }
+            })}
           </SortableContext>
         </DndContext>
-
-        {/* Welcome Dialog */}
-        <Dialog
-          open={showWelcome}
-          onClose={handleClose}
-          maxWidth="sm"
-          fullWidth
-        >
-          <DialogTitle>
-            Welcome to CreatorFlow! 🎉
-          </DialogTitle>
-          <DialogContent>
-            <Typography variant="body1" sx={{ mb: 2 }}>
-              We're excited to help you grow your creator business. Here's what you can do to get started:
-            </Typography>
-            <Box component="ul" sx={{ pl: 2 }}>
-              <Typography component="li" variant="body2" sx={{ mb: 1 }}>
-                Connect your social media accounts
-              </Typography>
-              <Typography component="li" variant="body2" sx={{ mb: 1 }}>
-                Create your first post
-              </Typography>
-              <Typography component="li" variant="body2" sx={{ mb: 1 }}>
-                Explore AI tools for content creation
-              </Typography>
-              <Typography component="li" variant="body2">
-                Set up your monetization dashboard
-              </Typography>
-            </Box>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose} variant="outlined">
-              Got it!
-            </Button>
-            <Button onClick={() => router.push('/dashboard/accounts')} variant="contained">
-              Connect Accounts
-            </Button>
-          </DialogActions>
-        </Dialog>
-
-        {/* Feedback Dialog */}
-        <Dialog
-          open={showGettingStarted}
-          onClose={() => setShowGettingStarted(false)}
-          maxWidth="sm"
-          fullWidth
-        >
-          <DialogTitle>
-            How's CreatorFlow working for you?
-          </DialogTitle>
-          <DialogContent>
-            <TextField
-              fullWidth
-              multiline
-              rows={4}
-              placeholder="Share your feedback, suggestions, or report any issues..."
-              value={feedback}
-              onChange={(e) => setFeedback(e.target.value)}
-              sx={{ mt: 1 }}
-            />
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => setShowGettingStarted(false)} variant="outlined">
-              Cancel
-            </Button>
-            <Button onClick={handleFeedbackSubmit} variant="contained">
-              Submit Feedback
-            </Button>
-          </DialogActions>
-        </Dialog>
-
-        <FeedbackWidget />
       </Box>
+
+      {/* Welcome Dialog */}
+      <Dialog
+        open={showWelcome}
+        onClose={handleClose}
+        maxWidth="sm"
+        fullWidth
+      >
+        <DialogTitle>
+          Welcome to CreatorFlow! 🎉
+        </DialogTitle>
+        <DialogContent>
+          <Typography variant="body1" sx={{ mb: 2 }}>
+            We're excited to help you grow your creator business. Here's what you can do to get started:
+          </Typography>
+          <Box component="ul" sx={{ pl: 2 }}>
+            <Typography component="li" variant="body2" sx={{ mb: 1 }}>
+              Connect your social media accounts
+            </Typography>
+            <Typography component="li" variant="body2" sx={{ mb: 1 }}>
+              Try our enhanced AI-powered dashboard
+            </Typography>
+            <Typography component="li" variant="body2" sx={{ mb: 1 }}>
+              Explore Phase 2 features for advanced content creation
+            </Typography>
+          </Box>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} variant="contained">
+            Get Started
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Feedback Widget */}
+      <FeedbackWidget />
+
+      {/* Bottom Spacer to Clear Bottom Navigation */}
+      <Box sx={{
+        height: { xs: '120px', sm: '40px' },
+        width: '100%'
+      }} />
+    </Box>
   );
 } 

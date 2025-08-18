@@ -182,9 +182,6 @@ export function MenuContent({
   className,
   align = 'start',
   side = 'bottom',
-  _sideOffset = 4,
-  _alignOffset = 0,
-  _avoidCollisions = true,
 }: MenuContentProps) {
   const { open, contentRef } = useMenuContext();
 
@@ -527,8 +524,6 @@ interface MenuSubContentProps {
 export function MenuSubContent({
   children,
   className,
-  _sideOffset = 4,
-  _alignOffset = 0,
 }: MenuSubContentProps) {
   const { open } = useMenuContext();
 

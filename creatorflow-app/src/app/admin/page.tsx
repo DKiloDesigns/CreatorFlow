@@ -44,7 +44,7 @@ export default function AdminDashboard() {
   const [details, setDetails] = useState<UserDetails | null>(null);
   const [detailsLoading, setDetailsLoading] = useState(false);
   const [detailsError, setDetailsError] = useState<string | null>(null);
-  const [feedbackFilters, setFeedbackFilters] = useState({ user: '', status: '', q: '' });
+  const [feedbackFilters, _setFeedbackFilters] = useState({ user: '', status: '', q: '' });
   const [replyId, setReplyId] = useState<string | null>(null);
   const [replyText, setReplyText] = useState('');
   const [replyLoading, setReplyLoading] = useState(false);
@@ -83,7 +83,7 @@ export default function AdminDashboard() {
       const feedbackData = await feedbackRes.json();
       setFeedback(feedbackData.feedback || feedbackData);
       setFeedbackTotal(feedbackData.total || feedbackData.feedback?.length || 0);
-    } catch (err: any) {
+    } catch (_err: any) {
       setError('Failed to load admin data');
     } finally {
       setLoading(false);
@@ -575,6 +575,9 @@ export default function AdminDashboard() {
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
         @keyframes slideUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
       `}</style>
+
+      {/* Bottom Spacer to Clear Bottom Navigation */}
+      <div className="h-32 sm:h-10 w-full"></div>
     </div>
   );
 } 

@@ -160,6 +160,16 @@ export const Alert = forwardRef<HTMLDivElement, AlertProps>(
 
 Alert.displayName = 'Alert';
 
+// Export MUI Alert components for use in other components
+export { AlertTitle } from '@mui/material';
+
+// AlertDescription component for consistent API
+export const AlertDescription: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ children, ...props }) => (
+  <div className="text-sm leading-relaxed" {...props}>
+    {children}
+  </div>
+);
+
 // Success Alert component
 export interface SuccessAlertProps extends Omit<AlertProps, 'severity'> {
   title?: string;

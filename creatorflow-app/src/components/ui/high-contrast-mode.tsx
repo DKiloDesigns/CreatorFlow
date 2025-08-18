@@ -1,14 +1,14 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import { Switch } from '@mui/material';
-import { Box, Typography, FormControl, InputLabel, Select, MenuItem, Chip, Alert } from '@mui/material';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Switch, Typography } from '@mui/material';
+import { Box, FormControl, InputLabel, Select, MenuItem, Chip, Alert } from '@mui/material';
 import { 
-  Visibility, 
-  Contrast, 
-  Palette,
   CheckCircle,
-  Warning
+  Warning,
+  Palette,
+  Contrast,
+  Visibility
 } from '@mui/icons-material';
 
 interface HighContrastModeProps {
@@ -66,8 +66,8 @@ export default function HighContrastMode({
     const savedAdjustment = localStorage.getItem('creatorflow-theme-adjustment');
 
     if (savedEnabled) setEnabled(JSON.parse(savedEnabled));
-    if (savedLevel) setContrastLevel(savedLevel as any);
-    if (savedAdjustment) setThemeAdjustment(savedAdjustment as any);
+    if (savedLevel) setContrastLevel(savedLevel as 'standard' | 'high' | 'maximum');
+    if (savedAdjustment) setThemeAdjustment(savedAdjustment as 'auto' | 'manual');
 
     // Apply high contrast mode if enabled
     if (savedEnabled === 'true') {
@@ -91,7 +91,7 @@ export default function HighContrastMode({
     onToggle?.(enabled);
   }, [enabled, contrastLevel, themeAdjustment, onToggle]);
 
-  const applyHighContrastMode = () => {
+  const applyHighContrastMode = useCallback(() => {
     const root = document.documentElement;
     const body = document.body;
 
@@ -183,7 +183,7 @@ export default function HighContrastMode({
     `;
     
     document.head.appendChild(style);
-  };
+  }, [contrastLevel]);
 
   const removeHighContrastMode = () => {
     const body = document.body;
@@ -248,6 +248,9 @@ export default function HighContrastMode({
           onChange={(e) => handleToggle(e.target.checked)}
           color="primary"
           size="large"
+          aria-label="Enable high contrast mode"
+          role="switch"
+          aria-checked={enabled}
         />
       </Box>
 
@@ -260,8 +263,9 @@ export default function HighContrastMode({
               <InputLabel>Select Contrast Level</InputLabel>
               <Select
                 value={contrastLevel}
-                onChange={(e) => handleContrastLevelChange(e.target.value as any)}
+                onChange={(e) => handleContrastLevelChange(e.target.value as 'standard' | 'high' | 'maximum')}
                 label="Select Contrast Level"
+                aria-label="Select contrast level for high contrast mode"
               >
                 {contrastLevels.map((level) => (
                   <MenuItem key={level.name} value={level.name.toLowerCase()}>
@@ -306,7 +310,7 @@ export default function HighContrastMode({
               <InputLabel>Adjustment Mode</InputLabel>
               <Select
                 value={themeAdjustment}
-                onChange={(e) => handleThemeAdjustmentChange(e.target.value as any)}
+                onChange={(e) => handleThemeAdjustmentChange(e.target.value as 'auto' | 'manual')}
                 label="Adjustment Mode"
               >
                 <MenuItem value="auto">

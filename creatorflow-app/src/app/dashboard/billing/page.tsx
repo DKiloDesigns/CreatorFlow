@@ -97,8 +97,13 @@ export default async function BillingPage({ searchParams }: BillingPageProps) {
   };
 
   return (
-    <Container maxWidth="lg" sx={{ py: 3 }}>
+    <Container maxWidth="lg" sx={{ py: 3, pb: { xs: 20, sm: 8 } }}>
       <BillingClient {...serializedData} />
     </Container>
   );
+{/* Bottom Spacer to Clear Bottom Navigation */}
+      <Box sx={{
+        height: { xs: '120px', sm: '40px' },
+        width: '100%'
+      }} />
 } 

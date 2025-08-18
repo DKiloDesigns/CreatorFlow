@@ -2,12 +2,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader } from '@/components/ui/mui-card';
-import { Typography, Button, Box, Grid, FormControlLabel } from '@mui/material';
+import { Typography, Button, Box } from '@mui/material';
 import { 
   Bell, 
-  Settings, 
-  Save, 
-  RefreshCw,
   Activity
 } from 'lucide-react';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
@@ -261,32 +258,26 @@ export function NotificationPreferences({ className }: NotificationPreferencesPr
               <div>
                 <Label className="text-base font-medium">Default Channels</Label>
                 <p className="text-sm text-gray-500 mb-3">Choose which channels to use by default</p>
-                <Grid container spacing={1}>
+                <div className="grid grid-cols-2 gap-4">
                   {NOTIFICATION_CHANNELS.map((channel) => (
-                    <Grid item xs={6} key={channel.key}>
-                      <FormControlLabel
-                        control={
-                          <Switch
-                            checked={preferences.global.channels.includes(channel.key)}
-                            onChange={(e) => {
-                              const currentChannels = preferences.global.channels;
-                              const newChannels = e.target.checked
-                                ? [...currentChannels, channel.key]
-                                : currentChannels.filter(c => c !== channel.key);
-                              updateGlobalSettings('channels', newChannels);
-                            }}
-                          />
-                        }
-                        label={
-                          <Box display="flex" alignItems="center">
-                            {channel.icon}
-                            <span className="ml-1">{channel.label}</span>
-                          </Box>
-                        }
+                    <div key={channel.key} className="flex items-center space-x-2">
+                      <Switch
+                        checked={preferences.global.channels.includes(channel.key)}
+                        onCheckedChange={(checked) => {
+                          const currentChannels = preferences.global.channels;
+                          const newChannels = checked
+                            ? [...currentChannels, channel.key]
+                            : currentChannels.filter(c => c !== channel.key);
+                          updateGlobalSettings('channels', newChannels);
+                        }}
                       />
-                    </Grid>
+                      <div className="flex items-center">
+                        {channel.icon}
+                        <span className="ml-1">{channel.label}</span>
+                      </div>
+                    </div>
                   ))}
-                </Grid>
+                </div>
               </div>
 
               <Separator />
@@ -307,8 +298,8 @@ export function NotificationPreferences({ className }: NotificationPreferencesPr
                 </div>
                 
                 {preferences.global.quietHours.enabled && (
-                  <Grid container spacing={2}>
-                    <Grid item xs={4}>
+                  <div className="grid grid-cols-3 gap-4">
+                    <div>
                       <Label htmlFor="quiet-start">Start Time</Label>
                       <input
                         id="quiet-start"
@@ -319,8 +310,8 @@ export function NotificationPreferences({ className }: NotificationPreferencesPr
                         }
                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                       />
-                    </Grid>
-                    <Grid item xs={4}>
+                    </div>
+                    <div>
                       <Label htmlFor="quiet-end">End Time</Label>
                       <input
                         id="quiet-end"
@@ -331,8 +322,8 @@ export function NotificationPreferences({ className }: NotificationPreferencesPr
                         }
                         className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                       />
-                    </Grid>
-                    <Grid item xs={4}>
+                    </div>
+                    <div>
                       <Label htmlFor="quiet-timezone">Timezone</Label>
                       <select
                         id="quiet-timezone"
@@ -348,8 +339,8 @@ export function NotificationPreferences({ className }: NotificationPreferencesPr
                         <option value="America/Denver">Mountain Time</option>
                         <option value="America/Los_Angeles">Pacific Time</option>
                       </select>
-                    </Grid>
-                  </Grid>
+                    </div>
+                  </div>
                 )}
               </div>
             </CardContent>

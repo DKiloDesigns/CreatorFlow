@@ -8,10 +8,14 @@ import {
   Typography,
   Grid
 } from '@mui/material';
-import { FileText, Activity } from 'lucide-react';
+import { FileText, Activity, Heart, Star } from 'lucide-react';
 import { toast } from 'sonner';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
+import { Badge } from '@/components/ui/feedback/mui-badge';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 
 interface Template {
   id: string;

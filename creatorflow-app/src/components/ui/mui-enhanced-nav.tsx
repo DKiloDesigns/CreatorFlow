@@ -16,9 +16,8 @@ import {
   MenuItem,
   Box,
   Typography,
-  useTheme,
-  useMediaQuery,
   Divider,
+  useTheme,
   Chip,
   Stack,
 } from '@mui/material';
@@ -29,7 +28,6 @@ import {
   Users2,
   BarChart2,
   Handshake,
-  CreditCard,
   Settings,
   LogOut,
   User,
@@ -57,7 +55,7 @@ const navItems: NavItem[] = [
   { href: '/dashboard/teams', label: 'Teams', icon: Users2 },
   { href: '/dashboard/analytics', label: 'Analytics', icon: BarChart2 },
   { href: '/dashboard/collabs', label: 'Brand Collabs', icon: Handshake },
-  { href: '/dashboard/billing', label: 'Billing', icon: CreditCard },
+
 ];
 
 export function MuiEnhancedNavigation() {
@@ -67,7 +65,6 @@ export function MuiEnhancedNavigation() {
   const [notificationsAnchor, setNotificationsAnchor] = useState<null | HTMLElement>(null);
   const { data: session } = useSession();
   const theme = useTheme();
-  const _isMobile = useMediaQuery(theme.breakpoints.down('lg'));
 
   const isActive = (href: string) => {
     return pathname ? pathname.startsWith(href) : false;
@@ -166,6 +163,9 @@ export function MuiEnhancedNavigation() {
         sx={{ display: { xs: 'flex', lg: 'none' } }}
         onClick={() => setMobileNavOpen(true)}
         color="inherit"
+        aria-label="Open mobile navigation menu"
+        aria-expanded={mobileNavOpen}
+        aria-controls="mobile-nav-drawer"
       >
         <MenuIcon className="h-5 w-5" />
       </IconButton>
@@ -181,6 +181,8 @@ export function MuiEnhancedNavigation() {
             backgroundColor: 'background.paper',
           },
         }}
+        id="mobile-nav-drawer"
+        aria-label="Mobile navigation menu"
       >
         <Box sx={{ p: 2 }}>
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
@@ -207,6 +209,9 @@ export function MuiEnhancedNavigation() {
           color="inherit"
           onClick={handleNotificationsOpen}
           sx={{ position: 'relative' }}
+          aria-label="Open notifications menu"
+          aria-expanded={Boolean(notificationsAnchor)}
+          aria-controls="notifications-menu"
         >
           <Badge badgeContent={3} color="error">
             <Bell className="h-5 w-5" />

@@ -236,9 +236,7 @@ const Input = forwardRef<HTMLDivElement, InputProps>(
             startAdornment,
             endAdornment,
           }}
-          variant={muiVariant}
           state={state}
-          size={size}
           {...props}
         />
         {(helperText || errorText) && (

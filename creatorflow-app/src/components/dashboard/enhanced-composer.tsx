@@ -1,14 +1,13 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader } from '@/components/ui/mui-card';
+import { Button } from '@/components/ui/mui-button';
 import { Textarea } from '@/components/ui/textarea';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/navigation/Tabs';
+import { Badge } from '@/components/ui/feedback/mui-badge';
 import { AlertDialog } from '@/components/ui/alert-dialog';
 import { 
-  Image, 
   Video, 
   Link, 
   Smile, 
@@ -26,8 +25,7 @@ import {
   Brain,
   Zap,
   Upload,
-  FileText,
-  Folder
+  FileText
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
@@ -186,7 +184,7 @@ export function EnhancedComposer({ onSubmit, className }: EnhancedComposerProps)
     toast.success('AI suggestion inserted!');
   };
 
-  const handleAiSave = (name: string, text: string) => {
+  const handleAiSave = (name: string, _text: string) => {
     // Save as template - you can implement this later
     toast.success(`Saved as template: ${name}`);
     setAiModalOpen(false);
@@ -221,7 +219,7 @@ export function EnhancedComposer({ onSubmit, className }: EnhancedComposerProps)
       } else {
         toast.error('Failed to generate AI content');
       }
-    } catch (error) {
+    } catch {
       toast.error('Failed to generate AI content');
     }
   };
@@ -247,7 +245,7 @@ export function EnhancedComposer({ onSubmit, className }: EnhancedComposerProps)
                 <div className="flex items-center gap-2">
                   <span className="text-lg">{platform.icon}</span>
                   <span className="font-medium">{platform.name}</span>
-                  <Badge variant="outline" className="ml-auto">
+                  <Badge variant="outlined" className="ml-auto">
                     {content.length}/{platform.maxLength}
                   </Badge>
                 </div>
@@ -515,7 +513,7 @@ export function EnhancedComposer({ onSubmit, className }: EnhancedComposerProps)
       {isClient && (
         <AlertDialog open={aiModalOpen} onOpenChange={setAiModalOpen}>
           <AiSuggestModal
-            open={aiModalOpen}
+            _open={aiModalOpen}
             onOpenChange={setAiModalOpen}
             type={aiModalType}
             onInsert={handleAiInsert}

@@ -47,7 +47,7 @@ interface AdvancedHashtagRecommenderProps {
   provider: string;
 }
 
-export function AdvancedHashtagRecommender({ provider }: AdvancedHashtagRecommenderProps) {
+export function AdvancedHashtagRecommender({ provider: _provider }: AdvancedHashtagRecommenderProps) {
   const [content, setContent] = useState('');
   const [industry, setIndustry] = useState('');
   const [targetAudience, setTargetAudience] = useState('');
@@ -56,15 +56,15 @@ export function AdvancedHashtagRecommender({ provider }: AdvancedHashtagRecommen
   const [recommendations, setRecommendations] = useState<HashtagRecommendation[]>([]);
   const [selectedHashtags, setSelectedHashtags] = useState<string[]>([]);
   const [showAdvanced, setShowAdvanced] = useState(false);
-  const [includeTrending, setIncludeTrending] = useState(true);
-  const [includeNiche, setIncludeNiche] = useState(true);
-  const [includeCompetitor, setIncludeCompetitor] = useState(true);
-  const [includeSeasonal, setIncludeSeasonal] = useState(true);
-  const [maxHashtags, setMaxHashtags] = useState(30);
-  const [minEngagement, setMinEngagement] = useState(2.0);
+  const [includeTrending, _setIncludeTrending] = useState(true);
+  const [includeNiche, _setIncludeNiche] = useState(true);
+  const [includeCompetitor, _setIncludeCompetitor] = useState(true);
+  const [includeSeasonal, _setIncludeSeasonal] = useState(true);
+  const [maxHashtags, _setMaxHashtags] = useState(30);
+  const [minEngagement, _setMinEngagement] = useState(2.0);
   const [competitorAccounts, setCompetitorAccounts] = useState<string[]>([]);
   const [location, setLocation] = useState('');
-  const [language, setLanguage] = useState('english');
+  const [language, _setLanguage] = useState('english');
 
   const platforms = [
     { id: 'instagram', name: 'Instagram', icon: '📸', maxHashtags: 30 },

@@ -4,7 +4,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "node scripts/free-port.js && node scripts/clean-next.js && next dev",
+    "dev": "node scripts/free-port.js && node scripts/clean-next.js && next dev -p 3001",
+    "dev:fast": "next dev -p 3001",
+    "dev:clean": "node scripts/clean-next.js && next dev -p 3001",
     "dev:3001": "node scripts/free-port.js && node scripts/clean-next.js && next dev -p 3001",
     "build": "node scripts/clean-next.js && next build",
     "build:analyze": "ANALYZE=true npm run build",
@@ -29,6 +31,7 @@
     "analyze": "npm run build:analyze",
     "lighthouse": "lighthouse http://localhost:3000 --output=html --output-path=./lighthouse-report.html",
     "performance": "npm run build && npm run lighthouse",
+    "perf:check": "node scripts/performance-check.js",
     "websocket": "node scripts/start-websocket-server.js"
   },
   "dependencies": {

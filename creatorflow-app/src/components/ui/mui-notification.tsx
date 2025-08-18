@@ -174,11 +174,10 @@ export function ToastNotification({ notification, onClose }: ToastNotificationPr
 
 interface NotificationCenterProps {
   open: boolean;
-  onClose: () => void;
   _anchorEl?: HTMLElement | null;
 }
 
-export function NotificationCenter({ open, onClose, _anchorEl }: NotificationCenterProps) {
+export function NotificationCenter({ open, _anchorEl }: NotificationCenterProps) {
   const { notifications, removeNotification, markAsRead, clearAll, unreadCount } = useNotifications();
 
   const handleNotificationClick = (notification: Notification) => {
@@ -321,19 +320,19 @@ export function NotificationBadge({ count = 0, children, onClick }: Notification
 }
 
 // Quick notification functions
-export function showSuccess(title: string, message: string, duration = 6000) {
+export function showSuccess(title: string, message: string, _duration = 6000) {
   // This would be called from the notification context
   console.log('Success:', title, message);
 }
 
-export function showError(title: string, message: string, duration = 6000) {
+export function showError(title: string, message: string, _duration = 6000) {
   console.log('Error:', title, message);
 }
 
-export function showWarning(title: string, message: string, duration = 6000) {
+export function showWarning(title: string, message: string, _duration = 6000) {
   console.log('Warning:', title, message);
 }
 
-export function showInfo(title: string, message: string, duration = 6000) {
+export function showInfo(title: string, message: string, _duration = 6000) {
   console.log('Info:', title, message);
 } 

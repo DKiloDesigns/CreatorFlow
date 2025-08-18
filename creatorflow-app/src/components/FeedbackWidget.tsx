@@ -9,8 +9,8 @@ import {
   TextField,
   Box,
   Typography,
-  Grid,
-  Chip
+  Chip,
+  MenuItem
 } from '@mui/material';
 import { Send, Star } from 'lucide-react';
 import { toast } from 'sonner';
@@ -171,46 +171,42 @@ export function FeedbackWidget({
           {/* Category */}
           <div className="space-y-2">
             <Typography variant="body2" className="text-sm font-medium">Category</Typography>
-            <Grid container spacing={1}>
-              <Grid item xs={12}>
-                <TextField
-                  select
-                  fullWidth
-                  label="Category"
-                  value={category}
-                  onChange={(e) => setCategory(e.target.value as string)}
-                >
-                  {FEEDBACK_CATEGORIES.map((cat) => (
-                    <MenuItem key={cat.value} value={cat.value}>
-                      {cat.label}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </Grid>
-            </Grid>
+            <Box sx={{ width: '100%' }}>
+              <TextField
+                select
+                fullWidth
+                label="Category"
+                value={category}
+                onChange={(e) => setCategory(e.target.value as string)}
+              >
+                {FEEDBACK_CATEGORIES.map((cat) => (
+                  <MenuItem key={cat.value} value={cat.value}>
+                    {cat.label}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Box>
           </div>
 
           {/* Feature (optional) */}
           <div className="space-y-2">
             <Typography variant="body2" className="text-sm font-medium">Feature (optional)</Typography>
-            <Grid container spacing={1}>
-              <Grid item xs={12}>
-                <TextField
-                  select
-                  fullWidth
-                  label="Feature"
-                  value={feature}
-                  onChange={(e) => setFeature(e.target.value as string)}
-                >
-                  <MenuItem value="">No specific feature</MenuItem>
-                  {FEATURES.map((feat) => (
-                    <MenuItem key={feat} value={feat}>
-                      {feat}
-                    </MenuItem>
-                  ))}
-                </TextField>
-              </Grid>
-            </Grid>
+            <Box sx={{ width: '100%' }}>
+              <TextField
+                select
+                fullWidth
+                label="Feature"
+                value={feature}
+                onChange={(e) => setFeature(e.target.value as string)}
+              >
+                <MenuItem value="">No specific feature</MenuItem>
+                {FEATURES.map((feat) => (
+                  <MenuItem key={feat} value={feat}>
+                    {feat}
+                  </MenuItem>
+                ))}
+              </TextField>
+            </Box>
           </div>
 
           {/* Feedback text */}

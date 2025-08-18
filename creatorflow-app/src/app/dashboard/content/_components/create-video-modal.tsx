@@ -1,18 +1,12 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import { 
   Button,
-  TextField,
-  Box,
-  Typography,
-  Grid,
   Select,
-  MenuItem,
-  FormControl,
-  InputLabel
+  MenuItem
 } from '@mui/material';
-import { Video, Activity, Upload } from 'lucide-react';
+import { Upload } from 'lucide-react';
 import { toast } from 'sonner';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { 
@@ -290,18 +284,13 @@ export function CreateVideoModal({ open, onOpenChange, onVideoCreated }: CreateV
                 <label htmlFor="aspectRatio" className="text-sm font-medium">Aspect Ratio</label>
                 <Select
                   value={aspectRatio}
-                  onValueChange={setAspectRatio}
+                  onChange={(e) => setAspectRatio(e.target.value)}
                   className="w-full"
                 >
-                  <SelectTrigger className="w-full text-sm">
-                    <SelectValue placeholder="Select aspect ratio" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="16:9">16:9 (Landscape)</SelectItem>
-                    <SelectItem value="9:16">9:16 (Portrait)</SelectItem>
-                    <SelectItem value="1:1">1:1 (Square)</SelectItem>
-                    <SelectItem value="4:3">4:3 (Classic)</SelectItem>
-                  </SelectContent>
+                  <MenuItem value="16:9">16:9 (Landscape)</MenuItem>
+                  <MenuItem value="9:16">9:16 (Portrait)</MenuItem>
+                  <MenuItem value="1:1">1:1 (Square)</MenuItem>
+                  <MenuItem value="4:3">4:3 (Classic)</MenuItem>
                 </Select>
               </div>
             </div>
@@ -401,7 +390,7 @@ export function CreateVideoModal({ open, onOpenChange, onVideoCreated }: CreateV
                                 <ImageIcon className="h-4 w-4 text-green-500" />
                               )}
                               <span className="text-sm font-medium">Clip {index + 1}</span>
-                              <Badge variant="secondary">{clip.duration}s</Badge>
+                              <span className="px-2 py-1 text-xs bg-gray-100 text-gray-700 rounded-full">{clip.duration}s</span>
                             </div>
                             <Button
                               variant="ghost"
@@ -454,7 +443,7 @@ export function CreateVideoModal({ open, onOpenChange, onVideoCreated }: CreateV
                     </div>
                   </div>
                   
-                  <Separator />
+                  <div className="border-t my-4" />
                   
                   {/* Text Overlays */}
                   <div>
@@ -531,20 +520,15 @@ export function CreateVideoModal({ open, onOpenChange, onVideoCreated }: CreateV
                                 <label className="text-xs">Animation</label>
                                 <Select
                                   value={overlay.animation}
-                                  onValueChange={(value: any) => 
-                                    handleUpdateOverlay(overlay.id, { animation: value })
+                                  onChange={(e) => 
+                                    handleUpdateOverlay(overlay.id, { animation: e.target.value })
                                   }
                                   className="w-full text-xs"
                                 >
-                                  <SelectTrigger className="w-full text-xs">
-                                    <SelectValue placeholder="Select animation" />
-                                  </SelectTrigger>
-                                  <SelectContent>
-                                    <SelectItem value="none">None</SelectItem>
-                                    <SelectItem value="fade">Fade</SelectItem>
-                                    <SelectItem value="slide">Slide</SelectItem>
-                                    <SelectItem value="bounce">Bounce</SelectItem>
-                                  </SelectContent>
+                                  <MenuItem value="none">None</MenuItem>
+                                  <MenuItem value="fade">Fade</MenuItem>
+                                  <MenuItem value="slide">Slide</MenuItem>
+                                  <MenuItem value="bounce">Bounce</MenuItem>
                                 </Select>
                               </div>
                             </div>

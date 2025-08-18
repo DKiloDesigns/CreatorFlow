@@ -509,6 +509,12 @@ export default function PostComposer({ platforms: propPlatforms }: { platforms?:
           </Tooltip>
         </CardFooter>
       </Card>
+
+      {/* Bottom Spacer to Clear Bottom Navigation */}
+      <Box sx={{
+        height: { xs: '120px', sm: '40px' },
+        width: '100%'
+      }} />
     </TooltipProvider>
   );
 } 

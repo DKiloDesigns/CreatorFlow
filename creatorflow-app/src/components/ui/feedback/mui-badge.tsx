@@ -63,7 +63,7 @@ const StyledChip = styled(Chip)<{
   variant?: 'default' | 'outlined' | 'filled';
   size?: 'sm' | 'md' | 'lg';
   color?: 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'info';
-}>(({ theme, variant = 'default', size = 'md', _color = 'primary' }) => ({
+}>(({ theme, variant = 'default', size = 'md', color = 'primary' }) => ({
   ...(size === 'sm' && {
     fontSize: '0.75rem',
     height: 20,
@@ -247,7 +247,7 @@ export const AvatarBadge = forwardRef<HTMLDivElement, AvatarBadgeProps>(
     src,
     alt,
     size = 'md',
-    _color = 'primary',
+    color = 'primary',
     children,
     ...props 
   }, ref) => {
@@ -293,7 +293,6 @@ export const CounterBadge = forwardRef<HTMLDivElement, CounterBadgeProps>(
     count,
     max,
     size = 'md',
-    color = 'primary',
     variant = 'default',
     showZero = false,
     ...props 

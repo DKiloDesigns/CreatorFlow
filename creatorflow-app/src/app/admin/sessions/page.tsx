@@ -3,10 +3,10 @@
 import React, { useEffect, useState } from 'react';
 import { NotificationToast } from '@/components/ui/notification-badge';
 import { 
-  Typography,
   Tooltip
 } from '@mui/material';
-import { Users, Clock, Activity, Eye, Trash2 } from 'lucide-react';
+
+import { Loader2, LogOut, Info } from 'lucide-react';
 
 interface Session {
   id: string;
@@ -128,31 +128,26 @@ export default function AdminSessionsPage() {
                 <td className="p-2 border text-xs">{s.sessionToken.slice(0, 8)}...{s.sessionToken.slice(-4)}</td>
                 <td className="p-2 border text-xs">{new Date(s.expires).toLocaleString()}</td>
                 <td className="p-2 border">
-                  <TooltipProvider>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <button
-                          className="px-2 py-1 bg-red-100 rounded text-xs hover:bg-red-200 focus:ring-2 focus:ring-red-400 flex items-center gap-1"
-                          aria-label="Force logout"
-                          disabled={actionLoading === s.id}
-                          onClick={async () => {
-                            setActionLoading(s.id);
-                            try {
-                              const res = await fetch(`/api/admin/sessions/${s.id}/revoke`, { method: 'POST' });
-                              if (!res.ok) throw new Error('Failed to revoke session');
-                              setSessions(prev => prev.filter(sess => sess.id !== s.id));
-                              setToast({ title: 'Session revoked', variant: 'success' });
-                            } catch (e) {
-                              setToast({ title: 'Error', message: (e as Error).message, variant: 'error' });
-                            } finally {
-                              setActionLoading(null);
-                            }
-                          }}
-                        >{actionLoading === s.id ? <Loader2 className="w-4 h-4 animate-spin inline-block" /> : <><LogOut className="w-4 h-4 inline-block" /> Force Logout</>}</button>
-                      </TooltipTrigger>
-                      <TooltipContent>Force logout this session</TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
+                  <Tooltip title="Force logout this session">
+                    <button
+                      className="px-2 py-1 bg-red-100 rounded text-xs hover:bg-red-200 focus:ring-2 focus:ring-red-400 flex items-center gap-1"
+                      aria-label="Force logout"
+                      disabled={actionLoading === s.id}
+                      onClick={async () => {
+                        setActionLoading(s.id);
+                        try {
+                          const res = await fetch(`/api/admin/sessions/${s.id}/revoke`, { method: 'POST' });
+                          if (!res.ok) throw new Error('Failed to revoke session');
+                          setSessions(prev => prev.filter(sess => sess.id !== s.id));
+                          setToast({ title: 'Session revoked', variant: 'success' });
+                        } catch (e) {
+                          setToast({ title: 'Error', message: (e as Error).message, variant: 'error' });
+                        } finally {
+                          setActionLoading(null);
+                        }
+                      }}
+                    >{actionLoading === s.id ? <Loader2 className="w-4 h-4 animate-spin inline-block" /> : <><LogOut className="w-4 h-4 inline-block" /> Force Logout</>}</button>
+                  </Tooltip>
                 </td>
               </tr>
             ))}
@@ -192,24 +187,26 @@ export default function AdminSessionsPage() {
                 <div className="mb-2"><b>Session Token:</b> <span className="font-mono break-all">{details.sessionToken}</span></div>
                 <div className="mb-2"><b>Expires:</b> {new Date(details.expires).toLocaleString()}</div>
                 <div className="flex justify-end mt-4">
-                  <button
-                    className="px-4 py-2 bg-red-500 text-white rounded"
-                    onClick={async () => {
-                      setActionLoading(details.id);
-                      try {
-                        const res = await fetch(`/api/admin/sessions/${details.id}/revoke`, { method: 'POST' });
-                        if (!res.ok) throw new Error('Failed to revoke session');
-                        setSessions(prev => prev.filter(sess => sess.id !== details.id));
-                        setToast({ title: 'Session revoked', variant: 'success' });
-                        setDetailsId(null);
-                      } catch (e) {
-                        setToast({ title: 'Error', message: (e as Error).message, variant: 'error' });
-                      } finally {
-                        setActionLoading(null);
-                      }
-                    }}
-                    disabled={actionLoading === details.id}
-                  >{actionLoading === details.id ? <Loader2 className="w-4 h-4 animate-spin inline-block" /> : 'Force Logout'}</button>
+                  <Tooltip title="Force logout this session">
+                    <button
+                      className="px-4 py-2 bg-red-500 text-white rounded"
+                      onClick={async () => {
+                        setActionLoading(details.id);
+                        try {
+                          const res = await fetch(`/api/admin/sessions/${details.id}/revoke`, { method: 'POST' });
+                          if (!res.ok) throw new Error('Failed to revoke session');
+                          setSessions(prev => prev.filter(sess => sess.id !== details.id));
+                          setToast({ title: 'Session revoked', variant: 'success' });
+                          setDetailsId(null);
+                        } catch (e) {
+                          setToast({ title: 'Error', message: (e as Error).message, variant: 'error' });
+                        } finally {
+                          setActionLoading(null);
+                        }
+                      }}
+                      disabled={actionLoading === details.id}
+                    >{actionLoading === details.id ? <Loader2 className="w-4 h-4 animate-spin inline-block" /> : 'Force Logout'}</button>
+                  </Tooltip>
                 </div>
               </div>
             ) : null}
@@ -218,4 +215,9 @@ export default function AdminSessionsPage() {
       )}
     </div>
   );
+{/* Bottom Spacer to Clear Bottom Navigation */}
+      <Box sx={{
+        height: { xs: '120px', sm: '40px' },
+        width: '100%'
+      }} />
 } 

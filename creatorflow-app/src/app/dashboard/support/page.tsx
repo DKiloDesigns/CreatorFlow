@@ -12,13 +12,11 @@ import {
   TextField, 
   Alert,
   AlertTitle,
-  Grid,
   Container,
   List,
   ListItem,
   ListItemIcon,
-  ListItemText,
-  Divider
+  ListItemText
 } from '@mui/material';
 import { FileText, Shield, Mail, MessageCircle, HelpCircle, Users, BarChart3 } from 'lucide-react';
 
@@ -232,4 +230,9 @@ export default function SupportPage() {
       </Box>
     </Container>
   );
+{/* Bottom Spacer to Clear Bottom Navigation */}
+      <Box sx={{
+        height: { xs: '120px', sm: '40px' },
+        width: '100%'
+      }} />
 } 

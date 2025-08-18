@@ -5,7 +5,7 @@ export const dynamic = 'force-dynamic';
 import { signOut } from "next-auth/react"
 import Link from "next/link"
 import { usePathname } from 'next/navigation';
-import { BarChart2, Users, FileText, Handshake, CreditCard, Menu, Bell, BarChart3, Target, MessageSquare, CalendarIcon, Activity, Shield, Settings, Sparkles, Star, Building2, Smartphone, Plug, TestTube, Home, Calendar, Brain, HelpCircle, HardDrive, Bot, Zap } from 'lucide-react';
+import { BarChart2, Users, FileText, Handshake, CreditCard, Menu, Bell, BarChart3, Target, MessageSquare, CalendarIcon, Activity, Shield, Settings, Sparkles, Star, Building2, Smartphone, Plug, TestTube, Home, Calendar, Brain, HelpCircle, HardDrive, Bot, Zap, Accessibility, Code } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { 
   AppBar, 
@@ -74,12 +74,12 @@ export default function DashboardLayout({
     { href: '/dashboard', label: 'Dashboard', icon: Home },
     { href: '/dashboard/phase2-hub', label: 'Phase 2 Hub', icon: Brain },
     { href: '/dashboard/phase3-hub', label: 'Phase 3 Hub', icon: Bot },
-            { href: '/dashboard/ai-api-test', label: 'AI API Test', icon: TestTube },
-            { href: '/dashboard/phase5-test', label: 'Phase 5 Test', icon: Star },
-        { href: '/dashboard/phase4-test', label: 'Phase 4 Test', icon: BarChart3 },
-        { href: '/dashboard/phase6-test', label: 'Phase 6 Test', icon: Zap },
-        { href: '/dashboard/phase7-test', label: 'Phase 7 Test', icon: Settings },
-        { href: '/dashboard/analytics', label: 'Analytics', icon: BarChart2 },
+    { href: '/dashboard/ai-api-test', label: 'AI API Test', icon: TestTube },
+    { href: '/dashboard/phase5-test', label: 'Phase 5 Test', icon: Star },
+    { href: '/dashboard/phase4-test', label: 'Phase 4 Test', icon: BarChart3 },
+    { href: '/dashboard/phase6-test', label: 'Phase 6 Test', icon: Zap },
+    { href: '/dashboard/phase7-test', label: 'Phase 7 Test', icon: Settings },
+    { href: '/dashboard/analytics', label: 'Analytics', icon: BarChart2 },
     { href: '/dashboard/content', label: 'Content', icon: FileText },
     { href: '/dashboard/accounts', label: 'Accounts', icon: Users },
     { href: '/dashboard/scheduling', label: 'Scheduling', icon: Calendar },
@@ -90,11 +90,13 @@ export default function DashboardLayout({
     { href: '/dashboard/integrations', label: 'Integrations', icon: Plug },
     { href: '/dashboard/api', label: 'API', icon: Plug },
     { href: '/dashboard/testing', label: 'Testing', icon: TestTube },
-    { href: '/dashboard/advanced-integrations', label: 'Advanced', icon: Sparkles },
-    { href: '/dashboard/enterprise', label: 'Enterprise', icon: Building2 },
-    { href: '/dashboard/security', label: 'Security', icon: Shield },
+            { href: '/dashboard/accessibility-testing', label: 'Accessibility', icon: Accessibility },
+        { href: '/saca-demo', label: 'SACA Demo', icon: Accessibility },
+        { href: '/dashboard/enterprise', label: 'Enterprise', icon: Building2 },
+        { href: '/dashboard/api-management', label: 'API Management', icon: Code },
+        { href: '/dashboard/advanced-integrations', label: 'Advanced', icon: Sparkles },
+        { href: '/dashboard/security', label: 'Security', icon: Shield },
     { href: '/dashboard/settings', label: 'Settings', icon: Settings },
-
     { href: '/dashboard/support', label: 'Support', icon: HelpCircle },
     { href: '/dashboard/notifications/enhanced', label: 'Notifications', icon: Bell },
     { href: '/admin/campaign', label: 'Campaign', icon: Target },
@@ -290,7 +292,7 @@ export default function DashboardLayout({
       </AppBar>
 
       {/* Main Content */}
-      <Box component="main" sx={{ flexGrow: 1, py: 3 }}>
+      <Box component="main" sx={{ flexGrow: 1, p: 3, pb: { xs: 10, sm: 6 } }}>
         <Container maxWidth="xl">
           {children}
         </Container>

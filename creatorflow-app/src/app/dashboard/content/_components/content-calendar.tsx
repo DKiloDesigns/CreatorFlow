@@ -13,12 +13,8 @@ import { Loader2, AlertCircle } from 'lucide-react'; // For loading/error states
 import { PostStatus } from '@prisma/client';
 import { 
   Button,
-  Box,
-  Typography,
-  Grid,
   Tooltip
 } from '@mui/material';
-import { Calendar, Activity } from 'lucide-react';
 
 // Type for the data fetched from API
 interface FetchedPost {
@@ -157,27 +153,24 @@ export default function ContentCalendar() {
       case PostStatus.PUBLISHING: statusIndicator = '⏳'; break;
     }
     return (
-      <Tooltip>
-        <TooltipTrigger asChild>
-          <div tabIndex={0} className="overflow-hidden whitespace-nowrap text-ellipsis outline-none focus-visible:ring-2 focus-visible:ring-primary transition-shadow cursor-pointer">
-            <span className="font-medium">{statusIndicator} {title}</span>
-            <div className="text-xs text-muted-foreground mt-0.5">{platformIcons}</div>
-          </div>
-        </TooltipTrigger>
-        <TooltipContent>
-          <div className="max-w-xs">
-            <div className="font-semibold mb-1">{title}</div>
-            <div className="mb-1">{contentText}</div>
-            <div className="flex gap-1 mb-1">{platformIcons}</div>
-            <div className="text-xs text-muted-foreground">Status: {status}</div>
-          </div>
-        </TooltipContent>
+      <Tooltip title={
+        <div className="max-w-xs">
+          <div className="font-semibold mb-1">{title}</div>
+          <div className="mb-1">{contentText}</div>
+          <div className="flex gap-1 mb-1">{platformIcons}</div>
+          <div className="text-xs text-muted-foreground">Status: {status}</div>
+        </div>
+      }>
+        <div tabIndex={0} className="overflow-hidden whitespace-nowrap text-ellipsis outline-none focus-visible:ring-2 focus-visible:ring-primary transition-shadow cursor-pointer">
+          <span className="font-medium">{statusIndicator} {title}</span>
+          <div className="text-xs text-muted-foreground mt-0.5">{platformIcons}</div>
+        </div>
       </Tooltip>
     );
   }
 
   return (
-    <TooltipProvider>
+    <>
       {isLoading && (
         <div className="flex items-center justify-center h-64">
           <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
@@ -247,7 +240,10 @@ export default function ContentCalendar() {
       }}
     />
   </div>
-)}
-    </TooltipProvider>
+      )}
+
+      {/* Bottom Spacer to Clear Bottom Navigation */}
+      <div className="h-32 sm:h-10 w-full"></div>
+    </>
   );
 } 

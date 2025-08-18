@@ -2,11 +2,8 @@ import {
   Card, 
   CardContent, 
   CardHeader, 
-  Box,
-  Typography,
-  Grid
+  Typography
 } from '@mui/material';
-import { TrendingUp, Activity } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface DataPoint {

@@ -6,11 +6,8 @@ import {
   Card, 
   CardContent, 
   CardHeader, 
-  Box,
-  Typography,
-  Grid
+  Typography
 } from '@mui/material';
-import { Plus, Activity } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { SiInstagram, SiTiktok, SiYoutube, SiX, SiLinkedin } from "react-icons/si"; // Platform icons
 import { toast } from "sonner";
@@ -139,7 +136,7 @@ export default function AccountConnectButtons() {
           {PLATFORMS.map((platform) => (
             <Button
               key={platform.id}
-              variant="outline"
+              variant="outlined"
               disabled={isLoading || limitReached || isConnecting === platform.id}
               onClick={() => handleConnect(platform.id)}
               className="w-full justify-center sm:justify-start"

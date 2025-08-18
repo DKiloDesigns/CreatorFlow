@@ -22,7 +22,7 @@ export function ThemeToggle({ _isLandingPage = false }: ThemeToggleProps) {
     theme = context.theme;
     toggleTheme = context.toggleTheme;
     if (!isContextAvailable) setIsContextAvailable(true);
-  } catch (_error) {
+  } catch {
     // Context not available, use fallback
     if (isContextAvailable) setIsContextAvailable(false);
   }

@@ -6,19 +6,12 @@ import {
   CardContent, 
   CardHeader, 
   Button,
-  Box,
-  Typography,
-  Grid,
-  Tabs,
-  Tab,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel
+  Typography
 } from '@mui/material';
 import { BarChart3, TrendingUp, Activity, Settings, RefreshCw, AlertTriangle, Eye, Users, Target, Lightbulb } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { TabsContent } from '@/components/ui/tabs';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 
 interface AnalyticsInsight {
   type: 'trend' | 'anomaly' | 'opportunity' | 'risk' | 'segment' | 'funnel';
@@ -487,4 +480,9 @@ export default function AnalyticsPage() {
       </Tabs>
     </div>
   );
+{/* Bottom Spacer to Clear Bottom Navigation */}
+      <Box sx={{
+        height: { xs: '120px', sm: '40px' },
+        width: '100%'
+      }} />
 } 

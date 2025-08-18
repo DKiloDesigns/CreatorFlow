@@ -19,8 +19,6 @@ import {
   MenuItem,
   Alert,
   AlertTitle,
-  Divider,
-  Grid,
   Chip,
   CircularProgress,
   Container
@@ -29,8 +27,6 @@ import {
   Settings, 
   Bell, 
   Shield, 
-  Palette, 
-  Globe, 
   CheckCircle,
   XCircle
 } from 'lucide-react';
@@ -80,7 +76,7 @@ export default function SettingsPage() {
   const { settings, isLoading, error, updating, updateError, updateSettings } = useUserSettings();
   const [form, setForm] = useState<Settings>(defaultSettings);
   const [success, setSuccess] = useState(false);
-  const [notifPrefs, setNotifPrefs] = useState<any>({});
+  const [_notifPrefs, setNotifPrefs] = useState<any>({});
   const [notifLoading, setNotifLoading] = useState(true);
   const [notifError, setNotifError] = useState<string | null>(null);
   const [notifSuccess, setNotifSuccess] = useState(false);
@@ -147,7 +143,7 @@ export default function SettingsPage() {
       const res = await fetch('/api/user/notifications', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ notificationPreferences: notifPrefs }),
+        body: JSON.stringify({ notificationPreferences: _notifPrefs }),
       });
 
       if (!res.ok) throw new Error('Failed to update notification preferences');
@@ -379,6 +375,12 @@ export default function SettingsPage() {
             </Card>
           </Box>
         </Box>
+
+        {/* Bottom Spacer to Clear Bottom Navigation */}
+        <Box sx={{
+          height: { xs: '120px', sm: '40px' },
+          width: '100%'
+        }} />
       </Box>
     </Container>
   );

@@ -144,6 +144,9 @@ export default function PrivacyPage() {
         </div>
       </main>
 
+      {/* Bottom Spacer to Clear Bottom Navigation */}
+      <div className="h-32 sm:h-10 w-full"></div>
+
       <Footer />
     </div>
   );

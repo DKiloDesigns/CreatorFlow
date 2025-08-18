@@ -8,9 +8,10 @@ import {
   Card, 
   CardContent, 
   Avatar, 
-  Grid,
   Container,
-  Divider
+  Accordion,
+  AccordionSummary,
+  AccordionDetails
 } from '@mui/material';
 import { 
   Brain, 
@@ -21,8 +22,10 @@ import {
   Bell, 
   LifeBuoy,
   LogOut,
-  User
+  User,
+  CreditCard
 } from 'lucide-react';
+import { ExpandMore } from '@mui/icons-material';
 import Link from 'next/link';
 
 export default function ProfilePage() {
@@ -54,6 +57,12 @@ export default function ProfilePage() {
       ]
     },
     {
+      title: 'Billing & Subscription',
+      items: [
+        { href: '/dashboard/billing', label: 'Manage Billing', icon: CreditCard, description: 'View plans, payment history, and manage subscription' },
+      ]
+    },
+    {
       title: 'Settings & Security',
       items: [
         { href: '/dashboard/settings', label: 'Settings', icon: Settings, description: 'App preferences and configuration' },
@@ -70,117 +79,138 @@ export default function ProfilePage() {
   ];
 
   return (
-    <Container maxWidth="lg" sx={{ py: 3 }}>
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-        {/* Header */}
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 2 }}>
-          <Box>
-            <Typography variant="h4" component="h1" sx={{ fontWeight: 'bold', mb: 1 }}>
-              Profile & Settings
-            </Typography>
-            <Typography variant="body1" sx={{ color: 'text.secondary' }}>
-              Manage your account and preferences
-            </Typography>
-          </Box>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-            <Avatar sx={{ bgcolor: 'primary.main', width: 40, height: 40 }}>
-              <User style={{ width: 20, height: 20 }} />
-            </Avatar>
-            <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-              <Typography variant="body1" sx={{ fontWeight: 500 }}>
-                {session.user.name}
+    <Box sx={{ 
+      pb: { xs: 20, sm: 8 } // 80px on mobile, 32px on desktop for consistent bottom spacing
+    }}>
+      <Container maxWidth="lg" sx={{ py: 3 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+          {/* Header */}
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 2, mb: 4 }}>
+            <Box>
+              <Typography variant="h4" component="h1" sx={{ fontWeight: 'bold', mb: 1 }}>
+                Profile & Settings
               </Typography>
-              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                {session.user.email}
+              <Typography variant="body1" sx={{ color: 'text.secondary' }}>
+                Manage your account and preferences
               </Typography>
             </Box>
-          </Box>
-        </Box>
-
-        {/* Profile Sections */}
-        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
-          {profileSections.map((section) => (
-            <Card key={section.title}>
-              <CardContent>
-                <Typography variant="h6" component="h2" sx={{ fontWeight: 'bold', mb: 2 }}>
-                  {section.title}
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+              <Avatar sx={{ bgcolor: 'primary.main', width: 40, height: 40 }}>
+                <User style={{ width: 20, height: 20 }} />
+              </Avatar>
+              <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+                <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                  {session.user?.name || 'User'}
                 </Typography>
-                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-                  {section.items.map((item) => {
-                    const Icon = item.icon;
-                    return (
-                      <Button
-                        key={item.href}
-                        component={Link}
-                        href={item.href}
-                        variant="text"
-                        fullWidth
-                        sx={{ 
-                          justifyContent: 'flex-start', 
-                          textAlign: 'left',
-                          p: 2,
-                          borderRadius: 1,
-                          '&:hover': {
-                            bgcolor: 'action.hover'
-                          }
-                        }}
-                      >
-                        <Box sx={{ 
-                          display: 'flex', 
-                          alignItems: 'center', 
-                          gap: 2, 
-                          width: '100%' 
-                        }}>
+                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                  {session.user?.email}
+                </Typography>
+              </Box>
+            </Box>
+          </Box>
+
+          {/* Profile Sections - Now Collapsible */}
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, mb: 4 }}>
+            {profileSections.map((section, index) => (
+              <Accordion key={section.title} defaultExpanded={index === 0}>
+                <AccordionSummary
+                  expandIcon={<ExpandMore style={{ width: 20, height: 20 }} />}
+                  sx={{
+                    '&:hover': {
+                      bgcolor: 'action.hover'
+                    }
+                  }}
+                >
+                  <Typography variant="h6" component="h2" sx={{ fontWeight: 'bold' }}>
+                    {section.title}
+                  </Typography>
+                </AccordionSummary>
+                <AccordionDetails>
+                  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                    {section.items.map((item) => {
+                      const Icon = item.icon;
+                      return (
+                        <Button
+                          key={item.href}
+                          component={Link}
+                          href={item.href}
+                          variant="text"
+                          fullWidth
+                          sx={{ 
+                            justifyContent: 'flex-start', 
+                            textAlign: 'left',
+                            p: 2,
+                            borderRadius: 1,
+                            '&:hover': {
+                              bgcolor: 'action.hover'
+                            }
+                          }}
+                        >
                           <Box sx={{ 
-                            width: 40, 
-                            height: 40, 
-                            borderRadius: 1, 
-                            bgcolor: 'primary.main', 
                             display: 'flex', 
                             alignItems: 'center', 
-                            justifyContent: 'center' 
+                            gap: 2, 
+                            width: '100%' 
                           }}>
-                            <Icon style={{ width: 20, height: 20, color: 'white' }} />
+                            <Box sx={{ 
+                              width: 40, 
+                              height: 40, 
+                              borderRadius: 1, 
+                              bgcolor: 'primary.main', 
+                              display: 'flex', 
+                              alignItems: 'center', 
+                              justifyContent: 'center' 
+                            }}>
+                              <Icon style={{ width: 20, height: 20, color: 'white' }} />
+                            </Box>
+                            <Box sx={{ flex: 1, textAlign: 'left' }}>
+                              <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                                {item.label}
+                              </Typography>
+                              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                                {item.description}
+                              </Typography>
+                            </Box>
                           </Box>
-                          <Box sx={{ flex: 1, textAlign: 'left' }}>
-                            <Typography variant="body1" sx={{ fontWeight: 500 }}>
-                              {item.label}
-                            </Typography>
-                            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                              {item.description}
-                            </Typography>
-                          </Box>
-                        </Box>
-                      </Button>
-                    );
-                  })}
-                </Box>
+                        </Button>
+                      );
+                    })}
+                  </Box>
+                </AccordionDetails>
+              </Accordion>
+            ))}
+          </Box>
+
+          {/* Sign Out */}
+          <Box sx={{ mb: 4 }}>
+            <Card>
+              <CardContent>
+                <Button
+                  component={Link}
+                  href="/api/auth/signout"
+                  variant="contained"
+                  fullWidth
+                  startIcon={<LogOut style={{ width: 16, height: 16 }} />}
+                  sx={{ 
+                    bgcolor: 'error.main',
+                    '&:hover': {
+                      bgcolor: 'error.dark'
+                    }
+                  }}
+                >
+                  Sign Out
+                </Button>
               </CardContent>
             </Card>
-          ))}
-        </Box>
+          </Box>
 
-        {/* Sign Out */}
-        <Card>
-          <CardContent>
-            <Button
-              component={Link}
-              href="/api/auth/signout"
-              variant="contained"
-              fullWidth
-              startIcon={<LogOut style={{ width: 16, height: 16 }} />}
-              sx={{ 
-                bgcolor: 'error.main',
-                '&:hover': {
-                  bgcolor: 'error.dark'
-                }
-              }}
-            >
-              Sign Out
-            </Button>
-          </CardContent>
-        </Card>
-      </Box>
-    </Container>
+          {/* Massive Spacer to Clear Bottom Navigation */}
+          <Box sx={{ 
+            height: { xs: '120px', sm: '40px' }, // 120px on mobile, 40px on desktop
+            width: '100%'
+          }} />
+        </Box>
+      </Container>
+    </Box>
   );
 } 

@@ -11,7 +11,6 @@ import {
   Typography,
   Grid,
   Tabs,
-  Tab,
   Chip
 } from '@mui/material';
 import { 
@@ -39,7 +38,7 @@ import {
   Activity
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import { TabsContent } from '@/components/ui/tabs';
+import { TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 interface Team {
   id: string;
@@ -550,6 +549,9 @@ export default function EnterprisePage() {
           </div>
         </div>
       )}
+
+      {/* Bottom Spacer to Clear Bottom Navigation */}
+      <div className="h-32 sm:h-10 w-full"></div>
     </div>
   );
 } 

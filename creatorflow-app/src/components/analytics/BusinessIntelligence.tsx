@@ -26,7 +26,11 @@ import {
   Paper,
   Button,
   Switch,
-  FormControlLabel
+  FormControlLabel,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Fade
 } from '@mui/material';
 import {
   TrendingUp,
@@ -35,7 +39,7 @@ import {
   Refresh,
   Info,
   AttachMoney,
-  Target,
+  Flag,
   Analytics,
   AutoAwesome,
   TrendingFlat,
@@ -43,7 +47,10 @@ import {
   CheckCircle,
   Schedule,
   PlayArrow,
-  Pause
+  Pause,
+  ExpandMore,
+  NavigateNext,
+  NavigateBefore
 } from '@mui/icons-material';
 
 interface BusinessMetrics {
@@ -95,10 +102,80 @@ export default function BusinessIntelligence() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [autoOptimization, setAutoOptimization] = useState(true);
+  
+  // Accordion expansion states
+  const [expandedSections, setExpandedSections] = useState({
+    forecasting: false,
+    opportunities: false,
+    rules: false,
+    recommendations: false
+  });
+  
+  // Cycling states for collapsed view
+  const [currentForecastIndex, setCurrentForecastIndex] = useState(0);
+  const [currentOpportunityIndex, setCurrentOpportunityIndex] = useState(0);
+  const [currentRuleIndex, setCurrentRuleIndex] = useState(0);
+  const [currentRecommendationIndex, setCurrentRecommendationIndex] = useState(0);
+  
+  // Cycling control states
+  const [isCycling, setIsCycling] = useState(true);
+  const [cyclingSpeed, setCyclingSpeed] = useState(4000); // 4 seconds
 
   useEffect(() => {
     fetchBusinessData();
   }, [timeRange]);
+
+  // Cycling effect for collapsed view recommendations
+  useEffect(() => {
+    if (!isCycling || !businessData) return;
+
+    const forecastInterval = setInterval(() => {
+      if (!expandedSections.forecasting) {
+        setCurrentForecastIndex(prev => 
+          prev < businessData.forecasting.recommendations.length - 1 ? prev + 1 : 0
+        );
+      }
+    }, cyclingSpeed);
+
+    const opportunityInterval = setInterval(() => {
+      if (!expandedSections.opportunities) {
+        setCurrentOpportunityIndex(prev => 
+          prev < businessData.optimization.topOpportunities.length - 1 ? prev + 1 : 0
+        );
+      }
+    }, cyclingSpeed);
+
+    const ruleInterval = setInterval(() => {
+      if (!expandedSections.rules) {
+        setCurrentRuleIndex(prev => 
+          prev < businessData.optimization.automatedRules.length - 1 ? prev + 1 : 0
+        );
+      }
+    }, cyclingSpeed);
+
+    const recommendationInterval = setInterval(() => {
+      if (!expandedSections.recommendations) {
+        setCurrentRecommendationIndex(prev => 
+          prev < businessData.forecasting.recommendations.length - 1 ? prev + 1 : 0
+        );
+      }
+    }, cyclingSpeed);
+
+    return () => {
+      clearInterval(forecastInterval);
+      clearInterval(opportunityInterval);
+      clearInterval(ruleInterval);
+      clearInterval(recommendationInterval);
+    };
+  }, [isCycling, cyclingSpeed, expandedSections, businessData]);
+
+  // Handle accordion expansion changes
+  const handleAccordionChange = (section: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+    setExpandedSections(prev => ({
+      ...prev,
+      [section]: isExpanded
+    }));
+  };
 
   const fetchBusinessData = async () => {
     setLoading(true);
@@ -249,18 +326,67 @@ export default function BusinessIntelligence() {
     switch (impact) {
       case 'high': return 'error';
       case 'medium': return 'warning';
-      case 'low': return 'info';
+      case 'low': return 'success';
       default: return 'default';
     }
   };
 
   const getEffortColor = (effort: string) => {
     switch (effort) {
-      case 'low': return 'success';
-      case 'medium': return 'warning';
       case 'high': return 'error';
+      case 'medium': return 'warning';
+      case 'low': return 'success';
       default: return 'default';
     }
+  };
+
+  // Manual navigation functions for cycling
+  const navigateForecast = (direction: 'next' | 'prev') => {
+    if (!businessData) return;
+    const maxIndex = businessData.forecasting.recommendations.length - 1;
+    setCurrentForecastIndex(prev => {
+      if (direction === 'next') {
+        return prev < maxIndex ? prev + 1 : 0;
+      } else {
+        return prev > 0 ? prev - 1 : maxIndex;
+      }
+    });
+  };
+
+  const navigateOpportunity = (direction: 'next' | 'prev') => {
+    if (!businessData) return;
+    const maxIndex = businessData.optimization.topOpportunities.length - 1;
+    setCurrentOpportunityIndex(prev => {
+      if (direction === 'next') {
+        return prev < maxIndex ? prev + 1 : 0;
+      } else {
+        return prev > 0 ? prev - 1 : maxIndex;
+      }
+    });
+  };
+
+  const navigateRule = (direction: 'next' | 'prev') => {
+    if (!businessData) return;
+    const maxIndex = businessData.optimization.automatedRules.length - 1;
+    setCurrentRuleIndex(prev => {
+      if (direction === 'next') {
+        return prev < maxIndex ? prev + 1 : 0;
+      } else {
+        return prev > 0 ? prev - 1 : maxIndex;
+      }
+    });
+  };
+
+  const navigateRecommendation = (direction: 'next' | 'prev') => {
+    if (!businessData) return;
+    const maxIndex = businessData.forecasting.recommendations.length - 1;
+    setCurrentRecommendationIndex(prev => {
+      if (direction === 'next') {
+        return prev < maxIndex ? prev + 1 : 0;
+      } else {
+        return prev > 0 ? prev - 1 : maxIndex;
+      }
+    });
   };
 
   const toggleAutomationRule = (ruleId: string) => {
@@ -308,9 +434,16 @@ export default function BusinessIntelligence() {
   }
 
   return (
-    <Box sx={{ p: 2 }}>
+    <Box sx={{ p: 2, pb: { xs: 12, sm: 10 } }}>
       {/* Header with Controls */}
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+      <Box sx={{ 
+        display: 'flex', 
+        flexDirection: { xs: 'column', sm: 'row' }, 
+        justifyContent: 'space-between', 
+        alignItems: { xs: 'flex-start', sm: 'center' }, 
+        gap: 2, 
+        mb: 3 
+      }}>
         <Box>
           <Typography variant="h4" gutterBottom>
             Business Intelligence
@@ -320,8 +453,14 @@ export default function BusinessIntelligence() {
           </Typography>
         </Box>
         
-        <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-          <FormControl size="small" sx={{ minWidth: 120 }}>
+        <Box sx={{ 
+          display: 'flex', 
+          flexDirection: { xs: 'column', sm: 'row' }, 
+          gap: 2, 
+          alignItems: { xs: 'stretch', sm: 'center' },
+          width: { xs: '100%', sm: 'auto' }
+        }}>
+          <FormControl size="small" sx={{ minWidth: { xs: '100%', sm: 120 } }}>
             <InputLabel>Time Range</InputLabel>
             <Select
               value={timeRange}
@@ -335,6 +474,12 @@ export default function BusinessIntelligence() {
             </Select>
           </FormControl>
           
+          <Box sx={{ 
+            display: 'flex', 
+            alignItems: 'center', 
+            gap: 2,
+            justifyContent: { xs: 'space-between', sm: 'flex-end' }
+          }}>
           <FormControlLabel
             control={
               <Switch
@@ -344,19 +489,71 @@ export default function BusinessIntelligence() {
               />
             }
             label="Auto-Optimization"
+              sx={{ alignSelf: { xs: 'flex-start', sm: 'center' } }}
           />
           
           <Tooltip title="Refresh data">
-            <IconButton onClick={fetchBusinessData}>
+              <IconButton 
+                onClick={fetchBusinessData}
+                sx={{ alignSelf: { xs: 'flex-start', sm: 'center' } }}
+              >
               <Refresh />
             </IconButton>
           </Tooltip>
+          </Box>
         </Box>
       </Box>
 
+      {/* Cycling Controls */}
+      <Box sx={{ 
+        display: 'flex', 
+        alignItems: 'center', 
+        gap: 2, 
+        mb: 3, 
+        p: 2, 
+        bgcolor: 'background.paper', 
+        borderRadius: 1,
+        border: '1px solid',
+        borderColor: 'divider'
+      }}>
+        <Typography variant="body2" color="text.secondary">
+          Cycling Speed:
+        </Typography>
+        <Select
+          size="small"
+          value={cyclingSpeed}
+          onChange={(e) => setCyclingSpeed(Number(e.target.value))}
+          sx={{ minWidth: 100 }}
+        >
+          <MenuItem value={2000}>2 seconds</MenuItem>
+          <MenuItem value={4000}>4 seconds</MenuItem>
+          <MenuItem value={6000}>6 seconds</MenuItem>
+        </Select>
+        
+        <FormControlLabel
+          control={
+            <Switch
+              checked={isCycling}
+              onChange={(e) => setIsCycling(e.target.checked)}
+              color="primary"
+              size="small"
+            />
+          }
+          label="Auto-cycle"
+        />
+        
+        <Typography variant="caption" color="text.secondary">
+          {isCycling ? 'Cycling active' : 'Cycling paused'}
+        </Typography>
+      </Box>
+
       {/* ROI Overview */}
-      <Grid container spacing={3} sx={{ mb: 4 }}>
-        <Grid item xs={12} md={4}>
+      <Box sx={{ 
+        display: 'grid', 
+        gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)' },
+        gap: 3,
+        mb: 4 
+      }}>
           <Card>
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -372,9 +569,7 @@ export default function BusinessIntelligence() {
               </Box>
             </CardContent>
           </Card>
-        </Grid>
 
-        <Grid item xs={12} md={4}>
           <Card>
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -390,9 +585,7 @@ export default function BusinessIntelligence() {
               </Box>
             </CardContent>
           </Card>
-        </Grid>
 
-        <Grid item xs={12} md={4}>
           <Card>
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -400,7 +593,7 @@ export default function BusinessIntelligence() {
                   <Typography color="text.secondary" gutterBottom>
                     Overall ROI
                   </Typography>
-                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
                     <Typography variant="h4">
                       {formatPercentage(businessData.roi.overallROI)}
                     </Typography>
@@ -416,8 +609,7 @@ export default function BusinessIntelligence() {
               </Box>
             </CardContent>
           </Card>
-        </Grid>
-      </Grid>
+      </Box>
 
       {/* Platform ROI Breakdown */}
       <Card sx={{ mb: 4 }}>
@@ -468,44 +660,225 @@ export default function BusinessIntelligence() {
         </CardContent>
       </Card>
 
-      {/* Forecasting and Optimization */}
-      <Grid container spacing={3} sx={{ mb: 4 }}>
-        <Grid item xs={12} md={6}>
+      {/* AI Revenue Forecasting */}
+      <Accordion 
+        expanded={expandedSections.forecasting}
+        onChange={handleAccordionChange('forecasting')}
+        sx={{ mb: 3 }}
+      >
+        <AccordionSummary
+          expandIcon={<ExpandMore />}
+          aria-controls="forecasting-content"
+          id="forecasting-header"
+        >
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, width: '100%' }}>
+            <ShowChart color="primary" />
+            <Typography variant="h6">
+              AI Revenue Forecasting
+            </Typography>
+            {!expandedSections.forecasting && (
+              <Fade in={!expandedSections.forecasting}>
+                <Box sx={{ 
+                  ml: 'auto', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  gap: 1,
+                  flexWrap: 'wrap',
+                  justifyContent: 'flex-end',
+                  maxWidth: { xs: '100%', sm: 'auto' }
+                }}>
+                  <Box 
+                    component="span"
+                    onClick={(e) => { e.stopPropagation(); navigateForecast('prev'); }}
+                    sx={{ 
+                      p: 0.5, 
+                      flexShrink: 0,
+                      cursor: 'pointer',
+                      borderRadius: 1,
+                      '&:hover': { bgcolor: 'action.hover' }
+                    }}
+                  >
+                    <NavigateBefore fontSize="small" />
+                  </Box>
+                  <Typography 
+                    variant="body2" 
+                    color="text.secondary"
+                    sx={{ 
+                      maxWidth: { xs: '120px', sm: '200px', md: '300px' },
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                      flexShrink: 1
+                    }}
+                  >
+                    Next Month: {formatCurrency(businessData.forecasting.nextMonthPrediction)}
+                  </Typography>
+                  <Box 
+                    component="span"
+                    onClick={(e) => { e.stopPropagation(); navigateForecast('next'); }}
+                    sx={{ 
+                      p: 0.5, 
+                      flexShrink: 0,
+                      cursor: 'pointer',
+                      borderRadius: 1,
+                      '&:hover': { bgcolor: 'action.hover' }
+                    }}
+                  >
+                    <NavigateNext fontSize="small" />
+                  </Box>
+                  <Chip 
+                    label={`${businessData.forecasting.confidence}% confidence`}
+                    color="success"
+                    size="small"
+                    sx={{ flexShrink: 0 }}
+                  />
+                </Box>
+              </Fade>
+            )}
+          </Box>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 3 }}>
           <Card>
             <CardContent>
               <Typography variant="h6" gutterBottom>
-                AI Revenue Forecasting
+                  Next Month Prediction
               </Typography>
-              <Box sx={{ mb: 3 }}>
                 <Typography variant="h4" color="primary" gutterBottom>
-                  {formatPercentage(businessData.forecasting.nextMonthPrediction)} ROI
+                  {formatCurrency(businessData.forecasting.nextMonthPrediction)}
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  Predicted for next month (85% confidence)
+                  Confidence: {businessData.forecasting.confidence}%
                 </Typography>
-              </Box>
-              
-              <Typography variant="subtitle2" gutterBottom>
-                Key Factors:
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardContent>
+                <Typography variant="h6" gutterBottom>
+                  Key Factors
               </Typography>
-              <Stack spacing={1}>
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
                 {businessData.forecasting.factors.map((factor, index) => (
-                  <Box key={index} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                    <Info fontSize="small" color="action" />
-                    <Typography variant="body2">{factor}</Typography>
-                  </Box>
-                ))}
-              </Stack>
+                    <Chip 
+                      key={index}
+                      label={factor}
+                      variant="outlined"
+                      size="small"
+                      icon={<Info />}
+                    />
+                  ))}
+                </Box>
             </CardContent>
           </Card>
-        </Grid>
+          </Box>
 
-        <Grid item xs={12} md={6}>
-          <Card>
+          <Card sx={{ mt: 3 }}>
             <CardContent>
               <Typography variant="h6" gutterBottom>
+                AI Recommendations
+              </Typography>
+              <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 2 }}>
+                {businessData.forecasting.recommendations.map((rec, index) => (
+                  <Box 
+                    key={index}
+                    sx={{ 
+                      p: 2, 
+                      bgcolor: 'background.default', 
+                      borderRadius: 1,
+                      border: '1px solid',
+                      borderColor: 'divider'
+                    }}
+                  >
+                    <Typography variant="body2">
+                      {rec}
+                    </Typography>
+                  </Box>
+                ))}
+              </Box>
+            </CardContent>
+          </Card>
+        </AccordionDetails>
+      </Accordion>
+
+      {/* Top Optimization Opportunities */}
+      <Accordion 
+        expanded={expandedSections.opportunities}
+        onChange={handleAccordionChange('opportunities')}
+        sx={{ mb: 3 }}
+      >
+        <AccordionSummary
+          expandIcon={<ExpandMore />}
+          aria-controls="opportunities-content"
+          id="opportunities-header"
+        >
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, width: '100%' }}>
+            <Flag color="primary" />
+            <Typography variant="h6">
                 Top Optimization Opportunities
               </Typography>
+            {!expandedSections.opportunities && (
+              <Fade in={!expandedSections.opportunities}>
+                <Box sx={{ 
+                  ml: 'auto', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  gap: 1,
+                  flexWrap: 'wrap',
+                  justifyContent: 'flex-end',
+                  maxWidth: { xs: '100%', sm: 'auto' }
+                }}>
+                  <Box 
+                    component="span"
+                    onClick={(e) => { e.stopPropagation(); navigateOpportunity('prev'); }}
+                    sx={{ 
+                      p: 0.5, 
+                      flexShrink: 0,
+                      cursor: 'pointer',
+                      borderRadius: 1,
+                      '&:hover': { bgcolor: 'action.hover' }
+                    }}
+                  >
+                    <NavigateBefore fontSize="small" />
+                  </Box>
+                  <Typography 
+                    variant="body2" 
+                    color="text.secondary"
+                    sx={{ 
+                      maxWidth: { xs: '120px', sm: '200px', md: '300px' },
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                      flexShrink: 1
+                    }}
+                  >
+                    Opportunity: {businessData.optimization.topOpportunities[currentOpportunityIndex].description}
+                  </Typography>
+                  <Box 
+                    component="span"
+                    onClick={(e) => { e.stopPropagation(); navigateOpportunity('next'); }}
+                    sx={{ 
+                      p: 0.5, 
+                      flexShrink: 0,
+                      cursor: 'pointer',
+                      borderRadius: 1,
+                      '&:hover': { bgcolor: 'action.hover' }
+                    }}
+                  >
+                    <NavigateNext fontSize="small" />
+                  </Box>
+                  <Chip 
+                    label={`+${businessData.optimization.topOpportunities[currentOpportunityIndex].potentialGain}%`}
+                    color="success"
+                    size="small"
+                    sx={{ flexShrink: 0 }}
+                  />
+                </Box>
+              </Fade>
+            )}
+          </Box>
+        </AccordionSummary>
+        <AccordionDetails>
               <Stack spacing={2}>
                 {businessData.optimization.topOpportunities.map((opportunity) => (
                   <Box key={opportunity.id}>
@@ -543,25 +916,98 @@ export default function BusinessIntelligence() {
                   </Box>
                 ))}
               </Stack>
-            </CardContent>
-          </Card>
-        </Grid>
-      </Grid>
+        </AccordionDetails>
+      </Accordion>
 
       {/* Automated Rules */}
-      <Card>
-        <CardContent>
-          <Typography variant="h6" gutterBottom>
+      <Accordion 
+        expanded={expandedSections.rules}
+        onChange={handleAccordionChange('rules')}
+        sx={{ mb: 3 }}
+      >
+        <AccordionSummary
+          expandIcon={<ExpandMore />}
+          aria-controls="rules-content"
+          id="rules-header"
+        >
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, width: '100%' }}>
+            <Schedule color="primary" />
+            <Typography variant="h6">
             Automated Optimization Rules
           </Typography>
-          <Grid container spacing={2}>
+            {!expandedSections.rules && (
+              <Fade in={!expandedSections.rules}>
+                <Box sx={{ 
+                  ml: 'auto', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  gap: 1,
+                  flexWrap: 'wrap',
+                  justifyContent: 'flex-end',
+                  maxWidth: { xs: '100%', sm: 'auto' }
+                }}>
+                  <Box 
+                    component="span"
+                    onClick={(e) => { e.stopPropagation(); navigateRule('prev'); }}
+                    sx={{ 
+                      p: 0.5, 
+                      flexShrink: 0,
+                      cursor: 'pointer',
+                      borderRadius: 1,
+                      '&:hover': { bgcolor: 'action.hover' }
+                    }}
+                  >
+                    <NavigateBefore fontSize="small" />
+                  </Box>
+                  <Typography 
+                    variant="body2" 
+                    color="text.secondary"
+                    sx={{ 
+                      maxWidth: { xs: '120px', sm: '200px', md: '300px' },
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                      flexShrink: 1
+                    }}
+                  >
+                    Rule: {businessData.optimization.automatedRules[currentRuleIndex].name}
+                  </Typography>
+                  <Box 
+                    component="span"
+                    onClick={(e) => { e.stopPropagation(); navigateRule('next'); }}
+                    sx={{ 
+                      p: 0.5, 
+                      flexShrink: 0,
+                      cursor: 'pointer',
+                      borderRadius: 1,
+                      '&:hover': { bgcolor: 'action.hover' }
+                    }}
+                  >
+                    <NavigateNext fontSize="small" />
+                  </Box>
+                  <Chip
+                    label={businessData.optimization.automatedRules[currentRuleIndex].active ? 'Active' : 'Paused'}
+                    color={businessData.optimization.automatedRules[currentRuleIndex].active ? 'success' : 'default'}
+                    size="small"
+                    sx={{ flexShrink: 0 }}
+                  />
+                </Box>
+              </Fade>
+            )}
+          </Box>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Box sx={{ 
+            display: 'grid', 
+            gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' },
+            gap: 2 
+          }}>
             {businessData.optimization.automatedRules.map((rule) => (
-              <Grid item xs={12} md={6} key={rule.id}>
-                <Card variant="outlined">
+              <Card key={rule.id} variant="outlined">
                   <CardContent>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
                       <Box>
-                        <Typography variant="subtitle1" gutterBottom>
+                      <Typography variant="h6" gutterBottom>
                           {rule.name}
                         </Typography>
                         <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
@@ -576,16 +1022,15 @@ export default function BusinessIntelligence() {
                     </Box>
                     
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <Box>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
                         <Typography variant="caption" color="text.secondary">
                           Last triggered: {rule.lastTriggered}
                         </Typography>
-                        <Typography variant="caption" display="block" color="text.secondary">
+                      <Typography variant="caption" color="text.secondary">
                           Success rate: {rule.successRate}%
                         </Typography>
                       </Box>
                       <Chip
-                        icon={rule.active ? <PlayArrow /> : <Pause />}
                         label={rule.active ? 'Active' : 'Paused'}
                         color={rule.active ? 'success' : 'default'}
                         size="small"
@@ -593,31 +1038,114 @@ export default function BusinessIntelligence() {
                     </Box>
                   </CardContent>
                 </Card>
-              </Grid>
             ))}
-          </Grid>
-        </CardContent>
-      </Card>
+          </Box>
+        </AccordionDetails>
+      </Accordion>
 
       {/* AI Recommendations */}
-      <Card sx={{ mt: 3 }}>
-        <CardContent>
-          <Typography variant="h6" gutterBottom>
+      <Accordion 
+        expanded={expandedSections.recommendations}
+        onChange={handleAccordionChange('recommendations')}
+        sx={{ mt: 3, mb: { xs: 10, sm: 8 } }}
+      >
+        <AccordionSummary
+          expandIcon={<ExpandMore />}
+          aria-controls="recommendations-content"
+          id="recommendations-header"
+        >
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, width: '100%' }}>
+            <AutoAwesome color="primary" />
+            <Typography variant="h6">
             AI-Powered Recommendations
           </Typography>
-          <Grid container spacing={2}>
+            {!expandedSections.recommendations && (
+              <Fade in={!expandedSections.recommendations}>
+                <Box sx={{ 
+                  ml: 'auto', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  gap: 1,
+                  flexWrap: 'wrap',
+                  justifyContent: 'flex-end',
+                  maxWidth: { xs: '100%', sm: 'auto' }
+                }}>
+                  <Box 
+                    component="span"
+                    onClick={(e) => { e.stopPropagation(); navigateRecommendation('prev'); }}
+                    sx={{ 
+                      p: 0.5, 
+                      flexShrink: 0,
+                      cursor: 'pointer',
+                      borderRadius: 1,
+                      '&:hover': { bgcolor: 'action.hover' }
+                    }}
+                  >
+                    <NavigateBefore fontSize="small" />
+                  </Box>
+                  <Typography 
+                    variant="body2" 
+                    color="text.secondary"
+                    sx={{ 
+                      maxWidth: { xs: '120px', sm: '200px', md: '300px' },
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      whiteSpace: 'nowrap',
+                      flexShrink: 1
+                    }}
+                  >
+                    Recommendation: {businessData.forecasting.recommendations[currentRecommendationIndex]}
+                  </Typography>
+                  <Box 
+                    component="span"
+                    onClick={(e) => { e.stopPropagation(); navigateRecommendation('next'); }}
+                    sx={{ 
+                      p: 0.5, 
+                      flexShrink: 0,
+                      cursor: 'pointer',
+                      borderRadius: 1,
+                      '&:hover': { bgcolor: 'action.hover' }
+                    }}
+                  >
+                    <NavigateNext fontSize="small" />
+                  </Box>
+                  <Chip
+                    label="Recommendation"
+                    color="info"
+                    size="small"
+                    sx={{ flexShrink: 0 }}
+                  />
+                </Box>
+              </Fade>
+            )}
+          </Box>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Box sx={{ 
+            display: 'grid', 
+            gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' },
+            gap: 2 
+          }}>
             {businessData.forecasting.recommendations.map((recommendation, index) => (
-              <Grid item xs={12} md={6} key={index}>
-                <Alert severity="info" icon={<AutoAwesome />}>
-                  <Typography variant="body2">
+              <Card key={index} variant="outlined">
+                <CardContent>
+                  <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
+                    <AutoAwesome color="primary" sx={{ mt: 0.5 }} />
+                    <Box sx={{ flex: 1 }}>
+                      <Typography variant="body1" gutterBottom>
                     {recommendation}
                   </Typography>
-                </Alert>
-              </Grid>
-            ))}
-          </Grid>
+                      <Typography variant="caption" color="text.secondary">
+                        AI-generated recommendation #{index + 1}
+                      </Typography>
+                    </Box>
+                  </Box>
         </CardContent>
       </Card>
+            ))}
+          </Box>
+        </AccordionDetails>
+      </Accordion>
     </Box>
   );
 }

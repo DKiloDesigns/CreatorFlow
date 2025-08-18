@@ -420,4 +420,9 @@ function TabPanel(props: { children?: React.ReactNode; index: number; value: num
       {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
     </div>
   );
+{/* Bottom Spacer to Clear Bottom Navigation */}
+      <Box sx={{
+        height: { xs: '120px', sm: '40px' },
+        width: '100%'
+      }} />
 } 

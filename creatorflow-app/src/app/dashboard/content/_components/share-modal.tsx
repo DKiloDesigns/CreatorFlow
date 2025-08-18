@@ -1,11 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
-  Button,
-  Box,
-  Typography,
-  Grid
+  Button
 } from '@mui/material';
-import { Share2, Activity } from 'lucide-react';
 import { AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogCancel } from '@/components/ui/alert-dialog';
 
 const PERMISSIONS = [

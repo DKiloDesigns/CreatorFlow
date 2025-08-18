@@ -167,7 +167,7 @@ export function Button({
                      'contained';
 
   // SACA: Prepare ARIA attributes
-  const ariaProps: Record<string, any> = {};
+  const ariaProps: Record<string, string | boolean> = {};
   if (ariaLabel) ariaProps['aria-label'] = ariaLabel;
   if (ariaDescribedBy) ariaProps['aria-describedby'] = ariaDescribedBy;
   if (ariaPressed !== undefined) ariaProps['aria-pressed'] = ariaPressed;

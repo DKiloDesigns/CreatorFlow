@@ -71,7 +71,7 @@ export function Select({
   const handleChange = (event: SelectChangeEvent<string>) => {
     setValue(event.target.value);
     if (props.onChange) {
-      props.onChange(event as any);
+      props.onChange(event);
     }
   };
 

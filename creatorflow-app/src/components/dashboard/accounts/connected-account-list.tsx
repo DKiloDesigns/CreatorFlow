@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import ConnectedAccountCard from './connected-account-card';
-import { Skeleton } from "@/components/ui/skeleton";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Skeleton } from "@/components/ui/feedback/Skeleton";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/feedback/mui-alert";
 import { Terminal } from 'lucide-react';
 import { toast } from "sonner";
 
@@ -81,7 +81,7 @@ export default function ConnectedAccountList() {
 
   if (error && accounts.length === 0) {
     return (
-      <Alert variant="destructive">
+      <Alert severity="error">
         <Terminal className="h-4 w-4" />
         <AlertTitle>Error Loading Accounts</AlertTitle>
         <AlertDescription>{error}</AlertDescription>

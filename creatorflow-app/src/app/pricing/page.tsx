@@ -45,6 +45,9 @@ export default function Pricing() {
           <button className="bg-primary text-white px-6 py-2 rounded">Contact Sales</button>
         </div>
       </div>
+      
+      {/* Bottom Spacer to Clear Bottom Navigation */}
+      <div className="h-32 sm:h-10 w-full"></div>
     </div>
   );
 } 

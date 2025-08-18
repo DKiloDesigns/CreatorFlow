@@ -1,11 +1,7 @@
 import React, { useState } from 'react';
 import { 
-  Button,
-  Box,
-  Typography,
-  Grid
+  Button
 } from '@mui/material';
-import { Sparkles, Activity } from 'lucide-react';
 import { AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogCancel } from '@/components/ui/alert-dialog';
 
 const USE_CASES = [
@@ -16,8 +12,8 @@ const USE_CASES = [
   { key: 'personal', label: 'Personal' },
 ];
 
-export default function AiSuggestModal({ open, onOpenChange, type, onInsert, onSave }: {
-  open: boolean;
+export default function AiSuggestModal({ _open, onOpenChange, type, onInsert, onSave }: {
+  _open: boolean;
   onOpenChange: (v: boolean) => void;
   type: 'captions' | 'hashtags';
   onInsert?: (text: string) => void;

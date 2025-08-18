@@ -1,15 +1,11 @@
+import React, { useState } from 'react';
 import { 
-  Button,
-  TextField,
-  Box,
-  Typography,
-  Grid,
-  Select,
-  MenuItem,
-  FormControl,
-  InputLabel
+  Button
 } from '@mui/material';
-import { Save, Activity } from 'lucide-react';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Checkbox } from '@/components/ui/mui-checkbox';
 
 interface Post {
   id: string;
@@ -80,7 +76,7 @@ export default function EditPostForm({ post, onSave, onCancel }: EditPostFormPro
               <Checkbox
                 id={platform}
                 checked={formData.platforms.includes(platform)}
-                onCheckedChange={() => handlePlatformToggle(platform)}
+                onChange={() => handlePlatformToggle(platform)}
               />
               <Label htmlFor={platform} className="text-sm capitalize">
                 {platform}
@@ -109,18 +105,19 @@ export default function EditPostForm({ post, onSave, onCancel }: EditPostFormPro
       {formData.status === 'SCHEDULED' && (
         <div>
           <Label htmlFor="scheduledAt">Scheduled Date</Label>
-          <Input
+          <TextField
             id="scheduledAt"
             type="datetime-local"
             value={formData.scheduledAt}
             onChange={(e) => setFormData(prev => ({ ...prev, scheduledAt: e.target.value }))}
             required
+            fullWidth
           />
         </div>
       )}
 
       <div className="flex justify-end gap-2 pt-4">
-        <Button type="button" variant="outline" onClick={onCancel}>
+        <Button type="button" variant="outlined" onClick={onCancel}>
           Cancel
         </Button>
         <Button type="submit">

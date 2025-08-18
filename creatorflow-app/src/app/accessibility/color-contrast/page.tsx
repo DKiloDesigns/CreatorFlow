@@ -11,7 +11,6 @@ import {
   Grid, 
   Chip, 
   Alert,
-  Divider,
   Paper,
   InputAdornment,
   IconButton,
@@ -28,7 +27,6 @@ import {
   Contrast
 } from '@mui/icons-material';
 import { 
-  calculateContrastRatio, 
   checkWCAGCompliance, 
   suggestAlternativeColors,
   generateContrastReport 
@@ -486,3 +484,8 @@ export default function ColorContrastPage() {
     </Box>
   );
 }
+{/* Bottom Spacer to Clear Bottom Navigation */}
+      <Box sx={{
+        height: { xs: '120px', sm: '40px' },
+        width: '100%'
+      }} />

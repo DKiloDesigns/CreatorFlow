@@ -12,18 +12,14 @@ import {
   Chip,
   LinearProgress
 } from '@mui/material';
-import { Badge } from '@/components/ui/badge';
-import { Button as UiButton } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
-import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Button as UiButton } from '@/components/ui/mui-button';
+import { Alert, AlertDescription } from '@/components/ui/feedback/mui-alert';
 import { 
   CheckCircle, 
   AlertCircle, 
   Clock, 
   XCircle, 
-  RefreshCw, 
-  TrendingUp,
-  Users,
+  RefreshCw,
   Activity
 } from 'lucide-react';
 import { toast } from 'sonner';
@@ -128,7 +124,7 @@ export function SocialAccountStatus({ accounts, onRefresh, onReauth }: SocialAcc
     }, 5 * 60 * 1000); // 5 minutes
 
     return () => clearInterval(interval);
-  }, [accounts]);
+  }, [accounts, checkAllHealth]);
 
   const getStatusIcon = (status: string) => {
     switch (status) {

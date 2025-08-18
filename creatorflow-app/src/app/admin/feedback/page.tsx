@@ -424,4 +424,9 @@ export default function FeedbackDashboard() {
       </Tabs>
     </div>
   );
+{/* Bottom Spacer to Clear Bottom Navigation */}
+      <Box sx={{
+        height: { xs: '120px', sm: '40px' },
+        width: '100%'
+      }} />
 } 

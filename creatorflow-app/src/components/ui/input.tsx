@@ -44,7 +44,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     const generatedHelperId = helperId || `helper-${Math.random().toString(36).substr(2, 9)}`;
     
     // SACA: Prepare ARIA attributes
-    const ariaProps: Record<string, any> = {};
+    const ariaProps: Record<string, string | boolean> = {};
     if (ariaLabel) ariaProps['aria-label'] = ariaLabel;
     if (ariaDescribedBy) ariaProps['aria-describedby'] = ariaDescribedBy;
     if (ariaInvalid !== undefined) ariaProps['aria-invalid'] = ariaInvalid;

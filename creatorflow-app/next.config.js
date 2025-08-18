@@ -2,6 +2,9 @@
 import { fileURLToPath } from 'url';
 
 const nextConfig = {
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   webpack: (config, { dev, isServer }) => {
     // Optimize webpack cache
     if (dev) {

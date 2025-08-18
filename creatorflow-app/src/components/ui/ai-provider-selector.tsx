@@ -81,7 +81,7 @@ export function AIProviderSelector({
           ].map(({ key, label, icon: Icon }) => (
             <Button
               key={key}
-              onClick={() => setFilter(key as any)}
+              onClick={() => setFilter(key as 'all' | 'free' | 'premium')}
               className={`inline-flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                 filter === key
                   ? 'bg-white text-gray-900 shadow-sm'

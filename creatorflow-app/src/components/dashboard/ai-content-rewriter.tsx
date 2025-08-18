@@ -1,12 +1,10 @@
-import { 
-  Card, 
-  CardContent, 
-  CardHeader, 
-  Button,
-  TextField,
-  Box,
-  Typography,
-  Grid,
-  Chip
-} from '@mui/material';
-import { Edit, Activity } from 'lucide-react'; 
+// AI Content Rewriter Component
+// TODO: Implement content rewriting functionality
+
+export default function AIContentRewriter() {
+  return (
+    <div>
+      <p>AI Content Rewriter - Coming Soon</p>
+    </div>
+  );
+} 

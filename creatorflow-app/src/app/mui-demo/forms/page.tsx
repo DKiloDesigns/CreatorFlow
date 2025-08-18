@@ -7,13 +7,10 @@ import {
   Stack,
   Typography,
   Paper,
-  Divider,
-  Grid,
   FormControl,
-  FormHelperText,
+  FormControlLabel,
   Radio,
   RadioGroup,
-  FormControlLabel,
   Slider,
   Rating,
   Chip,
@@ -462,4 +459,9 @@ export default function MuiFormsDemo() {
       )}
     </Container>
   );
+{/* Bottom Spacer to Clear Bottom Navigation */}
+      <Box sx={{
+        height: { xs: '120px', sm: '40px' },
+        width: '100%'
+      }} />
 } 

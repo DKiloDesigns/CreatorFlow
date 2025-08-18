@@ -8,9 +8,7 @@ import {
   CardContent, 
   CardHeader, 
   Button,
-  Box,
   Typography,
-  Grid,
   Chip
 } from '@mui/material';
 import { Users, Activity, Settings, Edit, ArrowLeft } from 'lucide-react';
@@ -798,4 +796,9 @@ export default function TeamDetailPage() {
       </Tabs>
     </div>
   );
+{/* Bottom Spacer to Clear Bottom Navigation */}
+      <Box sx={{
+        height: { xs: '120px', sm: '40px' },
+        width: '100%'
+      }} />
 } 

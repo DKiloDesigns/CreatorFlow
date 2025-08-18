@@ -25,7 +25,12 @@ interface ContentOptimizationRequest {
   content: string;
   platform: string;
   targetMetrics: string[];
-  currentPerformance?: any;
+  currentPerformance?: {
+    engagement?: number;
+    reach?: number;
+    clicks?: number;
+    conversions?: number;
+  };
 }
 
 interface AIPrediction {

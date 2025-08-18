@@ -2,23 +2,13 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { 
-  Card, 
-  CardContent, 
-  CardHeader, 
-  Button,
-  Box,
-  Typography,
-  Grid,
-  Chip,
-  Switch,
-  FormControlLabel
+  Button
 } from '@mui/material';
-import { Bell, Activity, X, Check, Trash2, Filter, Settings, RefreshCw } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { Bell, Check, Trash2, RefreshCw } from 'lucide-react';
 import { Notification, NotificationType, NotificationSeverity, NotificationCategory } from '@/lib/notifications/types';
 import { NotificationToast } from '@/components/ui/notification-badge';
+import { cn } from '@/lib/utils';
 
-import { Separator } from '@/components/ui/separator';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
@@ -63,12 +53,12 @@ const CATEGORY_ICONS = {
   subscription: '📦',
 };
 
-export function NotificationCenter({ className, onNotificationClick }: NotificationCenterProps) {
+export function NotificationCenter({ className: _className, onNotificationClick }: NotificationCenterProps) {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [filters, setFilters] = useState<NotificationFilters>({
+  const [filters, _setFilters] = useState<NotificationFilters>({
     severity: [],
     category: [],
     type: [],
@@ -227,8 +217,8 @@ export function NotificationCenter({ className, onNotificationClick }: Notificat
       <Popover open={isOpen} onOpenChange={setIsOpen}>
         <PopoverTrigger asChild>
           <Button
-            variant="ghost"
-            size="icon"
+            variant="text"
+            size="small"
             className="relative"
             aria-label="Notifications"
           >
@@ -283,11 +273,11 @@ export function NotificationCenter({ className, onNotificationClick }: Notificat
               <ScrollArea className="h-80">
                 {isLoading ? (
                   <div className="flex items-center justify-center p-8">
-                    <RefreshCw className="h-6 w-6 animate-spin" />
+                    <RefreshCw className="h-6 w-6 animate-spin" aria-label="Loading notifications" />
                   </div>
                 ) : filteredNotifications.length === 0 ? (
                   <div className="flex flex-col items-center justify-center p-8 text-center">
-                    <Bell className="h-8 w-8 text-gray-400 mb-2" />
+                    <Bell className="h-8 w-8 text-gray-400 mb-2" aria-label="No notifications" />
                     <p className="text-sm text-gray-500">No notifications</p>
                   </div>
                 ) : (

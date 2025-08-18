@@ -108,7 +108,6 @@ export function preloadCriticalResources() {
 
     // Preload critical images
     const criticalImages = [
-      '/logo.png',
       '/favicon.ico',
     ];
 

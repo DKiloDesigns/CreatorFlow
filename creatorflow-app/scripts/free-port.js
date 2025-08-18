@@ -16,12 +16,12 @@ try {
     pids = execSync(findCommand, { encoding: 'utf8' }).trim();
   } catch (e) {
     // No processes found, which is fine
-    console.log(`No processes found using port ${PORT}.`);
+    console.log(`Port ${PORT} is available.`);
     process.exit(0);
   }
   
   if (!pids) {
-    console.log(`No processes found using port ${PORT}.`);
+    console.log(`Port ${PORT} is available.`);
     process.exit(0);
   }
   
@@ -39,26 +39,47 @@ try {
     pids = pids.split('\n').filter(Boolean);
   }
   
-  // Kill each process
+  // Only kill if there are actually processes using the port
   if (pids.length > 0) {
-    console.log(`Found ${pids.length} process(es) using port ${PORT}. Terminating...`);
+    console.log(`Found ${pids.length} process(es) using port ${PORT}.`);
     
-    pids.forEach(pid => {
+    // Check if any of these are Next.js dev servers
+    const hasNextDev = pids.some(pid => {
       try {
-        const killCommand = process.platform === 'win32'
-          ? `taskkill /F /PID ${pid}`
-          : `kill -9 ${pid}`;
-        
-        execSync(killCommand);
-        console.log(`Successfully terminated process ${pid}`);
+        const cmd = execSync(`ps -p ${pid} -o command=`, { encoding: 'utf8' });
+        return cmd.includes('next dev') || cmd.includes('next');
       } catch (e) {
-        console.error(`Failed to terminate process ${pid}: ${e.message}`);
+        return false;
       }
     });
     
-    console.log(`Port ${PORT} should now be free.`);
+    if (hasNextDev) {
+      console.log(`Port ${PORT} is in use by Next.js. Using next available port.`);
+      process.exit(0);
+    }
+    
+    // Only kill non-Next.js processes
+    console.log(`Terminating non-Next.js processes on port ${PORT}...`);
+    
+    pids.forEach(pid => {
+      try {
+        const cmd = execSync(`ps -p ${pid} -o command=`, { encoding: 'utf8' });
+        if (!cmd.includes('next')) {
+          const killCommand = process.platform === 'win32'
+            ? `taskkill /F /PID ${pid}`
+            : `kill -9 ${pid}`;
+          
+          execSync(killCommand);
+          console.log(`Terminated process ${pid}`);
+        }
+      } catch (e) {
+        // Process might have already ended
+      }
+    });
+    
+    console.log(`Port ${PORT} should now be available.`);
   }
 } catch (error) {
-  console.error(`Error checking/freeing port ${PORT}:`, error.message);
+  console.error(`Error checking port ${PORT}:`, error.message);
   process.exit(1);
 }

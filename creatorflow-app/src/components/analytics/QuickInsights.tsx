@@ -78,9 +78,13 @@ export default function QuickInsights({ user, analyticsData }: QuickInsightsProp
       />
       <Collapse in={expanded}>
         <CardContent>
-          <Grid container spacing={3}>
+          <Box sx={{ 
+            display: 'grid', 
+            gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' },
+            gap: 3
+          }}>
             {/* Usage Statistics */}
-            <Grid item xs={12} md={6}>
+            <Box>
               <Typography variant="subtitle1" gutterBottom fontWeight="medium">
                 Usage & Limits
               </Typography>
@@ -125,10 +129,10 @@ export default function QuickInsights({ user, analyticsData }: QuickInsightsProp
                   </Typography>
                 </Box>
               </Box>
-            </Grid>
+            </Box>
 
             {/* Key Performance Indicators */}
-            <Grid item xs={12} md={6}>
+            <Box>
               <Typography variant="subtitle1" gutterBottom fontWeight="medium">
                 Key Performance
               </Typography>
@@ -179,34 +183,8 @@ export default function QuickInsights({ user, analyticsData }: QuickInsightsProp
                   </Box>
                 </Box>
               </Box>
-            </Grid>
-
-            {/* Plan Status */}
-            <Grid item xs={12}>
-              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', p: 2, bgcolor: 'background.default', borderRadius: 1 }}>
-                <Box>
-                  <Typography variant="body2" color="text.secondary">
-                    Current Plan
-                  </Typography>
-                  <Typography variant="h6">
-                    {user?.plan || 'Free'}
-                  </Typography>
-                </Box>
-                <Box sx={{ textAlign: 'right' }}>
-                  <Chip 
-                    label={user?.plan === 'Free' ? 'Limited' : 'Premium'} 
-                    color={user?.plan === 'Free' ? 'warning' : 'success'}
-                    size="small"
-                  />
-                  {user?.plan === 'Free' && (
-                    <Typography variant="caption" display="block" color="text.secondary" sx={{ mt: 1 }}>
-                      Consider upgrading for more features
-                    </Typography>
-                  )}
-                </Box>
-              </Box>
-            </Grid>
-          </Grid>
+            </Box>
+          </Box>
         </CardContent>
       </Collapse>
     </Card>

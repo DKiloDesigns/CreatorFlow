@@ -1,25 +1,17 @@
-const { PrismaClient } = require('@prisma/client');
+// Lightweight session kickoff - non-blocking
+console.log('🚀 Starting CreatorFlow development session...');
 
-function checkDb(cb) {
-  const prisma = new PrismaClient();
-  prisma.$queryRaw`SELECT 1`
-    .then(() => {
-      console.log('Database connection: OK');
-      prisma.$disconnect();
-      cb(true);
-    })
-    .catch((err) => {
-      console.log('WARNING: Database connection failed:', err.message);
-      prisma.$disconnect();
-      cb(false);
-    });
+// Simple timestamp logging
+const sessionStart = new Date().toISOString();
+console.log(`📅 Session started at: ${sessionStart}`);
+
+// Check if we're in development mode
+if (process.env.NODE_ENV === 'development') {
+  console.log('🔧 Development mode detected');
 }
 
-checkServer(running => {
-  if (running) {
-    console.log('Dev server is running on http://localhost:3001');
-  } else {
-    console.log('WARNING: Dev server is NOT running on http://localhost:3001');
-  }
-  checkDb(() => printState());
-}); 
+// Log available ports
+console.log('🌐 Dev server will be available on next available port');
+
+// Exit immediately to not block startup
+process.exit(0); 

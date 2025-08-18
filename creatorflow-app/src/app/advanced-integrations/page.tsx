@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { 
   Card, 
   CardContent, 
@@ -17,7 +17,7 @@ import { CardDescription } from '@/components/ui/base/Card';
 import { Settings, Zap, Code, Database, Cloud, Shield, Activity, RefreshCw, Plus, Plug, CheckCircle, TrendingUp, Eye, BarChart3, Webhook, Edit } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import { Label, Input } from '@/components/ui';
+import { Label, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui';
 
 interface Integration {
   id: string;
@@ -612,10 +612,10 @@ export default function AdvancedIntegrationsPage() {
                         )}
                       </div>
                       <div className="flex gap-2">
-                        <Button size="sm" variant="outline" onClick={() => checkHealth(integration.id)}>
+                        <Button size="small" variant="outlined" onClick={() => checkHealth(integration.id)}>
                           <Activity className="h-3 w-3" />
                         </Button>
-                        <Button size="sm" variant="outline">
+                        <Button size="small" variant="outlined">
                           <Eye className="h-3 w-3" />
                         </Button>
                       </div>
@@ -683,4 +683,9 @@ export default function AdvancedIntegrationsPage() {
       )}
     </div>
   );
+{/* Bottom Spacer to Clear Bottom Navigation */}
+      <Box sx={{
+        height: { xs: '120px', sm: '40px' },
+        width: '100%'
+      }} />
 } 

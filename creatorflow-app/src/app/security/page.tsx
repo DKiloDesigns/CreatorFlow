@@ -10,16 +10,15 @@ import {
   Typography,
   Grid,
   Tabs,
-  Tab,
   Chip,
-  Select,
   MenuItem,
   FormControl,
   InputLabel
 } from '@mui/material';
 import { Shield, Activity, RefreshCw } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import { TabsContent } from '@/components/ui/tabs';
+import { TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 
 interface SecurityEvent {
   id: string;
@@ -480,6 +479,12 @@ export default function SecurityPage() {
           </div>
         </TabsContent>
       </Tabs>
+
+      {/* Bottom Spacer to Clear Bottom Navigation */}
+      <Box sx={{
+        height: { xs: '120px', sm: '40px' },
+        width: '100%'
+      }} />
     </div>
   );
 } 

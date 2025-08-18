@@ -1,14 +1,11 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { 
   Button,
-  Box,
-  Typography,
-  Grid,
-  Chip
+  Typography
 } from '@mui/material';
-import { CheckCircle, Activity, Trash2 } from 'lucide-react';
+import { Trash2 } from 'lucide-react';
 import { SiInstagram, SiTiktok, SiYoutube, SiX } from "react-icons/si";
 import { Card, CardContent, CardHeader, CardFooter, CardDescription } from '@/components/ui/mui-components';
 import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogCancel, AlertDialogAction } from '@/components/ui/alert-dialog';

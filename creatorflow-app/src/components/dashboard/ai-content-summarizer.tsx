@@ -1,12 +1,10 @@
-import { 
-  Card, 
-  CardContent, 
-  CardHeader, 
-  Button,
-  TextField,
-  Box,
-  Typography,
-  Grid,
-  Chip
-} from '@mui/material';
-import { FileText, Activity } from 'lucide-react'; 
+// AI Content Summarizer Component
+// TODO: Implement content summarization functionality
+
+export default function AIContentSummarizer() {
+  return (
+    <div>
+      <p>AI Content Summarizer - Coming Soon</p>
+    </div>
+  );
+} 

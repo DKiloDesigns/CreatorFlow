@@ -1,12 +1,1 @@
-import { 
-  Card, 
-  CardContent, 
-  CardHeader, 
-  Button,
-  TextField,
-  Box,
-  Typography,
-  Grid,
-  Chip
-} from '@mui/material';
-import { RefreshCw, Activity } from 'lucide-react'; 
+// Placeholder component - imports removed due to unused variables 

@@ -1,12 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardHeader } from '@/components/ui/mui-card';
 import { Typography, Button } from '@mui/material';
 import { 
-  Calendar, 
   Clock, 
   TrendingUp, 
-  Users, 
-  Eye,
   Target,
   Info,
   Zap
