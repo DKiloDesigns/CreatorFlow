@@ -75,11 +75,15 @@ export function InsightsPanel({ insights, onRefresh }: InsightsPanelProps) {
   if (!insights || insightsArray.length === 0) {
     return (
       <Box sx={{ textAlign: 'center', py: 4 }}>
-        <Activity className="mx-auto h-12 w-12 text-gray-400 mb-4" />
+        <Box sx={{ color: 'grey.400', mb: 2 }}>
+          <Activity className="h-12 w-12" />
+        </Box>
         <Typography variant="h5" component="h3" sx={{ fontWeight: 500, color: 'grey.900', mb: 1 }}>No Insights Available</Typography>
         <Typography variant="body1" sx={{ color: 'grey.500', mb: 2 }}>Generate AI-powered insights to get personalized recommendations.</Typography>
         <Button onClick={onRefresh}>
-          <Activity className="h-4 w-4 mr-2" />
+          <Box sx={{ mr: 1 }}>
+            <Activity className="h-4 w-4" />
+          </Box>
           Generate Insights
         </Button>
       </Box>
