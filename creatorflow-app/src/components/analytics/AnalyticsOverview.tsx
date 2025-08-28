@@ -239,7 +239,9 @@ export function AnalyticsOverview({ data }: AnalyticsOverviewProps) {
         <CardContent sx={{ pt: 3 }}>
           <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1.5 }}>
             <Box sx={{ p: 1, bgcolor: 'blue.100', borderRadius: 2 }}>
-              <BarChart3 className="h-5 w-5 text-blue-600" />
+              <Box sx={{ color: 'blue.600' }}>
+                <BarChart3 className="h-5 w-5" />
+              </Box>
             </Box>
             <Box>
               <Typography variant="h6" sx={{ fontWeight: 500, color: 'blue.900', mb: 0.5 }}>
