@@ -118,9 +118,11 @@ export function TrialStatus({ trialStartDate, trialEndDate, className }: TrialSt
             </Grid>
           ) : (
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, p: 2, bgcolor: 'error.light', borderRadius: 1 }}>
-              <Activity className="h-5 w-5 text-red-600" />
+              <Box sx={{ color: 'error.main' }}>
+                <Activity className="h-5 w-5" />
+              </Box>
               <Box>
-                <Typography variant="body2" color="error.dark" sx={{ fontWeight: 'medium' }}>Trial Expired</Typography>
+                <Typography variant="body2" color="error.dark" sx={{ fontWeight: 500 }}>Trial Expired</Typography>
                 <Typography variant="body2" color="error.main">
                   Upgrade to Pro to continue using all features
                 </Typography>
