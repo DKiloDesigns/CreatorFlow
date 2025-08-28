@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader } from '@/components/ui/mui-card';
-import { Typography, Button } from '@mui/material';
+import { Typography, Button, Chip, Grid } from '@mui/material';
 import { 
   Clock, 
   TrendingUp, 
@@ -12,6 +12,7 @@ import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@
 import { Badge } from '@/components/ui/badge';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { PostingTimeSuggestion } from '@/lib/ai-service';
+import { Box } from '@mui/material';
 
 interface AIPostingTimesProps {
   className?: string;
@@ -121,99 +122,114 @@ export function AIPostingTimes({ className }: AIPostingTimesProps) {
 
         {/* Generated Posting Times */}
         {postingTimes.length > 0 && (
-          <div className="space-y-4">
-            <h3 className="font-medium text-sm text-muted-foreground">
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+            <Typography variant="body2" sx={{ fontWeight: 500, fontSize: '0.875rem', color: 'text.secondary' }}>
               Optimal Posting Times
-            </h3>
+            </Typography>
             
             {postingTimes.map((suggestion, index) => {
               const engagement = getEngagementLevel(suggestion.best_times);
               return (
-                <div
+                <Box
                   key={index}
-                  className="p-4 border rounded-lg hover:border-gray-300 transition-colors"
+                  sx={{ 
+                    p: 2, 
+                    border: '1px solid', 
+                    borderColor: 'divider', 
+                    borderRadius: 2,
+                    '&:hover': { borderColor: 'grey.300' },
+                    transition: 'border-color 0.2s'
+                  }}
                 >
-                  <div className="flex items-start justify-between gap-3 mb-3">
-                    <div className="flex items-center gap-2">
-                      <h4 className="font-medium">{suggestion.platform}</h4>
-                      <Badge className={`text-xs ${engagement.color}`}>
-                        {engagement.level} Engagement
-                      </Badge>
-                    </div>
-                    <Badge variant="outline" className="text-xs">
+                  <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 1.5, mb: 1.5 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                      <Typography variant="h6" sx={{ fontWeight: 500 }}>{suggestion.platform}</Typography>
+                      <Chip 
+                        label={`${engagement.level} Engagement`} 
+                        color={engagement.color as any}
+                        size="small"
+                      />
+                    </Box>
+                    <Chip variant="outlined" size="small">
                       {suggestion.timezone}
-                    </Badge>
-                  </div>
+                    </Chip>
+                  </Box>
 
-                  <div className="space-y-3">
-                    <div>
-                      <h5 className="text-sm font-medium mb-2 flex items-center gap-2">
+                  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+                    <Box>
+                      <Typography variant="body2" sx={{ fontWeight: 500, mb: 1, display: 'flex', alignItems: 'center', gap: 1 }}>
                         <Target className="h-4 w-4" />
                         Best Times to Post
-                      </h5>
-                      <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+                      </Typography>
+                      <Grid container spacing={1}>
                         {suggestion.best_times.map((time, timeIndex) => (
-                          <div
-                            key={timeIndex}
-                            className="flex items-center gap-2 p-2 bg-muted/50 rounded-lg"
-                          >
-                            <span className="text-lg">{getTimeIcon(time)}</span>
-                            <span className="font-medium text-sm">{time}</span>
-                          </div>
+                          <Grid item xs={6} md={4} key={timeIndex}>
+                            <Box sx={{ 
+                              display: 'flex', 
+                              alignItems: 'center', 
+                              gap: 1, 
+                              p: 1, 
+                              bgcolor: 'action.hover', 
+                              borderRadius: 2 
+                            }}>
+                              <Box sx={{ fontSize: '1.125rem' }}>{getTimeIcon(time)}</Box>
+                              <Typography variant="body2" sx={{ fontWeight: 500, fontSize: '0.875rem' }}>{time}</Typography>
+                            </Box>
+                          </Grid>
                         ))}
-                      </div>
-                    </div>
+                      </Grid>
+                    </Box>
 
-                    <div className="p-3 bg-blue-50 dark:bg-blue-900/60 rounded-lg">
-                      <h5 className="text-sm font-medium mb-1 flex items-center gap-2">
+                    <Box sx={{ p: 1.5, bgcolor: 'info.50', borderRadius: 2 }}>
+                      <Typography variant="body2" sx={{ fontWeight: 500, mb: 0.5, display: 'flex', alignItems: 'center', gap: 1 }}>
                         <Info className="h-4 w-4" />
                         AI Reasoning
-                      </h5>
-                      <p className="text-xs text-muted-foreground">
+                      </Typography>
+                      <Typography variant="body2" sx={{ fontSize: '0.75rem', color: 'text.secondary' }}>
                         {suggestion.reasoning}
-                      </p>
-                    </div>
-                  </div>
-                </div>
+                      </Typography>
+                    </Box>
+                  </Box>
+                </Box>
               );
             })}
-          </div>
+          </Box>
         )}
 
         {/* Tips Section */}
-        <div className="p-4 bg-green-50 dark:bg-green-900/60 rounded-lg">
-          <h4 className="font-medium text-sm mb-3 flex items-center gap-2">
+        <Box sx={{ p: 2, bgcolor: 'success.50', borderRadius: 2 }}>
+          <Typography variant="body2" sx={{ fontWeight: 500, mb: 1.5, display: 'flex', alignItems: 'center', gap: 1 }}>
             <TrendingUp className="h-4 w-4 text-green-600" />
             Posting Time Best Practices
-          </h4>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-muted-foreground">
-            <div>
-              <h5 className="font-medium mb-2">General Tips:</h5>
-              <ul className="space-y-1">
-                <li>• Post when your audience is most active</li>
-                <li>• Test different times and track engagement</li>
-                <li>• Consider your timezone vs audience timezone</li>
-                <li>• Be consistent with your posting schedule</li>
-              </ul>
-            </div>
-            <div>
-              <h5 className="font-medium mb-2">Platform-Specific:</h5>
-              <ul className="space-y-1">
-                <li>• Instagram: Evenings and weekends</li>
-                <li>• LinkedIn: Weekdays during business hours</li>
-                <li>• Twitter: Throughout the day, peak at lunch</li>
-                <li>• TikTok: Evenings and late nights</li>
-              </ul>
-            </div>
-          </div>
-        </div>
+          </Typography>
+          <Grid container spacing={2} sx={{ fontSize: '0.75rem', color: 'text.secondary' }}>
+            <Grid item xs={12} md={6}>
+              <Typography variant="body2" sx={{ fontWeight: 500, mb: 1 }}>General Tips:</Typography>
+              <Box component="ul" sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
+                <Box component="li">• Post when your audience is most active</Box>
+                <Box component="li">• Test different times and track engagement</Box>
+                <Box component="li">• Consider your timezone vs audience timezone</Box>
+                <Box component="li">• Be consistent with your posting schedule</Box>
+              </Box>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <Typography variant="body2" sx={{ fontWeight: 500, mb: 1 }}>Platform-Specific:</Typography>
+              <Box component="ul" sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
+                <Box component="li">• Instagram: Evenings and weekends</Box>
+                <Box component="li">• LinkedIn: Weekdays during business hours</Box>
+                <Box component="li">• Twitter: Throughout the day, peak at lunch</Box>
+                <Box component="li">• TikTok: Evenings and late nights</Box>
+              </Box>
+            </Grid>
+          </Grid>
+        </Box>
 
         {/* Quick Actions */}
-        <div className="flex gap-2">
+        <Box sx={{ display: 'flex', gap: 1 }}>
           <Button
             variant="outlined"
             size="small"
-            className="flex-1"
+            sx={{ flex: 1 }}
             onClick={() => {
               setPlatform('Instagram');
               getOptimalTimes();
@@ -225,7 +241,7 @@ export function AIPostingTimes({ className }: AIPostingTimesProps) {
           <Button
             variant="outlined"
             size="small"
-            className="flex-1"
+            sx={{ flex: 1 }}
             onClick={() => {
               setPlatform('LinkedIn');
               getOptimalTimes();
@@ -234,7 +250,7 @@ export function AIPostingTimes({ className }: AIPostingTimesProps) {
             <Zap className="h-4 w-4 mr-2" />
             LinkedIn Times
           </Button>
-        </div>
+        </Box>
       </CardContent>
     </Card>
   );
