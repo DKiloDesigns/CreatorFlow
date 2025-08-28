@@ -6,7 +6,9 @@ import {
   CardContent, 
   CardHeader, 
   Button,
-  Typography
+  Typography,
+  Box,
+  Grid
 } from '@mui/material';
 
 import { 
@@ -103,10 +105,10 @@ export function AdvancedAnalyticsDashboard({
 
   if (loading) {
     return (
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-bold">Advanced Analytics</h2>
-          <div className="flex gap-2">
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <Typography variant="h4" component="h2" sx={{ fontWeight: 'bold' }}>Advanced Analytics</Typography>
+          <Box sx={{ display: 'flex', gap: 1 }}>
             <Select value={selectedTimeRange} onValueChange={handleTimeRangeChange}>
               <SelectTrigger className="w-32">
                 <SelectValue />
@@ -131,43 +133,45 @@ export function AdvancedAnalyticsDashboard({
                 <SelectItem value="youtube">YouTube</SelectItem>
               </SelectContent>
             </Select>
-          </div>
-        </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          </Box>
+        </Box>
+        <Grid container spacing={3}>
           {[...Array(4)].map((_, i) => (
-            <Card key={i} className="animate-pulse">
-              <CardHeader className="pb-2">
-                <div className="h-4 bg-gray-200 rounded w-3/4"></div>
-              </CardHeader>
-              <CardContent>
-                <div className="h-8 bg-gray-200 rounded w-1/2"></div>
-              </CardContent>
-            </Card>
+            <Grid item xs={12} md={6} lg={3} key={i}>
+              <Card sx={{ animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite' }}>
+                <CardHeader sx={{ pb: 1 }}>
+                  <Box sx={{ height: 16, bgcolor: 'grey.200', borderRadius: 1, width: '75%' }}></Box>
+                </CardHeader>
+                <CardContent>
+                  <Box sx={{ height: 32, bgcolor: 'grey.200', borderRadius: 1, width: '50%' }}></Box>
+                </CardContent>
+              </Card>
+            </Grid>
           ))}
-        </div>
-      </div>
+        </Grid>
+      </Box>
     );
   }
 
   if (!analyticsData) {
     return (
-      <div className="text-center py-12">
+      <Box sx={{ textAlign: 'center', py: 6 }}>
         <Activity className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-        <h3 className="text-lg font-medium text-gray-900 mb-2">No Analytics Data</h3>
-        <p className="text-gray-500">Start posting content to see your analytics here.</p>
-      </div>
+        <Typography variant="h5" component="h3" sx={{ fontWeight: 500, color: 'grey.900', mb: 1 }}>No Analytics Data</Typography>
+        <Typography variant="body1" sx={{ color: 'grey.500' }}>Start posting content to see your analytics here.</Typography>
+      </Box>
     );
   }
 
   return (
-    <div className="space-y-6">
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
       {/* Header with Controls */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-2xl font-bold">Advanced Analytics</h2>
-          <p className="text-gray-600">Comprehensive insights into your content performance</p>
-        </div>
-        <div className="flex gap-2">
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Box>
+          <Typography variant="h4" component="h2" sx={{ fontWeight: 'bold' }}>Advanced Analytics</Typography>
+          <Typography variant="body1" sx={{ color: 'grey.600' }}>Comprehensive insights into your content performance</Typography>
+        </Box>
+        <Box sx={{ display: 'flex', gap: 1 }}>
           <Select value={selectedTimeRange} onValueChange={handleTimeRangeChange}>
             <SelectTrigger className="w-32">
               <SelectValue />
@@ -196,63 +200,71 @@ export function AdvancedAnalyticsDashboard({
             <Zap className="h-4 w-4 mr-2" />
             Refresh
           </Button>
-        </div>
-      </div>
+        </Box>
+      </Box>
 
       {/* Key Metrics Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <Typography variant="h6" className="text-sm font-medium">Total Posts</Typography>
-            <BarChart3 className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{analyticsData.totalPosts.toLocaleString()}</div>
-            <p className="text-xs text-muted-foreground">
-              +12% from last period
-            </p>
-          </CardContent>
-        </Card>
+      <Grid container spacing={3}>
+        <Grid item xs={12} md={6} lg={3}>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <Typography variant="h6" className="text-sm font-medium">Total Posts</Typography>
+              <BarChart3 className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{analyticsData.totalPosts.toLocaleString()}</div>
+              <p className="text-xs text-muted-foreground">
+                +12% from last period
+              </p>
+            </CardContent>
+          </Card>
+        </Grid>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <Typography variant="h6" className="text-sm font-medium">Total Engagement</Typography>
-            <Heart className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{analyticsData.totalEngagement.toLocaleString()}</div>
-            <p className="text-xs text-muted-foreground">
-              +8% from last period
-            </p>
-          </CardContent>
-        </Card>
+        <Grid item xs={12} md={6} lg={3}>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <Typography variant="h6" className="text-sm font-medium">Total Engagement</Typography>
+              <Heart className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{analyticsData.totalEngagement.toLocaleString()}</div>
+              <p className="text-xs text-muted-foreground">
+                +8% from last period
+              </p>
+            </CardContent>
+          </Card>
+        </Grid>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <Typography variant="h6" className="text-sm font-medium">Avg Engagement Rate</Typography>
-            <TrendingUp className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{analyticsData.avgEngagementRate.toFixed(2)}%</div>
-            <p className="text-xs text-muted-foreground">
-              +2.1% from last period
-            </p>
-          </CardContent>
-        </Card>
+        <Grid item xs={12} md={6} lg={3}>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <Typography variant="h6" className="text-sm font-medium">Avg Engagement Rate</Typography>
+              <TrendingUp className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{analyticsData.avgEngagementRate.toFixed(2)}%</div>
+              <p className="text-xs text-muted-foreground">
+                +2.1% from last period
+              </p>
+            </CardContent>
+          </Card>
+        </Grid>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <Typography variant="h6" className="text-sm font-medium">Total Reach</Typography>
-            <Eye className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{analyticsData.totalReach.toLocaleString()}</div>
-            <p className="text-xs text-muted-foreground">
-              +15% from last period
-            </p>
-          </CardContent>
-        </Card>
-      </div>
+        <Grid item xs={12} md={6} lg={3}>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <Typography variant="h6" className="text-sm font-medium">Total Reach</Typography>
+              <Eye className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{analyticsData.totalReach.toLocaleString()}</div>
+              <p className="text-xs text-muted-foreground">
+                +15% from last period
+              </p>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
 
       {/* Detailed Analytics Tabs */}
       <Tabs defaultValue="overview" className="space-y-4">
@@ -264,31 +276,35 @@ export function AdvancedAnalyticsDashboard({
         </TabsList>
 
         <TabsContent value="overview" className="space-y-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <Card>
-              <CardHeader>
-                <Typography variant="h6">Engagement Trends</Typography>
-                <CardDescription>Your engagement over time</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="h-[300px] flex items-center justify-center text-gray-500">
-                  Chart Component - Engagement Trends
-                </div>
-              </CardContent>
-            </Card>
+          <Grid container spacing={3}>
+            <Grid item xs={12} lg={6}>
+              <Card>
+                <CardHeader>
+                  <Typography variant="h6">Engagement Trends</Typography>
+                  <CardDescription>Your engagement over time</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="h-[300px] flex items-center justify-center text-gray-500">
+                    Chart Component - Engagement Trends
+                  </div>
+                </CardContent>
+              </Card>
+            </Grid>
 
-            <Card>
-              <CardHeader>
-                <Typography variant="h6">Audience Growth</Typography>
-                <CardDescription>Follower growth and engagement</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="h-[300px] flex items-center justify-center text-gray-500">
-                  Chart Component - Audience Growth
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+            <Grid item xs={12} lg={6}>
+              <Card>
+                <CardHeader>
+                  <Typography variant="h6">Audience Growth</Typography>
+                  <CardDescription>Follower growth and engagement</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="h-[300px] flex items-center justify-center text-gray-500">
+                    Chart Component - Audience Growth
+                  </div>
+                </CardContent>
+              </Card>
+            </Grid>
+          </Grid>
         </TabsContent>
 
         <TabsContent value="platforms" className="space-y-4">
@@ -391,6 +407,6 @@ export function AdvancedAnalyticsDashboard({
           </Card>
         </TabsContent>
       </Tabs>
-    </div>
+    </Box>
   );
 } 
