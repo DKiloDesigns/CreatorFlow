@@ -291,77 +291,81 @@ export default function MobileOptimizer() {
         </Box>
 
         <TabPanel value={activeTab} index="overview">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Card>
-              <CardHeader>
-                <Typography variant="subtitle2" component="div" className="flex items-center gap-2">
-                  <Smartphone className="h-5 w-5" />
-                  Touch Optimization
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Touch-friendly interface settings
-                </Typography>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="flex justify-between items-center">
-                    <Typography variant="body2">Minimum Touch Size</Typography>
-                    <Chip label={touch?.minSize} variant="outlined" />
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <Typography variant="body2">Touch Spacing</Typography>
-                    <Chip label={touch?.spacing} variant="outlined" />
-                  </div>
-                  <div className="space-y-2">
-                    <Typography variant="body2" fontWeight="medium">Recommendations:</Typography>
-                    <ul className="text-xs text-muted-foreground space-y-1">
-                      {touch?.recommendations.map((rec, index) => (
-                        <li key={index}>• {rec}</li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={6}>
+              <Card>
+                <CardHeader>
+                  <Typography variant="subtitle2" component="div" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <Smartphone className="h-5 w-5" />
+                    Touch Optimization
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Touch-friendly interface settings
+                  </Typography>
+                </CardHeader>
+                <CardContent>
+                  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <Typography variant="body2">Minimum Touch Size</Typography>
+                      <Chip label={touch?.minSize} variant="outlined" />
+                    </Box>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <Typography variant="body2">Touch Spacing</Typography>
+                      <Chip label={touch?.spacing} variant="outlined" />
+                    </Box>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                      <Typography variant="body2" sx={{ fontWeight: 500 }}>Recommendations:</Typography>
+                      <Box component="ul" sx={{ fontSize: '0.75rem', color: 'text.secondary', display: 'flex', flexDirection: 'column', gap: 0.5 }}>
+                        {touch?.recommendations.map((rec, index) => (
+                          <Box component="li" key={index}>• {rec}</Box>
+                        ))}
+                      </Box>
+                    </Box>
+                  </Box>
+                </CardContent>
+              </Card>
+            </Grid>
 
-            <Card>
-              <CardHeader>
-                <Typography variant="subtitle2" component="div" className="flex items-center gap-2">
-                  <Chip label="Performance" color="info" />
-                  Performance Optimizations
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Active performance optimizations
-                </Typography>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <Typography variant="body2">Image Optimization</Typography>
-                    <Chip label={performance?.imageOptimization ? 'Enabled' : 'Disabled'} variant="outlined" />
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <Typography variant="body2">Lazy Loading</Typography>
-                    <Chip label={performance?.lazyLoading ? 'Enabled' : 'Disabled'} variant="outlined" />
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <Typography variant="body2">Code Splitting</Typography>
-                    <Chip label={performance?.codeSplitting ? 'Enabled' : 'Disabled'} variant="outlined" />
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <Typography variant="body2">Caching</Typography>
-                    <Chip label={performance?.caching ? 'Enabled' : 'Disabled'} variant="outlined" />
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+            <Grid item xs={12} md={6}>
+              <Card>
+                <CardHeader>
+                  <Typography variant="subtitle2" component="div" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <Chip label="Performance" color="info" />
+                    Performance Optimizations
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Active performance optimizations
+                  </Typography>
+                </CardHeader>
+                <CardContent>
+                  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                      <Typography variant="body2">Image Optimization</Typography>
+                      <Chip label={performance?.imageOptimization ? 'Enabled' : 'Disabled'} variant="outlined" />
+                    </Box>
+                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                      <Typography variant="body2">Lazy Loading</Typography>
+                      <Chip label={performance?.lazyLoading ? 'Enabled' : 'Disabled'} variant="outlined" />
+                    </Box>
+                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                      <Typography variant="body2">Code Splitting</Typography>
+                      <Chip label={performance?.codeSplitting ? 'Enabled' : 'Disabled'} variant="outlined" />
+                    </Box>
+                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                      <Typography variant="body2">Caching</Typography>
+                      <Chip label={performance?.caching ? 'Enabled' : 'Disabled'} variant="outlined" />
+                    </Box>
+                  </Box>
+                </CardContent>
+              </Card>
+            </Grid>
+          </Grid>
         </TabPanel>
 
         <TabPanel value={activeTab} index="performance">
           <Card>
             <CardHeader>
-              <Typography variant="subtitle2" component="div" className="flex items-center gap-2">
+              <Typography variant="subtitle2" component="div" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 <Activity className="h-5 w-5" />
                 Performance Metrics
               </Typography>
@@ -370,47 +374,47 @@ export default function MobileOptimizer() {
               </Typography>
             </CardHeader>
             <CardContent>
-              <div className="space-y-6">
-                <div>
-                  <div className="flex justify-between items-center mb-2">
-                    <Typography variant="body2" fontWeight="medium">Load Time</Typography>
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+                <Box>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+                    <Typography variant="body2" sx={{ fontWeight: 500 }}>Load Time</Typography>
                     <Typography variant="body2" color="text.secondary">
                       {metrics?.performance.loadTime ? `${Math.round(metrics.performance.loadTime)}ms` : 'N/A'}
                     </Typography>
-                  </div>
+                  </Box>
                   <LinearProgress variant="determinate" value={Math.min((metrics?.performance.loadTime || 0) / 3000 * 100, 100)} />
-                </div>
+                </Box>
 
-                <div>
-                  <div className="flex justify-between items-center mb-2">
-                    <Typography variant="body2" fontWeight="medium">Render Time</Typography>
+                <Box>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+                    <Typography variant="body2" sx={{ fontWeight: 500 }}>Render Time</Typography>
                     <Typography variant="body2" color="text.secondary">
                       {metrics?.performance.renderTime ? `${Math.round(metrics.performance.renderTime)}ms` : 'N/A'}
                     </Typography>
-                  </div>
+                  </Box>
                   <LinearProgress variant="determinate" value={Math.min((metrics?.performance.renderTime || 0) / 1000 * 100, 100)} />
-                </div>
+                </Box>
 
-                <div>
-                  <div className="flex justify-between items-center mb-2">
-                    <Typography variant="body2" fontWeight="medium">Memory Usage</Typography>
+                <Box>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+                    <Typography variant="body2" sx={{ fontWeight: 500 }}>Memory Usage</Typography>
                     <Typography variant="body2" color="text.secondary">
                       {metrics?.performance.memoryUsage ? `${Math.round(metrics.performance.memoryUsage / 1024 / 1024)}MB` : 'N/A'}
                     </Typography>
-                  </div>
+                  </Box>
                   <LinearProgress variant="determinate" value={Math.min((metrics?.performance.memoryUsage || 0) / (100 * 1024 * 1024) * 100, 100)} />
-                </div>
+                </Box>
 
-                <div>
-                  <div className="flex justify-between items-center mb-2">
-                    <Typography variant="body2" fontWeight="medium">Battery Level</Typography>
+                <Box>
+                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+                    <Typography variant="body2" sx={{ fontWeight: 500 }}>Battery Level</Typography>
                     <Typography variant="body2" color="text.secondary">
                       {metrics?.performance.batteryLevel || 100}%
                     </Typography>
-                  </div>
+                  </Box>
                   <LinearProgress variant="determinate" value={metrics?.performance.batteryLevel || 100} />
-                </div>
-              </div>
+                </Box>
+              </Box>
             </CardContent>
           </Card>
         </TabPanel>
