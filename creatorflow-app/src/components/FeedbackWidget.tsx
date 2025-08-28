@@ -250,8 +250,7 @@ export function FeedbackWidget({
                     height: 16, 
                     width: 16, 
                     border: '2px solid transparent', 
-                    borderBottomColor: 'white', 
-                    mr: 1 
+                    borderBottomColor: 'white'
                   }} />
                   Submitting...
                 </>
