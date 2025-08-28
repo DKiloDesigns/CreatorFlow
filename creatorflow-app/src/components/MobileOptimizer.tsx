@@ -190,88 +190,96 @@ export default function MobileOptimizer() {
     return <Chip label={`${level}%`} color="error" />;
   };
 
-  if (loading) return <div className="p-8">Loading mobile optimization data...</div>;
+  if (loading) return <Box sx={{ p: 4 }}>Loading mobile optimization data...</Box>;
 
   return (
-    <div className="p-8 space-y-8">
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold flex items-center gap-2">
+    <Box sx={{ p: 4, display: 'flex', flexDirection: 'column', gap: 4 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Box>
+          <Typography variant="h3" component="h1" sx={{ fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: 1 }}>
             <Smartphone className="h-8 w-8" />
             Mobile Optimization
-          </h1>
-          <p className="text-muted-foreground">Real-time device detection and optimization</p>
-        </div>
-        <Button onClick={fetchMobileData} variant="outline">
+          </Typography>
+          <Typography variant="body1" sx={{ color: 'text.secondary' }}>Real-time device detection and optimization</Typography>
+        </Box>
+        <Button onClick={fetchMobileData} variant="outlined">
           <Activity className="h-4 w-4 mr-2" />
           Refresh
         </Button>
-      </div>
+      </Box>
 
       {/* Device Overview */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <Typography variant="subtitle2" component="div">Device Type</Typography>
-            {getDeviceIcon()}
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {capabilities?.isMobile ? 'Mobile' : capabilities?.isTablet ? 'Tablet' : 'Desktop'}
-            </div>
-            <p className="text-xs text-muted-foreground">
-              {capabilities?.capabilities.join(', ')}
-            </p>
-          </CardContent>
-        </Card>
+      <Grid container spacing={3}>
+        <Grid item xs={12} md={3}>
+          <Card>
+            <CardHeader sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', pb: 1 }}>
+              <Typography variant="subtitle2" component="div">Device Type</Typography>
+              {getDeviceIcon()}
+            </CardHeader>
+            <CardContent>
+              <Typography variant="h4" component="div" sx={{ fontWeight: 'bold' }}>
+                {capabilities?.isMobile ? 'Mobile' : capabilities?.isTablet ? 'Tablet' : 'Desktop'}
+              </Typography>
+              <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                {capabilities?.capabilities.join(', ')}
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <Typography variant="subtitle2" component="div">Viewport</Typography>
-            <Chip label="Viewport" color="info" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {viewport?.width} × {viewport?.height}
-            </div>
-            <p className="text-xs text-muted-foreground">
-              {viewport?.orientation} • {viewport?.breakpoint}
-            </p>
-          </CardContent>
-        </Card>
+        <Grid item xs={12} md={3}>
+          <Card>
+            <CardHeader sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', pb: 1 }}>
+              <Typography variant="subtitle2" component="div">Viewport</Typography>
+              <Chip label="Viewport" color="info" />
+            </CardHeader>
+            <CardContent>
+              <Typography variant="h4" component="div" sx={{ fontWeight: 'bold' }}>
+                {viewport?.width} × {viewport?.height}
+              </Typography>
+              <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                {viewport?.orientation} • {viewport?.breakpoint}
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <Typography variant="subtitle2" component="div">Network</Typography>
-            {getConnectionIcon()}
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {network?.connectionType.toUpperCase()}
-            </div>
-            <p className="text-xs text-muted-foreground">
-              {network?.bandwidth} Mbps • {network?.latency}ms
-            </p>
-          </CardContent>
-        </Card>
+        <Grid item xs={12} md={3}>
+          <Card>
+            <CardHeader sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', pb: 1 }}>
+              <Typography variant="subtitle2" component="div">Network</Typography>
+              {getConnectionIcon()}
+            </CardHeader>
+            <CardContent>
+              <Typography variant="h4" component="div" sx={{ fontWeight: 'bold' }}>
+                {network?.connectionType.toUpperCase()}
+              </Typography>
+              <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                {network?.bandwidth} Mbps • {network?.latency}ms
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <Typography variant="subtitle2" component="div">Battery</Typography>
-            {getBatteryIcon()}
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">
-              {metrics?.performance.batteryLevel || 100}%
-            </div>
-            <p className="text-xs text-muted-foreground">
-              {metrics?.performance.memoryUsage ? `${Math.round(metrics.performance.memoryUsage / 1024 / 1024)}MB` : 'Unknown'} memory
-            </p>
-          </CardContent>
-        </Card>
-      </div>
+        <Grid item xs={12} md={3}>
+          <Card>
+            <CardHeader sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', pb: 1 }}>
+              <Typography variant="subtitle2" component="div">Battery</Typography>
+              {getBatteryIcon()}
+            </CardHeader>
+            <CardContent>
+              <Typography variant="h4" component="div" sx={{ fontWeight: 'bold' }}>
+                {metrics?.performance.batteryLevel || 100}%
+              </Typography>
+              <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+                {metrics?.performance.memoryUsage ? `${Math.round(metrics.performance.memoryUsage / 1024 / 1024)}MB` : 'Unknown'} memory
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
 
-      <Tabs value={activeTab} onChange={(event, newValue) => setActiveTab(newValue)} className="space-y-6">
+      <Tabs value={activeTab} onChange={(event, newValue) => setActiveTab(newValue)} sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs value={activeTab} onChange={(event, newValue) => setActiveTab(newValue)} aria-label="mobile optimization tabs">
             <Tab label="Overview" />
@@ -578,7 +586,7 @@ export default function MobileOptimizer() {
           </div>
         </TabPanel>
       </Tabs>
-    </div>
+    </Box>
   );
 }
 
