@@ -2,6 +2,7 @@
 // Implements WCAG 2.1 AA guidelines for screen reader announcements
 
 import * as React from 'react';
+import { Box } from '@mui/material';
 
 export interface AnnouncementConfig {
   priority: 'low' | 'medium' | 'high';
@@ -267,11 +268,66 @@ export function ScreenReaderAnnouncementsProvider({ children }: { children: Reac
     <>
       {children}
       {/* Hidden live regions for screen reader announcements */}
-      <div id="sr-announcement-status" aria-live="polite" aria-atomic="true" className="sr-only" />
-      <div id="sr-announcement-alert" aria-live="assertive" aria-atomic="true" className="sr-only" />
-      <div id="sr-announcement-log" aria-live="polite" aria-atomic="true" className="sr-only" />
-      <div id="sr-announcement-timer" aria-live="polite" aria-atomic="true" className="sr-only" />
-      <div id="sr-announcement-marquee" aria-live="polite" aria-atomic="true" className="sr-only" />
+      <Box 
+        id="sr-announcement-status" 
+        aria-live="polite" 
+        aria-atomic="true" 
+        sx={{ 
+          position: 'absolute',
+          left: '-10000px',
+          width: '1px',
+          height: '1px',
+          overflow: 'hidden'
+        }} 
+      />
+      <Box 
+        id="sr-announcement-alert" 
+        aria-live="assertive" 
+        aria-atomic="true" 
+        sx={{ 
+          position: 'absolute',
+          left: '-10000px',
+          width: '1px',
+          height: '1px',
+          overflow: 'hidden'
+        }} 
+      />
+      <Box 
+        id="sr-announcement-log" 
+        aria-live="polite" 
+        aria-atomic="true" 
+        sx={{ 
+          position: 'absolute',
+          left: '-10000px',
+          width: '1px',
+          height: '1px',
+          overflow: 'hidden'
+        }} 
+      />
+      <Box 
+        id="sr-announcement-timer" 
+        aria-live="polite" 
+        aria-atomic="true" 
+        sx={{ 
+          position: 'absolute',
+          left: '-10000px',
+          width: '1px',
+          height: '1px',
+          overflow: 'hidden'
+        }} 
+      />
+      <Box 
+        id="sr-announcement-marquee" 
+        aria-live="polite" 
+        aria-atomic="true" 
+        sx={{ 
+          position: 'absolute',
+          left: '-10000px',
+          width: '1px',
+          height: '1px',
+          overflow: 'hidden'
+        }} 
+      />
     </>
   );
 }
