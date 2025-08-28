@@ -106,9 +106,9 @@ export function FeedbackWidget({
   if (isSubmitted) {
     return (
       <Card className={className}>
-        <CardContent className="p-6 text-center">
+        <CardContent sx={{ p: 3, textAlign: 'center' }}>
           <Chip icon={<Star className="h-12 w-12 text-green-500" />} label="Thank You!" />
-          <Typography variant="h6" component="h3" className="mt-2 mb-1">Thank You!</Typography>
+          <Typography variant="h6" component="h3" sx={{ mt: 1, mb: 0.5 }}>Thank You!</Typography>
           <Typography variant="body2" color="text.secondary">Your feedback has been submitted successfully.</Typography>
         </CardContent>
       </Card>
@@ -120,7 +120,7 @@ export function FeedbackWidget({
       <Button
         onClick={() => setIsOpen(true)}
         variant="outlined"
-        className={`${className} gap-2`}
+        sx={{ gap: 1 }}
       >
         <Star className="h-4 w-4" />
         Share Feedback
@@ -131,7 +131,7 @@ export function FeedbackWidget({
   return (
     <Card className={className}>
       <CardHeader>
-        <Typography variant="h5" component="h2" className="flex items-center gap-2">
+        <Typography variant="h5" component="h2" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <Star className="h-5 w-5" />
           {showTitle ? 'Share Your Feedback' : 'Feedback'}
         </Typography>
