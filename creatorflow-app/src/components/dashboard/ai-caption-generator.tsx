@@ -103,12 +103,14 @@ export function AICaptionGenerator({ onCaptionSelect, className }: AICaptionGene
   return (
     <Card className={className}>
       <CardHeader>
-        <Typography variant="h5" component="div" className="flex items-center gap-2">
-          <Activity className="h-5 w-5 text-purple-600" />
+        <Typography variant="h5" component="div" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Box sx={{ color: 'purple.600' }}>
+            <Activity className="h-5 w-5" />
+          </Box>
           AI Caption Generator
         </Typography>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
         {/* Input Fields */}
         <Box sx={{ mt: 2 }}>
           <Grid container spacing={2}>
