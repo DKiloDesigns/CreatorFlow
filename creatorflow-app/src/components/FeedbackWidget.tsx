@@ -159,7 +159,7 @@ export function FeedbackWidget({
                     color: star <= rating ? 'yellow.500' : 'grey.300'
                   }}
                 >
-                  <Star sx={{ height: 24, width: 24, fill: 'currentColor' }} />
+                  <Star className="h-6 w-6" />
                 </Button>
               ))}
             </Box>
