@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { Box } from '@mui/material';
 import { Doughnut } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -82,8 +83,8 @@ export function PlatformBreakdown({ data }: PlatformBreakdownProps) {
   };
 
   return (
-    <div className="h-64">
+    <Box sx={{ height: 256 }}>
       <Doughnut data={chartData} options={options} />
-    </div>
+    </Box>
   );
 } 

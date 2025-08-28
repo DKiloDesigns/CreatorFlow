@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import { Line } from 'react-chartjs-2';
+import { Box } from '@mui/material';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -11,8 +11,9 @@ import {
   Title,
   Tooltip,
   Legend,
-  Filler,
+  Filler
 } from 'chart.js';
+import { Line } from 'react-chartjs-2';
 
 ChartJS.register(
   CategoryScale,
@@ -111,8 +112,8 @@ export function EngagementChart({ data, title = 'Engagement Trend', color = '#3b
   };
 
   return (
-    <div className="h-64">
+    <Box sx={{ height: 256 }}>
       <Line data={chartData} options={options} />
-    </div>
+    </Box>
   );
 } 

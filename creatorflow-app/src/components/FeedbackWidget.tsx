@@ -140,21 +140,26 @@ export function FeedbackWidget({
         </Typography>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           {/* Rating */}
-          <div className="space-y-2">
-            <Typography variant="body2" className="text-sm font-medium">How would you rate your experience?</Typography>
-            <Box className="flex gap-1">
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+            <Typography variant="body2" sx={{ fontSize: '0.875rem', fontWeight: 500 }}>
+              How would you rate your experience?
+            </Typography>
+            <Box sx={{ display: 'flex', gap: 0.5 }}>
               {[1, 2, 3, 4, 5].map((star) => (
                 <Button
                   key={star}
                   type="button"
                   onClick={() => handleRatingClick(star)}
-                  className={`p-1 rounded transition-colors ${
-                    star <= rating ? 'text-yellow-500' : 'text-gray-300'
-                  }`}
+                  sx={{
+                    p: 0.5,
+                    borderRadius: 1,
+                    transition: 'colors 0.2s ease-in-out',
+                    color: star <= rating ? 'yellow.500' : 'grey.300'
+                  }}
                 >
-                  <Star className="h-6 w-6 fill-current" />
+                  <Star sx={{ height: 24, width: 24, fill: 'currentColor' }} />
                 </Button>
               ))}
             </Box>
@@ -166,11 +171,13 @@ export function FeedbackWidget({
               {rating === 4 && 'Very Good'}
               {rating === 5 && 'Excellent'}
             </Typography>
-          </div>
+          </Box>
 
           {/* Category */}
-          <div className="space-y-2">
-            <Typography variant="body2" className="text-sm font-medium">Category</Typography>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+            <Typography variant="body2" sx={{ fontSize: '0.875rem', fontWeight: 500 }}>
+              Category
+            </Typography>
             <Box sx={{ width: '100%' }}>
               <TextField
                 select
@@ -186,18 +193,20 @@ export function FeedbackWidget({
                 ))}
               </TextField>
             </Box>
-          </div>
+          </Box>
 
           {/* Feature (optional) */}
-          <div className="space-y-2">
-            <Typography variant="body2" className="text-sm font-medium">Feature (optional)</Typography>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+            <Typography variant="body2" sx={{ fontSize: '0.875rem', fontWeight: 500 }}>
+              Feature (optional)
+            </Typography>
             <Box sx={{ width: '100%' }}>
               <TextField
                 select
                 fullWidth
                 label="Feature"
                 value={feature}
-                onChange={(e) => setFeature(e.target.value as string)}
+                onChange={(e) => setFeature(e.target.value)}
               >
                 <MenuItem value="">No specific feature</MenuItem>
                 {FEATURES.map((feat) => (
@@ -207,11 +216,13 @@ export function FeedbackWidget({
                 ))}
               </TextField>
             </Box>
-          </div>
+          </Box>
 
           {/* Feedback text */}
-          <div className="space-y-2">
-            <Typography variant="body2" className="text-sm font-medium">Your feedback</Typography>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+            <Typography variant="body2" sx={{ fontSize: '0.875rem', fontWeight: 500 }}>
+              Your feedback
+            </Typography>
             <TextField
               value={feedback}
               onChange={(e) => setFeedback(e.target.value)}
@@ -222,23 +233,31 @@ export function FeedbackWidget({
               variant="outlined"
               required
             />
-          </div>
+          </Box>
 
           {/* Action buttons */}
-          <div className="flex gap-2 pt-2">
+          <Box sx={{ display: 'flex', gap: 1, pt: 1 }}>
             <Button
               type="submit"
               disabled={isSubmitting || !rating || !feedback.trim()}
-              className="flex-1"
+              sx={{ flex: 1 }}
             >
               {isSubmitting ? (
                 <>
-                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
+                  <Box sx={{ 
+                    animation: 'spin 1s linear infinite', 
+                    borderRadius: '50%', 
+                    height: 16, 
+                    width: 16, 
+                    border: '2px solid transparent', 
+                    borderBottomColor: 'white', 
+                    mr: 1 
+                  }} />
                   Submitting...
                 </>
               ) : (
                 <>
-                  <Send className="h-4 w-4 mr-2" />
+                  <Send sx={{ height: 16, width: 16, mr: 1 }} />
                   Submit Feedback
                 </>
               )}
@@ -251,8 +270,8 @@ export function FeedbackWidget({
             >
               Cancel
             </Button>
-          </div>
-        </form>
+          </Box>
+        </Box>
       </CardContent>
     </Card>
   );
