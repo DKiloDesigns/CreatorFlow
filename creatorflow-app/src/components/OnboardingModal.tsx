@@ -136,10 +136,10 @@ export default function OnboardingModal({ isOpen, onClose, onComplete }: Onboard
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-              <DialogContent className="max-w-2xl">
-          <DialogHeader>
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <DialogTitle className="text-xl font-bold">
+      <DialogContent className="max-w-2xl">
+        <DialogHeader>
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <DialogTitle className="text-xl font-bold">
               Welcome to CreatorFlow
             </DialogTitle>
             <Button variant="text" size="small" onClick={onClose}>
@@ -270,7 +270,9 @@ export default function OnboardingModal({ isOpen, onClose, onComplete }: Onboard
               {currentStepData.required ? (
                 <Button onClick={() => completeStep(currentStepData.id)} disabled={loading}>
                   {loading ? 'Completing...' : 'Complete Step'}
-                  <ArrowRight className="h-4 w-4 ml-2" />
+                  <Box sx={{ ml: 1 }}>
+                    <ArrowRight className="h-4 w-4" />
+                  </Box>
                 </Button>
               ) : (
                 <>
@@ -279,7 +281,9 @@ export default function OnboardingModal({ isOpen, onClose, onComplete }: Onboard
                   </Button>
                   <Button onClick={() => completeStep(currentStepData.id)} disabled={loading}>
                     {loading ? 'Completing...' : 'Complete'}
-                    <ArrowRight className="h-4 w-4 ml-2" />
+                    <Box sx={{ ml: 1 }}>
+                      <ArrowRight className="h-4 w-4" />
+                    </Box>
                   </Button>
                 </>
               )}
