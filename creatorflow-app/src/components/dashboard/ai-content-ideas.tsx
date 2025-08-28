@@ -305,7 +305,7 @@ export function AIContentIdeas({ onIdeaSelect, className }: AIContentIdeasProps)
         {/* Quick Tips */}
         <Box sx={{ p: 2, backgroundColor: 'yellow.50', borderRadius: 1, border: '1px solid', borderColor: 'divider' }}>
           <Typography variant="subtitle2" component="h6" sx={{ fontWeight: 'medium', display: 'flex', alignItems: 'center', gap: 0.5, mb: 0.5 }}>
-            <Lightbulb className="h-4 w-4 text-yellow-600" />
+            <Box sx={{ color: 'warning.600' }}><Lightbulb className="h-4 w-4" /></Box>
             Content Creation Tips
           </Typography>
           <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
