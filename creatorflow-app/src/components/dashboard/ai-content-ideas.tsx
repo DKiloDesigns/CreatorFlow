@@ -133,7 +133,9 @@ export function AIContentIdeas({ onIdeaSelect, className }: AIContentIdeasProps)
     <Card className={className}>
       <CardHeader>
         <Typography variant="h5" component="div" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <Lightbulb className="h-5 w-5 text-yellow-600" />
+          <Box sx={{ color: 'warning.600' }}>
+            <Lightbulb className="h-5 w-5" />
+          </Box>
           AI Content Ideas
         </Typography>
       </CardHeader>
