@@ -203,7 +203,9 @@ export default function MobileOptimizer() {
           <Typography variant="body1" sx={{ color: 'text.secondary' }}>Real-time device detection and optimization</Typography>
         </Box>
         <Button onClick={fetchMobileData} variant="outlined">
-          <Activity className="h-4 w-4 mr-2" />
+          <Box sx={{ mr: 1 }}>
+            <Activity className="h-4 w-4" />
+          </Box>
           Refresh
         </Button>
       </Box>
