@@ -58,28 +58,28 @@ export function AnalyticsOverview({ data }: AnalyticsOverviewProps) {
       label: 'Avg Engagement Rate',
       value: `${data.overview.avgEngagementRate}%`,
       trend: engagementGrowth,
-      icon: <Activity sx={{ height: 16, width: 16 }} />,
+      icon: <Activity className="h-4 w-4" />,
       color: 'text-blue-600',
     },
     {
       label: 'Posts per Platform',
       value: avgPostsPerPlatform.toFixed(1),
       trend: data.overview.growthRate,
-      icon: <Activity sx={{ height: 16, width: 16 }} />,
+      icon: <Activity className="h-4 w-4" />,
       color: 'text-green-600',
     },
     {
       label: 'Active Platforms',
       value: totalPlatforms.toString(),
       trend: 0,
-      icon: <Activity sx={{ height: 16, width: 16 }} />,
+      icon: <Activity className="h-4 w-4" />,
       color: 'text-purple-600',
     },
     {
       label: 'Content Performance',
       value: `${Math.round((data.overview.totalEngagement / data.overview.totalPosts))}`,
       trend: engagementGrowth,
-      icon: <Activity sx={{ height: 16, width: 16 }} />,
+      icon: <Activity className="h-4 w-4" />,
       color: 'text-orange-600',
     },
   ];
@@ -235,21 +235,23 @@ export function AnalyticsOverview({ data }: AnalyticsOverviewProps) {
       </Box>
 
       {/* Insights Summary */}
-      <Card className="bg-blue-50 border-blue-200">
-        <CardContent className="pt-6">
-          <div className="flex items-start space-x-3">
-            <div className="p-2 bg-blue-100 rounded-lg">
+      <Card sx={{ bgcolor: 'blue.50', border: '1px solid', borderColor: 'blue.200' }}>
+        <CardContent sx={{ pt: 3 }}>
+          <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1.5 }}>
+            <Box sx={{ p: 1, bgcolor: 'blue.100', borderRadius: 2 }}>
               <BarChart3 className="h-5 w-5 text-blue-600" />
-            </div>
-            <div>
-              <h4 className="font-medium text-blue-900 mb-1">Performance Summary</h4>
-              <p className="text-sm text-blue-700">
+            </Box>
+            <Box>
+              <Typography variant="h6" sx={{ fontWeight: 500, color: 'blue.900', mb: 0.5 }}>
+                Performance Summary
+              </Typography>
+              <Typography variant="body2" sx={{ color: 'blue.700' }}>
                 Your content is performing {data.overview.avgEngagementRate > 5 ? 'well' : 'below average'} 
                 with an {data.overview.avgEngagementRate}% engagement rate. 
                 {data.overview.growthRate > 10 ? ' Great growth momentum!' : ' Consider increasing your posting frequency.'}
-              </p>
-            </div>
-          </div>
+              </Typography>
+            </Box>
+          </Box>
         </CardContent>
       </Card>
     </Box>
