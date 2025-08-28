@@ -221,86 +221,96 @@ export default function AdvancedIntegrationsPage() {
     }
   };
 
-  if (loading) return <div className="p-8">Loading advanced integrations data...</div>;
+  if (loading) return <Box sx={{ p: 4 }}>Loading advanced integrations data...</Box>;
 
   return (
-    <div className="p-8 space-y-8">
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold flex items-center gap-2">
+    <Box sx={{ p: 4, display: 'flex', flexDirection: 'column', gap: 4 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Box>
+          <Typography variant="h3" component="h1" sx={{ fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: 1 }}>
             <Cloud className="h-8 w-8" />
             Advanced Integrations
-          </h1>
-          <p className="text-muted-foreground">Comprehensive third-party service integration management</p>
-        </div>
-        <div className="flex gap-2">
+          </Typography>
+          <Typography variant="body1" sx={{ color: 'text.secondary' }}>
+            Comprehensive third-party service integration management
+          </Typography>
+        </Box>
+        <Box sx={{ display: 'flex', gap: 1 }}>
           <Button onClick={() => setShowCreateIntegration(true)}>
             <Plus className="h-4 w-4 mr-2" />
             New Integration
           </Button>
-        </div>
-      </div>
+        </Box>
+      </Box>
 
       {/* Integration Overview */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <Typography variant="h6" className="text-sm font-medium">Total Integrations</Typography>
-            <Plug className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{metrics?.totalIntegrations || 0}</div>
-            <p className="text-xs text-muted-foreground">
-              All integrations
-            </p>
-          </CardContent>
-        </Card>
+      <Grid container spacing={2}>
+        <Grid item xs={12} md={3}>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <Typography variant="h6" className="text-sm font-medium">Total Integrations</Typography>
+              <Plug className="h-4 w-4 text-muted-foreground" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold">{metrics?.totalIntegrations || 0}</div>
+              <p className="text-xs text-muted-foreground">
+                All integrations
+              </p>
+            </CardContent>
+          </Card>
+        </Grid>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <Typography variant="h6" className="text-sm font-medium">Active Integrations</Typography>
-            <CheckCircle className="h-4 w-4 text-green-600" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-green-600">
-              {metrics?.activeIntegrations || 0}
-            </div>
-            <p className="text-xs text-muted-foreground">
-              Healthy integrations
-            </p>
-          </CardContent>
-        </Card>
+        <Grid item xs={12} md={3}>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <Typography variant="h6" className="text-sm font-medium">Active Integrations</Typography>
+              <CheckCircle className="h-4 w-4 text-green-600" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-green-600">
+                {metrics?.activeIntegrations || 0}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Healthy integrations
+              </p>
+            </CardContent>
+          </Card>
+        </Grid>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <Typography variant="h6" className="text-sm font-medium">Success Rate</Typography>
-            <TrendingUp className="h-4 w-4 text-blue-600" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-blue-600">
-              {metrics?.successRate || 0}%
-            </div>
-            <p className="text-xs text-muted-foreground">
-              Event success rate
-            </p>
-          </CardContent>
-        </Card>
+        <Grid item xs={12} md={3}>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <Typography variant="h6" className="text-sm font-medium">Success Rate</Typography>
+              <TrendingUp className="h-4 w-4 text-blue-600" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-blue-600">
+                {metrics?.successRate || 0}%
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Event success rate
+              </p>
+            </CardContent>
+          </Card>
+        </Grid>
 
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <Typography variant="h6" className="text-sm font-medium">Avg Response</Typography>
-            <Activity className="h-4 w-4 text-purple-600" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-purple-600">
-              {metrics?.averageResponseTime || 0}ms
-            </div>
-            <p className="text-xs text-muted-foreground">
-              Response time
-            </p>
-          </CardContent>
-        </Card>
-      </div>
+        <Grid item xs={12} md={3}>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <Typography variant="h6" className="text-sm font-medium">Avg Response</Typography>
+              <Activity className="h-4 w-4 text-purple-600" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-purple-600">
+                {metrics?.averageResponseTime || 0}ms
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Response time
+              </p>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
         <TabsList>
@@ -312,77 +322,81 @@ export default function AdvancedIntegrationsPage() {
         </TabsList>
 
         <TabsContent value="overview" className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Card>
-              <CardHeader>
-                <Typography variant="h6" className="flex items-center gap-2">
-                  <Activity className="h-5 w-5" />
-                  Recent Events
-                </Typography>
-                <CardDescription>
-                  Latest integration events and activities
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {integrations.slice(0, 3).flatMap(integration => 
-                    integration.events.slice(0, 2).map(event => (
-                      <div key={event.id} className="flex items-center justify-between p-3 border rounded-lg">
-                        <div>
-                          <h3 className="font-semibold">{integration.name}</h3>
-                          <p className="text-sm text-muted-foreground">{event.type}</p>
-                          <div className="flex items-center gap-2 mt-1">
-                            <Badge className={event.status === 'success' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}>
-                              {event.status}
-                            </Badge>
-                            <span className="text-xs text-muted-foreground">
-                              {new Date(event.timestamp).toLocaleDateString()}
-                            </span>
+          <Grid container spacing={2}>
+            <Grid item xs={12} md={6}>
+              <Card>
+                <CardHeader>
+                  <Typography variant="h6" className="flex items-center gap-2">
+                    <Activity className="h-5 w-5" />
+                    Recent Events
+                  </Typography>
+                  <CardDescription>
+                    Latest integration events and activities
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {integrations.slice(0, 3).flatMap(integration => 
+                      integration.events.slice(0, 2).map(event => (
+                        <div key={event.id} className="flex items-center justify-between p-3 border rounded-lg">
+                          <div>
+                            <h3 className="font-semibold">{integration.name}</h3>
+                            <p className="text-sm text-muted-foreground">{event.type}</p>
+                            <div className="flex items-center gap-2 mt-1">
+                              <Badge className={event.status === 'success' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}>
+                                {event.status}
+                              </Badge>
+                              <span className="text-xs text-muted-foreground">
+                                {new Date(event.timestamp).toLocaleDateString()}
+                              </span>
+                            </div>
+                          </div>
+                          <Button size="sm" variant="outlined">
+                            <Eye className="h-3 w-3" />
+                          </Button>
+                        </div>
+                      ))
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            </Grid>
+
+            <Grid item xs={12} md={6}>
+              <Card>
+                <CardHeader>
+                  <Typography variant="h6" className="flex items-center gap-2">
+                    <BarChart3 className="h-5 w-5" />
+                    Integration Types
+                  </Typography>
+                  <CardDescription>
+                    Distribution of integration types
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {['api', 'webhook', 'oauth', 'sdk'].map(type => {
+                      const count = integrations.filter(i => i.type === type).length;
+                      const percentage = integrations.length > 0 ? (count / integrations.length) * 100 : 0;
+                      
+                      return (
+                        <div key={type} className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            {getTypeIcon(type)}
+                            <span className="text-sm font-medium capitalize">{type}</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-sm font-semibold">{count}</span>
+                            <span className="text-xs text-muted-foreground">({percentage.toFixed(1)}%)</span>
                           </div>
                         </div>
-                        <Button size="sm" variant="outlined">
-                          <Eye className="h-3 w-3" />
-                        </Button>
-                      </div>
-                    ))
-                  )}
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <Typography variant="h6" className="flex items-center gap-2">
-                  <BarChart3 className="h-5 w-5" />
-                  Integration Types
-                </Typography>
-                <CardDescription>
-                  Distribution of integration types
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {['api', 'webhook', 'oauth', 'sdk'].map(type => {
-                    const count = integrations.filter(i => i.type === type).length;
-                    const percentage = integrations.length > 0 ? (count / integrations.length) * 100 : 0;
-                    
-                    return (
-                      <div key={type} className="flex items-center justify-between">
-                        <div className="flex items-center gap-2">
-                          {getTypeIcon(type)}
-                          <span className="text-sm font-medium capitalize">{type}</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <span className="text-sm font-semibold">{count}</span>
-                          <span className="text-xs text-muted-foreground">({percentage.toFixed(1)}%)</span>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              </CardContent>
-            </Card>
-          </div>
+                      );
+                    })}
+                  </div>
+                </CardContent>
+              </Card>
+            </Grid>
+          </Grid>
         </TabsContent>
 
         <TabsContent value="integrations" className="space-y-6">
@@ -681,11 +695,6 @@ export default function AdvancedIntegrationsPage() {
           </div>
         </div>
       )}
-    </div>
+    </Box>
   );
-{/* Bottom Spacer to Clear Bottom Navigation */}
-      <Box sx={{
-        height: { xs: '120px', sm: '40px' },
-        width: '100%'
-      }} />
 } 
