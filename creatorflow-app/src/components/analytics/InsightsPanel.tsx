@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { Card, CardContent, CardHeader } from '@/components/ui/mui-card';
-import { Button, Typography } from '@mui/material';
+import { Button, Typography, Box, Grid, Chip } from '@mui/material';
 import { Badge } from '@/components/ui/badge';
 import { Activity, CheckCircle, Info, Clock } from 'lucide-react';
 
@@ -51,20 +51,20 @@ export function InsightsPanel({ insights, onRefresh }: InsightsPanelProps) {
   const getImpactColor = (impact: string) => {
     switch (impact) {
       case 'high':
-        return 'bg-red-100 text-red-800 border-red-200';
+        return 'error';
       case 'medium':
-        return 'bg-yellow-100 text-yellow-800 border-red-200';
+        return 'warning';
       case 'low':
-        return 'bg-green-100 text-green-800 border-green-200';
+        return 'success';
       default:
-        return 'bg-gray-100 text-gray-800 border-gray-200';
+        return 'default';
     }
   };
 
   const getConfidenceColor = (confidence: number) => {
-    if (confidence >= 80) return 'text-green-600';
-    if (confidence >= 60) return 'text-yellow-600';
-    return 'text-red-600';
+    if (confidence >= 80) return 'success.main';
+    if (confidence >= 60) return 'warning.main';
+    return 'error.main';
   };
 
   // Safe access to insights array with fallback
@@ -74,109 +74,124 @@ export function InsightsPanel({ insights, onRefresh }: InsightsPanelProps) {
 
   if (!insights || insightsArray.length === 0) {
     return (
-      <div className="text-center py-8">
+      <Box sx={{ textAlign: 'center', py: 4 }}>
         <Activity className="mx-auto h-12 w-12 text-gray-400 mb-4" />
-        <h3 className="text-lg font-medium text-gray-900 mb-2">No Insights Available</h3>
-        <p className="text-gray-500 mb-4">Generate AI-powered insights to get personalized recommendations.</p>
+        <Typography variant="h5" component="h3" sx={{ fontWeight: 500, color: 'grey.900', mb: 1 }}>No Insights Available</Typography>
+        <Typography variant="body1" sx={{ color: 'grey.500', mb: 2 }}>Generate AI-powered insights to get personalized recommendations.</Typography>
         <Button onClick={onRefresh}>
           <Activity className="h-4 w-4 mr-2" />
           Generate Insights
         </Button>
-      </div>
+      </Box>
     );
   }
 
   return (
-    <div className="space-y-6">
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
       {/* Header */}
-      <div className="flex items-center justify-between">
-        <div>
-          <h2 className="text-2xl font-bold text-gray-900">AI Insights</h2>
-          <p className="text-gray-600 mt-1">
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Box>
+          <Typography variant="h4" component="h2" sx={{ fontWeight: 'bold', color: 'grey.900' }}>AI Insights</Typography>
+          <Typography variant="body2" sx={{ color: 'grey.600', mt: 0.5 }}>
             Last generated: {new Date(lastGenerated).toLocaleString()}
-          </p>
-        </div>
+          </Typography>
+        </Box>
         <Button onClick={onRefresh} variant="outlined">
           <Activity className="h-4 w-4 mr-2" />
           Refresh
         </Button>
-      </div>
+      </Box>
 
       {/* Insights Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <Grid container spacing={3}>
         {insightsArray.map((insight) => (
-          <Card key={insight.id} className="hover:shadow-lg transition-all duration-200 transform hover:-translate-y-1">
-            <CardHeader className="pb-3">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-2">
-                  <div className="p-2 bg-blue-100 rounded-lg">
-                    {getInsightIcon(insight.type)}
-                  </div>
-                  <div>
-                    <Typography variant="h6" className="text-lg">{insight.title}</Typography>
-                    <div className="flex items-center space-x-2 mt-1">
-                      <Badge className={getImpactColor(insight.impact)}>
-                        {insight.impact} impact
-                      </Badge>
-                      <span className={`text-sm ${getConfidenceColor(insight.confidence)}`}>
-                        {insight.confidence}% confidence
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent>
-              <p className="text-gray-600 mb-4">{insight.description}</p>
-              
-              {insight.recommendations && insight.recommendations.length > 0 && (
-                <div className="space-y-2">
-                  <h4 className="font-medium text-gray-900">Recommendations:</h4>
-                  <ul className="space-y-1">
-                    {insight.recommendations.map((recommendation, index) => (
-                      <li key={index} className="flex items-start space-x-2 text-sm text-gray-600">
-                        <CheckCircle className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
-                        <span>{recommendation}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
+          <Grid item xs={12} lg={6} key={insight.id}>
+            <Card sx={{ 
+              '&:hover': { 
+                boxShadow: 3, 
+                transform: 'translateY(-4px)',
+                transition: 'all 0.2s'
+              }
+            }}>
+              <CardHeader sx={{ pb: 1.5 }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <Box sx={{ p: 1, bgcolor: 'blue.100', borderRadius: 2 }}>
+                      {getInsightIcon(insight.type)}
+                    </Box>
+                    <Box>
+                      <Typography variant="h6" sx={{ fontSize: '1.125rem' }}>{insight.title}</Typography>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 0.5 }}>
+                        <Chip 
+                          label={`${insight.impact} impact`} 
+                          color={getImpactColor(insight.impact) as any}
+                          size="small"
+                        />
+                        <Typography variant="body2" sx={{ 
+                          fontSize: '0.875rem',
+                          color: getConfidenceColor(insight.confidence)
+                        }}>
+                          {insight.confidence}% confidence
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </Box>
+                </Box>
+              </CardHeader>
+              <CardContent>
+                <Typography variant="body2" sx={{ color: 'grey.600', mb: 2 }}>{insight.description}</Typography>
+                
+                {insight.recommendations && insight.recommendations.length > 0 && (
+                  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                    <Typography variant="subtitle2" sx={{ fontWeight: 500, color: 'grey.900' }}>Recommendations:</Typography>
+                    <Box component="ul" sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
+                      {insight.recommendations.map((recommendation, index) => (
+                        <Box component="li" key={index} sx={{ display: 'flex', alignItems: 'flex-start', gap: 1, fontSize: '0.875rem', color: 'grey.600' }}>
+                          <CheckCircle className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
+                          <span>{recommendation}</span>
+                        </Box>
+                      ))}
+                    </Box>
+                  </Box>
+                )}
 
-              {insight.data && Object.keys(insight.data).length > 0 && (
-                <div className="mt-4 pt-4 border-t border-gray-200">
-                  <h4 className="font-medium text-gray-900 mb-2">Key Data:</h4>
-                  <div className="grid grid-cols-2 gap-2 text-sm">
-                    {Object.entries(insight.data).map(([key, value]) => (
-                      <div key={key} className="flex justify-between">
-                        <span className="text-gray-600">{key}:</span>
-                        <span className="font-medium">{String(value)}</span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </CardContent>
-          </Card>
+                {insight.data && Object.keys(insight.data).length > 0 && (
+                  <Box sx={{ mt: 2, pt: 2, borderTop: '1px solid', borderColor: 'grey.200' }}>
+                    <Typography variant="subtitle2" sx={{ fontWeight: 500, color: 'grey.900', mb: 1 }}>Key Data:</Typography>
+                    <Grid container spacing={1} sx={{ fontSize: '0.875rem' }}>
+                      {Object.entries(insight.data).map(([key, value]) => (
+                        <Grid item xs={6} key={key}>
+                          <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <Typography variant="body2" sx={{ color: 'grey.600' }}>{key}:</Typography>
+                            <Typography variant="body2" sx={{ fontWeight: 500 }}>{String(value)}</Typography>
+                          </Box>
+                        </Grid>
+                      ))}
+                    </Grid>
+                  </Box>
+                )}
+              </CardContent>
+            </Card>
+          </Grid>
         ))}
-      </div>
+      </Grid>
 
       {/* Next Update Info */}
-      <Card className="bg-blue-50 border-blue-200">
-        <CardContent className="pt-6">
-          <div className="flex items-center space-x-2">
+      <Card sx={{ bgcolor: 'blue.50', border: '1px solid', borderColor: 'blue.200' }}>
+        <CardContent sx={{ pt: 3 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <Clock className="h-5 w-5 text-blue-600" />
-            <div>
-              <p className="text-sm font-medium text-blue-900">
+            <Box>
+              <Typography variant="body2" sx={{ fontSize: '0.875rem', fontWeight: 500, color: 'blue.900' }}>
                 Next insights update: {new Date(nextUpdate).toLocaleString()}
-              </p>
-              <p className="text-xs text-blue-700">
+              </Typography>
+              <Typography variant="caption" sx={{ color: 'blue.700' }}>
                 Insights are automatically updated every 24 hours
-              </p>
-            </div>
-          </div>
+              </Typography>
+            </Box>
+          </Box>
         </CardContent>
       </Card>
-    </div>
+    </Box>
   );
 } 
