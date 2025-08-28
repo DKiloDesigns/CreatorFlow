@@ -132,12 +132,12 @@ export function AIContentIdeas({ onIdeaSelect, className }: AIContentIdeasProps)
   return (
     <Card className={className}>
       <CardHeader>
-        <Typography variant="h5" component="div" className="flex items-center gap-2">
+        <Typography variant="h5" component="div" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <Lightbulb className="h-5 w-5 text-yellow-600" />
           AI Content Ideas
         </Typography>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
         {/* Input Fields */}
         <Box sx={{ width: '100%' }}>
           <Grid container spacing={2}>
@@ -194,8 +194,7 @@ export function AIContentIdeas({ onIdeaSelect, className }: AIContentIdeasProps)
             variant="contained"
             onClick={generateIdeas}
             disabled={isGenerating}
-            sx={{ mt: 2 }}
-            className="w-full"
+            sx={{ mt: 2, width: '100%' }}
           >
             <RefreshCw className={`h-4 w-4 mr-2 ${isGenerating ? 'animate-spin' : ''}`} />
             {isGenerating ? 'Generating Ideas...' : 'Generate Content Ideas'}
@@ -204,7 +203,7 @@ export function AIContentIdeas({ onIdeaSelect, className }: AIContentIdeasProps)
 
         {/* Generated Ideas */}
         {ideas.length > 0 && (
-          <Box className="space-y-3">
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
             <Typography variant="h6" component="h3">Generated Ideas</Typography>
             
             {ideas.map((idea, index) => (
@@ -224,9 +223,9 @@ export function AIContentIdeas({ onIdeaSelect, className }: AIContentIdeasProps)
                   <Grid item xs={12} md={8}>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 0.5 }}>
                       <Typography variant="subtitle2" component="h4">{idea.title}</Typography>
-                      <Badge variant="outline" className="text-xs">
+                      <Badge variant="outline" sx={{ fontSize: '0.75rem' }}>
                         {getContentTypeIcon(idea.content_type)}
-                        <span className="ml-1 capitalize">{idea.content_type}</span>
+                        <Box sx={{ ml: 0.5, textTransform: 'capitalize' }}>{idea.content_type}</Box>
                       </Badge>
                     </Box>
                     <Typography variant="body2" sx={{ color: 'text.muted' }}>{idea.description}</Typography>
@@ -236,7 +235,7 @@ export function AIContentIdeas({ onIdeaSelect, className }: AIContentIdeasProps)
                         <Typography variant="body2" sx={{ fontWeight: 'medium' }}>Platforms:</Typography>
                         <Box sx={{ display: 'flex', gap: 0.5 }}>
                           {idea.platforms.map((platform, pIndex) => (
-                            <Badge key={pIndex} variant="secondary" className="text-xs">
+                            <Badge key={pIndex} variant="secondary" sx={{ fontSize: '0.75rem' }}>
                               {platform}
                             </Badge>
                           ))}
@@ -247,7 +246,7 @@ export function AIContentIdeas({ onIdeaSelect, className }: AIContentIdeasProps)
                         <Typography variant="body2" sx={{ fontWeight: 'medium' }}>Suggested Hashtags:</Typography>
                         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                           {idea.hashtags.slice(0, 3).map((hashtag, hIndex) => (
-                            <Badge key={hIndex} variant="outline" className="text-xs">
+                            <Badge key={hIndex} variant="outline" sx={{ fontSize: '0.75rem' }}>
                               {hashtag}
                             </Badge>
                           ))}
@@ -291,7 +290,7 @@ export function AIContentIdeas({ onIdeaSelect, className }: AIContentIdeasProps)
               variant="outlined"
               onClick={generateIdeas}
               disabled={isGenerating}
-              className="w-full"
+              sx={{ width: '100%' }}
             >
               <RefreshCw className={`h-4 w-4 mr-2 ${isGenerating ? 'animate-spin' : ''}`} />
               Generate More Ideas
