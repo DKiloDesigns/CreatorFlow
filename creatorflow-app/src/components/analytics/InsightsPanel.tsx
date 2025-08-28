@@ -34,17 +34,17 @@ export function InsightsPanel({ insights, onRefresh }: InsightsPanelProps) {
   const getInsightIcon = (type: string) => {
     switch (type) {
       case 'performance':
-        return <Activity className="h-5 w-5" />;
+        return <Box sx={{ color: 'primary.500' }}><Activity className="h-5 w-5" /></Box>;
       case 'timing':
-        return <Activity className="h-5 w-5" />;
+        return <Box sx={{ color: 'warning.500' }}><Activity className="h-5 w-5" /></Box>;
       case 'content':
-        return <Activity className="h-5 w-5" />;
+        return <Box sx={{ color: 'success.500' }}><Activity className="h-5 w-5" /></Box>;
       case 'engagement':
-        return <Activity className="h-5 w-5" />;
+        return <Box sx={{ color: 'info.500' }}><Activity className="h-5 w-5" /></Box>;
       case 'growth':
-        return <Activity className="h-5 w-5" />;
+        return <Box sx={{ color: 'secondary.500' }}><Activity className="h-5 w-5" /></Box>;
       default:
-        return <Activity className="h-5 w-5" />;
+        return <Box sx={{ color: 'grey.500' }}><Activity className="h-5 w-5" /></Box>;
     }
   };
 
