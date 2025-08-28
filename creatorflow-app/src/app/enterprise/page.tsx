@@ -174,24 +174,26 @@ export default function EnterprisePage() {
 
   return (
     <div className="p-8 space-y-8">
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold flex items-center gap-2">
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Box>
+          <Typography variant="h3" component="h1" sx={{ fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: 1 }}>
             <Building2 className="h-8 w-8" />
             Enterprise
-          </h1>
-          <p className="text-muted-foreground">Team collaboration and enterprise features</p>
-        </div>
-        <div className="flex gap-2">
+          </Typography>
+          <Typography variant="body1" sx={{ color: 'text.secondary' }}>
+            Team collaboration and enterprise features
+          </Typography>
+        </Box>
+        <Box sx={{ display: 'flex', gap: 1 }}>
           <Button onClick={() => setShowCreateTeam(true)}>
             <Plus className="h-4 w-4 mr-2" />
             Create Team
           </Button>
-        </div>
-      </div>
+        </Box>
+      </Box>
 
       {/* Enterprise Overview */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+      <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(4, 1fr)' }, gap: 3 }}>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <Typography variant="h6" className="text-sm font-medium">Total Teams</Typography>
@@ -249,7 +251,7 @@ export default function EnterprisePage() {
             </p>
           </CardContent>
         </Card>
-      </div>
+      </Box>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
         <TabsList>
