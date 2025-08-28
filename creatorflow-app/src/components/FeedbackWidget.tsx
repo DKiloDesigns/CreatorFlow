@@ -107,7 +107,7 @@ export function FeedbackWidget({
     return (
       <Card className={className}>
         <CardContent sx={{ p: 3, textAlign: 'center' }}>
-          <Chip icon={<Star className="h-12 w-12 text-green-500" />} label="Thank You!" />
+          <Chip icon={<Box sx={{ color: 'green.500' }}><Star className="h-12 w-12" /></Box>} label="Thank You!" />
           <Typography variant="h6" component="h3" sx={{ mt: 1, mb: 0.5 }}>Thank You!</Typography>
           <Typography variant="body2" color="text.secondary">Your feedback has been submitted successfully.</Typography>
         </CardContent>
