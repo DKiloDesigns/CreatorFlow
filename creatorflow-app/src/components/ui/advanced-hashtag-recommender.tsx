@@ -244,10 +244,10 @@ export function AdvancedHashtagRecommender({ provider: _provider }: AdvancedHash
 
   const getTrendIcon = (trend: string) => {
     switch (trend) {
-      case 'rising': return <Activity className="w-4 h-4 text-green-600" />;
-      case 'declining': return <Activity className="w-4 h-4 text-red-600" />;
-      case 'stable': return <Activity className="w-4 h-4 text-gray-600" />;
-      default: return <Activity className="w-4 h-4 text-gray-600" />;
+      case 'rising': return <Box sx={{ color: 'green.600' }}><Activity className="w-4 h-4" /></Box>;
+      case 'declining': return <Box sx={{ color: 'red.600' }}><Activity className="w-4 h-4" /></Box>;
+      case 'stable': return <Box sx={{ color: 'grey.600' }}><Activity className="w-4 h-4" /></Box>;
+      default: return <Box sx={{ color: 'grey.600' }}><Activity className="w-4 h-4" /></Box>;
     }
   };
 
