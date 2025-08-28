@@ -130,15 +130,15 @@ export function TrialStatus({ trialStartDate, trialEndDate, className }: TrialSt
 
           <Grid item xs={12}>
             <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-              <div>Started: {new Date(trialStartDate).toLocaleDateString()}</div>
-              <div>Ends: {new Date(trialEndDate).toLocaleDateString()}</div>
+              <Box>Started: {new Date(trialStartDate).toLocaleDateString()}</Box>
+              <Box>Ends: {new Date(trialEndDate).toLocaleDateString()}</Box>
             </Typography>
           </Grid>
 
           {isExpiringSoon && !isExpired && (
             <Grid item xs={12}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, p: 2, bgcolor: 'warning.light', borderRadius: 1 }}>
-                <Clock className="h-4 w-4 text-yellow-600" />
+                <Clock className="h-4 w-4" sx={{ color: 'warning.600' }} />
                 <Typography variant="body2" color="warning.dark">
                   Your trial expires soon! Upgrade to Pro to keep all features.
                 </Typography>
