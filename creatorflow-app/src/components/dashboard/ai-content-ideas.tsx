@@ -198,7 +198,9 @@ export function AIContentIdeas({ onIdeaSelect, className }: AIContentIdeasProps)
             disabled={isGenerating}
             sx={{ mt: 2, width: '100%' }}
           >
-            <RefreshCw className={`h-4 w-4 mr-2 ${isGenerating ? 'animate-spin' : ''}`} />
+            <Box sx={{ mr: 1 }}>
+              <RefreshCw className={`h-4 w-4 ${isGenerating ? 'animate-spin' : ''}`} />
+            </Box>
             {isGenerating ? 'Generating Ideas...' : 'Generate Content Ideas'}
           </Button>
         </Box>
