@@ -25,6 +25,7 @@ import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { toast } from 'sonner';
+import { Box } from '@mui/material';
 
 interface OptimalTime {
   time: string;
@@ -311,7 +312,7 @@ export function OptimalPostingTimePredictor({ provider }: OptimalPostingTimePred
   };
 
   return (
-    <div className="space-y-6">
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
       {/* Input Section */}
       <Card>
         <CardHeader>
@@ -678,6 +679,6 @@ export function OptimalPostingTimePredictor({ provider }: OptimalPostingTimePred
           </Tabs>
         </div>
       )}
-    </div>
+    </Box>
   );
 } 
