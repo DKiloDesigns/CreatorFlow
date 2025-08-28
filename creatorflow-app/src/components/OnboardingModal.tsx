@@ -110,12 +110,12 @@ export default function OnboardingModal({ isOpen, onClose, onComplete }: Onboard
 
   const getStepIcon = (stepId: string) => {
     switch (stepId) {
-      case 'welcome': return <Sparkles className="h-6 w-6" />;
-      case 'connect_accounts': return <Users className="h-6 w-6" />;
-      case 'create_post': return <Zap className="h-6 w-6" />;
-      case 'schedule_content': return <Calendar className="h-6 w-6" />;
-      case 'analytics': return <BarChart3 className="h-6 w-6" />;
-      default: return <Settings className="h-6 w-6" />;
+      case 'welcome': return <Box sx={{ color: 'purple.600' }}><Sparkles className="h-6 w-6" /></Box>;
+      case 'connect_accounts': return <Box sx={{ color: 'blue.600' }}><Users className="h-6 w-6" /></Box>;
+      case 'create_post': return <Box sx={{ color: 'green.600' }}><Zap className="h-6 w-6" /></Box>;
+      case 'schedule_content': return <Box sx={{ color: 'orange.600' }}><Calendar className="h-6 w-6" /></Box>;
+      case 'analytics': return <Box sx={{ color: 'indigo.600' }}><BarChart3 className="h-6 w-6" /></Box>;
+      default: return <Box sx={{ color: 'grey.600' }}><Settings className="h-6 w-6" /></Box>;
     }
   };
 
