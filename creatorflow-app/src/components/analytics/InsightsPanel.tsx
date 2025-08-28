@@ -147,7 +147,9 @@ export function InsightsPanel({ insights, onRefresh }: InsightsPanelProps) {
                     <Box component="ul" sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
                       {insight.recommendations.map((recommendation, index) => (
                         <Box component="li" key={index} sx={{ display: 'flex', alignItems: 'flex-start', gap: 1, fontSize: '0.875rem', color: 'grey.600' }}>
-                          <CheckCircle className="h-4 w-4 text-green-500 mt-0.5 flex-shrink-0" />
+                          <Box sx={{ color: 'green.500', mt: 0.5, flexShrink: 0 }}>
+                            <CheckCircle className="h-4 w-4" />
+                          </Box>
                           <span>{recommendation}</span>
                         </Box>
                       ))}
@@ -180,7 +182,9 @@ export function InsightsPanel({ insights, onRefresh }: InsightsPanelProps) {
       <Card sx={{ bgcolor: 'blue.50', border: '1px solid', borderColor: 'blue.200' }}>
         <CardContent sx={{ pt: 3 }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <Clock className="h-5 w-5 text-blue-600" />
+            <Box sx={{ color: 'blue.600' }}>
+              <Clock className="h-5 w-5" />
+            </Box>
             <Box>
               <Typography variant="body2" sx={{ fontSize: '0.875rem', fontWeight: 500, color: 'blue.900' }}>
                 Next insights update: {new Date(nextUpdate).toLocaleString()}
