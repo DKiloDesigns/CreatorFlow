@@ -7,7 +7,8 @@ import {
   Typography,
   Grid,
   Chip,
-  LinearProgress
+  LinearProgress,
+  Paper
 } from '@mui/material';
 import { Rocket, Activity, Sparkles, Users, Zap, Calendar, BarChart3, Settings, X, CheckCircle, ArrowRight } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
@@ -120,12 +121,12 @@ export default function OnboardingModal({ isOpen, onClose, onComplete }: Onboard
 
   const getStepColor = (stepId: string) => {
     switch (stepId) {
-      case 'welcome': return 'text-purple-600';
-      case 'connect_accounts': return 'text-blue-600';
-      case 'create_post': return 'text-green-600';
-      case 'schedule_content': return 'text-orange-600';
-      case 'analytics': return 'text-indigo-600';
-      default: return 'text-gray-600';
+      case 'welcome': return 'purple.600';
+      case 'connect_accounts': return 'blue.600';
+      case 'create_post': return 'green.600';
+      case 'schedule_content': return 'orange.600';
+      case 'analytics': return 'indigo.600';
+      default: return 'grey.600';
     }
   };
 
@@ -135,115 +136,137 @@ export default function OnboardingModal({ isOpen, onClose, onComplete }: Onboard
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl">
-        <DialogHeader>
-          <div className="flex items-center justify-between">
-            <DialogTitle className="text-xl font-bold">
+              <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <DialogTitle className="text-xl font-bold">
               Welcome to CreatorFlow
             </DialogTitle>
             <Button variant="text" size="small" onClick={onClose}>
               <X className="h-4 w-4" />
             </Button>
-          </div>
+          </Box>
         </DialogHeader>
 
-        <div className="space-y-6">
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
           {/* Progress Bar */}
-          <div className="space-y-2">
-            <div className="flex justify-between text-sm">
-              <span>Progress</span>
-              <span>{progress.percentage}% Complete</span>
-            </div>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.875rem' }}>
+              <Typography variant="body2">Progress</Typography>
+              <Typography variant="body2">{progress.percentage}% Complete</Typography>
+            </Box>
             <Progress value={progress.percentage} className="h-2" />
-            <div className="flex justify-between text-xs text-muted-foreground">
-              <span>{progress.completed} of {progress.total} steps</span>
-            </div>
-          </div>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: 'text.secondary' }}>
+              <Typography variant="caption">{progress.completed} of {progress.total} steps</Typography>
+            </Box>
+          </Box>
 
           {/* Step Indicator */}
-          <div className="flex justify-center space-x-2">
+          <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1 }}>
             {steps.map((step, index) => (
-              <div
+              <Box
                 key={step.id}
-                className={`flex items-center space-x-1 px-2 py-1 rounded-full text-xs ${
-                  index === currentStep
-                    ? 'bg-primary text-primary-foreground'
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 0.5,
+                  px: 1,
+                  py: 0.5,
+                  borderRadius: '50px',
+                  fontSize: '0.75rem',
+                  ...(index === currentStep
+                    ? { bgcolor: 'primary.main', color: 'primary.contrastText' }
                     : step.completed
-                    ? 'bg-green-100 text-green-800'
-                    : 'bg-gray-100 text-gray-600'
-                }`}
+                    ? { bgcolor: 'success.100', color: 'success.800' }
+                    : { bgcolor: 'grey.100', color: 'grey.600' }
+                  )
+                }}
               >
                 {step.completed ? (
                   <CheckCircle className="h-3 w-3" />
                 ) : (
                   <span>{index + 1}</span>
                 )}
-              </div>
+              </Box>
             ))}
-          </div>
+          </Box>
 
           {/* Current Step Content */}
-          <div className="text-center space-y-4">
-            <div className={`mx-auto w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center ${getStepColor(currentStepData.id)}`}>
+          <Box sx={{ textAlign: 'center', display: 'flex', flexDirection: 'column', gap: 2 }}>
+            <Box sx={{ 
+              mx: 'auto', 
+              width: 64, 
+              height: 64, 
+              borderRadius: '50%', 
+              bgcolor: 'grey.100', 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'center',
+              color: getStepColor(currentStepData.id)
+            }}>
               {getStepIcon(currentStepData.id)}
-            </div>
+            </Box>
             
-            <div>
-              <h3 className="text-xl font-semibold mb-2">{currentStepData.title}</h3>
-              <p className="text-muted-foreground mb-4">{currentStepData.description}</p>
-            </div>
+            <Box>
+              <Typography variant="h5" component="h3" sx={{ fontWeight: 600, mb: 1 }}>
+                {currentStepData.title}
+              </Typography>
+              <Typography variant="body2" sx={{ color: 'text.secondary', mb: 2 }}>
+                {currentStepData.description}
+              </Typography>
+            </Box>
 
             {/* Step-specific content */}
             {currentStepData.id === 'welcome' && (
-              <div className="bg-blue-50 p-4 rounded-lg">
-                <p className="text-sm text-blue-800">
+              <Paper sx={{ bgcolor: 'blue.50', p: 2, borderRadius: 2 }}>
+                <Typography variant="body2" sx={{ color: 'blue.800' }}>
                   Let&apos;s get you started with CreatorFlow! We&apos;ll guide you through the essential features to help you create and manage your social media content effectively.
-                </p>
-              </div>
+                </Typography>
+              </Paper>
             )}
 
             {currentStepData.id === 'connect_accounts' && (
-              <div className="bg-green-50 p-4 rounded-lg">
-                <p className="text-sm text-green-800">
+              <Paper sx={{ bgcolor: 'green.50', p: 2, borderRadius: 2 }}>
+                <Typography variant="body2" sx={{ color: 'green.800' }}>
                   Connect your social media accounts to start publishing content directly from CreatorFlow. We support Instagram, TikTok, YouTube, and Twitter.
-                </p>
-              </div>
+                </Typography>
+              </Paper>
             )}
 
             {currentStepData.id === 'create_post' && (
-              <div className="bg-purple-50 p-4 rounded-lg">
-                <p className="text-sm text-purple-800">
+              <Paper sx={{ bgcolor: 'purple.50', p: 2, borderRadius: 2 }}>
+                <Typography variant="body2" sx={{ color: 'purple.800' }}>
                   Learn how to create engaging posts with our AI-powered content generation tools. You can create posts, captions, and hashtags optimized for each platform.
-                </p>
-              </div>
+                </Typography>
+              </Paper>
             )}
 
             {currentStepData.id === 'schedule_content' && (
-              <div className="bg-orange-50 p-4 rounded-lg">
-                <p className="text-sm text-orange-800">
+              <Paper sx={{ bgcolor: 'orange.50', p: 2, borderRadius: 2 }}>
+                <Typography variant="body2" sx={{ color: 'orange.800' }}>
                   Schedule your content in advance to maintain a consistent posting schedule. Our AI can suggest the best times to post for maximum engagement.
-                </p>
-              </div>
+                </Typography>
+              </Paper>
             )}
 
             {currentStepData.id === 'analytics' && (
-              <div className="bg-indigo-50 p-4 rounded-lg">
-                <p className="text-sm text-indigo-800">
+              <Paper sx={{ bgcolor: 'indigo.50', p: 2, borderRadius: 2 }}>
+                <Typography variant="body2" sx={{ color: 'indigo.800' }}>
                   Track your performance with detailed analytics and insights. Monitor engagement, reach, and audience growth across all your connected platforms.
-                </p>
-              </div>
+                </Typography>
+              </Paper>
             )}
-          </div>
+          </Box>
 
           {/* Action Buttons */}
-          <div className="flex justify-between items-center pt-4">
-            <div className="flex items-center space-x-2">
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', pt: 2 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               {currentStepData.required && (
                 <Badge variant="secondary">Required</Badge>
               )}
-            </div>
+            </Box>
 
-            <div className="flex space-x-2">
+            <Box sx={{ display: 'flex', gap: 1 }}>
               {currentStepData.required ? (
                 <Button onClick={() => completeStep(currentStepData.id)} disabled={loading}>
                   {loading ? 'Completing...' : 'Complete Step'}
@@ -260,9 +283,9 @@ export default function OnboardingModal({ isOpen, onClose, onComplete }: Onboard
                   </Button>
                 </>
               )}
-            </div>
-          </div>
-        </div>
+            </Box>
+          </Box>
+        </Box>
       </DialogContent>
     </Dialog>
   );
