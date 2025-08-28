@@ -55,32 +55,32 @@ export function AnalyticsOverview({ data }: AnalyticsOverviewProps) {
 
   const metrics = [
     {
-      label: 'Avg Engagement Rate',
-      value: `${data.overview.avgEngagementRate}%`,
-      trend: engagementGrowth,
-      icon: <Activity className="h-4 w-4" />,
-      color: 'text-blue-600',
-    },
-    {
-      label: 'Posts per Platform',
-      value: avgPostsPerPlatform.toFixed(1),
+      label: 'Total Posts',
+      value: data.overview.totalPosts.toLocaleString(),
       trend: data.overview.growthRate,
       icon: <Activity className="h-4 w-4" />,
-      color: 'text-green-600',
+      color: 'blue.600',
     },
     {
-      label: 'Active Platforms',
-      value: totalPlatforms.toString(),
-      trend: 0,
+      label: 'Total Engagement',
+      value: data.overview.totalEngagement.toLocaleString(),
+      trend: data.overview.growthRate,
       icon: <Activity className="h-4 w-4" />,
-      color: 'text-purple-600',
+      color: 'green.600',
     },
     {
-      label: 'Content Performance',
-      value: `${Math.round((data.overview.totalEngagement / data.overview.totalPosts))}`,
-      trend: engagementGrowth,
+      label: 'Avg Engagement Rate',
+      value: `${data.overview.avgEngagementRate}%`,
+      trend: data.overview.growthRate,
       icon: <Activity className="h-4 w-4" />,
-      color: 'text-orange-600',
+      color: 'purple.600',
+    },
+    {
+      label: 'Followers',
+      value: data.overview.followers.toLocaleString(),
+      trend: data.overview.growthRate,
+      icon: <Activity className="h-4 w-4" />,
+      color: 'orange.600',
     },
   ];
 
