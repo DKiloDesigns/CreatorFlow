@@ -244,10 +244,10 @@ export function AdvancedHashtagRecommender({ provider: _provider }: AdvancedHash
 
   const getTrendIcon = (trend: string) => {
     switch (trend) {
-      case 'rising': return <Box sx={{ color: 'green.600' }}><Activity className="w-4 h-4" /></Box>;
-      case 'declining': return <Box sx={{ color: 'red.600' }}><Activity className="w-4 h-4" /></Box>;
-      case 'stable': return <Box sx={{ color: 'grey.600' }}><Activity className="w-4 h-4" /></Box>;
-      default: return <Box sx={{ color: 'grey.600' }}><Activity className="w-4 h-4" /></Box>;
+      case 'rising': return <Activity className="w-4 h-4 text-green-600" />;
+      case 'declining': return <Activity className="w-4 h-4 text-red-600" />;
+      case 'stable': return <Activity className="w-4 h-4 text-gray-600" />;
+      default: return <Activity className="w-4 h-4 text-gray-600" />;
     }
   };
 
@@ -261,11 +261,11 @@ export function AdvancedHashtagRecommender({ provider: _provider }: AdvancedHash
   };
 
   return (
-    <div className="space-y-6">
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
       {/* Input Section */}
       <Card>
         <CardHeader>
-          <Typography variant="h5" component="div" className="flex items-center gap-2">
+          <Typography variant="h5" component="div" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <Hash className="w-5 h-5" />
             Advanced Hashtag Recommender
           </Typography>
@@ -273,7 +273,7 @@ export function AdvancedHashtagRecommender({ provider: _provider }: AdvancedHash
             AI-powered hashtag analysis with trending detection, competitor insights, and performance predictions
           </Typography>
         </CardHeader>
-        <CardContent className="space-y-6">
+        <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
           {/* Basic Input */}
                      <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 2 }}>
              <TextField
@@ -500,6 +500,6 @@ export function AdvancedHashtagRecommender({ provider: _provider }: AdvancedHash
           </Grid>
         </div>
       )}
-    </div>
+    </Box>
   );
 } 
