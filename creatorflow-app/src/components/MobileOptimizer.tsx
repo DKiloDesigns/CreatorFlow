@@ -424,7 +424,7 @@ export default function MobileOptimizer() {
         <TabPanel value={activeTab} index="accessibility">
           <Card>
             <CardHeader>
-              <Typography variant="subtitle2" component="div" className="flex items-center gap-2">
+              <Typography variant="subtitle2" component="div" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 <Chip label="Accessibility" color="info" />
                 Accessibility Settings
               </Typography>
