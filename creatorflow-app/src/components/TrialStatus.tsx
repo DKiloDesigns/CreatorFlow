@@ -142,7 +142,7 @@ export function TrialStatus({ trialStartDate, trialEndDate, className }: TrialSt
           {isExpiringSoon && !isExpired && (
             <Grid item xs={12}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, p: 2, bgcolor: 'warning.light', borderRadius: 1 }}>
-                <Clock className="h-4 w-4" sx={{ color: 'warning.600' }} />
+                <Box sx={{ color: 'warning.600' }}><Clock className="h-4 w-4" /></Box>
                 <Typography variant="body2" color="warning.dark">
                   Your trial expires soon! Upgrade to Pro to keep all features.
                 </Typography>
