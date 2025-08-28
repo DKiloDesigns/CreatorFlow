@@ -252,10 +252,10 @@ export const MemoizedLoadingSkeleton = memo(({
           <Card>
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                <Box className="skeleton" sx={{ width: 40, height: 40, borderRadius: '50%' }} />
+                <Box sx={{ width: 40, height: 40, borderRadius: '50%', bgcolor: 'grey.200' }} />
                 <Box sx={{ flex: 1 }}>
-                  <Box className="skeleton" sx={{ width: '60%', height: 20, mb: 1 }} />
-                  <Box className="skeleton" sx={{ width: '40%', height: 16 }} />
+                  <Box sx={{ width: '60%', height: 20, mb: 1, bgcolor: 'grey.200' }} />
+                  <Box sx={{ width: '40%', height: 16, bgcolor: 'grey.200' }} />
                 </Box>
               </Box>
             </CardContent>
@@ -263,18 +263,18 @@ export const MemoizedLoadingSkeleton = memo(({
         )}
         {variant === 'list' && (
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, p: 2 }}>
-            <Box className="skeleton" sx={{ width: 32, height: 32, borderRadius: '50%' }} />
+            <Box sx={{ width: 32, height: 32, borderRadius: '50%', bgcolor: 'grey.200' }} />
             <Box sx={{ flex: 1 }}>
-              <Box className="skeleton" sx={{ width: '70%', height: 18, mb: 0.5 }} />
-              <Box className="skeleton" sx={{ width: '50%', height: 14 }} />
+              <Box sx={{ width: '70%', height: 18, mb: 0.5, bgcolor: 'grey.200' }} />
+              <Box sx={{ width: '50%', height: 14, bgcolor: 'grey.200' }} />
             </Box>
           </Box>
         )}
         {variant === 'table' && (
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, p: 1 }}>
-            <Box className="skeleton" sx={{ width: 24, height: 24, borderRadius: '50%' }} />
+            <Box sx={{ width: 24, height: 24, borderRadius: '50%', bgcolor: 'grey.200' }} />
             <Box sx={{ flex: 1 }}>
-              <Box className="skeleton" sx={{ width: '80%', height: 16 }} />
+              <Box sx={{ width: '80%', height: 16, bgcolor: 'grey.200' }} />
             </Box>
           </Box>
         )}
