@@ -1,7 +1,19 @@
 'use client';
 
+import React from 'react';
+import { 
+  Box, 
+  Typography, 
+  Card, 
+  CardContent, 
+  Chip, 
+  Button, 
+  TextField,
+  Grid,
+  Container
+} from '@mui/material';
+import { User, Calendar, Clock, ArrowRight, Mail } from 'lucide-react';
 import Link from 'next/link';
-import { Calendar, Clock, User, ArrowRight, Mail } from 'lucide-react';
 import { PublicHeader } from '@/components/PublicHeader';
 import { Footer } from '@/components/Footer';
 
@@ -85,39 +97,70 @@ export default function BlogPage() {
                   </div>
                 </div>
                 
-                <div className="p-6">
-                  <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-3 line-clamp-2">
+                <CardContent sx={{ p: 3 }}>
+                  <Typography variant="h5" component="h3" sx={{ 
+                    fontWeight: 600, 
+                    color: 'text.primary', 
+                    mb: 1.5, 
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    display: '-webkit-box',
+                    WebkitLineClamp: 2,
+                    WebkitBoxOrient: 'vertical'
+                  }}>
                     {post.title}
-                  </h3>
-                  <p className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-3">
+                  </Typography>
+                  <Typography variant="body2" sx={{ 
+                    color: 'text.secondary', 
+                    mb: 2, 
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    display: '-webkit-box',
+                    WebkitLineClamp: 3,
+                    WebkitBoxOrient: 'vertical'
+                  }}>
                     {post.excerpt}
-                  </p>
+                  </Typography>
                   
-                  <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400 mb-4">
-                    <div className="flex items-center gap-2">
+                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                       <User className="h-4 w-4" />
-                      {post.author}
-                    </div>
-                    <div className="flex items-center gap-2">
+                      <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                        {post.author}
+                      </Typography>
+                    </Box>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                       <Calendar className="h-4 w-4" />
-                      {post.date}
-                    </div>
-                  </div>
+                      <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                        {post.date}
+                      </Typography>
+                    </Box>
+                  </Box>
                   
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400">
+                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                       <Clock className="h-4 w-4" />
-                      {post.readTime}
-                    </div>
-                    <Link 
+                      <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                        {post.readTime}
+                      </Typography>
+                    </Box>
+                    <Button
+                      component={Link}
                       href={`/blog/${post.id}`}
-                      className="flex items-center gap-1 text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 font-medium"
+                      sx={{ 
+                        color: 'primary.main',
+                        '&:hover': { color: 'primary.dark' },
+                        fontWeight: 500,
+                        p: 0,
+                        minHeight: 'auto',
+                        textTransform: 'none'
+                      }}
                     >
                       Read More
-                      <ArrowRight className="h-4 w-4" />
-                    </Link>
-                  </div>
-                </div>
+                      <ArrowRight className="h-4 w-4 ml-2" />
+                    </Button>
+                  </Box>
+                </CardContent>
               </article>
             ))}
           </div>
