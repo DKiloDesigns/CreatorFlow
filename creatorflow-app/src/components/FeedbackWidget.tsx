@@ -256,7 +256,7 @@ export function FeedbackWidget({
                 </>
               ) : (
                 <>
-                  <Send sx={{ height: 16, width: 16, mr: 1 }} />
+                  <Send className="h-4 w-4 mr-1" />
                   Submit Feedback
                 </>
               )}
