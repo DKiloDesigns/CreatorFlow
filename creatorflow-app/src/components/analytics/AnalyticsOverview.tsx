@@ -114,14 +114,18 @@ export function AnalyticsOverview({ data }: AnalyticsOverviewProps) {
               <Box sx={{ textAlign: 'right' }}>
                 {metric.trend > 0 ? (
                   <Box sx={{ display: 'flex', alignItems: 'center', color: 'green.600' }}>
-                    <TrendingUp className="h-4 w-4 mr-1" />
+                    <Box sx={{ mr: 0.5 }}>
+                      <TrendingUp className="h-4 w-4" />
+                    </Box>
                     <Typography variant="body2" sx={{ fontWeight: 500 }}>
                       +{metric.trend.toFixed(1)}%
                     </Typography>
                   </Box>
                 ) : metric.trend < 0 ? (
                   <Box sx={{ display: 'flex', alignItems: 'center', color: 'red.600' }}>
-                    <TrendingUp className="h-4 w-4 mr-1" />
+                    <Box sx={{ mr: 0.5 }}>
+                      <TrendingUp className="h-4 w-4" />
+                    </Box>
                     <Typography variant="body2" sx={{ fontWeight: 500 }}>
                       {metric.trend.toFixed(1)}%
                     </Typography>
