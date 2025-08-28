@@ -2,7 +2,11 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { 
-  Button
+  Button,
+  Box,
+  Typography,
+  Paper,
+  Chip
 } from '@mui/material';
 import { Bell, Check, Trash2, RefreshCw } from 'lucide-react';
 import { Notification, NotificationType, NotificationSeverity, NotificationCategory } from '@/lib/notifications/types';
@@ -100,14 +104,12 @@ export function NotificationCenter({ className: _className, onNotificationClick 
         body: JSON.stringify({ action: 'mark_read', notificationId }),
       });
 
-      if (!response.ok) throw new Error('Failed to mark notification as read');
-
-      setNotifications(prev => 
-        prev.map(n => 
-          n.id === notificationId ? { ...n, read: true, readAt: new Date() } : n
-        )
-      );
-      setUnreadCount(prev => Math.max(0, prev - 1));
+      if (response.ok) {
+        setNotifications(prev => prev.map(n => 
+          n.id === notificationId ? { ...n, read: true } : n
+        ));
+        setUnreadCount(prev => Math.max(0, prev - 1));
+      }
     } catch (error) {
       console.error('Failed to mark notification as read:', error);
     }
@@ -122,16 +124,12 @@ export function NotificationCenter({ className: _className, onNotificationClick 
         body: JSON.stringify({ action: 'mark_all_read' }),
       });
 
-      if (!response.ok) throw new Error('Failed to mark all notifications as read');
-
-      setNotifications(prev => 
-        prev.map(n => ({ ...n, read: true, readAt: new Date() }))
-      );
-      setUnreadCount(0);
-      setToast({ title: 'Success', message: 'All notifications marked as read', variant: 'success' });
+      if (response.ok) {
+        setNotifications(prev => prev.map(n => ({ ...n, read: true })));
+        setUnreadCount(0);
+      }
     } catch (error) {
       console.error('Failed to mark all notifications as read:', error);
-      setToast({ title: 'Error', message: 'Failed to mark all notifications as read', variant: 'error' });
     }
   };
 
@@ -139,64 +137,61 @@ export function NotificationCenter({ className: _className, onNotificationClick 
   const deleteNotification = async (notificationId: string) => {
     try {
       const response = await fetch('/api/notifications/enhanced', {
-        method: 'PATCH',
+        method: 'DELETE',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'delete', notificationId }),
+        body: JSON.stringify({ notificationId }),
       });
 
-      if (!response.ok) throw new Error('Failed to delete notification');
-
-      setNotifications(prev => prev.filter(n => n.id !== notificationId));
-      setUnreadCount(prev => {
-        const notification = notifications.find(n => n.id === notificationId);
-        return notification && !notification.read ? Math.max(0, prev - 1) : prev;
-      });
+      if (response.ok) {
+        setNotifications(prev => prev.filter(n => n.id !== notificationId));
+        const deletedNotification = notifications.find(n => n.id === notificationId);
+        if (deletedNotification && !deletedNotification.read) {
+          setUnreadCount(prev => Math.max(0, prev - 1));
+        }
+      }
     } catch (error) {
       console.error('Failed to delete notification:', error);
     }
   };
-
-  // Filter notifications based on active tab and filters
-  const filteredNotifications = notifications.filter(notification => {
-    // Tab filtering
-    if (activeTab === 'unread' && notification.read) return false;
-    if (activeTab === 'system' && notification.category !== 'system') return false;
-    if (activeTab === 'security' && notification.category !== 'security') return false;
-    if (activeTab === 'content' && !['content', 'analytics'].includes(notification.category)) return false;
-
-    // Additional filters
-    if (filters.severity.length > 0 && !filters.severity.includes(notification.severity)) return false;
-    if (filters.category.length > 0 && !filters.category.includes(notification.category)) return false;
-    if (filters.type.length > 0 && !filters.type.includes(notification.type)) return false;
-    if (filters.unreadOnly && notification.read) return false;
-
-    return true;
-  });
 
   // Handle notification click
   const handleNotificationClick = (notification: Notification) => {
     if (!notification.read) {
       markAsRead(notification.id);
     }
-    onNotificationClick?.(notification);
+    if (onNotificationClick) {
+      onNotificationClick(notification);
+    }
   };
+
+  // Filter notifications based on active tab
+  const filteredNotifications = notifications.filter(notification => {
+    switch (activeTab) {
+      case 'unread':
+        return !notification.read;
+      case 'system':
+        return notification.category === 'system';
+      case 'security':
+        return notification.category === 'security';
+      case 'content':
+        return notification.category === 'content';
+      default:
+        return true;
+    }
+  });
 
   // Format timestamp
-  const formatTimestamp = (timestamp: Date) => {
+  const formatTimestamp = (timestamp: string) => {
+    const date = new Date(timestamp);
     const now = new Date();
-    const diff = now.getTime() - new Date(timestamp).getTime();
-    const minutes = Math.floor(diff / 60000);
-    const hours = Math.floor(diff / 3600000);
-    const days = Math.floor(diff / 86400000);
-
-    if (minutes < 1) return 'Just now';
-    if (minutes < 60) return `${minutes}m ago`;
-    if (hours < 24) return `${hours}h ago`;
-    if (days < 7) return `${days}d ago`;
-    return new Date(timestamp).toLocaleDateString();
+    const diffInMinutes = Math.floor((now.getTime() - date.getTime()) / (1000 * 60));
+    
+    if (diffInMinutes < 1) return 'Just now';
+    if (diffInMinutes < 60) return `${diffInMinutes}m ago`;
+    if (diffInMinutes < 1440) return `${Math.floor(diffInMinutes / 60)}h ago`;
+    return date.toLocaleDateString();
   };
 
-  // Load notifications on mount and when filters change
   useEffect(() => {
     fetchNotifications();
   }, [fetchNotifications]);
@@ -219,27 +214,27 @@ export function NotificationCenter({ className: _className, onNotificationClick 
           <Button
             variant="text"
             size="small"
-            className="relative"
+            sx={{ position: 'relative' }}
             aria-label="Notifications"
           >
             <Bell className="h-5 w-5 text-black" />
             {unreadCount > 0 && (
-              <Badge
-                variant="destructive"
-                className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 text-xs"
-              >
-                {unreadCount > 99 ? '99+' : unreadCount}
-              </Badge>
+                          <Badge
+              variant="destructive"
+              className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 text-xs"
+            >
+              {unreadCount > 99 ? '99+' : unreadCount}
+            </Badge>
             )}
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-96 p-0" align="end">
-          <div className="flex items-center justify-between p-4 border-b">
-            <h3 className="font-semibold">Notifications</h3>
-            <div className="flex items-center gap-2">
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', p: 2, borderBottom: '1px solid', borderColor: 'divider' }}>
+            <Typography variant="h6" sx={{ fontWeight: 600 }}>Notifications</Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               <Button
-                variant="ghost"
-                size="icon"
+                variant="text"
+                size="small"
                 onClick={fetchNotifications}
                 disabled={isLoading}
               >
@@ -250,13 +245,13 @@ export function NotificationCenter({ className: _className, onNotificationClick 
                   variant="ghost"
                   size="sm"
                   onClick={markAllAsRead}
-                  className="text-xs"
+                  sx={{ fontSize: '0.75rem' }}
                 >
                   Mark all read
                 </Button>
               )}
-            </div>
-          </div>
+            </Box>
+          </Box>
 
           <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as any)}>
             <TabsList className="grid w-full grid-cols-5">
@@ -272,58 +267,81 @@ export function NotificationCenter({ className: _className, onNotificationClick 
             <TabsContent value={activeTab} className="mt-0">
               <ScrollArea className="h-80">
                 {isLoading ? (
-                  <div className="flex items-center justify-center p-8">
+                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', p: 4 }}>
                     <RefreshCw className="h-6 w-6 animate-spin" aria-label="Loading notifications" />
-                  </div>
+                  </Box>
                 ) : filteredNotifications.length === 0 ? (
-                  <div className="flex flex-col items-center justify-center p-8 text-center">
+                  <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', p: 4, textAlign: 'center' }}>
                     <Bell className="h-8 w-8 text-gray-400 mb-2" aria-label="No notifications" />
-                    <p className="text-sm text-gray-500">No notifications</p>
-                  </div>
+                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>No notifications</Typography>
+                  </Box>
                 ) : (
-                  <div className="space-y-1 p-2">
+                  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, p: 1 }}>
                     {filteredNotifications.map((notification) => (
-                      <div
+                      <Paper
                         key={notification.id}
-                        className={cn(
-                          "group relative p-3 rounded-lg border cursor-pointer transition-all hover:bg-gray-50 dark:hover:bg-gray-800",
-                          !notification.read && "bg-blue-50 border-blue-200 dark:bg-blue-950/20 dark:border-blue-800",
-                          notification.read && "opacity-75"
-                        )}
+                        sx={{
+                          position: 'relative',
+                          p: 1.5,
+                          borderRadius: 2,
+                          border: '1px solid',
+                          borderColor: 'divider',
+                          cursor: 'pointer',
+                          transition: 'all 0.2s',
+                          '&:hover': { 
+                            bgcolor: 'action.hover',
+                            '& .dark &': { bgcolor: 'grey.800' }
+                          },
+                          ...(!notification.read && {
+                            bgcolor: 'primary.50',
+                            borderColor: 'primary.200',
+                            '& .dark &': { 
+                              bgcolor: 'primary.950',
+                              borderColor: 'primary.800'
+                            }
+                          }),
+                          ...(notification.read && {
+                            opacity: 0.75
+                          })
+                        }}
                         onClick={() => handleNotificationClick(notification)}
                       >
-                        <div className="flex items-start gap-3">
-                          <div className="flex-shrink-0">
-                            <span className="text-lg">{CATEGORY_ICONS[notification.category]}</span>
-                          </div>
+                        <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1.5 }}>
+                          <Box sx={{ flexShrink: 0 }}>
+                            <Typography variant="h6">{CATEGORY_ICONS[notification.category]}</Typography>
+                          </Box>
                           
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-2 mb-1">
-                              <h4 className="font-medium text-sm leading-tight">
+                          <Box sx={{ flex: 1, minWidth: 0 }}>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.5 }}>
+                              <Typography variant="subtitle2" sx={{ fontWeight: 500, fontSize: '0.875rem', lineHeight: 'tight' }}>
                                 {notification.title}
-                              </h4>
+                              </Typography>
                               <Badge
                                 variant="secondary"
                                 className={cn("text-xs", SEVERITY_COLORS[notification.severity])}
                               >
                                 {notification.severity}
                               </Badge>
-                            </div>
+                            </Box>
                             
-                            <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">
+                            <Typography variant="body2" sx={{ 
+                              color: 'text.secondary', 
+                              mb: 1,
+                              '& .dark &': { color: 'grey.300' }
+                            }}>
                               {notification.message}
-                            </p>
+                            </Typography>
                             
-                            <div className="flex items-center justify-between">
-                              <span className="text-xs text-gray-500">
+                            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                              <Typography variant="caption" sx={{ color: 'text.disabled' }}>
                                 {formatTimestamp(notification.createdAt)}
-                              </span>
+                              </Typography>
                               
                               {notification.actionUrl && (
                                 <Button
                                   variant="ghost"
                                   size="sm"
-                                  className="text-xs"
+                                  sx={{ fontSize: '0.75rem' }}
                                   onClick={(e) => {
                                     e.stopPropagation();
                                     window.open(notification.actionUrl, '_blank');
@@ -332,15 +350,22 @@ export function NotificationCenter({ className: _className, onNotificationClick 
                                   {notification.actionText || 'View'}
                                 </Button>
                               )}
-                            </div>
-                          </div>
+                            </Box>
+                          </Box>
                           
-                          <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <Box sx={{ 
+                            display: 'flex', 
+                            alignItems: 'center', 
+                            gap: 0.5, 
+                            opacity: 0, 
+                            '&:hover': { opacity: 1 }, 
+                            transition: 'opacity 0.2s' 
+                          }}>
                             {!notification.read && (
                               <Button
                                 variant="ghost"
                                 size="icon"
-                                className="h-6 w-6"
+                                sx={{ height: 24, width: 24 }}
                                 onClick={(e) => {
                                   e.stopPropagation();
                                   markAsRead(notification.id);
@@ -352,7 +377,12 @@ export function NotificationCenter({ className: _className, onNotificationClick 
                             <Button
                               variant="ghost"
                               size="icon"
-                              className="h-6 w-6 text-red-500 hover:text-red-700"
+                              sx={{ 
+                                height: 24, 
+                                width: 24, 
+                                color: 'error.main',
+                                '&:hover': { color: 'error.dark' }
+                              }}
                               onClick={(e) => {
                                 e.stopPropagation();
                                 deleteNotification(notification.id);
@@ -360,11 +390,11 @@ export function NotificationCenter({ className: _className, onNotificationClick 
                             >
                               <Trash2 className="h-3 w-3" />
                             </Button>
-                          </div>
-                        </div>
-                      </div>
+                          </Box>
+                        </Box>
+                      </Paper>
                     ))}
-                  </div>
+                  </Box>
                 )}
               </ScrollArea>
             </TabsContent>
