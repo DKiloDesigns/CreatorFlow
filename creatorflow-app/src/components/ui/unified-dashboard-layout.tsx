@@ -51,7 +51,6 @@ import {
   CalendarToday,
   AccessTime,
   TrendingFlat,
-  Psychology,
   Rocket,
   Monitor,
   BarChart,
