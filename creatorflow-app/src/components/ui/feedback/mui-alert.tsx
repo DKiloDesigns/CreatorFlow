@@ -165,9 +165,9 @@ export { AlertTitle } from '@mui/material';
 
 // AlertDescription component for consistent API
 export const AlertDescription: React.FC<React.HTMLAttributes<HTMLDivElement>> = ({ children, ...props }) => (
-  <div className="text-sm leading-relaxed" {...props}>
+  <Box sx={{ fontSize: '0.875rem', lineHeight: 1.625 }} {...props}>
     {children}
-  </div>
+  </Box>
 );
 
 // Success Alert component
