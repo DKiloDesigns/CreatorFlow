@@ -72,7 +72,7 @@ const Skeleton = forwardRef<HTMLDivElement, SkeletonProps>(
               )}
               style={{
                 width: index === lines - 1 ? '75%' : '100%',
-                height: `${sizeClasses[size].replace('h-', '') * 0.25}rem`,
+                height: `${parseInt(sizeClasses[size].replace('h-', '')) * 0.25}rem`,
                 marginBottom: `${spacing}rem`,
               }}
             />
