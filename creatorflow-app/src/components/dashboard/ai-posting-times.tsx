@@ -199,7 +199,7 @@ export function AIPostingTimes({ className }: AIPostingTimesProps) {
         {/* Tips Section */}
         <Box sx={{ p: 2, bgcolor: 'success.50', borderRadius: 2 }}>
           <Typography variant="body2" sx={{ fontWeight: 500, mb: 1.5, display: 'flex', alignItems: 'center', gap: 1 }}>
-            <TrendingUp className="h-4 w-4 text-green-600" />
+            <Box sx={{ color: 'success.600' }}><TrendingUp className="h-4 w-4" /></Box>
             Posting Time Best Practices
           </Typography>
           <Grid container spacing={2} sx={{ fontSize: '0.75rem', color: 'text.secondary' }}>
