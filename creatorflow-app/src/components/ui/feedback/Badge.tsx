@@ -3,6 +3,7 @@
 import React, { forwardRef } from 'react';
 import { cn } from '@/lib/utils';
 import { X } from 'lucide-react';
+import { Box } from '@mui/material';
 
 export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
   variant?: 'default' | 'primary' | 'secondary' | 'success' | 'warning' | 'error' | 'info' | 'outline' | 'ghost';
@@ -96,18 +97,31 @@ const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
         )}
         
         {dismissible && (
-          <button
+          <Box
+            component="button"
             type="button"
             onClick={handleDismiss}
-            className={cn(
-              'flex-shrink-0 ml-1 p-0.5 rounded-sm transition-colors',
-              'hover:bg-black/10 dark:hover:bg-white/10',
-              'focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-current'
-            )}
+            sx={{
+              flexShrink: 0,
+              ml: 0.5,
+              p: 0.25,
+              borderRadius: 0.5,
+              transition: 'colors',
+              '&:hover': {
+                bgcolor: 'rgba(0, 0, 0, 0.1)',
+                '& .dark &': { bgcolor: 'rgba(255, 255, 255, 0.1)' }
+              },
+              '&:focus': {
+                outline: 'none',
+                ring: 2,
+                ringOffset: 1,
+                ringColor: 'currentColor'
+              }
+            }}
             aria-label="Remove badge"
           >
             <X className="w-3 h-3" />
-          </button>
+          </Box>
         )}
       </span>
     );
