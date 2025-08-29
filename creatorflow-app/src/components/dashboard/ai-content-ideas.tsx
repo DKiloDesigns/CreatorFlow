@@ -272,7 +272,7 @@ export function AIContentIdeas({ onIdeaSelect, className }: AIContentIdeasProps)
                       sx={{ p: 0, minWidth: 40 }}
                     >
                       {copiedIndex === index ? (
-                        <Check className="h-4 w-4 text-green-600" />
+                        <Box sx={{ color: 'success.600' }}><Check className="h-4 w-4" /></Box>
                       ) : (
                         <Copy className="h-4 w-4" />
                       )}
