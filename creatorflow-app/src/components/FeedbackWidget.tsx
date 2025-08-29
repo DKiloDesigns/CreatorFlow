@@ -256,7 +256,7 @@ export function FeedbackWidget({
                 </>
               ) : (
                 <>
-                  <Send className="h-4 w-4 mr-1" />
+                  <Box sx={{ mr: 0.5 }}><Send className="h-4 w-4" /></Box>
                   Submit Feedback
                 </>
               )}
