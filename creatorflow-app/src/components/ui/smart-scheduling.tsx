@@ -771,7 +771,7 @@ export default function SmartScheduling({
 
                             {/* Details */}
                             <Grid container spacing={2} sx={{ mb: 2 }}>
-                              <Grid item xs={6}>
+                              <Grid item xs={6} component="div">
                                 <Typography variant="caption" sx={{ color: designTokens.colors.neutral[500] }}>
                                   Platforms
                                 </Typography>
@@ -791,7 +791,7 @@ export default function SmartScheduling({
                                 </Box>
                               </Grid>
                               
-                              <Grid item xs={6}>
+                              <Grid item xs={6} component="div">
                                 <Typography variant="caption" sx={{ color: designTokens.colors.neutral[500] }}>
                                   Frequency
                                 </Typography>
