@@ -517,7 +517,7 @@ export default function PredictiveContentIntelligence() {
                     Predicted Metrics
                   </Typography>
                   <Grid container spacing={2}>
-                    <Grid item xs={6}>
+                    <Grid item xs={6} component="div">
                       <Box sx={{ textAlign: 'center', p: 1 }}>
                         <Typography variant="h6" sx={{ color: designTokens.colors.neutral[900] }}>
                           {(prediction.predictedMetrics.engagement * 100).toFixed(1)}%
