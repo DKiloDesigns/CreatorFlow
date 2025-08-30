@@ -616,7 +616,7 @@ export default function TeamManagement() {
                       </Typography>
                       <Grid container spacing={1}>
                         {Object.entries(role.permissions).map(([key, value]) => (
-                          <Grid item xs={6} key={key}>
+                          <Grid item xs={6} key={key} component="div">
                             <Chip
                               icon={value ? <CheckCircle /> : <VisibilityOff />}
                               label={key.charAt(0).toUpperCase() + key.slice(1)}
