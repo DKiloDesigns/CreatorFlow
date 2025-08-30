@@ -500,7 +500,7 @@ export default function AdvancedAudienceIntelligence() {
       
       <Grid container spacing={3}>
         {audienceSegments.map((segment) => (
-          <Grid item xs={12} lg={4} key={segment.id}>
+          <Grid item xs={12} lg={4} key={segment.id} component="div">
             <Card 
               elevation={0} 
               sx={{ 
