@@ -77,7 +77,7 @@ export function AIContentVoice({ onVoiceSelect, className }: AIContentVoiceProps
             />
           </Grid>
           
-          <Grid item xs={12}>
+          <Grid item xs={12} component="div">
             <Button
               fullWidth
               variant="contained"
