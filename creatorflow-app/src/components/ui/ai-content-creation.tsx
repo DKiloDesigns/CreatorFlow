@@ -831,7 +831,7 @@ export default function AIContentCreation({
             </Grid>
 
             {/* Right Column - AI Insights & Optimization */}
-            <Grid item xs={12} lg={4}>
+            <Grid item xs={12} lg={4} component="div">
               {/* AI Optimization Panel */}
               {aiOptimization && (
                 <Box sx={{ mb: 3 }}>
