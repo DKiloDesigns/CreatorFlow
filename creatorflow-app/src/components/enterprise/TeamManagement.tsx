@@ -833,7 +833,7 @@ export default function TeamManagement() {
           </Card>
         </Grid>
         
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid item xs={12} sm={6} md={3} component="div">
           <Card>
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -976,7 +976,7 @@ export default function TeamManagement() {
               </Typography>
               <Grid container spacing={2}>
                 {Object.entries(roleForm.permissions).map(([key, value]) => (
-                  <Grid item xs={6} key={key}>
+                  <Grid item xs={6} key={key} component="div">
                     <FormControlLabel
                       control={
                         <Switch
