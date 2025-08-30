@@ -659,7 +659,7 @@ export default function APIManagement() {
             
             <Grid container spacing={3}>
               {webhooks.map((webhook) => (
-                <Grid item xs={12} md={6} key={webhook.id}>
+                <Grid item xs={12} md={6} key={webhook.id} component="div">
                   <Card variant="outlined">
                     <CardContent>
                       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
@@ -667,7 +667,7 @@ export default function APIManagement() {
                           <Typography variant="h6" gutterBottom>
                             {webhook.name}
                           </Typography>
-                          <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                          <Typography variant="body2" color="text.secondary">
                             {webhook.url}
                           </Typography>
                         </Box>
