@@ -688,7 +688,7 @@ export default function AdvancedSecurity() {
             
             <Grid container spacing={3}>
               {complianceReports.map((report) => (
-                <Grid item xs={12} md={6} lg={4} key={report.id}>
+                <Grid item xs={12} md={6} lg={4} key={report.id} component="div">
                   <Card variant="outlined">
                     <CardContent>
                       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
