@@ -513,7 +513,7 @@ export default function AdvancedPerformanceMetrics() {
       
       <Grid container spacing={3}>
         {trendAnalysis.map((trend, index) => (
-          <Grid item xs={12} lg={6} key={index}>
+          <Grid item xs={12} lg={6} key={index} component="div">
             <Card elevation={0} sx={{ border: `1px solid ${designTokens.colors.neutral[200]}` }}>
               <CardContent>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
@@ -575,7 +575,7 @@ export default function AdvancedPerformanceMetrics() {
                         </Typography>
                       </Box>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={6} component="div">
                       <Box sx={{ textAlign: 'center' }}>
                         <Typography variant="body2" sx={{ color: designTokens.colors.neutral[600] }}>
                           Confidence
@@ -623,7 +623,7 @@ export default function AdvancedPerformanceMetrics() {
       
       <Grid container spacing={3}>
         {aiInsights.map((insight) => (
-          <Grid item xs={12} md={6} key={insight.id}>
+          <Grid item xs={12} md={6} key={insight.id} component="div">
             <Card elevation={0} sx={{ border: `1px solid ${designTokens.colors.neutral[200]}` }}>
               <CardContent>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
@@ -747,7 +747,7 @@ export default function AdvancedPerformanceMetrics() {
         <Box sx={{ mt: 4 }}>
           <Grid container spacing={3}>
             {[1, 2, 3, 4, 5, 6].map((item) => (
-              <Grid item xs={12} md={6} lg={4} key={item}>
+              <Grid item xs={12} md={6} lg={4} key={item} component="div">
                 <Skeleton variant="rectangular" height={300} />
               </Grid>
             ))}
