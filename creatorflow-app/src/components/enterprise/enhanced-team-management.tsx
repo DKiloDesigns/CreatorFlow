@@ -886,7 +886,7 @@ export default function EnhancedTeamManagement() {
             </Card>
           </Grid>
 
-          <Grid item xs={12} md={3}>
+          <Grid item xs={12} md={3} component="div">
             <Card elevation={0} sx={{ border: `1px solid ${designTokens.colors.neutral[200]}` }}>
               <CardContent sx={{ textAlign: 'center' }}>
                 <Typography variant="h4" sx={{ color: designTokens.colors.primary[600], fontWeight: 'bold' }}>
@@ -899,7 +899,7 @@ export default function EnhancedTeamManagement() {
             </Card>
           </Grid>
 
-          <Grid item xs={12} md={3}>
+          <Grid item xs={12} md={3} component="div">
             <Card elevation={0} sx={{ border: `1px solid ${designTokens.colors.neutral[200]}` }}>
               <CardContent sx={{ textAlign: 'center' }}>
                 <Typography variant="h4" sx={{ color: designTokens.colors.warning[600], fontWeight: 'bold' }}>
@@ -913,7 +913,7 @@ export default function EnhancedTeamManagement() {
           </Grid>
 
           {/* Department Performance */}
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} md={6} component="div">
             <Card elevation={0} sx={{ border: `1px solid ${designTokens.colors.neutral[200]}` }}>
               <CardContent>
                 <Typography variant="h6" sx={{ color: designTokens.colors.neutral[800], mb: 2 }}>
@@ -949,7 +949,7 @@ export default function EnhancedTeamManagement() {
           </Grid>
 
           {/* Top Performers */}
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} md={6} component="div">
             <Card elevation={0} sx={{ border: `1px solid ${designTokens.colors.neutral[200]}` }}>
               <CardContent>
                 <Typography variant="h6" sx={{ color: designTokens.colors.neutral[800], mb: 2 }}>
@@ -981,7 +981,7 @@ export default function EnhancedTeamManagement() {
           </Grid>
 
           {/* AI Recommendations */}
-          <Grid item xs={12}>
+          <Grid item xs={12} component="div">
             <Card elevation={0} sx={{ border: `1px solid ${designTokens.colors.neutral[200]}` }}>
               <CardContent>
                 <Typography variant="h6" sx={{ color: designTokens.colors.neutral[800], mb: 2 }}>
@@ -989,7 +989,7 @@ export default function EnhancedTeamManagement() {
                 </Typography>
                 <Grid container spacing={2}>
                   {teamAnalytics.aiRecommendations.map((recommendation, index) => (
-                    <Grid item xs={12} md={6} key={index}>
+                    <Grid item xs={12} md={6} key={index} component="div">
                       <Box sx={{ 
                         p: 2, 
                         background: designTokens.colors.ai[50], 
@@ -1025,7 +1025,7 @@ export default function EnhancedTeamManagement() {
         <Box sx={{ mt: 4 }}>
           <Grid container spacing={3}>
             {[1, 2, 3, 4, 5].map((item) => (
-              <Grid item xs={12} md={6} lg={4} key={item}>
+              <Grid item xs={12} md={6} lg={4} key={item} component="div">
                 <Skeleton variant="rectangular" height={300} />
               </Grid>
             ))}
