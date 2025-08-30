@@ -221,7 +221,7 @@ export function AIProviderSelector({
               <Typography variant="body2" className="text-gray-600">Start with <strong>CreatorFlow AI</strong> or <strong>DeepSeek</strong> - both free and easy to use.</Typography>
             </Box>
           </Grid>
-          <Grid item xs={12} md={4}>
+          <Grid item xs={12} md={4} component="div">
             <Box className="space-y-2">
               <Typography variant="subtitle1" className="font-medium text-gray-800">💰 For Budget-Conscious</Typography>
               <Typography variant="body2" className="text-gray-600">Try <strong>Google AI</strong> or <strong>Hugging Face</strong> - excellent quality at low cost.</Typography>
