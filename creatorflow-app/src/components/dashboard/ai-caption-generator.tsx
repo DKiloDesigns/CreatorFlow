@@ -114,7 +114,7 @@ export function AICaptionGenerator({ onCaptionSelect, className }: AICaptionGene
         {/* Input Fields */}
         <Box sx={{ mt: 2 }}>
           <Grid container spacing={2}>
-            <Grid item xs={12}>
+            <Grid item xs={12} component="div">
               <TextField
                 label="Content Description"
                 multiline
