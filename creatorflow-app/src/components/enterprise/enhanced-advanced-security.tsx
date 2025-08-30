@@ -523,7 +523,7 @@ export default function EnhancedAdvancedSecurity() {
 
       <Grid container spacing={3}>
         {compliance.map((report) => (
-          <Grid item xs={12} md={6} lg={4} key={report.id}>
+          <Grid item xs={12} md={6} lg={4} key={report.id} component="div">
             <Card elevation={0} sx={{ border: `1px solid ${designTokens.colors.neutral[200]}` }}>
               <CardContent>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
@@ -622,7 +622,7 @@ export default function EnhancedAdvancedSecurity() {
         <Box sx={{ mt: 4 }}>
           <Grid container spacing={3}>
             {[1, 2, 3].map((item) => (
-              <Grid item xs={12} md={6} lg={4} key={item}>
+              <Grid item xs={12} md={6} lg={4} key={item} component="div">
                 <Skeleton variant="rectangular" height={300} />
               </Grid>
             ))}
