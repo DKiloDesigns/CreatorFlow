@@ -168,7 +168,7 @@ export function InsightsPanel({ insights, onRefresh }: InsightsPanelProps) {
                     <Typography variant="subtitle2" sx={{ fontWeight: 500, color: 'grey.900', mb: 1 }}>Key Data:</Typography>
                     <Grid container spacing={1} sx={{ fontSize: '0.875rem' }}>
                       {Object.entries(insight.data).map(([key, value]) => (
-                        <Grid item xs={6} key={key}>
+                        <Grid item xs={6} key={key} component="div">
                           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                             <Typography variant="body2" sx={{ color: 'grey.600' }}>{key}:</Typography>
                             <Typography variant="body2" sx={{ fontWeight: 500 }}>{String(value)}</Typography>
