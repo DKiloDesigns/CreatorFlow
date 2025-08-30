@@ -509,7 +509,7 @@ export default function CompetitiveIntelligence() {
                         </Typography>
                       </Box>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={6} component="div">
                       <Box sx={{ textAlign: 'center' }}>
                         <Typography variant="h5" sx={{ color: designTokens.colors.success[600], fontWeight: 'bold' }}>
                           {competitor.engagement}%
@@ -586,7 +586,7 @@ export default function CompetitiveIntelligence() {
       
       <Grid container spacing={3}>
         {marketAnalysis.map((market) => (
-          <Grid item xs={12} lg={6} key={market.id}>
+          <Grid item xs={12} lg={6} key={market.id} component="div">
             <Card elevation={0} sx={{ border: `1px solid ${designTokens.colors.neutral[200]}` }}>
               <CardContent>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
@@ -656,7 +656,7 @@ export default function CompetitiveIntelligence() {
       
       <Grid container spacing={3}>
         {competitiveGaps.map((gap) => (
-          <Grid item xs={12} md={6} key={gap.id}>
+          <Grid item xs={12} md={6} key={gap.id} component="div">
             <Card elevation={0} sx={{ border: `1px solid ${designTokens.colors.neutral[200]}` }}>
               <CardContent>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
@@ -677,7 +677,7 @@ export default function CompetitiveIntelligence() {
 
                 <Box sx={{ mb: 3 }}>
                   <Grid container spacing={2}>
-                    <Grid item xs={4}>
+                    <Grid item xs={4} component="div">
                       <Box sx={{ textAlign: 'center' }}>
                         <Typography variant="h5" sx={{ color: designTokens.colors.neutral[800], fontWeight: 'bold' }}>
                           {gap.yourPerformance}
@@ -687,7 +687,7 @@ export default function CompetitiveIntelligence() {
                         </Typography>
                       </Box>
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item xs={4} component="div">
                       <Box sx={{ textAlign: 'center' }}>
                         <Typography variant="h5" sx={{ color: designTokens.colors.primary[600], fontWeight: 'bold' }}>
                           {gap.competitorPerformance}
@@ -697,7 +697,7 @@ export default function CompetitiveIntelligence() {
                         </Typography>
                       </Box>
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item xs={4} component="div">
                       <Box sx={{ textAlign: 'center' }}>
                         <Typography variant="h5" sx={{ 
                           color: gap.gap > 0 ? designTokens.colors.success[600] : designTokens.colors.error[600], 
@@ -741,7 +741,7 @@ export default function CompetitiveIntelligence() {
         <Box sx={{ mt: 4 }}>
           <Grid container spacing={3}>
             {[1, 2, 3].map((item) => (
-              <Grid item xs={12} lg={4} key={item}>
+              <Grid item xs={12} lg={4} key={item} component="div">
                 <Skeleton variant="rectangular" height={400} />
               </Grid>
             ))}
