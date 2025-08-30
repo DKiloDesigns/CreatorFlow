@@ -227,7 +227,7 @@ export function AIProviderSelector({
               <Typography variant="body2" className="text-gray-600">Try <strong>Google AI</strong> or <strong>Hugging Face</strong> - excellent quality at low cost.</Typography>
             </Box>
           </Grid>
-          <Grid item xs={12} md={4}>
+          <Grid item xs={12} md={4} component="div">
             <Box className="space-y-2">
               <Typography variant="subtitle1" className="font-medium text-gray-800">🔒 For Privacy</Typography>
               <Typography variant="body2" className="text-gray-600">Use <strong>Local AI (Ollama)</strong> - runs completely on your device.</Typography>
