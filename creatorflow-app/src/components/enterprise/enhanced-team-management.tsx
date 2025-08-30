@@ -697,7 +697,7 @@ export default function EnhancedTeamManagement() {
                         </Typography>
                       </Box>
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item xs={4} component="div">
                       <Box sx={{ textAlign: 'center' }}>
                         <Typography variant="h6" sx={{ color: designTokens.colors.primary[600], fontWeight: 'bold' }}>
                           {dept.performance.collaboration}%
@@ -707,7 +707,7 @@ export default function EnhancedTeamManagement() {
                         </Typography>
                       </Box>
                     </Grid>
-                    <Grid item xs={4}>
+                    <Grid item xs={4} component="div">
                       <Box sx={{ textAlign: 'center' }}>
                         <Typography variant="h6" sx={{ color: designTokens.colors.warning[600], fontWeight: 'bold' }}>
                           {dept.performance.innovation}%
