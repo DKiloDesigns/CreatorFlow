@@ -496,7 +496,7 @@ export default function EnhancedTeamManagement() {
             member.department.toLowerCase().includes(searchTerm.toLowerCase())
           )
           .map((member) => (
-          <Grid item xs={12} md={6} lg={4} key={member.id}>
+          <Grid item xs={12} md={6} lg={4} key={member.id} component="div">
             <Card 
               elevation={0} 
               sx={{ 
@@ -687,7 +687,7 @@ export default function EnhancedTeamManagement() {
                     Performance Metrics
                   </Typography>
                   <Grid container spacing={2}>
-                    <Grid item xs={4}>
+                    <Grid item xs={4} component="div">
                       <Box sx={{ textAlign: 'center' }}>
                         <Typography variant="h6" sx={{ color: designTokens.colors.success[600], fontWeight: 'bold' }}>
                           {dept.performance.productivity}%
