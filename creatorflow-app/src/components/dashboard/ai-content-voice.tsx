@@ -125,7 +125,7 @@ export function AIContentVoice({ onVoiceSelect, className }: AIContentVoiceProps
             </Box>
           </Grid>
 
-          <Grid item xs={12}>
+          <Grid item xs={12} component="div">
             <Typography variant="body2" color="text.secondary">
               Select a voice style to see how your content would sound with that tone and personality.
             </Typography>
