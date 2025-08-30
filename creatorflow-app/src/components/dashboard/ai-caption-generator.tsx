@@ -142,7 +142,7 @@ export function AICaptionGenerator({ onCaptionSelect, className }: AICaptionGene
               </TextField>
             </Grid>
 
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={6} component="div">
               <TextField
                 label="Tone"
                 select
@@ -157,7 +157,7 @@ export function AICaptionGenerator({ onCaptionSelect, className }: AICaptionGene
               </TextField>
             </Grid>
 
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={6} component="div">
               <TextField
                 label="Industry (Optional)"
                 select
@@ -173,7 +173,7 @@ export function AICaptionGenerator({ onCaptionSelect, className }: AICaptionGene
               </TextField>
             </Grid>
 
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={6} component="div">
               <TextField
                 label="Target Audience (Optional)"
                 multiline
@@ -229,10 +229,10 @@ export function AICaptionGenerator({ onCaptionSelect, className }: AICaptionGene
                 }}
               >
                 <Grid container spacing={1}>
-                  <Grid item xs={12}>
+                  <Grid item xs={12} component="div">
                     <Typography variant="body2">{caption.caption}</Typography>
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid item xs={12} component="div">
                     <Box sx={{ display: 'flex', gap: 1 }}>
                       <Chip label={caption.tone} variant="outlined" size="small" />
                       <Chip label={caption.platform} variant="outlined" size="small" />
@@ -244,7 +244,7 @@ export function AICaptionGenerator({ onCaptionSelect, className }: AICaptionGene
                       )}
                     </Box>
                   </Grid>
-                  <Grid item xs={12}>
+                  <Grid item xs={12} component="div">
                     <Box sx={{ display: 'flex', gap: 1 }}>
                       <Button
                         variant="text"
