@@ -124,7 +124,7 @@ export default function AboutPage() {
               </Box>
             </Grid>
             
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} md={4} component="div">
               <Box sx={{ textAlign: 'center' }}>
                 <Box sx={{ 
                   width: 64, 
@@ -174,7 +174,7 @@ export default function AboutPage() {
           </Box>
           
           <Grid container spacing={4}>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={6} component="div">
               <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
                 <Box sx={{ 
                   width: 48, 
@@ -208,7 +208,7 @@ export default function AboutPage() {
               </Box>
             </Grid>
             
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={6} component="div">
               <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
                 <Box sx={{ 
                   width: 48, 
@@ -242,7 +242,7 @@ export default function AboutPage() {
               </Box>
             </Grid>
             
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={6} component="div">
               <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
                 <Box sx={{ 
                   width: 48, 
@@ -276,7 +276,7 @@ export default function AboutPage() {
               </Box>
             </Grid>
             
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={6} component="div">
               <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
                 <Box sx={{ 
                   width: 48, 
@@ -339,7 +339,7 @@ export default function AboutPage() {
           </Box>
           
           <Grid container spacing={4}>
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} md={4} component="div">
               <Box sx={{ textAlign: 'center' }}>
                 <Box sx={{ 
                   width: 96, 
@@ -381,7 +381,7 @@ export default function AboutPage() {
               </Box>
             </Grid>
             
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} md={4} component="div">
               <Box sx={{ textAlign: 'center' }}>
                 <Box sx={{ 
                   width: 96, 
@@ -423,7 +423,7 @@ export default function AboutPage() {
               </Box>
             </Grid>
             
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} md={4} component="div">
               <Box sx={{ textAlign: 'center' }}>
                 <Box sx={{ 
                   width: 96, 

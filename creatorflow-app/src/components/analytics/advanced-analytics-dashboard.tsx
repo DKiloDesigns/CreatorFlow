@@ -220,7 +220,7 @@ export function AdvancedAnalyticsDashboard({
           </Card>
         </Grid>
 
-        <Grid item xs={12} md={6} lg={3}>
+        <Grid item xs={12} md={6} lg={3} component="div">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <Typography variant="h6" className="text-sm font-medium">Total Engagement</Typography>
@@ -235,7 +235,7 @@ export function AdvancedAnalyticsDashboard({
           </Card>
         </Grid>
 
-        <Grid item xs={12} md={6} lg={3}>
+        <Grid item xs={12} md={6} lg={3} component="div">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <Typography variant="h6" className="text-sm font-medium">Avg Engagement Rate</Typography>
@@ -250,7 +250,7 @@ export function AdvancedAnalyticsDashboard({
           </Card>
         </Grid>
 
-        <Grid item xs={12} md={6} lg={3}>
+        <Grid item xs={12} md={6} lg={3} component="div">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <Typography variant="h6" className="text-sm font-medium">Total Reach</Typography>
@@ -277,7 +277,7 @@ export function AdvancedAnalyticsDashboard({
 
         <TabsContent value="overview" className="space-y-4">
           <Grid container spacing={3}>
-            <Grid item xs={12} lg={6}>
+            <Grid item xs={12} lg={6} component="div">
               <Card>
                 <CardHeader>
                   <Typography variant="h6">Engagement Trends</Typography>
@@ -291,7 +291,7 @@ export function AdvancedAnalyticsDashboard({
               </Card>
             </Grid>
 
-            <Grid item xs={12} lg={6}>
+            <Grid item xs={12} lg={6} component="div">
               <Card>
                 <CardHeader>
                   <Typography variant="h6">Audience Growth</Typography>

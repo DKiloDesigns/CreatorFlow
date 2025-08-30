@@ -281,7 +281,7 @@ export default function ColorContrastPage() {
         </Grid>
 
         {/* Results Display */}
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={6} component="div">
           <Card>
             <CardContent>
               <Typography variant="h6" gutterBottom>Test Results</Typography>
@@ -296,13 +296,13 @@ export default function ColorContrastPage() {
                   </Box>
 
                   <Grid container spacing={2} sx={{ mb: 2 }}>
-                    <Grid item xs={6}>
+                    <Grid item xs={6} component="div">
                       <Typography variant="body2" color="text.secondary">Contrast Ratio</Typography>
                       <Typography variant="h4" color="primary">
                         {testResult.ratio.toFixed(2)}:1
                       </Typography>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={6} component="div">
                       <Typography variant="body2" color="text.secondary">WCAG 2.1 AA</Typography>
                       <Chip 
                         label={testResult.wcagAA ? 'PASS' : 'FAIL'} 
@@ -356,7 +356,7 @@ export default function ColorContrastPage() {
         </Grid>
 
         {/* Bulk Testing */}
-        <Grid item xs={12}>
+        <Grid item xs={12} component="div">
           <Card>
             <CardContent>
               <Typography variant="h6" gutterBottom>Bulk Testing</Typography>
@@ -411,7 +411,7 @@ export default function ColorContrastPage() {
                   <Typography variant="subtitle2" gutterBottom>Bulk Test Results</Typography>
                   <Grid container spacing={1}>
                     {bulkTestResults.map((result, index) => (
-                      <Grid item xs={12} sm={6} md={4} key={index}>
+                      <Grid item xs={12} sm={6} md={4} key={index} component="div">
                         <Paper sx={{ p: 1, border: '1px solid', borderColor: 'divider' }}>
                           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
                             {getStatusIcon(result.status)}
@@ -436,7 +436,7 @@ export default function ColorContrastPage() {
         </Grid>
 
         {/* Recent Tests */}
-        <Grid item xs={12}>
+        <Grid item xs={12} component="div">
           <Card>
             <CardContent>
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
@@ -454,7 +454,7 @@ export default function ColorContrastPage() {
               {recentTests.length > 0 ? (
                 <Grid container spacing={1}>
                   {recentTests.map((test, index) => (
-                    <Grid item xs={12} sm={6} md={4} key={index}>
+                    <Grid item xs={12} sm={6} md={4} key={index} component="div">
                       <Paper sx={{ p: 1, border: '1px solid', borderColor: 'divider' }}>
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
                           {getStatusIcon(test.status)}

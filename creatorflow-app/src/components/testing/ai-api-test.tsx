@@ -488,7 +488,7 @@ export default function AIAPITest() {
               Test Results Summary
             </Typography>
             <Grid container spacing={2}>
-              <Grid item xs={12} md={3}>
+              <Grid item xs={12} md={3} component="div">
                 <Box sx={{ textAlign: 'center' }}>
                   <Typography variant="h4" sx={{ color: designTokens.colors.neutral[900] }}>
                     {totalTests}
@@ -508,7 +508,7 @@ export default function AIAPITest() {
                   </Typography>
                 </Box>
               </Grid>
-              <Grid item xs={12} md={3}>
+              <Grid item xs={12} md={3} component="div">
                 <Box sx={{ textAlign: 'center' }}>
                   <Typography variant="h4" sx={{ color: designTokens.colors.error[600] }}>
                     {errorCount}
@@ -518,7 +518,7 @@ export default function AIAPITest() {
                   </Typography>
                 </Box>
               </Grid>
-              <Grid item xs={12} md={3}>
+              <Grid item xs={12} md={3} component="div">
                 <Box sx={{ textAlign: 'center' }}>
                   <Typography variant="h4" sx={{ color: designTokens.colors.primary[600] }}>
                     {totalTests > 0 ? Math.round((successCount / totalTests) * 100) : 0}%
@@ -580,7 +580,7 @@ export default function AIAPITest() {
             Sample Test Data
           </Typography>
           <Grid container spacing={2}>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={6} component="div">
               <Card elevation={0} sx={{ border: `1px solid ${designTokens.colors.neutral[200]}` }}>
                 <CardContent>
                   <Typography variant="h6" sx={{ mb: 2, color: designTokens.colors.neutral[800] }}>
@@ -592,7 +592,7 @@ export default function AIAPITest() {
                 </CardContent>
               </Card>
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={6} component="div">
               <Card elevation={0} sx={{ border: `1px solid ${designTokens.colors.neutral[200]}` }}>
                 <CardContent>
                   <Typography variant="h6" sx={{ mb: 2, color: designTokens.colors.neutral[800] }}>
@@ -661,7 +661,7 @@ export default function AIAPITest() {
                 </AccordionSummary>
                 <AccordionDetails>
                   <Grid container spacing={3}>
-                    <Grid item xs={12} md={6}>
+                    <Grid item xs={12} md={6} component="div">
                       <Typography variant="subtitle2" sx={{ mb: 2, color: designTokens.colors.neutral[800] }}>
                         Request
                       </Typography>
@@ -672,7 +672,7 @@ export default function AIAPITest() {
                       </Box>
                     </Grid>
                     
-                    <Grid item xs={12} md={6}>
+                    <Grid item xs={12} md={6} component="div">
                       {result.status === 'success' && result.response ? (
                         <>
                           <Typography variant="subtitle2" sx={{ mb: 2, color: designTokens.colors.neutral[800] }}>
@@ -715,7 +715,7 @@ export default function AIAPITest() {
           API Service Status
         </Typography>
         <Grid container spacing={2}>
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} md={6} component="div">
             <Card elevation={0} sx={{ border: `1px solid ${designTokens.colors.neutral[200] }` }}>
               <CardContent>
                 <Typography variant="h6" sx={{ mb: 2, color: designTokens.colors.neutral[800] }}>
@@ -733,7 +733,7 @@ export default function AIAPITest() {
             </Card>
           </Grid>
           
-          <Grid item xs={12} md={6}>
+          <Grid item xs={12} md={6} component="div">
             <Card elevation={0} sx={{ border: `1px solid ${designTokens.colors.neutral[200] }` }}>
               <CardContent>
                 <Typography variant="h6" sx={{ mb: 2, color: designTokens.colors.neutral[800] }}>
