@@ -313,7 +313,7 @@ export default function EnhancedAdvancedSecurity() {
 
       <Grid container spacing={3}>
         {threats.map((threat) => (
-          <Grid item xs={12} md={6} lg={4} key={threat.id}>
+          <Grid item xs={12} md={6} lg={4} key={threat.id} component="div">
             <Card elevation={0} sx={{ border: `1px solid ${designTokens.colors.neutral[200]}` }}>
               <CardContent>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
