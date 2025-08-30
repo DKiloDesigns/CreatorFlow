@@ -444,7 +444,7 @@ export default function EnterpriseAnalytics() {
             
             <Grid container spacing={3}>
               {dashboards.map((dashboard) => (
-                <Grid item xs={12} md={6} lg={4} key={dashboard.id}>
+                <Grid item xs={12} md={6} lg={4} key={dashboard.id} component="div">
                   <Card variant="outlined" sx={{ height: '100%' }}>
                     <CardContent>
                       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
