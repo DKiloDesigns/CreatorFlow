@@ -99,7 +99,7 @@ export function TrialStatus({ trialStartDate, trialEndDate, className }: TrialSt
                   <Typography variant="body2" color="text.secondary">Days</Typography>
                 </Box>
               </Grid>
-              <Grid item xs={3}>
+              <Grid item xs={3} component="div">
                 <Box sx={{ bgcolor: 'background.paper', p: 2, borderRadius: 1 }}>
                   <Typography variant="h6" color="text.primary">{timeLeft.hours}</Typography>
                   <Typography variant="body2" color="text.secondary">Hours</Typography>
