@@ -596,7 +596,7 @@ export default function IntegrationHub() {
           </Card>
         </Grid>
         
-        <Grid item xs={12} md={3}>
+        <Grid item xs={12} md={3} component="div">
           <Card>
             <CardContent>
               <Typography color="text.secondary" gutterBottom>
