@@ -137,7 +137,7 @@ export function AdvancedAnalyticsDashboard({
         </Box>
         <Grid container spacing={3}>
           {[...Array(4)].map((_, i) => (
-            <Grid item xs={12} md={6} lg={3} key={i}>
+            <Grid item xs={12} md={6} lg={3} key={i} component="div">
               <Card sx={{ animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite' }}>
                 <CardHeader sx={{ pb: 1 }}>
                   <Box sx={{ height: 16, bgcolor: 'grey.200', borderRadius: 1, width: '75%' }}></Box>
@@ -205,7 +205,7 @@ export function AdvancedAnalyticsDashboard({
 
       {/* Key Metrics Cards */}
       <Grid container spacing={3}>
-        <Grid item xs={12} md={6} lg={3}>
+        <Grid item xs={12} md={6} lg={3} component="div">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <Typography variant="h6" className="text-sm font-medium">Total Posts</Typography>
