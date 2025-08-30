@@ -554,7 +554,7 @@ export default function AdvancedAudienceIntelligence() {
                         </Typography>
                       </Box>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={6} component="div">
                       <Box sx={{ textAlign: 'center' }}>
                         <Typography variant="h5" sx={{ color: designTokens.colors.primary[600], fontWeight: 'bold' }}>
                           {segment.engagement}%
@@ -636,7 +636,7 @@ export default function AdvancedAudienceIntelligence() {
       
       <Grid container spacing={3}>
         {behavioralPatterns.map((pattern) => (
-          <Grid item xs={12} md={6} key={pattern.id}>
+          <Grid item xs={12} md={6} key={pattern.id} component="div">
             <Card elevation={0} sx={{ border: `1px solid ${designTokens.colors.neutral[200]}` }}>
               <CardContent>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
@@ -722,7 +722,7 @@ export default function AdvancedAudienceIntelligence() {
       
       <Grid container spacing={3}>
         {audiencePredictions.map((prediction) => (
-          <Grid item xs={12} md={6} lg={4} key={prediction.segmentId}>
+          <Grid item xs={12} md={6} lg={4} key={prediction.segmentId} component="div">
             <Card elevation={0} sx={{ border: `1px solid ${designTokens.colors.neutral[200]}` }}>
               <CardContent>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
@@ -746,7 +746,7 @@ export default function AdvancedAudienceIntelligence() {
 
                 <Box sx={{ mb: 3 }}>
                   <Grid container spacing={2}>
-                    <Grid item xs={6}>
+                    <Grid item xs={6} component="div">
                       <Box sx={{ textAlign: 'center' }}>
                         <Typography variant="h5" sx={{ color: designTokens.colors.neutral[800], fontWeight: 'bold' }}>
                           {prediction.currentValue}
@@ -756,7 +756,7 @@ export default function AdvancedAudienceIntelligence() {
                         </Typography>
                       </Box>
                     </Grid>
-                    <Grid item xs={6}>
+                    <Grid item xs={6} component="div">
                       <Box sx={{ textAlign: 'center' }}>
                         <Typography variant="h5" sx={{ color: designTokens.colors.primary[600], fontWeight: 'bold' }}>
                           {prediction.predictedValue}
@@ -828,7 +828,7 @@ export default function AdvancedAudienceIntelligence() {
         <Box sx={{ mt: 4 }}>
           <Grid container spacing={3}>
             {[1, 2, 3].map((item) => (
-              <Grid item xs={12} lg={4} key={item}>
+              <Grid item xs={12} lg={4} key={item} component="div">
                 <Skeleton variant="rectangular" height={400} />
               </Grid>
             ))}
