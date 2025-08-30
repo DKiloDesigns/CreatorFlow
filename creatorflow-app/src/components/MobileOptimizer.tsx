@@ -246,7 +246,7 @@ export default function MobileOptimizer() {
           </Card>
         </Grid>
 
-        <Grid item xs={12} md={3}>
+        <Grid item xs={12} md={3} component="div">
           <Card>
             <CardHeader sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', pb: 1 }}>
               <Typography variant="subtitle2" component="div">Network</Typography>
@@ -263,7 +263,7 @@ export default function MobileOptimizer() {
           </Card>
         </Grid>
 
-        <Grid item xs={12} md={3}>
+        <Grid item xs={12} md={3} component="div">
           <Card>
             <CardHeader sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', pb: 1 }}>
               <Typography variant="subtitle2" component="div">Battery</Typography>
@@ -294,7 +294,7 @@ export default function MobileOptimizer() {
 
         <TabPanel value={activeTab} index="overview">
           <Grid container spacing={3}>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={6} component="div">
               <Card>
                 <CardHeader>
                   <Typography variant="subtitle2" component="div" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -328,7 +328,7 @@ export default function MobileOptimizer() {
               </Card>
             </Grid>
 
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={6} component="div">
               <Card>
                 <CardHeader>
                   <Typography variant="subtitle2" component="div" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
