@@ -78,7 +78,7 @@ export function TrialStatus({ trialStartDate, trialEndDate, className }: TrialSt
       </CardHeader>
       <CardContent>
         <Grid container spacing={2} alignItems="center">
-          <Grid item xs={12}>
+          <Grid item xs={12} component="div">
             <Typography variant="body2" sx={{ fontWeight: 'medium' }}>Trial Progress</Typography>
             <Chip
               label={isExpired ? "Expired" : isExpiringSoon ? "Expiring Soon" : "Active"}
@@ -87,7 +87,7 @@ export function TrialStatus({ trialStartDate, trialEndDate, className }: TrialSt
             />
           </Grid>
 
-          <Grid item xs={12}>
+          <Grid item xs={12} component="div">
             <LinearProgress variant="determinate" value={progress} sx={{ height: 8 }} />
           </Grid>
 
