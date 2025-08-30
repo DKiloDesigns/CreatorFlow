@@ -75,7 +75,7 @@ export function VirtualList<T>({
 
   return (
     <Box
-      className={className}
+      sx={className ? { ...className } : {}}
       style={{
         height: containerHeight,
         overflow: 'auto',
@@ -223,7 +223,7 @@ export function InfiniteVirtualList<T>({
 
   return (
     <Box
-      className={className}
+      sx={className ? { ...className } : {}}
       style={{
         height: containerHeight,
         overflow: 'auto',
