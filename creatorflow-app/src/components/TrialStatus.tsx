@@ -140,7 +140,7 @@ export function TrialStatus({ trialStartDate, trialEndDate, className }: TrialSt
           </Grid>
 
           {isExpiringSoon && !isExpired && (
-            <Grid item xs={12}>
+            <Grid item xs={12} component="div">
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, p: 2, bgcolor: 'warning.light', borderRadius: 1 }}>
                 <Box sx={{ color: 'warning.600' }}><Clock className="h-4 w-4" /></Box>
                 <Typography variant="body2" color="warning.dark">
