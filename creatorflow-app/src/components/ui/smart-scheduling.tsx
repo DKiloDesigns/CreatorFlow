@@ -592,7 +592,7 @@ export default function SmartScheduling({
                 
                 <Grid container spacing={3}>
                   {optimalTimes.map((time, index) => (
-                    <Grid item xs={12} md={6} lg={4} key={index}>
+                    <Grid item xs={12} md={6} lg={4} key={index} component="div">
                       <Fade in={true} timeout={300 + index * 100}>
                         <Card 
                           elevation={0}
