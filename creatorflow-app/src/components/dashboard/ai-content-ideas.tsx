@@ -224,7 +224,7 @@ export function AIContentIdeas({ onIdeaSelect, className }: AIContentIdeasProps)
                 }}
               >
                 <Grid container spacing={1}>
-                  <Grid item xs={12} md={8}>
+                  <Grid item xs={12} md={8} component="div">
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 0.5 }}>
                       <Typography variant="subtitle2" component="h4">{idea.title}</Typography>
                       <Badge variant="outline" sx={{ fontSize: '0.75rem' }}>
