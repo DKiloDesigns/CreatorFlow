@@ -228,7 +228,7 @@ export default function EnhancedAPIManagement() {
 
       <Grid container spacing={3}>
         {apiKeys.map((key) => (
-          <Grid item xs={12} md={6} key={key.id}>
+          <Grid item xs={12} md={6} key={key.id} component="div">
             <Card elevation={0} sx={{ border: `1px solid ${designTokens.colors.neutral[200]}` }}>
               <CardContent>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
