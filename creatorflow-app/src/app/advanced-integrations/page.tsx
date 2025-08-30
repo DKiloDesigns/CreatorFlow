@@ -245,7 +245,7 @@ export default function AdvancedIntegrationsPage() {
 
       {/* Integration Overview */}
       <Grid container spacing={2}>
-        <Grid item xs={12} md={3}>
+        <Grid item xs={12} md={3} component="div">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <Typography variant="h6" className="text-sm font-medium">Total Integrations</Typography>
