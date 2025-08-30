@@ -721,7 +721,7 @@ export default function AIWorkflowAutomation() {
 
       <Grid container spacing={3}>
         {/* Overall Performance */}
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={6} component="div">
           <Card elevation={0} sx={{ border: `1px solid ${designTokens.colors.neutral[200]}` }}>
             <CardContent>
               <Typography variant="h6" sx={{ mb: 2, color: designTokens.colors.neutral[900] }}>
