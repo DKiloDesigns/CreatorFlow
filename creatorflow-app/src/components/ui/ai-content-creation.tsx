@@ -895,7 +895,7 @@ export default function AIContentCreation({
                                 </Typography>
                               </Box>
                             </Grid>
-                            <Grid item xs={6}>
+                            <Grid item xs={6} component="div">
                               <Box sx={{ textAlign: 'center', p: 2, background: 'white', borderRadius: designTokens.borderRadius.md }}>
                                 <Typography variant="h4" sx={{ color: designTokens.colors.primary[600], fontWeight: 'bold' }}>
                                   {performancePrediction.reach.toLocaleString()}
