@@ -499,7 +499,7 @@ export default function CompetitiveIntelligence() {
 
                 <Box sx={{ mb: 3 }}>
                   <Grid container spacing={2}>
-                    <Grid item xs={6}>
+                    <Grid item xs={6} component="div">
                       <Box sx={{ textAlign: 'center' }}>
                         <Typography variant="h5" sx={{ color: designTokens.colors.primary[600], fontWeight: 'bold' }}>
                           {competitor.followers.toLocaleString()}
