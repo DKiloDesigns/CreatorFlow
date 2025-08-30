@@ -197,7 +197,7 @@ export default function SettingsPage() {
             </CardHeader>
             <CardContent className="space-y-6">
               <Grid container spacing={2}>
-                <Grid item xs={12} md={6}>
+                <Grid item xs={12} md={6} component="div">
                   <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                       <InputLabel>Animations</InputLabel>
