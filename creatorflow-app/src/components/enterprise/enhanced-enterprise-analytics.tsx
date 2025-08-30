@@ -572,7 +572,7 @@ export default function EnhancedEnterpriseAnalytics() {
 
       <Grid container spacing={3}>
         {dashboards.map((dashboard) => (
-          <Grid item xs={12} md={6} lg={4} key={dashboard.id}>
+          <Grid item xs={12} md={6} lg={4} key={dashboard.id} component="div">
             <Card 
               elevation={0} 
               sx={{ 
