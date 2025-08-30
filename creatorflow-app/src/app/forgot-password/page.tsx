@@ -77,7 +77,7 @@ export default function ForgotPasswordPage() {
           <CardContent>
             <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
               <Grid container spacing={2}>
-                <Grid item xs={12}>
+                <Grid item xs={12} component="div">
                   <TextField
                     label="Email"
                     type="email"
@@ -108,7 +108,7 @@ export default function ForgotPasswordPage() {
                   </Grid>
                 )}
 
-                <Grid item xs={12}>
+                <Grid item xs={12} component="div">
                   <Button type="submit" fullWidth variant="contained" disabled={isLoading}>
                     {isLoading ? 'Sending...' : 'Send Reset Link'}
                   </Button>
