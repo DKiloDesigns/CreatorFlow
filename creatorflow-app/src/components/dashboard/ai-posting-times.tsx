@@ -163,7 +163,7 @@ export function AIPostingTimes({ className }: AIPostingTimesProps) {
                       </Typography>
                       <Grid container spacing={1}>
                         {suggestion.best_times.map((time, timeIndex) => (
-                          <Grid item xs={6} md={4} key={timeIndex}>
+                          <Grid item xs={6} md={4} key={timeIndex} component="div">
                             <Box sx={{ 
                               display: 'flex', 
                               alignItems: 'center', 
