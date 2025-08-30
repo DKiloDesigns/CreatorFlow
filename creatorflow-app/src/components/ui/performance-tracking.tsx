@@ -997,7 +997,7 @@ export default function PerformanceTracking({
 
                             {/* Current vs Previous */}
                             <Grid container spacing={2} sx={{ mb: 3 }}>
-                              <Grid item xs={6}>
+                              <Grid item xs={6} component="div">
                                 <Box sx={{ textAlign: 'center', p: 2, background: designTokens.colors.primary[50], borderRadius: designTokens.borderRadius.md }}>
                                   <Typography variant="h5" sx={{ color: designTokens.colors.primary[600], fontWeight: 'bold' }}>
                                     {trend.currentValue}
@@ -1007,7 +1007,7 @@ export default function PerformanceTracking({
                                   </Typography>
                                 </Box>
                               </Grid>
-                              <Grid item xs={6}>
+                              <Grid item xs={6} component="div">
                                 <Box sx={{ textAlign: 'center', p: 2, background: designTokens.colors.neutral[50], borderRadius: designTokens.borderRadius.md }}>
                                   <Typography variant="h5" sx={{ color: designTokens.colors.neutral[600], fontWeight: 'bold' }}>
                                     {trend.previousValue}
@@ -1122,7 +1122,7 @@ export default function PerformanceTracking({
                 
                 <Grid container spacing={3}>
                   {audienceInsights.map((insight, index) => (
-                    <Grid item xs={12} md={6} lg={4} key={index}>
+                    <Grid item xs={12} md={6} lg={4} key={index} component="div">
                       <Fade in={true} timeout={300 + index * 100}>
                         <Card 
                           elevation={0}
@@ -1160,7 +1160,7 @@ export default function PerformanceTracking({
 
                             {/* Metrics */}
                             <Grid container spacing={2} sx={{ mb: 3 }}>
-                              <Grid item xs={6}>
+                              <Grid item xs={6} component="div">
                                 <Box sx={{ textAlign: 'center', p: 2, background: designTokens.colors.success[50], borderRadius: designTokens.borderRadius.md }}>
                                   <Typography variant="h5" sx={{ color: designTokens.colors.success[600], fontWeight: 'bold' }}>
                                     {insight.engagement}%
@@ -1170,7 +1170,7 @@ export default function PerformanceTracking({
                                   </Typography>
                                 </Box>
                               </Grid>
-                              <Grid item xs={6}>
+                              <Grid item xs={6} component="div">
                                 <Box sx={{ textAlign: 'center', p: 2, background: designTokens.colors.primary[50], borderRadius: designTokens.borderRadius.md }}>
                                   <Typography variant="h5" sx={{ color: designTokens.colors.primary[600], fontWeight: 'bold' }}>
                                     {insight.growth}%
