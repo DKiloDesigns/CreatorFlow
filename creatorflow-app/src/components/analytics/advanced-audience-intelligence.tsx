@@ -544,7 +544,7 @@ export default function AdvancedAudienceIntelligence() {
 
                 <Box sx={{ mb: 3 }}>
                   <Grid container spacing={2}>
-                    <Grid item xs={6}>
+                    <Grid item xs={6} component="div">
                       <Box sx={{ textAlign: 'center' }}>
                         <Typography variant="h5" sx={{ color: designTokens.colors.success[600], fontWeight: 'bold' }}>
                           {segment.growth}%
