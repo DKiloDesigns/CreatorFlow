@@ -188,7 +188,7 @@ export default function ColorContrastPage() {
               <Typography variant="h6" gutterBottom>Test Color Combination</Typography>
               
               <Grid container spacing={2}>
-                <Grid item xs={6}>
+                <Grid item xs={6} component="div">
                   <TextField
                     fullWidth
                     label="Foreground Color"
