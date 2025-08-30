@@ -64,7 +64,7 @@ export function AIContentVoice({ onVoiceSelect, className }: AIContentVoiceProps
       />
       <CardContent>
         <Grid container spacing={3}>
-          <Grid item xs={12}>
+          <Grid item xs={12} component="div">
             <TextField
               fullWidth
               multiline
@@ -107,7 +107,7 @@ export function AIContentVoice({ onVoiceSelect, className }: AIContentVoiceProps
             </Grid>
           )}
 
-          <Grid item xs={12}>
+          <Grid item xs={12} component="div">
             <Typography variant="subtitle2" gutterBottom>
               Available Voices:
             </Typography>
