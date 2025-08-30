@@ -519,42 +519,45 @@ export default function MobileOptimizer() {
         </TabPanel>
 
         <TabPanel value={activeTab} index="metrics">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Card>
-              <CardHeader>
-                <Typography variant="subtitle2" component="div" className="flex items-center gap-2">
-                  <Chip label="Metrics" color="info" />
-                  Interaction Metrics
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  User interaction tracking
-                </Typography>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div className="flex justify-between items-center">
-                    <Typography variant="body2">Touch Events</Typography>
-                    <Typography variant="h6" fontWeight="semibold">{metrics?.interaction.touchEvents || 0}</Typography>
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={6} component="div">
+              <Card>
+                <CardHeader>
+                  <Typography variant="subtitle2" component="div" className="flex items-center gap-2">
+                    <Chip label="Metrics" color="info" />
+                    Interaction Metrics
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    User interaction tracking
+                  </Typography>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-center">
+                      <Typography variant="body2">Touch Events</Typography>
+                      <Typography variant="h6" fontWeight="semibold">{metrics?.interaction.touchEvents || 0}</Typography>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <Typography variant="body2">Scroll Events</Typography>
+                      <Typography variant="h6" fontWeight="semibold">{metrics?.interaction.scrollEvents || 0}</Typography>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <Typography variant="body2">Gesture Events</Typography>
+                      <Typography variant="h6" fontWeight="semibold">{metrics?.interaction.gestureEvents || 0}</Typography>
+                    </div>
+                    <div className="flex justify-between items-center">
+                      <Typography variant="body2">Errors</Typography>
+                      <Typography variant="h6" color="error">{metrics?.interaction.errors || 0}</Typography>
+                    </div>
                   </div>
-                  <div className="flex justify-between items-center">
-                    <Typography variant="body2">Scroll Events</Typography>
-                    <Typography variant="h6" fontWeight="semibold">{metrics?.interaction.scrollEvents || 0}</Typography>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <Typography variant="body2">Gesture Events</Typography>
-                    <Typography variant="h6" fontWeight="semibold">{metrics?.interaction.gestureEvents || 0}</Typography>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <Typography variant="body2">Errors</Typography>
-                    <Typography variant="h6" color="error">{metrics?.interaction.errors || 0}</Typography>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </Grid>
 
-            <Card>
-              <CardHeader>
-                <Typography variant="subtitle2" component="div" className="flex items-center gap-2">
+            <Grid item xs={12} md={6} component="div">
+              <Card>
+                <CardHeader>
+                  <Typography variant="subtitle2" component="div" className="flex items-center gap-2">
                   <Chip label="Performance" color="info" />
                   Performance Score
                 </Typography>
@@ -589,7 +592,7 @@ export default function MobileOptimizer() {
                 </div>
               </CardContent>
             </Card>
-          </div>
+          </Grid>
         </TabPanel>
       </Tabs>
     </Box>
