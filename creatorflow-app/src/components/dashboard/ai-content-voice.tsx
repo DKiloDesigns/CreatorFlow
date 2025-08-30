@@ -90,7 +90,7 @@ export function AIContentVoice({ onVoiceSelect, className }: AIContentVoiceProps
           </Grid>
 
           {selectedVoice && (
-            <Grid item xs={12}>
+            <Grid item xs={12} component="div">
               <Box>
                 <Typography variant="subtitle2" gutterBottom>
                   Generated Voice:
