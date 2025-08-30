@@ -368,7 +368,7 @@ export default function AIContentIntelligence() {
   const renderOverview = () => (
     <Grid container spacing={3}>
       {/* Main Intelligence Scores */}
-      <Grid item xs={12} md={6}>
+      <Grid item xs={12} md={6} component="div">
         <Card>
           <CardHeader 
             title="Content Intelligence Score" 
