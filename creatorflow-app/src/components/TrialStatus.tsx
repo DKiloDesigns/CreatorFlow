@@ -93,7 +93,7 @@ export function TrialStatus({ trialStartDate, trialEndDate, className }: TrialSt
 
           {!isExpired ? (
             <Grid container spacing={1} justifyContent="center">
-              <Grid item xs={3}>
+              <Grid item xs={3} component="div">
                 <Box sx={{ bgcolor: 'background.paper', p: 2, borderRadius: 1 }}>
                   <Typography variant="h6" color="text.primary">{timeLeft.days}</Typography>
                   <Typography variant="body2" color="text.secondary">Days</Typography>
@@ -105,13 +105,13 @@ export function TrialStatus({ trialStartDate, trialEndDate, className }: TrialSt
                   <Typography variant="body2" color="text.secondary">Hours</Typography>
                 </Box>
               </Grid>
-              <Grid item xs={3}>
+              <Grid item xs={3} component="div">
                 <Box sx={{ bgcolor: 'background.paper', p: 2, borderRadius: 1 }}>
                   <Typography variant="h6" color="text.primary">{timeLeft.minutes}</Typography>
                   <Typography variant="body2" color="text.secondary">Minutes</Typography>
                 </Box>
               </Grid>
-              <Grid item xs={3}>
+              <Grid item xs={3} component="div">
                 <Box sx={{ bgcolor: 'background.paper', p: 2, borderRadius: 1 }}>
                   <Typography variant="h6" color="text.primary">{timeLeft.seconds}</Typography>
                   <Typography variant="body2" color="text.secondary">Seconds</Typography>
@@ -132,7 +132,7 @@ export function TrialStatus({ trialStartDate, trialEndDate, className }: TrialSt
             </Box>
           )}
 
-          <Grid item xs={12}>
+          <Grid item xs={12} component="div">
             <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
               <Box>Started: {new Date(trialStartDate).toLocaleDateString()}</Box>
               <Box>Ends: {new Date(trialEndDate).toLocaleDateString()}</Box>
