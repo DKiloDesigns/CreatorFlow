@@ -219,7 +219,7 @@ export function SocialAccountStatus({ accounts, onRefresh, onReauth }: SocialAcc
         {/* Overall Health Summary */}
         <Box sx={{ p: 2, bgcolor: 'grey.50', borderRadius: 1 }}>
           <Grid container alignItems="center" spacing={2}>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={6} component="div">
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 {healthPercentage >= 80 ? (
                   <CheckCircle className="w-5 h-5 text-green-600" />
