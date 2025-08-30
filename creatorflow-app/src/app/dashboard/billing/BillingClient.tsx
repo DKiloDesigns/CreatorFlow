@@ -157,7 +157,7 @@ export default function BillingClient({ user, searchParams, upcomingCharges, pay
         <CardHeader title="Current Plan" />
         <CardContent>
           <Grid container spacing={3} alignItems="center">
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={6} component="div">
               <Typography variant="h5" gutterBottom>
                 {user?.plan || 'Free'}
               </Typography>
@@ -167,7 +167,7 @@ export default function BillingClient({ user, searchParams, upcomingCharges, pay
                 </Typography>
               )}
             </Grid>
-            <Grid item xs={12} md={6} sx={{ textAlign: 'right' }}>
+            <Grid item xs={12} md={6} sx={{ textAlign: 'right' }} component="div">
                 {user?.stripeCustomerId && (
                   <Button
                   variant="contained"
@@ -232,7 +232,7 @@ export default function BillingClient({ user, searchParams, upcomingCharges, pay
           <CardContent>
             <Grid container spacing={2}>
               {paymentHistory.map((payment) => (
-                <Grid item xs={12} key={payment.id}>
+                <Grid item xs={12} key={payment.id} component="div">
                   <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 2, border: '1px solid', borderColor: 'divider', borderRadius: 1 }}>
                     <Box>
                       <Typography variant="body1" fontWeight="medium">
