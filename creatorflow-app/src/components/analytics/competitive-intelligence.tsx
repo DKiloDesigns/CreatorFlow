@@ -455,7 +455,7 @@ export default function CompetitiveIntelligence() {
       
       <Grid container spacing={3}>
         {competitors.map((competitor) => (
-          <Grid item xs={12} lg={4} key={competitor.id}>
+          <Grid item xs={12} lg={4} key={competitor.id} component="div">
             <Card 
               elevation={0} 
               sx={{ 
