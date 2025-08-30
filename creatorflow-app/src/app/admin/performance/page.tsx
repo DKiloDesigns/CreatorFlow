@@ -163,7 +163,7 @@ export default function PerformancePage() {
             </Card>
           </Grid>
 
-          <Grid item xs={12} md={6} lg={2}>
+          <Grid item xs={12} md={6} lg={2} component="div">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <Typography variant="subtitle2" component="div">Memory Usage</Typography>
