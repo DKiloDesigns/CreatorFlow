@@ -757,7 +757,7 @@ export default function EnhancedTeamManagement() {
 
       <Grid container spacing={3}>
         {roles.map((role) => (
-          <Grid item xs={12} md={6} lg={4} key={role.id}>
+          <Grid item xs={12} md={6} lg={4} key={role.id} component="div">
             <Card elevation={0} sx={{ border: `1px solid ${designTokens.colors.neutral[200]}` }}>
               <CardContent>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
@@ -831,7 +831,7 @@ export default function EnhancedTeamManagement() {
                 </Box>
 
                 <Box sx={{ display: 'flex', gap: 1, mt: 2 }}>
-                  <IconButton size="small" sx={{ color: designTokens.colors.primary[600] }}>
+                  <IconButton size="small" sx={{ color: designTokens.colors.neutral[600] }}>
                     <Edit />
                   </IconButton>
                   <IconButton size="small" sx={{ color: designTokens.colors.neutral[600] }}>
@@ -860,7 +860,7 @@ export default function EnhancedTeamManagement() {
       {teamAnalytics && (
         <Grid container spacing={3}>
           {/* Overview Cards */}
-          <Grid item xs={12} md={3}>
+          <Grid item xs={12} md={3} component="div">
             <Card elevation={0} sx={{ border: `1px solid ${designTokens.colors.neutral[200]}` }}>
               <CardContent sx={{ textAlign: 'center' }}>
                 <Typography variant="h4" sx={{ color: designTokens.colors.primary[600], fontWeight: 'bold' }}>
@@ -873,7 +873,7 @@ export default function EnhancedTeamManagement() {
             </Card>
           </Grid>
 
-          <Grid item xs={12} md={3}>
+          <Grid item xs={12} md={3} component="div">
             <Card elevation={0} sx={{ border: `1px solid ${designTokens.colors.neutral[200]}` }}>
               <CardContent sx={{ textAlign: 'center' }}>
                 <Typography variant="h4" sx={{ color: designTokens.colors.success[600], fontWeight: 'bold' }}>
