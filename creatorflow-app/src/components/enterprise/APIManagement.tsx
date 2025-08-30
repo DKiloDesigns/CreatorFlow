@@ -558,7 +558,7 @@ export default function APIManagement() {
             
             <Grid container spacing={3}>
               {apiKeys.map((apiKey) => (
-                <Grid item xs={12} md={6} lg={4} key={apiKey.id}>
+                <Grid item xs={12} md={6} lg={4} key={apiKey.id} component="div">
                   <Card variant="outlined" sx={{ height: '100%' }}>
                     <CardContent>
                       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
@@ -794,7 +794,7 @@ export default function APIManagement() {
             
             <Grid container spacing={3}>
               {rateLimits.map((limit) => (
-                <Grid item xs={12} md={6} lg={4} key={limit.id}>
+                <Grid item xs={12} md={6} lg={4} key={limit.id} component="div">
                   <Card variant="outlined">
                     <CardContent>
                       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
@@ -845,7 +845,7 @@ export default function APIManagement() {
             
             <Grid container spacing={3}>
               {integrations.map((integration) => (
-                <Grid item xs={12} md={6} lg={4} key={integration.id}>
+                <Grid item xs={12} md={6} lg={4} key={integration.id} component="div">
                   <Card variant="outlined">
                     <CardContent>
                       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
@@ -958,7 +958,7 @@ export default function APIManagement() {
 
       {/* Quick Stats */}
       <Grid container spacing={3} sx={{ mb: 6 }}>
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid item xs={12} sm={6} md={3} component="div">
           <Card>
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -976,7 +976,7 @@ export default function APIManagement() {
           </Card>
         </Grid>
         
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid item xs={12} sm={6} md={3} component="div">
           <Card>
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -994,7 +994,7 @@ export default function APIManagement() {
           </Card>
         </Grid>
         
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid item xs={12} sm={6} md={3} component="div">
           <Card>
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -1012,7 +1012,7 @@ export default function APIManagement() {
           </Card>
         </Grid>
         
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid item xs={12} sm={6} md={3} component="div">
           <Card>
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -1087,7 +1087,7 @@ export default function APIManagement() {
               </Typography>
               <Grid container spacing={2}>
                 {['read', 'write', 'analytics', 'admin'].map((permission) => (
-                  <Grid item xs={6} key={permission}>
+                  <Grid item xs={6} key={permission} component="div">
                     <FormControlLabel
                       control={
                         <Switch
