@@ -710,7 +710,7 @@ export default function SmartScheduling({
                 
                 <Grid container spacing={3}>
                   {schedulingRules.map((rule, index) => (
-                    <Grid item xs={12} md={6} key={index}>
+                    <Grid item xs={12} md={6} key={index} component="div">
                       <Fade in={true} timeout={300 + index * 100}>
                         <Card 
                           elevation={0}
