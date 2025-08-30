@@ -238,7 +238,7 @@ export default function SettingsPage() {
                   </Box>
                 </Grid>
 
-                <Grid item xs={12} md={6}>
+                <Grid item xs={12} md={6} component="div">
                   <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                       <InputLabel>Reduced Motion</InputLabel>
