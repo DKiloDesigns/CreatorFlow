@@ -591,7 +591,7 @@ export default function TeamManagement() {
             
             <Grid container spacing={3}>
               {roles.map((role) => (
-                <Grid item xs={12} md={6} key={role.id}>
+                <Grid item xs={12} md={6} key={role.id} component="div">
                   <Card variant="outlined">
                     <CardContent>
                       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
@@ -658,7 +658,7 @@ export default function TeamManagement() {
             
             <Grid container spacing={3}>
               {departments.map((dept) => (
-                <Grid item xs={12} md={4} key={dept.id}>
+                <Grid item xs={12} md={4} key={dept.id} component="div">
                   <Card variant="outlined">
                     <CardContent>
                       <Typography variant="h6" gutterBottom>
@@ -797,7 +797,7 @@ export default function TeamManagement() {
 
       {/* Quick Stats */}
       <Grid container spacing={3} sx={{ mb: 6 }}>
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid item xs={12} sm={6} md={3} component="div">
           <Card>
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -815,7 +815,7 @@ export default function TeamManagement() {
           </Card>
         </Grid>
         
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid item xs={12} sm={6} md={3} component="div">
           <Card>
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -851,7 +851,7 @@ export default function TeamManagement() {
           </Card>
         </Grid>
         
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid item xs={12} sm={6} md={3} component="div">
           <Card>
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
