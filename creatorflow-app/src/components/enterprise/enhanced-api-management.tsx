@@ -332,7 +332,7 @@ export default function EnhancedAPIManagement() {
 
       <Grid container spacing={3}>
         {webhooks.map((webhook) => (
-          <Grid item xs={12} md={6} key={webhook.id}>
+          <Grid item xs={12} md={6} key={webhook.id} component="div">
             <Card elevation={0} sx={{ border: `1px solid ${designTokens.colors.neutral[200]}` }}>
               <CardContent>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
@@ -487,7 +487,7 @@ export default function EnhancedAPIManagement() {
         <Box sx={{ mt: 4 }}>
           <Grid container spacing={3}>
             {[1, 2].map((item) => (
-              <Grid item xs={12} md={6} key={item}>
+              <Grid item xs={12} md={6} key={item} component="div">
                 <Skeleton variant="rectangular" height={300} />
               </Grid>
             ))}
