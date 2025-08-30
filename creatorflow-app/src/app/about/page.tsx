@@ -91,7 +91,7 @@ export default function AboutPage() {
               </Box>
             </Grid>
             
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} md={4} component="div">
               <Box sx={{ textAlign: 'center' }}>
                 <Box sx={{ 
                   width: 64, 
