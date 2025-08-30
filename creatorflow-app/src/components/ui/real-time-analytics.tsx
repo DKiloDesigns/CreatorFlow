@@ -366,7 +366,7 @@ export default function RealTimeAnalytics() {
           />
           <CardContent>
             <Grid container spacing={3}>
-              <Grid item xs={12} sm={6} md={3}>
+              <Grid item xs={12} sm={6} md={3} component="div">
                 <Box sx={{ textAlign: 'center' }}>
                   <Typography variant="h4" color="primary" gutterBottom>
                     {liveMetrics.impressions.toLocaleString()}
