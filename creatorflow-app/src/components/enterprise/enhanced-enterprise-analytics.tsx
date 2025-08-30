@@ -823,7 +823,7 @@ export default function EnhancedEnterpriseAnalytics() {
 
       <Grid container spacing={3}>
         {aiInsights.map((insight) => (
-          <Grid item xs={12} md={6} key={insight.id}>
+          <Grid item xs={12} md={6} key={insight.id} component="div">
             <Card elevation={0} sx={{ border: `1px solid ${designTokens.colors.neutral[200]}` }}>
               <CardContent>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
@@ -954,7 +954,7 @@ export default function EnhancedEnterpriseAnalytics() {
 
       <Grid container spacing={3}>
         {reports.map((report) => (
-          <Grid item xs={12} md={6} lg={4} key={report.id}>
+          <Grid item xs={12} md={6} lg={4} key={report.id} component="div">
             <Card elevation={0} sx={{ border: `1px solid ${designTokens.colors.neutral[200]}` }}>
               <CardContent>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
@@ -1044,7 +1044,7 @@ export default function EnhancedEnterpriseAnalytics() {
         <Box sx={{ mt: 4 }}>
           <Grid container spacing={3}>
             {[1, 2, 3, 4, 5, 6].map((item) => (
-              <Grid item xs={12} md={6} lg={4} key={item}>
+              <Grid item xs={12} md={6} lg={4} key={item} component="div">
                 <Skeleton variant="rectangular" height={300} />
               </Grid>
             ))}
