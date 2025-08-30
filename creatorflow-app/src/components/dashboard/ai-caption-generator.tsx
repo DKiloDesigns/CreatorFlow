@@ -203,7 +203,7 @@ export function AICaptionGenerator({ onCaptionSelect, className }: AICaptionGene
             </>
           ) : (
             <>
-              <Activity className="h-4 w-4 mr-2" />
+              <Box sx={{ mr: 1 }}><Activity className="h-4 w-4" /></Box>
               Generate Captions
             </>
           )}
