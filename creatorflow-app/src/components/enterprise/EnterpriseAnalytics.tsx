@@ -602,7 +602,7 @@ export default function EnterpriseAnalytics() {
             
             <Grid container spacing={3}>
               {whiteLabels.map((brand) => (
-                <Grid item xs={12} md={6} key={brand.id}>
+                <Grid item xs={12} md={6} key={brand.id} component="div">
                   <Card variant="outlined">
                     <CardContent>
                       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
