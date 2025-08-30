@@ -77,7 +77,7 @@ export function AIContentTranslator({ onTranslation, className }: AIContentTrans
       />
       <CardContent>
         <Grid container spacing={3}>
-          <Grid item xs={12}>
+          <Grid item xs={12} component="div">
             <TextField
               fullWidth
               multiline
@@ -108,7 +108,7 @@ export function AIContentTranslator({ onTranslation, className }: AIContentTrans
             </Box>
           </Grid>
 
-          <Grid item xs={12}>
+          <Grid item xs={12} component="div">
             <Button
               fullWidth
               variant="contained"
@@ -121,7 +121,7 @@ export function AIContentTranslator({ onTranslation, className }: AIContentTrans
           </Grid>
 
           {translatedContent && (
-            <Grid item xs={12}>
+            <Grid item xs={12} component="div">
               <Box>
                 <Typography variant="subtitle2" gutterBottom>
                   Translation:
