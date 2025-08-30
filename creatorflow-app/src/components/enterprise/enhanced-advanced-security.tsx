@@ -435,30 +435,22 @@ export default function EnhancedAdvancedSecurity() {
 
       <Grid container spacing={3}>
         {policies.map((policy) => (
-          <Grid item xs={12} md={6} lg={4} key={policy.id}>
+          <Grid item xs={12} md={6} lg={4} key={policy.id} component="div">
             <Card elevation={0} sx={{ border: `1px solid ${designTokens.colors.neutral[200]}` }}>
               <CardContent>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
-                  <Box>
-                    <Typography variant="h6" sx={{ color: designTokens.colors.neutral[800] }}>
-                      {policy.name}
-                    </Typography>
-                    <Typography variant="body2" sx={{ color: designTokens.colors.neutral[600] }}>
-                      {policy.description}
-                    </Typography>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    {getPolicyIcon(policy.category)}
+                    <Box>
+                      <Typography variant="h6" sx={{ color: designTokens.colors.neutral[800] }}>
+                        {policy.name}
+                      </Typography>
+                      <Typography variant="body2" sx={{ color: designTokens.colors.neutral[600] }}>
+                        {policy.category}
+                      </Typography>
+                    </Box>
                   </Box>
                   <Box sx={{ textAlign: 'right' }}>
-                    <Chip
-                      label={policy.category.replace('_', ' ')}
-                      size="small"
-                      sx={{
-                        background: designTokens.colors.primary[100],
-                        color: designTokens.colors.primary[700],
-                        fontWeight: 'medium',
-                        textTransform: 'capitalize',
-                        mb: 1
-                      }}
-                    />
                     <Chip
                       label={policy.riskLevel}
                       size="small"
