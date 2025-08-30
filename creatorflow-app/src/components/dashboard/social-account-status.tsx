@@ -231,7 +231,7 @@ export function SocialAccountStatus({ accounts, onRefresh, onReauth }: SocialAcc
                 <Typography variant="subtitle1" component="span" fontWeight="medium">Overall Health</Typography>
               </Box>
             </Grid>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12} sm={6} component="div">
               <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 2 }}>
                 <Box sx={{ textAlign: 'right' }}>
                   <Typography variant="h5" fontWeight="bold">{healthyAccounts}/{totalAccounts}</Typography>
