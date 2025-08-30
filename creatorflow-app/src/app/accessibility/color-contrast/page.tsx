@@ -182,7 +182,7 @@ export default function ColorContrastPage() {
 
       <Grid container spacing={3}>
         {/* Main Testing Interface */}
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={6} component="div">
           <Card>
             <CardContent>
               <Typography variant="h6" gutterBottom>Test Color Combination</Typography>
@@ -200,7 +200,7 @@ export default function ColorContrastPage() {
                     }}
                   />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={6} component="div">
                   <TextField
                     fullWidth
                     label="Background Color"
