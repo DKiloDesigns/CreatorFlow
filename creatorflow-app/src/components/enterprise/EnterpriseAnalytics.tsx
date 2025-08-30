@@ -681,7 +681,7 @@ export default function EnterpriseAnalytics() {
             
             <Grid container spacing={3}>
               {insights.map((insight) => (
-                <Grid item xs={12} md={6} key={insight.id}>
+                <Grid item xs={12} md={6} key={insight.id} component="div">
                   <Card variant="outlined">
                     <CardContent>
                       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
@@ -791,7 +791,7 @@ export default function EnterpriseAnalytics() {
 
       {/* Quick Stats */}
       <Grid container spacing={3} sx={{ mb: 4 }}>
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid item xs={12} sm={6} md={3} component="div">
           <Card>
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -809,7 +809,7 @@ export default function EnterpriseAnalytics() {
           </Card>
         </Grid>
         
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid item xs={12} sm={6} md={3} component="div">
           <Card>
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -827,7 +827,7 @@ export default function EnterpriseAnalytics() {
           </Card>
         </Grid>
         
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid item xs={12} sm={6} md={3} component="div">
           <Card>
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -845,7 +845,7 @@ export default function EnterpriseAnalytics() {
           </Card>
         </Grid>
         
-        <Grid item xs={12} sm={6} md={3}>
+        <Grid item xs={12} sm={6} md={3} component="div">
           <Card>
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
