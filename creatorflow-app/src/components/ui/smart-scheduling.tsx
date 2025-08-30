@@ -642,7 +642,7 @@ export default function SmartScheduling({
 
                             {/* Performance Scores */}
                             <Grid container spacing={2} sx={{ mb: 3 }}>
-                              <Grid item xs={6}>
+                              <Grid item xs={6} component="div">
                                 <Box sx={{ textAlign: 'center', p: 2, background: designTokens.colors.success[50], borderRadius: designTokens.borderRadius.md }}>
                                   <Typography variant="h6" sx={{ color: designTokens.colors.success[600], fontWeight: 'bold' }}>
                                     {time.engagementScore.toFixed(1)}
@@ -652,7 +652,7 @@ export default function SmartScheduling({
                                   </Typography>
                                 </Box>
                               </Grid>
-                              <Grid item xs={6}>
+                              <Grid item xs={6} component="div">
                                 <Box sx={{ textAlign: 'center', p: 2, background: designTokens.colors.primary[50], borderRadius: designTokens.borderRadius.md }}>
                                   <Typography variant="h6" sx={{ color: designTokens.colors.primary[600], fontWeight: 'bold' }}>
                                     {time.reachScore.toFixed(1)}
