@@ -567,7 +567,7 @@ export default function AIContentCreation({
                 </Typography>
                 <Grid container spacing={2}>
                   {contentTypes.map((type) => (
-                    <Grid item xs={12} sm={6} key={type.id}>
+                    <Grid item xs={12} sm={6} key={type.id} component="div">
                       <Card
                         elevation={0}
                         sx={{
