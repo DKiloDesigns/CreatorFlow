@@ -90,7 +90,7 @@ export function AIContentTranslator({ onTranslation, className }: AIContentTrans
             />
           </Grid>
           
-          <Grid item xs={12}>
+          <Grid item xs={12} component="div">
             <Typography variant="subtitle2" gutterBottom>
               Select Target Language:
             </Typography>
