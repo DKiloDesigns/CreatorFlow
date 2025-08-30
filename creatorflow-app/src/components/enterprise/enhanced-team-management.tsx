@@ -648,7 +648,7 @@ export default function EnhancedTeamManagement() {
 
       <Grid container spacing={3}>
         {departments.map((dept) => (
-          <Grid item xs={12} md={6} key={dept.id}>
+          <Grid item xs={12} md={6} key={dept.id} component="div">
             <Card elevation={0} sx={{ border: `1px solid ${designTokens.colors.neutral[200]}` }}>
               <CardContent>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
