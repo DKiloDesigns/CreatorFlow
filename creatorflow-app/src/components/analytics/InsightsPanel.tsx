@@ -111,7 +111,7 @@ export function InsightsPanel({ insights, onRefresh }: InsightsPanelProps) {
       {/* Insights Grid */}
       <Grid container spacing={3}>
         {insightsArray.map((insight) => (
-          <Grid item xs={12} lg={6} key={insight.id}>
+          <Grid item xs={12} lg={6} key={insight.id} component="div">
             <Card sx={{ 
               '&:hover': { 
                 boxShadow: 3, 
