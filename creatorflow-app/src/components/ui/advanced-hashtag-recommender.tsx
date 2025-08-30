@@ -304,7 +304,7 @@ export function AdvancedHashtagRecommender({ provider: _provider }: AdvancedHash
               />
             </Grid>
 
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} md={4} component="div">
               <TextField
                 label="Target Audience"
                 fullWidth
