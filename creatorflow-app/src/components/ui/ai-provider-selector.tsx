@@ -215,7 +215,7 @@ export function AIProviderSelector({
       <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-6">
         <Typography variant="h6" className="text-lg font-semibold text-gray-900 mb-3">💡 Recommendations</Typography>
         <Grid container spacing={2}>
-          <Grid item xs={12} md={4}>
+          <Grid item xs={12} md={4} component="div">
             <Box className="space-y-2">
               <Typography variant="subtitle1" className="font-medium text-gray-800">🎯 For Beginners</Typography>
               <Typography variant="body2" className="text-gray-600">Start with <strong>CreatorFlow AI</strong> or <strong>DeepSeek</strong> - both free and easy to use.</Typography>
