@@ -203,7 +203,7 @@ export function AIPostingTimes({ className }: AIPostingTimesProps) {
             Posting Time Best Practices
           </Typography>
           <Grid container spacing={2} sx={{ fontSize: '0.75rem', color: 'text.secondary' }}>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={6} component="div">
               <Typography variant="body2" sx={{ fontWeight: 500, mb: 1 }}>General Tips:</Typography>
               <Box component="ul" sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
                 <Box component="li">• Post when your audience is most active</Box>
@@ -212,7 +212,7 @@ export function AIPostingTimes({ className }: AIPostingTimesProps) {
                 <Box component="li">• Be consistent with your posting schedule</Box>
               </Box>
             </Grid>
-            <Grid item xs={12} md={6}>
+            <Grid item xs={12} md={6} component="div">
               <Typography variant="body2" sx={{ fontWeight: 500, mb: 1 }}>Platform-Specific:</Typography>
               <Box component="ul" sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
                 <Box component="li">• Instagram: Evenings and weekends</Box>
