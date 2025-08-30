@@ -398,7 +398,7 @@ export default function AdvancedPerformanceMetrics() {
       
       <Grid container spacing={3}>
         {metrics.map((metric) => (
-          <Grid item xs={12} md={6} lg={4} key={metric.id}>
+          <Grid item xs={12} md={6} lg={4} key={metric.id} component="div">
             <Card 
               elevation={0} 
               sx={{ 
@@ -565,7 +565,7 @@ export default function AdvancedPerformanceMetrics() {
                     AI Forecast
                   </Typography>
                   <Grid container spacing={2}>
-                    <Grid item xs={6}>
+                    <Grid item xs={6} component="div">
                       <Box sx={{ textAlign: 'center' }}>
                         <Typography variant="body2" sx={{ color: designTokens.colors.neutral[600] }}>
                           Next Period
