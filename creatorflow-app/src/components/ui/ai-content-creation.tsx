@@ -559,7 +559,7 @@ export default function AIContentCreation({
         <Box sx={{ p: 3 }}>
           <Grid container spacing={3}>
             {/* Left Column - Content Input */}
-            <Grid item xs={12} lg={8}>
+            <Grid item xs={12} lg={8} component="div">
               {/* Content Type Selection */}
               <Box sx={{ mb: 3 }}>
                 <Typography variant="h6" sx={{ mb: 2, color: designTokens.colors.neutral[800] }}>
@@ -686,7 +686,7 @@ export default function AIContentCreation({
                 </Typography>
                 <Grid container spacing={2}>
                   {platforms.map((platform) => (
-                    <Grid item xs={12} sm={6} key={platform.id}>
+                    <Grid item xs={12} sm={6} key={platform.id} component="div">
                       <Card
                         elevation={0}
                         sx={{
@@ -885,7 +885,7 @@ export default function AIContentCreation({
                           </Typography>
                           
                           <Grid container spacing={2} sx={{ mb: 3 }}>
-                            <Grid item xs={6}>
+                            <Grid item xs={6} component="div">
                               <Box sx={{ textAlign: 'center', p: 2, background: 'white', borderRadius: designTokens.borderRadius.md }}>
                                 <Typography variant="h4" sx={{ color: designTokens.colors.success[600], fontWeight: 'bold' }}>
                                   {performancePrediction.engagement}%
