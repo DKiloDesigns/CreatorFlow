@@ -718,8 +718,19 @@ export default function EnhancedEnterpriseAnalytics() {
 
       <Grid container spacing={3}>
         {businessMetrics.map((metric) => (
-          <Grid item xs={12} md={6} lg={4} key={metric.id}>
-            <Card elevation={0} sx={{ border: `1px solid ${designTokens.colors.neutral[200]}` }}>
+          <Grid item xs={12} md={6} lg={4} key={metric.id} component="div">
+            <Card 
+              elevation={0} 
+              sx={{ 
+                border: `1px solid ${designTokens.colors.neutral[200]}`,
+                borderRadius: designTokens.borderRadius.lg,
+                transition: designTokens.animation.micro.cardHover,
+                '&:hover': {
+                  boxShadow: designTokens.shadows.md,
+                  transform: 'translateY(-2px)'
+                }
+              }}
+            >
               <CardContent>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
