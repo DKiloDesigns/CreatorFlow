@@ -558,9 +558,9 @@ export default function MobileOptimizer() {
               <Card>
                 <CardHeader>
                   <Typography variant="subtitle2" component="div" className="flex items-center gap-2">
-                  <Chip label="Performance" color="info" />
-                  Performance Score
-                </Typography>
+                    <Chip label="Performance" color="info" />
+                    Performance Score
+                  </Typography>
                 <Typography variant="body2" color="text.secondary">
                   Overall mobile performance rating
                 </Typography>
