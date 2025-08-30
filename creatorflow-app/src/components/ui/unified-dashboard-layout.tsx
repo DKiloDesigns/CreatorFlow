@@ -303,7 +303,7 @@ export default function UnifiedDashboardLayout({
         </Box>
         <Grid container spacing={3}>
           {[...Array(4)].map((_, index) => (
-            <Grid item xs={12} sm={6} md={3} key={index}>
+            <Grid item xs={12} sm={6} md={3} key={index} component="div">
               <Skeleton variant="rectangular" height={120} />
             </Grid>
           ))}
