@@ -464,7 +464,7 @@ export default function AIWorkflowAutomation() {
       {/* Workflows Grid */}
       <Grid container spacing={3}>
         {workflows.map((workflow) => (
-          <Grid item xs={12} md={6} lg={4} key={workflow.id}>
+          <Grid item xs={12} md={6} lg={4} key={workflow.id} component="div">
             <Card
               elevation={0}
               sx={{
