@@ -153,7 +153,7 @@ export function AIOnboarding({ onComplete, className }: AIOnboardingProps) {
                 </Typography>
               </Box>
             </Grid>
-            <Grid item xs={12} md={4}>
+            <Grid item xs={12} md={4} component="div">
               <Box textAlign="center">
                 <Box className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
                   <Typography variant="h6" component="span" className="font-bold text-purple-600">3</Typography>
