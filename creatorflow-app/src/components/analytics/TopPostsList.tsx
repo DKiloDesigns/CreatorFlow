@@ -56,11 +56,11 @@ export function TopPostsList({ posts }: TopPostsListProps) {
   if (posts.length === 0) {
     return (
       <Box sx={{ textAlign: 'center', py: 4 }}>
-        <TrendingUp sx={{ mx: 'auto', height: 48, width: 48, color: 'grey.400', mb: 2 }} />
-        <Typography variant="h6" sx={{ fontWeight: 500, color: 'grey.900', mb: 1 }}>
+        <TrendingUp sx={{ mx: 'auto', height: 48, width: 48, color: 'text.secondary', mb: 2 }} />
+        <Typography variant="h6" sx={{ fontWeight: 500, color: 'text.primary', mb: 1 }}>
           No Top Posts
         </Typography>
-        <Typography variant="body2" sx={{ color: 'grey.500' }}>
+        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
           Start creating content to see your top performing posts here.
         </Typography>
       </Box>
@@ -88,7 +88,7 @@ export function TopPostsList({ posts }: TopPostsListProps) {
                   borderRadius: '50%', 
                   bgcolor: 'grey.100' 
                 }}>
-                  <Typography variant="body2" sx={{ fontWeight: 'bold', color: 'grey.600' }}>
+                  <Typography variant="body2" sx={{ fontWeight: 'bold', color: 'text.secondary' }}>
                     #{index + 1}
                   </Typography>
                 </Box>
@@ -101,10 +101,10 @@ export function TopPostsList({ posts }: TopPostsListProps) {
                     {getPlatformIcon(post.platform)}
                   </Box>
                   <Box>
-                    <Typography variant="body2" sx={{ fontWeight: 500, color: 'grey.900' }}>
+                    <Typography variant="body2" sx={{ fontWeight: 500, color: 'text.primary' }}>
                       Post {post.id}
                     </Typography>
-                    <Typography variant="caption" sx={{ color: 'grey.500', textTransform: 'capitalize' }}>
+                    <Typography variant="caption" sx={{ color: 'text.secondary', textTransform: 'capitalize' }}>
                       {post.platform}
                     </Typography>
                   </Box>
@@ -119,11 +119,11 @@ export function TopPostsList({ posts }: TopPostsListProps) {
                   }}>
                     {post.engagement.toLocaleString()}
                   </Typography>
-                  <Typography variant="caption" sx={{ color: 'grey.500' }}>
+                  <Typography variant="caption" sx={{ color: 'text.secondary' }}>
                     engagement
                   </Typography>
                 </Box>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, color: 'grey.400' }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, color: 'text.disabled' }}>
                   <Heart sx={{ height: 16, width: 16 }} />
                   <MessageSquare sx={{ height: 16, width: 16 }} />
                   <Share2 sx={{ height: 16, width: 16 }} />
@@ -135,8 +135,8 @@ export function TopPostsList({ posts }: TopPostsListProps) {
       ))}
       
       {posts.length > 0 && (
-        <Box sx={{ mt: 2, p: 1.5, bgcolor: 'blue.50', borderRadius: 2 }}>
-          <Typography variant="body2" sx={{ color: 'blue.700' }}>
+        <Box sx={{ mt: 2, p: 1.5, bgcolor: 'info.50', borderRadius: 2 }}>
+          <Typography variant="body2" sx={{ color: 'info.700' }}>
             💡 <strong>Tip:</strong> Analyze your top posts to understand what resonates with your audience.
           </Typography>
         </Box>

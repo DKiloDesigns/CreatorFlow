@@ -106,43 +106,47 @@ export function APIKeySetup({ onKeyAdded, className }: APIKeySetupProps) {
   };
 
   return (
-    <Card className={className}>
+    <Card sx={className ? { className } : undefined}>
       <CardHeader>
-        <Typography variant="h5" component="div" className="flex items-center gap-2">
-          <Activity className="h-5 w-5 text-purple-600" />
-          OpenAI API Key Setup
-        </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Activity sx={{ width: 20, height: 20, color: 'secondary.main' }} />
+          <Typography variant="h5" component="div">
+            OpenAI API Key Setup
+          </Typography>
+        </Box>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
         {/* Step 1: Get API Key */}
-        <div className="space-y-3">
-          <div className="flex items-center gap-2">
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <Chip label="Step 1" variant="outlined" />
             <Typography variant="h6" component="div">Get Your OpenAI API Key</Typography>
-          </div>
+          </Box>
           
           <Grid container alignItems="center" spacing={1}>
             <Grid item>
-              <Key className="h-5 w-5 text-blue-600" />
+              <Key sx={{ width: 20, height: 20, color: 'primary.main' }} />
             </Grid>
             <Grid item xs>
               <Typography variant="body2">Don&apos;t have an API key?</Typography>
-              <ol className="text-sm text-muted-foreground space-y-1">
-                <li>1. Visit <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline inline-flex items-center gap-1">OpenAI Platform <span className="h-3 w-3">↗</span></a></li>
-                <li>2. Sign in or create an account</li>
-                <li>3. Click &quot;Create new secret key&quot;</li>
-                <li>4. Copy the generated key (starts with &quot;sk-&quot;)</li>
-              </ol>
+              <Box component="ol" sx={{ fontSize: '0.875rem', color: 'text.secondary', display: 'flex', flexDirection: 'column', gap: 0.5 }}>
+                <Typography component="li" variant="body2" sx={{ color: 'text.secondary' }}>
+                  1. Visit <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener noreferrer" style={{ color: 'primary.main', textDecoration: 'underline' }}>OpenAI Platform <span style={{ fontSize: '0.75rem' }}>↗</span></a>
+                </Typography>
+                <Typography component="li" variant="body2" sx={{ color: 'text.secondary' }}>2. Sign in or create an account</Typography>
+                <Typography component="li" variant="body2" sx={{ color: 'text.secondary' }}>3. Click &quot;Create new secret key&quot;</Typography>
+                <Typography component="li" variant="body2" sx={{ color: 'text.secondary' }}>4. Copy the generated key (starts with &quot;sk-&quot;)</Typography>
+              </Box>
             </Grid>
           </Grid>
-        </div>
+        </Box>
 
         {/* Step 2: Enter API Key */}
-        <div className="space-y-3">
-          <div className="flex items-center gap-2">
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <Chip label="Step 2" variant="outlined" />
             <Typography variant="h6" component="div">Enter Your API Key</Typography>
-          </div>
+          </Box>
           
           <TextField
             label="OpenAI API Key"
@@ -162,7 +166,7 @@ export function APIKeySetup({ onKeyAdded, className }: APIKeySetupProps) {
                       onClick={() => setShowKey(!showKey)}
                       size="small"
                     >
-                      {showKey ? <span className="h-3 w-3">🙈</span> : <span className="h-3 w-3">👁️</span>}
+                      {showKey ? <span style={{ fontSize: '0.75rem' }}>🙈</span> : <span style={{ fontSize: '0.75rem' }}>👁️</span>}
                     </Button>
                   </Grid>
                   <Grid item>
@@ -172,7 +176,7 @@ export function APIKeySetup({ onKeyAdded, className }: APIKeySetupProps) {
                         onClick={() => copyToClipboard(apiKey)}
                         size="small"
                       >
-                        <span className="h-3 w-3">📋</span>
+                        <span style={{ fontSize: '0.75rem' }}>📋</span>
                       </Button>
                     )}
                   </Grid>
@@ -194,9 +198,9 @@ export function APIKeySetup({ onKeyAdded, className }: APIKeySetupProps) {
           )}
           
           {isValid && (
-            <Grid container alignItems="center" spacing={1} sx={{ mt: 1, color: 'text.success', fontSize: '0.875rem' }}>
+            <Grid container alignItems="center" spacing={1} sx={{ mt: 1, color: 'success.main', fontSize: '0.875rem' }}>
               <Grid item>
-                <span className="h-4 w-4">✓</span>
+                <span style={{ fontSize: '1rem' }}>✓</span>
               </Grid>
               <Grid item>
                 API key is valid!
@@ -205,44 +209,44 @@ export function APIKeySetup({ onKeyAdded, className }: APIKeySetupProps) {
           )}
           
           {error && (
-            <Grid container alignItems="center" spacing={1} sx={{ mt: 1, color: 'text.error', fontSize: '0.875rem' }}>
+            <Grid container alignItems="center" spacing={1} sx={{ mt: 1, color: 'error.main', fontSize: '0.875rem' }}>
               <Grid item>
-                <span className="h-4 w-4">⚠️</span>
+                <span style={{ fontSize: '1rem' }}>⚠️</span>
               </Grid>
               <Grid item>
                 {error}
               </Grid>
             </Grid>
           )}
-        </div>
+        </Box>
 
         {/* Step 3: Save Key */}
-        <div className="space-y-3">
-          <div className="flex items-center gap-2">
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <Chip label="Step 3" variant="outlined" />
             <Typography variant="h6" component="div">Save & Activate</Typography>
-          </div>
+          </Box>
           
           <Button
             onClick={handleSaveKey}
             disabled={!isValid || isValidating}
             fullWidth
             variant="contained"
-            startIcon={isValidating ? <LoadingSpinner size="sm" /> : <span className="h-4 w-4">⚡</span>}
+            startIcon={isValidating ? <LoadingSpinner size="sm" /> : <span style={{ fontSize: '1rem' }}>⚡</span>}
           >
             {isValidating ? (
               <>
-                <LoadingSpinner size="sm" className="mr-2" />
+                <LoadingSpinner size="sm" sx={{ mr: 1 }} />
                 Validating...
               </>
             ) : (
               <>
-                <span className="h-4 w-4 mr-2">⚡</span>
+                <span style={{ fontSize: '1rem', marginRight: 8 }}>⚡</span>
                 Activate AI Features
               </>
             )}
           </Button>
-        </div>
+        </Box>
 
         {/* Security Notice */}
         {/* The AlertDialog component was removed, so this section is removed. */}
@@ -250,15 +254,15 @@ export function APIKeySetup({ onKeyAdded, className }: APIKeySetupProps) {
         {/* Pricing Info */}
         <Grid container alignItems="center" spacing={1} sx={{ p: 2, bgcolor: 'warning.light', borderRadius: 2 }}>
           <Grid item>
-            <span className="h-4 w-4 text-yellow-600">⚡</span>
+            <span style={{ fontSize: '1rem', color: 'warning.main' }}>⚡</span>
           </Grid>
           <Grid item xs>
             <Typography variant="body2">
               <Typography variant="subtitle2" component="span" fontWeight="medium">Usage Costs</Typography>
               <br />
               OpenAI charges per API call. Typical costs are $0.002-0.02 per request. 
-              <a href="https://openai.com/pricing" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline ml-1">
-                View pricing <span className="h-3 w-3 inline">↗</span>
+              <a href="https://openai.com/pricing" target="_blank" rel="noopener noreferrer" style={{ color: 'primary.main', textDecoration: 'underline', marginLeft: 4 }}>
+                View pricing <span style={{ fontSize: '0.75rem', display: 'inline' }}>↗</span>
               </a>
             </Typography>
           </Grid>

@@ -1,6 +1,5 @@
 import * as React from "react"
-
-import { cn } from "@/lib/utils"
+import { Box, TextField } from "@mui/material"
 
 export interface TextareaProps
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
@@ -52,47 +51,78 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
     if (helperText) ariaProps['aria-describedby'] = `${ariaDescribedBy ? ariaDescribedBy + ' ' : ''}${generatedHelperId}`;
 
     return (
-      <div className="relative">
-        <textarea
-          className={cn(
-            "flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
-            // SACA: Enhanced focus styles for better visibility
-            "focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
-            // SACA: Ensure sufficient touch target size
-            "min-h-[44px]",
-            // SACA: Error state styling
-            hasError && "border-red-500 focus-visible:ring-red-500",
-            className
-          )}
-          ref={ref}
-          role="textbox"
-          tabIndex={0}
+      <Box sx={{ position: 'relative' }}>
+        <TextField
+          multiline
+          minRows={3}
+          fullWidth
+          variant="outlined"
+          size="small"
+          sx={{
+            '& .MuiOutlinedInput-root': {
+              minHeight: 80,
+              fontSize: '0.875rem',
+              '&.Mui-focused': {
+                '& .MuiOutlinedInput-notchedOutline': {
+                  borderColor: hasError ? 'error.main' : 'primary.main',
+                  borderWidth: 2
+                }
+              },
+              '&.Mui-error': {
+                '& .MuiOutlinedInput-notchedOutline': {
+                  borderColor: 'error.main'
+                }
+              }
+            }
+          }}
+          inputRef={ref}
+          error={hasError}
           {...ariaProps}
           {...props}
         />
         
         {/* SACA: Error message for screen readers */}
         {errorMessage && (
-          <div
+          <Box
             id={generatedErrorId}
-            className="sr-only"
+            sx={{ 
+              position: 'absolute',
+              width: '1px',
+              height: '1px',
+              padding: 0,
+              margin: '-1px',
+              overflow: 'hidden',
+              clip: 'rect(0, 0, 0, 0)',
+              whiteSpace: 'nowrap',
+              border: 0
+            }}
             role="alert"
             aria-live="assertive"
           >
             {errorMessage}
-          </div>
+          </Box>
         )}
         
         {/* SACA: Helper text for screen readers */}
         {helperText && (
-          <div
+          <Box
             id={generatedHelperId}
-            className="sr-only"
+            sx={{ 
+              position: 'absolute',
+              width: '1px',
+              height: '1px',
+              padding: 0,
+              margin: '-1px',
+              overflow: 'hidden',
+              clip: 'rect(0, 0, 0, 0)',
+              whiteSpace: 'nowrap',
+              border: 0
+            }}
           >
             {helperText}
-          </div>
+          </Box>
         )}
-      </div>
+      </Box>
     )
   }
 )

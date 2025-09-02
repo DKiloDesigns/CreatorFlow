@@ -297,18 +297,18 @@ export function OptimalPostingTimePredictor({ provider }: OptimalPostingTimePred
   };
 
   const getScoreIcon = (score: number) => {
-    if (score >= 90) return <Crown className="w-4 h-4" />;
-    if (score >= 80) return <Trophy className="w-4 h-4" />;
-    if (score >= 70) return <Medal className="w-4 h-4" />;
-    return <Star className="w-4 h-4" />;
+    if (score >= 90) return <Crown style={{ width: 16, height: 16 }} />;
+    if (score >= 80) return <Trophy style={{ width: 16, height: 16 }} />;
+    if (score >= 70) return <Medal style={{ width: 16, height: 16 }} />;
+    return <Star style={{ width: 16, height: 16 }} />;
   };
 
   const getTimeIcon = (time: string) => {
     const hour = parseInt(time.split(':')[0]);
-    if (hour >= 6 && hour < 12) return <Sun className="w-4 h-4 text-yellow-500" />;
-    if (hour >= 12 && hour < 17) return <Briefcase className="w-4 h-4 text-blue-500" />;
-    if (hour >= 17 && hour < 21) return <Home className="w-4 h-4 text-green-500" />;
-    return <Moon className="w-4 h-4 text-purple-500" />;
+    if (hour >= 6 && hour < 12) return <Sun style={{ width: 16, height: 16, color: 'warning.main' }} />;
+    if (hour >= 12 && hour < 17) return <Briefcase style={{ width: 16, height: 16, color: 'primary.main' }} />;
+    if (hour >= 17 && hour < 21) return <Home style={{ width: 16, height: 16, color: 'success.main' }} />;
+    return <Moon style={{ width: 16, height: 16, color: 'secondary.main' }} />;
   };
 
   return (
@@ -316,36 +316,36 @@ export function OptimalPostingTimePredictor({ provider }: OptimalPostingTimePred
       {/* Input Section */}
       <Card>
         <CardHeader>
-          <Typography variant="h6" className="flex items-center gap-2">
-            <Clock className="h-5 w-5" />
+          <Typography variant="h6" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Clock style={{ width: 20, height: 20 }} />
             Optimal Posting Times
           </Typography>
           <Typography variant="body2" color="text.secondary">
             AI-powered posting time optimization with audience behavior analysis and platform-specific insights
           </Typography>
         </CardHeader>
-        <CardContent className="space-y-6">
+        <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
           {/* Basic Input */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="space-y-2">
+          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' }, gap: 3 }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
               <Label>Target Audience</Label>
               <Input
                 placeholder="e.g., entrepreneurs, fitness enthusiasts..."
                 value={targetAudience}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTargetAudience(e.target.value)}
               />
-            </div>
+            </Box>
             
-            <div className="space-y-2">
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
               <Label>Industry/Niche</Label>
               <Input
                 placeholder="e.g., tech, fitness, business..."
                 value={industry}
                 onChange={(e: React.ChangeEvent<HTMLInputElement>) => setIndustry(e.target.value)}
               />
-            </div>
+            </Box>
 
-            <div className="space-y-2">
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
               <Label>Timezone</Label>
               <Select value={timezone} onValueChange={setTimezone}>
                 <SelectTrigger>
@@ -359,8 +359,8 @@ export function OptimalPostingTimePredictor({ provider }: OptimalPostingTimePred
                   ))}
                 </SelectContent>
               </Select>
-            </div>
-          </div>
+            </Box>
+          </Box>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
@@ -432,7 +432,7 @@ export function OptimalPostingTimePredictor({ provider }: OptimalPostingTimePred
             </Button>
 
             {showAdvanced && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-4 bg-gray-50 rounded-lg">
+              <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 3, p: 2, bgcolor: 'grey.50', borderRadius: '8px' }}>
                 <div className="space-y-4">
                   <div className="space-y-2">
                     <Label>Analysis Features</Label>
@@ -467,19 +467,19 @@ export function OptimalPostingTimePredictor({ provider }: OptimalPostingTimePred
                   </div>
                 </div>
 
-                <div className="space-y-4">
-                  <div className="p-3 bg-blue-50 rounded-lg">
-                    <h4 className="font-medium text-blue-900 mb-2">Analysis Includes:</h4>
-                    <ul className="text-sm text-blue-800 space-y-1">
-                      <li>• Audience behavior patterns</li>
-                      <li>• Platform-specific algorithms</li>
-                      <li>• Competitor posting schedules</li>
-                      <li>• Seasonal and trending factors</li>
-                      <li>• Timezone optimization</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                  <Box sx={{ p: 1.5, bgcolor: 'blue.50', borderRadius: '8px' }}>
+                    <Typography variant="h6" sx={{ fontWeight: 500, color: 'blue.900', mb: 1 }}>Analysis Includes:</Typography>
+                    <Box component="ul" sx={{ fontSize: '0.875rem', color: 'blue.800', display: 'flex', flexDirection: 'column', gap: 0.5 }}>
+                      <Box component="li">• Audience behavior patterns</Box>
+                      <Box component="li">• Platform-specific algorithms</Box>
+                      <Box component="li">• Competitor posting schedules</Box>
+                      <Box component="li">• Seasonal and trending factors</Box>
+                      <Box component="li">• Timezone optimization</Box>
+                    </Box>
+                  </Box>
+                </Box>
+              </Box>
             )}
           </div>
 

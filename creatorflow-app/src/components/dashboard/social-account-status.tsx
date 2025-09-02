@@ -129,15 +129,15 @@ export function SocialAccountStatus({ accounts, onRefresh, onReauth }: SocialAcc
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'active':
-        return <CheckCircle className="w-4 h-4 text-green-600" />;
+        return <CheckCircle style={{ width: 16, height: 16, color: 'success.main' }} />;
       case 'pending':
-        return <Clock className="w-4 h-4 text-blue-600" />;
+        return <Clock style={{ width: 16, height: 16, color: 'info.main' }} />;
       case 'needs_reauth':
-        return <AlertCircle className="w-4 h-4 text-orange-600" />;
+        return <AlertCircle style={{ width: 16, height: 16, color: 'warning.main' }} />;
       case 'error':
-        return <XCircle className="w-4 h-4 text-red-600" />;
+        return <XCircle style={{ width: 16, height: 16, color: 'error.main' }} />;
       default:
-        return <Activity className="w-4 h-4 text-gray-600" />;
+        return <Activity style={{ width: 16, height: 16, color: 'text.secondary' }} />;
     }
   };
 

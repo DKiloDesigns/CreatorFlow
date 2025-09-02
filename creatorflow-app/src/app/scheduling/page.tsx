@@ -9,7 +9,15 @@ import {
   TextField,
   Typography,
   Select,
-  MenuItem
+  MenuItem,
+  Box,
+  Container,
+  Grid,
+  FormControl,
+  InputLabel,
+  Chip,
+  Alert,
+  AlertTitle
 } from '@mui/material';
 import { Calendar, Activity, Edit, Trash2, Play, TrendingUp } from 'lucide-react';
 import { format } from 'date-fns';
@@ -181,30 +189,30 @@ export default function SchedulingPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
+      <Box sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <Box sx={{ textAlign: 'center' }}>
           <Activity className="h-8 w-8 animate-spin mx-auto mb-4" />
           <Typography>Loading scheduling data...</Typography>
-        </div>
-      </div>
+        </Box>
+      </Box>
     );
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="flex justify-between items-center mb-8">
-        <Typography variant="h4" className="text-2xl font-bold">
+    <Container maxWidth="xl" sx={{ py: 4 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
+        <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
           Content Scheduling
         </Typography>
-        <Button variant="contained" onClick={handleCreateSchedule} className="flex items-center gap-2">
+        <Button variant="contained" onClick={handleCreateSchedule} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <Calendar className="h-4 w-4" />
           New Schedule
         </Button>
-      </div>
+      </Box>
 
-      <div className="space-y-6">
-        <div>
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+        <Box>
+          <Tabs value={activeTab} onValueChange={setActiveTab}>
             <TabsList className="grid w-full grid-cols-4">
               <TabsTrigger value="schedule">Schedule</TabsTrigger>
               <TabsTrigger value="scheduled">Scheduled</TabsTrigger>
@@ -212,7 +220,7 @@ export default function SchedulingPage() {
               <TabsTrigger value="optimal">Optimal Times</TabsTrigger>
             </TabsList>
           </Tabs>
-        </div>
+        </Box>
 
         <div>
           <TabsContent value="schedule" className="space-y-6">
@@ -522,10 +530,10 @@ export default function SchedulingPage() {
             </Card>
           </TabsContent>
         </div>
-      </div>
+      </Box>
 
       {/* Bottom Spacer to Clear Bottom Navigation */}
-      <div className="h-32 sm:h-10 w-full"></div>
-    </div>
+      <Box sx={{ height: { xs: '128px', sm: '40px' }, width: '100%' }} />
+    </Container>
   );
 } 

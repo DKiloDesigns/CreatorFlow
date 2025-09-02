@@ -1,5 +1,5 @@
 import React from 'react';
-import { cn } from '@/lib/utils';
+import { Box, Typography, IconButton, Button } from '@mui/material';
 import { Bell, X, CheckCircle, AlertCircle, Info } from 'lucide-react';
 
 interface NotificationBadgeProps {
@@ -19,23 +19,32 @@ export function NotificationBadge({
   onClick,
   showDot = false
 }: NotificationBadgeProps) {
-  const sizeClasses = {
-    sm: 'h-5 w-5 text-xs',
-    md: 'h-6 w-6 text-sm',
-    lg: 'h-8 w-8 text-base'
+  const getSizeStyles = () => {
+    const sizeMap = {
+      sm: { height: 20, width: 20, fontSize: '0.75rem' },
+      md: { height: 24, width: 24, fontSize: '0.875rem' },
+      lg: { height: 32, width: 32, fontSize: '1rem' }
+    };
+    return sizeMap[size];
   };
 
-  const variantStyles = {
-    default: 'bg-primary text-primary-foreground',
-    success: 'bg-green-500 text-white',
-    warning: 'bg-yellow-500 text-white',
-    error: 'bg-red-500 text-white'
+  const getVariantStyles = () => {
+    const variantMap = {
+      default: { bgcolor: 'primary.main', color: 'primary.contrastText' },
+      success: { bgcolor: 'success.main', color: 'white' },
+      warning: { bgcolor: 'warning.main', color: 'white' },
+      error: { bgcolor: 'error.main', color: 'white' }
+    };
+    return variantMap[variant];
   };
 
-  const iconSizes = {
-    sm: 'h-3 w-3',
-    md: 'h-4 w-4',
-    lg: 'h-5 w-5'
+  const getIconSizes = () => {
+    const iconSizeMap = {
+      sm: { height: 12, width: 12 },
+      md: { height: 16, width: 16 },
+      lg: { height: 20, width: 20 }
+    };
+    return iconSizeMap[size];
   };
 
   if (count === 0 && !showDot) {
@@ -43,32 +52,44 @@ export function NotificationBadge({
   }
 
   return (
-    <div className="relative inline-block">
-      <button
+    <Box sx={{ position: 'relative', display: 'inline-block' }}>
+      <Button
         onClick={onClick}
-        className={cn(
-          'relative inline-flex items-center justify-center rounded-full transition-all duration-200 hover:scale-105',
-          sizeClasses[size],
-          variantStyles[variant],
-          className
-        )}
+        sx={{
+          position: 'relative',
+          display: 'inline-flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          borderRadius: '50%',
+          transition: 'all 0.2s',
+          '&:hover': { transform: 'scale(1.05)' },
+          ...getSizeStyles(),
+          ...getVariantStyles(),
+          ...(className && { className })
+        }}
         aria-label={count > 0 ? `${count} notifications` : 'Notifications'}
       >
         {count > 0 ? (
-          <span className="font-medium">
+          <Typography sx={{ fontWeight: 500 }}>
             {count > 99 ? '99+' : count}
-          </span>
+          </Typography>
         ) : (
-          <Bell className={iconSizes[size]} />
+          <Bell style={getIconSizes()} />
         )}
-      </button>
+      </Button>
       {showDot && count === 0 && (
-        <div className={cn(
-          'absolute -top-1 -right-1 h-2 w-2 rounded-full animate-pulse',
-          variantStyles[variant]
-        )} />
+        <Box sx={{
+          position: 'absolute',
+          top: -4,
+          right: -4,
+          height: 8,
+          width: 8,
+          borderRadius: '50%',
+          animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+          ...getVariantStyles()
+        }} />
       )}
-    </div>
+    </Box>
   );
 }
 
@@ -150,38 +171,68 @@ export function NotificationToast({
       </div>
       
       {/* Visual Toast Notification */}
-      <div 
-        className={cn(
-          'fixed top-4 right-4 z-50 max-w-sm w-full p-4 rounded-lg border shadow-lg transition-all duration-300',
-          variantStyles[variant],
-          isVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0'
-        )}
+      <Box 
+        sx={{
+          position: 'fixed',
+          top: 16,
+          right: 16,
+          zIndex: 50,
+          maxWidth: '24rem',
+          width: '100%',
+          p: 2,
+          borderRadius: '8px',
+          border: '1px solid',
+          boxShadow: 3,
+          transition: 'all 0.3s ease',
+          ...(variant === 'success' && {
+            borderColor: 'success.200',
+            bgcolor: 'success.50',
+            color: 'success.800'
+          }),
+          ...(variant === 'warning' && {
+            borderColor: 'warning.200',
+            bgcolor: 'warning.50',
+            color: 'warning.800'
+          }),
+          ...(variant === 'error' && {
+            borderColor: 'error.200',
+            bgcolor: 'error.50',
+            color: 'error.800'
+          }),
+          ...(variant === 'info' && {
+            borderColor: 'info.200',
+            bgcolor: 'info.50',
+            color: 'info.800'
+          }),
+          transform: isVisible ? 'translateX(0)' : 'translateX(100%)',
+          opacity: isVisible ? 1 : 0
+        }}
         role="alert"
         aria-labelledby="toast-title"
         aria-describedby={message ? "toast-message" : undefined}
       >
-        <div className="flex items-start gap-3">
-          <Icon className="h-5 w-5 mt-0.5 flex-shrink-0" aria-hidden="true" />
-          <div className="flex-1 min-w-0">
-            <h4 id="toast-title" className="font-medium">{title}</h4>
+        <Box sx={{ display: 'flex', alignItems: 'start', gap: 1.5 }}>
+          <Icon style={{ height: 20, width: 20, marginTop: 2, flexShrink: 0 }} aria-hidden="true" />
+          <Box sx={{ flex: 1, minWidth: 0 }}>
+            <Typography id="toast-title" variant="h6" sx={{ fontWeight: 500 }}>{title}</Typography>
             {message && (
-              <p id="toast-message" className="mt-1 text-sm opacity-90">{message}</p>
+              <Typography id="toast-message" variant="body2" sx={{ mt: 0.5, opacity: 0.9 }}>{message}</Typography>
             )}
-          </div>
+          </Box>
           {onClose && (
-            <button
+            <IconButton
               onClick={() => {
                 setIsVisible(false);
                 setTimeout(() => onClose(), 300);
               }}
-              className="ml-2 p-1 rounded hover:bg-black/10 transition-colors"
+              sx={{ ml: 1, p: 0.5, borderRadius: 1, '&:hover': { bgcolor: 'rgba(0, 0, 0, 0.1)' }, transition: 'colors 0.2s ease' }}
               aria-label="Close notification"
             >
-              <X className="h-4 w-4" aria-hidden="true" />
-            </button>
+              <X style={{ height: 16, width: 16 }} aria-hidden="true" />
+            </IconButton>
           )}
-        </div>
-      </div>
+                </Box>
+      </Box>
     </>
   );
 } 

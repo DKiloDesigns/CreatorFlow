@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader } from '@/components/ui/mui-card';
-import { Typography, Button, Slider } from '@mui/material';
+import { Typography, Button, Slider, Box } from '@mui/material';
 import { 
   Star, 
   TrendingUp, 
@@ -360,29 +360,29 @@ Which tip resonates most with you? 🤔
   };
 
   const getScoreIcon = (score: number) => {
-    if (score >= 90) return <Star className="w-4 h-4" />;
-    if (score >= 80) return <TrendingUp className="w-4 h-4" />;
-    if (score >= 70) return <CheckCircle className="w-4 h-4" />;
-    return <AlertCircle className="w-4 h-4" />;
+    if (score >= 90) return <Star style={{ width: 16, height: 16 }} />;
+    if (score >= 80) return <TrendingUp style={{ width: 16, height: 16 }} />;
+    if (score >= 70) return <CheckCircle style={{ width: 16, height: 16 }} />;
+    return <AlertCircle style={{ width: 16, height: 16 }} />;
   };
 
   return (
-    <div className="space-y-6">
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
       {/* Input Section */}
       <Card>
         <CardHeader>
-          <Typography variant="h6" className="flex items-center gap-2">
-            <Sparkles className="w-5 h-5" />
+          <Typography variant="h6" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Sparkles style={{ width: 20, height: 20 }} />
             Smart Caption Generator
           </Typography>
           <Typography variant="body2" color="text.secondary">
             Generate platform-optimized captions with AI-powered engagement analysis
           </Typography>
         </CardHeader>
-        <CardContent className="space-y-6">
+        <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
           {/* Basic Settings */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-2">
+          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 3 }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
               <Label>Content Description</Label>
               <Textarea
                 placeholder="Describe your content, key message, or what you want to achieve..."
@@ -390,10 +390,10 @@ Which tip resonates most with you? 🤔
                 onChange={(e) => setContent(e.target.value)}
                 rows={4}
               />
-            </div>
+            </Box>
             
-            <div className="space-y-4">
-              <div className="space-y-2">
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
                 <Label>Platform</Label>
                 <Select value={selectedPlatform} onValueChange={setSelectedPlatform}>
                   <SelectTrigger>
@@ -402,17 +402,17 @@ Which tip resonates most with you? 🤔
                   <SelectContent>
                     {PLATFORM_CONFIGS.map((platform) => (
                       <SelectItem key={platform.id} value={platform.id}>
-                        <div className="flex items-center gap-2">
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                           <span>{platform.icon}</span>
                           <span>{platform.name}</span>
-                        </div>
+                        </Box>
                       </SelectItem>
                     ))}
                   </SelectContent>
                 </Select>
-              </div>
+              </Box>
 
-              <div className="space-y-2">
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
                 <Label>Brand Voice</Label>
                 <Select value={selectedVoice} onValueChange={setSelectedVoice}>
                   <SelectTrigger>
@@ -426,43 +426,43 @@ Which tip resonates most with you? 🤔
                     ))}
                   </SelectContent>
                 </Select>
-              </div>
+              </Box>
 
-              <div className="space-y-2">
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
                 <Label>Industry/Niche</Label>
                 <Input
                   placeholder="e.g., fitness, tech, fashion..."
                   value={industry}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => setIndustry(e.target.value)}
                 />
-              </div>
+              </Box>
 
-              <div className="space-y-2">
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
                 <Label>Target Audience</Label>
                 <Input
                   placeholder="e.g., entrepreneurs, fitness enthusiasts..."
                   value={targetAudience}
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTargetAudience(e.target.value)}
                 />
-              </div>
-            </div>
-          </div>
+              </Box>
+            </Box>
+          </Box>
 
           {/* Advanced Settings */}
-          <div className="space-y-4">
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             <Button
               variant="outlined"
               onClick={() => setShowAdvanced(!showAdvanced)}
-              className="w-full"
+              sx={{ width: '100%' }}
             >
-              <Settings className="w-4 h-4 mr-2" />
+              <Settings style={{ width: 16, height: 16, marginRight: 8 }} />
               {showAdvanced ? 'Hide' : 'Show'} Advanced Settings
             </Button>
 
             {showAdvanced && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-4 bg-gray-50 rounded-lg">
-                <div className="space-y-4">
-                  <div className="space-y-2">
+              <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 3, p: 2, bgcolor: 'grey.50', borderRadius: '8px' }}>
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
                     <Label>Engagement Focus</Label>
                     <Slider
                       value={[engagementFocus]}
@@ -470,13 +470,13 @@ Which tip resonates most with you? 🤔
                       max={100}
                       step={5}
                     />
-                    <div className="flex justify-between text-sm text-gray-600">
-                      <span>Comments & Shares</span>
-                      <span>Likes & Views</span>
-                    </div>
-                  </div>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                      <Typography variant="body2" sx={{ color: 'text.secondary' }}>Comments & Shares</Typography>
+                      <Typography variant="body2" sx={{ color: 'text.secondary' }}>Likes & Views</Typography>
+                    </Box>
+                  </Box>
 
-                  <div className="space-y-2">
+                  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
                     <Label>Virality Potential</Label>
                     <Slider
                       value={[viralityFocus]}
@@ -484,13 +484,13 @@ Which tip resonates most with you? 🤔
                       max={100}
                       step={5}
                     />
-                    <div className="flex justify-between text-sm text-gray-600">
-                      <span>Niche Appeal</span>
-                      <span>Mass Appeal</span>
-                    </div>
-                  </div>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                      <Typography variant="body2" sx={{ color: 'text.secondary' }}>Niche Appeal</Typography>
+                      <Typography variant="body2" sx={{ color: 'text.secondary' }}>Mass Appeal</Typography>
+                    </Box>
+                  </Box>
 
-                  <div className="space-y-2">
+                  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
                     <Label>Brand Alignment</Label>
                     <Slider
                       value={[brandAlignment]}
@@ -498,89 +498,89 @@ Which tip resonates most with you? 🤔
                       max={100}
                       step={5}
                     />
-                    <div className="flex justify-between text-sm text-gray-600">
-                      <span>Casual</span>
-                      <span>Professional</span>
-                    </div>
-                  </div>
-                </div>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                      <Typography variant="body2" sx={{ color: 'text.secondary' }}>Casual</Typography>
+                      <Typography variant="body2" sx={{ color: 'text.secondary' }}>Professional</Typography>
+                    </Box>
+                  </Box>
+                </Box>
 
-                <div className="space-y-4">
-                  <div className="space-y-2">
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                     <Label>Call to Action</Label>
                     <Input
                       placeholder="e.g., Comment below, Save this post..."
                       value={callToAction}
                       onChange={(e) => setCallToAction(e.target.value)}
                     />
-                  </div>
+                  </Box>
 
-                  <div className="space-y-3">
-                    <div className="flex items-center justify-between">
+                  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                       <Label>Include Hashtags</Label>
                       <Switch checked={includeHashtags} onCheckedChange={setIncludeHashtags} />
-                    </div>
-                    <div className="flex items-center justify-between">
+                    </Box>
+                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                       <Label>Include Emojis</Label>
                       <Switch checked={includeEmojis} onCheckedChange={setIncludeEmojis} />
-                    </div>
-                    <div className="flex items-center justify-between">
+                    </Box>
+                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                       <Label>Include CTA</Label>
                       <Switch checked={includeCTA} onCheckedChange={setIncludeCTA} />
-                    </div>
-                    <div className="flex items-center justify-between">
+                    </Box>
+                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                       <Label>AI Tweaks</Label>
                       <Switch checked={useAITweaks} onCheckedChange={setUseAITweaks} />
-                    </div>
-                  </div>
-                </div>
-              </div>
+                    </Box>
+                  </Box>
+                </Box>
+              </Box>
             )}
-          </div>
+          </Box>
 
           {/* Platform Info */}
           {platformConfig && (
-            <div className="p-4 bg-blue-50 rounded-lg">
-              <div className="flex items-center gap-2 mb-2">
-                <span className="text-2xl">{platformConfig.icon}</span>
-                <h3 className="font-semibold">{platformConfig.name} Optimization</h3>
-              </div>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
-                <div>
-                  <span className="font-medium">Optimal Length:</span>
-                  <p className="text-gray-600">{platformConfig.optimalLength} characters</p>
-                </div>
-                <div>
-                  <span className="font-medium">Hashtag Limit:</span>
-                  <p className="text-gray-600">{platformConfig.hashtagLimit} hashtags</p>
-                </div>
-                <div>
-                  <span className="font-medium">Tone:</span>
-                  <p className="text-gray-600">{platformConfig.tone}</p>
-                </div>
-                <div>
-                  <span className="font-medium">Audience:</span>
-                  <p className="text-gray-600">{platformConfig.audience}</p>
-                </div>
-              </div>
-            </div>
-          )}
+                          <Box sx={{ p: 2, bgcolor: 'blue.50', borderRadius: '8px' }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
+                  <Typography variant="h4">{platformConfig.icon}</Typography>
+                  <Typography variant="h6" sx={{ fontWeight: 600 }}>{platformConfig.name} Optimization</Typography>
+                </Box>
+                                <Box sx={{ display: 'grid', gridTemplateColumns: { xs: 'repeat(2, 1fr)', md: 'repeat(4, 1fr)' }, gap: 2 }}>
+                  <Box>
+                    <Typography variant="body2" sx={{ fontWeight: 500 }}>Optimal Length:</Typography>
+                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>{platformConfig.optimalLength} characters</Typography>
+                  </Box>
+                  <Box>
+                    <Typography variant="body2" sx={{ fontWeight: 500 }}>Hashtag Limit:</Typography>
+                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>{platformConfig.hashtagLimit} hashtags</Typography>
+                  </Box>
+                  <Box>
+                    <Typography variant="body2" sx={{ fontWeight: 500 }}>Tone:</Typography>
+                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>{platformConfig.tone}</Typography>
+                  </Box>
+                  <Box>
+                    <Typography variant="body2" sx={{ fontWeight: 500 }}>Audience:</Typography>
+                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>{platformConfig.tone}</Typography>
+                  </Box>
+                                </Box>
+              </Box>
+            )}
 
           {/* Generate Button */}
           <Button
             onClick={generateCaptions}
             disabled={isGenerating || !content.trim()}
-            className="w-full"
-            size="lg"
+            sx={{ width: '100%' }}
+            size="large"
           >
             {isGenerating ? (
               <>
-                <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
+                <RefreshCw style={{ width: 16, height: 16, marginRight: 8 }} />
                 Generating Captions...
               </>
             ) : (
               <>
-                <Wand2 className="w-4 h-4 mr-2" />
+                <Wand2 style={{ width: 16, height: 16, marginRight: 8 }} />
                 Generate Smart Captions
               </>
             )}
@@ -590,40 +590,42 @@ Which tip resonates most with you? 🤔
 
       {/* Results Section */}
       {variants.length > 0 && (
-        <div className="space-y-6">
-          <div className="flex items-center justify-between">
-            <h2 className="text-xl font-semibold">Generated Captions</h2>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <Typography variant="h5" sx={{ fontWeight: 600 }}>Generated Captions</Typography>
             <Badge variant="secondary">
               {variants.length} variants created
             </Badge>
-          </div>
+          </Box>
 
-          <Tabs defaultValue="variants" className="space-y-4">
+          <Tabs defaultValue="variants" sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             <TabsList>
               <TabsTrigger value="variants">Caption Variants</TabsTrigger>
               <TabsTrigger value="analysis">AI Analysis</TabsTrigger>
               <TabsTrigger value="comparison">A/B Testing</TabsTrigger>
             </TabsList>
 
-            <TabsContent value="variants" className="space-y-4">
+            <TabsContent value="variants" sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
               {variants.map((variant, index) => (
                 <Card
                   key={variant.id}
-                  className={`cursor-pointer transition-all ${
-                    selectedVariant?.id === variant.id
-                      ? 'ring-2 ring-blue-500 bg-blue-50'
-                      : 'hover:bg-gray-50'
-                  }`}
+                  sx={{
+                    cursor: 'pointer',
+                    transition: 'all 0.2s',
+                    ...(selectedVariant?.id === variant.id
+                      ? { ring: 2, ringColor: 'blue.500', bgcolor: 'blue.50' }
+                      : { '&:hover': { bgcolor: 'grey.50' } })
+                  }}
                   onClick={() => setSelectedVariant(variant)}
                 >
-                  <CardContent className="pt-6">
-                    <div className="flex items-start justify-between mb-4">
-                      <div className="flex items-center gap-2">
+                  <CardContent sx={{ pt: 3 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', mb: 2 }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                         <Badge variant="outline">Variant {index + 1}</Badge>
                         <Badge variant="secondary">{variant.platform}</Badge>
                         <Badge variant="secondary">{variant.tone}</Badge>
-                      </div>
-                      <div className="flex items-center gap-2">
+                      </Box>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                         <Button
                           variant="text"
                           size="small"
@@ -632,7 +634,7 @@ Which tip resonates most with you? 🤔
                             regenerateVariant(variant.id);
                           }}
                         >
-                          <RefreshCw className="w-4 h-4" />
+                          <RefreshCw style={{ width: 16, height: 16 }} />
                         </Button>
                         <Button
                           variant="text"
@@ -642,52 +644,52 @@ Which tip resonates most with you? 🤔
                             copyToClipboard(variant.text);
                           }}
                         >
-                          <Copy className="w-4 h-4" />
+                          <Copy style={{ width: 16, height: 16 }} />
                         </Button>
-                      </div>
-                    </div>
+                      </Box>
+                    </Box>
 
-                    <div className="prose prose-sm max-w-none mb-4">
-                      <p className="whitespace-pre-wrap">{variant.text}</p>
-                    </div>
+                    <Box sx={{ mb: 2 }}>
+                      <Typography variant="body2" sx={{ whiteSpace: 'pre-wrap' }}>{variant.text}</Typography>
+                    </Box>
 
-                    <div className="grid grid-cols-2 md:grid-cols-5 gap-4 text-sm">
-                      <div className="text-center">
-                        <div className={`font-semibold ${getScoreColor(variant.engagement_score)}`}>
+                    <Box sx={{ display: 'grid', gridTemplateColumns: { xs: 'repeat(2, 1fr)', md: 'repeat(5, 1fr)' }, gap: 2, fontSize: '0.875rem' }}>
+                      <Box sx={{ textAlign: 'center' }}>
+                        <Box sx={{ fontWeight: 600, color: getScoreColor(variant.engagement_score) }}>
                           {getScoreIcon(variant.engagement_score)}
-                        </div>
-                        <p className="text-gray-600">Engagement</p>
-                        <p className="font-medium">{variant.engagement_score}%</p>
-                      </div>
-                      <div className="text-center">
-                        <div className={`font-semibold ${getScoreColor(variant.virality_potential)}`}>
+                        </Box>
+                        <Typography variant="body2" sx={{ color: 'text.secondary' }}>Engagement</Typography>
+                        <Typography variant="body2" sx={{ fontWeight: 500 }}>{variant.engagement_score}%</Typography>
+                      </Box>
+                      <Box sx={{ textAlign: 'center' }}>
+                        <Box sx={{ fontWeight: 600, color: getScoreColor(variant.virality_potential) }}>
                           {getScoreIcon(variant.virality_potential)}
-                        </div>
-                        <p className="text-gray-600">Virality</p>
-                        <p className="font-medium">{variant.virality_potential}%</p>
-                      </div>
-                      <div className="text-center">
-                        <div className={`font-semibold ${getScoreColor(variant.brand_alignment)}`}>
+                        </Box>
+                        <Typography variant="body2" sx={{ color: 'text.secondary' }}>Virality</Typography>
+                        <Typography variant="body2" sx={{ fontWeight: 500 }}>{variant.virality_potential}%</Typography>
+                      </Box>
+                      <Box sx={{ textAlign: 'center' }}>
+                        <Box sx={{ fontWeight: 600, color: getScoreColor(variant.brand_alignment) }}>
                           {getScoreIcon(variant.brand_alignment)}
-                        </div>
-                        <p className="text-gray-600">Brand Fit</p>
-                        <p className="font-medium">{variant.brand_alignment}%</p>
-                      </div>
-                      <div className="text-center">
-                        <div className={`font-semibold ${getScoreColor(variant.readability_score)}`}>
+                        </Box>
+                        <Typography variant="body2" sx={{ color: 'text.secondary' }}>Brand Fit</Typography>
+                        <Typography variant="body2" sx={{ fontWeight: 500 }}>{variant.brand_alignment}%</Typography>
+                      </Box>
+                      <Box sx={{ textAlign: 'center' }}>
+                        <Box sx={{ fontWeight: 600, color: getScoreColor(variant.readability_score) }}>
                           {getScoreIcon(variant.readability_score)}
-                        </div>
-                        <p className="text-gray-600">Readability</p>
-                        <p className="font-medium">{variant.readability_score}%</p>
-                      </div>
-                      <div className="text-center">
-                        <div className="font-semibold text-gray-600">
-                          <Hash className="w-4 h-4 mx-auto" />
-                        </div>
-                        <p className="text-gray-600">Hashtags</p>
-                        <p className="font-medium">{variant.hashtags.length}</p>
-                      </div>
-                    </div>
+                        </Box>
+                        <Typography variant="body2" sx={{ color: 'text.secondary' }}>Readability</Typography>
+                        <Typography variant="body2" sx={{ fontWeight: 500 }}>{variant.readability_score}%</Typography>
+                      </Box>
+                      <Box sx={{ textAlign: 'center' }}>
+                        <Box sx={{ fontWeight: 600, color: 'text.secondary' }}>
+                          <Hash style={{ width: 16, height: 16, margin: '0 auto' }} />
+                        </Box>
+                        <Typography variant="body2" sx={{ color: 'text.secondary' }}>Hashtags</Typography>
+                        <Typography variant="body2" sx={{ fontWeight: 500 }}>{variant.hashtags.length}</Typography>
+                      </Box>
+                    </Box>
                   </CardContent>
                 </Card>
               ))}
@@ -695,7 +697,7 @@ Which tip resonates most with you? 🤔
 
             <TabsContent value="analysis" className="space-y-4">
               {selectedVariant && (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 6 }}>
                   <Card>
                     <CardHeader>
                       <Typography variant="h6" className="flex items-center gap-2">
@@ -704,38 +706,38 @@ Which tip resonates most with you? 🤔
                       </Typography>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                      <div className="space-y-3">
-                        <div>
+                      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+                        <Box>
                           <Label className="text-sm font-medium">Hooks Used</Label>
-                          <div className="flex flex-wrap gap-1 mt-1">
+                          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mt: 1 }}>
                             {selectedVariant.hooks.map((hook, index) => (
                               <Badge key={index} variant="outline" className="text-xs">
                                 {hook}
                               </Badge>
                             ))}
-                          </div>
-                        </div>
-                        <div>
+                          </Box>
+                        </Box>
+                        <Box>
                           <Label className="text-sm font-medium">Pain Points Addressed</Label>
-                          <div className="flex flex-wrap gap-1 mt-1">
+                          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mt: 1 }}>
                             {selectedVariant.pain_points.map((point, index) => (
                               <Badge key={index} variant="outline" className="text-xs">
                                 {point}
                               </Badge>
                             ))}
-                          </div>
-                        </div>
-                        <div>
+                          </Box>
+                        </Box>
+                        <Box>
                           <Label className="text-sm font-medium">Benefits Highlighted</Label>
-                          <div className="flex flex-wrap gap-1 mt-1">
+                          <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mt: 1 }}>
                             {selectedVariant.benefits.map((benefit, index) => (
                               <Badge key={index} variant="outline" className="text-xs">
                                 {benefit}
                               </Badge>
                             ))}
-                          </div>
-                        </div>
-                      </div>
+                          </Box>
+                        </Box>
+                      </Box>
                     </CardContent>
                   </Card>
 
@@ -747,31 +749,31 @@ Which tip resonates most with you? 🤔
                       </Typography>
                     </CardHeader>
                     <CardContent className="space-y-4">
-                      <div className="space-y-3">
-                        <div className="flex justify-between items-center">
-                          <span className="text-sm">Character Count</span>
-                          <span className="font-medium">{selectedVariant.length}</span>
-                        </div>
-                        <div className="flex justify-between items-center">
-                          <span className="text-sm">Emoji Count</span>
-                          <span className="font-medium">{selectedVariant.emoji_count}</span>
-                        </div>
-                        <div className="flex justify-between items-center">
-                          <span className="text-sm">Call to Action</span>
-                          <span className="font-medium text-green-600">✓ Included</span>
-                        </div>
-                        <div className="flex justify-between items-center">
-                          <span className="text-sm">Social Proof</span>
-                          <span className="font-medium text-green-600">✓ Used</span>
-                        </div>
-                        <div className="flex justify-between items-center">
-                          <span className="text-sm">Urgency Indicators</span>
-                          <span className="font-medium text-green-600">✓ Present</span>
-                        </div>
-                      </div>
+                      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+                        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                          <Typography variant="body2">Character Count</Typography>
+                          <Typography variant="body2" sx={{ fontWeight: 'medium' }}>{selectedVariant.length}</Typography>
+                        </Box>
+                        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                          <Typography variant="body2">Emoji Count</Typography>
+                          <Typography variant="body2" sx={{ fontWeight: 'medium' }}>{selectedVariant.emoji_count}</Typography>
+                        </Box>
+                        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                          <Typography variant="body2">Call to Action</Typography>
+                          <Typography variant="body2" sx={{ fontWeight: 'medium', color: 'green.600' }}>✓ Included</Typography>
+                        </Box>
+                        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                          <Typography variant="body2">Social Proof</Typography>
+                          <Typography variant="body2" sx={{ fontWeight: 'medium', color: 'green.600' }}>✓ Used</Typography>
+                        </Box>
+                        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                          <Typography variant="body2">Urgency Indicators</Typography>
+                          <Typography variant="body2" sx={{ fontWeight: 'medium', color: 'green.600' }}>✓ Present</Typography>
+                        </Box>
+                      </Box>
                     </CardContent>
                   </Card>
-                </div>
+                </Box>
               )}
             </TabsContent>
 
@@ -787,7 +789,7 @@ Which tip resonates most with you? 🤔
                   </Typography>
                 </CardHeader>
                 <CardContent>
-                  <div className="overflow-x-auto">
+                  <Box sx={{ overflowX: 'auto' }}>
                     <table className="w-full text-sm">
                       <thead>
                         <tr className="border-b">
@@ -842,13 +844,13 @@ Which tip resonates most with you? 🤔
                         </tr>
                       </tbody>
                     </table>
-                  </div>
+                  </Box>
                 </CardContent>
               </Card>
             </TabsContent>
           </Tabs>
-        </div>
+        </Box>
       )}
-    </div>
+    </Box>
   );
 } 

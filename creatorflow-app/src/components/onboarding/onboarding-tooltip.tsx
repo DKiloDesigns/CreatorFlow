@@ -16,7 +16,7 @@ import {
   Lightbulb,
   Close,
   CheckCircle,
-  ArrowForward,
+  ArrowForwardIos,
   Help
 } from '@mui/icons-material';
 import { designTokens } from '@/lib/design-system';
@@ -246,7 +246,7 @@ export default function OnboardingTooltip({
                 size="small"
                 variant="contained"
                 onClick={handleComplete}
-                endIcon={<ArrowForward sx={{ fontSize: 14 }} />}
+                endIcon={<ArrowForwardIos sx={{ fontSize: 14 }} />}
                 sx={{
                   background: variantStyles.iconColor,
                   color: 'white',

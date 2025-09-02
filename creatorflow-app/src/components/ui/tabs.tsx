@@ -1,55 +1,97 @@
 "use client"
 
 import * as React from "react"
-import * as TabsPrimitive from "@radix-ui/react-tabs"
+import {
+  Tabs as MuiTabs,
+  TabsList as MuiTabsList,
+  Tab as MuiTab,
+  Box
+} from "@mui/material"
 
-import { cn } from "@/lib/utils"
-
-const Tabs = TabsPrimitive.Root
+// MUI-based Tabs components
+const Tabs = MuiTabs
 
 const TabsList = React.forwardRef<
-  React.ElementRef<typeof TabsPrimitive.List>,
-  React.ComponentPropsWithoutRef<typeof TabsPrimitive.List>
+  HTMLDivElement,
+  React.ComponentPropsWithoutRef<typeof MuiTabsList>
 >(({ className, ...props }, ref) => (
-  <TabsPrimitive.List
+  <MuiTabsList
     ref={ref}
-    className={cn(
-      "inline-flex h-10 items-center justify-center rounded-md bg-muted p-1 text-muted-foreground",
-      className
-    )}
+    className={className}
+    sx={{
+      height: '40px',
+      borderRadius: '6px',
+      backgroundColor: 'action.hover',
+      padding: '4px',
+      color: 'text.secondary'
+    }}
     {...props}
   />
 ))
-TabsList.displayName = TabsPrimitive.List.displayName
+TabsList.displayName = "TabsList"
 
 const TabsTrigger = React.forwardRef<
-  React.ElementRef<typeof TabsPrimitive.Trigger>,
-  React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger>
+  HTMLButtonElement,
+  React.ComponentPropsWithoutRef<typeof MuiTab>
 >(({ className, ...props }, ref) => (
-  <TabsPrimitive.Trigger
+  <MuiTab
     ref={ref}
-    className={cn(
-      "inline-flex items-center justify-center whitespace-nowrap rounded-sm px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-sm",
-      className
-    )}
+    className={className}
+    sx={{
+      display: 'inline-flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      whiteSpace: 'nowrap',
+      borderRadius: '2px',
+      padding: '6px 12px',
+      fontSize: '0.875rem',
+      fontWeight: 500,
+      transition: 'all 0.2s ease',
+      outline: 'none',
+      cursor: 'pointer',
+      '&:focus-visible': {
+        outline: 'none',
+        ring: '2px',
+        ringColor: 'primary.main',
+        ringOffset: '2px',
+        ringOffsetColor: 'background.paper'
+      },
+      '&:disabled': {
+        pointerEvents: 'none',
+        opacity: 0.5
+      },
+      '&.Mui-selected': {
+        backgroundColor: 'background.paper',
+        color: 'text.primary',
+        boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)'
+      }
+    }}
     {...props}
   />
 ))
-TabsTrigger.displayName = TabsPrimitive.Trigger.displayName
+TabsTrigger.displayName = "TabsTrigger"
 
 const TabsContent = React.forwardRef<
-  React.ElementRef<typeof TabsPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof TabsPrimitive.Content>
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
 >(({ className, ...props }, ref) => (
-  <TabsPrimitive.Content
+  <Box
     ref={ref}
-    className={cn(
-      "mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
-      className
-    )}
+    className={className}
+    sx={{
+      marginTop: '8px',
+      outline: 'none',
+      '&:focus-visible': {
+        outline: 'none',
+        ring: '2px',
+        ringColor: 'primary.main',
+        ringOffset: '2px',
+        ringOffsetColor: 'background.paper'
+      }
+    }}
     {...props}
   />
 ))
-TabsContent.displayName = TabsPrimitive.Content.displayName
+TabsContent.displayName = "TabsContent"
 
 export { Tabs, TabsList, TabsTrigger, TabsContent }

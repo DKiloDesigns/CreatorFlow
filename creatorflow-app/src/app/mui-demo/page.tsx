@@ -90,7 +90,7 @@ import {
   Visibility,
   VisibilityOff,
   ArrowBack,
-  ArrowForward,
+  ArrowForwardIos,
   ArrowUpward,
   ArrowDownward,
   Menu as MenuIcon,

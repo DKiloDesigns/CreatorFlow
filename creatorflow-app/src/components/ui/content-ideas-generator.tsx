@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader } from '@/components/ui/mui-card';
-import { Typography, Button } from '@mui/material';
+import { Typography, Button, Box } from '@mui/material';
 import { 
   RefreshCw, 
   Sparkles, 
@@ -311,24 +311,24 @@ export function ContentIdeasGenerator({ provider }: ContentIdeasGeneratorProps) 
   };
 
   const getScoreIcon = (score: number) => {
-    if (score >= 90) return <Crown className="w-4 h-4" />;
-    if (score >= 80) return <Trophy className="w-4 h-4" />;
-    if (score >= 70) return <Medal className="w-4 h-4" />;
-    return <Star className="w-4 h-4" />;
+    if (score >= 90) return <Crown style={{ width: 16, height: 16 }} />;
+    if (score >= 80) return <Trophy style={{ width: 16, height: 16 }} />;
+    if (score >= 70) return <Medal style={{ width: 16, height: 16 }} />;
+    return <Star style={{ width: 16, height: 16 }} />;
   };
 
   return (
-    <div className="space-y-6">
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
       {/* Input Section */}
       <Card>
         <CardHeader>
-          <Typography variant="h6" className="flex items-center gap-2">
-            <Sparkles className="w-5 h-5" />
+          <Typography variant="h6" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Sparkles style={{ width: 20, height: 20 }} />
             Content Ideas Generator
           </Typography>
           {/* CardDescription is not defined in the original file, removing it */}
         </CardHeader>
-        <CardContent className="space-y-6">
+        <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
           {/* Basic Input */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <div className="space-y-2">
@@ -385,7 +385,7 @@ export function ContentIdeasGenerator({ provider }: ContentIdeasGeneratorProps) 
             </Button>
 
             {showAdvanced && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-4 bg-gray-50 rounded-lg">
+              <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 3, p: 2, bgcolor: 'grey.50', borderRadius: '8px' }}>
                 <div className="space-y-4">
                   <div className="space-y-2">
                     <Label>Content Types</Label>
@@ -679,21 +679,21 @@ export function ContentIdeasGenerator({ provider }: ContentIdeasGeneratorProps) 
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <div className="text-center p-4 bg-green-50 rounded-lg">
-                      <TrendingUp className="w-8 h-8 text-green-600 mx-auto mb-2" />
-                      <h3 className="font-semibold text-green-800">High Viral Potential</h3>
-                      <p className="text-green-600 text-sm">3 ideas with 85%+ viral score</p>
-                    </div>
-                    <div className="text-center p-4 bg-blue-50 rounded-lg">
-                      <Target className="w-8 h-8 text-blue-600 mx-auto mb-2" />
-                      <h3 className="font-semibold text-blue-800">Content Gaps</h3>
-                      <p className="text-blue-600 text-sm">2 ideas with 80%+ gap score</p>
-                    </div>
-                    <div className="text-center p-4 bg-purple-50 rounded-lg">
-                      <Crown className="w-8 h-8 text-purple-600 mx-auto mb-2" />
-                      <h3 className="font-semibold text-purple-800">Evergreen Content</h3>
-                      <p className="text-purple-600 text-sm">4 ideas with 85%+ evergreen score</p>
-                    </div>
+                                      <Box sx={{ textAlign: 'center', p: 2, bgcolor: 'green.50', borderRadius: '8px' }}>
+                    <TrendingUp style={{ width: 32, height: 32, color: 'green.600', margin: '0 auto', marginBottom: 8 }} />
+                    <Typography variant="h6" sx={{ fontWeight: 600, color: 'green.800' }}>High Viral Potential</Typography>
+                    <Typography variant="body2" sx={{ color: 'green.600', fontSize: '0.875rem' }}>3 ideas with 85%+ viral score</Typography>
+                  </Box>
+                  <Box sx={{ textAlign: 'center', p: 2, bgcolor: 'blue.50', borderRadius: '8px' }}>
+                    <Target style={{ width: 32, height: 32, color: 'blue.600', margin: '0 auto', marginBottom: 8 }} />
+                    <Typography variant="h6" sx={{ fontWeight: 600, color: 'blue.800' }}>Content Gaps</Typography>
+                    <Typography variant="body2" sx={{ color: 'blue.600', fontSize: '0.875rem' }}>2 ideas with 80%+ gap score</Typography>
+                  </Box>
+                  <Box sx={{ textAlign: 'center', p: 2, bgcolor: 'purple.50', borderRadius: '8px' }}>
+                    <Crown style={{ width: 32, height: 32, color: 'purple.600', margin: '0 auto', marginBottom: 8 }} />
+                    <Typography variant="h6" sx={{ fontWeight: 600, color: 'purple.800' }}>Evergreen Content</Typography>
+                    <Typography variant="body2" sx={{ color: 'purple.600', fontSize: '0.875rem' }}>4 ideas with 85%+ evergreen score</Typography>
+                  </Box>
                   </div>
                 </CardContent>
               </Card>

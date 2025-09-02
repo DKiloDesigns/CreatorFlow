@@ -1,7 +1,7 @@
 'use client';
 
 import React, { forwardRef } from 'react';
-import { cn } from '@/lib/utils';
+import { Box, Button, Typography } from '@mui/material';
 import { ChevronLeft, ChevronRight, MoreHorizontal } from 'lucide-react';
 
 export interface PaginationProps extends React.HTMLAttributes<HTMLElement> {
@@ -34,36 +34,49 @@ const Pagination = forwardRef<HTMLElement, PaginationProps>(
     fullWidth = false,
     ...props 
   }, ref) => {
-    const variantClasses = {
-      default: 'bg-background border border-border',
-      outlined: 'bg-background border-2 border-border',
-      minimal: 'bg-transparent',
+    const getVariantStyles = () => {
+      const variantMap = {
+        default: { bgcolor: 'background.paper', border: 1, borderColor: 'divider' },
+        outlined: { bgcolor: 'background.paper', border: 2, borderColor: 'divider' },
+        minimal: { bgcolor: 'transparent' },
+      };
+      return variantMap[variant];
     };
 
-    const sizeClasses = {
-      sm: 'px-2 py-1 text-sm',
-      md: 'px-3 py-2 text-base',
-      lg: 'px-4 py-3 text-lg',
+    const getSizeStyles = () => {
+      const sizeMap = {
+        sm: { px: 1, py: 0.5, fontSize: '0.875rem' },
+        md: { px: 1.5, py: 1, fontSize: '1rem' },
+        lg: { px: 2, py: 1.5, fontSize: '1.125rem' },
+      };
+      return sizeMap[size];
     };
 
-    const buttonClasses = cn(
-      'flex items-center justify-center transition-all duration-200',
-      'hover:bg-accent hover:text-accent-foreground',
-      'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2',
-      'disabled:opacity-50 disabled:cursor-not-allowed',
-      sizeClasses[size]
-    );
+    const getButtonStyles = () => ({
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      transition: 'all 0.2s',
+      '&:hover': { bgcolor: 'action.hover' },
+      '&:focus': { outline: 'none', ring: 2, ringColor: 'primary.main', ringOffset: 2 },
+      '&.Mui-disabled': { opacity: 0.5, cursor: 'not-allowed' },
+      ...getSizeStyles()
+    });
 
-    const pageButtonClasses = cn(
-      buttonClasses,
-      'min-w-[2.5rem] rounded-md',
-      'border border-transparent'
-    );
+    const getPageButtonStyles = () => ({
+      ...getButtonStyles(),
+      minWidth: '2.5rem',
+      borderRadius: '6px',
+      border: 1,
+      borderColor: 'transparent'
+    });
 
-    const activePageClasses = cn(
-      'bg-primary text-primary-foreground border-primary',
-      'hover:bg-primary-dark'
-    );
+    const getActivePageStyles = () => ({
+      bgcolor: 'primary.main',
+      color: 'primary.contrastText',
+      borderColor: 'primary.main',
+      '&:hover': { bgcolor: 'primary.dark' }
+    });
 
     const generatePageNumbers = () => {
       if (totalPages <= maxVisiblePages) {
@@ -105,15 +118,18 @@ const Pagination = forwardRef<HTMLElement, PaginationProps>(
     const renderPageButton = (page: number | string, index: number) => {
       if (page === '...') {
         return (
-          <span
+          <Box
             key={`ellipsis-${index}`}
-            className={cn(
-              'flex items-center justify-center text-muted-foreground',
-              sizeClasses[size]
-            )}
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              color: 'text.disabled',
+              ...getSizeStyles()
+            }}
           >
-            <MoreHorizontal className="w-4 h-4" />
-          </span>
+            <MoreHorizontal style={{ width: 16, height: 16 }} />
+          </Box>
         );
       }
 
@@ -121,98 +137,102 @@ const Pagination = forwardRef<HTMLElement, PaginationProps>(
       const isActive = pageNum === currentPage;
 
       return (
-        <button
+        <Button
           key={pageNum}
-          type="button"
+          variant="outlined"
           onClick={() => handlePageChange(pageNum)}
           disabled={disabled}
-          className={cn(
-            pageButtonClasses,
-            isActive && activePageClasses,
-            !isActive && 'hover:border-border'
-          )}
+          sx={{
+            ...getPageButtonStyles(),
+            ...(isActive && getActivePageStyles()),
+            ...(!isActive && { '&:hover': { borderColor: 'divider' } })
+          }}
           aria-current={isActive ? 'page' : undefined}
           aria-label={`Go to page ${pageNum}`}
         >
           {pageNum}
-        </button>
+        </Button>
       );
     };
 
     if (totalPages <= 1) return null;
 
     return (
-      <nav
+      <Box
+        component="nav"
         ref={ref}
-        className={cn(
-          'flex items-center justify-center gap-1',
-          variantClasses[variant],
-          'rounded-lg',
-          fullWidth && 'w-full',
-          className
-        )}
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: 0.5,
+          borderRadius: '8px',
+          ...(fullWidth && { width: '100%' }),
+          ...getVariantStyles(),
+          ...(className && { className })
+        }}
         role="navigation"
         aria-label="Pagination"
         {...props}
       >
         {showFirstLast && (
-          <button
-            type="button"
+          <Button
+            variant="outlined"
             onClick={() => handlePageChange(1)}
             disabled={disabled || currentPage === 1}
-            className={cn(buttonClasses, 'rounded-md')}
+            sx={{ ...getButtonStyles(), borderRadius: '6px' }}
             aria-label="Go to first page"
           >
-            <span className="sr-only">First</span>
-            <ChevronLeft className="w-4 h-4" />
-            <ChevronLeft className="w-4 h-4 -ml-3" />
-          </button>
+            <Box component="span" sx={{ srOnly: 'First' }}>First</Box>
+            <ChevronLeft style={{ width: 16, height: 16 }} />
+            <ChevronLeft style={{ width: 16, height: 16, marginLeft: -12 }} />
+          </Button>
         )}
 
         {showPrevNext && (
-          <button
-            type="button"
+          <Button
+            variant="outlined"
             onClick={() => handlePageChange(currentPage - 1)}
             disabled={disabled || currentPage === 1}
-            className={cn(buttonClasses, 'rounded-md')}
+            sx={{ ...getButtonStyles(), borderRadius: '6px' }}
             aria-label="Go to previous page"
           >
-            <ChevronLeft className="w-4 h-4" />
-          </button>
+            <ChevronLeft style={{ width: 16, height: 16 }} />
+          </Button>
         )}
 
         {showPageNumbers && (
-          <div className="flex items-center gap-1">
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
             {generatePageNumbers().map(renderPageButton)}
-          </div>
+          </Box>
         )}
 
         {showPrevNext && (
-          <button
-            type="button"
+          <Button
+            variant="outlined"
             onClick={() => handlePageChange(currentPage + 1)}
             disabled={disabled || currentPage === totalPages}
-            className={cn(buttonClasses, 'rounded-md')}
+            sx={{ ...getButtonStyles(), borderRadius: '6px' }}
             aria-label="Go to next page"
           >
-            <ChevronRight className="w-4 h-4" />
-          </button>
+            <ChevronRight style={{ width: 16, height: 16 }} />
+          </Button>
         )}
 
         {showFirstLast && (
-          <button
-            type="button"
+          <Button
+            variant="outlined"
             onClick={() => handlePageChange(totalPages)}
             disabled={disabled || currentPage === totalPages}
-            className={cn(buttonClasses, 'rounded-md')}
+            sx={{ ...getButtonStyles(), borderRadius: '6px' }}
             aria-label="Go to last page"
           >
-            <span className="sr-only">Last</span>
-            <ChevronRight className="w-4 h-4" />
-            <ChevronRight className="w-4 h-4 -ml-3" />
-          </button>
+            <Box component="span" sx={{ srOnly: 'Last' }}>Last</Box>
+            <ChevronRight style={{ width: 16, height: 16 }} />
+            <ChevronRight style={{ width: 16, height: 16, marginLeft: -12 }} />
+          </Button>
         )}
-      </nav>
+      </Box>
     );
   }
 );

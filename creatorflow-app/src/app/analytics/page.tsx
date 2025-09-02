@@ -7,7 +7,14 @@ import {
   CardHeader, 
   Button,
   Typography,
-  Box
+  Box,
+  Container,
+  Grid,
+  Chip,
+  FormControl,
+  InputLabel,
+  Select as MuiSelect,
+  MenuItem
 } from '@mui/material';
 import { BarChart3, TrendingUp, Activity, Settings, RefreshCw, AlertTriangle, Eye, Users, Target, Lightbulb, Zap, Download, Brain } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
@@ -78,13 +85,13 @@ export default function AnalyticsPage() {
 
   const getInsightIcon = (type: string) => {
     switch (type) {
-      case 'opportunity': return <TrendingUp className="h-5 w-5 text-green-600" />;
-      case 'risk': return <AlertTriangle className="h-5 w-5 text-red-600" />;
-      case 'trend': return <BarChart3 className="h-5 w-5 text-blue-600" />;
-      case 'anomaly': return <Eye className="h-5 w-5 text-orange-600" />;
-      case 'segment': return <Users className="h-5 w-5 text-purple-600" />;
-      case 'funnel': return <Target className="h-5 w-5 text-indigo-600" />;
-      default: return <Lightbulb className="h-5 w-5 text-yellow-600" />;
+      case 'opportunity': return <TrendingUp style={{ width: 20, height: 20, color: 'success.main' }} />;
+      case 'risk': return <AlertTriangle style={{ width: 20, height: 20, color: 'error.main' }} />;
+      case 'trend': return <BarChart3 style={{ width: 20, height: 20, color: 'primary.main' }} />;
+      case 'anomaly': return <Eye style={{ width: 20, height: 20, color: 'warning.main' }} />;
+      case 'segment': return <Users style={{ width: 20, height: 20, color: 'secondary.main' }} />;
+      case 'funnel': return <Target style={{ width: 20, height: 20, color: 'info.main' }} />;
+      default: return <Lightbulb style={{ width: 20, height: 20, color: 'warning.main' }} />;
     }
   };
 
@@ -154,11 +161,11 @@ export default function AnalyticsPage() {
             </SelectContent>
           </Select>
           <Button onClick={refreshData} disabled={refreshing} variant="outlined">
-            <RefreshCw className={`h-4 w-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} />
+            <RefreshCw style={{ width: 16, height: 16, marginRight: 8 }} className={refreshing ? 'animate-spin' : ''} />
             Refresh
           </Button>
           <Button onClick={exportInsights} variant="outlined">
-            <Download className="h-4 w-4 mr-2" />
+            <Download style={{ width: 16, height: 16, marginRight: 8 }} />
             Export
           </Button>
         </Box>
@@ -166,63 +173,71 @@ export default function AnalyticsPage() {
 
       {/* Real-time Metrics */}
       {realTimeMetrics && (
-        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)', lg: 'repeat(4, 1fr)' }, gap: 2 }}>
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                              <Typography variant="subtitle2" className="text-sm font-medium">Active Users</Typography>
-              <Activity className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{realTimeMetrics.activeUsers}</div>
-              <p className="text-xs text-muted-foreground">
-                Last hour
-              </p>
-            </CardContent>
-          </Card>
+        <Grid container spacing={2}>
+          <Grid item xs={12} md={6} lg={3}>
+            <Card>
+              <CardHeader sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', pb: 1 }}>
+                <Typography variant="subtitle2" sx={{ fontSize: '0.875rem', fontWeight: 500 }}>Active Users</Typography>
+                <Activity sx={{ height: 16, width: 16, color: 'text.secondary' }} />
+              </CardHeader>
+              <CardContent>
+                <Typography variant="h4" sx={{ fontWeight: 'bold' }}>{realTimeMetrics.activeUsers}</Typography>
+                <Typography variant="caption" color="text.secondary">
+                  Last hour
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
 
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                              <Typography variant="subtitle2" className="text-sm font-medium">New Users</Typography>
-              <Users className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{realTimeMetrics.newUsers}</div>
-              <p className="text-xs text-muted-foreground">
-                Last hour
-              </p>
-            </CardContent>
-          </Card>
+          <Grid item xs={12} md={6} lg={3}>
+            <Card>
+              <CardHeader sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', pb: 1 }}>
+                <Typography variant="subtitle2" sx={{ fontSize: '0.875rem', fontWeight: 500 }}>New Users</Typography>
+                <Users sx={{ height: 16, width: 16, color: 'text.secondary' }} />
+              </CardHeader>
+              <CardContent>
+                <Typography variant="h4" sx={{ fontWeight: 'bold' }}>{realTimeMetrics.newUsers}</Typography>
+                <Typography variant="caption" color="text.secondary">
+                  Last hour
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
 
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <Typography variant="h6" className="text-sm font-medium">Total Events</Typography>
-              <BarChart3 className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{realTimeMetrics.totalEvents}</div>
-              <p className="text-xs text-muted-foreground">
-                Last hour
-              </p>
-            </CardContent>
-          </Card>
+          <Grid item xs={12} md={6} lg={3}>
+            <Card>
+              <CardHeader sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', pb: 1 }}>
+                <Typography variant="h6" sx={{ fontSize: '0.875rem', fontWeight: 500 }}>Total Events</Typography>
+                <BarChart3 sx={{ height: 16, width: 16, color: 'text.secondary' }} />
+              </CardHeader>
+              <CardContent>
+                <Typography variant="h4" sx={{ fontWeight: 'bold' }}>{realTimeMetrics.totalEvents}</Typography>
+                <Typography variant="caption" color="text.secondary">
+                  Last hour
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
 
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <Typography variant="h6" className="text-sm font-medium">Platform Usage</Typography>
-              <Zap className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                {Object.entries(realTimeMetrics.platformUsage).map(([platform, count]) => (
-                  <div key={platform} className="flex justify-between text-sm">
-                    <span className="capitalize">{platform}</span>
-                    <span className="font-medium">{count}</span>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </Box>
+          <Grid item xs={12} md={6} lg={3}>
+            <Card>
+              <CardHeader sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', pb: 1 }}>
+                <Typography variant="h6" sx={{ fontSize: '0.875rem', fontWeight: 500 }}>Platform Usage</Typography>
+                <Zap sx={{ height: 16, width: 16, color: 'text.secondary' }} />
+              </CardHeader>
+              <CardContent>
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                  {Object.entries(realTimeMetrics.platformUsage).map(([platform, count]) => (
+                    <Box key={platform} sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                      <Typography variant="body2" sx={{ textTransform: 'capitalize' }}>{platform}</Typography>
+                      <Typography variant="body2" sx={{ fontWeight: 500 }}>{count}</Typography>
+                    </Box>
+                  ))}
+                </Box>
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
       )}
 
       {/* Tabs and Content */}

@@ -15,7 +15,7 @@ import {
   FormControl,
   InputLabel
 } from '@mui/material';
-import { Shield, Activity, RefreshCw } from 'lucide-react';
+import { Shield, Activity, RefreshCw, AlertTriangle, Lock, Eye, Download } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
@@ -165,16 +165,16 @@ export default function SecurityPage() {
     a.click();
   };
 
-  if (loading) return <div className="p-8">Loading security data...</div>;
+  if (loading) return <Box sx={{ p: 4 }}>Loading security data...</Box>;
 
   return (
-    <div className="p-8 space-y-8">
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold">Security Center</h1>
-          <p className="text-muted-foreground">Threat monitoring and security management</p>
-        </div>
-        <div className="flex gap-2">
+    <Box sx={{ p: 4, display: 'flex', flexDirection: 'column', gap: 4 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Box>
+          <Typography variant="h3" sx={{ fontWeight: 'bold' }}>Security Center</Typography>
+          <Typography variant="body1" color="text.secondary">Threat monitoring and security management</Typography>
+        </Box>
+        <Box sx={{ display: 'flex', gap: 1 }}>
           <Select value={severityFilter} onValueChange={setSeverityFilter}>
             <SelectTrigger className="w-40">
               <SelectValue />
@@ -206,68 +206,76 @@ export default function SecurityPage() {
             <Download className="h-4 w-4 mr-2" />
             Export
           </Button>
-        </div>
-      </div>
+        </Box>
+      </Box>
 
       {/* Security Overview */}
       {stats && (
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <Typography variant="h6" className="text-sm font-medium">Total Events</Typography>
-              <Activity className="h-4 w-4 text-muted-foreground" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold">{stats.total}</div>
-              <p className="text-xs text-muted-foreground">
-                Last 24 hours
-              </p>
-            </CardContent>
-          </Card>
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={3}>
+            <Card>
+              <CardHeader sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', pb: 1 }}>
+                <Typography variant="h6" sx={{ fontSize: '0.875rem', fontWeight: 500 }}>Total Events</Typography>
+                <Activity sx={{ height: 16, width: 16, color: 'text.secondary' }} />
+              </CardHeader>
+              <CardContent>
+                <Typography variant="h4" sx={{ fontWeight: 'bold' }}>{stats.total}</Typography>
+                <Typography variant="caption" color="text.secondary">
+                  Last 24 hours
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
 
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <Typography variant="h6" className="text-sm font-medium">Critical Events</Typography>
-              <AlertTriangle className="h-4 w-4 text-red-600" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-red-600">
-                {stats.severityBreakdown.critical || 0}
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Requires immediate attention
-              </p>
-            </CardContent>
-          </Card>
+          <Grid item xs={12} md={3}>
+            <Card>
+              <CardHeader sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', pb: 1 }}>
+                <Typography variant="h6" sx={{ fontSize: '0.875rem', fontWeight: 500 }}>Critical Events</Typography>
+                <AlertTriangle sx={{ height: 16, width: 16, color: 'error.main' }} />
+              </CardHeader>
+              <CardContent>
+                <Typography variant="h4" sx={{ fontWeight: 'bold', color: 'error.main' }}>
+                  {stats.severityBreakdown.critical || 0}
+                </Typography>
+                <Typography variant="caption" color="text.secondary">
+                  Requires immediate attention
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
 
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <Typography variant="h6" className="text-sm font-medium">Active Threats</Typography>
-              <Shield className="h-4 w-4 text-orange-600" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-orange-600">
-                {threats.filter(t => t.status === 'active').length}
-              </div>
-              <p className="text-xs text-muted-foreground">
-                Currently being monitored
-              </p>
-            </CardContent>
-          </Card>
+          <Grid item xs={12} md={3}>
+            <Card>
+              <CardHeader sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', pb: 1 }}>
+                <Typography variant="h6" sx={{ fontSize: '0.875rem', fontWeight: 500 }}>Active Threats</Typography>
+                <Shield sx={{ height: 16, width: 16, color: 'warning.main' }} />
+              </CardHeader>
+              <CardContent>
+                <Typography variant="h4" sx={{ fontWeight: 'bold', color: 'warning.main' }}>
+                  {threats.filter(t => t.status === 'active').length}
+                </Typography>
+                <Typography variant="caption" color="text.secondary">
+                  Currently being monitored
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
 
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <Typography variant="h6" className="text-sm font-medium">Security Score</Typography>
-              <Lock className="h-4 w-4 text-green-600" />
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-green-600">85%</div>
-              <p className="text-xs text-muted-foreground">
-                Overall security health
-              </p>
-            </CardContent>
-          </Card>
-        </div>
+          <Grid item xs={12} md={3}>
+            <Card>
+              <CardHeader sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', pb: 1 }}>
+                <Typography variant="h6" sx={{ fontSize: '0.875rem', fontWeight: 500 }}>Security Score</Typography>
+                <Lock sx={{ height: 16, width: 16, color: 'text.secondary' }} />
+              </CardHeader>
+              <CardContent>
+                <Typography variant="h4" sx={{ fontWeight: 'bold', color: 'success.main' }}>85%</Typography>
+                <Typography variant="caption" color="text.secondary">
+                  Overall security health
+                </Typography>
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
       )}
 
       <Tabs defaultValue="events" className="space-y-6">
@@ -485,6 +493,6 @@ export default function SecurityPage() {
         height: { xs: '120px', sm: '40px' },
         width: '100%'
       }} />
-    </div>
+    </Box>
   );
 } 

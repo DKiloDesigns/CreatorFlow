@@ -54,7 +54,6 @@ import {
 } from '@mui/material';
 import {
   AutoAwesome,
-  Brain,
   TrendingUp,
   SmartToy,
   Psychology,
@@ -464,7 +463,7 @@ export default function AIWorkflowAutomation() {
       {/* Workflows Grid */}
       <Grid container spacing={3}>
         {workflows.map((workflow) => (
-          <Grid item xs={12} md={6} lg={4} key={workflow.id} component="div">
+          <Grid xs={12} md={6} lg={4} key={workflow.id}>
             <Card
               elevation={0}
               sx={{
@@ -568,7 +567,7 @@ export default function AIWorkflowAutomation() {
                 {workflow.aiOptimization.enabled && (
                   <Box sx={{ mb: 3, p: 2, background: designTokens.colors.ai[50], borderRadius: designTokens.borderRadius.md }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-                      <Brain sx={{ fontSize: 16, color: designTokens.colors.ai[600] }} />
+                      <Psychology sx={{ fontSize: 16, color: designTokens.colors.ai[600] }} />
                       <Typography variant="body2" sx={{ color: designTokens.colors.ai[700], fontWeight: 'medium' }}>
                         AI Optimization Active
                       </Typography>

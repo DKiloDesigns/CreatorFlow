@@ -19,7 +19,7 @@ import {
 } from '@mui/material';
 import {
   AutoAwesome,
-  Brain,
+  Psychology,
   TrendingUp,
   ContentCopy,
   Schedule,
@@ -95,7 +95,7 @@ export default function Phase2HubPage() {
       id: 'ai-optimization-hub',
       title: 'AI Optimization Hub',
       description: 'Centralized AI-powered content optimization tools. Batch optimize content, A/B test variations, and improve performance.',
-      icon: Brain,
+      icon: Psychology,
       route: '/dashboard/phase2-hub/ai-optimization',
       status: 'coming-soon',
       difficulty: 'advanced',

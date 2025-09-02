@@ -156,9 +156,9 @@ export function AdvancedAnalyticsDashboard({
   if (!analyticsData) {
     return (
       <Box sx={{ textAlign: 'center', py: 6 }}>
-        <Activity className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-        <Typography variant="h5" component="h3" sx={{ fontWeight: 500, color: 'grey.900', mb: 1 }}>No Analytics Data</Typography>
-        <Typography variant="body1" sx={{ color: 'grey.500' }}>Start posting content to see your analytics here.</Typography>
+        <Activity style={{ width: 48, height: 48, color: 'grey.400', margin: '0 auto 16px' }} />
+        <Typography variant="h5" component="h3" sx={{ fontWeight: 500, color: 'text.primary', mb: 1 }}>No Analytics Data</Typography>
+        <Typography variant="body1" sx={{ color: 'text.secondary' }}>Start posting content to see your analytics here.</Typography>
       </Box>
     );
   }
@@ -205,62 +205,62 @@ export function AdvancedAnalyticsDashboard({
 
       {/* Key Metrics Cards */}
       <Grid container spacing={3}>
-        <Grid item xs={12} md={6} lg={3} component="div">
+        <Grid item xs={12} md={6} lg={3}>
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <Typography variant="h6" className="text-sm font-medium">Total Posts</Typography>
-              <BarChart3 className="h-4 w-4 text-muted-foreground" />
+            <CardHeader sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', pb: 1 }}>
+              <Typography variant="h6" sx={{ fontSize: '0.875rem', fontWeight: 500 }}>Total Posts</Typography>
+              <BarChart3 style={{ width: 16, height: 16, color: 'text.secondary' }} />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{analyticsData.totalPosts.toLocaleString()}</div>
-              <p className="text-xs text-muted-foreground">
+              <Typography variant="h4" sx={{ fontWeight: 'bold' }}>{analyticsData.totalPosts.toLocaleString()}</Typography>
+              <Typography variant="caption" sx={{ color: 'text.secondary' }}>
                 +12% from last period
-              </p>
+              </Typography>
             </CardContent>
           </Card>
         </Grid>
 
-        <Grid item xs={12} md={6} lg={3} component="div">
+        <Grid item xs={12} md={6} lg={3}>
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <Typography variant="h6" className="text-sm font-medium">Total Engagement</Typography>
-              <Heart className="h-4 w-4 text-muted-foreground" />
+            <CardHeader sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', pb: 1 }}>
+              <Typography variant="h6" sx={{ fontSize: '0.875rem', fontWeight: 500 }}>Total Engagement</Typography>
+              <Heart style={{ width: 16, height: 16, color: 'text.secondary' }} />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{analyticsData.totalEngagement.toLocaleString()}</div>
-              <p className="text-xs text-muted-foreground">
+              <Typography variant="h4" sx={{ fontWeight: 'bold' }}>{analyticsData.totalEngagement.toLocaleString()}</Typography>
+              <Typography variant="caption" sx={{ color: 'text.secondary' }}>
                 +8% from last period
-              </p>
+              </Typography>
             </CardContent>
           </Card>
         </Grid>
 
-        <Grid item xs={12} md={6} lg={3} component="div">
+        <Grid item xs={12} md={6} lg={3}>
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <Typography variant="h6" className="text-sm font-medium">Avg Engagement Rate</Typography>
-              <TrendingUp className="h-4 w-4 text-muted-foreground" />
+            <CardHeader sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', pb: 1 }}>
+              <Typography variant="h6" sx={{ fontSize: '0.875rem', fontWeight: 500 }}>Avg Engagement Rate</Typography>
+              <TrendingUp style={{ width: 16, height: 16, color: 'text.secondary' }} />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{analyticsData.avgEngagementRate.toFixed(2)}%</div>
-              <p className="text-xs text-muted-foreground">
+              <Typography variant="h4" sx={{ fontWeight: 'bold' }}>{analyticsData.avgEngagementRate.toFixed(2)}%</Typography>
+              <Typography variant="caption" sx={{ color: 'text.secondary' }}>
                 +2.1% from last period
-              </p>
+              </Typography>
             </CardContent>
           </Card>
         </Grid>
 
-        <Grid item xs={12} md={6} lg={3} component="div">
+        <Grid item xs={12} md={6} lg={3}>
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <Typography variant="h6" className="text-sm font-medium">Total Reach</Typography>
-              <Eye className="h-4 w-4 text-muted-foreground" />
+            <CardHeader sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', pb: 1 }}>
+              <Typography variant="h6" sx={{ fontSize: '0.875rem', fontWeight: 500 }}>Total Reach</Typography>
+              <Eye style={{ width: 16, height: 16, color: 'text.secondary' }} />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{analyticsData.totalReach.toLocaleString()}</div>
-              <p className="text-xs text-muted-foreground">
+              <Typography variant="h4" sx={{ fontWeight: 'bold' }}>{analyticsData.totalReach.toLocaleString()}</Typography>
+              <Typography variant="caption" sx={{ color: 'text.secondary' }}>
                 +15% from last period
-              </p>
+              </Typography>
             </CardContent>
           </Card>
         </Grid>

@@ -44,11 +44,11 @@ interface TemplateVariable {
 
 interface UseTemplateModalProps {
   open: boolean;
-  onOpenChange: (open: boolean) => void;
+  onClose: () => void;
   onTemplateUsed?: (templateData: any) => void;
 }
 
-export function UseTemplateModal({ open, onOpenChange, onTemplateUsed }: UseTemplateModalProps) {
+export function UseTemplateModal({ open, onClose, onTemplateUsed }: UseTemplateModalProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedPlatform, setSelectedPlatform] = useState<string>('all');
   const [searchQuery, setSearchQuery] = useState('');
@@ -228,7 +228,7 @@ export function UseTemplateModal({ open, onOpenChange, onTemplateUsed }: UseTemp
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+            <Dialog open={open} onClose={onClose}>
       <DialogContent className="max-w-6xl max-h-[95vh] overflow-hidden">
         <DialogHeader>
           <DialogTitle>Use Template</DialogTitle>

@@ -3,7 +3,7 @@ import Link from "next/link";
 import { format } from 'date-fns';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader } from '@/components/ui/card';
-import { Typography } from '@mui/material';
+import { Typography, Box, Container, Grid, Alert, AlertTitle, AlertDescription, Chip } from '@mui/material';
 import { createPortalSession } from './actions';
 import { ArrowRight, CreditCard, History, TrendingUp, BarChart3, Users, Zap, Download, FileText, BarChart2 } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
@@ -119,60 +119,53 @@ export default function BillingClientComponent({ user, searchParams, upcomingCha
   if (searchParams?.success) {
     console.log("BillingClientComponent: Rendering success message");
     return (
-      <div className="rounded-md bg-green-50 p-4">
-        <div className="flex">
-          <div className="flex-shrink-0">
-            <svg className="h-5 w-5 text-green-400" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-            </svg>
-          </div>
-          <div className="ml-3">
-            <h3 className="text-sm font-medium text-green-800">Payment successful!</h3>
-            <div className="mt-2 text-sm text-green-700">
-              <p>Your subscription has been activated. You can now access all premium features.</p>
-            </div>
-            <div className="mt-4">
-              <Link
-                href="/dashboard"
-                className="text-sm font-medium text-green-600 hover:text-green-500"
-              >
-                Go to Dashboard →
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
+      <Alert severity="success" sx={{ borderRadius: 2, p: 2 }}>
+        <AlertTitle sx={{ fontSize: '0.875rem', fontWeight: 500, color: 'success.dark' }}>
+          Payment successful!
+        </AlertTitle>
+        <AlertDescription sx={{ mt: 1, color: 'success.dark' }}>
+          Your subscription has been activated. You can now access all premium features.
+        </AlertDescription>
+        <Box sx={{ mt: 2 }}>
+          <Link
+            href="/dashboard"
+            style={{ 
+              fontSize: '0.875rem', 
+              fontWeight: 500, 
+              color: 'success.main',
+              textDecoration: 'none'
+            }}
+          >
+            Go to Dashboard →
+          </Link>
+        </Box>
+      </Alert>
     );
   }
 
   if (searchParams?.canceled) {
     console.log("BillingClientComponent: Rendering canceled message");
     return (
-      <div className="rounded-md bg-yellow-50 p-4">
-        <div className="flex">
-          <div className="flex-shrink-0">
-            <svg className="h-5 w-5 text-yellow-400" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
-            </svg>
-          </div>
-          <div className="ml-3">
-            <h3 className="text-sm font-medium text-yellow-800">Payment canceled</h3>
-            <div className="mt-2 text-sm text-yellow-700">
-              <p>Your payment was canceled. You can try again or choose a different plan.</p>
-            </div>
-          </div>
-        </div>
-      </div>
+      <Alert severity="warning" sx={{ borderRadius: 2, p: 2 }}>
+        <AlertTitle sx={{ fontSize: '0.875rem', fontWeight: 500, color: 'warning.dark' }}>
+          Payment canceled
+        </AlertTitle>
+        <AlertDescription sx={{ mt: 1, color: 'warning.dark' }}>
+          Your payment was canceled. You can try again or choose a different plan.
+        </AlertDescription>
+      </Alert>
     );
   }
 
   console.log("BillingClientComponent: Rendering main component");
   
   return (
-    <div className="container max-w-5xl py-8">
-      <h1 className="text-3xl font-bold mb-8">Billing & Subscription</h1>
-      <p>Debug: Main component rendering</p>
-      <Tabs defaultValue="overview" className="space-y-6">
+    <Container maxWidth="lg" sx={{ py: 4 }}>
+      <Typography variant="h3" component="h1" sx={{ fontWeight: 'bold', mb: 4 }}>
+        Billing & Subscription
+      </Typography>
+      <Typography variant="body2" sx={{ mb: 2 }}>Debug: Main component rendering</Typography>
+      <Tabs defaultValue="overview">
         <TabsList>
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="usage">Usage</TabsTrigger>
@@ -186,12 +179,12 @@ export default function BillingClientComponent({ user, searchParams, upcomingCha
               <CardDescription>Your current subscription details</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <p className="text-sm font-medium">Plan</p>
-                    <p className="text-2xl font-bold">{user?.plan || 'Free'}</p>
-                  </div>
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <Box>
+                    <Typography variant="body2" sx={{ fontWeight: 500 }}>Plan</Typography>
+                    <Typography variant="h4" sx={{ fontWeight: 'bold' }}>{user?.plan || 'Free'}</Typography>
+                  </Box>
                   {user?.stripeCustomerId && (
                     <Button
                       onClick={async () => {
@@ -207,16 +200,16 @@ export default function BillingClientComponent({ user, searchParams, upcomingCha
                       Manage Subscription
                     </Button>
                   )}
-                </div>
+                </Box>
                 {user?.stripeCurrentPeriodEnd && (
-                  <div>
-                    <p className="text-sm font-medium">Next Billing Date</p>
-                    <p className="text-lg">
+                  <Box>
+                    <Typography variant="body2" sx={{ fontWeight: 500 }}>Next Billing Date</Typography>
+                    <Typography variant="h6">
                       {format(new Date(user.stripeCurrentPeriodEnd), 'MMMM d, yyyy')}
-                    </p>
-                  </div>
+                    </Typography>
+                  </Box>
                 )}
-              </div>
+              </Box>
             </CardContent>
           </Card>
 
@@ -227,30 +220,34 @@ export default function BillingClientComponent({ user, searchParams, upcomingCha
               <CardDescription>Your current usage and limits</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2">
-                    <TrendingUp className="h-5 w-5 text-muted-foreground" />
-                    <p className="text-sm font-medium">Scheduled Posts</p>
-                  </div>
-                  <p className="text-2xl font-bold">{user?._count.posts || 0}</p>
-                  <Progress value={postUsage} className="h-2" />
-                  <p className="text-sm text-muted-foreground">
-                    {user?.plan === 'Free' ? 'Limited to 5 posts' : 'Unlimited posts'}
-                  </p>
-                </div>
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2">
-                    <CreditCard className="h-5 w-5 text-muted-foreground" />
-                    <p className="text-sm font-medium">Connected Accounts</p>
-                  </div>
-                  <p className="text-2xl font-bold">{user?._count.socialAccounts || 0}</p>
-                  <Progress value={accountUsage} className="h-2" />
-                  <p className="text-sm text-muted-foreground">
-                    {user?.plan === 'Free' ? 'Limited to 2 accounts' : 'Unlimited accounts'}
-                  </p>
-                </div>
-              </div>
+              <Grid container spacing={3}>
+                <Grid item xs={12} md={6}>
+                  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                      <TrendingUp sx={{ height: 20, width: 20, color: 'text.secondary' }} />
+                      <Typography variant="body2" sx={{ fontWeight: 500 }}>Scheduled Posts</Typography>
+                    </Box>
+                    <Typography variant="h4" sx={{ fontWeight: 'bold' }}>{user?._count.posts || 0}</Typography>
+                    <Progress value={postUsage} className="h-2" />
+                    <Typography variant="body2" color="text.secondary">
+                      {user?.plan === 'Free' ? 'Limited to 5 posts' : 'Unlimited posts'}
+                    </Typography>
+                  </Box>
+                </Grid>
+                <Grid item xs={12} md={6}>
+                  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                      <CreditCard sx={{ height: 20, width: 20, color: 'text.secondary' }} />
+                      <Typography variant="body2" sx={{ fontWeight: 500 }}>Connected Accounts</Typography>
+                    </Box>
+                    <Typography variant="h4" sx={{ fontWeight: 'bold' }}>{user?._count.socialAccounts || 0}</Typography>
+                    <Progress value={accountUsage} className="h-2" />
+                    <Typography variant="body2" color="text.secondary">
+                      {user?.plan === 'Free' ? 'Limited to 2 accounts' : 'Unlimited accounts'}
+                    </Typography>
+                  </Box>
+                </Grid>
+              </Grid>
             </CardContent>
           </Card>
 
@@ -262,19 +259,19 @@ export default function BillingClientComponent({ user, searchParams, upcomingCha
                 <CardDescription>Your next billing details</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="space-y-4">
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                   {upcomingCharges.map((charge: any) => (
-                    <div key={charge.id} className="flex items-center justify-between">
-                      <div>
-                        <p className="font-medium">{charge.description}</p>
-                        <p className="text-sm text-muted-foreground">
+                    <Box key={charge.id} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                      <Box>
+                        <Typography variant="body1" sx={{ fontWeight: 500 }}>{charge.description}</Typography>
+                        <Typography variant="body2" color="text.secondary">
                           {format(new Date(charge.date * 1000), 'MMMM d, yyyy')}
-                        </p>
-                      </div>
-                      <p className="font-medium">${(charge.amount / 100).toFixed(2)}</p>
-                    </div>
+                        </Typography>
+                      </Box>
+                      <Typography variant="body1" sx={{ fontWeight: 500 }}>${(charge.amount / 100).toFixed(2)}</Typography>
+                    </Box>
                   ))}
-                </div>
+                </Box>
               </CardContent>
             </Card>
           )}

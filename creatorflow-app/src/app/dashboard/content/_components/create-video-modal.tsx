@@ -56,11 +56,11 @@ interface TextOverlay {
 
 interface CreateVideoModalProps {
   open: boolean;
-  onOpenChange: (open: boolean) => void;
+  onClose: () => void;
   onVideoCreated?: (videoData: any) => void;
 }
 
-export function CreateVideoModal({ open, onOpenChange, onVideoCreated }: CreateVideoModalProps) {
+export function CreateVideoModal({ open, onClose, onVideoCreated }: CreateVideoModalProps) {
   const [videoTitle, setVideoTitle] = useState('');
   const [videoDescription, setVideoDescription] = useState('');
   const [aspectRatio, setAspectRatio] = useState('16:9');
@@ -192,7 +192,7 @@ export function CreateVideoModal({ open, onOpenChange, onVideoCreated }: CreateV
   const totalDuration = clips.reduce((total, clip) => total + clip.duration, 0);
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+            <Dialog open={open} onClose={onClose}>
       <DialogContent className="max-w-7xl max-h-[95vh] overflow-hidden">
         <DialogHeader>
           <DialogTitle>Create Video</DialogTitle>

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { forwardRef } from 'react';
-import { cn } from '@/lib/utils';
+import { Box, Typography } from '@mui/material';
 
 export interface DividerProps extends React.HTMLAttributes<HTMLDivElement> {
   orientation?: 'horizontal' | 'vertical';
@@ -28,86 +28,106 @@ const Divider = forwardRef<HTMLDivElement, DividerProps>(
     children,
     ...props 
   }, ref) => {
-    const sizeClasses = {
-      xs: orientation === 'horizontal' ? 'h-px' : 'w-px',
-      sm: orientation === 'horizontal' ? 'h-0.5' : 'w-0.5',
-      md: orientation === 'horizontal' ? 'h-px' : 'w-px',
-      lg: orientation === 'horizontal' ? 'h-0.5' : 'w-0.5',
-      xl: orientation === 'horizontal' ? 'h-1' : 'w-1',
+    const getSizeStyles = () => {
+      const sizeMap = {
+        xs: orientation === 'horizontal' ? { height: '1px' } : { width: '1px' },
+        sm: orientation === 'horizontal' ? { height: '2px' } : { width: '2px' },
+        md: orientation === 'horizontal' ? { height: '1px' } : { width: '1px' },
+        lg: orientation === 'horizontal' ? { height: '2px' } : { width: '2px' },
+        xl: orientation === 'horizontal' ? { height: '4px' } : { width: '4px' },
+      };
+      return sizeMap[size];
     };
 
-    const spacingClasses = {
-      none: orientation === 'horizontal' ? 'my-0' : 'mx-0',
-      sm: orientation === 'horizontal' ? 'my-2' : 'mx-2',
-      md: orientation === 'horizontal' ? 'my-4' : 'mx-4',
-      lg: orientation === 'horizontal' ? 'my-6' : 'mx-6',
-      xl: orientation === 'horizontal' ? 'my-8' : 'mx-8',
+    const getSpacingStyles = () => {
+      const spacingMap = {
+        none: orientation === 'horizontal' ? { my: 0 } : { mx: 0 },
+        sm: orientation === 'horizontal' ? { my: 1 } : { mx: 1 },
+        md: orientation === 'horizontal' ? { my: 2 } : { mx: 2 },
+        lg: orientation === 'horizontal' ? { my: 3 } : { mx: 3 },
+        xl: orientation === 'horizontal' ? { my: 4 } : { mx: 4 },
+      };
+      return spacingMap[spacing];
     };
 
-    const variantClasses = {
-      solid: 'border-current',
-      dashed: 'border-dashed border-current',
-      dotted: 'border-dotted border-current',
-      gradient: 'bg-gradient-to-r from-transparent via-current to-transparent',
+    const getVariantStyles = () => {
+      const variantMap = {
+        solid: { borderStyle: 'solid' },
+        dashed: { borderStyle: 'dashed' },
+        dotted: { borderStyle: 'dotted' },
+        gradient: { 
+          background: 'linear-gradient(to right, transparent, currentColor, transparent)',
+          border: 'none'
+        },
+      };
+      return variantMap[variant];
     };
 
-    const colorClasses = {
-      default: 'border-border text-border',
-      muted: 'border-muted text-muted-foreground',
-      primary: 'border-primary text-primary',
-      secondary: 'border-secondary text-secondary',
-      success: 'border-success text-success',
-      warning: 'border-warning text-warning',
-      error: 'border-error text-error',
+    const getColorStyles = () => {
+      const colorMap = {
+        default: { borderColor: 'divider', color: 'divider' },
+        muted: { borderColor: 'action.disabled', color: 'text.disabled' },
+        primary: { borderColor: 'primary.main', color: 'primary.main' },
+        secondary: { borderColor: 'secondary.main', color: 'secondary.main' },
+        success: { borderColor: 'success.main', color: 'success.main' },
+        warning: { borderColor: 'warning.main', color: 'warning.main' },
+        error: { borderColor: 'error.main', color: 'error.main' },
+      };
+      return colorMap[color];
     };
 
-    const labelPositionClasses = {
-      left: 'justify-start',
-      center: 'justify-center',
-      right: 'justify-end',
+    const getLabelPositionStyles = () => {
+      const positionMap = {
+        left: { justifyContent: 'flex-start' },
+        center: { justifyContent: 'center' },
+        right: { justifyContent: 'flex-end' },
+      };
+      return positionMap[labelPosition];
     };
 
-    const baseClasses = cn(
-      'flex items-center',
-      orientation === 'horizontal' ? 'w-full' : 'h-full',
-      spacingClasses[spacing],
-      className
-    );
+    const getBaseStyles = () => ({
+      display: 'flex',
+      alignItems: 'center',
+      ...(orientation === 'horizontal' ? { width: '100%' } : { height: '100%' }),
+      ...getSpacingStyles(),
+    });
 
-    const lineClasses = cn(
-      'flex-shrink-0',
-      sizeClasses[size],
-      variantClasses[variant],
-      colorClasses[color],
-      orientation === 'horizontal' ? 'flex-1' : 'h-full'
-    );
+    const getLineStyles = () => ({
+      flexShrink: 0,
+      ...getSizeStyles(),
+      ...getVariantStyles(),
+      ...getColorStyles(),
+      ...(orientation === 'horizontal' ? { flex: 1 } : { height: '100%' }),
+    });
 
     if (withLabel || labelContent || children) {
       return (
-        <div ref={ref} className={baseClasses} {...props}>
-          <div className={cn(lineClasses, labelPosition === 'left' && 'hidden')} />
-          <div className={cn(
-            'px-3 text-sm text-muted-foreground whitespace-nowrap',
-            labelPositionClasses[labelPosition]
-          )}>
+        <Box 
+          ref={ref} 
+          sx={getBaseStyles()} 
+          {...props}
+        >
+          <Box sx={{ ...getLineStyles(), ...(labelPosition === 'left' && { display: 'none' }) }} />
+          <Box sx={{
+            px: 1.5,
+            fontSize: '0.875rem',
+            color: 'text.disabled',
+            whiteSpace: 'nowrap',
+            ...getLabelPositionStyles()
+          }}>
             {labelContent || children}
-          </div>
-          <div className={cn(lineClasses, labelPosition === 'right' && 'hidden')} />
-        </div>
+          </Box>
+          <Box sx={{ ...getLineStyles(), ...(labelPosition === 'right' && { display: 'none' }) }} />
+        </Box>
       );
     }
 
     return (
-      <div 
+      <Box 
         ref={ref} 
-        className={cn(
-          baseClasses,
-          orientation === 'horizontal' ? 'justify-center' : 'justify-center'
-        )} 
+        sx={{ ...getLineStyles(), ...getSpacingStyles() }} 
         {...props}
-      >
-        <div className={cn(lineClasses, 'w-full')} />
-      </div>
+      />
     );
   }
 );

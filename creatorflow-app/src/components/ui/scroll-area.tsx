@@ -1,48 +1,80 @@
 "use client"
 
 import * as React from "react"
-import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area"
+import { Box } from "@mui/material"
 
-import { cn } from "@/lib/utils"
-
+// MUI-based ScrollArea component
 const ScrollArea = React.forwardRef<
-  React.ElementRef<typeof ScrollAreaPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Root>
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
 >(({ className, children, ...props }, ref) => (
-  <ScrollAreaPrimitive.Root
+  <Box
     ref={ref}
-    className={cn("relative overflow-hidden", className)}
+    className={className}
+    sx={{
+      position: 'relative',
+      overflow: 'hidden',
+      height: '100%',
+      width: '100%'
+    }}
     {...props}
   >
-    <ScrollAreaPrimitive.Viewport className="h-full w-full rounded-[inherit]">
+    <Box
+      sx={{
+        height: '100%',
+        width: '100%',
+        overflow: 'auto',
+        '&::-webkit-scrollbar': {
+          width: '8px',
+          height: '8px'
+        },
+        '&::-webkit-scrollbar-track': {
+          backgroundColor: 'transparent'
+        },
+        '&::-webkit-scrollbar-thumb': {
+          backgroundColor: 'divider',
+          borderRadius: '4px',
+          '&:hover': {
+            backgroundColor: 'action.hover'
+          }
+        }
+      }}
+    >
       {children}
-    </ScrollAreaPrimitive.Viewport>
-    <ScrollBar />
-    <ScrollAreaPrimitive.Corner />
-  </ScrollAreaPrimitive.Root>
+    </Box>
+  </Box>
 ))
-ScrollArea.displayName = ScrollAreaPrimitive.Root.displayName
+ScrollArea.displayName = "ScrollArea"
 
 const ScrollBar = React.forwardRef<
-  React.ElementRef<typeof ScrollAreaPrimitive.ScrollAreaScrollbar>,
-  React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.ScrollAreaScrollbar>
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement> & { orientation?: "vertical" | "horizontal" }
 >(({ className, orientation = "vertical", ...props }, ref) => (
-  <ScrollAreaPrimitive.ScrollAreaScrollbar
+  <Box
     ref={ref}
     orientation={orientation}
-    className={cn(
-      "flex touch-none select-none transition-colors",
-      orientation === "vertical" &&
-        "h-full w-2.5 border-l border-l-transparent p-[1px]",
-      orientation === "horizontal" &&
-        "h-2.5 flex-col border-t border-t-transparent p-[1px]",
-      className
-    )}
+    className={className}
+    sx={{
+      display: 'flex',
+      touchAction: 'none',
+      userSelect: 'none',
+      transition: 'colors 0.2s ease-in-out',
+      ...(orientation === "vertical" && {
+        height: '100%',
+        width: '10px',
+        borderLeft: '1px solid transparent',
+        padding: '1px'
+      }),
+      ...(orientation === "horizontal" && {
+        height: '10px',
+        flexDirection: 'column',
+        borderTop: '1px solid transparent',
+        padding: '1px'
+      })
+    }}
     {...props}
-  >
-    <ScrollAreaPrimitive.ScrollAreaThumb className="relative flex-1 rounded-full bg-border" />
-  </ScrollAreaPrimitive.ScrollAreaScrollbar>
+  />
 ))
-ScrollBar.displayName = ScrollAreaPrimitive.ScrollAreaScrollbar.displayName
+ScrollBar.displayName = "ScrollBar"
 
 export { ScrollArea, ScrollBar }

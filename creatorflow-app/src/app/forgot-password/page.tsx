@@ -77,7 +77,7 @@ export default function ForgotPasswordPage() {
           <CardContent>
             <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
               <Grid container spacing={2}>
-                <Grid item xs={12} component="div">
+                <Grid xs={12}>
                   <TextField
                     label="Email"
                     type="email"
@@ -95,7 +95,7 @@ export default function ForgotPasswordPage() {
                 </Grid>
 
                 {message && (
-                  <Grid item xs={12}>
+                  <Grid xs={12}>
                     <Box
                       sx={{
                         ...(message.type === 'error' ? { border: 1, borderColor: 'red.200', bgcolor: 'red.50' } : { border: 1, borderColor: 'green.200', bgcolor: 'green.50' }),
@@ -108,13 +108,13 @@ export default function ForgotPasswordPage() {
                   </Grid>
                 )}
 
-                <Grid item xs={12} component="div">
+                <Grid xs={12}>
                   <Button type="submit" fullWidth variant="contained" disabled={isLoading}>
                     {isLoading ? 'Sending...' : 'Send Reset Link'}
                   </Button>
                 </Grid>
 
-                <Grid item xs={12}>
+                <Grid xs={12}>
                   <Typography variant="body2" align="center">
                     <Link href="/auth" className="text-sm text-blue-600 hover:text-blue-500">
                       Back to Sign In
@@ -128,9 +128,4 @@ export default function ForgotPasswordPage() {
       </div>
     </div>
   );
-{/* Bottom Spacer to Clear Bottom Navigation */}
-      <Box sx={{
-        height: { xs: '120px', sm: '40px' },
-        width: '100%'
-      }} />
 } 

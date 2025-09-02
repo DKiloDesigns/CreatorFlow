@@ -6,7 +6,8 @@ import {
   Card, 
   CardContent, 
   CardHeader, 
-  Typography
+  Typography,
+  Box
 } from '@mui/material';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { SiInstagram, SiTiktok, SiYoutube, SiX, SiLinkedin } from "react-icons/si"; // Platform icons
@@ -107,9 +108,9 @@ export default function AccountConnectButtons() {
           <CardHeader><Typography variant="h6">Connect New Account</Typography></CardHeader>
           <CardContent>
              {/* Add Skeleton loaders for buttons */} 
-             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {[...Array(4)].map((_, i) => <div key={i} className="h-10 w-full bg-muted animate-pulse rounded-md" />)}
-             </div>
+             <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)' }, gap: 2 }}>
+                {[...Array(4)].map((_, i) => <Box key={i} sx={{ height: 40, width: '100%', bgcolor: 'action.hover', animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite', borderRadius: 1 }} />)}
+             </Box>
           </CardContent>
         </Card>
     );
@@ -120,33 +121,33 @@ export default function AccountConnectButtons() {
       <CardHeader>
         <Typography variant="h6">Connect New Account</Typography>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
         {limitReached && (
-          <Alert variant="destructive" className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-            <div>
+          <Alert variant="error" sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, alignItems: { sm: 'center' }, justifyContent: 'space-between', gap: 2 }}>
+            <Box>
                 <AlertTitle>Free Tier Limit Reached!</AlertTitle>
                 <AlertDescription>
                 Upgrade to Pro to connect more than {FREE_TIER_LIMIT} accounts.
                 </AlertDescription>
-            </div>
+            </Box>
             <Button onClick={handleUpgrade}>Upgrade to Pro</Button>
           </Alert>
         )}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)' }, gap: 2 }}>
           {PLATFORMS.map((platform) => (
             <Button
               key={platform.id}
               variant="outlined"
               disabled={isLoading || limitReached || isConnecting === platform.id}
               onClick={() => handleConnect(platform.id)}
-              className="w-full justify-center sm:justify-start"
+              sx={{ width: '100%', justifyContent: { xs: 'center', sm: 'flex-start' } }}
             >
-              <platform.icon className="mr-2 h-5 w-5" />
+              <platform.icon style={{ marginRight: 8, width: 20, height: 20 }} />
               Connect {platform.name}
-              {isConnecting === platform.id && <span className="ml-2 animate-spin">...</span>} 
+              {isConnecting === platform.id && <Box component="span" sx={{ ml: 1, animation: 'spin 1s linear infinite' }}>...</Box>} 
             </Button>
           ))}
-        </div>
+        </Box>
       </CardContent>
     </Card>
   );

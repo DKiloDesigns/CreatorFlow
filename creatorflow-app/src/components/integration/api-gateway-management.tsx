@@ -68,7 +68,6 @@ import {
   Timer,
   NetworkCheck,
   Router,
-  Firewall,
   Shield,
   Lock,
   Key,
@@ -644,7 +643,7 @@ export default function APIGatewayManagement() {
                     <Typography variant="body2" sx={{ mb: 2 }}>
                       Restrict API access to specific IP addresses for enhanced security.
                     </Typography>
-                    <Button variant="outlined" startIcon={<Firewall />}>
+                    <Button variant="outlined" startIcon={<Shield />}>
                       Manage IPs
                     </Button>
                   </CardContent>

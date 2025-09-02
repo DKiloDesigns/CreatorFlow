@@ -110,23 +110,23 @@ export default function OnboardingModal({ isOpen, onClose, onComplete }: Onboard
 
   const getStepIcon = (stepId: string) => {
     switch (stepId) {
-      case 'welcome': return <Box sx={{ color: 'purple.600' }}><Sparkles className="h-6 w-6" /></Box>;
-      case 'connect_accounts': return <Box sx={{ color: 'blue.600' }}><Users className="h-6 w-6" /></Box>;
-      case 'create_post': return <Box sx={{ color: 'green.600' }}><Zap className="h-6 w-6" /></Box>;
-      case 'schedule_content': return <Box sx={{ color: 'orange.600' }}><Calendar className="h-6 w-6" /></Box>;
-      case 'analytics': return <Box sx={{ color: 'indigo.600' }}><BarChart3 className="h-6 w-6" /></Box>;
-      default: return <Box sx={{ color: 'grey.600' }}><Settings className="h-6 w-6" /></Box>;
+      case 'welcome': return <Box sx={{ color: 'secondary.main' }}><Sparkles style={{ width: 24, height: 24 }} /></Box>;
+      case 'connect_accounts': return <Box sx={{ color: 'info.main' }}><Users style={{ width: 24, height: 24 }} /></Box>;
+      case 'create_post': return <Box sx={{ color: 'success.main' }}><Zap style={{ width: 24, height: 24 }} /></Box>;
+      case 'schedule_content': return <Box sx={{ color: 'warning.main' }}><Calendar style={{ width: 24, height: 24 }} /></Box>;
+      case 'analytics': return <Box sx={{ color: 'primary.main' }}><BarChart3 style={{ width: 24, height: 24 }} /></Box>;
+      default: return <Box sx={{ color: 'text.secondary' }}><Settings style={{ width: 24, height: 24 }} /></Box>;
     }
   };
 
   const getStepColor = (stepId: string) => {
     switch (stepId) {
-      case 'welcome': return 'purple.600';
-      case 'connect_accounts': return 'blue.600';
-      case 'create_post': return 'green.600';
-      case 'schedule_content': return 'orange.600';
-      case 'analytics': return 'indigo.600';
-      default: return 'grey.600';
+      case 'welcome': return 'secondary.main';
+      case 'connect_accounts': return 'info.main';
+      case 'create_post': return 'success.main';
+      case 'schedule_content': return 'warning.main';
+      case 'analytics': return 'primary.main';
+      default: return 'text.secondary';
     }
   };
 
@@ -136,7 +136,7 @@ export default function OnboardingModal({ isOpen, onClose, onComplete }: Onboard
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-2xl">
+      <DialogContent sx={{ maxWidth: '42rem' }}>
         <DialogHeader>
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <DialogTitle className="text-xl font-bold">

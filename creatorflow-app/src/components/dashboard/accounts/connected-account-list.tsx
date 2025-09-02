@@ -4,6 +4,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import ConnectedAccountCard from './connected-account-card';
 import { Skeleton } from "@/components/ui/feedback/Skeleton";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/feedback/mui-alert";
+import { Box } from '@mui/material';
 import { Terminal } from 'lucide-react';
 import { toast } from "sonner";
 
@@ -71,18 +72,18 @@ export default function ConnectedAccountList() {
 
   if (isLoading) {
     return (
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)' }, gap: 2 }}>
         {[...Array(3)].map((_, i) => (
-          <Skeleton key={i} className="h-[200px] w-full" />
+          <Skeleton key={i} sx={{ height: 200, width: '100%' }} />
         ))}
-      </div>
+      </Box>
     );
   }
 
   if (error && accounts.length === 0) {
     return (
       <Alert severity="error">
-        <Terminal className="h-4 w-4" />
+        <Terminal style={{ width: 16, height: 16 }} />
         <AlertTitle>Error Loading Accounts</AlertTitle>
         <AlertDescription>{error}</AlertDescription>
       </Alert>
@@ -92,7 +93,7 @@ export default function ConnectedAccountList() {
   if (accounts.length === 0) {
     return (
        <Alert>
-        <Terminal className="h-4 w-4" />
+        <Terminal style={{ width: 16, height: 16 }} />
         <AlertTitle>No Accounts Connected</AlertTitle>
         <AlertDescription>Connect your first social media account using the buttons above.</AlertDescription>
       </Alert>
@@ -100,7 +101,7 @@ export default function ConnectedAccountList() {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)', lg: 'repeat(3, 1fr)' }, gap: 2 }}>
       {accounts.map((account) => (
         <ConnectedAccountCard 
           key={account.id} 
@@ -109,6 +110,6 @@ export default function ConnectedAccountList() {
           isDisconnecting={disconnectingId === account.id}
         />
       ))}
-    </div>
+    </Box>
   );
 } 

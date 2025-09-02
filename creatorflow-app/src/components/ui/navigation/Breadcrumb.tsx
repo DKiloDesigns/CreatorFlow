@@ -1,7 +1,7 @@
 'use client';
 
 import React, { forwardRef } from 'react';
-import { cn } from '@/lib/utils';
+import { Box, Typography, Button, Link } from '@mui/material';
 import { ChevronRight, Home } from 'lucide-react';
 
 export interface BreadcrumbItem {
@@ -30,9 +30,9 @@ const Breadcrumb = forwardRef<HTMLElement, BreadcrumbProps>(
   ({ 
     className, 
     items,
-    separator = <ChevronRight className="w-4 h-4 text-muted-foreground" />,
+    separator = <ChevronRight style={{ width: 16, height: 16, color: 'var(--mui-palette-text-disabled)' }} />,
     showHome = true,
-    homeIcon = <Home className="w-4 h-4" />,
+    homeIcon = <Home style={{ width: 16, height: 16 }} />,
     homeLabel = 'Home',
     homeHref = '/',
     maxItems,
@@ -42,16 +42,22 @@ const Breadcrumb = forwardRef<HTMLElement, BreadcrumbProps>(
     fullWidth = false,
     ...props 
   }, ref) => {
-    const variantClasses = {
-      default: 'bg-background text-foreground',
-      minimal: 'bg-transparent text-foreground',
-      outlined: 'bg-background border border-border text-foreground',
+    const getVariantStyles = () => {
+      const variantMap = {
+        default: { bgcolor: 'background.paper', color: 'text.primary' },
+        minimal: { bgcolor: 'transparent', color: 'text.primary' },
+        outlined: { bgcolor: 'background.paper', border: 1, borderColor: 'divider', color: 'text.primary' },
+      };
+      return variantMap[variant];
     };
 
-    const sizeClasses = {
-      sm: 'px-2 py-1 text-sm',
-      md: 'px-3 py-2 text-base',
-      lg: 'px-4 py-3 text-lg',
+    const getSizeStyles = () => {
+      const sizeMap = {
+        sm: { px: 1, py: 0.5, fontSize: '0.875rem' },
+        md: { px: 1.5, py: 1, fontSize: '1rem' },
+        lg: { px: 2, py: 1.5, fontSize: '1.125rem' },
+      };
+      return sizeMap[size];
     };
 
     const allItems = showHome 
@@ -63,87 +69,93 @@ const Breadcrumb = forwardRef<HTMLElement, BreadcrumbProps>(
       : allItems;
 
     const renderItem = (item: BreadcrumbItem, index: number, isLast: boolean) => {
-      const itemClasses = cn(
-        'flex items-center gap-2 transition-colors duration-200',
-        'hover:text-primary focus:text-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2',
-        isLast && 'text-foreground font-medium',
-        !isLast && 'text-muted-foreground',
-        item.disabled && 'text-muted-foreground cursor-not-allowed hover:text-muted-foreground',
-        size === 'sm' && 'text-sm',
-        size === 'md' && 'text-base',
-        size === 'lg' && 'text-lg'
-      );
+      const getItemStyles = () => ({
+        display: 'flex',
+        alignItems: 'center',
+        gap: 1,
+        transition: 'color 0.2s',
+        '&:hover': { color: 'primary.main' },
+        '&:focus': { color: 'primary.main', outline: 'none', ring: 2, ringColor: 'primary.main', ringOffset: 2 },
+        ...(isLast && { color: 'text.primary', fontWeight: 500 }),
+        ...(!isLast && { color: 'text.disabled' }),
+        ...(item.disabled && { color: 'text.disabled', cursor: 'not-allowed', '&:hover': { color: 'text.disabled' } }),
+        ...(size === 'sm' && { fontSize: '0.875rem' }),
+        ...(size === 'md' && { fontSize: '1rem' }),
+        ...(size === 'lg' && { fontSize: '1.125rem' })
+      });
 
       const content = (
         <>
           {item.icon && (
-            <span className="flex-shrink-0">
+            <Box sx={{ flexShrink: 0 }}>
               {item.icon}
-            </span>
+            </Box>
           )}
-          <span className="truncate">{item.label}</span>
+          <Box sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{item.label}</Box>
         </>
       );
 
       if (item.disabled || !item.href) {
         return (
-          <span key={index} className={itemClasses}>
+          <Box key={index} sx={getItemStyles()}>
             {content}
-          </span>
+          </Box>
         );
       }
 
       if (item.onClick) {
         return (
-          <button
+          <Button
             key={index}
-            type="button"
+            variant="text"
             onClick={item.onClick}
-            className={itemClasses}
+            sx={getItemStyles()}
           >
             {content}
-          </button>
+          </Button>
         );
       }
 
       return (
-        <a
+        <Link
           key={index}
           href={item.href}
-          className={itemClasses}
+          sx={getItemStyles()}
         >
           {content}
-        </a>
+        </Link>
       );
     };
 
     return (
-      <nav
+      <Box
+        component="nav"
         ref={ref}
-        className={cn(
-          'flex items-center',
-          variantClasses[variant],
-          sizeClasses[size],
-          'rounded-md',
-          fullWidth && 'w-full',
-          className
-        )}
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          borderRadius: '6px',
+          ...(fullWidth && { width: '100%' }),
+          ...getVariantStyles(),
+          ...getSizeStyles(),
+          ...(className && { className })
+        }}
         aria-label="Breadcrumb"
         {...props}
       >
-        <ol className="flex items-center gap-2">
+        <Box component="ol" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           {displayItems.map((item, index) => (
-            <li key={index} className="flex items-center">
+            <Box key={index} component="li" sx={{ display: 'flex', alignItems: 'center' }}>
               {index > 0 && (
-                <span className="mx-2 flex-shrink-0">
+                <Box sx={{ mx: 1, flexShrink: 0 }}>
                   {separator}
-                </span>
+                </Box>
               )}
               {renderItem(item, index, index === displayItems.length - 1)}
-            </li>
+            </Box>
           ))}
-        </ol>
-      </nav>
+        </Box>
+      </Box>
     );
   }
 );

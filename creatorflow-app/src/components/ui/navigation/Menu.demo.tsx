@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import { Box, Typography, Grid } from '@mui/material';
 import {
   Menu,
   MenuTrigger,
@@ -23,60 +24,62 @@ export function MenuDemo() {
   const [language, setLanguage] = useState('en');
 
   return (
-    <div className="p-8 space-y-8">
-      <div className="text-center">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">Menu Component Demo</h1>
-        <p className="text-gray-600">Comprehensive showcase of all Menu component features</p>
-      </div>
+    <Box sx={{ p: 4, display: 'flex', flexDirection: 'column', gap: 4 }}>
+      <Box sx={{ textAlign: 'center' }}>
+        <Typography variant="h3" sx={{ fontWeight: 'bold', color: 'text.primary', mb: 1 }}>Menu Component Demo</Typography>
+        <Typography variant="body1" sx={{ color: 'text.secondary' }}>Comprehensive showcase of all Menu component features</Typography>
+      </Box>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <Grid container spacing={4}>
         
         {/* Basic Menu */}
-        <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-gray-800">Basic Menu</h3>
-          <div className="flex justify-center">
+        <Grid item xs={12} md={6} lg={4}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+            <Typography variant="h6" sx={{ fontWeight: 600, color: 'text.primary' }}>Basic Menu</Typography>
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
             <Menu>
               <MenuTrigger>Actions</MenuTrigger>
               <MenuContent>
                 <MenuItem onClick={() => console.log('Edit clicked')}>
-                  <Edit className="mr-2 h-4 w-4" />
+                  <Edit style={{ marginRight: 8, height: 16, width: 16 }} />
                   Edit
                 </MenuItem>
                 <MenuItem onClick={() => console.log('Copy clicked')}>
-                  <Copy className="mr-2 h-4 w-4" />
+                  <Copy style={{ marginRight: 8, height: 16, width: 16 }} />
                   Copy
                 </MenuItem>
                 <MenuItem onClick={() => console.log('Delete clicked')}>
-                  <Trash2 className="mr-2 h-4 w-4" />
+                  <Trash2 style={{ marginRight: 8, height: 16, width: 16 }} />
                   Delete
                 </MenuItem>
               </MenuContent>
             </Menu>
-          </div>
-        </div>
+          </Box>
+        </Box>
 
         {/* Menu with Icons */}
-        <div className="space-y-4">
-          <h3 className="text-lg font-semibold text-gray-800">Menu with Icons</h3>
-          <div className="flex justify-center">
+        <Grid item xs={12} md={6} lg={4}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+            <Typography variant="h6" sx={{ fontWeight: 600, color: 'text.primary' }}>Menu with Icons</Typography>
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
             <Menu>
               <MenuTrigger>User Menu</MenuTrigger>
               <MenuContent>
                 <MenuItem onClick={() => console.log('Profile clicked')}>
-                  <User className="mr-2 h-4 w-4" />
+                  <User style={{ marginRight: 8, height: 16, width: 16 }} />
                   Profile
                 </MenuItem>
                 <MenuItem onClick={() => console.log('Settings clicked')}>
-                  <Settings className="mr-2 h-4 w-4" />
+                  <Settings style={{ marginRight: 8, height: 16, width: 16 }} />
                   Settings
                 </MenuItem>
                 <MenuItem onClick={() => console.log('Help clicked')}>
-                  <HelpCircle className="mr-2 h-4 w-4" />
+                  <HelpCircle style={{ marginRight: 8, height: 16, width: 16 }} />
                   Help & Support
                 </MenuItem>
                 <MenuSeparator />
                 <MenuItem onClick={() => console.log('Sign out clicked')}>
-                  <LogOut className="mr-2 h-4 w-4" />
+                  <LogOut style={{ marginRight: 8, height: 16, width: 16 }} />
                   Sign Out
                 </MenuItem>
               </MenuContent>

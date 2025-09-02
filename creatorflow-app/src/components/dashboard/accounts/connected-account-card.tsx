@@ -3,7 +3,8 @@
 import React from 'react';
 import { 
   Button,
-  Typography
+  Typography,
+  Box
 } from '@mui/material';
 import { Trash2 } from 'lucide-react';
 import { SiInstagram, SiTiktok, SiYoutube, SiX } from "react-icons/si";
@@ -50,15 +51,15 @@ export default function ConnectedAccountCard({ account, onDisconnect, isDisconne
 
   return (
     <Card>
-      <CardHeader className="flex flex-row items-center justify-between pb-2">
-        <div className="flex items-center space-x-3">
+      <CardHeader sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', pb: 1 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
           {PlatformIcon ? (
-            <PlatformIcon className="h-6 w-6 text-muted-foreground" />
+            <PlatformIcon style={{ width: 24, height: 24, color: 'text.secondary' }} />
           ) : (
-            <div className="w-6 h-6 bg-muted rounded-sm" /> // Fallback if no icon
+            <Box sx={{ width: 24, height: 24, bgcolor: 'action.hover', borderRadius: 0.5 }} /> // Fallback if no icon
           )}
-          <Typography variant="h6" className="text-lg font-medium">{account.username}</Typography>
-        </div>
+          <Typography variant="h6" sx={{ fontSize: '1.125rem', fontWeight: 500 }}>{account.username}</Typography>
+        </Box>
         {/* Maybe add a status indicator here based on account.status */}
       </CardHeader>
       <CardContent>
@@ -71,7 +72,7 @@ export default function ConnectedAccountCard({ account, onDisconnect, isDisconne
          <AlertDialog>
           <AlertDialogTrigger asChild>
              <Button variant="contained" color="error" size="small" disabled={isDisconnecting}>
-              <Trash2 className="mr-2 h-4 w-4" />
+              <Trash2 style={{ marginRight: 8, width: 16, height: 16 }} />
               Disconnect
             </Button>
           </AlertDialogTrigger>

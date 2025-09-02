@@ -28,25 +28,25 @@ export function AIOnboarding({ onComplete, className }: AIOnboardingProps) {
       icon: Activity,
       title: 'Smart Captions',
       description: 'Generate engaging captions in seconds',
-      color: 'text-purple-600'
+      color: 'purple.600'
     },
     {
       icon: Activity,
       title: 'Perfect Hashtags',
       description: 'Find trending and relevant hashtags',
-      color: 'text-blue-600'
+      color: 'blue.600'
     },
     {
       icon: Activity,
       title: 'Content Ideas',
       description: 'Never run out of creative post ideas',
-      color: 'text-green-600'
+      color: 'green.600'
     },
     {
       icon: Activity,
       title: 'Optimal Timing',
       description: 'Post when your audience is most active',
-      color: 'text-orange-600'
+      color: 'orange.600'
     }
   ];
 
@@ -59,27 +59,37 @@ export function AIOnboarding({ onComplete, className }: AIOnboardingProps) {
 
   if (step === 'setup') {
     return (
-      <div className={className}>
+      <Box sx={className ? { className } : {}}>
         <APIKeySetup onKeyAdded={handleSetupComplete} />
-      </div>
+      </Box>
     );
   }
 
   if (step === 'complete') {
     return (
-      <Card className={className}>
-        <CardContent className="p-8 text-center">
-          <div className="mb-6">
-            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Activity className="h-8 w-8 text-green-600" />
-            </div>
-            <h2 className="text-2xl font-bold mb-2">Setup Complete!</h2>
-            <p className="text-muted-foreground">
+      <Card sx={className ? { className } : {}}>
+        <CardContent sx={{ p: 4, textAlign: 'center' }}>
+          <Box sx={{ mb: 3 }}>
+            <Box sx={{ 
+              width: 64, 
+              height: 64, 
+              bgcolor: 'success.50', 
+              borderRadius: '50%', 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'center', 
+              mx: 'auto', 
+              mb: 2 
+            }}>
+              <Activity style={{ width: 32, height: 32, color: 'success.main' }} />
+            </Box>
+            <Typography variant="h4" component="h2" sx={{ fontWeight: 'bold', mb: 1 }}>Setup Complete!</Typography>
+            <Typography variant="body1" sx={{ color: 'text.secondary' }}>
               Your AI features are now ready to use. Let&apos;s get started!
-            </p>
-          </div>
-          <Button onClick={onComplete} className="w-full">
-            <Activity className="h-4 w-4 mr-2" />
+            </Typography>
+          </Box>
+          <Button onClick={onComplete} sx={{ width: '100%' }}>
+            <Activity style={{ width: 16, height: 16, marginRight: 8 }} />
             Start Using AI Tools
           </Button>
         </CardContent>
@@ -88,119 +98,172 @@ export function AIOnboarding({ onComplete, className }: AIOnboardingProps) {
   }
 
   return (
-    <div className={className}>
+    <Box sx={className ? { className } : {}}>
       {/* Hero Section */}
-      <div className="text-center mb-8">
-        <div className="w-20 h-20 bg-gradient-to-r from-purple-500 to-blue-500 rounded-full flex items-center justify-center mx-auto mb-6">
-          <Brain className="h-10 w-10 text-white" />
-        </div>
-        <h1 className="text-4xl font-bold mb-4">
+      <Box sx={{ textAlign: 'center', mb: 4 }}>
+        <Box sx={{ 
+          width: 80, 
+          height: 80, 
+          background: 'linear-gradient(135deg, #8b5cf6 0%, #3b82f6 100%)', 
+          borderRadius: '50%', 
+          display: 'flex', 
+          alignItems: 'center', 
+          justifyContent: 'center', 
+          mx: 'auto', 
+          mb: 3 
+        }}>
+          <Brain style={{ width: 40, height: 40, color: 'white' }} />
+        </Box>
+        <Typography variant="h3" component="h1" sx={{ fontWeight: 'bold', mb: 2 }}>
           Welcome to AI-Powered Content Creation
-        </h1>
-        <p className="text-xl text-muted-foreground mb-6 max-w-2xl mx-auto">
+        </Typography>
+        <Typography variant="h6" sx={{ color: 'text.secondary', mb: 3, maxWidth: '32rem', mx: 'auto' }}>
           Supercharge your social media presence with intelligent AI tools that help you create engaging content faster than ever.
-        </p>
-        <div className="flex items-center justify-center gap-4">
+        </Typography>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2 }}>
           <Chip label="Powered by OpenAI" variant="outlined" size="small" />
           <Chip label="Secure & Private" variant="outlined" size="small" />
-        </div>
-      </div>
+        </Box>
+      </Box>
 
       {/* Benefits Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+      <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 3, mb: 4 }}>
         {benefits.map((benefit, index) => (
-          <Card key={index} className="hover:shadow-md transition-shadow">
-            <CardContent className="p-6">
-              <div className={`p-3 rounded-lg w-fit mb-4 ${benefit.color.replace('text-', 'bg-').replace('-600', '-100')}`}>
-                <benefit.icon className={`h-6 w-6 ${benefit.color}`} />
-              </div>
-              <h3 className="font-semibold text-lg mb-2">{benefit.title}</h3>
-              <p className="text-muted-foreground">{benefit.description}</p>
+          <Card key={index} sx={{ 
+            '&:hover': { 
+              boxShadow: 3,
+              transition: 'box-shadow 0.2s ease-in-out'
+            }
+          }}>
+            <CardContent sx={{ p: 3 }}>
+              <Box sx={{ 
+                p: 1.5, 
+                borderRadius: 1, 
+                width: 'fit-content', 
+                mb: 2,
+                bgcolor: benefit.color === 'blue.600' ? 'blue.50' : 
+                         benefit.color === 'green.600' ? 'green.50' : 
+                         benefit.color === 'purple.600' ? 'purple.50' : 'orange.50'
+              }}>
+                <benefit.icon style={{ 
+                  width: 24, 
+                  height: 24, 
+                  color: benefit.color === 'blue.600' ? 'blue.main' : 
+                         benefit.color === 'green.600' ? 'green.main' : 
+                         benefit.color === 'purple.600' ? 'purple.main' : 'orange.main'
+                }} />
+              </Box>
+              <Typography variant="h6" component="h3" sx={{ fontWeight: 600, mb: 1 }}>{benefit.title}</Typography>
+              <Typography variant="body2" sx={{ color: 'text.secondary' }}>{benefit.description}</Typography>
             </CardContent>
           </Card>
         ))}
-      </div>
+      </Box>
 
       {/* Quick Setup */}
-      <Card className="mb-8">
+      <Card sx={{ mb: 4 }}>
         <CardHeader>
-          <Typography variant="h5" component="h2" className="flex items-center gap-2">
-            <Activity className="h-5 w-5" />
+          <Typography variant="h5" component="h2" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <Activity style={{ width: 20, height: 20 }} />
             Quick Setup - 2 Minutes
           </Typography>
         </CardHeader>
         <CardContent>
-          <Grid container spacing={2} mb={2}>
-            <Grid item xs={12} md={4} component="div">
-              <Box textAlign="center">
-                <Box className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <Typography variant="h6" component="span" className="font-bold text-blue-600">1</Typography>
-                </Box>
-                <Typography variant="subtitle2" component="h4" className="font-medium mb-1">Get API Key</Typography>
-                <Typography variant="body2" className="text-sm text-muted-foreground">
-                  Visit OpenAI and create a free API key
-                </Typography>
+          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' }, gap: 2, mb: 2 }}>
+            <Box sx={{ textAlign: 'center' }}>
+              <Box sx={{ 
+                width: 48, 
+                height: 48, 
+                bgcolor: 'primary.50', 
+                borderRadius: '50%', 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center', 
+                mx: 'auto', 
+                mb: 1.5 
+              }}>
+                <Typography variant="h6" component="span" sx={{ fontWeight: 'bold', color: 'primary.main' }}>1</Typography>
               </Box>
-            </Grid>
-            <Grid item xs={12} md={4} component="div">
-              <Box textAlign="center">
-                <Box className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <Typography variant="h6" component="span" className="font-bold text-green-600">2</Typography>
-                </Box>
-                <Typography variant="subtitle2" component="h4" className="font-medium mb-1">Enter Key</Typography>
-                <Typography variant="body2" className="text-sm text-muted-foreground">
-                  Paste your key securely in CreatorFlow
-                </Typography>
+              <Typography variant="subtitle2" component="h4" sx={{ fontWeight: 500, mb: 0.5 }}>Get API Key</Typography>
+              <Typography variant="body2" sx={{ fontSize: '0.875rem', color: 'text.secondary' }}>
+                Visit OpenAI and create a free API key
+              </Typography>
+            </Box>
+            <Box sx={{ textAlign: 'center' }}>
+              <Box sx={{ 
+                width: 48, 
+                height: 48, 
+                bgcolor: 'success.50', 
+                borderRadius: '50%', 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center', 
+                mx: 'auto', 
+                mb: 1.5 
+              }}>
+                <Typography variant="h6" component="span" sx={{ fontWeight: 'bold', color: 'success.main' }}>2</Typography>
               </Box>
-            </Grid>
-            <Grid item xs={12} md={4} component="div">
-              <Box textAlign="center">
-                <Box className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <Typography variant="h6" component="span" className="font-bold text-purple-600">3</Typography>
-                </Box>
-                <Typography variant="subtitle2" component="h4" className="font-medium mb-1">Start Creating</Typography>
-                <Typography variant="body2" className="text-sm text-muted-foreground">
-                  Generate amazing content instantly
-                </Typography>
+              <Typography variant="subtitle2" component="h4" sx={{ fontWeight: 500, mb: 0.5 }}>Enter Key</Typography>
+              <Typography variant="body2" sx={{ fontSize: '0.875rem', color: 'text.secondary' }}>
+                Paste your key securely in CreatorFlow
+              </Typography>
+            </Box>
+            <Box sx={{ textAlign: 'center' }}>
+              <Box sx={{ 
+                width: 48, 
+                height: 48, 
+                bgcolor: 'secondary.50', 
+                borderRadius: '50%', 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center', 
+                mx: 'auto', 
+                mb: 1.5 
+              }}>
+                <Typography variant="h6" component="span" sx={{ fontWeight: 'bold', color: 'secondary.main' }}>3</Typography>
               </Box>
-            </Grid>
-          </Grid>
+              <Typography variant="subtitle2" component="h4" sx={{ fontWeight: 500, mb: 0.5 }}>Start Creating</Typography>
+              <Typography variant="body2" sx={{ fontSize: '0.875rem', color: 'text.secondary' }}>
+                Generate amazing content instantly
+              </Typography>
+            </Box>
+          </Box>
           
           <Button 
             onClick={() => setStep('setup')} 
-            className="w-full"
+            sx={{ width: '100%' }}
             variant="contained"
             size="large"
           >
-            <Activity className="h-5 w-5 mr-2" />
+            <Activity style={{ width: 20, height: 20, marginRight: 8 }} />
             Get Started with AI
-            <Activity className="h-4 w-4 ml-2" />
+            <Activity style={{ width: 16, height: 16, marginLeft: 8 }} />
           </Button>
         </CardContent>
       </Card>
 
       {/* Pricing Info */}
       <Card>
-        <CardContent className="p-6">
-          <Box display="flex" alignItems="start" gap={2}>
-            <Box className="p-2 bg-yellow-100 rounded-lg">
-              <Activity className="h-5 w-5 text-yellow-600" />
+        <CardContent sx={{ p: 3 }}>
+          <Box sx={{ display: 'flex', alignItems: 'start', gap: 2 }}>
+            <Box sx={{ p: 1, bgcolor: 'warning.50', borderRadius: 1 }}>
+              <Activity style={{ width: 20, height: 20, color: 'warning.main' }} />
             </Box>
             <Box>
-              <Typography variant="subtitle1" className="font-semibold mb-2">Cost-Effective AI</Typography>
-              <Typography variant="body2" className="text-sm text-muted-foreground mb-3">
+              <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 1 }}>Cost-Effective AI</Typography>
+              <Typography variant="body2" sx={{ fontSize: '0.875rem', color: 'text.secondary', mb: 1.5 }}>
                 OpenAI charges per API call, but costs are minimal. Typical usage:
               </Typography>
-              <ul className="text-sm text-muted-foreground space-y-1">
-                <li>• Caption generation: ~$0.002 per caption</li>
-                <li>• Hashtag suggestions: ~$0.001 per request</li>
-                <li>• Content ideas: ~$0.005 per idea set</li>
-                <li>• Most users spend $1-5/month on AI features</li>
-              </ul>
+              <Box component="ul" sx={{ fontSize: '0.875rem', color: 'text.secondary', '& > li': { mb: 0.5 } }}>
+                <Typography component="li">• Caption generation: ~$0.002 per caption</Typography>
+                <Typography component="li">• Hashtag suggestions: ~$0.001 per request</Typography>
+                <Typography component="li">• Content ideas: ~$0.005 per idea set</Typography>
+                <Typography component="li">• Most users spend $1-5/month on AI features</Typography>
+              </Box>
             </Box>
           </Box>
         </CardContent>
       </Card>
-    </div>
+    </Box>
   );
 } 

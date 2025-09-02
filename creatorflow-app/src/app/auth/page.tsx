@@ -277,6 +277,15 @@ export default function AuthPage() {
                 }}
               />
 
+              {/* Forgot Password Link */}
+              {!isNewUser && (
+                <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 1 }}>
+                  <Link href="/forgot-password" style={{ color: 'inherit', textDecoration: 'underline', fontSize: '0.875rem' }}>
+                    Forgot your password?
+                  </Link>
+                </Box>
+              )}
+
               {/* Error Alert */}
               {error && (
                 <Alert severity="error" sx={{ mt: 1 }}>
@@ -347,9 +356,4 @@ export default function AuthPage() {
       </Box>
     </Container>
   );
-{/* Bottom Spacer to Clear Bottom Navigation */}
-      <Box sx={{
-        height: { xs: '120px', sm: '40px' },
-        width: '100%'
-      }} />
-} 
+}

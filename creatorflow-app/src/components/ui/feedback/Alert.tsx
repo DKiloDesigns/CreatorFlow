@@ -1,7 +1,7 @@
 'use client';
 
 import React, { forwardRef } from 'react';
-import { cn } from '@/lib/utils';
+import { Box, Typography, IconButton } from '@mui/material';
 import { AlertCircle, CheckCircle, Info, XCircle, X } from 'lucide-react';
 
 export interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -75,61 +75,106 @@ const Alert = forwardRef<HTMLDivElement, AlertProps>(
     };
 
     return (
-      <div
+      <Box
         ref={ref}
-        className={cn(
-          'relative border rounded-lg transition-all duration-200',
-          config.classes,
-          sizeClasses[size],
-          fullWidth && 'w-full',
-          className
-        )}
+        className={className}
+        sx={{
+          position: 'relative',
+          border: '1px solid',
+          borderRadius: 2,
+          transition: 'all 0.2s ease',
+          width: fullWidth ? '100%' : 'auto',
+          ...(variant === 'default' && {
+            bgcolor: 'background.paper',
+            borderColor: 'divider',
+            color: 'text.primary'
+          }),
+          ...(variant === 'info' && {
+            bgcolor: 'info.50',
+            borderColor: 'info.200',
+            color: 'info.foreground'
+          }),
+          ...(variant === 'success' && {
+            bgcolor: 'success.50',
+            borderColor: 'success.200',
+            color: 'success.foreground'
+          }),
+          ...(variant === 'warning' && {
+            bgcolor: 'warning.50',
+            borderColor: 'warning.200',
+            color: 'warning.foreground'
+          }),
+          ...(variant === 'error' && {
+            bgcolor: 'error.50',
+            borderColor: 'error.200',
+            color: 'error.foreground'
+          }),
+          ...(size === 'sm' && { p: 1.5, fontSize: '0.875rem' }),
+          ...(size === 'md' && { p: 2, fontSize: '1rem' }),
+          ...(size === 'lg' && { p: 3, fontSize: '1.125rem' })
+        }}
         role="alert"
         {...props}
       >
-        <div className="flex items-start gap-3">
+        <Box sx={{ display: 'flex', alignItems: 'start', gap: 1.5 }}>
           {IconComponent && (
-            <div className={cn('flex-shrink-0 mt-0.5', config.iconClasses)}>
-              {React.isValidElement(icon) ? icon : <IconComponent className="w-5 h-5" />}
-            </div>
+            <Box sx={{ 
+              flexShrink: 0, 
+              mt: 0.25,
+              color: variant === 'default' ? 'text.primary' :
+                     variant === 'info' ? 'info.main' :
+                     variant === 'success' ? 'success.main' :
+                     variant === 'warning' ? 'warning.main' :
+                     variant === 'error' ? 'error.main' : 'text.primary'
+            }}>
+              {React.isValidElement(icon) ? icon : <IconComponent style={{ width: 20, height: 20 }} />}
+            </Box>
           )}
           
-          <div className="flex-1 min-w-0">
+          <Box sx={{ flex: 1, minWidth: 0 }}>
             {title && (
-              <h4 className="font-semibold leading-tight mb-1">
+              <Typography component="h4" sx={{ fontWeight: 600, lineHeight: 1.25, mb: 0.5 }}>
                 {title}
-              </h4>
+              </Typography>
             )}
             
             {(description || children) && (
-              <div className="text-sm leading-relaxed">
+              <Box sx={{ fontSize: '0.875rem', lineHeight: 1.5 }}>
                 {description || children}
-              </div>
+              </Box>
             )}
             
             {actions && (
-              <div className="mt-3 flex flex-wrap gap-2">
+              <Box sx={{ mt: 1.5, display: 'flex', flexWrap: 'wrap', gap: 1 }}>
                 {actions}
-              </div>
+              </Box>
             )}
-          </div>
+          </Box>
 
           {dismissible && (
-            <button
-              type="button"
+            <IconButton
               onClick={handleDismiss}
-              className={cn(
-                'flex-shrink-0 p-1 rounded-md transition-colors',
-                'hover:bg-black/5 dark:hover:bg-white/5',
-                'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-current'
-              )}
+              sx={{
+                flexShrink: 0,
+                p: 0.5,
+                borderRadius: 1,
+                transition: 'colors 0.2s ease',
+                '&:hover': {
+                  bgcolor: 'action.hover'
+                },
+                '&:focus': {
+                  outline: 'none',
+                  ring: '2px solid currentColor',
+                  ringOffset: '2px'
+                }
+              }}
               aria-label="Dismiss alert"
             >
-              <X className="w-4 h-4" />
-            </button>
+              <X style={{ width: 16, height: 16 }} />
+            </IconButton>
           )}
-        </div>
-      </div>
+        </Box>
+      </Box>
     );
   }
 );

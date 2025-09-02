@@ -37,7 +37,7 @@ interface MediaFile {
 
 interface UploadMediaModalProps {
   open: boolean;
-  onOpenChange: (open: boolean) => void;
+  onClose: () => void;
   onUploadComplete: (files: MediaFile[]) => void;
 }
 
@@ -49,7 +49,7 @@ const ACCEPTED_TYPES = {
 const MAX_FILE_SIZE = 100 * 1024 * 1024; // 100MB
 const MAX_FILES = 10;
 
-export function UploadMediaModal({ open, onOpenChange, onUploadComplete }: UploadMediaModalProps) {
+export function UploadMediaModal({ open, onClose, onUploadComplete }: UploadMediaModalProps) {
   const [files, setFiles] = useState<MediaFile[]>([]);
   const [uploading, setUploading] = useState(false);
   const [dragActive, setDragActive] = useState(false);
@@ -272,8 +272,8 @@ export function UploadMediaModal({ open, onOpenChange, onUploadComplete }: Uploa
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden">
+    <Dialog open={open} onClose={onClose}>
+      <DialogContent>
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Upload className="h-5 w-5" />

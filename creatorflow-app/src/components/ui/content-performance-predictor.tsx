@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader } from '@/components/ui/mui-card';
-import { Typography, Button } from '@mui/material';
+import { Typography, Button, Box } from '@mui/material';
 import { 
   RefreshCw, 
   Sparkles, 
@@ -304,10 +304,10 @@ export function ContentPerformancePredictor({ provider }: ContentPerformancePred
   };
 
   const getScoreColor = (score: number) => {
-    if (score >= 90) return 'text-green-600';
-    if (score >= 80) return 'text-blue-600';
-    if (score >= 70) return 'text-yellow-600';
-    return 'text-red-600';
+    if (score >= 90) return 'green.600';
+    if (score >= 80) return 'blue.600';
+    if (score >= 70) return 'yellow.600';
+    return 'red.600';
   };
 
   const getScoreIcon = (score: number) => {
@@ -327,7 +327,7 @@ export function ContentPerformancePredictor({ provider }: ContentPerformancePred
   };
 
   return (
-    <div className="space-y-6">
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
       {/* Input Section */}
       <Card>
         <CardHeader>
@@ -430,42 +430,42 @@ export function ContentPerformancePredictor({ provider }: ContentPerformancePred
           </div>
 
           {/* Advanced Settings */}
-          <div className="space-y-4">
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
             <Button
-              variant="outline"
+              variant="outlined"
               onClick={() => setShowAdvanced(!showAdvanced)}
-              className="w-full"
+              sx={{ width: '100%' }}
             >
               <Brain className="w-4 h-4 mr-2" />
               {showAdvanced ? 'Hide' : 'Show'} Advanced Analysis
             </Button>
 
             {showAdvanced && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-4 bg-gray-50 rounded-lg">
-                <div className="space-y-4">
-                  <div className="space-y-2">
+              <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 3, p: 2, bgcolor: 'grey.50', borderRadius: '8px' }}>
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                     <Label>Analysis Features</Label>
-                    <div className="space-y-2">
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm">Competitor Analysis</span>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <Typography variant="body2">Competitor Analysis</Typography>
                         <Switch checked={includeCompetitorAnalysis} onCheckedChange={setIncludeCompetitorAnalysis} />
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm">Seasonal Factors</span>
+                      </Box>
+                      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <Typography variant="body2">Seasonal Factors</Typography>
                         <Switch checked={includeSeasonalFactors} onCheckedChange={setIncludeSeasonalFactors} />
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm">ROI Analysis</span>
+                      </Box>
+                      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <Typography variant="body2">ROI Analysis</Typography>
                         <Switch checked={includeROIAnalysis} onCheckedChange={setIncludeROIAnalysis} />
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm">Risk Assessment</span>
+                      </Box>
+                      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <Typography variant="body2">Risk Assessment</Typography>
                         <Switch checked={includeRiskAssessment} onCheckedChange={setIncludeRiskAssessment} />
-                      </div>
-                    </div>
-                  </div>
+                      </Box>
+                    </Box>
+                  </Box>
 
-                  <div className="space-y-2">
+                  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                     <Label>Brand Voice</Label>
                     <Select value={brandVoice} onValueChange={setBrandVoice}>
                       <SelectTrigger>
@@ -479,32 +479,32 @@ export function ContentPerformancePredictor({ provider }: ContentPerformancePred
                         <SelectItem value="luxury">Luxury & Premium</SelectItem>
                       </SelectContent>
                     </Select>
-                  </div>
-                </div>
+                  </Box>
+                </Box>
 
-                <div className="space-y-4">
-                  <div className="p-3 bg-blue-50 rounded-lg">
-                    <h4 className="font-medium text-blue-900 mb-2">Analysis Includes:</h4>
-                    <ul className="text-sm text-blue-800 space-y-1">
-                      <li>• Engagement rate predictions</li>
-                      <li>• Reach and impressions forecast</li>
-                      <li>• Competitive benchmarking</li>
-                      <li>• Optimization recommendations</li>
-                      <li>• Risk assessment</li>
-                      <li>• ROI predictions</li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                  <Box sx={{ p: 3, bgcolor: 'blue.50', borderRadius: '8px' }}>
+                    <Typography variant="subtitle2" sx={{ mb: 2, color: 'blue.900' }}>Analysis Includes:</Typography>
+                    <Box component="ul" sx={{ fontSize: '0.875rem', color: 'blue.800', display: 'flex', flexDirection: 'column', gap: 0.5 }}>
+                      <Box component="li">• Engagement rate predictions</Box>
+                      <Box component="li">• Reach and impressions forecast</Box>
+                      <Box component="li">• Competitive benchmarking</Box>
+                      <Box component="li">• Optimization recommendations</Box>
+                      <Box component="li">• Risk assessment</Box>
+                      <Box component="li">• ROI predictions</Box>
+                    </Box>
+                  </Box>
+                </Box>
+              </Box>
             )}
-          </div>
+          </Box>
 
           {/* Analyze Button */}
           <Button
             onClick={analyzePerformance}
             disabled={isAnalyzing || (!content.trim() && !industry.trim())}
-            className="w-full"
-            size="lg"
+            sx={{ width: '100%' }}
+            size="large"
           >
             {isAnalyzing ? (
               <>
@@ -523,16 +523,20 @@ export function ContentPerformancePredictor({ provider }: ContentPerformancePred
 
       {/* Results Section */}
       {prediction && (
-        <div className="space-y-6">
-          <div className="flex items-center justify-between">
-            <h2 className="text-xl font-semibold">Performance Prediction</h2>
-            <div className="flex items-center gap-2">
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <Typography variant="h5" component="h2" sx={{ fontWeight: 'semibold' }}>
+              Performance Prediction
+            </Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
               <Badge variant="secondary" className="bg-green-100 text-green-800">
-                <CheckCircle className="w-3 h-3 mr-1" />
-                {prediction.confidence_score}% Confidence
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <CheckCircle className="w-3 h-3" />
+                  {prediction.confidence_score}% Confidence
+                </Box>
               </Badge>
-            </div>
-          </div>
+            </Box>
+          </Box>
 
           <Tabs defaultValue="overview" className="space-y-4">
             <TabsList>
@@ -544,55 +548,55 @@ export function ContentPerformancePredictor({ provider }: ContentPerformancePred
 
             <TabsContent value="overview" className="space-y-4">
               {/* Key Metrics */}
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+              <Box sx={{ display: 'grid', gridTemplateColumns: { xs: 'repeat(2, 1fr)', md: 'repeat(4, 1fr)' }, gap: 4 }}>
                 <Card>
-                  <CardContent className="pt-6">
-                    <div className="text-center">
-                      <div className={`text-2xl font-bold ${getScoreColor(prediction.predicted_engagement)}`}>
+                  <CardContent sx={{ pt: 6 }}>
+                    <Box sx={{ textAlign: 'center' }}>
+                      <Box sx={{ fontSize: '1.5rem', fontWeight: 'bold', color: getScoreColor(prediction.predicted_engagement) }}>
                         {getScoreIcon(prediction.predicted_engagement)}
-                      </div>
-                      <p className="text-sm text-gray-600">Engagement Rate</p>
-                      <p className="text-xl font-bold">{prediction.predicted_engagement}%</p>
-                    </div>
+                      </Box>
+                      <Typography variant="body2" sx={{ color: 'text.secondary', fontSize: '0.875rem' }}>Engagement Rate</Typography>
+                      <Typography variant="h6" sx={{ fontWeight: 'bold' }}>{prediction.predicted_engagement}%</Typography>
+                    </Box>
                   </CardContent>
                 </Card>
 
                 <Card>
-                  <CardContent className="pt-6">
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-blue-600">
+                  <CardContent sx={{ pt: 6 }}>
+                    <Box sx={{ textAlign: 'center' }}>
+                      <Box sx={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'blue.600' }}>
                         <Users className="w-6 h-6 mx-auto" />
-                      </div>
-                      <p className="text-sm text-gray-600">Predicted Reach</p>
-                      <p className="text-xl font-bold">{prediction.predicted_reach.toLocaleString()}</p>
-                    </div>
+                      </Box>
+                      <Typography variant="body2" sx={{ color: 'text.secondary', fontSize: '0.875rem' }}>Predicted Reach</Typography>
+                      <Typography variant="h6" sx={{ fontWeight: 'bold' }}>{prediction.predicted_reach.toLocaleString()}</Typography>
+                    </Box>
                   </CardContent>
                 </Card>
 
                 <Card>
-                  <CardContent className="pt-6">
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-purple-600">
+                  <CardContent sx={{ pt: 6 }}>
+                    <Box sx={{ textAlign: 'center' }}>
+                      <Box sx={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'purple.600' }}>
                         <Eye className="w-6 h-6 mx-auto" />
-                      </div>
-                      <p className="text-sm text-gray-600">Impressions</p>
-                      <p className="text-xl font-bold">{prediction.predicted_impressions.toLocaleString()}</p>
-                    </div>
+                      </Box>
+                      <Typography variant="body2" sx={{ color: 'text.secondary', fontSize: '0.875rem' }}>Impressions</Typography>
+                      <Typography variant="h6" sx={{ fontWeight: 'bold' }}>{prediction.predicted_impressions.toLocaleString()}</Typography>
+                    </Box>
                   </CardContent>
                 </Card>
 
                 <Card>
-                  <CardContent className="pt-6">
-                    <div className="text-center">
-                      <div className="text-2xl font-bold text-green-600">
+                  <CardContent sx={{ pt: 6 }}>
+                    <Box sx={{ textAlign: 'center' }}>
+                      <Box sx={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'green.600' }}>
                         <DollarSign className="w-6 h-6 mx-auto" />
-                      </div>
-                      <p className="text-sm text-gray-600">Estimated Value</p>
-                      <p className="text-xl font-bold">${prediction.roi_prediction.estimated_value}</p>
-                    </div>
+                      </Box>
+                      <Typography variant="body2" sx={{ color: 'text.secondary', fontSize: '0.875rem' }}>Estimated Value</Typography>
+                      <Typography variant="h6" sx={{ fontWeight: 'bold' }}>${prediction.roi_prediction.estimated_value}</Typography>
+                    </Box>
                   </CardContent>
                 </Card>
-              </div>
+              </Box>
 
               {/* Performance Factors */}
               <Card>
@@ -600,41 +604,41 @@ export function ContentPerformancePredictor({ provider }: ContentPerformancePred
                   <Typography variant="h6">Performance Factors</Typography>
                 </CardHeader>
                 <CardContent>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div>
-                      <h4 className="font-semibold text-green-600 mb-2">Positive Factors</h4>
-                      <ul className="text-sm space-y-1">
+                  <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' }, gap: 4 }}>
+                    <Box>
+                      <Typography variant="subtitle1" sx={{ fontWeight: 'semibold', color: 'green.600', mb: 2 }}>Positive Factors</Typography>
+                      <Box component="ul" sx={{ fontSize: '0.875rem', display: 'flex', flexDirection: 'column', gap: 1, listStyle: 'none', p: 0 }}>
                         {prediction.factors.positive.map((factor, index) => (
-                          <li key={index} className="flex items-center gap-1">
+                          <Box component="li" key={index} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                             <CheckCircle className="w-3 h-3 text-green-600" />
                             {factor}
-                          </li>
+                          </Box>
                         ))}
-                      </ul>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-red-600 mb-2">Negative Factors</h4>
-                      <ul className="text-sm space-y-1">
+                      </Box>
+                    </Box>
+                    <Box>
+                      <Typography variant="subtitle1" sx={{ fontWeight: 'semibold', color: 'red.600', mb: 2 }}>Negative Factors</Typography>
+                      <Box component="ul" sx={{ fontSize: '0.875rem', display: 'flex', flexDirection: 'column', gap: 1, listStyle: 'none', p: 0 }}>
                         {prediction.factors.negative.map((factor, index) => (
-                          <li key={index} className="flex items-center gap-1">
+                          <Box component="li" key={index} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                             <AlertTriangle className="w-3 h-3 text-red-600" />
                             {factor}
-                          </li>
+                          </Box>
                         ))}
-                      </ul>
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-gray-600 mb-2">Neutral Factors</h4>
-                      <ul className="text-sm space-y-1">
+                      </Box>
+                    </Box>
+                    <Box>
+                      <Typography variant="subtitle1" sx={{ fontWeight: 'semibold', color: 'gray.600', mb: 2 }}>Neutral Factors</Typography>
+                      <Box component="ul" sx={{ fontSize: '0.875rem', display: 'flex', flexDirection: 'column', gap: 1, listStyle: 'none', p: 0 }}>
                         {prediction.factors.neutral.map((factor, index) => (
-                          <li key={index} className="flex items-center gap-1">
+                          <Box component="li" key={index} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                             <Info className="w-3 h-3 text-gray-600" />
                             {factor}
-                          </li>
+                          </Box>
                         ))}
-                      </ul>
-                    </div>
-                  </div>
+                      </Box>
+                    </Box>
+                  </Box>
                 </CardContent>
               </Card>
             </TabsContent>
@@ -645,55 +649,55 @@ export function ContentPerformancePredictor({ provider }: ContentPerformancePred
                   <Typography variant="h6">Detailed Performance Predictions</Typography>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div className="space-y-4">
-                        <h3 className="font-semibold">Engagement Metrics</h3>
-                        <div className="space-y-3">
-                          <div className="flex justify-between items-center">
-                            <span className="text-sm">Comments</span>
-                            <span className="font-medium">{prediction.predicted_comments}</span>
-                          </div>
-                          <div className="flex justify-between items-center">
-                            <span className="text-sm">Shares</span>
-                            <span className="font-medium">{prediction.predicted_shares}</span>
-                          </div>
-                          <div className="flex justify-between items-center">
-                            <span className="text-sm">Saves</span>
-                            <span className="font-medium">{prediction.predicted_saves}</span>
-                          </div>
-                          <div className="flex justify-between items-center">
-                            <span className="text-sm">Clicks</span>
-                            <span className="font-medium">{prediction.predicted_clicks}</span>
-                          </div>
-                        </div>
-                      </div>
+                  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                    <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 6 }}>
+                      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                        <Typography variant="h6" sx={{ fontWeight: 'semibold' }}>Engagement Metrics</Typography>
+                        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+                          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <Typography variant="body2">Comments</Typography>
+                            <Typography variant="body2" sx={{ fontWeight: 'medium' }}>{prediction.predicted_comments}</Typography>
+                          </Box>
+                          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <Typography variant="body2">Shares</Typography>
+                            <Typography variant="body2" sx={{ fontWeight: 'medium' }}>{prediction.predicted_shares}</Typography>
+                          </Box>
+                          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <Typography variant="body2">Saves</Typography>
+                            <Typography variant="body2" sx={{ fontWeight: 'medium' }}>{prediction.predicted_saves}</Typography>
+                          </Box>
+                          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <Typography variant="body2">Clicks</Typography>
+                            <Typography variant="body2" sx={{ fontWeight: 'medium' }}>{prediction.predicted_clicks}</Typography>
+                          </Box>
+                        </Box>
+                      </Box>
 
-                      <div className="space-y-4">
-                        <h3 className="font-semibold">Audience Insights</h3>
-                        <div className="space-y-3">
-                          <div>
-                            <span className="text-sm font-medium">Primary Audience:</span>
-                            <p className="text-sm text-gray-600">{prediction.audience_insights.primary_audience}</p>
-                          </div>
-                          <div>
-                            <span className="text-sm font-medium">Secondary Audience:</span>
-                            <p className="text-sm text-gray-600">{prediction.audience_insights.secondary_audience}</p>
-                          </div>
-                          <div>
-                            <span className="text-sm font-medium">Engagement Drivers:</span>
-                            <div className="flex flex-wrap gap-1 mt-1">
+                      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                        <Typography variant="h6" sx={{ fontWeight: 'semibold' }}>Audience Insights</Typography>
+                        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+                          <Box>
+                            <Typography variant="body2" sx={{ fontWeight: 'medium' }}>Primary Audience:</Typography>
+                            <Typography variant="body2" sx={{ color: 'text.secondary' }}>{prediction.audience_insights.primary_audience}</Typography>
+                          </Box>
+                          <Box>
+                            <Typography variant="body2" sx={{ fontWeight: 'medium' }}>Secondary Audience:</Typography>
+                            <Typography variant="body2" sx={{ color: 'text.secondary' }}>{prediction.audience_insights.secondary_audience}</Typography>
+                          </Box>
+                          <Box>
+                            <Typography variant="body2" sx={{ fontWeight: 'medium' }}>Engagement Drivers:</Typography>
+                            <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mt: 1 }}>
                               {prediction.audience_insights.engagement_drivers.map((driver, index) => (
                                 <Badge key={index} variant="outline" className="text-xs">
                                   {driver}
                                 </Badge>
                               ))}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                            </Box>
+                          </Box>
+                        </Box>
+                      </Box>
+                    </Box>
+                  </Box>
                 </CardContent>
               </Card>
             </TabsContent>
@@ -704,125 +708,129 @@ export function ContentPerformancePredictor({ provider }: ContentPerformancePred
                   <Typography variant="h6">Optimization Recommendations</Typography>
                 </CardHeader>
                 <CardContent>
-                  <div className="space-y-6">
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                      <div>
-                        <h4 className="font-semibold text-red-600 mb-2">High Impact</h4>
-                        <ul className="text-sm space-y-1">
+                  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+                    <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' }, gap: 4 }}>
+                      <Box>
+                        <Typography variant="subtitle1" sx={{ fontWeight: 'semibold', color: 'red.600', mb: 2 }}>High Impact</Typography>
+                        <Box component="ul" sx={{ fontSize: '0.875rem', display: 'flex', flexDirection: 'column', gap: 1, listStyle: 'none', p: 0 }}>
                           {prediction.recommendations.high_impact.map((rec, index) => (
-                            <li key={index} className="flex items-center gap-1">
+                            <Box component="li" key={index} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                               <Zap className="w-3 h-3 text-red-600" />
                               {rec}
-                            </li>
+                            </Box>
                           ))}
-                        </ul>
-                      </div>
-                      <div>
-                        <h4 className="font-semibold text-yellow-600 mb-2">Medium Impact</h4>
-                        <ul className="text-sm space-y-1">
+                        </Box>
+                      </Box>
+                      <Box>
+                        <Typography variant="subtitle1" sx={{ fontWeight: 'semibold', color: 'yellow.600', mb: 2 }}>Medium Impact</Typography>
+                        <Box component="ul" sx={{ fontSize: '0.875rem', display: 'flex', flexDirection: 'column', gap: 1, listStyle: 'none', p: 0 }}>
                           {prediction.recommendations.medium_impact.map((rec, index) => (
-                            <li key={index} className="flex items-center gap-1">
+                            <Box component="li" key={index} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                               <Target className="w-3 h-3 text-yellow-600" />
                               {rec}
-                            </li>
+                            </Box>
                           ))}
-                        </ul>
-                      </div>
-                      <div>
-                        <h4 className="font-semibold text-green-600 mb-2">Low Impact</h4>
-                        <ul className="text-sm space-y-1">
+                        </Box>
+                      </Box>
+                      <Box>
+                        <Typography variant="subtitle1" sx={{ fontWeight: 'semibold', color: 'green.600', mb: 2 }}>Low Impact</Typography>
+                        <Box component="ul" sx={{ fontSize: '0.875rem', display: 'flex', flexDirection: 'column', gap: 1, listStyle: 'none', p: 0 }}>
                           {prediction.recommendations.low_impact.map((rec, index) => (
-                            <li key={index} className="flex items-center gap-1">
+                            <Box component="li" key={index} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                               <CheckCircle className="w-3 h-3 text-green-600" />
                               {rec}
-                            </li>
+                            </Box>
                           ))}
-                        </ul>
-                      </div>
-                    </div>
+                        </Box>
+                      </Box>
+                    </Box>
 
-                    <div className="space-y-4">
-                      <h3 className="font-semibold">Content Optimization</h3>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                      <Typography variant="h6" sx={{ fontWeight: 'semibold' }}>Content Optimization</Typography>
+                      <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 4 }}>
+                        <Box>
                           <Label className="text-sm font-medium">Hashtag Strategy</Label>
-                          <ul className="text-sm text-gray-600 mt-1 space-y-1">
+                          <Box component="ul" sx={{ fontSize: '0.875rem', color: 'text.secondary', mt: 1, display: 'flex', flexDirection: 'column', gap: 1, listStyle: 'none', p: 0 }}>
                             {prediction.optimization_suggestions.hashtag_strategy.map((suggestion, index) => (
-                              <li key={index}>• {suggestion}</li>
+                              <Box component="li" key={index}>
+                                • {suggestion}
+                              </Box>
                             ))}
-                          </ul>
-                        </div>
-                        <div>
+                          </Box>
+                        </Box>
+                        <Box>
                           <Label className="text-sm font-medium">Caption Enhancements</Label>
-                          <ul className="text-sm text-gray-600 mt-1 space-y-1">
+                          <Box component="ul" sx={{ fontSize: '0.875rem', color: 'text.secondary', mt: 1, display: 'flex', flexDirection: 'column', gap: 1, listStyle: 'none', p: 0 }}>
                             {prediction.optimization_suggestions.caption_enhancements.map((suggestion, index) => (
-                              <li key={index}>• {suggestion}</li>
+                              <Box component="li" key={index}>
+                                • {suggestion}
+                              </Box>
                             ))}
-                          </ul>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                          </Box>
+                        </Box>
+                      </Box>
+                    </Box>
+                  </Box>
                 </CardContent>
               </Card>
             </TabsContent>
 
             <TabsContent value="analysis" className="space-y-4">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 6 }}>
                 <Card>
                   <CardHeader>
-                    <Typography variant="h6" className="flex items-center gap-2">
+                    <Typography variant="h6" sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                       <BarChart3 className="w-5 h-5" />
                       Competitive Analysis
                     </Typography>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    <div className="space-y-3">
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm">Similar Content Performance</span>
-                        <span className="font-medium">{prediction.competitive_analysis.similar_content_performance}%</span>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm">Market Gap Opportunity</span>
-                        <span className="font-medium">{prediction.competitive_analysis.market_gap_opportunity}%</span>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm">Avg Industry Engagement</span>
-                        <span className="font-medium">{prediction.competitive_analysis.competitor_benchmarks.avg_engagement}%</span>
-                      </div>
-                    </div>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <Typography variant="body2">Similar Content Performance</Typography>
+                        <Typography variant="body2" sx={{ fontWeight: 'medium' }}>{prediction.competitive_analysis.similar_content_performance}%</Typography>
+                      </Box>
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <Typography variant="body2">Market Gap Opportunity</Typography>
+                        <Typography variant="body2" sx={{ fontWeight: 'medium' }}>{prediction.competitive_analysis.market_gap_opportunity}%</Typography>
+                      </Box>
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <Typography variant="body2">Avg Industry Engagement</Typography>
+                        <Typography variant="body2" sx={{ fontWeight: 'medium' }}>{prediction.competitive_analysis.competitor_benchmarks.avg_engagement}%</Typography>
+                      </Box>
+                    </Box>
                   </CardContent>
                 </Card>
 
                 <Card>
                   <CardHeader>
-                    <Typography variant="h6" className="flex items-center gap-2">
+                    <Typography variant="h6" sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                       <TrendingUp className="w-5 h-5" />
                       Seasonal Factors
                     </Typography>
                   </CardHeader>
                   <CardContent className="space-y-4">
-                    <div className="space-y-3">
-                      <div className="flex items-center gap-2">
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                         {getTrendIcon(prediction.seasonal_factors.current_trend)}
-                        <span className="text-sm font-medium">Current Trend: {prediction.seasonal_factors.current_trend}</span>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm">Seasonal Boost</span>
-                        <span className="font-medium">+{prediction.seasonal_factors.seasonal_boost}%</span>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm">Timing Advantage</span>
-                        <span className="font-medium">+{prediction.seasonal_factors.timing_advantage}%</span>
-                      </div>
-                    </div>
+                        <Typography variant="body2" sx={{ fontWeight: 'medium' }}>Current Trend: {prediction.seasonal_factors.current_trend}</Typography>
+                      </Box>
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <Typography variant="body2">Seasonal Boost</Typography>
+                        <Typography variant="body2" sx={{ fontWeight: 'medium' }}>+{prediction.seasonal_factors.seasonal_boost}%</Typography>
+                      </Box>
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <Typography variant="body2">Timing Advantage</Typography>
+                        <Typography variant="body2" sx={{ fontWeight: 'medium' }}>+{prediction.seasonal_factors.timing_advantage}%</Typography>
+                      </Box>
+                    </Box>
                   </CardContent>
                 </Card>
-              </div>
+              </Box>
             </TabsContent>
           </Tabs>
-        </div>
+        </Box>
       )}
-    </div>
+    </Box>
   );
 } 

@@ -21,9 +21,6 @@ export type { IconProps } from './base/Icon';
 export { Container } from './layout/Container';
 export type { ContainerProps } from './layout/Container';
 
-export { Grid, GridItem } from './layout/Grid';
-export type { GridProps } from './layout/Grid';
-
 
 
 export { Divider } from './layout/Divider';
@@ -32,6 +29,7 @@ export type { DividerProps } from './layout/Divider';
 // Feedback Components
 export { Alert } from './feedback/Alert';
 export type { AlertProps } from './feedback/Alert';
+export { AlertTitle, AlertDescription } from './feedback/mui-alert';
 
 export { Badge } from './feedback/Badge';
 export type { BadgeProps } from './feedback/Badge';
@@ -68,16 +66,13 @@ export { Select, SelectGroup, SelectValue, SelectTrigger, SelectContent, SelectL
 export { Textarea } from './textarea';
 export type { TextareaProps } from './textarea';
 
-// Alert Components
-export { AlertDescription, AlertTitle } from './feedback/Alert';
+
 
 // Unified Dashboard Components (Phase 1)
 export { default as ConnectedAccountsStory } from './connected-accounts-story';
 // export { default as EnhancedBottomNavigation } from './enhanced-bottom-navigation';
 export { default as UnifiedDashboardLayout } from './unified-dashboard-layout';
 export type {
-  NavigationItem,
-  EnhancedBottomNavigationProps,
   DashboardSection,
   QuickStat,
   AIInsight,

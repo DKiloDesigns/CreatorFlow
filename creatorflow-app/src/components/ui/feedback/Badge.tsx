@@ -32,32 +32,36 @@ const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
     interactive = false,
     ...props 
   }, ref) => {
-    const variantClasses = {
-      default: 'bg-muted text-muted-foreground border-border',
-      primary: 'bg-primary text-primary-foreground border-primary',
-      secondary: 'bg-secondary text-secondary-foreground border-secondary',
-      success: 'bg-success text-success-foreground border-success',
-      warning: 'bg-warning text-warning-foreground border-warning',
-      error: 'bg-error text-error-foreground border-error',
-      info: 'bg-info text-info-foreground border-info',
-      outline: 'bg-transparent border-border text-foreground',
-      ghost: 'bg-transparent text-foreground',
+    const variantStyles = {
+      default: { bgcolor: 'grey.100', color: 'text.secondary', borderColor: 'grey.300' },
+      primary: { bgcolor: 'primary.main', color: 'primary.contrastText', borderColor: 'primary.main' },
+      secondary: { bgcolor: 'secondary.main', color: 'secondary.contrastText', borderColor: 'secondary.main' },
+      success: { bgcolor: 'success.main', color: 'success.contrastText', borderColor: 'success.main' },
+      warning: { bgcolor: 'warning.main', color: 'warning.contrastText', borderColor: 'warning.main' },
+      error: { bgcolor: 'error.main', color: 'error.contrastText', borderColor: 'error.main' },
+      info: { bgcolor: 'info.main', color: 'info.contrastText', borderColor: 'info.main' },
+      outline: { bgcolor: 'transparent', color: 'text.primary', borderColor: 'grey.300' },
+      ghost: { bgcolor: 'transparent', color: 'text.primary' },
     };
 
-    const sizeClasses = {
-      sm: 'px-2 py-0.5 text-xs',
-      md: 'px-2.5 py-1 text-sm',
-      lg: 'px-3 py-1.5 text-base',
+    const sizeStyles = {
+      sm: { px: 1, py: 0.25, fontSize: '0.75rem' },
+      md: { px: 1.25, py: 0.5, fontSize: '0.875rem' },
+      lg: { px: 1.5, py: 0.75, fontSize: '1rem' },
     };
 
-    const roundedClasses = {
-      sm: 'rounded',
-      md: 'rounded-md',
-      lg: 'rounded-lg',
-      full: 'rounded-full',
+    const roundedStyles = {
+      sm: { borderRadius: 1 },
+      md: { borderRadius: 2 },
+      lg: { borderRadius: 3 },
+      full: { borderRadius: '50%' },
     };
 
-    const interactiveClasses = interactive ? 'cursor-pointer hover:scale-105 transition-transform' : '';
+    const interactiveStyles = interactive ? { 
+      cursor: 'pointer', 
+      transition: 'transform 0.2s ease-in-out',
+      '&:hover': { transform: 'scale(1.05)' }
+    } : {};
 
     const handleDismiss = (e: React.MouseEvent) => {
       e.stopPropagation();
@@ -67,33 +71,38 @@ const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
     };
 
     return (
-      <span
+      <Box
+        component="span"
         ref={ref}
-        className={cn(
-          'inline-flex items-center gap-1.5 border font-medium transition-all duration-200',
-          variantClasses[variant],
-          sizeClasses[size],
-          roundedClasses[rounded],
-          interactiveClasses,
-          fullWidth && 'w-full justify-center',
-          className
-        )}
+        sx={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: 0.75,
+          border: 1,
+          fontWeight: 500,
+          transition: 'all 0.2s ease-in-out',
+          ...variantStyles[variant],
+          ...sizeStyles[size],
+          ...roundedStyles[rounded],
+          ...interactiveStyles,
+          ...(fullWidth && { width: '100%', justifyContent: 'center' }),
+        }}
         {...props}
       >
         {icon && iconPosition === 'left' && (
-          <span className="flex-shrink-0">
+          <Box sx={{ flexShrink: 0 }}>
             {icon}
-          </span>
+          </Box>
         )}
         
-        <span className="flex-1">
+        <Box sx={{ flex: 1 }}>
           {children}
-        </span>
+        </Box>
         
         {icon && iconPosition === 'right' && (
-          <span className="flex-shrink-0">
+          <Box sx={{ flexShrink: 0 }}>
             {icon}
-          </span>
+          </Box>
         )}
         
         {dismissible && (
@@ -120,10 +129,10 @@ const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
             }}
             aria-label="Remove badge"
           >
-            <X className="w-3 h-3" />
+            <X style={{ width: 12, height: 12 }} />
           </Box>
         )}
-      </span>
+      </Box>
     );
   }
 );

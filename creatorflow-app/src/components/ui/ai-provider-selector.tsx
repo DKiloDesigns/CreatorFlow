@@ -39,12 +39,12 @@ export function AIProviderSelector({
 
   const getPricingBadge = (provider: AIProvider) => {
     if (provider.pricing.model === 'free') {
-      return <Chip label="Free" variant="outlined" className="bg-green-100 text-green-800" />;
+      return <Chip label="Free" variant="outlined" sx={{ bgcolor: 'green.100', color: 'green.800' }} />;
     }
     if (provider.pricing.costPerRequest && provider.pricing.costPerRequest < 0.005) {
-      return <Chip label="Low Cost" variant="outlined" className="bg-blue-100 text-blue-800" />;
+      return <Chip label="Low Cost" variant="outlined" sx={{ bgcolor: 'blue.100', color: 'blue.800' }} />;
     }
-    return <Chip label="Premium" variant="outlined" className="bg-purple-100 text-purple-800" />;
+    return <Chip label="Premium" variant="outlined" sx={{ bgcolor: 'purple.100', color: 'purple.800' }} />;
   };
 
   const getStatusBadge = (provider: AIProvider) => {
@@ -61,18 +61,18 @@ export function AIProviderSelector({
   };
 
   return (
-    <div className={`space-y-6 ${className}`}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }} className={className}>
       {/* Header */}
-      <div className="text-center space-y-2">
-        <h2 className="text-2xl font-bold text-gray-900">Choose Your AI Provider</h2>
-        <p className="text-gray-600 max-w-2xl mx-auto">
+      <Box sx={{ textAlign: 'center', display: 'flex', flexDirection: 'column', gap: 1 }}>
+        <Typography variant="h4" sx={{ fontWeight: 700, color: 'text.primary' }}>Choose Your AI Provider</Typography>
+        <Typography variant="body1" sx={{ color: 'text.secondary', maxWidth: '42rem', mx: 'auto' }}>
           Select from multiple AI providers to find the perfect balance of cost, quality, and features for your content creation needs.
-        </p>
-      </div>
+        </Typography>
+      </Box>
 
       {/* Filter Tabs */}
-      <div className="flex justify-center">
-        <div className="inline-flex rounded-lg bg-gray-100 p-1">
+      <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+        <Box sx={{ display: 'inline-flex', borderRadius: '8px', bgcolor: 'grey.100', p: 0.5 }}>
           {[
             { key: 'all', label: 'All Options', icon: Brain },
             { key: 'free', label: 'Free', icon: Activity },
@@ -82,18 +82,28 @@ export function AIProviderSelector({
             <Button
               key={key}
               onClick={() => setFilter(key as 'all' | 'free' | 'premium')}
-              className={`inline-flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                filter === key
-                  ? 'bg-white text-gray-900 shadow-sm'
-                  : 'text-gray-600 hover:text-gray-900'
-              }`}
+              sx={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: 1,
+                px: 2,
+                py: 1,
+                borderRadius: '6px',
+                fontSize: '0.875rem',
+                fontWeight: 500,
+                transition: 'colors 0.2s ease',
+                ...(filter === key
+                  ? { bgcolor: 'white', color: 'grey.900', boxShadow: 1 }
+                  : { color: 'grey.600', '&:hover': { color: 'grey.900' } }
+                )
+              }}
             >
-              <Icon className="w-4 h-4" />
+              <Icon style={{ width: 16, height: 16 }} />
               {label}
             </Button>
           ))}
-        </div>
-      </div>
+        </Box>
+      </Box>
 
       {/* Provider Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -130,24 +140,24 @@ export function AIProviderSelector({
 
             <CardContent className="space-y-4">
               {/* Pricing Info */}
-              <div className="bg-gray-50 rounded-lg p-3">
-                <div className="flex items-center justify-between">
-                  <Typography variant="body2" className="text-gray-700 font-medium">Pricing</Typography>
+              <Box sx={{ bgcolor: 'grey.50', borderRadius: '8px', p: 1.5 }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <Typography variant="body2" sx={{ color: 'text.secondary', fontWeight: 500 }}>Pricing</Typography>
                   {provider.pricing.costPerRequest === 0 ? (
-                    <Typography variant="body2" className="text-green-600 font-semibold">Free</Typography>
+                    <Typography variant="body2" sx={{ color: 'success.main', fontWeight: 600 }}>Free</Typography>
                   ) : (
-                    <Typography variant="body2" className="text-gray-900 font-semibold">
+                    <Typography variant="body2" sx={{ color: 'text.primary', fontWeight: 600 }}>
                       ${provider.pricing.costPerRequest?.toFixed(3)}/request
                     </Typography>
                   )}
-                </div>
-                <Typography variant="body2" className="text-gray-600 mt-1">{provider.pricing.details}</Typography>
+                </Box>
+                <Typography variant="body2" sx={{ color: 'text.secondary', mt: 0.5 }}>{provider.pricing.details}</Typography>
                 {provider.pricing.monthlyLimit && (
-                  <Typography variant="body2" className="text-gray-500 mt-1">
+                  <Typography variant="body2" sx={{ color: 'text.disabled', mt: 0.5 }}>
                     {provider.pricing.monthlyLimit} requests/month included
                   </Typography>
                 )}
-              </div>
+              </Box>
 
               {/* Features */}
               <div>

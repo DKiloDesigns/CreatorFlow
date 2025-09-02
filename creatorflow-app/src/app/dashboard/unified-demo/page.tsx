@@ -18,7 +18,7 @@ import {
 } from '@mui/material';
 import {
   AutoAwesome,
-  Brain,
+  Psychology,
   TrendingUp,
   ContentCopy,
   Schedule,
@@ -208,7 +208,7 @@ export default function UnifiedDemoPage() {
       id: 'ai-tools',
       title: 'AI Tools & Automation',
       subtitle: 'Advanced AI features for content creators',
-      icon: Brain,
+      icon: Psychology,
       content: (
         <Box>
           <Typography variant="body1" sx={{ mb: 2 }}>

@@ -17,16 +17,16 @@ import {
   Divider
 } from '@mui/material';
 import {
-  Instagram,
-  Twitter,
-  Facebook,
-  YouTube,
-  TikTok,
-  LinkedIn,
-  Pinterest,
-  Snapchat,
-  Twitch,
-  Discord,
+  Language,
+  Share,
+  Public,
+  PlayArrow,
+  VideoLibrary,
+  Business,
+  Bookmark,
+  CameraAlt,
+  LiveTv,
+  Group,
   Add,
   CheckCircle,
   Warning,
@@ -37,7 +37,6 @@ import {
   TrendingUp,
   TrendingDown,
   Schedule,
-  Public,
   Lock
 } from '@mui/icons-material';
 import { designTokens } from '@/lib/design-system';
@@ -45,61 +44,61 @@ import { designTokens } from '@/lib/design-system';
 // Platform configuration with icons and colors
 const platformConfig = {
   instagram: {
-    icon: Instagram,
+    icon: Language,
     color: '#E4405F',
     name: 'Instagram',
     gradient: 'linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%)'
   },
   twitter: {
-    icon: Twitter,
+    icon: Share,
     color: '#1DA1F2',
     name: 'Twitter',
     gradient: 'linear-gradient(45deg, #1DA1F2 0%, #0D8BD9 100%)'
   },
   facebook: {
-    icon: Facebook,
+    icon: Public,
     color: '#1877F2',
     name: 'Facebook',
     gradient: 'linear-gradient(45deg, #1877F2 0%, #0D6EFD 100%)'
   },
   youtube: {
-    icon: YouTube,
+    icon: PlayArrow,
     color: '#FF0000',
     name: 'YouTube',
     gradient: 'linear-gradient(45deg, #FF0000 0%, #CC0000 100%)'
   },
   tiktok: {
-    icon: TikTok,
+    icon: VideoLibrary,
     color: '#000000',
     name: 'TikTok',
     gradient: 'linear-gradient(45deg, #000000 0%, #25F4EE 50%, #FE2C55 100%)'
   },
   linkedin: {
-    icon: LinkedIn,
+    icon: Business,
     color: '#0A66C2',
     name: 'LinkedIn',
     gradient: 'linear-gradient(45deg, #0A66C2 0%, #0077B5 100%)'
   },
   pinterest: {
-    icon: Pinterest,
+    icon: Bookmark,
     color: '#BD081C',
     name: 'Pinterest',
     gradient: 'linear-gradient(45deg, #BD081C 0%, #E60023 100%)'
   },
   snapchat: {
-    icon: Snapchat,
+    icon: CameraAlt,
     color: '#FFFC00',
     name: 'Snapchat',
     gradient: 'linear-gradient(45deg, #FFFC00 0%, #FFD700 100%)'
   },
   twitch: {
-    icon: Twitch,
+    icon: LiveTv,
     color: '#9146FF',
     name: 'Twitch',
     gradient: 'linear-gradient(45deg, #9146FF 0%, #7B3FE4 100%)'
   },
   discord: {
-    icon: Discord,
+    icon: Group,
     color: '#5865F2',
     name: 'Discord',
     gradient: 'linear-gradient(45deg, #5865F2 0%, #4752C4 100%)'

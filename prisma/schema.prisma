@@ -6,8 +6,8 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 // User Model (Compatible with NextAuth.js)
@@ -28,6 +28,29 @@ model User {
   stripeSubscriptionId   String?   @unique @map(name: "stripe_subscription_id")
   stripePriceId          String?   @map(name: "stripe_price_id")
   stripeCurrentPeriodEnd DateTime? @map(name: "stripe_current_period_end")
+
+  // --- Authentication & Security Fields ---
+  password              String?
+  twoFAEnabled         Boolean   @default(false) @map(name: "two_fa_enabled")
+  role                 String?   @default("USER")
+  deactivated          Boolean   @default(false)
+
+  // --- Password Reset Fields ---
+  resetToken           String?
+  resetTokenExpiry     DateTime?
+
+  // --- Trial & Billing Fields ---
+  isTrialUser          Boolean   @default(false) @map(name: "is_trial_user")
+  promoCodeUsed        String?   @map(name: "promo_code_used")
+  promoCodeUsedAt      DateTime? @map(name: "promo_code_used_at")
+  trialEndDate         DateTime? @map(name: "trial_end_date")
+  trialStartDate       DateTime? @map(name: "trial_start_date")
+  paymentRetryCount    Int       @default(0) @map(name: "payment_retry_count")
+  paymentRetryDate     DateTime? @map(name: "payment_retry_date")
+
+  // --- Settings & Preferences ---
+  settings             String?   // JSON string for user settings
+  notificationPreferences String? // JSON string for notification preferences
 
   accounts      Account[]
   sessions      Session[]

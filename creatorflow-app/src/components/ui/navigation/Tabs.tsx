@@ -1,7 +1,7 @@
 'use client';
 
 import React, { forwardRef, createContext, useContext, useState } from 'react';
-import { cn } from '@/lib/utils';
+import { Box, Typography } from '@mui/material';
 
 interface TabsContextType {
   value: string;
@@ -61,35 +61,41 @@ const Tabs = forwardRef<HTMLDivElement, TabsProps>(
       orientation,
     };
 
-    const variantClasses = {
-      default: 'border-b border-border',
-      outlined: 'border border-border rounded-lg p-1',
-      pills: 'space-x-1',
-      underline: 'border-b border-border',
+    const getVariantStyles = () => {
+      const variantMap = {
+        default: { borderBottom: 1, borderColor: 'divider' },
+        outlined: { border: 1, borderColor: 'divider', borderRadius: '8px', p: 0.5 },
+        pills: { '& > * + *': { ml: 0.5 } },
+        underline: { borderBottom: 1, borderColor: 'divider' },
+      };
+      return variantMap[variant];
     };
 
-    const sizeClasses = {
-      sm: 'text-sm',
-      md: 'text-base',
-      lg: 'text-lg',
+    const getSizeStyles = () => {
+      const sizeMap = {
+        sm: { fontSize: '0.875rem' },
+        md: { fontSize: '1rem' },
+        lg: { fontSize: '1.125rem' },
+      };
+      return sizeMap[size];
     };
 
     return (
       <TabsContext.Provider value={contextValue}>
-        <div
+        <Box
           ref={ref}
-          className={cn(
-            'w-full',
-            orientation === 'vertical' ? 'flex' : 'block',
-            variantClasses[variant],
-            sizeClasses[size],
-            disabled && 'opacity-50 pointer-events-none',
-            className
-          )}
+          sx={{
+            width: '100%',
+            ...(orientation === 'vertical' ? { display: 'flex' } : { display: 'block' }),
+            ...getVariantStyles(),
+            ...getSizeStyles(),
+            ...(disabled && { opacity: 0.5, pointerEvents: 'none' }),
+            ...(className && { className })
+          }}
           {...props}
         >
           {children}
-        </div>
+        </Box>
       </TabsContext.Provider>
     );
   }
@@ -106,20 +112,20 @@ const TabsList = forwardRef<HTMLDivElement, TabsListProps>(
     const { orientation } = useTabsContext();
     
     return (
-      <div
+      <Box
         ref={ref}
-        className={cn(
-          'flex',
-          orientation === 'horizontal' ? 'flex-row' : 'flex-col',
-          fullWidth && 'w-full',
-          className
-        )}
+        sx={{
+          display: 'flex',
+          ...(orientation === 'horizontal' ? { flexDirection: 'row' } : { flexDirection: 'column' }),
+          ...(_fullWidth && { width: '100%' }),
+          ...(className && { className })
+        }}
         role="tablist"
         aria-orientation={orientation}
         {...props}
       >
         {children}
-      </div>
+      </Box>
     );
   }
 );
@@ -137,57 +143,77 @@ const TabsTrigger = forwardRef<HTMLButtonElement, TabsTriggerProps>(
     const { value: selectedValue, onValueChange, orientation, variant } = useTabsContext();
     const isSelected = value === selectedValue;
     
-    const variantClasses = {
-      default: cn(
-        'border-b-2 border-transparent px-3 py-2',
-        'hover:text-foreground hover:border-border',
-        'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2',
-        isSelected && 'border-primary text-foreground',
-        !isSelected && 'text-muted-foreground'
-      ),
-      outlined: cn(
-        'px-3 py-2 rounded-md transition-colors',
-        'hover:bg-accent hover:text-accent-foreground',
-        'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2',
-        isSelected && 'bg-primary text-primary-foreground',
-        !isSelected && 'text-foreground'
-      ),
-      pills: cn(
-        'px-4 py-2 rounded-full transition-colors',
-        'hover:bg-accent hover:text-accent-foreground',
-        'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2',
-        isSelected && 'bg-primary text-primary-foreground',
-        !isSelected && 'text-muted-foreground'
-      ),
-      underline: cn(
-        'border-b-2 border-transparent px-3 py-2',
-        'hover:text-foreground hover:border-border',
-        'focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2',
-        isSelected && 'border-primary text-foreground',
-        !isSelected && 'text-muted-foreground'
-      ),
+    const getVariantStyles = () => {
+      const baseStyles = {
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        transition: 'all 0.2s',
+        '&:focus': { outline: 'none', ring: 2, ringColor: 'primary.main', ringOffset: 2 },
+        '&.Mui-disabled': { opacity: 0.5, cursor: 'not-allowed' },
+      };
+
+      const variantMap = {
+        default: {
+          ...baseStyles,
+          borderBottom: 2,
+          borderColor: 'transparent',
+          px: 1.5,
+          py: 1,
+          '&:hover': { color: 'text.primary', borderColor: 'divider' },
+          ...(isSelected && { borderColor: 'primary.main', color: 'text.primary' }),
+          ...(!isSelected && { color: 'text.disabled' })
+        },
+        outlined: {
+          ...baseStyles,
+          px: 1.5,
+          py: 1,
+          borderRadius: '6px',
+          '&:hover': { bgcolor: 'action.hover', color: 'text.primary' },
+          ...(isSelected && { bgcolor: 'primary.main', color: 'primary.contrastText' }),
+          ...(!isSelected && { color: 'text.primary' })
+        },
+        pills: {
+          ...baseStyles,
+          px: 2,
+          py: 1,
+          borderRadius: '9999px',
+          '&:hover': { bgcolor: 'action.hover', color: 'text.primary' },
+          ...(isSelected && { bgcolor: 'primary.main', color: 'primary.contrastText' }),
+          ...(!isSelected && { color: 'text.disabled' })
+        },
+        underline: {
+          ...baseStyles,
+          borderBottom: 2,
+          borderColor: 'transparent',
+          px: 1.5,
+          py: 1,
+          '&:hover': { color: 'text.primary', borderColor: 'divider' },
+          ...(isSelected && { borderColor: 'primary.main', color: 'text.primary' }),
+          ...(!isSelected && { color: 'text.disabled' })
+        },
+      };
+      return variantMap[variant];
     };
 
     return (
-      <button
+      <Button
         ref={ref}
-        type="button"
+        variant="text"
         role="tab"
         aria-selected={isSelected}
         aria-disabled={disabled}
         disabled={disabled}
-        className={cn(
-          'flex items-center justify-center transition-all duration-200',
-          'disabled:opacity-50 disabled:cursor-not-allowed',
-          fullWidth && 'flex-1',
-          variantClasses[variant],
-          className
-        )}
+        sx={{
+          ...getVariantStyles(),
+          ...(_fullWidth && { flex: 1 }),
+          ...(className && { className })
+        }}
         onClick={() => onValueChange(value)}
         {...props}
       >
         {children}
-      </button>
+      </Button>
     );
   }
 );
@@ -206,19 +232,19 @@ const TabsContent = forwardRef<HTMLDivElement, TabsContentProps>(
     if (!isSelected) return null;
 
     return (
-      <div
+      <Box
         ref={ref}
         role="tabpanel"
         tabIndex={0}
-        className={cn(
-          'outline-none',
-          orientation === 'vertical' ? 'ml-4' : 'mt-4',
-          className
-        )}
+        sx={{
+          outline: 'none',
+          ...(orientation === 'vertical' ? { ml: 2 } : { mt: 2 }),
+          ...(className && { className })
+        }}
         {...props}
       >
         {children}
-      </div>
+      </Box>
     );
   }
 );

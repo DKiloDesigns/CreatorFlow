@@ -130,7 +130,7 @@ export function MuiEnhancedNavigation() {
               minWidth: 40,
             }}
           >
-            <Icon className="h-4 w-4" />
+            <Icon style={{ width: 16, height: 16 }} />
           </ListItemIcon>
           <ListItemText
             primary={item.label}
@@ -167,7 +167,7 @@ export function MuiEnhancedNavigation() {
         aria-expanded={mobileNavOpen}
         aria-controls="mobile-nav-drawer"
       >
-        <MenuIcon className="h-5 w-5" />
+        <MenuIcon style={{ width: 20, height: 20 }} />
       </IconButton>
 
       {/* Mobile Navigation Drawer */}
@@ -190,7 +190,7 @@ export function MuiEnhancedNavigation() {
               CreatorFlow
             </Typography>
             <IconButton onClick={() => setMobileNavOpen(false)}>
-              <X className="h-5 w-5" />
+              <X style={{ width: 20, height: 20 }} />
             </IconButton>
           </Box>
           
@@ -214,7 +214,7 @@ export function MuiEnhancedNavigation() {
           aria-controls="notifications-menu"
         >
           <Badge badgeContent={3} color="error">
-            <Bell className="h-5 w-5" />
+            <Bell style={{ width: 20, height: 20 }} />
           </Badge>
         </IconButton>
 
@@ -260,21 +260,21 @@ export function MuiEnhancedNavigation() {
           
           <MenuItem onClick={handleUserMenuClose}>
             <ListItemIcon>
-              <User className="h-4 w-4" />
+              <User style={{ width: 16, height: 16 }} />
             </ListItemIcon>
             <ListItemText primary="Profile" />
           </MenuItem>
           
           <MenuItem onClick={handleUserMenuClose}>
             <ListItemIcon>
-              <Settings className="h-4 w-4" />
+              <Settings style={{ width: 16, height: 16 }} />
             </ListItemIcon>
             <ListItemText primary="Settings" />
           </MenuItem>
           
           <MenuItem onClick={handleUserMenuClose}>
             <ListItemIcon>
-              <HelpCircle className="h-4 w-4" />
+              <HelpCircle style={{ width: 16, height: 16 }} />
             </ListItemIcon>
             <ListItemText primary="Help & Support" />
           </MenuItem>
@@ -283,7 +283,7 @@ export function MuiEnhancedNavigation() {
           
           <MenuItem onClick={handleSignOut} sx={{ color: 'error.main' }}>
             <ListItemIcon>
-              <LogOut className="h-4 w-4" />
+              <LogOut style={{ width: 16, height: 16 }} />
             </ListItemIcon>
             <ListItemText primary="Sign Out" />
           </MenuItem>
@@ -311,7 +311,7 @@ export function MuiEnhancedNavigation() {
           
           <MenuItem onClick={handleNotificationsClose}>
             <ListItemIcon>
-              <Bell className="h-4 w-4" />
+              <Bell style={{ width: 16, height: 16 }} />
             </ListItemIcon>
             <ListItemText 
               primary="New content scheduled"
@@ -321,7 +321,7 @@ export function MuiEnhancedNavigation() {
           
           <MenuItem onClick={handleNotificationsClose}>
             <ListItemIcon>
-              <TrendingUp className="h-4 w-4" />
+              <TrendingUp style={{ width: 16, height: 16 }} />
             </ListItemIcon>
             <ListItemText 
               primary="Analytics update"
@@ -331,7 +331,7 @@ export function MuiEnhancedNavigation() {
           
           <MenuItem onClick={handleNotificationsClose}>
             <ListItemIcon>
-              <MessageSquare className="h-4 w-4" />
+              <MessageSquare style={{ width: 16, height: 16 }} />
             </ListItemIcon>
             <ListItemText 
               primary="New collaboration request"
@@ -367,7 +367,7 @@ export function MuiBreadcrumbs() {
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
       <Link href="/dashboard" style={{ textDecoration: 'none' }}>
         <Chip
-          icon={<Home className="h-4 w-4" />}
+                      icon={<Home style={{ width: 16, height: 16 }} />}
           label="Dashboard"
           variant="outlined"
           size="small"
@@ -377,7 +377,7 @@ export function MuiBreadcrumbs() {
       
       {breadcrumbs.map((breadcrumb, _index) => (
         <Box key={breadcrumb.href} sx={{ display: 'flex', alignItems: 'center' }}>
-          <ChevronDown className="h-4 w-4" style={{ transform: 'rotate(-90deg)' }} />
+                      <ChevronDown style={{ width: 16, height: 16, transform: 'rotate(-90deg)' }} />
           <Link href={breadcrumb.href} style={{ textDecoration: 'none' }}>
             <Chip
               label={breadcrumb.label}

@@ -117,15 +117,15 @@ export function AIContentIdeas({ onIdeaSelect, className }: AIContentIdeasProps)
   const getContentTypeIcon = (type: string) => {
     switch (type) {
       case 'image':
-        return <Image className="h-4 w-4" aria-label="Image content type" />;
+        return <Image style={{ width: 16, height: 16 }} aria-label="Image content type" />;
       case 'video':
-        return <Video className="h-4 w-4" aria-label="Video content type" />;
+        return <Video style={{ width: 16, height: 16 }} aria-label="Video content type" />;
       case 'carousel':
-        return <Layers className="h-4 w-4" aria-label="Carousel content type" />;
+        return <Layers style={{ width: 16, height: 16 }} aria-label="Carousel content type" />;
       case 'story':
-        return <BookOpen className="h-4 w-4" aria-label="Story content type" />;
+        return <BookOpen style={{ width: 16, height: 16 }} aria-label="Story content type" />;
       default:
-        return <Image className="h-4 w-4" aria-label="Default content type" />;
+        return <Image style={{ width: 16, height: 16 }} aria-label="Default content type" />;
     }
   };
 
@@ -199,7 +199,11 @@ export function AIContentIdeas({ onIdeaSelect, className }: AIContentIdeasProps)
             sx={{ mt: 2, width: '100%' }}
           >
             <Box sx={{ mr: 1 }}>
-              <RefreshCw className={`h-4 w-4 ${isGenerating ? 'animate-spin' : ''}`} />
+              <RefreshCw style={{ 
+                width: 16, 
+                height: 16,
+                animation: isGenerating ? 'spin 1s linear infinite' : 'none'
+              }} />
             </Box>
             {isGenerating ? 'Generating Ideas...' : 'Generate Content Ideas'}
           </Button>

@@ -30,12 +30,11 @@ model User {
   deactivated             Boolean                @default(false)
   resetToken              String?                @unique
   resetTokenExpiry        DateTime?
-  // Trial and Promo Code fields
   isTrialUser             Boolean                @default(false) @map("is_trial_user")
-  trialStartDate          DateTime?              @map("trial_start_date")
-  trialEndDate            DateTime?              @map("trial_end_date")
   promoCodeUsed           String?                @map("promo_code_used")
   promoCodeUsedAt         DateTime?              @map("promo_code_used_at")
+  trialEndDate            DateTime?              @map("trial_end_date")
+  trialStartDate          DateTime?              @map("trial_start_date")
   accounts                Account[]
   analyticsAggregations   AnalyticsAggregation[]
   announcementsCreated    Announcement[]         @relation("AnnouncementCreatedBy")
@@ -129,20 +128,15 @@ model Post {
   reach          Int?         @default(0)
   impressions    Int?         @default(0)
   engagementRate Float?       @default(0)
-  
-  // Enhanced metadata fields
-  hashtags       String[]     @default([])
-  mentions       String[]     @default([])
-  location       String?
-  errorMessage   String?      @db.Text
-  
-  // Repost functionality
-  isRepost       Boolean      @default(false)
-  repostInterval Int?         // Days between reposts
-  repostCount    Int?         // Number of reposts remaining
-  parentPostId   String?      // Link to original post for reposts
-  
   brandCollabId  String?
+  errorMessage   String?
+  hashtags       String[]     @default([])
+  isRepost       Boolean      @default(false)
+  location       String?
+  mentions       String[]     @default([])
+  parentPostId   String?
+  repostCount    Int?
+  repostInterval Int?
   brandCollab    BrandCollab? @relation(fields: [brandCollabId], references: [id])
   user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -461,26 +455,24 @@ model AuditLog {
   actor      User?    @relation("AuditLogActor", fields: [actorId], references: [id])
 }
 
-// Notification model
 model Notification {
-  id          String   @id @default(cuid())
-  userId      String
-  type        String   // NotificationType enum
-  title       String
-  message     String   @db.Text
-  severity    String   // NotificationSeverity enum
-  category    String   // NotificationCategory enum
-  channels    String[] // NotificationChannel[]
-  priority    String   // NotificationPriority enum
-  metadata    Json?
-  actionUrl   String?
-  actionText  String?
-  read        Boolean  @default(false)
-  expiresAt   DateTime?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id         String    @id @default(cuid())
+  userId     String
+  type       String
+  title      String
+  message    String
+  severity   String
+  category   String
+  channels   String[]
+  priority   String
+  metadata   Json?
+  actionUrl  String?
+  actionText String?
+  read       Boolean   @default(false)
+  expiresAt  DateTime?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([type])
@@ -488,21 +480,20 @@ model Notification {
   @@index([createdAt])
 }
 
-// PromoCode model for trial campaigns
 model PromoCode {
-  id          String   @id @default(cuid())
-  code        String   @unique
+  id          String    @id @default(cuid())
+  code        String    @unique
   name        String
   description String?
-  type        String   @default("TRIAL") // TRIAL, DISCOUNT, etc.
-  value       Int      // Trial days, discount percentage, etc.
-  maxUses     Int?     @map("max_uses") // null = unlimited
-  usedCount   Int      @default(0) @map("used_count")
-  isActive    Boolean  @default(true) @map("is_active")
-  validFrom   DateTime @default(now()) @map("valid_from")
+  type        String    @default("TRIAL")
+  value       Int
+  maxUses     Int?      @map("max_uses")
+  usedCount   Int       @default(0) @map("used_count")
+  isActive    Boolean   @default(true) @map("is_active")
+  validFrom   DateTime  @default(now()) @map("valid_from")
   validUntil  DateTime? @map("valid_until")
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 
   @@index([code])
   @@index([isActive])

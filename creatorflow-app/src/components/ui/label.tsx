@@ -1,26 +1,29 @@
 "use client"
 
 import * as React from "react"
-import * as LabelPrimitive from "@radix-ui/react-label"
-import { cva, type VariantProps } from "class-variance-authority"
-
-import { cn } from "@/lib/utils"
-
-const labelVariants = cva(
-  "text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-)
+import { Typography } from "@mui/material"
 
 const Label = React.forwardRef<
-  React.ElementRef<typeof LabelPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root> &
-    VariantProps<typeof labelVariants>
+  React.ElementRef<typeof Typography>,
+  React.ComponentPropsWithoutRef<typeof Typography>
 >(({ className, ...props }, ref) => (
-  <LabelPrimitive.Root
+  <Typography
     ref={ref}
-    className={cn(labelVariants(), className)}
+    component="label"
+    variant="body2"
+    className={className}
+    sx={{
+      fontWeight: 500,
+      lineHeight: 1,
+      cursor: 'pointer',
+      '&.peer-disabled': {
+        cursor: 'not-allowed',
+        opacity: 0.7
+      }
+    }}
     {...props}
   />
 ))
-Label.displayName = LabelPrimitive.Root.displayName
+Label.displayName = "Label"
 
 export { Label }

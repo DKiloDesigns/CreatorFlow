@@ -58,29 +58,29 @@ export function AnalyticsOverview({ data }: AnalyticsOverviewProps) {
       label: 'Total Posts',
       value: data.overview.totalPosts.toLocaleString(),
       trend: data.overview.growthRate,
-      icon: <Activity className="h-4 w-4" />,
-      color: 'blue.600',
+      icon: <Activity style={{ width: 16, height: 16 }} />,
+      color: 'primary.main',
     },
     {
       label: 'Total Engagement',
       value: data.overview.totalEngagement.toLocaleString(),
       trend: data.overview.growthRate,
-      icon: <Activity className="h-4 w-4" />,
-      color: 'green.600',
+      icon: <Activity style={{ width: 16, height: 16 }} />,
+      color: 'success.main',
     },
     {
       label: 'Avg Engagement Rate',
       value: `${data.overview.avgEngagementRate}%`,
       trend: data.overview.growthRate,
-      icon: <Activity className="h-4 w-4" />,
-      color: 'purple.600',
+      icon: <Activity style={{ width: 16, height: 16 }} />,
+      color: 'secondary.main',
     },
     {
       label: 'Followers',
       value: data.overview.followers.toLocaleString(),
       trend: data.overview.growthRate,
-      icon: <Activity className="h-4 w-4" />,
-      color: 'orange.600',
+      icon: <Activity style={{ width: 16, height: 16 }} />,
+      color: 'warning.main',
     },
   ];
 
@@ -113,18 +113,18 @@ export function AnalyticsOverview({ data }: AnalyticsOverviewProps) {
               </Box>
               <Box sx={{ textAlign: 'right' }}>
                 {metric.trend > 0 ? (
-                  <Box sx={{ display: 'flex', alignItems: 'center', color: 'green.600' }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', color: 'success.main' }}>
                     <Box sx={{ mr: 0.5 }}>
-                      <TrendingUp className="h-4 w-4" />
+                      <TrendingUp style={{ width: 16, height: 16 }} />
                     </Box>
                     <Typography variant="body2" sx={{ fontWeight: 500 }}>
                       +{metric.trend.toFixed(1)}%
                     </Typography>
                   </Box>
                 ) : metric.trend < 0 ? (
-                  <Box sx={{ display: 'flex', alignItems: 'center', color: 'red.600' }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', color: 'error.main' }}>
                     <Box sx={{ mr: 0.5 }}>
-                      <TrendingUp className="h-4 w-4" />
+                      <TrendingUp style={{ width: 16, height: 16 }} />
                     </Box>
                     <Typography variant="body2" sx={{ fontWeight: 500 }}>
                       {metric.trend.toFixed(1)}%
@@ -244,7 +244,7 @@ export function AnalyticsOverview({ data }: AnalyticsOverviewProps) {
           <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1.5 }}>
             <Box sx={{ p: 1, bgcolor: 'blue.100', borderRadius: 2 }}>
               <Box sx={{ color: 'blue.600' }}>
-                <BarChart3 className="h-5 w-5" />
+                <BarChart3 style={{ width: 20, height: 20 }} />
               </Box>
             </Box>
             <Box>

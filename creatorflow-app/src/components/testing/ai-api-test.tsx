@@ -54,7 +54,7 @@ import {
   Schedule,
   TrendingUp,
   Rocket,
-  TestTube,
+  Science,
   Code,
   DataUsage,
   Sync

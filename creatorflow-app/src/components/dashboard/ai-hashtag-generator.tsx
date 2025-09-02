@@ -119,12 +119,12 @@ export function AIHashtagGenerator({ onHashtagsSelect, className }: AIHashtagGen
   return (
     <Card className={className}>
       <CardHeader>
-        <Typography variant="h5" component="div" className="flex items-center gap-2">
-          <Hash className="h-5 w-5 text-blue-600" />
+        <Typography variant="h5" component="div" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          <Hash style={{ width: 20, height: 20, color: 'primary.main' }} />
           AI Hashtag Generator
         </Typography>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
         {/* Input Fields */}
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           <TextField
@@ -178,12 +178,12 @@ export function AIHashtagGenerator({ onHashtagsSelect, className }: AIHashtagGen
         >
           {isGenerating ? (
             <>
-              <Activity className="h-4 w-4 mr-2" />
+              <Activity style={{ width: 16, height: 16, marginRight: 8 }} />
               Generating Hashtags...
             </>
           ) : (
             <>
-              <Hash className="h-4 w-4 mr-2" />
+              <Hash style={{ width: 16, height: 16, marginRight: 8 }} />
               Generate Hashtags
             </>
           )}
@@ -192,7 +192,7 @@ export function AIHashtagGenerator({ onHashtagsSelect, className }: AIHashtagGen
         {/* Generated Hashtags */}
         {hashtags.length > 0 && (
           <Box sx={{ mt: 2 }}>
-            <Typography variant="h6" component="div" className="flex items-center justify-between">
+            <Typography variant="h6" component="div" sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <Typography variant="subtitle1" component="span">
                 Generated Hashtags ({hashtags.length})
               </Typography>
@@ -205,14 +205,14 @@ export function AIHashtagGenerator({ onHashtagsSelect, className }: AIHashtagGen
                     variant="outlined"
                     size="small"
                     onClick={copyAllSelected}
-                    startIcon={<Copy className="h-3 w-3" />}
+                    startIcon={<Copy style={{ width: 12, height: 12 }} />}
                   >
                     Copy All
                   </Button>
                   <Button
                     size="small"
                     onClick={useSelectedHashtags}
-                    startIcon={<Zap className="h-3 w-3" />}
+                    startIcon={<Zap style={{ width: 12, height: 12 }} />}
                   >
                     Use Selected
                   </Button>
@@ -231,7 +231,7 @@ export function AIHashtagGenerator({ onHashtagsSelect, className }: AIHashtagGen
                           <Chip
                             label="Trending"
                             size="small"
-                            icon={<TrendingUp className="h-3 w-3" />}
+                            icon={<TrendingUp style={{ width: 12, height: 12 }} />}
                             variant="outlined"
                             color="error"
                           />
@@ -243,9 +243,9 @@ export function AIHashtagGenerator({ onHashtagsSelect, className }: AIHashtagGen
                     onDelete={() => toggleHashtagSelection(hashtag.hashtag)}
                     deleteIcon={
                       copiedIndex === index ? (
-                        <Check className="h-3 w-3 text-green-600" />
+                        <Check style={{ width: 12, height: 12, color: 'success.main' }} />
                       ) : (
-                        <Copy className="h-3 w-3" />
+                        <Copy style={{ width: 12, height: 12 }} />
                       )
                     }
                   />
@@ -258,7 +258,12 @@ export function AIHashtagGenerator({ onHashtagsSelect, className }: AIHashtagGen
               onClick={generateHashtags}
               disabled={isGenerating}
               fullWidth
-              startIcon={<RefreshCw className={`h-4 w-4 mr-2 ${isGenerating ? 'animate-spin' : ''}`} />}
+              startIcon={<RefreshCw style={{ 
+                width: 16, 
+                height: 16, 
+                marginRight: 8,
+                animation: isGenerating ? 'spin 1s linear infinite' : 'none'
+              }} />}
             >
               Generate More
             </Button>

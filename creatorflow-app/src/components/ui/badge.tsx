@@ -1,36 +1,49 @@
 import * as React from "react"
-import { cva, type VariantProps } from "class-variance-authority"
-
-import { cn } from "@/lib/utils"
-
-const badgeVariants = cva(
-  "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2",
-  {
-    variants: {
-      variant: {
-        default:
-          "border-transparent bg-primary text-primary-foreground hover:bg-primary/80",
-        secondary:
-          "border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80",
-        destructive:
-          "border-transparent bg-destructive text-destructive-foreground hover:bg-destructive/80",
-        outline: "text-foreground",
-      },
-    },
-    defaultVariants: {
-      variant: "default",
-    },
-  }
-)
+import { Chip } from "@mui/material"
 
 export interface BadgeProps
-  extends React.HTMLAttributes<HTMLDivElement>,
-    VariantProps<typeof badgeVariants> {}
+  extends React.ComponentProps<typeof Chip> {
+  variant?: 'default' | 'secondary' | 'destructive' | 'outline'
+}
 
-function Badge({ className, variant, ...props }: BadgeProps) {
+function Badge({ className, variant = 'default', ...props }: BadgeProps) {
+  const getVariantProps = () => {
+    switch (variant) {
+      case 'default':
+        return {
+          color: 'primary' as const,
+          variant: 'filled' as const
+        }
+      case 'secondary':
+        return {
+          color: 'secondary' as const,
+          variant: 'filled' as const
+        }
+      case 'destructive':
+        return {
+          color: 'error' as const,
+          variant: 'filled' as const
+        }
+      case 'outline':
+        return {
+          variant: 'outlined' as const
+        }
+      default:
+        return {
+          color: 'primary' as const,
+          variant: 'filled' as const
+        }
+    }
+  }
+
   return (
-    <div className={cn(badgeVariants({ variant }), className)} {...props} />
+    <Chip
+      className={className}
+      size="small"
+      {...getVariantProps()}
+      {...props}
+    />
   )
 }
 
-export { Badge, badgeVariants }
+export { Badge }

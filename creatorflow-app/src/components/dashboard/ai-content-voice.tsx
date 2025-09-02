@@ -56,15 +56,15 @@ export function AIContentVoice({ onVoiceSelect, className }: AIContentVoiceProps
   };
 
   return (
-    <Card className={className} sx={{ height: '100%' }}>
+    <Card sx={{ height: '100%', ...(className && { className })}>
       <CardHeader
         title="AI Content Voice Generator"
         subheader="Generate content with different voice styles"
-        avatar={<User size={24} />}
+        avatar={<User style={{ width: 24, height: 24 }} />}
       />
       <CardContent>
         <Grid container spacing={3}>
-          <Grid item xs={12} component="div">
+          <Grid item xs={12}>
             <TextField
               fullWidth
               multiline
@@ -77,20 +77,20 @@ export function AIContentVoice({ onVoiceSelect, className }: AIContentVoiceProps
             />
           </Grid>
           
-          <Grid item xs={12} component="div">
+          <Grid item xs={12}>
             <Button
               fullWidth
               variant="contained"
               onClick={generateVoice}
               disabled={!content.trim() || isGenerating}
-              startIcon={<Activity />}
+              startIcon={<Activity style={{ width: 20, height: 20 }} />}
             >
               {isGenerating ? 'Generating...' : 'Generate Voice Variations'}
             </Button>
           </Grid>
 
           {selectedVoice && (
-            <Grid item xs={12} component="div">
+            <Grid item xs={12}>
               <Box>
                 <Typography variant="subtitle2" gutterBottom>
                   Generated Voice:
@@ -107,7 +107,7 @@ export function AIContentVoice({ onVoiceSelect, className }: AIContentVoiceProps
             </Grid>
           )}
 
-          <Grid item xs={12} component="div">
+          <Grid item xs={12}>
             <Typography variant="subtitle2" gutterBottom>
               Available Voices:
             </Typography>
@@ -125,7 +125,7 @@ export function AIContentVoice({ onVoiceSelect, className }: AIContentVoiceProps
             </Box>
           </Grid>
 
-          <Grid item xs={12} component="div">
+          <Grid item xs={12}>
             <Typography variant="body2" color="text.secondary">
               Select a voice style to see how your content would sound with that tone and personality.
             </Typography>

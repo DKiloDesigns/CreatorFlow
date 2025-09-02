@@ -41,7 +41,7 @@ import {
   Zap,
   Clock,
   CheckCircle,
-  ArrowForward,
+  ArrowRight,
   RefreshCw,
   Save,
   Play,
@@ -257,7 +257,7 @@ export default function SmartContentWorkflow() {
           <Button
             variant="contained"
             size="large"
-            endIcon={<ArrowForward />}
+            endIcon={<ArrowRight />}
             onClick={() => {
               setWorkflowData(prev => ({
                 ...prev,
@@ -373,7 +373,7 @@ export default function SmartContentWorkflow() {
         <Button
           variant="contained"
           size="large"
-          endIcon={<ArrowForward />}
+          endIcon={<ArrowRight />}
           onClick={() => setActiveStep(2)}
           disabled={!workflowData.content.trim()}
         >
@@ -436,7 +436,7 @@ export default function SmartContentWorkflow() {
         <Button
           variant="contained"
           size="large"
-          endIcon={<ArrowForward />}
+          endIcon={<ArrowRight />}
           onClick={() => setActiveStep(3)}
         >
           Continue to Smart Scheduling
@@ -507,7 +507,7 @@ export default function SmartContentWorkflow() {
         <Button
           variant="contained"
           size="large"
-          endIcon={<ArrowForward />}
+          endIcon={<ArrowRight />}
           onClick={() => setActiveStep(4)}
         >
           Continue to Review & Publish

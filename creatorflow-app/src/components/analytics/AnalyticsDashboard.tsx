@@ -242,8 +242,8 @@ export function AnalyticsDashboard() {
       </Box>
 
       {/* Overview Cards */}
-      <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', lg: 'repeat(4, 1fr)' }, gap: { xs: 2, sm: 3 } }}>
-        <Box>
+      <Grid container spacing={{ xs: 2, sm: 3 }}>
+        <Grid item xs={12} sm={6} lg={3}>
           <Card>
             <CardHeader
               sx={{ 
@@ -257,7 +257,7 @@ export function AnalyticsDashboard() {
               <Typography variant="h6" component="h3" sx={{ fontSize: '0.875rem', fontWeight: 500, wordBreak: 'break-word' }}>
                 Total Posts
               </Typography>
-              <MessageSquare style={{ width: 16, height: 16, color: 'var(--mui-palette-text-secondary)', flexShrink: 0 }} />
+              <MessageSquare sx={{ width: 16, height: 16, color: 'text.secondary', flexShrink: 0 }} />
             </CardHeader>
             <CardContent>
               <Typography variant="h4" component="div" sx={{ fontWeight: 'bold' }}>
@@ -268,9 +268,9 @@ export function AnalyticsDashboard() {
               </Typography>
             </CardContent>
           </Card>
-        </Box>
+        </Grid>
 
-        <Box>
+        <Grid item xs={12} sm={6} lg={3}>
           <Card>
             <CardHeader
               sx={{ 
@@ -284,7 +284,7 @@ export function AnalyticsDashboard() {
               <Typography variant="h6" component="h3" sx={{ fontSize: '0.875rem', fontWeight: 500, wordBreak: 'break-word' }}>
                 Total Engagement
               </Typography>
-              <Heart style={{ width: 16, height: 16, color: 'var(--mui-palette-text-secondary)', flexShrink: 0 }} />
+              <Heart sx={{ width: 16, height: 16, color: 'text.secondary', flexShrink: 0 }} />
             </CardHeader>
             <CardContent>
               <Typography variant="h4" component="div" sx={{ fontWeight: 'bold' }}>
@@ -295,9 +295,9 @@ export function AnalyticsDashboard() {
               </Typography>
             </CardContent>
           </Card>
-        </Box>
+        </Grid>
 
-        <Box>
+        <Grid item xs={12} sm={6} lg={3}>
           <Card>
             <CardHeader
               sx={{ 
@@ -311,7 +311,7 @@ export function AnalyticsDashboard() {
               <Typography variant="h6" component="h3" sx={{ fontSize: '0.875rem', fontWeight: 500, wordBreak: 'break-word' }}>
                 Avg Engagement Rate
               </Typography>
-              <TrendingUp style={{ width: 16, height: 16, color: 'var(--mui-palette-text-secondary)', flexShrink: 0 }} />
+              <TrendingUp sx={{ width: 16, height: 16, color: 'text.secondary', flexShrink: 0 }} />
             </CardHeader>
             <CardContent>
               <Typography variant="h4" component="div" sx={{ fontWeight: 'bold' }}>
@@ -322,9 +322,9 @@ export function AnalyticsDashboard() {
               </Typography>
             </CardContent>
           </Card>
-        </Box>
+        </Grid>
 
-        <Box>
+        <Grid item xs={12} sm={6} lg={3}>
           <Card>
             <CardHeader
               sx={{ 
@@ -338,7 +338,7 @@ export function AnalyticsDashboard() {
               <Typography variant="h6" component="h3" sx={{ fontSize: '0.875rem', fontWeight: 500, wordBreak: 'break-word' }}>
                 Followers
               </Typography>
-              <Users style={{ width: 16, height: 16, color: 'var(--mui-palette-text-secondary)', flexShrink: 0 }} />
+              <Users sx={{ width: 16, height: 16, color: 'text.secondary', flexShrink: 0 }} />
             </CardHeader>
             <CardContent>
               <Typography variant="h4" component="div" sx={{ fontWeight: 'bold' }}>
@@ -349,12 +349,12 @@ export function AnalyticsDashboard() {
               </Typography>
             </CardContent>
           </Card>
-        </Box>
+        </Grid>
       </Box>
 
       {/* Charts Section */}
-      <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', lg: '2fr 1fr' }, gap: 3, mt: 3 }}>
-        <Box>
+      <Grid container spacing={3} sx={{ mt: 3 }}>
+        <Grid item xs={12} lg={8}>
           <Card>
             <CardHeader>
               <Typography variant="h6" component="h3" sx={{ fontSize: '0.875rem', fontWeight: 500, wordBreak: 'break-word' }}>
@@ -369,9 +369,9 @@ export function AnalyticsDashboard() {
               </Box>
             </CardContent>
           </Card>
-        </Box>
+        </Grid>
 
-        <Box>
+        <Grid item xs={12} lg={4}>
           <Card>
             <CardHeader>
               <Typography variant="h6" component="h3" sx={{ fontSize: '0.875rem', fontWeight: 500, wordBreak: 'break-word' }}>
@@ -386,8 +386,8 @@ export function AnalyticsDashboard() {
               </Box>
             </CardContent>
           </Card>
-        </Box>
-      </Box>
+        </Grid>
+      </Grid>
 
       {/* Insights Section */}
       <Box sx={{ mt: 3 }}>

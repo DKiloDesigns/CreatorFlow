@@ -255,9 +255,4 @@ export default function ResetPasswordPage() {
       <ResetPasswordForm />
     </Suspense>
   );
-{/* Bottom Spacer to Clear Bottom Navigation */}
-      <Box sx={{
-        height: { xs: '120px', sm: '40px' },
-        width: '100%'
-      }} />
 } 

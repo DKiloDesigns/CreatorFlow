@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/mui-card';
-import { Button } from '@mui/material';
+import { Button, Box, Typography, Grid, Alert, AlertTitle, AlertDescription, Chip } from '@mui/material';
 import { 
   Eye, 
   EyeOff, 
@@ -140,90 +140,132 @@ export function AIProviderSetupModal({
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
-          <div className="flex items-center gap-3">
-            <div className={`w-10 h-10 rounded-lg flex items-center justify-center text-xl ${provider.color}`}>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+            <Box sx={{ 
+              width: 40, 
+              height: 40, 
+              borderRadius: 2, 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'center', 
+              fontSize: '1.25rem',
+              bgcolor: provider.color || 'primary.main'
+            }}>
               {provider.icon}
-            </div>
-            <div>
+            </Box>
+            <Box>
               <DialogTitle>{provider.name} Setup</DialogTitle>
               <DialogDescription>
                 Configure {provider.name} to start using AI-powered content generation
               </DialogDescription>
-            </div>
-          </div>
+            </Box>
+          </Box>
         </DialogHeader>
 
         {step === 'setup' && (
-          <div className="space-y-6">
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
             {/* Provider Info */}
             <Card>
-              <CardContent className="pt-6">
-                <div className="flex items-center justify-between mb-4">
-                  <div>
-                    <h3 className="font-semibold text-gray-900">{provider.name}</h3>
-                    <p className="text-sm text-gray-600">{provider.description}</p>
-                  </div>
-                  <Badge variant="secondary" className="bg-green-100 text-green-800">
-                    ${provider.pricing.costPerRequest?.toFixed(3) || '0'}/request
-                  </Badge>
-                </div>
+              <CardContent sx={{ pt: 3 }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
+                  <Box>
+                    <Typography variant="h6" sx={{ fontWeight: 600, color: 'text.primary' }}>
+                      {provider.name}
+                    </Typography>
+                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                      {provider.description}
+                    </Typography>
+                  </Box>
+                  <Chip 
+                    label={`$${provider.pricing.costPerRequest?.toFixed(3) || '0'}/request`}
+                    color="success"
+                    variant="outlined"
+                  />
+                </Box>
                 
-                <div className="grid grid-cols-2 gap-4 text-sm">
-                  <div>
-                    <span className="font-medium text-gray-700">Features:</span>
-                    <ul className="mt-1 space-y-1">
+                <Grid container spacing={2}>
+                  <Grid item xs={12} sm={6}>
+                    <Typography variant="body2" sx={{ fontWeight: 500, color: 'text.primary', mb: 1 }}>
+                      Features:
+                    </Typography>
+                    <Box component="ul" sx={{ mt: 0.5, display: 'flex', flexDirection: 'column', gap: 0.5 }}>
                       {provider.features.slice(0, 3).map((feature, index) => (
-                        <li key={index} className="text-gray-600">• {feature}</li>
+                        <Typography key={index} component="li" variant="body2" sx={{ color: 'text.secondary' }}>
+                          • {feature}
+                        </Typography>
                       ))}
-                    </ul>
-                  </div>
-                  <div>
-                    <span className="font-medium text-gray-700">Pricing:</span>
-                    <p className="mt-1 text-gray-600">{provider.pricing.details}</p>
-                  </div>
-                </div>
+                    </Box>
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <Typography variant="body2" sx={{ fontWeight: 500, color: 'text.primary', mb: 1 }}>
+                      Pricing:
+                    </Typography>
+                    <Typography variant="body2" sx={{ mt: 0.5, color: 'text.secondary' }}>
+                      {provider.pricing.details}
+                    </Typography>
+                  </Grid>
+                </Grid>
               </CardContent>
             </Card>
 
             {/* Setup Instructions */}
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <h3 className="text-lg font-semibold text-gray-900">{instructions.title}</h3>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <Typography variant="h6" sx={{ fontWeight: 600, color: 'text.primary' }}>
+                  {instructions.title}
+                </Typography>
                 <Button
                   variant="outlined"
                   size="small"
                   onClick={() => window.open(instructions.link, '_blank')}
                 >
-                  <ExternalLink className="w-4 h-4 mr-1" />
+                  <ExternalLink sx={{ width: 16, height: 16, mr: 0.5 }} />
                   Visit Website
                 </Button>
-              </div>
+              </Box>
 
-              <div className="bg-blue-50 rounded-lg p-4">
-                <ol className="space-y-2 text-sm">
+              <Box sx={{ bgcolor: 'info.50', borderRadius: 2, p: 2 }}>
+                <Box component="ol" sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
                   {instructions.steps.map((step, index) => (
-                    <li key={index} className="flex items-start gap-2">
-                      <span className="flex-shrink-0 w-5 h-5 bg-blue-500 text-white rounded-full flex items-center justify-center text-xs font-medium">
+                    <Box key={index} component="li" sx={{ display: 'flex', alignItems: 'flex-start', gap: 1 }}>
+                      <Box sx={{ 
+                        flexShrink: 0, 
+                        width: 20, 
+                        height: 20, 
+                        bgcolor: 'info.main', 
+                        color: 'white', 
+                        borderRadius: '50%', 
+                        display: 'flex', 
+                        alignItems: 'center', 
+                        justifyContent: 'center', 
+                        fontSize: '0.75rem', 
+                        fontWeight: 500 
+                      }}>
                         {index + 1}
-                      </span>
-                      <span className="text-gray-700">{step}</span>
-                    </li>
+                      </Box>
+                      <Typography variant="body2" sx={{ color: 'text.primary' }}>
+                        {step}
+                      </Typography>
+                    </Box>
                   ))}
-                </ol>
-              </div>
+                </Box>
+              </Box>
 
               {instructions.note && (
-                <div className="flex items-start gap-2 p-3 bg-yellow-50 rounded-lg">
-                  <AlertCircle className="w-4 h-4 text-yellow-600 mt-0.5 flex-shrink-0" />
-                  <p className="text-sm text-yellow-800">{instructions.note}</p>
-                </div>
+                <Alert severity="warning" sx={{ borderRadius: 2 }}>
+                  <AlertCircle sx={{ width: 16, height: 16, mt: 0.125, flexShrink: 0 }} />
+                  <AlertTitle sx={{ fontSize: '0.875rem' }}>Note</AlertTitle>
+                  <AlertDescription sx={{ fontSize: '0.875rem' }}>
+                    {instructions.note}
+                  </AlertDescription>
+                </Alert>
               )}
-            </div>
+            </Box>
 
             {/* API Key Input */}
-            <div className="space-y-2">
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
               <Label htmlFor="api-key">API Key</Label>
-              <div className="relative">
+              <Box sx={{ position: 'relative' }}>
                 <Input
                   id="api-key"
                   type={showApiKey ? 'text' : 'password'}
@@ -232,7 +274,7 @@ export function AIProviderSetupModal({
                   onChange={(e: React.ChangeEvent<HTMLInputElement>) => setApiKey(e.target.value)}
                   className="pr-20"
                 />
-                <div className="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center gap-1">
+                <Box sx={{ position: 'absolute', right: 1, top: '50%', transform: 'translateY(-50%)', display: 'flex', alignItems: 'center', gap: 0.5 }}>
                   <Button
                     type="button"
                     variant="text"
@@ -250,15 +292,15 @@ export function AIProviderSetupModal({
                   >
                     <Copy className="w-4 h-4" />
                   </Button>
-                </div>
-              </div>
-              <p className="text-xs text-gray-500">
+                </Box>
+              </Box>
+              <Typography variant="caption" sx={{ color: 'text.secondary' }}>
                 Your API key is encrypted and stored securely. We never share it with third parties.
-              </p>
-            </div>
+              </Typography>
+            </Box>
 
             {/* Action Buttons */}
-            <div className="flex justify-end gap-3">
+            <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 1.5 }}>
               <Button variant="outlined" onClick={onClose}>
                 Cancel
               </Button>
@@ -268,31 +310,31 @@ export function AIProviderSetupModal({
               >
                 {isLoading ? 'Testing...' : 'Test & Save'}
               </Button>
-            </div>
-          </div>
+            </Box>
+          </Box>
         )}
 
         {step === 'testing' && (
-          <div className="text-center py-8">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Testing API Key</h3>
-            <p className="text-gray-600">Verifying your {provider.name} API key...</p>
-          </div>
+          <Box sx={{ textAlign: 'center', py: 4 }}>
+            <Box sx={{ animation: 'spin 1s linear infinite', borderRadius: '50%', height: 48, width: 48, borderBottom: '2px solid', borderColor: 'primary.main', mx: 'auto', mb: 2 }}></Box>
+            <Typography variant="h6" sx={{ fontWeight: 600, color: 'text.primary', mb: 1 }}>Testing API Key</Typography>
+            <Typography variant="body2" sx={{ color: 'text.secondary' }}>Verifying your {provider.name} API key...</Typography>
+          </Box>
         )}
 
         {step === 'success' && (
-          <div className="text-center py-8">
-            <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Check className="w-8 h-8 text-green-600" />
-            </div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Setup Complete!</h3>
-            <p className="text-gray-600 mb-6">
+          <Box sx={{ textAlign: 'center', py: 4 }}>
+            <Box sx={{ width: 64, height: 64, bgcolor: 'green.100', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', mx: 'auto', mb: 2 }}>
+              <Check style={{ width: 32, height: 32, color: 'green.600' }} />
+            </Box>
+            <Typography variant="h6" sx={{ fontWeight: 600, color: 'text.primary', mb: 1 }}>Setup Complete!</Typography>
+            <Typography variant="body2" sx={{ color: 'text.secondary', mb: 3 }}>
               Your {provider.name} API key has been verified and saved successfully.
-            </p>
-            <Button onClick={handleComplete} className="w-full">
+            </Typography>
+            <Button onClick={handleComplete} sx={{ width: '100%' }}>
               Start Using {provider.name}
             </Button>
-          </div>
+          </Box>
         )}
       </DialogContent>
     </Dialog>

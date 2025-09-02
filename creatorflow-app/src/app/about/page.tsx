@@ -72,7 +72,7 @@ export default function AboutPage() {
                   mb: 2,
                   '& .dark &': { bgcolor: 'blue.900' }
                 }}>
-                  <Target className="h-8 w-8 text-blue-600" />
+                  <Target sx={{ height: 32, width: 32, color: 'primary.main' }} />
                 </Box>
                 <Typography variant="h5" component="h3" sx={{ 
                   fontWeight: 600, 
@@ -105,7 +105,7 @@ export default function AboutPage() {
                   mb: 2,
                   '& .dark &': { bgcolor: 'purple.900' }
                 }}>
-                  <Heart className="h-8 w-8 text-purple-600" />
+                  <Heart sx={{ height: 32, width: 32, color: 'secondary.main' }} />
                 </Box>
                 <Typography variant="h5" component="h3" sx={{ 
                   fontWeight: 600, 
@@ -138,7 +138,7 @@ export default function AboutPage() {
                   mb: 2,
                   '& .dark &': { bgcolor: 'green.900' }
                 }}>
-                  <Zap className="h-8 w-8 text-green-600" />
+                  <Zap sx={{ height: 32, width: 32, color: 'green.600' }} />
                 </Box>
                 <Typography variant="h5" component="h3" sx={{ 
                   fontWeight: 600, 
@@ -187,7 +187,7 @@ export default function AboutPage() {
                   flexShrink: 0,
                   '& .dark &': { bgcolor: 'blue.900' }
                 }}>
-                  <Users className="h-6 w-6 text-blue-600" />
+                  <Users sx={{ height: 24, width: 24, color: 'blue.600' }} />
                 </Box>
                 <Box>
                   <Typography variant="h6" component="h3" sx={{ 
@@ -221,7 +221,7 @@ export default function AboutPage() {
                   flexShrink: 0,
                   '& .dark &': { bgcolor: 'purple.900' }
                 }}>
-                  <Shield className="h-6 w-6 text-purple-600" />
+                  <Shield sx={{ height: 24, width: 24, color: 'purple.600' }} />
                 </Box>
                 <Box>
                   <Typography variant="h6" component="h3" sx={{ 
@@ -255,7 +255,7 @@ export default function AboutPage() {
                   flexShrink: 0,
                   '& .dark &': { bgcolor: 'green.900' }
                 }}>
-                  <Globe className="h-6 w-6 text-green-600" />
+                  <Globe sx={{ height: 24, width: 24, color: 'green.600' }} />
                 </Box>
                 <Box>
                   <Typography variant="h6" component="h3" sx={{ 
@@ -289,7 +289,7 @@ export default function AboutPage() {
                   flexShrink: 0,
                   '& .dark &': { bgcolor: 'orange.900' }
                 }}>
-                  <Zap className="h-6 w-6 text-orange-600" />
+                  <Zap sx={{ height: 24, width: 24, color: 'orange.600' }} />
                 </Box>
                 <Box>
                   <Typography variant="h6" component="h3" sx={{ 
@@ -491,7 +491,8 @@ export default function AboutPage() {
           }}>
             Join thousands of creators who are already using CreatorFlow to grow their audience and income.
           </Typography>
-          <Link 
+          <Box 
+            component={Link}
             href="/auth" 
             sx={{ 
               display: 'inline-block', 
@@ -501,13 +502,14 @@ export default function AboutPage() {
               borderRadius: '0.5rem', 
               px: 3, 
               py: 1, 
+              textDecoration: 'none',
               '&:hover': { 
                 bgcolor: 'linear-gradient(to right, blue.600, purple.700)' 
               }
             }}
           >
             Get Started Free
-          </Link>
+          </Box>
         </Container>
       </Box>
 

@@ -84,8 +84,7 @@ export function MuiStatsCard({
         </Typography>
         {Icon && (
           <Icon 
-            className="h-4 w-4"
-            style={{ color: getVariantColor() }}
+            style={{ width: 16, height: 16, color: getVariantColor() }}
           />
         )}
       </CardHeader>
@@ -127,9 +126,9 @@ export function MuiStatsCard({
             {trend && (
               <Stack direction="row" spacing={0.5} alignItems="center">
                 {trend.isPositive ? (
-                  <TrendingUp className="h-3 w-3" style={{ color: getTrendColor() }} />
+                  <TrendingUp style={{ width: 12, height: 12, color: getTrendColor() }} />
                 ) : (
-                  <TrendingDown className="h-3 w-3" style={{ color: getTrendColor() }} />
+                  <TrendingDown style={{ width: 12, height: 12, color: getTrendColor() }} />
                 )}
                 <Typography
                   variant="caption"

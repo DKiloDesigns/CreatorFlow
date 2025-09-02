@@ -105,16 +105,16 @@ export function AIPostingTimes({ className }: AIPostingTimesProps) {
         <Button
           onClick={getOptimalTimes}
           disabled={isLoading}
-          className="w-full"
+          sx={{ width: '100%' }}
         >
           {isLoading ? (
             <>
-              <LoadingSpinner size="sm" className="mr-2" />
+              <LoadingSpinner size="sm" sx={{ marginRight: 8 }} />
               Analyzing Posting Times...
             </>
           ) : (
             <>
-              <Clock className="h-4 w-4 mr-2" />
+              <Clock style={{ width: 16, height: 16, marginRight: 8 }} />
               Get Optimal Times
             </>
           )}

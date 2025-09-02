@@ -55,11 +55,11 @@ export function AIContentTone({ onToneSelect, className }: AIContentToneProps) {
   };
 
   return (
-    <Card className={className} sx={{ height: '100%' }}>
+    <Card sx={{ height: '100%', ...(className && { className })}>
       <CardHeader
         title="AI Content Tone Analyzer"
         subheader="Analyze and adjust the tone of your content"
-        avatar={<Mic size={24} />}
+        avatar={<Mic style={{ width: 24, height: 24 }} />}
       />
       <CardContent>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
@@ -79,7 +79,7 @@ export function AIContentTone({ onToneSelect, className }: AIContentToneProps) {
             variant="contained"
             onClick={analyzeTone}
             disabled={!content.trim() || isAnalyzing}
-            startIcon={<Mic />}
+            startIcon={<Mic style={{ width: 20, height: 20 }} />}
           >
             {isAnalyzing ? 'Analyzing...' : 'Analyze Tone'}
           </Button>

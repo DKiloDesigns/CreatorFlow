@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { createContext, useContext, useRef, useEffect, useState } from 'react';
-import { cn } from '@/lib/utils';
+import { Box, Button, Typography } from '@mui/material';
 import { ChevronDown, Check, Circle } from 'lucide-react';
 
 // Context for menu state management
@@ -137,32 +137,50 @@ export function MenuTrigger({ children, asChild = false, className, disabled }: 
       'aria-haspopup': 'menu',
       'aria-controls': 'menu-content',
       disabled,
-      className: cn(className, children.props.className),
+      sx: { ...(className && { className }), ...(children.props.className && { className: children.props.className }) },
     });
   }
 
   return (
-    <button
+    <Button
       ref={triggerRef}
-      type="button"
+      variant="outlined"
       onClick={handleClick}
       onKeyDown={handleKeyDown}
       aria-expanded={open}
       aria-haspopup="menu"
       aria-controls="menu-content"
       disabled={disabled}
-      className={cn(
-        'inline-flex items-center justify-center gap-2 rounded-md px-3 py-2 text-sm font-medium',
-        'bg-white text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300',
-        'hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2',
-        'disabled:opacity-50 disabled:cursor-not-allowed',
-        'transition-colors duration-200',
-        className
-      )}
+      sx={{
+        display: 'inline-flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 1,
+        borderRadius: '6px',
+        px: 1.5,
+        py: 1,
+        fontSize: '0.875rem',
+        fontWeight: 500,
+        bgcolor: 'white',
+        color: 'text.primary',
+        boxShadow: 1,
+        border: 1,
+        borderColor: 'grey.300',
+        '&:hover': { bgcolor: 'grey.50' },
+        '&:focus': { outline: 'none', ring: 2, ringColor: 'primary.500', ringOffset: 2 },
+        '&.Mui-disabled': { opacity: 0.5, cursor: 'not-allowed' },
+        transition: 'color 0.2s',
+        ...(className && { className })
+      }}
     >
       {children}
-      <ChevronDown className={cn('h-4 w-4 transition-transform duration-200', open && 'rotate-180')} />
-    </button>
+      <ChevronDown style={{ 
+        height: 16, 
+        width: 16, 
+        transition: 'transform 0.2s',
+        transform: open ? 'rotate(180deg)' : 'rotate(0deg)'
+      }} />
+    </Button>
   );
 }
 
@@ -188,20 +206,23 @@ export function MenuContent({
   if (!open) return null;
 
   return (
-    <div
+    <Box
       ref={contentRef}
       role="menu"
       id="menu-content"
       aria-orientation="vertical"
-      className={cn(
-        'z-50 min-w-[8rem] overflow-hidden rounded-md border border-gray-200 bg-white p-1 shadow-lg',
-        'animate-in fade-in-0 zoom-in-95',
-        'data-[side=bottom]:slide-in-from-top-2',
-        'data-[side=left]:slide-in-from-right-2',
-        'data-[side=right]:slide-in-from-left-2',
-        'data-[side=top]:slide-in-from-bottom-2',
-        className
-      )}
+      sx={{
+        zIndex: 50,
+        minWidth: '8rem',
+        overflow: 'hidden',
+        borderRadius: '6px',
+        border: 1,
+        borderColor: 'grey.200',
+        bgcolor: 'white',
+        p: 0.5,
+        boxShadow: 3,
+        ...(className && { className })
+      }}
       style={{
         '--radix-menu-content-transform-origin': 'var(--radix-popper-transform-origin)',
         '--radix-menu-content-available-width': 'var(--radix-popper-available-width)',
@@ -213,7 +234,7 @@ export function MenuContent({
       data-align={align}
     >
       {children}
-    </div>
+    </Box>
   );
 }
 
@@ -266,23 +287,32 @@ export function MenuItem({
   };
 
   return (
-    <button
-      type="button"
+    <Button
+      variant="text"
       role="menuitem"
       disabled={disabled}
       onClick={handleClick}
       onKeyDown={handleKeyDown}
-      className={cn(
-        'relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none',
-        'focus:bg-gray-100 focus:text-gray-900',
-        'disabled:pointer-events-none disabled:opacity-50',
-        'transition-colors duration-150',
-        inset && 'pl-8',
-        className
-      )}
+      sx={{
+        position: 'relative',
+        display: 'flex',
+        cursor: 'default',
+        userSelect: 'none',
+        alignItems: 'center',
+        borderRadius: '2px',
+        px: 1,
+        py: 0.75,
+        fontSize: '0.875rem',
+        outline: 'none',
+        '&:focus': { bgcolor: 'grey.100', color: 'grey.900' },
+        '&.Mui-disabled': { pointerEvents: 'none', opacity: 0.5 },
+        transition: 'color 0.15s',
+        ...(inset && { pl: 4 }),
+        ...(className && { className })
+      }}
     >
       {children}
-    </button>
+    </Button>
   );
 }
 
@@ -325,27 +355,36 @@ export function MenuCheckboxItem({
   };
 
   return (
-    <button
-      type="button"
+    <Button
+      variant="text"
       role="menuitemcheckbox"
       aria-checked={checked}
       disabled={disabled}
       onClick={handleClick}
       onKeyDown={handleKeyDown}
-      className={cn(
-        'relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none',
-        'focus:bg-gray-100 focus:text-gray-900',
-        'disabled:pointer-events-none disabled:opacity-50',
-        'transition-colors duration-150',
-        inset && 'pl-8',
-        className
-      )}
+      sx={{
+        position: 'relative',
+        display: 'flex',
+        cursor: 'default',
+        userSelect: 'none',
+        alignItems: 'center',
+        borderRadius: '2px',
+        px: 1,
+        py: 0.75,
+        fontSize: '0.875rem',
+        outline: 'none',
+        '&:focus': { bgcolor: 'grey.100', color: 'grey.900' },
+        '&.Mui-disabled': { pointerEvents: 'none', opacity: 0.5 },
+        transition: 'color 0.15s',
+        ...(inset && { pl: 4 }),
+        ...(className && { className })
+      }}
     >
-      <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
-        {checked && <Check className="h-3 w-3" />}
-      </span>
+      <Box sx={{ position: 'absolute', left: 1, display: 'flex', height: 14, width: 14, alignItems: 'center', justifyContent: 'center' }}>
+        {checked && <Check style={{ height: 12, width: 12 }} />}
+      </Box>
       {children}
-    </button>
+    </Button>
   );
 }
 
@@ -391,27 +430,36 @@ export function MenuRadioItem({
   };
 
   return (
-    <button
-      type="button"
+    <Button
+      variant="text"
       role="menuitemradio"
       aria-checked={checked}
       disabled={disabled}
       onClick={handleClick}
       onKeyDown={handleKeyDown}
-      className={cn(
-        'relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none',
-        'focus:bg-gray-100 focus:text-gray-900',
-        'disabled:pointer-events-none disabled:opacity-50',
-        'transition-colors duration-150',
-        inset && 'pl-8',
-        className
-      )}
+      sx={{
+        position: 'relative',
+        display: 'flex',
+        cursor: 'default',
+        userSelect: 'none',
+        alignItems: 'center',
+        borderRadius: '2px',
+        px: 1,
+        py: 0.75,
+        fontSize: '0.875rem',
+        outline: 'none',
+        '&:focus': { bgcolor: 'grey.100', color: 'grey.900' },
+        '&.Mui-disabled': { pointerEvents: 'none', opacity: 0.5 },
+        transition: 'color 0.15s',
+        ...(inset && { pl: 4 }),
+        ...(className && { className })
+      }}
     >
-      <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
-        {checked && <Circle className="h-2 w-2 fill-current" />}
-      </span>
+      <Box sx={{ position: 'absolute', left: 1, display: 'flex', height: 14, width: 14, alignItems: 'center', justifyContent: 'center' }}>
+        {checked && <Circle style={{ height: 8, width: 8, fill: 'currentColor' }} />}
+      </Box>
       {children}
-    </button>
+    </Button>
   );
 }
 
@@ -422,9 +470,14 @@ interface MenuSeparatorProps {
 
 export function MenuSeparator({ className }: MenuSeparatorProps) {
   return (
-    <div
+    <Box
       role="separator"
-      className={cn('my-1 h-px bg-gray-200', className)}
+      sx={{
+        my: 0.5,
+        height: '1px',
+        bgcolor: 'grey.200',
+        ...(className && { className })
+      }}
     />
   );
 }
@@ -438,15 +491,19 @@ interface MenuLabelProps {
 
 export function MenuLabel({ children, className, inset = false }: MenuLabelProps) {
   return (
-    <div
-      className={cn(
-        'px-2 py-1.5 text-sm font-semibold text-gray-900',
-        inset && 'pl-8',
-        className
-      )}
+    <Box
+      sx={{
+        px: 1,
+        py: 0.75,
+        fontSize: '0.875rem',
+        fontWeight: 600,
+        color: 'grey.900',
+        ...(inset && { pl: 4 }),
+        ...(className && { className })
+      }}
     >
       {children}
-    </div>
+    </Box>
   );
 }
 
@@ -458,9 +515,9 @@ interface MenuGroupProps {
 
 export function MenuGroup({ children, className }: MenuGroupProps) {
   return (
-    <div role="group" className={cn('', className)}>
+    <Box role="group" sx={{ ...(className && { className }) }}>
       {children}
-    </div>
+    </Box>
   );
 }
 
@@ -494,22 +551,31 @@ export function MenuSubTrigger({ children, className, inset = false }: MenuSubTr
   const { open, setOpen } = useMenuContext();
 
   return (
-    <button
-      type="button"
+    <Button
+      variant="text"
       role="menuitem"
       aria-expanded={open}
       onClick={() => setOpen(!open)}
-      className={cn(
-        'relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none',
-        'focus:bg-gray-100 focus:text-gray-900',
-        'transition-colors duration-150',
-        inset && 'pl-8',
-        className
-      )}
+      sx={{
+        position: 'relative',
+        display: 'flex',
+        cursor: 'default',
+        userSelect: 'none',
+        alignItems: 'center',
+        borderRadius: '2px',
+        px: 1,
+        py: 0.75,
+        fontSize: '0.875rem',
+        outline: 'none',
+        '&:focus': { bgcolor: 'grey.100', color: 'grey.900' },
+        transition: 'color 0.15s',
+        ...(inset && { pl: 4 }),
+        ...(className && { className })
+      }}
     >
       {children}
-      <ChevronDown className="ml-auto h-4 w-4" />
-    </button>
+      <ChevronDown style={{ marginLeft: 'auto', height: 16, width: 16 }} />
+    </Button>
   );
 }
 
@@ -530,17 +596,20 @@ export function MenuSubContent({
   if (!open) return null;
 
   return (
-    <div
+    <Box
       role="menu"
-      className={cn(
-        'z-50 min-w-[8rem] overflow-hidden rounded-md border border-gray-200 bg-white p-1 shadow-lg',
-        'animate-in fade-in-0 zoom-in-95',
-        'data-[side=bottom]:slide-in-from-top-2',
-        'data-[side=left]:slide-in-from-right-2',
-        'data-[side=right]:slide-in-from-left-2',
-        'data-[side=top]:slide-in-from-bottom-2',
-        className
-      )}
+      sx={{
+        zIndex: 50,
+        minWidth: '8rem',
+        overflow: 'hidden',
+        borderRadius: '6px',
+        border: 1,
+        borderColor: 'grey.200',
+        bgcolor: 'white',
+        p: 0.5,
+        boxShadow: 3,
+        ...(className && { className })
+      }}
       style={{
         '--radix-menu-sub-content-transform-origin': 'var(--radix-popper-transform-origin)',
         '--radix-menu-sub-content-available-width': 'var(--radix-popper-available-width)',
@@ -550,7 +619,7 @@ export function MenuSubContent({
       } as React.CSSProperties}
     >
       {children}
-    </div>
+    </Box>
   );
 }
 

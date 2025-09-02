@@ -19,7 +19,7 @@ import {
 } from '@mui/material';
 import {
   AutoAwesome,
-  Brain,
+
   TrendingUp,
   ContentCopy,
   Schedule,

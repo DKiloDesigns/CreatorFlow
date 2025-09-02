@@ -1,5 +1,5 @@
 import React from 'react';
-import { cn } from '@/lib/utils';
+import { Box, CircularProgress } from '@mui/material';
 
 interface LoadingSpinnerProps {
   size?: 'sm' | 'md' | 'lg';
@@ -7,19 +7,23 @@ interface LoadingSpinnerProps {
 }
 
 export function LoadingSpinner({ size = 'md', className }: LoadingSpinnerProps) {
-  const sizeClasses = {
-    sm: 'h-4 w-4',
-    md: 'h-6 w-6',
-    lg: 'h-8 w-8'
+  const sizeMap = {
+    sm: 16,
+    md: 24,
+    lg: 32
   };
 
   return (
-    <div
-      className={cn(
-        'animate-spin rounded-full border-2 border-gray-300 border-t-blue-600',
-        sizeClasses[size],
-        className
-      )}
-    />
+    <Box className={className}>
+      <CircularProgress 
+        size={sizeMap[size]} 
+        sx={{ 
+          color: 'primary.main',
+          '& .MuiCircularProgress-circle': {
+            strokeLinecap: 'round',
+          }
+        }} 
+      />
+    </Box>
   );
 }

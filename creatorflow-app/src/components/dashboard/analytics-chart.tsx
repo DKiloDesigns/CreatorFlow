@@ -2,9 +2,10 @@ import {
   Card, 
   CardContent, 
   CardHeader, 
-  Typography
+  Typography,
+  Box
 } from '@mui/material';
-import { cn } from '@/lib/utils';
+
 
 interface DataPoint {
   label: string;
@@ -29,12 +30,12 @@ export function AnalyticsChart({
 }: AnalyticsChartProps) {
   if (loading) {
     return (
-          <Card className={className}>
-      <CardHeader>
-        <Typography variant="h6" className="text-lg">{title}</Typography>
-      </CardHeader>
+      <Card className={className}>
+        <CardHeader>
+          <Typography variant="h6" sx={{ fontSize: '1.125rem' }}>{title}</Typography>
+        </CardHeader>
         <CardContent>
-          <div className="h-64 bg-muted animate-pulse rounded" />
+          <Box sx={{ height: 256, bgcolor: 'action.hover', borderRadius: 1, animation: 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite' }} />
         </CardContent>
       </Card>
     );
@@ -46,54 +47,59 @@ export function AnalyticsChart({
   return (
     <Card className={className}>
       <CardHeader>
-        <Typography variant="h6" className="text-lg">{title}</Typography>
+        <Typography variant="h6" sx={{ fontSize: '1.125rem' }}>{title}</Typography>
       </CardHeader>
       <CardContent>
         {type === 'bar' && (
-          <div className="space-y-3">
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
             {data.map((item, index) => (
-              <div key={index} className="space-y-1">
-                <div className="flex justify-between text-sm">
-                  <span className="font-medium">{item.label}</span>
-                  <span className="text-muted-foreground">{item.value}</span>
-                </div>
-                <div className="w-full bg-muted rounded-full h-2">
-                  <div
-                    className={cn(
-                      'h-2 rounded-full transition-all duration-500',
-                      item.color || 'bg-primary'
-                    )}
-                    style={{ width: `${(item.value / maxValue) * 100}%` }}
+              <Box key={index} sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.875rem' }}>
+                  <Typography component="span" sx={{ fontWeight: 500 }}>{item.label}</Typography>
+                  <Typography component="span" sx={{ color: 'text.secondary' }}>{item.value}</Typography>
+                </Box>
+                <Box sx={{ width: '100%', bgcolor: 'action.hover', borderRadius: '50%', height: 8 }}>
+                  <Box
+                    sx={{
+                      height: 8,
+                      borderRadius: '50%',
+                      transition: 'all 0.5s ease',
+                      bgcolor: item.color || 'primary.main',
+                      width: `${(item.value / maxValue) * 100}%`
+                    }}
                   />
-                </div>
-              </div>
+                </Box>
+              </Box>
             ))}
-          </div>
+          </Box>
         )}
 
         {type === 'line' && (
-          <div className="h-64 flex items-end justify-between gap-1">
+          <Box sx={{ height: 256, display: 'flex', alignItems: 'end', justifyContent: 'space-between', gap: 0.5 }}>
             {data.map((item, index) => (
-              <div key={index} className="flex-1 flex flex-col items-center">
-                <div
-                  className={cn(
-                    'w-full rounded-t transition-all duration-500',
-                    item.color || 'bg-primary'
-                  )}
-                  style={{ height: `${(item.value / maxValue) * 100}%` }}
+              <Box key={index} sx={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                <Box
+                  sx={{
+                    width: '100%',
+                    borderTopLeftRadius: 1,
+                    borderTopRightRadius: 1,
+                    transition: 'all 0.5s ease',
+                    bgcolor: item.color || 'primary.main',
+                    height: `${(item.value / maxValue) * 100}%`
+                  }}
                 />
-                <span className="text-xs text-muted-foreground mt-1">
+                <Typography component="span" sx={{ fontSize: '0.75rem', color: 'text.secondary', mt: 0.5 }}>
                   {item.label}
-                </span>
-              </div>
+                </Typography>
+              </Box>
             ))}
-          </div>
+          </Box>
         )}
 
         {type === 'pie' && (
-          <div className="flex items-center justify-center">
-            <div className="relative w-32 h-32">
-              <svg className="w-32 h-32 transform -rotate-90" viewBox="0 0 32 32">
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Box sx={{ position: 'relative', width: 128, height: 128 }}>
+              <svg style={{ width: 128, height: 128, transform: 'rotate(-90deg)' }} viewBox="0 0 32 32">
                 {data.map((item, index) => {
                   const percentage = (item.value / total) * 100;
                   const circumference = 2 * Math.PI * 14; // radius = 14
@@ -114,22 +120,22 @@ export function AnalyticsChart({
                       strokeWidth="4"
                       strokeDasharray={strokeDasharray}
                       strokeDashoffset={strokeDashoffset}
-                      className="transition-all duration-500"
+                      style={{ transition: 'all 0.5s ease' }}
                     />
                   );
                 })}
               </svg>
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-sm font-medium">{total}</span>
-              </div>
-            </div>
-          </div>
+              <Box sx={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Typography component="span" sx={{ fontSize: '0.875rem', fontWeight: 500 }}>{total}</Typography>
+              </Box>
+            </Box>
+          </Box>
         )}
 
         {type === 'donut' && (
-          <div className="flex items-center justify-center">
-            <div className="relative w-32 h-32">
-              <svg className="w-32 h-32 transform -rotate-90" viewBox="0 0 32 32">
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Box sx={{ position: 'relative', width: 128, height: 128 }}>
+              <svg style={{ width: 128, height: 128, transform: 'rotate(-90deg)' }} viewBox="0 0 32 32">
                 {data.map((item, index) => {
                   const percentage = (item.value / total) * 100;
                   const circumference = 2 * Math.PI * 12; // radius = 12
@@ -150,35 +156,37 @@ export function AnalyticsChart({
                       strokeWidth="3"
                       strokeDasharray={strokeDasharray}
                       strokeDashoffset={strokeDashoffset}
-                      className="transition-all duration-500"
+                      style={{ transition: 'all 0.5s ease' }}
                     />
                   );
                 })}
               </svg>
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center">
-                  <div className="text-lg font-bold">{total}</div>
-                  <div className="text-xs text-muted-foreground">Total</div>
-                </div>
-              </div>
-            </div>
-          </div>
+              <Box sx={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Box sx={{ textAlign: 'center' }}>
+                  <Typography variant="h6" sx={{ fontWeight: 'bold' }}>{total}</Typography>
+                  <Typography variant="caption" sx={{ color: 'text.secondary' }}>Total</Typography>
+                </Box>
+              </Box>
+            </Box>
+          </Box>
         )}
 
         {/* Legend */}
-        <div className="mt-4 flex flex-wrap gap-2">
+        <Box sx={{ mt: 2, display: 'flex', flexWrap: 'wrap', gap: 1 }}>
           {data.map((item, index) => (
-            <div key={index} className="flex items-center gap-1 text-xs">
-              <div
-                className={cn(
-                  'w-3 h-3 rounded-full',
-                  item.color || 'bg-primary'
-                )}
+            <Box key={index} sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+              <Box
+                sx={{
+                  width: 12,
+                  height: 12,
+                  borderRadius: '50%',
+                  bgcolor: item.color || 'primary.main'
+                }}
               />
-              <span>{item.label}</span>
-            </div>
+              <Typography variant="caption">{item.label}</Typography>
+            </Box>
           ))}
-        </div>
+        </Box>
       </CardContent>
     </Card>
   );
@@ -203,25 +211,24 @@ export function MetricCard({
   className
 }: MetricCardProps) {
   return (
-    <Card className={className}>
-      <CardContent className="p-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-sm font-medium text-muted-foreground">{title}</p>
-            <p className="text-2xl font-bold">{value}</p>
+    <Card sx={{ ...(className && { className }) }}>
+      <CardContent sx={{ p: 3 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+          <Box>
+            <Typography variant="body2" sx={{ fontWeight: 500, color: 'text.secondary' }}>{title}</Typography>
+            <Typography variant="h4" sx={{ fontWeight: 'bold' }}>{value}</Typography>
             {change && (
-              <p className={cn(
-                'text-sm',
-                change.isPositive ? 'text-green-600' : 'text-red-600'
-              )}>
+              <Typography variant="body2" sx={{ 
+                color: change.isPositive ? 'success.main' : 'error.main' 
+              }}>
                 {change.isPositive ? '+' : ''}{change.value}%
-              </p>
+              </Typography>
             )}
-          </div>
+          </Box>
           {Icon && (
-            <Icon className="h-8 w-8 text-muted-foreground" />
+            <Icon style={{ width: 32, height: 32, color: 'text.secondary' }} />
           )}
-        </div>
+        </Box>
       </CardContent>
     </Card>
   );

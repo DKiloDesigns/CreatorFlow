@@ -1,28 +1,37 @@
 "use client"
 
 import * as React from "react"
-import * as ProgressPrimitive from "@radix-ui/react-progress"
+import { LinearProgress, Box } from "@mui/material"
 
-import { cn } from "@/lib/utils"
-
+// MUI-based Progress component
 const Progress = React.forwardRef<
-  React.ElementRef<typeof ProgressPrimitive.Root>,
-  React.ComponentPropsWithoutRef<typeof ProgressPrimitive.Root>
->(({ className, value, ...props }, ref) => (
-  <ProgressPrimitive.Root
+  HTMLDivElement,
+  React.ComponentPropsWithoutRef<typeof LinearProgress> & { value?: number }
+>(({ className, value = 0, ...props }, ref) => (
+  <Box
     ref={ref}
-    className={cn(
-      "relative h-4 w-full overflow-hidden rounded-full bg-secondary",
-      className
-    )}
-    {...props}
+    className={className}
+    sx={{
+      position: 'relative',
+      width: '100%'
+    }}
   >
-    <ProgressPrimitive.Indicator
-      className="h-full w-full flex-1 bg-primary transition-all"
-      style={{ transform: `translateX(-${100 - (value || 0)}%)` }}
+    <LinearProgress
+      variant="determinate"
+      value={value}
+      sx={{
+        height: 16,
+        borderRadius: '8px',
+        backgroundColor: 'secondary.main',
+        '& .MuiLinearProgress-bar': {
+          backgroundColor: 'primary.main',
+          borderRadius: '8px'
+        }
+      }}
+      {...props}
     />
-  </ProgressPrimitive.Root>
+  </Box>
 ))
-Progress.displayName = ProgressPrimitive.Root.displayName
+Progress.displayName = "Progress"
 
 export { Progress }

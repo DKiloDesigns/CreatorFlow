@@ -197,7 +197,7 @@ export default function SettingsPage() {
             </CardHeader>
             <CardContent className="space-y-6">
               <Grid container spacing={2}>
-                <Grid item xs={12} md={6} component="div">
+                <Grid item xs={12} md={6}>
                   <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                       <InputLabel>Animations</InputLabel>
@@ -238,7 +238,7 @@ export default function SettingsPage() {
                   </Box>
                 </Grid>
 
-                <Grid item xs={12} md={6} component="div">
+                <Grid item xs={12} md={6}>
                   <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                       <InputLabel>Reduced Motion</InputLabel>
@@ -409,17 +409,17 @@ export default function SettingsPage() {
                 Account Actions
               </Typography>
               <Grid container spacing={1}>
-                <Grid item xs={12}>
+                <Grid item xs={12} component="div">
                   <Button variant="outlined" fullWidth>
                     Change Password
                   </Button>
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={12} component="div">
                   <Button variant="outlined" fullWidth>
                     Update Email
                   </Button>
                 </Grid>
-                <Grid item xs={12}>
+                <Grid item xs={12} component="div">
                   <Button variant="outlined" fullWidth>
                     Manage Connected Accounts
                   </Button>
@@ -442,7 +442,7 @@ export default function SettingsPage() {
             </CardHeader>
             <CardContent className="space-y-6">
               <Grid container spacing={2}>
-                <Grid item xs={12} md={6}>
+                <Grid item xs={12} md={6} component="div">
                   <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
                       <InputLabel>Export Data</InputLabel>
@@ -490,6 +490,22 @@ export default function SettingsPage() {
         height: { xs: '120px', sm: '40px' },
         width: '100%'
       }} />
+    </div>
+  );
+}
+
+function TabPanel(props: { children?: React.ReactNode; value: string; className?: string }) {
+  const { children, value, className, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      id={`settings-tabpanel-${value}`}
+      aria-labelledby={`settings-tab-${value}`}
+      className={className}
+      {...other}
+    >
+      {children}
     </div>
   );
 } 

@@ -34,17 +34,17 @@ export function InsightsPanel({ insights, onRefresh }: InsightsPanelProps) {
   const getInsightIcon = (type: string) => {
     switch (type) {
       case 'performance':
-        return <Box sx={{ color: 'primary.500' }}><Activity className="h-5 w-5" /></Box>;
+        return <Box sx={{ color: 'primary.main' }}><Activity style={{ width: 20, height: 20 }} /></Box>;
       case 'timing':
-        return <Box sx={{ color: 'warning.500' }}><Activity className="h-5 w-5" /></Box>;
+        return <Box sx={{ color: 'warning.main' }}><Activity style={{ width: 20, height: 20 }} /></Box>;
       case 'content':
-        return <Box sx={{ color: 'success.500' }}><Activity className="h-5 w-5" /></Box>;
+        return <Box sx={{ color: 'success.main' }}><Activity style={{ width: 20, height: 20 }} /></Box>;
       case 'engagement':
-        return <Box sx={{ color: 'info.500' }}><Activity className="h-5 w-5" /></Box>;
+        return <Box sx={{ color: 'info.main' }}><Activity style={{ width: 20, height: 20 }} /></Box>;
       case 'growth':
-        return <Box sx={{ color: 'secondary.500' }}><Activity className="h-5 w-5" /></Box>;
+        return <Box sx={{ color: 'secondary.main' }}><Activity style={{ width: 20, height: 20 }} /></Box>;
       default:
-        return <Box sx={{ color: 'grey.500' }}><Activity className="h-5 w-5" /></Box>;
+        return <Box sx={{ color: 'grey.500' }}><Activity style={{ width: 20, height: 20 }} /></Box>;
     }
   };
 
@@ -76,13 +76,13 @@ export function InsightsPanel({ insights, onRefresh }: InsightsPanelProps) {
     return (
       <Box sx={{ textAlign: 'center', py: 4 }}>
         <Box sx={{ color: 'grey.400', mb: 2 }}>
-          <Activity className="h-12 w-12" />
+          <Activity style={{ width: 48, height: 48 }} />
         </Box>
-        <Typography variant="h5" component="h3" sx={{ fontWeight: 500, color: 'grey.900', mb: 1 }}>No Insights Available</Typography>
-        <Typography variant="body1" sx={{ color: 'grey.500', mb: 2 }}>Generate AI-powered insights to get personalized recommendations.</Typography>
+        <Typography variant="h5" component="h3" sx={{ fontWeight: 500, color: 'text.primary', mb: 1 }}>No Insights Available</Typography>
+        <Typography variant="body1" sx={{ color: 'text.secondary', mb: 2 }}>Generate AI-powered insights to get personalized recommendations.</Typography>
         <Button onClick={onRefresh}>
           <Box sx={{ mr: 1 }}>
-            <Activity className="h-4 w-4" />
+            <Activity style={{ width: 16, height: 16 }} />
           </Box>
           Generate Insights
         </Button>
@@ -111,7 +111,7 @@ export function InsightsPanel({ insights, onRefresh }: InsightsPanelProps) {
       {/* Insights Grid */}
       <Grid container spacing={3}>
         {insightsArray.map((insight) => (
-          <Grid item xs={12} lg={6} key={insight.id} component="div">
+          <Grid item xs={12} lg={6} key={insight.id}>
             <Card sx={{ 
               '&:hover': { 
                 boxShadow: 3, 
@@ -168,7 +168,7 @@ export function InsightsPanel({ insights, onRefresh }: InsightsPanelProps) {
                     <Typography variant="subtitle2" sx={{ fontWeight: 500, color: 'grey.900', mb: 1 }}>Key Data:</Typography>
                     <Grid container spacing={1} sx={{ fontSize: '0.875rem' }}>
                       {Object.entries(insight.data).map(([key, value]) => (
-                        <Grid item xs={6} key={key} component="div">
+                        <Grid item xs={6} key={key}>
                           <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                             <Typography variant="body2" sx={{ color: 'grey.600' }}>{key}:</Typography>
                             <Typography variant="body2" sx={{ fontWeight: 500 }}>{String(value)}</Typography>

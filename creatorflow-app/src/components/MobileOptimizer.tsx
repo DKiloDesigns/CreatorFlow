@@ -168,10 +168,10 @@ export default function MobileOptimizer() {
   };
 
   const getDeviceIcon = () => {
-    if (!capabilities) return <Smartphone className="h-6 w-6" />;
-    if (capabilities.isTablet) return <Smartphone className="h-6 w-6" />;
-    if (capabilities.isMobile) return <Smartphone className="h-6 w-6" />;
-    return <Smartphone className="h-6 w-6" />;
+    if (!capabilities) return <Smartphone style={{ width: 24, height: 24 }} />;
+    if (capabilities.isTablet) return <Smartphone style={{ width: 24, height: 24 }} />;
+    if (capabilities.isMobile) return <Smartphone style={{ width: 24, height: 24 }} />;
+    return <Smartphone style={{ width: 24, height: 24 }} />;
   };
 
   const getConnectionIcon = () => {
@@ -561,11 +561,11 @@ export default function MobileOptimizer() {
                     <Chip label="Performance" color="info" />
                     Performance Score
                   </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Overall mobile performance rating
-                </Typography>
-              </CardHeader>
-              <CardContent>
+                  <Typography variant="body2" color="text.secondary">
+                    Overall mobile performance rating
+                  </Typography>
+                </CardHeader>
+                <CardContent>
                 <div className="space-y-4">
                   <div className="text-center">
                     <Typography variant="h4" fontWeight="bold" color="success">95</Typography>
@@ -592,6 +592,7 @@ export default function MobileOptimizer() {
                 </div>
               </CardContent>
             </Card>
+            </Grid>
           </Grid>
         </TabPanel>
       </Tabs>

@@ -2,7 +2,29 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { FileText, Shield, Mail, Users, BarChart3, Search, BookOpen, MessageSquare, Phone } from 'lucide-react';
+import { 
+  FileText, 
+  Shield, 
+  Mail, 
+  Users, 
+  BarChart3, 
+  Search, 
+  BookOpen, 
+  MessageSquare, 
+  Phone 
+} from 'lucide-react';
+import { 
+  Box, 
+  Container, 
+  Typography, 
+  Grid, 
+  Card, 
+  CardContent, 
+  TextField, 
+  InputAdornment,
+  Chip,
+  Button
+} from '@mui/material';
 import { PublicHeader } from '@/components/PublicHeader';
 import { Footer } from '@/components/Footer';
 
@@ -61,224 +83,558 @@ export default function SupportPage() {
   const [searchQuery, setSearchQuery] = useState('');
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
+    <Box sx={{ minHeight: '100vh', bgcolor: 'background.default', display: 'flex', flexDirection: 'column' }}>
       <PublicHeader />
 
       {/* Hero Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20">
-        <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white mb-6">
+      <Box 
+        component="section" 
+        sx={{ 
+          py: 8, 
+          px: { xs: 2, sm: 3, lg: 4 }, 
+          background: 'linear-gradient(to right, #dbeafe, #e9d5ff)',
+          '& .dark &': {
+            background: 'linear-gradient(to right, rgba(30, 58, 138, 0.2), rgba(147, 51, 234, 0.2))'
+          }
+        }}
+      >
+        <Container maxWidth="lg" sx={{ textAlign: 'center' }}>
+          <Typography 
+            variant="h2" 
+            component="h1" 
+            sx={{ 
+              fontSize: { xs: '2.5rem', sm: '3rem' }, 
+              fontWeight: 'bold', 
+              color: 'text.primary', 
+              mb: 3 
+            }}
+          >
             How Can We Help?
-          </h1>
-          <p className="text-xl text-gray-600 dark:text-gray-300 mb-8">
+          </Typography>
+          <Typography 
+            variant="h6" 
+            component="p" 
+            sx={{ 
+              color: 'text.secondary', 
+              mb: 4 
+            }}
+          >
             Find answers, get support, and learn how to make the most of CreatorFlow.
-          </p>
+          </Typography>
           
           {/* Search Bar */}
-          <div className="max-w-2xl mx-auto">
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-              <input
-                type="text"
-                placeholder="Search for help articles..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              />
-            </div>
-          </div>
-        </div>
-      </section>
+          <Box sx={{ maxWidth: 'md', mx: 'auto' }}>
+            <TextField
+              fullWidth
+              placeholder="Search for help articles..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Search sx={{ color: 'text.disabled' }} />
+                  </InputAdornment>
+                ),
+              }}
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  bgcolor: 'background.paper',
+                  '&:hover': {
+                    '& .MuiOutlinedInput-notchedOutline': {
+                      borderColor: 'primary.main',
+                    },
+                  },
+                },
+              }}
+            />
+          </Box>
+        </Container>
+      </Box>
 
       {/* Help Categories */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8 text-center">Help Categories</h2>
+      <Box component="section" sx={{ py: 8, px: { xs: 2, sm: 3, lg: 4 } }}>
+        <Container maxWidth="xl">
+          <Typography 
+            variant="h3" 
+            component="h2" 
+            sx={{ 
+              fontWeight: 'bold', 
+              color: 'text.primary', 
+              mb: 4, 
+              textAlign: 'center' 
+            }}
+          >
+            Help Categories
+          </Typography>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <Grid container spacing={3}>
             {helpCategories.map((category) => {
               const Icon = category.icon;
               return (
-                <Link
-                  key={category.title}
-                  href={`/support/category/${category.title.toLowerCase().replace(/\s+/g, '-')}`}
-                  className="block p-6 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-500 transition-colors"
-                >
-                  <div className="text-center">
-                    <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center mx-auto mb-4">
-                      <Icon className="h-6 w-6 text-blue-600 dark:text-blue-400" />
-                    </div>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                      {category.title}
-                    </h3>
-                    <p className="text-gray-600 dark:text-gray-300 text-sm mb-3">
-                      {category.description}
-                    </p>
-                    <span className="text-sm text-gray-500 dark:text-gray-400">
-                      {category.articles} articles
-                    </span>
-                  </div>
-                </Link>
+                <Grid item xs={12} sm={6} lg={3} key={category.title}>
+                  <Link
+                    href={`/support/category/${category.title.toLowerCase().replace(/\s+/g, '-')}`}
+                    style={{ textDecoration: 'none' }}
+                  >
+                    <Card 
+                      sx={{ 
+                        p: 3, 
+                        textAlign: 'center',
+                        '&:hover': {
+                          borderColor: 'primary.main',
+                          transform: 'translateY(-2px)',
+                          transition: 'all 0.2s ease-in-out',
+                        }
+                      }}
+                    >
+                      <CardContent>
+                        <Box 
+                          sx={{ 
+                            width: 48, 
+                            height: 48, 
+                            bgcolor: 'primary.50', 
+                            borderRadius: 1, 
+                            display: 'flex', 
+                            alignItems: 'center', 
+                            justifyContent: 'center', 
+                            mx: 'auto', 
+                            mb: 2 
+                          }}
+                        >
+                          <Icon sx={{ color: 'primary.main', fontSize: 24 }} />
+                        </Box>
+                        <Typography 
+                          variant="h6" 
+                          component="h3" 
+                          sx={{ 
+                            fontWeight: 600, 
+                            color: 'text.primary', 
+                            mb: 1 
+                          }}
+                        >
+                          {category.title}
+                        </Typography>
+                        <Typography 
+                          variant="body2" 
+                          sx={{ 
+                            color: 'text.secondary', 
+                            mb: 1.5 
+                          }}
+                        >
+                          {category.description}
+                        </Typography>
+                        <Typography 
+                          variant="caption" 
+                          sx={{ 
+                            color: 'text.disabled' 
+                          }}
+                        >
+                          {category.articles} articles
+                        </Typography>
+                      </CardContent>
+                    </Card>
+                  </Link>
+                </Grid>
               );
             })}
-          </div>
-        </div>
-      </section>
+          </Grid>
+        </Container>
+      </Box>
 
       {/* Contact Methods */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-800">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8 text-center">Get in Touch</h2>
+      <Box 
+        component="section" 
+        sx={{ 
+          py: 8, 
+          px: { xs: 2, sm: 3, lg: 4 }, 
+          bgcolor: 'grey.50' 
+        }}
+      >
+        <Container maxWidth="xl">
+          <Typography 
+            variant="h3" 
+            component="h2" 
+            sx={{ 
+              fontWeight: 'bold', 
+              color: 'text.primary', 
+              mb: 4, 
+              textAlign: 'center' 
+            }}
+          >
+            Get in Touch
+          </Typography>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <Grid container spacing={3}>
             {contactMethods.map((method) => {
               const Icon = method.icon;
               return (
-                <div key={method.title} className="bg-white dark:bg-gray-700 rounded-lg p-6 border border-gray-200 dark:border-gray-600">
-                  <div className="text-center">
-                    <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center mx-auto mb-4">
-                      <Icon className="h-6 w-6 text-blue-600 dark:text-blue-400" />
-                    </div>
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                      {method.title}
-                    </h3>
-                    <p className="text-gray-600 dark:text-gray-300 text-sm mb-3">
-                      {method.description}
-                    </p>
-                    <div className="space-y-1">
-                      <p className="text-sm font-medium text-gray-900 dark:text-white">
-                        {method.contact}
-                      </p>
-                      <p className="text-xs text-gray-500 dark:text-gray-400">
-                        {method.response}
-                      </p>
-                    </div>
-                  </div>
-                </div>
+                <Grid item xs={12} md={4} key={method.title}>
+                  <Card sx={{ p: 3, textAlign: 'center' }}>
+                    <CardContent>
+                      <Box 
+                        sx={{ 
+                          width: 48, 
+                          height: 48, 
+                          bgcolor: 'primary.50', 
+                          borderRadius: 1, 
+                          display: 'flex', 
+                          alignItems: 'center', 
+                          justifyContent: 'center', 
+                          mx: 'auto', 
+                          mb: 2 
+                        }}
+                      >
+                        <Icon sx={{ color: 'primary.main', fontSize: 24 }} />
+                      </Box>
+                      <Typography 
+                        variant="h6" 
+                        component="h3" 
+                        sx={{ 
+                          fontWeight: 600, 
+                          color: 'text.primary', 
+                          mb: 1 
+                        }}
+                      >
+                        {method.title}
+                      </Typography>
+                      <Typography 
+                        variant="body2" 
+                        sx={{ 
+                          color: 'text.secondary', 
+                          mb: 1.5 
+                        }}
+                      >
+                        {method.description}
+                      </Typography>
+                      <Box sx={{ mt: 1 }}>
+                        <Typography 
+                          variant="body2" 
+                          sx={{ 
+                            fontWeight: 500, 
+                            color: 'text.primary' 
+                          }}
+                        >
+                          {method.contact}
+                        </Typography>
+                        <Typography 
+                          variant="caption" 
+                          sx={{ 
+                            color: 'text.disabled' 
+                          }}
+                        >
+                          {method.response}
+                        </Typography>
+                      </Box>
+                    </CardContent>
+                  </Card>
+                </Grid>
               );
             })}
-          </div>
-        </div>
-      </section>
+          </Grid>
+        </Container>
+      </Box>
 
       {/* Legal & Policies */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8 text-center">Legal & Policies</h2>
+      <Box component="section" sx={{ py: 8, px: { xs: 2, sm: 3, lg: 4 } }}>
+        <Container maxWidth="lg">
+          <Typography 
+            variant="h3" 
+            component="h2" 
+            sx={{ 
+              fontWeight: 'bold', 
+              color: 'text.primary', 
+              mb: 4, 
+              textAlign: 'center' 
+            }}
+          >
+            Legal & Policies
+          </Typography>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Link 
-              href="/terms" 
-              className="flex items-center gap-4 p-6 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-500 transition-colors"
-            >
-              <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center flex-shrink-0">
-                <FileText className="h-6 w-6 text-blue-600 dark:text-blue-400" />
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">
-                  Terms of Service
-                </h3>
-                <p className="text-gray-600 dark:text-gray-300 text-sm">
-                  Read our terms and conditions
-                </p>
-              </div>
-            </Link>
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={6}>
+              <Link href="/terms" style={{ textDecoration: 'none' }}>
+                <Card 
+                  sx={{ 
+                    p: 3,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 2,
+                    '&:hover': {
+                      borderColor: 'primary.main',
+                      transform: 'translateY(-2px)',
+                      transition: 'all 0.2s ease-in-out',
+                    }
+                  }}
+                >
+                  <Box 
+                    sx={{ 
+                      width: 48, 
+                      height: 48, 
+                      bgcolor: 'primary.50', 
+                      borderRadius: 1, 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center', 
+                      flexShrink: 0 
+                    }}
+                  >
+                    <FileText sx={{ color: 'primary.main', fontSize: 24 }} />
+                  </Box>
+                  <Box>
+                    <Typography 
+                      variant="h6" 
+                      component="h3" 
+                      sx={{ 
+                        fontWeight: 600, 
+                        color: 'text.primary', 
+                        mb: 0.5 
+                      }}
+                    >
+                      Terms of Service
+                    </Typography>
+                    <Typography 
+                      variant="body2" 
+                      sx={{ 
+                        color: 'text.secondary' 
+                      }}
+                    >
+                      Read our terms and conditions
+                    </Typography>
+                  </Box>
+                </Card>
+              </Link>
+            </Grid>
             
-            <Link 
-              href="/privacy" 
-              className="flex items-center gap-4 p-6 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-600 hover:border-blue-300 dark:hover:border-blue-500 transition-colors"
-            >
-              <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center flex-shrink-0">
-                <Shield className="h-6 w-6 text-purple-600 dark:text-purple-400" />
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">
-                  Privacy Policy
-                </h3>
-                <p className="text-gray-600 dark:text-gray-300 text-sm">
-                  Learn how we protect your data
-                </p>
-              </div>
-            </Link>
-          </div>
-        </div>
-      </section>
+            <Grid item xs={12} md={6}>
+              <Link href="/privacy" style={{ textDecoration: 'none' }}>
+                <Card 
+                  sx={{ 
+                    p: 3,
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 2,
+                    '&:hover': {
+                      borderColor: 'secondary.main',
+                      transform: 'translateY(-2px)',
+                      transition: 'all 0.2s ease-in-out',
+                    }
+                  }}
+                >
+                  <Box 
+                    sx={{ 
+                      width: 48, 
+                      height: 48, 
+                      bgcolor: 'secondary.50', 
+                      borderRadius: 1, 
+                      display: 'flex', 
+                      alignItems: 'center', 
+                      justifyContent: 'center', 
+                      flexShrink: 0 
+                    }}
+                  >
+                    <Shield sx={{ color: 'secondary.main', fontSize: 24 }} />
+                  </Box>
+                  <Box>
+                    <Typography 
+                      variant="h6" 
+                      component="h3" 
+                      sx={{ 
+                        fontWeight: 600, 
+                        color: 'text.primary', 
+                        mb: 0.5 
+                      }}
+                    >
+                      Privacy Policy
+                    </Typography>
+                    <Typography 
+                      variant="body2" 
+                      sx={{ 
+                        color: 'text.secondary' 
+                      }}
+                    >
+                      Learn how we protect your data
+                    </Typography>
+                  </Box>
+                </Card>
+              </Link>
+            </Grid>
+          </Grid>
+        </Container>
+      </Box>
 
       {/* FAQ Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-800">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8 text-center">Frequently Asked Questions</h2>
+      <Box 
+        component="section" 
+        sx={{ 
+          py: 8, 
+          px: { xs: 2, sm: 3, lg: 4 }, 
+          bgcolor: 'grey.50' 
+        }}
+      >
+        <Container maxWidth="lg">
+          <Typography 
+            variant="h3" 
+            component="h2" 
+            sx={{ 
+              fontWeight: 'bold', 
+              color: 'text.primary', 
+              mb: 4, 
+              textAlign: 'center' 
+            }}
+          >
+            Frequently Asked Questions
+          </Typography>
           
-          <div className="space-y-4">
-            <div className="bg-white dark:bg-gray-700 rounded-lg p-6 border border-gray-200 dark:border-gray-600">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+            <Card sx={{ p: 3 }}>
+              <Typography 
+                variant="h6" 
+                component="h3" 
+                sx={{ 
+                  fontWeight: 600, 
+                  color: 'text.primary', 
+                  mb: 1 
+                }}
+              >
                 How do I get started with CreatorFlow?
-              </h3>
-              <p className="text-gray-600 dark:text-gray-300">
+              </Typography>
+              <Typography 
+                variant="body2" 
+                sx={{ 
+                  color: 'text.secondary' 
+                }}
+              >
                 Sign up for a free account and connect your social media platforms. Our guided setup will help you get started in minutes.
-              </p>
-            </div>
+              </Typography>
+            </Card>
             
-            <div className="bg-white dark:bg-gray-700 rounded-lg p-6 border border-gray-200 dark:border-gray-600">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+            <Card sx={{ p: 3 }}>
+              <Typography 
+                variant="h6" 
+                component="h3" 
+                sx={{ 
+                  fontWeight: 600, 
+                  color: 'text.primary', 
+                  mb: 1 
+                }}
+              >
                 What platforms does CreatorFlow support?
-              </h3>
-              <p className="text-gray-600 dark:text-gray-300">
+              </Typography>
+              <Typography 
+                variant="body2" 
+                sx={{ 
+                  color: 'text.secondary' 
+                }}
+              >
                 We support all major platforms including Instagram, TikTok, YouTube, Twitter, LinkedIn, Facebook, and more.
-              </p>
-            </div>
+              </Typography>
+            </Card>
             
-            <div className="bg-white dark:bg-gray-700 rounded-lg p-6 border border-gray-200 dark:border-gray-600">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+            <Card sx={{ p: 3 }}>
+              <Typography 
+                variant="h6" 
+                component="h3" 
+                sx={{ 
+                  fontWeight: 600, 
+                  color: 'text.primary', 
+                  mb: 1 
+                }}
+              >
                 How much does CreatorFlow cost?
-              </h3>
-              <p className="text-gray-600 dark:text-gray-300">
+              </Typography>
+              <Typography 
+                variant="body2" 
+                sx={{ 
+                  color: 'text.secondary' 
+                }}
+              >
                 We offer a free plan to get started, with Pro plans starting at $12/month for advanced features and analytics.
-              </p>
-            </div>
+              </Typography>
+            </Card>
             
-            <div className="bg-white dark:bg-gray-700 rounded-lg p-6 border border-gray-200 dark:border-gray-600">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+            <Card sx={{ p: 3 }}>
+              <Typography 
+                variant="h6" 
+                component="h3" 
+                sx={{ 
+                  fontWeight: 600, 
+                  color: 'text.primary', 
+                  mb: 1 
+                }}
+              >
                 Is my data secure?
-              </h3>
-              <p className="text-gray-600 dark:text-gray-300">
+              </Typography>
+              <Typography 
+                variant="body2" 
+                sx={{ 
+                  color: 'text.secondary' 
+                }}
+              >
                 Yes, we use industry-standard encryption and security measures to protect your data and account information.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
+              </Typography>
+            </Card>
+          </Box>
+        </Container>
+      </Box>
 
       {/* CTA Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-2xl mx-auto text-center">
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+      <Box component="section" sx={{ py: 8, px: { xs: 2, sm: 3, lg: 4 } }}>
+        <Container maxWidth="md" sx={{ textAlign: 'center' }}>
+          <Typography 
+            variant="h3" 
+            component="h2" 
+            sx={{ 
+              fontWeight: 'bold', 
+              color: 'text.primary', 
+              mb: 2 
+            }}
+          >
             Still Need Help?
-          </h2>
-          <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
+          </Typography>
+          <Typography 
+            variant="h6" 
+            component="p" 
+            sx={{ 
+              color: 'text.secondary', 
+              mb: 4 
+            }}
+          >
             Can&apos;t find what you&apos;re looking for? Our support team is here to help.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link 
+          </Typography>
+          <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2, justifyContent: 'center' }}>
+            <Button 
+              component={Link}
               href="/contact" 
-              className="bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold rounded-lg px-8 py-3 shadow hover:from-blue-600 hover:to-purple-700 transition"
+              variant="contained"
+              sx={{ 
+                background: 'linear-gradient(to right, #3b82f6, #8b5cf6)',
+                '&:hover': {
+                  background: 'linear-gradient(to right, #2563eb, #7c3aed)',
+                }
+              }}
             >
               Contact Support
-            </Link>
-            <Link 
+            </Button>
+            <Button 
+              component={Link}
               href="/auth" 
-              className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white font-semibold rounded-lg px-8 py-3 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 transition"
+              variant="outlined"
+              sx={{ 
+                '&:hover': {
+                  bgcolor: 'grey.50',
+                }
+              }}
             >
               Sign Up Free
-            </Link>
-          </div>
-        </div>
-      </section>
+            </Button>
+          </Box>
+        </Container>
+      </Box>
 
       {/* Bottom Spacer to Clear Bottom Navigation */}
-      <div className="h-32 sm:h-10 w-full"></div>
+      <Box sx={{ height: { xs: '128px', sm: '40px' }, width: '100%' }} />
 
       <Footer />
-    </div>
+    </Box>
   );
 } 

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { forwardRef } from 'react';
-import { cn } from '@/lib/utils';
+import { Box } from '@mui/material';
 
 export interface GridProps extends React.HTMLAttributes<HTMLDivElement> {
   cols?: number | { base?: number; sm?: number; md?: number; lg?: number; xl?: number; '2xl'?: number };
@@ -31,68 +31,80 @@ const Grid = forwardRef<HTMLDivElement, GridProps>(
     },
     ref
   ) => {
-    // Helper function to generate responsive classes
-    const generateResponsiveClasses = (
-      value: number | Record<string, number>,
-      prefix: string
-    ): string => {
+    // Helper function to generate responsive grid styles
+    const generateResponsiveGridStyles = (
+      value: number | Record<string, number>
+    ): any => {
       if (typeof value === 'number') {
-        return `${prefix}-${value}`;
+        return { gridTemplateColumns: `repeat(${value}, 1fr)` };
       }
       
-      const classes: string[] = [];
+      const styles: any = {};
       Object.entries(value).forEach(([breakpoint, val]) => {
         if (breakpoint === 'base') {
-          classes.push(`${prefix}-${val}`);
+          styles.gridTemplateColumns = `repeat(${val}, 1fr)`;
         } else {
-          classes.push(`${breakpoint}:${prefix}-${val}`);
+          styles[`@media (min-width: ${getBreakpointWidth(breakpoint)})`] = {
+            gridTemplateColumns: `repeat(${val}, 1fr)`
+          };
         }
       });
       
-      return classes.join(' ');
+      return styles;
     };
 
-    // Generate grid column classes
-    const gridColsClasses = autoFit
-      ? 'grid-cols-auto-fit'
-      : autoFill
-      ? 'grid-cols-auto-fill'
-      : generateResponsiveClasses(cols, 'grid-cols');
+    // Helper function to get breakpoint widths
+    const getBreakpointWidth = (breakpoint: string): string => {
+      const breakpoints: Record<string, string> = {
+        sm: '640px',
+        md: '768px',
+        lg: '1024px',
+        xl: '1280px',
+        '2xl': '1536px'
+      };
+      return breakpoints[breakpoint] || '0px';
+    };
 
-    // Generate gap classes
-    const gapClasses = generateResponsiveClasses(gap, 'gap');
-    const rowGapClasses = rowGap ? generateResponsiveClasses(rowGap, 'gap-y') : '';
-    const colGapClasses = colGap ? generateResponsiveClasses(colGap, 'gap-x') : '';
+    // Generate gap styles
+    const generateGapStyles = (gapValue: number | Record<string, number>): any => {
+      if (typeof gapValue === 'number') {
+        return { gap: gapValue * 4 }; // Convert to MUI spacing units
+      }
+      
+      const styles: any = {};
+      Object.entries(gapValue).forEach(([breakpoint, val]) => {
+        if (breakpoint === 'base') {
+          styles.gap = val * 4;
+        } else {
+          styles[`@media (min-width: ${getBreakpointWidth(breakpoint)})`] = {
+            gap: val * 4
+          };
+        }
+      });
+      
+      return styles;
+    };
 
-    const baseClasses = cn(
-      // Base grid styles
-      'grid',
-      gridColsClasses,
-      
-      // Gap classes
-      gapClasses,
-      rowGapClasses,
-      colGapClasses,
-      
-      // Alignment
-      center && 'place-items-center',
-      stretch && 'items-stretch',
-      
-      // Custom grid utilities
-      autoFit && 'grid-cols-[repeat(auto-fit,minmax(250px,1fr))]',
-      autoFill && 'grid-cols-[repeat(auto-fill,minmax(250px,1fr))]',
-      
-      className
-    );
+    const getGridStyles = () => ({
+      display: 'grid',
+      ...(autoFit && { gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))' }),
+      ...(autoFill && { gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))' }),
+      ...(!autoFit && !autoFill && generateResponsiveGridStyles(cols)),
+      ...generateGapStyles(gap),
+      ...(rowGap && generateGapStyles(rowGap)),
+      ...(colGap && generateGapStyles(colGap)),
+      ...(center && { placeItems: 'center' }),
+      ...(stretch && { alignItems: 'stretch' }),
+    });
 
     return (
-      <div
+      <Box
         ref={ref}
-        className={baseClasses}
+        sx={getGridStyles()}
         {...props}
       >
         {children}
-      </div>
+      </Box>
     );
   }
 );
@@ -123,55 +135,46 @@ export const GridItem = forwardRef<
     },
     ref
   ) => {
-    // Helper function to generate responsive span classes
-    const generateSpanClasses = (
+    // Helper function to generate responsive span styles
+    const generateSpanStyles = (
       value: number | Record<string, number>,
-      prefix: string
-    ): string => {
+      property: string
+    ): any => {
       if (typeof value === 'number') {
-        return `${prefix}-${value}`;
+        return { [property]: value };
       }
       
-      const classes: string[] = [];
+      const styles: any = {};
       Object.entries(value).forEach(([breakpoint, val]) => {
         if (breakpoint === 'base') {
-          classes.push(`${prefix}-${val}`);
+          styles[property] = val;
         } else {
-          classes.push(`${breakpoint}:${prefix}-${val}`);
+          styles[`@media (min-width: ${getBreakpointWidth(breakpoint)})`] = {
+            [property]: val
+          };
         }
       });
       
-      return classes.join(' ');
+      return styles;
     };
 
-    const spanClasses = span ? generateSpanClasses(span, 'col-span') : '';
-    const startClasses = start ? generateSpanClasses(start, 'col-start') : '';
-    const endClasses = end ? generateSpanClasses(end, 'col-end') : '';
-
-    const baseClasses = cn(
-      // Base styles
-      'min-w-0',
-      
-      // Span classes
-      spanClasses,
-      startClasses,
-      endClasses,
-      
-      // Alignment
-      center && 'place-self-center',
-      stretch && 'self-stretch',
-      
-      className
-    );
+    const getGridItemStyles = () => ({
+      minWidth: 0,
+      ...(span && generateSpanStyles(span, 'gridColumn')),
+      ...(start && generateSpanStyles(start, 'gridColumnStart')),
+      ...(end && generateSpanStyles(end, 'gridColumnEnd')),
+      ...(center && { placeSelf: 'center' }),
+      ...(stretch && { alignSelf: 'stretch' })
+    });
 
     return (
-      <div
+      <Box
         ref={ref}
-        className={baseClasses}
+        sx={getGridItemStyles()}
         {...props}
       >
         {children}
-      </div>
+      </Box>
     );
   }
 );

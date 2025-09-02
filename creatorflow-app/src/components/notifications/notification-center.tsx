@@ -217,7 +217,7 @@ export function NotificationCenter({ className: _className, onNotificationClick 
             sx={{ position: 'relative' }}
             aria-label="Notifications"
           >
-            <Bell className="h-5 w-5" />
+            <Bell style={{ width: 20, height: 20 }} />
             {unreadCount > 0 && (
               <Badge
                 variant="destructive"
@@ -254,14 +254,14 @@ export function NotificationCenter({ className: _className, onNotificationClick 
           </Box>
 
           <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as any)}>
-            <TabsList className="grid w-full grid-cols-5">
-              <TabsTrigger value="all" className="text-xs">All</TabsTrigger>
-              <TabsTrigger value="unread" className="text-xs">
+            <TabsList sx={{ display: 'grid', width: '100%', gridTemplateColumns: 'repeat(5, 1fr)' }}>
+              <TabsTrigger value="all" sx={{ fontSize: '0.75rem' }}>All</TabsTrigger>
+              <TabsTrigger value="unread" sx={{ fontSize: '0.75rem' }}>
                 Unread {unreadCount > 0 && `(${unreadCount})`}
               </TabsTrigger>
-              <TabsTrigger value="system" className="text-xs">System</TabsTrigger>
-              <TabsTrigger value="security" className="text-xs">Security</TabsTrigger>
-              <TabsTrigger value="content" className="text-xs">Content</TabsTrigger>
+              <TabsTrigger value="system" sx={{ fontSize: '0.75rem' }}>System</TabsTrigger>
+              <TabsTrigger value="security" sx={{ fontSize: '0.75rem' }}>Security</TabsTrigger>
+              <TabsTrigger value="content" sx={{ fontSize: '0.75rem' }}>Content</TabsTrigger>
             </TabsList>
 
             <TabsContent value={activeTab} className="mt-0">

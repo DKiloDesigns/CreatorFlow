@@ -62,10 +62,10 @@ export function PromoCodeInput({ onSuccess, className }: PromoCodeInputProps) {
   };
 
   return (
-    <Card className={className}>
+    <Card sx={{ ...(className && { className }) }}>
       <CardHeader>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <Gift style={{ height: 20, width: 20, color: '#2e7d32' }} />
+          <Gift style={{ height: 20, width: 20, color: 'success.main' }} />
           <Typography variant="h6">Have a Promo Code?</Typography>
         </Box>
         <Typography variant="body2" color="text.secondary">
@@ -94,7 +94,7 @@ export function PromoCodeInput({ onSuccess, className }: PromoCodeInputProps) {
 
           {isValid === true && trialInfo && (
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, p: 3, bgcolor: 'success.light', border: '1px solid', borderColor: 'success.main', borderRadius: 2 }}>
-              <CheckCircle style={{ height: 20, width: 20, color: '#2e7d32' }} />
+              <CheckCircle style={{ height: 20, width: 20, color: 'success.main' }} />
               <Box sx={{ flexGrow: 1 }}>
                 <Typography variant="body2" fontWeight="medium" color="success.dark">
                   Trial Activated!

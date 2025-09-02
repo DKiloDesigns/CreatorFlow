@@ -244,10 +244,10 @@ export function AdvancedHashtagRecommender({ provider: _provider }: AdvancedHash
 
   const getTrendIcon = (trend: string) => {
     switch (trend) {
-      case 'rising': return <Activity className="w-4 h-4 text-green-600" />;
-      case 'declining': return <Activity className="w-4 h-4 text-red-600" />;
-      case 'stable': return <Activity className="w-4 h-4 text-gray-600" />;
-      default: return <Activity className="w-4 h-4 text-gray-600" />;
+      case 'rising': return <Activity style={{ width: 16, height: 16, color: 'success.main' }} />;
+      case 'declining': return <Activity style={{ width: 16, height: 16, color: 'error.main' }} />;
+      case 'stable': return <Activity style={{ width: 16, height: 16, color: 'text.secondary' }} />;
+      default: return <Activity style={{ width: 16, height: 16, color: 'text.secondary' }} />;
     }
   };
 
@@ -398,10 +398,10 @@ export function AdvancedHashtagRecommender({ provider: _provider }: AdvancedHash
 
       {/* Results Section */}
       {recommendations.length > 0 && (
-        <div className="space-y-6">
-          <div className="flex items-center justify-between">
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <Typography variant="h6" component="div">Hashtag Recommendations</Typography>
-            <div className="flex items-center gap-2">
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               <Chip label={`${selectedHashtags.length} selected`} variant="outlined" />
               <Button
                 variant="outlined"
@@ -409,11 +409,11 @@ export function AdvancedHashtagRecommender({ provider: _provider }: AdvancedHash
                 onClick={copyHashtags}
                 disabled={selectedHashtags.length === 0}
               >
-                <Activity className="w-4 h-4 mr-1" />
+                <Activity style={{ width: 16, height: 16, marginRight: 4 }} />
                 Copy Selected
               </Button>
-            </div>
-          </div>
+            </Box>
+          </Box>
 
           {/* Tabs will be replaced with a new component or removed if not needed */}
           {/* For now, we'll keep the structure but the content will be static */}
@@ -498,7 +498,7 @@ export function AdvancedHashtagRecommender({ provider: _provider }: AdvancedHash
               </Card>
             </Grid>
           </Grid>
-        </div>
+        </Box>
       )}
     </Box>
   );

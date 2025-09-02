@@ -104,8 +104,8 @@ export function AICaptionGenerator({ onCaptionSelect, className }: AICaptionGene
     <Card className={className}>
       <CardHeader>
         <Typography variant="h5" component="div" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <Box sx={{ color: 'purple.600' }}>
-            <Activity className="h-5 w-5" />
+          <Box sx={{ color: 'secondary.main' }}>
+            <Activity style={{ width: 20, height: 20 }} />
           </Box>
           AI Caption Generator
         </Typography>
@@ -127,7 +127,7 @@ export function AICaptionGenerator({ onCaptionSelect, className }: AICaptionGene
               />
             </Grid>
 
-            <Grid item xs={12} md={6} component="div">
+            <Grid xs={12} md={6}>
               <TextField
                 label="Platform"
                 select
@@ -142,7 +142,7 @@ export function AICaptionGenerator({ onCaptionSelect, className }: AICaptionGene
               </TextField>
             </Grid>
 
-            <Grid item xs={12} md={6} component="div">
+            <Grid xs={12} md={6}>
               <TextField
                 label="Tone"
                 select
@@ -157,7 +157,7 @@ export function AICaptionGenerator({ onCaptionSelect, className }: AICaptionGene
               </TextField>
             </Grid>
 
-            <Grid item xs={12} md={6} component="div">
+            <Grid xs={12} md={6}>
               <TextField
                 label="Industry (Optional)"
                 select
@@ -173,7 +173,7 @@ export function AICaptionGenerator({ onCaptionSelect, className }: AICaptionGene
               </TextField>
             </Grid>
 
-            <Grid item xs={12} md={6} component="div">
+            <Grid xs={12} md={6}>
               <TextField
                 label="Target Audience (Optional)"
                 multiline

@@ -30,7 +30,7 @@ import {
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 import AiSuggestModal from '@/app/dashboard/content/_components/ai-suggest-modal';
-import { Typography } from '@mui/material';
+import { Typography, Box } from '@mui/material';
 
 interface Platform {
   id: string;
@@ -234,100 +234,133 @@ export function EnhancedComposer({ onSubmit, className }: EnhancedComposerProps)
       .replace(/-\s*(.*)/g, '<li>$1</li>');
 
     return (
-      <div className="space-y-4">
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
         {selectedPlatforms.map(platformId => {
           const platform = platforms.find(p => p.id === platformId);
           if (!platform) return null;
 
           return (
-            <Card key={platformId} className="border-2 border-dashed">
-              <CardHeader className="pb-2">
-                <div className="flex items-center gap-2">
-                  <span className="text-lg">{platform.icon}</span>
-                  <span className="font-medium">{platform.name}</span>
-                  <Badge variant="outlined" className="ml-auto">
+            <Card key={platformId} sx={{ border: '2px dashed', borderColor: 'divider' }}>
+              <CardHeader sx={{ pb: 1 }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  <Typography component="span" sx={{ fontSize: '1.125rem' }}>{platform.icon}</Typography>
+                  <Typography component="span" sx={{ fontWeight: 500 }}>{platform.name}</Typography>
+                  <Badge variant="outlined" sx={{ ml: 'auto' }}>
                     {content.length}/{platform.maxLength}
                   </Badge>
-                </div>
+                </Box>
               </CardHeader>
               <CardContent>
-                <div 
-                  className="prose prose-sm max-w-none"
+                <Box 
+                  sx={{ 
+                    '& .prose': { 
+                      fontSize: '0.875rem',
+                      maxWidth: 'none'
+                    }
+                  }}
                   dangerouslySetInnerHTML={{ __html: formattedContent }}
                 />
               </CardContent>
             </Card>
           );
         })}
-      </div>
+      </Box>
     );
   };
 
   return (
-    <Card className={className}>
+    <Card sx={{ ...(className && { className }) }}>
       <CardHeader>
-        <Typography variant="h5" className="flex items-center justify-between">
+        <Typography variant="h5" sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <span>Create Content</span>
-          <div className="flex items-center gap-2">
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <Button
               variant="ghost"
               size="sm"
               onClick={() => setShowPreview(!showPreview)}
             >
-              {showPreview ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+              {showPreview ? <EyeOff style={{ width: 16, height: 16 }} /> : <Eye style={{ width: 16, height: 16 }} />}
               {showPreview ? 'Hide Preview' : 'Preview'}
             </Button>
-          </div>
+          </Box>
         </Typography>
         
         {/* Action Buttons - Right below the header */}
-        <div className="flex flex-col sm:flex-row flex-wrap gap-2 mt-4">
+        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, flexWrap: 'wrap', gap: 1, mt: 2 }}>
           <Button
             variant="outline"
             size="sm"
             onClick={() => window.dispatchEvent(new CustomEvent('openUploadModal'))}
-            className="flex items-center gap-2 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 w-full sm:w-auto min-w-[44px] min-h-[44px]"
+            sx={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: 1, 
+              width: { xs: '100%', sm: 'auto' }, 
+              minWidth: 44, 
+              minHeight: 44 
+            }}
           >
-            <Upload className="h-4 w-4" />
-            <span className="text-gray-900 dark:text-white break-words">Upload Media</span>
+            <Upload style={{ width: 16, height: 16 }} />
+            <Typography component="span" sx={{ color: 'text.primary', wordBreak: 'break-words' }}>Upload Media</Typography>
           </Button>
           <Button
             variant="outline"
             size="sm"
             onClick={() => window.dispatchEvent(new CustomEvent('openCreateVideoModal'))}
-            className="flex items-center gap-2 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 w-full sm:w-auto min-w-[44px] min-h-[44px]"
+            sx={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: 1, 
+              width: { xs: '100%', sm: 'auto' }, 
+              minWidth: 44, 
+              minHeight: 44 
+            }}
           >
-            <Video className="h-4 w-4" />
-            <span className="text-gray-900 dark:text-white break-words">Create Video</span>
+            <Video style={{ width: 16, height: 16 }} />
+            <Typography component="span" sx={{ color: 'text.primary', wordBreak: 'break-words' }}>Create Video</Typography>
           </Button>
           <Button
             variant="outline"
             size="sm"
             onClick={() => window.dispatchEvent(new CustomEvent('openUseTemplateModal'))}
-            className="flex items-center gap-2 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 w-full sm:w-auto min-w-[44px] min-h-[44px]"
+            sx={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: 1, 
+              width: { xs: '100%', sm: 'auto' }, 
+              minWidth: 44, 
+              minHeight: 44 
+            }}
           >
-            <FileText className="h-4 w-4" />
-            <span className="text-gray-900 dark:text-white break-words">Use Template</span>
+            <FileText style={{ width: 16, height: 16 }} />
+            <Typography component="span" sx={{ color: 'text.primary', wordBreak: 'break-words' }}>Use Template</Typography>
           </Button>
           <Button
             variant="outline"
             size="sm"
             onClick={() => window.dispatchEvent(new CustomEvent('openBulkScheduleModal'))}
-            className="flex items-center gap-2 border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-800 w-full sm:w-auto min-w-[44px] min-h-[44px]"
+            sx={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              gap: 1, 
+              width: { xs: '100%', sm: 'auto' }, 
+              minWidth: 44, 
+              minHeight: 44 
+            }}
           >
-            <Calendar className="h-4 w-4" />
-            <span className="text-gray-900 dark:text-white break-words">Bulk Schedule</span>
+            <Calendar style={{ width: 16, height: 16 }} />
+            <Typography component="span" sx={{ color: 'text.primary', wordBreak: 'break-words' }}>Bulk Schedule</Typography>
           </Button>
-        </div>
+        </Box>
       </CardHeader>
       <CardContent>
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid w-full grid-cols-2">
+          <TabsList sx={{ display: 'grid', width: '100%', gridTemplateColumns: 'repeat(2, 1fr)' }}>
             <TabsTrigger value="compose">Compose</TabsTrigger>
             <TabsTrigger value="schedule">Schedule</TabsTrigger>
           </TabsList>
 
-          <TabsContent value="compose" className="space-y-4">
+          <TabsContent value="compose" sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             {/* Platform Selection */}
             <div className="space-y-2">
               <label className="text-sm font-medium">Select Platforms</label>

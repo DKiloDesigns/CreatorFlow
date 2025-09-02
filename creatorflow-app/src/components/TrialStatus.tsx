@@ -67,8 +67,8 @@ export function TrialStatus({ trialStartDate, trialEndDate, className }: TrialSt
     <Card className={className}>
       <CardHeader>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <Box sx={{ color: 'warning.600' }}>
-            <Activity className="h-5 w-5" />
+          <Box sx={{ color: 'warning.main' }}>
+            <Activity style={{ width: 20, height: 20 }} />
           </Box>
           <Typography variant="h6">Pro Trial Status</Typography>
         </Box>
