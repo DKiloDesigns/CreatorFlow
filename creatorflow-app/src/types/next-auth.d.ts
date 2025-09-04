@@ -12,6 +12,9 @@ declare module "next-auth" {
       image?: string | null;
       impersonated?: boolean;
       impersonatorId?: string;
+      isTrialUser?: boolean;
+      promoCodeUsed?: string | null;
+      plan?: string;
     };
   }
 

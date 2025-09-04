@@ -21,8 +21,8 @@ import {
   Activity
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
+import { Tabs, Tab, TabPanel } from '@mui/material';
+import { Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 import { CardDescription } from '@/components/ui/base/Card';
 
 interface AnalyticsData {
@@ -71,6 +71,7 @@ export function AdvancedAnalyticsDashboard({
   const [loading, setLoading] = useState(true);
   const [selectedTimeRange, setSelectedTimeRange] = useState(timeRange);
   const [selectedPlatform, setSelectedPlatform] = useState<string>('all');
+  const [activeTab, setActiveTab] = useState(0);
 
   useEffect(() => {
     fetchAnalyticsData();
@@ -109,30 +110,26 @@ export function AdvancedAnalyticsDashboard({
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <Typography variant="h4" component="h2" sx={{ fontWeight: 'bold' }}>Advanced Analytics</Typography>
           <Box sx={{ display: 'flex', gap: 1 }}>
-            <Select value={selectedTimeRange} onValueChange={handleTimeRangeChange}>
-              <SelectTrigger className="w-32">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="7d">Last 7 days</SelectItem>
-                <SelectItem value="30d">Last 30 days</SelectItem>
-                <SelectItem value="90d">Last 90 days</SelectItem>
-                <SelectItem value="1y">Last year</SelectItem>
-              </SelectContent>
-            </Select>
-            <Select value={selectedPlatform} onValueChange={handlePlatformChange}>
-              <SelectTrigger className="w-40">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All Platforms</SelectItem>
-                <SelectItem value="instagram">Instagram</SelectItem>
-                <SelectItem value="twitter">Twitter</SelectItem>
-                <SelectItem value="linkedin">LinkedIn</SelectItem>
-                <SelectItem value="tiktok">TikTok</SelectItem>
-                <SelectItem value="youtube">YouTube</SelectItem>
-              </SelectContent>
-            </Select>
+            <FormControl className="w-32">
+              <InputLabel>Time Range</InputLabel>
+              <Select value={selectedTimeRange} onChange={(e) => handleTimeRangeChange(e.target.value)}>
+                <MenuItem value="7d">Last 7 days</MenuItem>
+                <MenuItem value="30d">Last 30 days</MenuItem>
+                <MenuItem value="90d">Last 90 days</MenuItem>
+                <MenuItem value="1y">Last year</MenuItem>
+              </Select>
+            </FormControl>
+            <FormControl className="w-40">
+              <InputLabel>Platform</InputLabel>
+              <Select value={selectedPlatform} onChange={(e) => handlePlatformChange(e.target.value)}>
+                <MenuItem value="all">All Platforms</MenuItem>
+                <MenuItem value="instagram">Instagram</MenuItem>
+                <MenuItem value="twitter">Twitter</MenuItem>
+                <MenuItem value="linkedin">LinkedIn</MenuItem>
+                <MenuItem value="tiktok">TikTok</MenuItem>
+                <MenuItem value="youtube">YouTube</MenuItem>
+              </Select>
+            </FormControl>
           </Box>
         </Box>
         <Grid container spacing={3}>
@@ -172,30 +169,26 @@ export function AdvancedAnalyticsDashboard({
           <Typography variant="body1" sx={{ color: 'grey.600' }}>Comprehensive insights into your content performance</Typography>
         </Box>
         <Box sx={{ display: 'flex', gap: 1 }}>
-          <Select value={selectedTimeRange} onValueChange={handleTimeRangeChange}>
-            <SelectTrigger className="w-32">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="7d">Last 7 days</SelectItem>
-              <SelectItem value="30d">Last 30 days</SelectItem>
-              <SelectItem value="90d">Last 90 days</SelectItem>
-              <SelectItem value="1y">Last year</SelectItem>
-            </SelectContent>
-          </Select>
-          <Select value={selectedPlatform} onValueChange={handlePlatformChange}>
-            <SelectTrigger className="w-40">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Platforms</SelectItem>
-              <SelectItem value="instagram">Instagram</SelectItem>
-              <SelectItem value="twitter">Twitter</SelectItem>
-              <SelectItem value="linkedin">LinkedIn</SelectItem>
-              <SelectItem value="tiktok">TikTok</SelectItem>
-              <SelectItem value="youtube">YouTube</SelectItem>
-            </SelectContent>
-          </Select>
+          <FormControl className="w-32">
+            <InputLabel>Time Range</InputLabel>
+            <Select value={selectedTimeRange} onChange={(e) => handleTimeRangeChange(e.target.value)}>
+              <MenuItem value="7d">Last 7 days</MenuItem>
+              <MenuItem value="30d">Last 30 days</MenuItem>
+              <MenuItem value="90d">Last 90 days</MenuItem>
+              <MenuItem value="1y">Last year</MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl className="w-40">
+            <InputLabel>Platform</InputLabel>
+            <Select value={selectedPlatform} onChange={(e) => handlePlatformChange(e.target.value)}>
+              <MenuItem value="all">All Platforms</MenuItem>
+              <MenuItem value="instagram">Instagram</MenuItem>
+              <MenuItem value="twitter">Twitter</MenuItem>
+              <MenuItem value="linkedin">LinkedIn</MenuItem>
+              <MenuItem value="tiktok">TikTok</MenuItem>
+              <MenuItem value="youtube">YouTube</MenuItem>
+            </Select>
+          </FormControl>
           <Button onClick={fetchAnalyticsData} variant="outlined" size="small">
             <Zap className="h-4 w-4 mr-2" />
             Refresh
@@ -267,15 +260,13 @@ export function AdvancedAnalyticsDashboard({
       </Grid>
 
       {/* Detailed Analytics Tabs */}
-      <Tabs defaultValue="overview" className="space-y-4">
-        <TabsList role="tablist" aria-label="Analytics dashboard tabs">
-          <TabsTrigger value="overview" role="tab" tabIndex={0}>Overview</TabsTrigger>
-          <TabsTrigger value="platforms" role="tab" tabIndex={0}>Platform Breakdown</TabsTrigger>
-          <TabsTrigger value="performance" role="tab" tabIndex={0}>Performance</TabsTrigger>
-          <TabsTrigger value="top-posts" role="tab" tabIndex={0}>Top Posts</TabsTrigger>
-        </TabsList>
+      <Tabs value={activeTab} onChange={(e, newValue) => setActiveTab(newValue)} className="space-y-4">
+        <Tab label="Overview" />
+        <Tab label="Platform Breakdown" />
+        <Tab label="Performance" />
+        <Tab label="Top Posts" />
 
-        <TabsContent value="overview" className="space-y-4">
+        <TabPanel value={activeTab} index={0} className="space-y-4">
           <Grid container spacing={3}>
             <Grid item xs={12} lg={6} component="div">
               <Card>
@@ -305,9 +296,9 @@ export function AdvancedAnalyticsDashboard({
               </Card>
             </Grid>
           </Grid>
-        </TabsContent>
+        </TabPanel>
 
-        <TabsContent value="platforms" className="space-y-4">
+        <TabPanel value={activeTab} index={1} className="space-y-4">
           <Card>
             <CardHeader>
               <Typography variant="h6">Platform Performance</Typography>
@@ -318,7 +309,7 @@ export function AdvancedAnalyticsDashboard({
                 {analyticsData.platformBreakdown.map((platform) => (
                   <div key={platform.platform} className="flex items-center justify-between p-4 border rounded-lg">
                     <div className="flex items-center space-x-3">
-                      <Badge variant="outline">{platform.platform}</Badge>
+                      <Badge variant="outline" label={platform.platform} />
                       <span className="text-sm text-gray-600">{platform.posts} posts</span>
                     </div>
                     <div className="flex items-center space-x-4">
@@ -336,9 +327,9 @@ export function AdvancedAnalyticsDashboard({
               </div>
             </CardContent>
           </Card>
-        </TabsContent>
+        </TabPanel>
 
-        <TabsContent value="performance" className="space-y-4">
+        <TabPanel value={activeTab} index={2} className="space-y-4">
           <Card>
             <CardHeader>
               <Typography variant="h6">Recent Performance</Typography>
@@ -371,9 +362,9 @@ export function AdvancedAnalyticsDashboard({
               </div>
             </CardContent>
           </Card>
-        </TabsContent>
+        </TabPanel>
 
-        <TabsContent value="top-posts" className="space-y-4">
+        <TabPanel value={activeTab} index={3} className="space-y-4">
           <Card>
             <CardHeader>
               <Typography variant="h6">Top Performing Posts</Typography>
@@ -385,7 +376,7 @@ export function AdvancedAnalyticsDashboard({
                   <div key={post.id} className="p-4 border rounded-lg">
                     <div className="flex items-start justify-between mb-2">
                       <div className="flex items-center space-x-2">
-                        <Badge variant="outline">{post.platform}</Badge>
+                        <Badge variant="outline" label={post.platform} />
                         <span className="text-xs text-gray-500">{post.publishedAt}</span>
                       </div>
                       <div className="flex items-center space-x-2">
@@ -405,7 +396,7 @@ export function AdvancedAnalyticsDashboard({
               </div>
             </CardContent>
           </Card>
-        </TabsContent>
+        </TabPanel>
       </Tabs>
     </Box>
   );

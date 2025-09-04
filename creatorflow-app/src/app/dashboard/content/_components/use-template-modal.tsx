@@ -8,10 +8,10 @@ import {
   Typography,
   Grid
 } from '@mui/material';
-import { FileText, Activity, Heart, Star } from 'lucide-react';
+import { FileText, Activity, Heart, Star, Image as ImageIcon, Sparkles, Copy, Download } from 'lucide-react';
 import { toast } from 'sonner';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
+import { Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 import { Badge } from '@/components/ui/feedback/mui-badge';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
@@ -214,7 +214,7 @@ export function UseTemplateModal({ open, onClose, onTemplateUsed }: UseTemplateM
       
       onTemplateUsed?.(templateData);
       toast.success(`Template "${selectedTemplate.name}" applied successfully!`);
-      onOpenChange(false);
+      onClose();
     } catch (error) {
       toast.error('Failed to apply template');
     } finally {
@@ -251,31 +251,27 @@ export function UseTemplateModal({ open, onClose, onTemplateUsed }: UseTemplateM
                 </div>
               </div>
               
-              <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                <SelectTrigger className="w-full sm:w-48">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
+              <FormControl className="w-full sm:w-48">
+                <InputLabel>Category</InputLabel>
+                <Select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
                   {categories.map(category => (
-                    <SelectItem key={category.value} value={category.value}>
+                    <MenuItem key={category.value} value={category.value}>
                       {category.label}
-                    </SelectItem>
+                    </MenuItem>
                   ))}
-                </SelectContent>
-              </Select>
+                </Select>
+              </FormControl>
               
-              <Select value={selectedPlatform} onValueChange={setSelectedPlatform}>
-                <SelectTrigger className="w-full sm:w-48">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
+              <FormControl className="w-full sm:w-48">
+                <InputLabel>Platform</InputLabel>
+                <Select value={selectedPlatform} onChange={(e) => setSelectedPlatform(e.target.value)}>
                   {platforms.map(platform => (
-                    <SelectItem key={platform.value} value={platform.value}>
+                    <MenuItem key={platform.value} value={platform.value}>
                       {platform.label}
-                    </SelectItem>
+                    </MenuItem>
                   ))}
-                </SelectContent>
-              </Select>
+                </Select>
+              </FormControl>
             </div>
             
             {/* Template Grid */}
@@ -306,11 +302,11 @@ export function UseTemplateModal({ open, onClose, onTemplateUsed }: UseTemplateM
                         </div>
                         <div className="flex items-center gap-1">
                           {template.isPremium && (
-                            <Badge variant="secondary" className="text-xs">PRO</Badge>
+                            <span className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">PRO</span>
                           )}
                           <Button
-                            variant="ghost"
-                            size="sm"
+                            variant="text"
+                            size="small"
                             onClick={(e) => {
                               e.stopPropagation();
                               handleFavoriteToggle(template.id);
@@ -347,8 +343,8 @@ export function UseTemplateModal({ open, onClose, onTemplateUsed }: UseTemplateM
               <div className="flex items-center justify-between mb-4">
                 <h3 className="font-medium">Customize Template</h3>
                 <Button
-                  variant="outline"
-                  size="sm"
+                  variant="outlined"
+                  size="small"
                   onClick={() => setSelectedTemplate(null)}
                 >
                   Back to Browse
@@ -415,7 +411,7 @@ export function UseTemplateModal({ open, onClose, onTemplateUsed }: UseTemplateM
                         <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
                           <ImageIcon className="h-8 w-8 text-gray-400 mx-auto mb-2" />
                           <p className="text-sm text-gray-500">{variable.placeholder}</p>
-                          <Button variant="outline" size="sm" className="mt-2">
+                          <Button variant="outlined" size="small" className="mt-2">
                             Upload Image
                           </Button>
                         </div>
@@ -446,11 +442,11 @@ export function UseTemplateModal({ open, onClose, onTemplateUsed }: UseTemplateM
                 </Button>
                 
                 <div className="flex gap-2">
-                  <Button variant="outline" size="sm" className="flex-1">
+                  <Button variant="outlined" size="small" className="flex-1">
                     <Copy className="h-4 w-4 mr-2" />
                     Duplicate
                   </Button>
-                  <Button variant="outline" size="sm" className="flex-1">
+                  <Button variant="outlined" size="small" className="flex-1">
                     <Download className="h-4 w-4 mr-2" />
                     Download
                   </Button>

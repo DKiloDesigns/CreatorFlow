@@ -224,8 +224,8 @@ const Input = forwardRef<HTMLDivElement, InputProps>(
       <Box sx={{ width: fullWidth ? '100%' : 'auto' }}>
         <StyledTextField
           ref={ref}
-          variant={muiVariant}
-          size={muiSize}
+          variant={muiVariant as any}
+          size={muiSize as any}
           fullWidth={fullWidth}
           label={label}
           value={inputValue}

@@ -21,18 +21,20 @@ export async function POST(req: NextRequest) {
     });
 
     // Log suggestions generation
-    await prisma.analyticsEvent.create({
+    await prisma.analyticsAggregation.create({
       data: {
         userId: session.user.id,
-        eventType: 'AI_SUGGESTIONS_GENERATED',
-        eventData: JSON.stringify({
+        type: 'AI_SUGGESTIONS_GENERATED',
+        platform: platform,
+        startDate: new Date(),
+        endDate: new Date(),
+        data: {
           type,
           platform,
           context,
           suggestionsCount: suggestions.length,
           suggestions: suggestions.map(s => ({ type: s.type, title: s.title, impact: s.impact })),
-        }),
-        timestamp: new Date(),
+        },
       },
     });
 
@@ -67,29 +69,28 @@ export async function GET(req: NextRequest) {
     // Get user's suggestions history
     const where: any = {
       userId: session.user.id,
-      eventType: 'AI_SUGGESTIONS_GENERATED',
+      type: 'AI_SUGGESTIONS_GENERATED',
     };
 
     if (type) {
-      where.eventData = {
-        contains: `"type":"${type}"`,
+      where.data = {
+        path: ['type'],
+        equals: type,
       };
     }
 
     if (platform) {
-      where.eventData = {
-        contains: `"platform":"${platform}"`,
-      };
+      where.platform = platform;
     }
 
-    const history = await prisma.analyticsEvent.findMany({
+    const history = await prisma.analyticsAggregation.findMany({
       where,
-      orderBy: { timestamp: 'desc' },
+      orderBy: { createdAt: 'desc' },
       take: limit,
     });
 
-    const formattedHistory = history.map(event => {
-      const data = JSON.parse(event.eventData);
+    const formattedHistory = history.map((event: any) => {
+      const data = event.data;
       return {
         id: event.id,
         type: data.type,

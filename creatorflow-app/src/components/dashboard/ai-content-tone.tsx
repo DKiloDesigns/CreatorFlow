@@ -55,7 +55,7 @@ export function AIContentTone({ onToneSelect, className }: AIContentToneProps) {
   };
 
   return (
-    <Card sx={{ height: '100%', ...(className && { className })}>
+    <Card sx={{ height: '100%' }} className={className}>
       <CardHeader
         title="AI Content Tone Analyzer"
         subheader="Analyze and adjust the tone of your content"

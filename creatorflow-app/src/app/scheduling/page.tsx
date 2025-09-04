@@ -22,12 +22,12 @@ import {
 import { Calendar, Activity, Edit, Trash2, Play, TrendingUp } from 'lucide-react';
 import { format } from 'date-fns';
 import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tab, TabPanel } from '@mui/material';
 import { CardDescription } from '@/components/ui/base/Card';
 
 interface ScheduledPost {
   id: string;
-  content: any;
+  content: string;
   platforms: string[];
   scheduledAt: string;
   metadata: any;
@@ -212,18 +212,16 @@ export default function SchedulingPage() {
 
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
         <Box>
-          <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="grid w-full grid-cols-4">
-              <TabsTrigger value="schedule">Schedule</TabsTrigger>
-              <TabsTrigger value="scheduled">Scheduled</TabsTrigger>
-              <TabsTrigger value="analytics">Analytics</TabsTrigger>
-              <TabsTrigger value="optimal">Optimal Times</TabsTrigger>
-            </TabsList>
+          <Tabs value={activeTab} onChange={(e, newValue) => setActiveTab(newValue)} sx={{ mb: 2 }}>
+            <Tab value="schedule" label="Schedule" />
+            <Tab value="scheduled" label="Scheduled" />
+            <Tab value="analytics" label="Analytics" />
+            <Tab value="optimal" label="Optimal Times" />
           </Tabs>
         </Box>
 
         <div>
-          <TabsContent value="schedule" className="space-y-6">
+          <TabPanel value="schedule" sx={{ p: 0 }}>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Schedule Form */}
               <Card>
@@ -277,10 +275,13 @@ export default function SchedulingPage() {
                     <div>
                       <label className="text-sm font-medium">Scheduled Date & Time</label>
                       <div className="flex gap-2 mt-2">
-                        <Calendar
-                          mode="single"
-                          selected={scheduledAt}
-                          onSelect={setScheduledAt}
+                        <TextField
+                          type="date"
+                          value={scheduledAt ? scheduledAt.toISOString().split('T')[0] : ''}
+                          onChange={(e) => {
+                            const date = e.target.value ? new Date(e.target.value) : undefined;
+                            setScheduledAt(date);
+                          }}
                           className="rounded-md border"
                         />
                         <TextField
@@ -311,20 +312,26 @@ export default function SchedulingPage() {
 
                       <div>
                         <label className="text-sm font-medium">Start Date</label>
-                        <Calendar
-                          mode="single"
-                          selected={startDate}
-                          onSelect={setStartDate}
+                        <TextField
+                          type="date"
+                          value={startDate ? startDate.toISOString().split('T')[0] : ''}
+                          onChange={(e) => {
+                            const date = e.target.value ? new Date(e.target.value) : undefined;
+                            setStartDate(date);
+                          }}
                           className="rounded-md border"
                         />
                       </div>
 
                       <div>
                         <label className="text-sm font-medium">End Date</label>
-                        <Calendar
-                          mode="single"
-                          selected={endDate}
-                          onSelect={setEndDate}
+                        <TextField
+                          type="date"
+                          value={endDate ? endDate.toISOString().split('T')[0] : ''}
+                          onChange={(e) => {
+                            const date = e.target.value ? new Date(e.target.value) : undefined;
+                            setEndDate(date);
+                          }}
                           className="rounded-md border"
                         />
                       </div>
@@ -361,9 +368,7 @@ export default function SchedulingPage() {
                         <Typography variant="subtitle2" className="text-gray-600">Platforms:</Typography>
                         <div className="flex flex-wrap gap-2 mt-1">
                           {platforms.map(platform => (
-                            <Badge key={platform} variant="secondary">
-                              {platform}
-                            </Badge>
+                            <Badge key={platform} variant="secondary" label={platform} />
                           ))}
                         </div>
                       </div>
@@ -382,9 +387,9 @@ export default function SchedulingPage() {
                 </CardContent>
               </Card>
             </div>
-          </TabsContent>
+          </TabPanel>
 
-          <TabsContent value="scheduled" className="space-y-6">
+          <TabPanel value="scheduled" sx={{ p: 0 }}>
             <Card>
               <CardHeader>
                 <Typography variant="h6">Scheduled Posts</Typography>
@@ -411,9 +416,7 @@ export default function SchedulingPage() {
                             </Typography>
                             <div className="flex gap-1">
                               {post.platforms.map(platform => (
-                                <Badge key={platform} variant="outline" className="text-xs">
-                                  {platform}
-                                </Badge>
+                                <Badge key={platform} variant="outline" className="text-xs" label={platform} />
                               ))}
                             </div>
                           </div>
@@ -437,9 +440,9 @@ export default function SchedulingPage() {
                 )}
               </CardContent>
             </Card>
-          </TabsContent>
+          </TabPanel>
 
-          <TabsContent value="analytics" className="space-y-6">
+          <TabPanel value="analytics" sx={{ p: 0 }}>
             <Card>
               <CardHeader>
                 <Typography variant="h6">Schedule Analytics</Typography>
@@ -482,9 +485,9 @@ export default function SchedulingPage() {
                 )}
               </CardContent>
             </Card>
-          </TabsContent>
+          </TabPanel>
 
-          <TabsContent value="optimal" className="space-y-6">
+          <TabPanel value="optimal" sx={{ p: 0 }}>
             <Card>
               <CardHeader>
                 <Typography variant="h6">Optimal Posting Times</Typography>
@@ -528,7 +531,7 @@ export default function SchedulingPage() {
                 )}
               </CardContent>
             </Card>
-          </TabsContent>
+          </TabPanel>
         </div>
       </Box>
 

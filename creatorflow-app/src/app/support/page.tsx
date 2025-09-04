@@ -132,7 +132,7 @@ export default function SupportPage() {
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <Search sx={{ color: 'text.disabled' }} />
+                    <Search style={{ color: 'inherit' }} />
                   </InputAdornment>
                 ),
               }}
@@ -201,7 +201,7 @@ export default function SupportPage() {
                             mb: 2 
                           }}
                         >
-                          <Icon sx={{ color: 'primary.main', fontSize: 24 }} />
+                          <Icon style={{ color: 'inherit', fontSize: 24 }} />
                         </Box>
                         <Typography 
                           variant="h6" 
@@ -284,7 +284,7 @@ export default function SupportPage() {
                           mb: 2 
                         }}
                       >
-                        <Icon sx={{ color: 'primary.main', fontSize: 24 }} />
+                        <Icon style={{ color: 'inherit', fontSize: 24 }} />
                       </Box>
                       <Typography 
                         variant="h6" 
@@ -378,7 +378,7 @@ export default function SupportPage() {
                       flexShrink: 0 
                     }}
                   >
-                    <FileText sx={{ color: 'primary.main', fontSize: 24 }} />
+                    <FileText style={{ color: 'inherit', fontSize: 24 }} />
                   </Box>
                   <Box>
                     <Typography 
@@ -432,7 +432,7 @@ export default function SupportPage() {
                       flexShrink: 0 
                     }}
                   >
-                    <Shield sx={{ color: 'secondary.main', fontSize: 24 }} />
+                    <Shield style={{ color: 'inherit', fontSize: 24 }} />
                   </Box>
                   <Box>
                     <Typography 

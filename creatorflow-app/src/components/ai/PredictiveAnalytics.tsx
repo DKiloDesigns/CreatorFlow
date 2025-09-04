@@ -47,7 +47,7 @@ import {
   Warning,
   Info,
   Lightbulb,
-  Target,
+  GpsFixed,
   Speed,
   Visibility,
   ThumbUp,

@@ -86,25 +86,33 @@ async function handlePaymentSucceeded(event: any) {
         stripeCustomerId: paymentIntent.customer,
       },
       data: {
-        subscriptionStatus: 'active',
-        subscriptionTier: getSubscriptionTier(paymentIntent.amount),
-        lastPaymentAt: new Date(),
+        // TODO: Add subscriptionStatus field to User model
+        // subscriptionStatus: 'active',
+        // TODO: Add subscriptionTier field to User model
+        // subscriptionTier: getSubscriptionTier(paymentIntent.amount),
+        // TODO: Add lastPaymentAt field to User model
+        // lastPaymentAt: new Date(),
       },
     });
 
     // Log payment event
-    await prisma.analyticsEvent.create({
-      data: {
-        userId: await getUserIdByStripeCustomer(paymentIntent.customer),
-        eventType: 'PAYMENT_SUCCEEDED',
-        eventData: JSON.stringify({
-          amount: paymentIntent.amount,
-          currency: paymentIntent.currency,
-          paymentIntentId: paymentIntent.id,
-        }),
-        timestamp: new Date(),
-      },
-    });
+    const userId = await getUserIdByStripeCustomer(paymentIntent.customer);
+    if (userId) {
+      await prisma.analyticsAggregation.create({
+        data: {
+          userId,
+          type: 'PAYMENT_SUCCEEDED',
+          platform: 'stripe',
+          startDate: new Date(),
+          endDate: new Date(),
+          data: {
+            amount: paymentIntent.amount,
+            currency: paymentIntent.currency,
+            paymentIntentId: paymentIntent.id,
+          },
+        },
+      });
+    }
 
     console.log(`Payment succeeded: ${paymentIntent.id}`);
   } catch (error) {
@@ -122,25 +130,32 @@ async function handlePaymentFailed(event: any) {
         stripeCustomerId: paymentIntent.customer,
       },
       data: {
-        subscriptionStatus: 'past_due',
-        lastPaymentFailedAt: new Date(),
+        // TODO: Add subscriptionStatus field to User model
+        // subscriptionStatus: 'past_due',
+        // TODO: Add lastPaymentFailedAt field to User model
+        // lastPaymentFailedAt: new Date(),
       },
     });
 
     // Log payment failure
-    await prisma.analyticsEvent.create({
-      data: {
-        userId: await getUserIdByStripeCustomer(paymentIntent.customer),
-        eventType: 'PAYMENT_FAILED',
-        eventData: JSON.stringify({
-          amount: paymentIntent.amount,
-          currency: paymentIntent.currency,
-          paymentIntentId: paymentIntent.id,
-          failureReason: paymentIntent.last_payment_error?.message,
-        }),
-        timestamp: new Date(),
-      },
-    });
+    const userId = await getUserIdByStripeCustomer(paymentIntent.customer);
+    if (userId) {
+      await prisma.analyticsAggregation.create({
+        data: {
+          userId,
+          type: 'PAYMENT_FAILED',
+          platform: 'stripe',
+          startDate: new Date(),
+          endDate: new Date(),
+          data: {
+            amount: paymentIntent.amount,
+            currency: paymentIntent.currency,
+            paymentIntentId: paymentIntent.id,
+            failureReason: paymentIntent.last_payment_error?.message,
+          },
+        },
+      });
+    }
 
     console.log(`Payment failed: ${paymentIntent.id}`);
   } catch (error) {
@@ -158,11 +173,16 @@ async function handleSubscriptionCreated(event: any) {
         stripeCustomerId: subscription.customer,
       },
       data: {
-        subscriptionId: subscription.id,
-        subscriptionStatus: subscription.status,
-        subscriptionTier: getSubscriptionTier(subscription.items.data[0].price.unit_amount),
-        subscriptionStartDate: new Date(subscription.current_period_start * 1000),
-        subscriptionEndDate: new Date(subscription.current_period_end * 1000),
+        // TODO: Add subscriptionId field to User model
+        // subscriptionId: subscription.id,
+        // TODO: Add subscriptionStatus field to User model
+        // subscriptionStatus: subscription.status,
+        // TODO: Add subscriptionTier field to User model
+        // subscriptionTier: getSubscriptionTier(subscription.items.data[0].price.unit_amount),
+        // TODO: Add subscriptionStartDate field to User model
+        // subscriptionStartDate: new Date(subscription.current_period_start * 1000),
+        // TODO: Add subscriptionEndDate field to User model
+        // subscriptionEndDate: new Date(subscription.current_period_end * 1000),
       },
     });
 
@@ -182,9 +202,12 @@ async function handleSubscriptionUpdated(event: any) {
         stripeCustomerId: subscription.customer,
       },
       data: {
-        subscriptionStatus: subscription.status,
-        subscriptionTier: getSubscriptionTier(subscription.items.data[0].price.unit_amount),
-        subscriptionEndDate: new Date(subscription.current_period_end * 1000),
+        // TODO: Add subscriptionStatus field to User model
+        // subscriptionStatus: subscription.status,
+        // TODO: Add subscriptionTier field to User model
+        // subscriptionTier: getSubscriptionTier(subscription.items.data[0].price.unit_amount),
+        // TODO: Add subscriptionEndDate field to User model
+        // subscriptionEndDate: new Date(subscription.current_period_end * 1000),
       },
     });
 
@@ -204,8 +227,10 @@ async function handleSubscriptionDeleted(event: any) {
         stripeCustomerId: subscription.customer,
       },
       data: {
-        subscriptionStatus: 'canceled',
-        subscriptionEndDate: new Date(subscription.canceled_at * 1000),
+        // TODO: Add subscriptionStatus field to User model
+        // subscriptionStatus: 'canceled',
+        // TODO: Add subscriptionEndDate field to User model
+        // subscriptionEndDate: new Date(subscription.canceled_at * 1000),
       },
     });
 
@@ -220,18 +245,23 @@ async function handleInvoicePaymentSucceeded(event: any) {
     const invoice = event.data.object;
     
     // Log successful invoice payment
-    await prisma.analyticsEvent.create({
-      data: {
-        userId: await getUserIdByStripeCustomer(invoice.customer),
-        eventType: 'INVOICE_PAYMENT_SUCCEEDED',
-        eventData: JSON.stringify({
-          invoiceId: invoice.id,
-          amount: invoice.amount_paid,
-          currency: invoice.currency,
-        }),
-        timestamp: new Date(),
-      },
-    });
+    const userId = await getUserIdByStripeCustomer(invoice.customer);
+    if (userId) {
+      await prisma.analyticsAggregation.create({
+        data: {
+          userId,
+          type: 'INVOICE_PAYMENT_SUCCEEDED',
+          platform: 'stripe',
+          startDate: new Date(),
+          endDate: new Date(),
+          data: {
+            invoiceId: invoice.id,
+            amount: invoice.amount_paid,
+            currency: invoice.currency,
+          },
+        },
+      });
+    }
 
     console.log(`Invoice payment succeeded: ${invoice.id}`);
   } catch (error) {
@@ -244,18 +274,23 @@ async function handleInvoicePaymentFailed(event: any) {
     const invoice = event.data.object;
     
     // Log failed invoice payment
-    await prisma.analyticsEvent.create({
-      data: {
-        userId: await getUserIdByStripeCustomer(invoice.customer),
-        eventType: 'INVOICE_PAYMENT_FAILED',
-        eventData: JSON.stringify({
-          invoiceId: invoice.id,
-          amount: invoice.amount_due,
-          currency: invoice.currency,
-        }),
-        timestamp: new Date(),
-      },
-    });
+    const userId = await getUserIdByStripeCustomer(invoice.customer);
+    if (userId) {
+      await prisma.analyticsAggregation.create({
+        data: {
+          userId,
+          type: 'INVOICE_PAYMENT_FAILED',
+          platform: 'stripe',
+          startDate: new Date(),
+          endDate: new Date(),
+          data: {
+            invoiceId: invoice.id,
+            amount: invoice.amount_due,
+            currency: invoice.currency,
+          },
+        },
+      });
+    }
 
     console.log(`Invoice payment failed: ${invoice.id}`);
   } catch (error) {

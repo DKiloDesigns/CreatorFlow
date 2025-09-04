@@ -52,7 +52,6 @@ const ScrollBar = React.forwardRef<
 >(({ className, orientation = "vertical", ...props }, ref) => (
   <Box
     ref={ref}
-    orientation={orientation}
     className={className}
     sx={{
       display: 'flex',

@@ -63,7 +63,7 @@ import {
   Error,
   Info,
   Lightbulb,
-  Target,
+  GpsFixed,
   Speed,
   Timer,
   FlashOn,

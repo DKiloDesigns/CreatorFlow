@@ -82,8 +82,8 @@ export function TrialStatus({ trialStartDate, trialEndDate, className }: TrialSt
             <Typography variant="body2" sx={{ fontWeight: 'medium' }}>Trial Progress</Typography>
             <Chip
               label={isExpired ? "Expired" : isExpiringSoon ? "Expiring Soon" : "Active"}
-              variant={isExpired ? "filled" : isExpiringSoon ? "outlined" : "default"}
-              color={isExpired ? "error" : isExpiringSoon ? "warning" : "default"}
+              variant={isExpired ? "filled" : isExpiringSoon ? "outlined" : "filled"}
+              color={isExpired ? "error" : isExpiringSoon ? "warning" : "success"}
             />
           </Grid>
 

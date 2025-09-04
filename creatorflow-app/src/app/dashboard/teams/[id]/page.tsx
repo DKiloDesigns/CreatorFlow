@@ -9,7 +9,8 @@ import {
   CardHeader, 
   Button,
   Typography,
-  Chip
+  Chip,
+  Box
 } from '@mui/material';
 import { Users, Activity, Settings, Edit, ArrowLeft } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
@@ -321,7 +322,7 @@ export default function TeamDetailPage() {
     return (
       <div className="space-y-6">
         <div className="flex items-center space-x-4">
-          <Button variant="ghost" size="sm" disabled>
+          <Button variant="text" size="small" disabled>
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back
           </Button>
@@ -336,7 +337,7 @@ export default function TeamDetailPage() {
     return (
       <div className="space-y-6">
         <div className="flex items-center space-x-4">
-          <Button asChild variant="ghost" size="sm">
+          <Button variant="text" size="small">
             <Link href="/dashboard/teams">
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back
@@ -349,8 +350,8 @@ export default function TeamDetailPage() {
             <p className="text-muted-foreground text-center mb-4">
               The team you're looking for doesn't exist or you don't have access to it.
             </p>
-            <Button asChild>
-              <Link href="/dashboard/teams">Back to Teams</Link>
+            <Button component={Link} href="/dashboard/teams">
+              Back to Teams
             </Button>
           </CardContent>
         </Card>
@@ -362,7 +363,7 @@ export default function TeamDetailPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center space-x-4">
-          <Button asChild variant="ghost" size="sm">
+          <Button variant="text" size="small">
             <Link href="/dashboard/teams">
               <ArrowLeft className="h-4 w-4 mr-2" />
               Back
@@ -375,13 +376,11 @@ export default function TeamDetailPage() {
         </div>
         {isOwner && (
           <div className="flex space-x-2">
-            <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
-              <DialogTrigger asChild>
-                <Button variant="outline">
-                  <Edit className="h-4 w-4 mr-2" />
-                  Edit
-                </Button>
-              </DialogTrigger>
+            <Dialog open={editDialogOpen} onClose={() => setEditDialogOpen(false)}>
+              <Button variant="outlined" onClick={() => setEditDialogOpen(true)}>
+                <Edit className="h-4 w-4 mr-2" />
+                Edit
+              </Button>
               <DialogContent>
                 <DialogHeader>
                   <DialogTitle>Edit Team</DialogTitle>
@@ -410,7 +409,7 @@ export default function TeamDetailPage() {
                     />
                   </div>
                   <div className="flex justify-end space-x-2">
-                    <Button variant="outline" onClick={() => setEditDialogOpen(false)}>
+                    <Button variant="outlined" onClick={() => setEditDialogOpen(false)}>
                       Cancel
                     </Button>
                     <Button onClick={updateTeam} disabled={editing}>
@@ -420,13 +419,15 @@ export default function TeamDetailPage() {
                 </div>
               </DialogContent>
             </Dialog>
-            <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
-              <DialogTrigger asChild>
-                <Button variant="destructive">
-                  <Trash2 className="h-4 w-4 mr-2" />
-                  Delete
-                </Button>
-              </DialogTrigger>
+            <Dialog open={deleteDialogOpen} onClose={() => setDeleteDialogOpen(false)}>
+              <Button 
+                variant="contained" 
+                color="error" 
+                onClick={() => setDeleteDialogOpen(true)}
+              >
+                <Trash2 className="h-4 w-4 mr-2" />
+                Delete
+              </Button>
               <DialogContent>
                 <DialogHeader>
                   <DialogTitle>Delete Team</DialogTitle>
@@ -435,10 +436,10 @@ export default function TeamDetailPage() {
                   </DialogDescription>
                 </DialogHeader>
                 <div className="flex justify-end space-x-2">
-                  <Button variant="outline" onClick={() => setDeleteDialogOpen(false)}>
+                  <Button variant="outlined" onClick={() => setDeleteDialogOpen(false)}>
                     Cancel
                   </Button>
-                  <Button variant="destructive" onClick={deleteTeam} disabled={deleting}>
+                  <Button variant="contained" color="error" onClick={deleteTeam} disabled={deleting}>
                     {deleting ? 'Deleting...' : 'Delete Team'}
                   </Button>
                 </div>
@@ -508,13 +509,11 @@ export default function TeamDetailPage() {
               </CardHeader>
               <CardContent className="space-y-3">
                 {isOwner && (
-                  <Dialog open={inviteDialogOpen} onOpenChange={setInviteDialogOpen}>
-                    <DialogTrigger asChild>
-                      <Button className="w-full justify-start">
-                        <UserPlus className="h-4 w-4 mr-2" />
-                        Invite Member
-                      </Button>
-                    </DialogTrigger>
+                  <Dialog open={inviteDialogOpen} onClose={() => setInviteDialogOpen(false)}>
+                    <Button className="w-full justify-start" onClick={() => setInviteDialogOpen(true)}>
+                      <UserPlus className="h-4 w-4 mr-2" />
+                      Invite Member
+                    </Button>
                     <DialogContent>
                       <DialogHeader>
                         <DialogTitle>Invite Team Member</DialogTitle>
@@ -546,7 +545,7 @@ export default function TeamDetailPage() {
                           </select>
                         </div>
                         <div className="flex justify-end space-x-2">
-                          <Button variant="outline" onClick={() => setInviteDialogOpen(false)}>
+                          <Button variant="outlined" onClick={() => setInviteDialogOpen(false)}>
                             Cancel
                           </Button>
                           <Button onClick={sendInvitation} disabled={inviting}>
@@ -557,11 +556,14 @@ export default function TeamDetailPage() {
                     </DialogContent>
                   </Dialog>
                 )}
-                <Button asChild variant="outline" className="w-full justify-start">
-                  <Link href={`/dashboard/teams/${teamId}?tab=members`}>
-                    <Users2 className="h-4 w-4 mr-2" />
-                    View All Members
-                  </Link>
+                <Button 
+                  component={Link} 
+                  href={`/dashboard/teams/${teamId}?tab=members`}
+                  variant="outlined" 
+                  className="w-full justify-start"
+                >
+                  <Users2 className="h-4 w-4 mr-2" />
+                  View All Members
                 </Button>
               </CardContent>
             </Card>
@@ -572,13 +574,11 @@ export default function TeamDetailPage() {
           <div className="flex items-center justify-between">
             <h3 className="text-lg font-semibold">Team Members</h3>
             {isOwner && (
-              <Dialog open={inviteDialogOpen} onOpenChange={setInviteDialogOpen}>
-                <DialogTrigger asChild>
-                  <Button>
-                    <UserPlus className="h-4 w-4 mr-2" />
-                    Invite Member
-                  </Button>
-                </DialogTrigger>
+              <Dialog open={inviteDialogOpen} onClose={() => setInviteDialogOpen(false)}>
+                <Button onClick={() => setInviteDialogOpen(true)}>
+                  <UserPlus className="h-4 w-4 mr-2" />
+                  Invite Member
+                </Button>
                 <DialogContent>
                   <DialogHeader>
                     <DialogTitle>Invite Team Member</DialogTitle>
@@ -610,7 +610,7 @@ export default function TeamDetailPage() {
                       </select>
                     </div>
                     <div className="flex justify-end space-x-2">
-                      <Button variant="outline" onClick={() => setInviteDialogOpen(false)}>
+                      <Button variant="outlined" onClick={() => setInviteDialogOpen(false)}>
                         Cancel
                       </Button>
                       <Button onClick={sendInvitation} disabled={inviting}>
@@ -647,8 +647,8 @@ export default function TeamDetailPage() {
                     </Badge>
                     {isOwner && member.role !== 'OWNER' && (
                       <Button
-                        variant="ghost"
-                        size="sm"
+                        variant="text"
+                        size="small"
                         onClick={() => removeMember(member.user.id)}
                       >
                         <Trash2 className="h-4 w-4" />
@@ -665,13 +665,11 @@ export default function TeamDetailPage() {
           <div className="flex items-center justify-between">
             <h3 className="text-lg font-semibold">Team Invitations</h3>
             {isOwner && (
-              <Dialog open={inviteDialogOpen} onOpenChange={setInviteDialogOpen}>
-                <DialogTrigger asChild>
-                  <Button>
-                    <UserPlus className="h-4 w-4 mr-2" />
-                    Send Invitation
-                  </Button>
-                </DialogTrigger>
+              <Dialog open={inviteDialogOpen} onClose={() => setInviteDialogOpen(false)}>
+                <Button onClick={() => setInviteDialogOpen(true)}>
+                  <UserPlus className="h-4 w-4 mr-2" />
+                  Send Invitation
+                </Button>
                 <DialogContent>
                   <DialogHeader>
                     <DialogTitle>Invite Team Member</DialogTitle>
@@ -703,7 +701,7 @@ export default function TeamDetailPage() {
                       </select>
                     </div>
                     <div className="flex justify-end space-x-2">
-                      <Button variant="outline" onClick={() => setInviteDialogOpen(false)}>
+                      <Button variant="outlined" onClick={() => setInviteDialogOpen(false)}>
                         Cancel
                       </Button>
                       <Button onClick={sendInvitation} disabled={inviting}>
@@ -769,16 +767,16 @@ export default function TeamDetailPage() {
                         {isOwner && status === 'PENDING' && (
                           <>
                             <Button
-                              variant="ghost"
-                              size="sm"
+                              variant="text"
+                              size="small"
                               onClick={() => resendInvitation(invitation.id)}
                               disabled={resending === invitation.id}
                             >
                               {resending === invitation.id ? 'Resending...' : 'Resend'}
                             </Button>
                             <Button
-                              variant="ghost"
-                              size="sm"
+                              variant="text"
+                              size="small"
                               onClick={() => cancelInvitation(invitation.id)}
                             >
                               <Trash2 className="h-4 w-4" />

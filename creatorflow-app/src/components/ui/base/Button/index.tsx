@@ -152,8 +152,8 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <StyledButton
         ref={ref}
-        variant={muiVariant}
-        size={muiSize}
+        variant={muiVariant as any}
+        size={muiSize as any}
         disabled={disabled || loading}
         fullWidth={fullWidth}
         rounded={rounded}

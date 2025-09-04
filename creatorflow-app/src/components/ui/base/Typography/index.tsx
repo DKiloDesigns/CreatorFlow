@@ -165,9 +165,9 @@ const Typography = forwardRef<HTMLElement, TypographyProps>(
     return (
       <StyledTypography
         ref={ref}
-        variant={muiVariant}
+        variant={muiVariant as any}
         component={Component}
-        color={muiColor}
+        color={muiColor as any}
         size={size}
         weight={weight}
         align={align}

@@ -462,7 +462,7 @@ export default function IntegrationHub() {
       setIntegrations(mockIntegrations);
       setWorkflows(mockWorkflows);
       setApiEndpoints(mockApiEndpoints);
-    } catch (err) {
+    } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Failed to load integration data');
     } finally {
       setLoading(false);

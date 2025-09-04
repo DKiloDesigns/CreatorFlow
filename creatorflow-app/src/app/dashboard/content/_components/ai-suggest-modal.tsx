@@ -88,7 +88,7 @@ export default function AiSuggestModal({ _open, onOpenChange, type, onInsert, on
         )}
       </div>
       <div className="flex justify-end mt-4">
-        <AlertDialogCancel asChild>
+        <AlertDialogCancel>
           <Button variant="text" onClick={() => onOpenChange(false)}>Close</Button>
         </AlertDialogCancel>
       </div>

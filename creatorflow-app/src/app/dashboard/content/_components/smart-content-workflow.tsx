@@ -52,7 +52,7 @@ import {
 import { toast } from 'sonner';
 import { SmartCaptionGenerator } from '@/components/ui/smart-caption-generator';
 import { AdvancedHashtagRecommender } from '@/components/ui/advanced-hashtag-recommender';
-import { ContentIdeasGenerator } from '@/components/ui/content-ideas-generator';
+
 import { OptimalPostingTimePredictor } from '@/components/ui/optimal-posting-time-predictor';
 import { ContentPerformancePredictor } from '@/components/ui/content-performance-predictor';
 
@@ -396,8 +396,7 @@ export default function SmartContentWorkflow() {
             <CardHeader title="Smart Caption Generator" />
             <CardContent>
               <SmartCaptionGenerator
-                content={workflowData.content}
-                onCaptionGenerated={(caption) => setWorkflowData(prev => ({ ...prev, caption }))}
+                provider="openai"
               />
             </CardContent>
           </Card>
@@ -408,8 +407,7 @@ export default function SmartContentWorkflow() {
             <CardHeader title="Advanced Hashtag Recommender" />
             <CardContent>
               <AdvancedHashtagRecommender
-                content={workflowData.content}
-                onHashtagsGenerated={(hashtags) => setWorkflowData(prev => ({ ...prev, hashtags }))}
+                provider="openai"
               />
             </CardContent>
           </Card>
@@ -420,12 +418,7 @@ export default function SmartContentWorkflow() {
             <CardHeader title="Content Performance Predictor" />
             <CardContent>
               <ContentPerformancePredictor
-                content={workflowData.content}
-                hashtags={workflowData.hashtags}
-                platforms={workflowData.platforms}
-                onPredictionGenerated={(prediction) => {
-                  setWorkflowData(prev => ({ ...prev, predictedPerformance: prediction }));
-                }}
+                provider="openai"
               />
             </CardContent>
           </Card>
@@ -458,10 +451,7 @@ export default function SmartContentWorkflow() {
             <CardHeader title="Optimal Posting Time Predictor" />
             <CardContent>
               <OptimalPostingTimePredictor
-                content={workflowData.content}
-                hashtags={workflowData.hashtags}
-                platforms={workflowData.platforms}
-                onTimePredicted={(time) => setWorkflowData(prev => ({ ...prev, postingTime: time }))}
+                provider="openai"
               />
             </CardContent>
           </Card>

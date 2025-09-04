@@ -57,7 +57,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           type={type}
           fullWidth
           variant="outlined"
-          size="small"
+          size={"small" as any}
           sx={{
             '& .MuiOutlinedInput-root': {
               height: 40,
@@ -79,7 +79,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           inputRef={ref}
           error={hasError}
           {...ariaProps}
-          {...props}
+          {...(props as any)}
         />
         
         {/* SACA: Error message for screen readers */}

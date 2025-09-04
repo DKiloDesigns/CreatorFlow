@@ -142,7 +142,7 @@ export function Card({
   return (
     <StyledCard 
       className={className} 
-      variant={variant} 
+      variant={variant as 'outlined' | undefined} 
       role="article"
       aria-label={ariaLabel}
       aria-describedby={ariaDescribedBy}

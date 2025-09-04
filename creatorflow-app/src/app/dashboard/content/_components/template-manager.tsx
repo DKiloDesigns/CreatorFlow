@@ -5,12 +5,12 @@ import {
   Typography,
   Grid,
   Tabs,
-  Tab
+  Tab,
+  Chip
 } from '@mui/material';
 import { FileText, Activity, Edit } from 'lucide-react';
 import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogCancel } from '@/components/ui/alert-dialog';
-import { Badge } from '@/components/ui/badge';
-import { TabsContent } from '@/components/ui/tabs';
+
 
 import { toast } from 'sonner';
 import { Star, Pin, Eye, Share2, Users } from 'lucide-react';
@@ -574,19 +574,15 @@ export default function TemplateManager({ onInsert }: { onInsert?: (text: string
 
   // Render
   return (
-    <AlertDialog open={open} onOpenChange={setOpen}>
-      <AlertDialogTrigger asChild>
-        <Button variant="outline" className="mb-2" aria-label="Manage Templates">Manage Templates</Button>
-      </AlertDialogTrigger>
+    <AlertDialog open={open} onClose={() => setOpen(false)}>
+      <Button variant="outlined" className="mb-2" aria-label="Manage Templates">Manage Templates</Button>
       <AlertDialogContent aria-modal="true" role="dialog" aria-labelledby="template-manager-title" className="max-w-lg w-full sm:max-w-2xl md:max-w-3xl lg:max-w-4xl xl:max-w-5xl max-w-[95vw] p-2 sm:p-6">
         <div className="flex justify-between items-center mb-2">
           <AlertDialogHeader>
             <AlertDialogTitle id="template-manager-title">Template Manager</AlertDialogTitle>
             <AlertDialogDescription>Manage your caption and hashtag templates.</AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogCancel asChild>
-            <Button variant="ghost" size="icon" aria-label="Close" className="ml-2">✕</Button>
-          </AlertDialogCancel>
+          <Button variant="text" aria-label="Close" className="ml-2" onClick={() => setOpen(false)}>✕</Button>
         </div>
         <div className="flex gap-4">
           {/* Folder Sidebar */}
@@ -607,13 +603,13 @@ export default function TemplateManager({ onInsert }: { onInsert?: (text: string
             {renamingFolderId ? (
               <div className="mb-2 flex gap-1">
                 <input ref={folderInputRef} value={renamingFolderName} onChange={e => setRenamingFolderName(e.target.value)} className="border rounded px-1 py-0.5 flex-1" />
-                <Button size="sm" onClick={() => handleRenameFolder(renamingFolderId)}>Save</Button>
-                <Button size="sm" variant="ghost" onClick={() => setRenamingFolderId(null)}>Cancel</Button>
+                <Button size="small" onClick={() => handleRenameFolder(renamingFolderId)}>Save</Button>
+                <Button size="small" variant="text" onClick={() => setRenamingFolderId(null)}>Cancel</Button>
               </div>
             ) : (
               <div className="mb-2 flex gap-1">
                 <input value={newFolderName} onChange={e => setNewFolderName(e.target.value)} placeholder="New folder" className="border rounded px-1 py-0.5 flex-1" />
-                <Button size="sm" onClick={handleCreateFolder}>Add</Button>
+                <Button size="small" onClick={handleCreateFolder}>Add</Button>
               </div>
             )}
           </div>
@@ -643,7 +639,7 @@ export default function TemplateManager({ onInsert }: { onInsert?: (text: string
             </div>
             <div className="flex justify-between items-center mb-2">
               <div></div>
-              <Button variant="secondary" onClick={() => setAiModalOpen(true)} aria-label="AI Suggestion">AI Suggest</Button>
+              <Button variant="outlined" onClick={() => setAiModalOpen(true)} aria-label="AI Suggestion">AI Suggest</Button>
             </div>
             {tab === 'captions' && (
               <div className="mb-4">
@@ -655,7 +651,7 @@ export default function TemplateManager({ onInsert }: { onInsert?: (text: string
                         <li key={s.id} className="flex items-center gap-2 bg-yellow-50 border rounded px-2 py-1">
                           <span className="flex-1 truncate font-medium">{s.name}</span>
                           <span className="flex-1 truncate text-gray-600">{s.content}</span>
-                          <Button size="sm" onClick={() => handleInsert(s.content)}>Insert</Button>
+                          <Button size="small" onClick={() => handleInsert(s.content)}>Insert</Button>
                         </li>
                       ))}
                     </ul>
@@ -663,12 +659,12 @@ export default function TemplateManager({ onInsert }: { onInsert?: (text: string
                 )}
               </div>
             )}
-            <Tabs value={tab} onValueChange={(v: string) => setTab(v as 'captions' | 'hashtags')}>
-              <TabsList aria-label="Template type tabs">
-                <TabsTrigger value="captions">Captions</TabsTrigger>
-                <TabsTrigger value="hashtags">Hashtags</TabsTrigger>
-              </TabsList>
-              <TabsContent value="captions">
+            <Tabs value={tab} onChange={(e, value) => setTab(value as 'captions' | 'hashtags')} sx={{ mb: 3 }}>
+              <Tab label="Captions" value="captions" />
+              <Tab label="Hashtags" value="hashtags" />
+            </Tabs>
+            {tab === 'captions' && (
+              <Box sx={{ mt: 3 }}>
                 {loading ? <div>Loading...</div> : error ? <div className="text-red-500">{error}</div> : (
                   <>
                     <div className="flex gap-2 mb-2">
@@ -680,7 +676,7 @@ export default function TemplateManager({ onInsert }: { onInsert?: (text: string
                       <label className="inline-block">
                         <span className="sr-only">Import</span>
                         <input type="file" accept="application/json" onChange={e => handleImport(e, 'captions')} className="hidden" disabled={importing} />
-                        <Button asChild disabled={importing}><span>Import</span></Button>
+                        <Button disabled={importing}>Import</Button>
                       </label>
                     </div>
                     <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEndCaptions}>
@@ -705,7 +701,7 @@ export default function TemplateManager({ onInsert }: { onInsert?: (text: string
                                 <>
                                   <input value={editingName} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEditingName(e.target.value)} aria-label="Edit caption name" className="border rounded px-2 py-1 w-32" placeholder="Name" />
                                   <input value={editingText} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEditingText(e.target.value)} aria-label="Edit caption content" className="border rounded px-2 py-1 flex-1" placeholder="Content" />
-                                  <Button size="sm" variant="outline" onClick={() => setSnippetModalOpen(true)} aria-label="Insert snippet or variable">Snippets/Vars</Button>
+                                  <Button size="small" variant="outlined" onClick={() => setSnippetModalOpen(true)} aria-label="Insert snippet or variable">Snippets/Vars</Button>
                                   <select value={category} onChange={e => setCategory(e.target.value)} aria-label="Edit category" className="border rounded px-2 py-1">
                                     {/* Add category options here */}
                                   </select>
@@ -720,8 +716,8 @@ export default function TemplateManager({ onInsert }: { onInsert?: (text: string
                                     <option value="">No Folder</option>
                                     {folders.map(f => <option key={f.id} value={f.id}>{f.name}</option>)}
                                   </select>
-                                  <Button size="sm" onClick={handleSaveEdit} aria-label="Save caption">Save</Button>
-                                  <Button size="sm" variant="ghost" onClick={() => setEditingId(null)} aria-label="Cancel edit">Cancel</Button>
+                                  <Button size="small" onClick={handleSaveEdit} aria-label="Save caption">Save</Button>
+                                  <Button size="small" variant="text" onClick={() => setEditingId(null)} aria-label="Cancel edit">Cancel</Button>
                                 </>
                               ) : (
                                 <>
@@ -730,13 +726,13 @@ export default function TemplateManager({ onInsert }: { onInsert?: (text: string
                                   <span className="text-xs text-muted-foreground" tabIndex={0}>{t.category || 'Uncategorized'}</span>
                                   <span className="text-xs text-blue-600" tabIndex={0}>{Array.isArray(t.tags) ? t.tags.join(', ') : ''}</span>
                                   <span className="text-xs bg-gray-200 rounded px-1 ml-1">{t.language || 'en'}</span>
-                                  <Button size="sm" variant="ghost" onClick={() => handleEdit(t.id, t.name, t.content, t.category, t.tags)} aria-label="Edit caption">Edit</Button>
-                                  <Button size="sm" variant="ghost" onClick={() => handleDelete(t.id)} aria-label="Delete caption">Delete</Button>
-                                  <Button size="sm" onClick={() => handleInsert(t.content)} aria-label="Insert caption">Insert</Button>
-                                  <Button size="sm" variant="ghost" onClick={() => handleShowHistory(t.id, 'captions')} aria-label="Show version history">History</Button>
-                                  <Button size="sm" variant="ghost" onClick={() => { setShareModalOpen(true); setShareTarget(t); setShareType('captions'); }} aria-label="Share caption template"><Share2 className="h-4 w-4" /></Button>
+                                  <Button size="small" variant="text" onClick={() => handleEdit(t.id, t.name, t.content, t.category, t.tags)} aria-label="Edit caption">Edit</Button>
+                                  <Button size="small" variant="text" onClick={() => handleDelete(t.id)} aria-label="Delete caption">Delete</Button>
+                                  <Button size="small" onClick={() => handleInsert(t.content)} aria-label="Insert caption">Insert</Button>
+                                  <Button size="small" variant="text" onClick={() => handleShowHistory(t.id, 'captions')} aria-label="Show version history">History</Button>
+                                  <Button size="small" variant="text" onClick={() => { setShareModalOpen(true); setShareTarget(t); setShareType('captions'); }} aria-label="Share caption template"><Share2 className="h-4 w-4" /></Button>
                                   {sharedIds.includes(t.id) && <Users className="h-4 w-4 text-green-500" aria-label="Shared" />}
-                                  <Button size="sm" variant="ghost" onClick={() => { setUsageModalOpen(true); setUsageTarget(t); setUsageType('captions'); }} aria-label="Usage analytics">Usage</Button>
+                                  <Button size="small" variant="text" onClick={() => { setUsageModalOpen(true); setUsageTarget(t); setUsageType('captions'); }} aria-label="Usage analytics">Usage</Button>
                                   <span className="text-xs text-gray-500 ml-1">{t.usageCount || 0} uses</span>
                                   <span className="text-xs text-gray-400 ml-1">{t.updatedAt ? new Date(t.updatedAt).toLocaleDateString() : ''}</span>
                                   {getTemplateStatus(t) && <span className={`text-xs ml-1 ${getTemplateStatus(t) === 'expired' ? 'text-red-500' : getTemplateStatus(t) === 'scheduled' ? 'text-blue-500' : 'text-green-600'}`}>{getTemplateStatus(t)}</span>}
@@ -756,7 +752,7 @@ export default function TemplateManager({ onInsert }: { onInsert?: (text: string
                 <div className="flex gap-2 mt-2">
                   <input value={newName} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewName(e.target.value)} placeholder="Name" aria-label="New caption name" className="border rounded px-2 py-1 w-32" />
                   <input value={newText} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewText(e.target.value)} placeholder="Content" aria-label="New caption content" className="border rounded px-2 py-1 flex-1" />
-                  <Button size="sm" variant="outline" onClick={() => setSnippetModalOpen(true)} aria-label="Insert snippet or variable">Snippets/Vars</Button>
+                  <Button size="small" variant="outlined" onClick={() => setSnippetModalOpen(true)} aria-label="Insert snippet or variable">Snippets/Vars</Button>
                   <select value={category} onChange={e => setCategory(e.target.value)} aria-label="Category" className="border rounded px-2 py-1">
                     {/* Add category options here */}
                   </select>
@@ -774,8 +770,10 @@ export default function TemplateManager({ onInsert }: { onInsert?: (text: string
                   <Button onClick={handleAdd} aria-label="Add caption template" disabled={loading}>Add</Button>
                 </div>
                 {renderPreview(newText)}
-              </TabsContent>
-              <TabsContent value="hashtags">
+              </Box>
+            )}
+            {tab === 'hashtags' && (
+              <Box sx={{ mt: 3 }}>
                 {loading ? <div>Loading...</div> : error ? <div className="text-red-500">{error}</div> : (
                   <>
                     <div className="flex gap-2 mb-2">
@@ -787,7 +785,7 @@ export default function TemplateManager({ onInsert }: { onInsert?: (text: string
                       <label className="inline-block">
                         <span className="sr-only">Import</span>
                         <input type="file" accept="application/json" onChange={e => handleImport(e, 'hashtags')} className="hidden" disabled={importing} />
-                        <Button asChild disabled={importing}><span>Import</span></Button>
+                        <Button disabled={importing}>Import</Button>
                       </label>
                     </div>
                     <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEndHashtags}>
@@ -812,7 +810,7 @@ export default function TemplateManager({ onInsert }: { onInsert?: (text: string
                                 <>
                                   <input value={editingName} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEditingName(e.target.value)} aria-label="Edit hashtag group name" className="border rounded px-2 py-1 w-32" placeholder="Name" />
                                   <input value={editingText} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEditingText(e.target.value)} aria-label="Edit hashtags" className="border rounded px-2 py-1 flex-1" placeholder="Hashtags (space separated)" />
-                                  <Button size="sm" variant="outline" onClick={() => setSnippetModalOpen(true)} aria-label="Insert snippet or variable">Snippets/Vars</Button>
+                                  <Button size="small" variant="outlined" onClick={() => setSnippetModalOpen(true)} aria-label="Insert snippet or variable">Snippets/Vars</Button>
                                   <select value={category} onChange={e => setCategory(e.target.value)} aria-label="Edit category" className="border rounded px-2 py-1">
                                     {/* Add category options here */}
                                   </select>
@@ -823,8 +821,8 @@ export default function TemplateManager({ onInsert }: { onInsert?: (text: string
                                   <select value={editingLanguage} onChange={e => setEditingLanguage(e.target.value)} aria-label="Edit language" className="border rounded px-2 py-1 w-32">
                                     {LANGUAGES.map(l => <option key={l.code} value={l.code}>{l.label}</option>)}
                                   </select>
-                                  <Button size="sm" onClick={handleSaveEdit} aria-label="Save hashtag group">Save</Button>
-                                  <Button size="sm" variant="ghost" onClick={() => setEditingId(null)} aria-label="Cancel edit">Cancel</Button>
+                                  <Button size="small" onClick={handleSaveEdit} aria-label="Save hashtag group">Save</Button>
+                                  <Button size="small" variant="text" onClick={() => setEditingId(null)} aria-label="Cancel edit">Cancel</Button>
                                 </>
                               ) : (
                                 <>
@@ -833,12 +831,12 @@ export default function TemplateManager({ onInsert }: { onInsert?: (text: string
                                   <span className="text-xs text-muted-foreground" tabIndex={0}>{t.category || 'Uncategorized'}</span>
                                   <span className="text-xs text-blue-600" tabIndex={0}>{Array.isArray(t.tags) ? t.tags.join(', ') : ''}</span>
                                   <span className="text-xs bg-gray-200 rounded px-1 ml-1">{t.language || 'en'}</span>
-                                  <Button size="sm" variant="ghost" onClick={() => handleEdit(t.id, t.name, Array.isArray(t.hashtags) ? t.hashtags.join(' ') : t.hashtags, t.category, t.tags)} aria-label="Edit hashtag group">Edit</Button>
-                                  <Button size="sm" variant="ghost" onClick={() => handleDelete(t.id)} aria-label="Delete hashtag group">Delete</Button>
-                                  <Button size="sm" onClick={() => handleInsert(Array.isArray(t.hashtags) ? t.hashtags.join(' ') : t.hashtags)} aria-label="Insert hashtags">Insert</Button>
-                                  <Button size="sm" variant="ghost" onClick={() => { setShareModalOpen(true); setShareTarget(t); setShareType('hashtags'); }} aria-label="Share hashtag group"><Share2 className="h-4 w-4" /></Button>
+                                  <Button size="small" variant="text" onClick={() => handleEdit(t.id, t.name, Array.isArray(t.hashtags) ? t.hashtags.join(' ') : t.hashtags, t.category, t.tags)} aria-label="Edit hashtag group">Edit</Button>
+                                  <Button size="small" variant="text" onClick={() => handleDelete(t.id)} aria-label="Delete hashtag group">Delete</Button>
+                                  <Button size="small" onClick={() => handleInsert(Array.isArray(t.hashtags) ? t.hashtags.join(' ') : t.hashtags)} aria-label="Insert hashtags">Insert</Button>
+                                  <Button size="small" variant="text" onClick={() => { setShareModalOpen(true); setShareTarget(t); setShareType('hashtags'); }} aria-label="Share hashtag group"><Share2 className="h-4 w-4" /></Button>
                                   {sharedIds.includes(t.id) && <Users className="h-4 w-4 text-green-500" aria-label="Shared" />}
-                                  <Button size="sm" variant="ghost" onClick={() => { setUsageModalOpen(true); setUsageTarget(t); setUsageType('hashtags'); }} aria-label="Usage analytics">Usage</Button>
+                                  <Button size="small" variant="text" onClick={() => { setUsageModalOpen(true); setUsageTarget(t); setUsageType('hashtags'); }} aria-label="Usage analytics">Usage</Button>
                                   <span className="text-xs text-gray-500 ml-1">{t.usageCount || 0} uses</span>
                                   <span className="text-xs text-gray-400 ml-1">{t.updatedAt ? new Date(t.updatedAt).toLocaleDateString() : ''}</span>
                                   {getTemplateStatus(t) && <span className={`text-xs ml-1 ${getTemplateStatus(t) === 'expired' ? 'text-red-500' : getTemplateStatus(t) === 'scheduled' ? 'text-blue-500' : 'text-green-600'}`}>{getTemplateStatus(t)}</span>}
@@ -858,7 +856,7 @@ export default function TemplateManager({ onInsert }: { onInsert?: (text: string
                 <div className="flex gap-2 mt-2">
                   <input value={newName} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewName(e.target.value)} placeholder="Name" aria-label="New hashtag group name" className="border rounded px-2 py-1 w-32" />
                   <input value={newText} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setNewText(e.target.value)} placeholder="Hashtags (space separated)" aria-label="New hashtags" className="border rounded px-2 py-1 flex-1" />
-                  <Button size="sm" variant="outline" onClick={() => setSnippetModalOpen(true)} aria-label="Insert snippet or variable">Snippets/Vars</Button>
+                  <Button size="small" variant="outlined" onClick={() => setSnippetModalOpen(true)} aria-label="Insert snippet or variable">Snippets/Vars</Button>
                   <select value={category} onChange={e => setCategory(e.target.value)} aria-label="Category" className="border rounded px-2 py-1">
                     {/* Add category options here */}
                   </select>
@@ -876,14 +874,12 @@ export default function TemplateManager({ onInsert }: { onInsert?: (text: string
                   <Button onClick={handleAdd} aria-label="Add hashtag group" disabled={loading}>Add</Button>
                 </div>
                 {renderPreview(newText)}
-              </TabsContent>
-            </Tabs>
+              </Box>
+            )}
           </div>
         </div>
         <div className="flex justify-end mt-4">
-          <AlertDialogCancel asChild>
-            <Button variant="ghost">Close</Button>
-          </AlertDialogCancel>
+          <Button variant="text" onClick={() => setOpen(false)}>Close</Button>
         </div>
       </AlertDialogContent>
       {shareModalOpen && shareTarget && (
@@ -904,7 +900,7 @@ export default function TemplateManager({ onInsert }: { onInsert?: (text: string
       )}
       {aiModalOpen && (
         <AiSuggestModal
-          open={aiModalOpen}
+          _open={aiModalOpen}
           onOpenChange={setAiModalOpen}
           type={tab}
           onInsert={text => {

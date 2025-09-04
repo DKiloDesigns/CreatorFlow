@@ -65,13 +65,14 @@ class AnalyticsEngine {
 
     // Store in database
     try {
-      await prisma.analyticsEvent.create({
+      await prisma.analyticsAggregation.create({
         data: {
           userId,
-          eventType,
-          eventData: JSON.stringify(eventData),
-          timestamp: event.timestamp,
+          type: eventType,
           platform,
+          startDate: event.timestamp,
+          endDate: event.timestamp,
+          data: eventData,
           metadata: metadata ? JSON.stringify(metadata) : null,
         },
       });
@@ -458,23 +459,23 @@ class AnalyticsEngine {
   private async getUserEvents(userId: string, days: number): Promise<AnalyticsEvent[]> {
     const startDate = new Date(Date.now() - days * 24 * 60 * 60 * 1000);
     
-    const events = await prisma.analyticsEvent.findMany({
+    const events = await prisma.analyticsAggregation.findMany({
       where: {
         userId,
-        timestamp: { gte: startDate },
+        startDate: { gte: startDate },
       },
-      orderBy: { timestamp: 'asc' },
+      orderBy: { startDate: 'asc' },
     });
 
     return events.map(event => ({
       id: event.id,
       userId: event.userId,
-      eventType: event.eventType,
-      eventData: JSON.parse(event.eventData),
-      timestamp: event.timestamp,
+      eventType: event.type,
+      eventData: event.data,
+      timestamp: event.startDate,
       platform: event.platform,
       metadata: event.metadata ? JSON.parse(event.metadata) : undefined,
-    }));
+    })) as any;
   }
 
   private calculateUserEngagementScore(user: any): number {
@@ -591,10 +592,10 @@ class AnalyticsEngine {
   }
 
   private async getActiveUsers(since: Date): Promise<number> {
-    const result = await prisma.analyticsEvent.groupBy({
+    const result = await prisma.analyticsAggregation.groupBy({
       by: ['userId'],
       where: {
-        timestamp: { gte: since },
+        startDate: { gte: since },
       },
     });
     return result.length;
@@ -610,20 +611,20 @@ class AnalyticsEngine {
   }
 
   private async getTotalEvents(since: Date): Promise<number> {
-    const result = await prisma.analyticsEvent.count({
+    const result = await prisma.analyticsAggregation.count({
       where: {
-        timestamp: { gte: since },
+        startDate: { gte: since },
       },
     });
     return result;
   }
 
   private async getPlatformUsage(since: Date): Promise<Record<string, number>> {
-    const result = await prisma.analyticsEvent.groupBy({
+    const result = await prisma.analyticsAggregation.groupBy({
       by: ['platform'],
       _count: { platform: true },
       where: {
-        timestamp: { gte: since },
+        startDate: { gte: since },
         platform: { not: null },
       },
     });

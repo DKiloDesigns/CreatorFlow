@@ -11,7 +11,7 @@ import {
   Grid,
   Chip
 } from '@mui/material';
-import { Bell, Activity, Settings } from 'lucide-react';
+import { Bell, Activity, Settings, AlertTriangle, CheckCircle } from 'lucide-react';
 import { NotificationToast } from '@/components/ui/notification-badge';
 
 export default function NotificationTestPage() {
@@ -186,7 +186,7 @@ export default function NotificationTestPage() {
               <Button 
                 onClick={() => sendTestNotification(notification)}
                 disabled={isLoading}
-                variant="outline"
+                variant="outlined"
                 className="w-full"
               >
                 <Send className="h-4 w-4 mr-2" />

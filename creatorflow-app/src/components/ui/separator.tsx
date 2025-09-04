@@ -14,7 +14,7 @@ const Separator = React.forwardRef<
   ) => (
     <Divider
       ref={ref}
-      orientation={orientation}
+      component="div"
       className={className}
       sx={{
         flexShrink: 0,

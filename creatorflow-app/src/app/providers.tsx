@@ -1,16 +1,19 @@
 'use client';
 import { SessionProvider } from "next-auth/react";
-import { ThemeProvider } from "./theme-provider";
-import { AppThemeProvider } from "@/components/providers/mui-theme-provider";
+import { MinimalThemeProvider } from "@/contexts/MinimalThemeContext";
+import { MinimalCollaborationProvider } from "@/contexts/MinimalCollaborationContext";
+import { SmartNotificationProvider } from "@/contexts/SmartNotificationContext";
 
 export function Providers({ children }: { children: React.ReactNode }) {
   return (
     <SessionProvider>
-      <ThemeProvider>
-        <AppThemeProvider>
-          {children}
-        </AppThemeProvider>
-      </ThemeProvider>
+      <MinimalThemeProvider>
+        <MinimalCollaborationProvider>
+          <SmartNotificationProvider>
+            {children}
+          </SmartNotificationProvider>
+        </MinimalCollaborationProvider>
+      </MinimalThemeProvider>
     </SessionProvider>
   );
 } 

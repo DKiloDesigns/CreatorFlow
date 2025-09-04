@@ -137,8 +137,8 @@ export const Pagination = forwardRef<HTMLElement, PaginationProps>(
     return (
       <StyledPagination
         ref={ref}
-        variant={variant}
-        size={size}
+        variant={variant as any}
+        size={size as any}
         color={color}
         showFirstButton={showFirstButton}
         showLastButton={showLastButton}
@@ -267,10 +267,10 @@ export const PageSizeSelector = forwardRef<HTMLDivElement, PageSizeSelectorProps
         }}
         {...props}
       >
-        <FormControl size={size} variant="outlined">
+        <FormControl variant="outlined">
           <InputLabel>{label}</InputLabel>
           <StyledSelect
-            size={size}
+            size={size as any}
             value={pageSize}
             onChange={(e) => onPageSizeChange(e.target.value as number)}
             label={label}

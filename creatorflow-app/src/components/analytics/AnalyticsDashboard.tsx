@@ -155,7 +155,7 @@ export function AnalyticsDashboard() {
   if (!analyticsData) {
     return (
       <Box sx={{ textAlign: 'center', py: 4 }}>
-        <BarChart3 sx={{ mx: 'auto', width: 48, height: 48, color: 'text.secondary', mb: 2 }} />
+        <BarChart3 style={{ margin: '0 auto', width: 48, height: 48, color: 'inherit', marginBottom: 16 }} />
         <Typography variant="h6" component="h3" sx={{ mb: 1, color: 'text.primary' }}>
           No Analytics Data
         </Typography>
@@ -218,10 +218,10 @@ export function AnalyticsDashboard() {
               bgcolor: 'background.paper'
             }}
           >
-            <RefreshCw sx={{ 
+            <RefreshCw style={{ 
               width: 16, 
               height: 16, 
-              mr: 1,
+              marginRight: 8,
               animation: refreshing ? 'spin 1s linear infinite' : 'none'
             }} />
             Refresh
@@ -235,7 +235,7 @@ export function AnalyticsDashboard() {
               minHeight: 44
             }}
           >
-            <Lightbulb sx={{ width: 16, height: 16, mr: 1 }} />
+            <Lightbulb style={{ width: 16, height: 16, marginRight: 8 }} />
             Generate Insights
           </Button>
         </Box>
@@ -257,7 +257,7 @@ export function AnalyticsDashboard() {
               <Typography variant="h6" component="h3" sx={{ fontSize: '0.875rem', fontWeight: 500, wordBreak: 'break-word' }}>
                 Total Posts
               </Typography>
-              <MessageSquare sx={{ width: 16, height: 16, color: 'text.secondary', flexShrink: 0 }} />
+              <MessageSquare style={{ width: 16, height: 16, color: 'inherit', flexShrink: 0 }} />
             </CardHeader>
             <CardContent>
               <Typography variant="h4" component="div" sx={{ fontWeight: 'bold' }}>
@@ -284,7 +284,7 @@ export function AnalyticsDashboard() {
               <Typography variant="h6" component="h3" sx={{ fontSize: '0.875rem', fontWeight: 500, wordBreak: 'break-word' }}>
                 Total Engagement
               </Typography>
-              <Heart sx={{ width: 16, height: 16, color: 'text.secondary', flexShrink: 0 }} />
+              <Heart style={{ width: 16, height: 16, color: 'inherit', flexShrink: 0 }} />
             </CardHeader>
             <CardContent>
               <Typography variant="h4" component="div" sx={{ fontWeight: 'bold' }}>
@@ -311,7 +311,7 @@ export function AnalyticsDashboard() {
               <Typography variant="h6" component="h3" sx={{ fontSize: '0.875rem', fontWeight: 500, wordBreak: 'break-word' }}>
                 Avg Engagement Rate
               </Typography>
-              <TrendingUp sx={{ width: 16, height: 16, color: 'text.secondary', flexShrink: 0 }} />
+              <TrendingUp style={{ width: 16, height: 16, color: 'inherit', flexShrink: 0 }} />
             </CardHeader>
             <CardContent>
               <Typography variant="h4" component="div" sx={{ fontWeight: 'bold' }}>
@@ -338,7 +338,7 @@ export function AnalyticsDashboard() {
               <Typography variant="h6" component="h3" sx={{ fontSize: '0.875rem', fontWeight: 500, wordBreak: 'break-word' }}>
                 Followers
               </Typography>
-              <Users sx={{ width: 16, height: 16, color: 'text.secondary', flexShrink: 0 }} />
+              <Users style={{ width: 16, height: 16, color: 'inherit', flexShrink: 0 }} />
             </CardHeader>
             <CardContent>
               <Typography variant="h4" component="div" sx={{ fontWeight: 'bold' }}>
@@ -350,7 +350,7 @@ export function AnalyticsDashboard() {
             </CardContent>
           </Card>
         </Grid>
-      </Box>
+      </Grid>
 
       {/* Charts Section */}
       <Grid container spacing={3} sx={{ mt: 3 }}>

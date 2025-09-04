@@ -27,19 +27,21 @@ export async function POST(req: NextRequest) {
     });
 
     // Log content optimization
-    await prisma.analyticsEvent.create({
+    await prisma.analyticsAggregation.create({
       data: {
         userId: session.user.id,
-        eventType: 'AI_CONTENT_OPTIMIZED',
-        eventData: JSON.stringify({
+        type: 'AI_CONTENT_OPTIMIZED',
+        platform: platform,
+        startDate: new Date(),
+        endDate: new Date(),
+        data: {
           platform,
           targetMetrics,
           originalLength: content.length,
           optimizedLength: optimization.optimizedContent.length,
           suggestions: optimization.suggestions,
           predictedPerformance: optimization.predictedPerformance,
-        }),
-        timestamp: new Date(),
+        },
       },
     });
 
@@ -73,23 +75,21 @@ export async function GET(req: NextRequest) {
     // Get user's optimization history
     const where: any = {
       userId: session.user.id,
-      eventType: 'AI_CONTENT_OPTIMIZED',
+      type: 'AI_CONTENT_OPTIMIZED',
     };
 
     if (platform) {
-      where.eventData = {
-        contains: `"platform":"${platform}"`,
-      };
+      where.platform = platform;
     }
 
-    const history = await prisma.analyticsEvent.findMany({
+    const history = await prisma.analyticsAggregation.findMany({
       where,
-      orderBy: { timestamp: 'desc' },
+      orderBy: { createdAt: 'desc' },
       take: limit,
     });
 
-    const formattedHistory = history.map(event => {
-      const data = JSON.parse(event.eventData);
+    const formattedHistory = history.map((event: any) => {
+      const data = event.data;
       return {
         id: event.id,
         platform: data.platform,

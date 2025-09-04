@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Card, CardContent, CardHeader } from '@/components/ui/mui-card';
 import { Button } from '@/components/ui/mui-button';
 import { Textarea } from '@/components/ui/textarea';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/navigation/Tabs';
+import { Tabs, Tab, TabPanel } from '@mui/material';
 import { Badge } from '@/components/ui/feedback/mui-badge';
 import { AlertDialog } from '@/components/ui/alert-dialog';
 import { 
@@ -100,7 +100,7 @@ export function EnhancedComposer({ onSubmit, className }: EnhancedComposerProps)
   const [content, setContent] = useState('');
   const [selectedPlatforms, setSelectedPlatforms] = useState<string[]>([]);
   const [showPreview, setShowPreview] = useState(false);
-  const [activeTab, setActiveTab] = useState('compose');
+  const [activeTab, setActiveTab] = useState(0);
   const [aiModalOpen, setAiModalOpen] = useState(false);
   const [aiModalType, setAiModalType] = useState<'captions' | 'hashtags'>('captions');
   const [isClient, setIsClient] = useState(false);
@@ -354,13 +354,11 @@ export function EnhancedComposer({ onSubmit, className }: EnhancedComposerProps)
         </Box>
       </CardHeader>
       <CardContent>
-        <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList sx={{ display: 'grid', width: '100%', gridTemplateColumns: 'repeat(2, 1fr)' }}>
-            <TabsTrigger value="compose">Compose</TabsTrigger>
-            <TabsTrigger value="schedule">Schedule</TabsTrigger>
-          </TabsList>
+        <Tabs value={activeTab} onChange={(e, newValue) => setActiveTab(newValue)}>
+          <Tab label="Compose" />
+          <Tab label="Schedule" />
 
-          <TabsContent value="compose" sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+          <TabPanel value={activeTab} index={0} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             {/* Platform Selection */}
             <div className="space-y-2">
               <label className="text-sm font-medium">Select Platforms</label>
@@ -531,20 +529,20 @@ export function EnhancedComposer({ onSubmit, className }: EnhancedComposerProps)
                 Post Now
               </Button>
             </div>
-          </TabsContent>
+          </TabPanel>
 
-          <TabsContent value="schedule" className="space-y-4">
+          <TabPanel value={activeTab} index={1} className="space-y-4">
             <div className="text-center py-8 text-muted-foreground">
               <Calendar className="h-12 w-12 mx-auto mb-4 opacity-50" />
               <p>Scheduling feature coming soon!</p>
             </div>
-          </TabsContent>
+          </TabPanel>
         </Tabs>
       </CardContent>
 
       {/* AI Suggestion Modal */}
       {isClient && (
-        <AlertDialog open={aiModalOpen} onOpenChange={setAiModalOpen}>
+        <AlertDialog open={aiModalOpen} onClose={() => setAiModalOpen(false)}>
           <AiSuggestModal
             _open={aiModalOpen}
             onOpenChange={setAiModalOpen}

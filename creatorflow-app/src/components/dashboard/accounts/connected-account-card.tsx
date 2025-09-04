@@ -54,7 +54,7 @@ export default function ConnectedAccountCard({ account, onDisconnect, isDisconne
       <CardHeader sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', pb: 1 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
           {PlatformIcon ? (
-            <PlatformIcon style={{ width: 24, height: 24, color: 'text.secondary' }} />
+            <PlatformIcon className="w-6 h-6 text-gray-500" />
           ) : (
             <Box sx={{ width: 24, height: 24, bgcolor: 'action.hover', borderRadius: 0.5 }} /> // Fallback if no icon
           )}
@@ -70,12 +70,10 @@ export default function ConnectedAccountCard({ account, onDisconnect, isDisconne
       </CardContent>
       <CardFooter>
          <AlertDialog>
-          <AlertDialogTrigger asChild>
-             <Button variant="contained" color="error" size="small" disabled={isDisconnecting}>
-              <Trash2 style={{ marginRight: 8, width: 16, height: 16 }} />
-              Disconnect
-            </Button>
-          </AlertDialogTrigger>
+          <Button variant="contained" color="error" size="small" disabled={isDisconnecting} onClick={() => {/* Handle disconnect */}}>
+            <Trash2 style={{ marginRight: 8, width: 16, height: 16 }} />
+            Disconnect
+          </Button>
           <AlertDialogContent>
             <AlertDialogHeader>
               <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>

@@ -95,7 +95,7 @@ export default function ClientRoot({ children }: { children: React.ReactNode }) 
               </div>
             </div>
             <div className="flex items-center gap-2 sm:gap-4">
-              <ThemeToggle isLandingPage={true} />
+              <ThemeToggle />
               <Link href="/auth" className="text-sm font-medium hover:underline text-black">Login</Link>
             </div>
           </div>

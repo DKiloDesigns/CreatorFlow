@@ -80,7 +80,7 @@ export default function ThemeAwareContent() {
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
               {/* Theme Toggle */}
               <Box sx={{ minWidth: 44, minHeight: 44, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <ThemeToggle isLandingPage={true} />
+                <ThemeToggle />
               </Box>
               
               {/* Sign In Link */}

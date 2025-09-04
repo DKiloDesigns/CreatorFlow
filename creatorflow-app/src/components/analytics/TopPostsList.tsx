@@ -20,15 +20,15 @@ export function TopPostsList({ posts }: TopPostsListProps) {
   const getPlatformIcon = (platform: string) => {
     switch (platform.toLowerCase()) {
       case 'instagram':
-        return <Instagram sx={{ height: 16, width: 16 }} />;
+        return <Instagram style={{ height: 16, width: 16 }} />;
       case 'twitter':
-        return <Twitter sx={{ height: 16, width: 16 }} />;
+        return <Twitter style={{ height: 16, width: 16 }} />;
       case 'linkedin':
-        return <Linkedin sx={{ height: 16, width: 16 }} />;
+        return <Linkedin style={{ height: 16, width: 16 }} />;
       case 'youtube':
-        return <Youtube sx={{ height: 16, width: 16 }} />;
+        return <Youtube style={{ height: 16, width: 16 }} />;
       default:
-        return <TrendingUp sx={{ height: 16, width: 16 }} />;
+        return <TrendingUp style={{ height: 16, width: 16 }} />;
     }
   };
 
@@ -56,7 +56,7 @@ export function TopPostsList({ posts }: TopPostsListProps) {
   if (posts.length === 0) {
     return (
       <Box sx={{ textAlign: 'center', py: 4 }}>
-        <TrendingUp sx={{ mx: 'auto', height: 48, width: 48, color: 'text.secondary', mb: 2 }} />
+        <TrendingUp style={{ margin: '0 auto', height: 48, width: 48, color: 'inherit', marginBottom: 16 }} />
         <Typography variant="h6" sx={{ fontWeight: 500, color: 'text.primary', mb: 1 }}>
           No Top Posts
         </Typography>
@@ -124,9 +124,9 @@ export function TopPostsList({ posts }: TopPostsListProps) {
                   </Typography>
                 </Box>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, color: 'text.disabled' }}>
-                  <Heart sx={{ height: 16, width: 16 }} />
-                  <MessageSquare sx={{ height: 16, width: 16 }} />
-                  <Share2 sx={{ height: 16, width: 16 }} />
+                  <Heart style={{ height: 16, width: 16 }} />
+                  <MessageSquare style={{ height: 16, width: 16 }} />
+                  <Share2 style={{ height: 16, width: 16 }} />
                 </Box>
               </Box>
             </Box>

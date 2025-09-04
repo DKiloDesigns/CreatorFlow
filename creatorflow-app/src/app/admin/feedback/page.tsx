@@ -6,12 +6,18 @@ import {
   CardContent, 
   CardHeader, 
   Button,
-  Typography
+  Typography,
+  Box,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Tabs,
+  Tab,
+  Chip
 } from '@mui/material';
 import { MessageSquare, Star, RefreshCw, Download, Filter, Users, BarChart3 } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
-import { TabsContent, Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
+
 
 interface FeedbackData {
   feedback: Array<{
@@ -56,6 +62,7 @@ export default function FeedbackDashboard() {
     isTrialUser: '',
   });
   const [refreshing, setRefreshing] = useState(false);
+  const [activeTab, setActiveTab] = useState('all');
 
   useEffect(() => {
     fetchFeedbackData();
@@ -169,47 +176,41 @@ export default function FeedbackDashboard() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div>
               <label className="text-sm font-medium">Category</label>
-              <Select value={filters.category} onValueChange={(value) => setFilters(prev => ({ ...prev, category: value }))}>
-                <SelectTrigger>
-                  <SelectValue placeholder="All categories" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="">All categories</SelectItem>
-                  <SelectItem value="general">General Feedback</SelectItem>
-                  <SelectItem value="ui_ux">User Interface</SelectItem>
-                  <SelectItem value="features">Features</SelectItem>
-                  <SelectItem value="performance">Performance</SelectItem>
-                  <SelectItem value="pricing">Pricing</SelectItem>
-                  <SelectItem value="support">Support</SelectItem>
-                  <SelectItem value="campaign">Campaign Experience</SelectItem>
-                </SelectContent>
-              </Select>
+              <FormControl fullWidth>
+                <InputLabel>Category</InputLabel>
+                <Select value={filters.category} onChange={(e) => setFilters(prev => ({ ...prev, category: e.target.value }))}>
+                  <MenuItem value="">All categories</MenuItem>
+                  <MenuItem value="general">General Feedback</MenuItem>
+                  <MenuItem value="ui_ux">User Interface</MenuItem>
+                  <MenuItem value="features">Features</MenuItem>
+                  <MenuItem value="performance">Performance</MenuItem>
+                  <MenuItem value="pricing">Pricing</MenuItem>
+                  <MenuItem value="support">Support</MenuItem>
+                  <MenuItem value="campaign">Campaign Experience</MenuItem>
+                </Select>
+              </FormControl>
             </div>
             <div>
               <label className="text-sm font-medium">Source</label>
-              <Select value={filters.source} onValueChange={(value) => setFilters(prev => ({ ...prev, source: value }))}>
-                <SelectTrigger>
-                  <SelectValue placeholder="All sources" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="">All sources</SelectItem>
-                  <SelectItem value="web">Web</SelectItem>
-                  <SelectItem value="mobile">Mobile</SelectItem>
-                </SelectContent>
-              </Select>
+              <FormControl fullWidth>
+                <InputLabel>Source</InputLabel>
+                <Select value={filters.source} onChange={(e) => setFilters(prev => ({ ...prev, source: e.target.value }))}>
+                  <MenuItem value="">All sources</MenuItem>
+                  <MenuItem value="web">Web</MenuItem>
+                  <MenuItem value="mobile">Mobile</MenuItem>
+                </Select>
+              </FormControl>
             </div>
             <div>
               <label className="text-sm font-medium">User Type</label>
-              <Select value={filters.isTrialUser} onValueChange={(value) => setFilters(prev => ({ ...prev, isTrialUser: value }))}>
-                <SelectTrigger>
-                  <SelectValue placeholder="All users" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="">All users</SelectItem>
-                  <SelectItem value="true">Trial users only</SelectItem>
-                  <SelectItem value="false">Paid users only</SelectItem>
-                </SelectContent>
-              </Select>
+              <FormControl fullWidth>
+                <InputLabel>User Type</InputLabel>
+                <Select value={filters.isTrialUser} onChange={(e) => setFilters(prev => ({ ...prev, isTrialUser: e.target.value }))}>
+                  <MenuItem value="">All users</MenuItem>
+                  <MenuItem value="true">Trial users only</MenuItem>
+                  <MenuItem value="false">Paid users only</MenuItem>
+                </Select>
+              </FormControl>
             </div>
           </div>
         </CardContent>
@@ -280,14 +281,14 @@ export default function FeedbackDashboard() {
       </div>
 
       {/* Detailed Feedback */}
-      <Tabs defaultValue="all" className="space-y-4">
-        <TabsList>
-          <TabsTrigger value="all">All Feedback</TabsTrigger>
-          <TabsTrigger value="trial">Trial Users</TabsTrigger>
-          <TabsTrigger value="analytics">Analytics</TabsTrigger>
-        </TabsList>
+      <Tabs value={activeTab} onChange={(e, value) => setActiveTab(value)} sx={{ mb: 3 }}>
+        <Tab label="All Feedback" value="all" />
+        <Tab label="Trial Users" value="trial" />
+        <Tab label="Analytics" value="analytics" />
+      </Tabs>
 
-        <TabsContent value="all" className="space-y-4">
+        {activeTab === 'all' && (
+          <Box sx={{ mt: 3 }}>
           <Card>
             <CardHeader>
               <Typography variant="h6">Recent Feedback</Typography>
@@ -305,11 +306,13 @@ export default function FeedbackDashboard() {
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
-                        <Badge className={getRatingColor(item.rating)}>
-                          {item.rating}/5
-                        </Badge>
+                        <Chip 
+                          label={`${item.rating}/5`}
+                          color={item.rating >= 4 ? "success" : item.rating >= 3 ? "warning" : "error"}
+                          size="small"
+                        />
                         {item.user.isTrialUser && (
-                          <Badge variant="secondary">Trial</Badge>
+                          <Chip label="Trial" variant="outlined" size="small" />
                         )}
                       </div>
                     </div>
@@ -324,9 +327,11 @@ export default function FeedbackDashboard() {
               </div>
             </CardContent>
           </Card>
-        </TabsContent>
+          </Box>
+        )}
 
-        <TabsContent value="trial" className="space-y-4">
+        {activeTab === 'trial' && (
+          <Box sx={{ mt: 3 }}>
           <Card>
             <CardHeader>
               <Typography variant="h6">Trial User Feedback</Typography>
@@ -344,10 +349,12 @@ export default function FeedbackDashboard() {
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
-                        <Badge className={getRatingColor(item.rating)}>
-                          {item.rating}/5
-                        </Badge>
-                        <Badge variant="outline">{item.user.plan}</Badge>
+                        <Chip 
+                          label={`${item.rating}/5`}
+                          color={item.rating >= 4 ? "success" : item.rating >= 3 ? "warning" : "error"}
+                          size="small"
+                        />
+                        <Chip label={item.user.plan} variant="outlined" size="small" />
                       </div>
                     </div>
                     {item.feature && (
@@ -361,9 +368,11 @@ export default function FeedbackDashboard() {
               </div>
             </CardContent>
           </Card>
-        </TabsContent>
+          </Box>
+        )}
 
-        <TabsContent value="analytics" className="space-y-4">
+        {activeTab === 'analytics' && (
+          <Box sx={{ mt: 3 }}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
@@ -379,7 +388,7 @@ export default function FeedbackDashboard() {
                         <span className="font-medium">
                           {item._avg.rating ? item._avg.rating.toFixed(1) : 'N/A'}
                         </span>
-                        <Badge variant="secondary">{item._count.rating}</Badge>
+                        <Chip label={item._count.rating.toString()} variant="outlined" size="small" />
                       </div>
                     </div>
                   ))}
@@ -420,8 +429,8 @@ export default function FeedbackDashboard() {
               </CardContent>
             </Card>
           </div>
-        </TabsContent>
-      </Tabs>
+          </Box>
+        )}
     </div>
   );
 {/* Bottom Spacer to Clear Bottom Navigation */}

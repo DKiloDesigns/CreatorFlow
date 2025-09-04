@@ -157,7 +157,7 @@ const tableColumns = [
   { id: 'salary', label: 'Salary', minWidth: 100, align: 'right' as const },
   { id: 'startDate', label: 'Start Date', minWidth: 120 },
   { id: 'active', label: 'Status', minWidth: 100 },
-];
+] as const;
 
 export default function MuiFormsDemo() {
   const [formData, setFormData] = useState<FormData>(initialFormData);
@@ -415,7 +415,7 @@ export default function MuiFormsDemo() {
                   <TextField
                     label="Email (with validation)"
                     type="email"
-                    error={formData.email && !formData.email.includes('@')}
+                    error={!!(formData.email && !formData.email.includes('@'))}
                     helperText={formData.email && !formData.email.includes('@') ? 'Please enter a valid email' : ''}
                     value={formData.email}
                     onChange={(e) => handleInputChange('email', e.target.value)}
@@ -424,7 +424,7 @@ export default function MuiFormsDemo() {
                   <TextField
                     label="Phone (with validation)"
                     type="tel"
-                    error={formData.phone && formData.phone.length < 10}
+                    error={!!(formData.phone && formData.phone.length < 10)}
                     helperText={formData.phone && formData.phone.length < 10 ? 'Please enter a valid phone number' : ''}
                     value={formData.phone}
                     onChange={(e) => handleInputChange('phone', e.target.value)}

@@ -11,7 +11,8 @@ import {
   Tabs,
   Tab,
   Grid,
-  Box
+  Box,
+
 } from '@mui/material';
 import { Activity, Settings } from 'lucide-react';
 
@@ -42,6 +43,7 @@ export default function PerformancePage() {
   const [performanceStats, setPerformanceStats] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
+  const [activeTab, setActiveTab] = useState('alerts');
 
   useEffect(() => {
     fetchPerformanceData();
@@ -233,14 +235,14 @@ export default function PerformancePage() {
         </Grid>
       )}
 
-      <Tabs value="alerts" className="space-y-6">
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <Tab label="Alerts" />
-          <Tab label="Metrics" />
-          <Tab label="Optimizations" />
-        </Box>
+      <Tabs value={activeTab} onChange={(e, value) => setActiveTab(value)} sx={{ mb: 3 }}>
+        <Tab label="Alerts" value="alerts" />
+        <Tab label="Metrics" value="metrics" />
+        <Tab label="Optimizations" value="recommendations" />
+      </Tabs>
 
-        <TabPanel value="alerts">
+        {activeTab === 'alerts' && (
+          <Box sx={{ mt: 3 }}>
           <Card>
             <CardHeader>
               <Typography variant="h6" component="div" className="flex items-center gap-2">
@@ -278,9 +280,11 @@ export default function PerformancePage() {
               </Box>
             </CardContent>
           </Card>
-        </TabPanel>
+          </Box>
+        )}
 
-        <TabPanel value="metrics">
+        {activeTab === 'metrics' && (
+          <Box sx={{ mt: 3 }}>
           {performanceStats && (
             <Grid container spacing={3}>
               <Grid item xs={12} md={4}>
@@ -365,9 +369,11 @@ export default function PerformancePage() {
               </Grid>
             </Grid>
           )}
-        </TabPanel>
+          </Box>
+        )}
 
-        <TabPanel value="recommendations">
+        {activeTab === 'recommendations' && (
+          <Box sx={{ mt: 3 }}>
           <Card>
             <CardHeader>
               <Typography variant="h6" component="div" className="flex items-center gap-2">
@@ -400,8 +406,8 @@ export default function PerformancePage() {
               </Box>
             </CardContent>
           </Card>
-        </TabPanel>
-      </Tabs>
+          </Box>
+        )}
     </div>
   );
 }

@@ -5,7 +5,7 @@ export default function Pricing() {
     <div className="max-w-3xl mx-auto py-16 px-4 relative">
       {/* Theme Toggle - Top Right */}
       <div className="absolute top-4 right-4 z-10">
-        <ThemeToggle isLandingPage={false} />
+        <ThemeToggle />
       </div>
       
       <h1 className="text-3xl font-bold mb-6 text-center">Our Plans</h1>

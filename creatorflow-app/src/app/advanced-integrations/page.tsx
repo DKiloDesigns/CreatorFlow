@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Card, 
   CardContent, 
@@ -11,13 +11,14 @@ import {
   Typography,
   Grid,
   Tab,
-  TextField
+  TextField,
+  Tabs,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem
 } from '@mui/material';
-import { CardDescription } from '@/components/ui/base/Card';
 import { Settings, Zap, Code, Database, Cloud, Shield, Activity, RefreshCw, Plus, Plug, CheckCircle, TrendingUp, Eye, BarChart3, Webhook, Edit } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
-import { Label, Input, Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui';
 
 interface Integration {
   id: string;
@@ -312,16 +313,16 @@ export default function AdvancedIntegrationsPage() {
         </Grid>
       </Grid>
 
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-        <TabsList>
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="integrations">Integrations</TabsTrigger>
-          <TabsTrigger value="webhooks">Webhooks</TabsTrigger>
-          <TabsTrigger value="sync">Sync</TabsTrigger>
-          <TabsTrigger value="health">Health</TabsTrigger>
-        </TabsList>
+      <Tabs value={activeTab} onChange={(e, value) => setActiveTab(value)} sx={{ mb: 3 }}>
+        <Tab label="Overview" value="overview" />
+        <Tab label="Integrations" value="integrations" />
+        <Tab label="Webhooks" value="webhooks" />
+        <Tab label="Sync" value="sync" />
+        <Tab label="Health" value="health" />
+      </Tabs>
 
-        <TabsContent value="overview" className="space-y-6">
+        {activeTab === 'overview' && (
+          <Box sx={{ mt: 3 }}>
           <Grid container spacing={2}>
             <Grid item xs={12} md={6}>
               <Card>
@@ -330,9 +331,9 @@ export default function AdvancedIntegrationsPage() {
                     <Activity className="h-5 w-5" />
                     Recent Events
                   </Typography>
-                  <CardDescription>
+                  <Typography variant="body2" color="text.secondary">
                     Latest integration events and activities
-                  </CardDescription>
+                  </Typography>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
@@ -343,15 +344,17 @@ export default function AdvancedIntegrationsPage() {
                             <h3 className="font-semibold">{integration.name}</h3>
                             <p className="text-sm text-muted-foreground">{event.type}</p>
                             <div className="flex items-center gap-2 mt-1">
-                              <Badge className={event.status === 'success' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}>
-                                {event.status}
-                              </Badge>
+                              <Chip 
+                                label={event.status}
+                                color={event.status === 'success' ? 'success' : 'error'}
+                                size="small"
+                              />
                               <span className="text-xs text-muted-foreground">
                                 {new Date(event.timestamp).toLocaleDateString()}
                               </span>
                             </div>
                           </div>
-                          <Button size="sm" variant="outlined">
+                          <Button size="small" variant="outlined">
                             <Eye className="h-3 w-3" />
                           </Button>
                         </div>
@@ -369,9 +372,9 @@ export default function AdvancedIntegrationsPage() {
                     <BarChart3 className="h-5 w-5" />
                     Integration Types
                   </Typography>
-                  <CardDescription>
+                  <Typography variant="body2" color="text.secondary">
                     Distribution of integration types
-                  </CardDescription>
+                  </Typography>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
@@ -397,18 +400,20 @@ export default function AdvancedIntegrationsPage() {
               </Card>
             </Grid>
           </Grid>
-        </TabsContent>
+          </Box>
+        )}
 
-        <TabsContent value="integrations" className="space-y-6">
+        {activeTab === 'integrations' && (
+          <Box sx={{ mt: 3 }}>
           <Card>
             <CardHeader>
               <Typography variant="h6" className="flex items-center gap-2">
                 <Plug className="h-5 w-5" />
                 Integrations
               </Typography>
-              <CardDescription>
+              <Typography variant="body2" color="text.secondary">
                 Manage your third-party service integrations
-              </CardDescription>
+              </Typography>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
@@ -425,12 +430,16 @@ export default function AdvancedIntegrationsPage() {
                           <div className="flex items-center gap-2 mb-2">
                             {getTypeIcon(integration.type)}
                             <h3 className="font-semibold">{integration.name}</h3>
-                            <Badge className={getStatusColor(integration.status)}>
-                              {integration.status}
-                            </Badge>
-                            <Badge className={getHealthColor(integration.health.status)}>
-                              {integration.health.status}
-                            </Badge>
+                            <Chip 
+                              label={integration.status}
+                              color={integration.status === 'active' ? 'success' : integration.status === 'inactive' ? 'default' : 'error'}
+                              size="small"
+                            />
+                            <Chip 
+                              label={integration.health.status}
+                              color={integration.health.status === 'healthy' ? 'success' : integration.health.status === 'warning' ? 'warning' : 'error'}
+                              size="small"
+                            />
                           </div>
                           <p className="text-sm text-muted-foreground mb-3">{integration.provider}</p>
                           <div className="flex items-center gap-4 text-sm">
@@ -440,13 +449,13 @@ export default function AdvancedIntegrationsPage() {
                           </div>
                         </div>
                         <div className="flex gap-2">
-                          <Button size="sm" variant="outlined" onClick={() => checkHealth(integration.id)}>
+                          <Button size="small" variant="outlined" onClick={() => checkHealth(integration.id)}>
                             <Activity className="h-3 w-3" />
                           </Button>
-                          <Button size="sm" variant="outlined" onClick={() => startSync(integration.id)}>
+                          <Button size="small" variant="outlined" onClick={() => startSync(integration.id)}>
                             <RefreshCw className="h-3 w-3" />
                           </Button>
-                          <Button size="sm" variant="outlined">
+                          <Button size="small" variant="outlined">
                             <Settings className="h-3 w-3" />
                           </Button>
                         </div>
@@ -457,18 +466,20 @@ export default function AdvancedIntegrationsPage() {
               </div>
             </CardContent>
           </Card>
-        </TabsContent>
+          </Box>
+        )}
 
-        <TabsContent value="webhooks" className="space-y-6">
+        {activeTab === 'webhooks' && (
+          <Box sx={{ mt: 3 }}>
           <Card>
             <CardHeader>
               <Typography variant="h6" className="flex items-center gap-2">
                 <Webhook className="h-5 w-5" />
                 Webhook Management
               </Typography>
-              <CardDescription>
+              <Typography variant="body2" color="text.secondary">
                 Monitor and manage webhook configurations
-              </CardDescription>
+              </Typography>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
@@ -479,9 +490,11 @@ export default function AdvancedIntegrationsPage() {
                         <div className="flex-1">
                           <div className="flex items-center gap-2 mb-2">
                             <h3 className="font-semibold">{integration.name}</h3>
-                            <Badge className={getStatusColor(webhook.status)}>
-                              {webhook.status}
-                            </Badge>
+                            <Chip 
+                              label={webhook.status}
+                              color={webhook.status === 'active' ? 'success' : 'default'}
+                              size="small"
+                            />
                           </div>
                           <p className="text-sm text-muted-foreground mb-2">{webhook.url}</p>
                           <div className="flex items-center gap-4 text-sm">
@@ -507,18 +520,20 @@ export default function AdvancedIntegrationsPage() {
               </div>
             </CardContent>
           </Card>
-        </TabsContent>
+          </Box>
+        )}
 
-        <TabsContent value="sync" className="space-y-6">
+        {activeTab === 'sync' && (
+          <Box sx={{ mt: 3 }}>
           <Card>
             <CardHeader>
               <Typography variant="h6" className="flex items-center gap-2">
                 <RefreshCw className="h-5 w-5" />
                 Sync Management
               </Typography>
-              <CardDescription>
+              <Typography variant="body2" color="text.secondary">
                 Monitor data synchronization status and schedules
-              </CardDescription>
+              </Typography>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
@@ -528,9 +543,7 @@ export default function AdvancedIntegrationsPage() {
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-2">
                           <h3 className="font-semibold">{integration.name}</h3>
-                          <Badge variant="outline">
-                            {integration.syncSettings.mode}
-                          </Badge>
+                          <Chip label={integration.syncSettings.mode} variant="outlined" size="small" />
                         </div>
                         <div className="space-y-2">
                           <div className="flex justify-between text-sm">
@@ -571,18 +584,20 @@ export default function AdvancedIntegrationsPage() {
               </div>
             </CardContent>
           </Card>
-        </TabsContent>
+          </Box>
+        )}
 
-        <TabsContent value="health" className="space-y-6">
+        {activeTab === 'health' && (
+          <Box sx={{ mt: 3 }}>
           <Card>
             <CardHeader>
               <Typography variant="h6" className="flex items-center gap-2">
                 <Activity className="h-5 w-5" />
                 Health Monitoring
               </Typography>
-              <CardDescription>
+              <Typography variant="body2" color="text.secondary">
                 Integration health status and performance metrics
-              </CardDescription>
+              </Typography>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
@@ -592,9 +607,11 @@ export default function AdvancedIntegrationsPage() {
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-2">
                           <h3 className="font-semibold">{integration.name}</h3>
-                          <Badge className={getHealthColor(integration.health.status)}>
-                            {integration.health.status}
-                          </Badge>
+                          <Chip 
+                            label={integration.health.status}
+                            color={integration.health.status === 'healthy' ? 'success' : integration.health.status === 'warning' ? 'warning' : 'error'}
+                            size="small"
+                          />
                         </div>
                         <div className="space-y-2">
                           <div className="flex justify-between text-sm">
@@ -639,8 +656,8 @@ export default function AdvancedIntegrationsPage() {
               </div>
             </CardContent>
           </Card>
-        </TabsContent>
-      </Tabs>
+          </Box>
+        )}
 
       {/* Create Integration Modal */}
       {showCreateIntegration && (
@@ -649,45 +666,49 @@ export default function AdvancedIntegrationsPage() {
             <h2 className="text-xl font-bold mb-4">Create New Integration</h2>
             <div className="space-y-4">
               <div>
-                <Label>Integration Name</Label>
-                <Input
+                <Typography variant="body2" component="label" sx={{ mb: 1, display: 'block' }}>
+                  Integration Name
+                </Typography>
+                <TextField
                   value={newIntegration.name}
                   onChange={(e) => setNewIntegration({ ...newIntegration, name: e.target.value })}
                   placeholder="Enter integration name"
+                  fullWidth
+                  size="small"
                 />
               </div>
               <div>
-                <Label>Provider</Label>
-                <Input
+                <Typography variant="body2" component="label" sx={{ mb: 1, display: 'block' }}>
+                  Provider
+                </Typography>
+                <TextField
                   value={newIntegration.provider}
                   onChange={(e) => setNewIntegration({ ...newIntegration, provider: e.target.value })}
                   placeholder="Enter provider name"
+                  fullWidth
+                  size="small"
                 />
               </div>
               <div>
-                <Label>Integration Type</Label>
-                <Select
-                  value={newIntegration.type}
-                  onValueChange={(value: 'api' | 'webhook' | 'oauth' | 'sdk') => 
-                    setNewIntegration({ ...newIntegration, type: value })
-                  }
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="api">API</SelectItem>
-                    <SelectItem value="webhook">Webhook</SelectItem>
-                    <SelectItem value="oauth">OAuth</SelectItem>
-                    <SelectItem value="sdk">SDK</SelectItem>
-                  </SelectContent>
-                </Select>
+                <FormControl fullWidth>
+                  <InputLabel>Integration Type</InputLabel>
+                  <Select
+                    value={newIntegration.type}
+                    onChange={(e) => setNewIntegration({ ...newIntegration, type: e.target.value as any })}
+                    label="Integration Type"
+                  >
+                    <MenuItem value="api">API</MenuItem>
+                    <MenuItem value="webhook">Webhook</MenuItem>
+                    <MenuItem value="oauth">OAuth</MenuItem>
+                    <MenuItem value="sdk">SDK</MenuItem>
+                  </Select>
+                </FormControl>
               </div>
               <div className="flex gap-2">
                 <Button onClick={createIntegration} disabled={!newIntegration.name || !newIntegration.provider}>
                   Create Integration
                 </Button>
-                <Button variant="outline" onClick={() => setShowCreateIntegration(false)}>
+                <Button variant="outlined" onClick={() => setShowCreateIntegration(false)}>
                   Cancel
                 </Button>
               </div>

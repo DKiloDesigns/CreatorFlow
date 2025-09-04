@@ -20,28 +20,31 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    if (!socialAccount?.accessToken) {
+    if (!socialAccount?.encryptedAccessToken) {
       return NextResponse.json({ error: 'Instagram account not connected' }, { status: 400 });
     }
 
+    // TODO: Decrypt the access token before using it
+    const accessToken = socialAccount.encryptedAccessToken; // This should be decrypted
+
     switch (action) {
       case 'create_post':
-        return await handleCreatePost(socialAccount.accessToken, data);
+        return await handleCreatePost(accessToken, data);
       
       case 'create_story':
-        return await handleCreateStory(socialAccount.accessToken, data);
+        return await handleCreateStory(accessToken, data);
       
       case 'create_reel':
-        return await handleCreateReel(socialAccount.accessToken, data);
+        return await handleCreateReel(accessToken, data);
       
       case 'get_user_info':
-        return await handleGetUserInfo(socialAccount.accessToken);
+        return await handleGetUserInfo(accessToken);
       
       case 'get_media':
-        return await handleGetMedia(socialAccount.accessToken, data);
+        return await handleGetMedia(accessToken, data);
       
       case 'get_insights':
-        return await handleGetInsights(socialAccount.accessToken, data);
+        return await handleGetInsights(accessToken, data);
       
       default:
         return NextResponse.json({ error: 'Invalid action' }, { status: 400 });

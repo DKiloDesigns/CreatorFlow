@@ -13,7 +13,10 @@ import {
   Select,
   MenuItem,
   FormControl,
-  InputLabel
+  InputLabel,
+  Tooltip,
+  Checkbox,
+  FormControlLabel
 } from '@mui/material';
 import { Edit, Activity } from 'lucide-react';
 import { Calendar as CalendarIcon, Loader2, UploadCloud, X, Image as ImageIcon } from "lucide-react"
@@ -316,36 +319,40 @@ export default function PostComposer({ platforms: propPlatforms }: { platforms?:
   };
 
   return (
-    <TooltipProvider>
+    <Box>
       <TemplateManager onInsert={handleInsertTemplate} />
       <Card>
         <CardHeader>
           <Typography variant="h6">Create Post</Typography>
-          <CardDescription>Draft your content and schedule it for your connected platforms.</CardDescription>
+          <Typography variant="body2" color="text.secondary">Draft your content and schedule it for your connected platforms.</Typography>
         </CardHeader>
         <CardContent className="space-y-4">
           <h2 className="sr-only" id="post-composer-heading">Compose a new post</h2>
           {/* Platform Selector */}
           <div className="space-y-2">
-            <Label>Platforms</Label>
+            <Typography variant="body2" component="label">Platforms</Typography>
             <div className="flex flex-col sm:flex-row sm:flex-wrap gap-2 sm:gap-4" aria-label="Platform selector">
               {platforms.map((platform) => (
-                <Tooltip key={platform.id}>
-                  <TooltipTrigger asChild>
-                    <div className="flex items-center space-x-2 px-3 py-2 rounded-lg min-w-[44px] min-h-[44px]" style={{ background: platform.color + '22' }}>
+                <Tooltip key={platform.id} title={platform.name}>
+                  <div className="flex items-center space-x-2 px-3 py-2 rounded-lg min-w-[44px] min-h-[44px]" style={{ background: platform.color + '22' }}>
                       <Checkbox
                         id={`platform-${platform.id}`}
                         checked={selectedPlatforms.includes(platform.id)}
-                        onCheckedChange={() => handlePlatformChange(platform.id)}
+                        onChange={() => handlePlatformChange(platform.id)}
                         disabled={isSubmitting}
                         aria-label={`Select ${platform.name}`}
-                        className="focus-visible:ring-2 focus-visible:ring-primary transition-shadow min-w-[44px] min-h-[44px]"
+                        sx={{ 
+                          minWidth: '44px', 
+                          minHeight: '44px',
+                          '&.Mui-focusVisible': {
+                            ring: '2px solid',
+                            ringColor: 'primary.main'
+                          }
+                        }}
                       />
                       <span className="text-xl" aria-label={platform.name}>{platform.icon}</span>
-                      <Label htmlFor={`platform-${platform.id}`} className={cn("font-normal cursor-pointer transition-colors break-words", isSubmitting && "text-muted-foreground")}>{platform.name}</Label>
+                      <Typography component="label" htmlFor={`platform-${platform.id}`} className={cn("font-normal cursor-pointer transition-colors break-words", isSubmitting && "text-muted-foreground")}>{platform.name}</Typography>
                     </div>
-                  </TooltipTrigger>
-                  <TooltipContent>Select to post on {platform.name}</TooltipContent>
                 </Tooltip>
               ))}
             </div>
@@ -353,8 +360,8 @@ export default function PostComposer({ platforms: propPlatforms }: { platforms?:
 
           {/* Content Text Area */}
           <div className="space-y-2">
-            <Label htmlFor="content-text">Content</Label>
-            <Textarea
+            <Typography component="label" htmlFor="content-text">Content</Typography>
+            <TextField
               id="content-text"
               placeholder="What's on your mind? Write your caption here..."
               value={contentText}
@@ -368,8 +375,7 @@ export default function PostComposer({ platforms: propPlatforms }: { platforms?:
           </div>
 
           {/* Media Upload Dropzone */}
-          <Tooltip>
-            <TooltipTrigger asChild>
+          <Tooltip title="Upload media files">
               <div
                 {...getRootProps()}
                 className={cn(
@@ -389,8 +395,6 @@ export default function PostComposer({ platforms: propPlatforms }: { platforms?:
                 )}
                 <p className="text-xs text-muted-foreground mt-1 text-center">(Max 5 files, images or videos)</p>
               </div>
-            </TooltipTrigger>
-            <TooltipContent>Upload images or videos (max 5)</TooltipContent>
           </Tooltip>
 
           {/* File Previews & Upload Status */}
@@ -416,9 +420,9 @@ export default function PostComposer({ platforms: propPlatforms }: { platforms?:
                       <span className="text-sm truncate">{file.name}</span>
                     </div>
                     <Button 
-                      variant="ghost" 
-                      size="icon" 
-                      className="h-6 w-6" 
+                      variant="text" 
+                      size="small" 
+                      sx={{ minWidth: '24px', minHeight: '24px', width: '24px', height: '24px' }}
                       onClick={() => removeFileToUpload(file)} 
                       disabled={isSubmitting}
                     >
@@ -432,42 +436,38 @@ export default function PostComposer({ platforms: propPlatforms }: { platforms?:
 
           {/* Schedule Picker */}
           <div className="space-y-2">
-            <Label>Schedule (Optional)</Label>
+            <Typography>Schedule (Optional)</Typography>
             <div className="flex items-center space-x-2">
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    variant={"outline"}
-                    disabled={isSubmitting}
-                    className={cn(
-                      "w-[200px] justify-start text-left font-normal transition-shadow focus-visible:ring-2 focus-visible:ring-primary",
-                      !selectedDate && "text-muted-foreground",
-                      isSubmitting && "disabled:opacity-50"
-                    )}
+              <Tooltip title="Select a date to schedule your post">
+                <Button
+                  variant="outlined"
+                  disabled={isSubmitting}
+                  className={cn(
+                    "w-[200px] justify-start text-left font-normal transition-shadow focus-visible:ring-2 focus-visible:ring-primary",
+                    !selectedDate && "text-muted-foreground",
+                    isSubmitting && "disabled:opacity-50"
+                  )}
                     aria-label="Pick a date"
                   >
                     <CalendarIcon className="mr-2 h-4 w-4" />
                     {selectedDate ? format(selectedDate, "PPP") : <span>Pick a date</span>}
                   </Button>
-                </TooltipTrigger>
-                <TooltipContent>Select a date to schedule your post</TooltipContent>
-              </Tooltip>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Select value={selectedTime} onValueChange={setSelectedTime} disabled={isSubmitting}>
-                    <SelectTrigger className={cn("w-[120px] transition-shadow focus-visible:ring-2 focus-visible:ring-primary", isSubmitting && "disabled:opacity-50")}> 
-                      <SelectValue placeholder="Pick time" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {TIME_OPTIONS.map(option => (
-                        <SelectItem key={option.value} value={option.value}>
-                          {option.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
+                </Tooltip>
+              <Tooltip title="Select a time to schedule your post">
+                <FormControl size="small" sx={{ minWidth: 120 }}>
+                  <InputLabel>Time</InputLabel>
+                  <Select 
+                    value={selectedTime} 
+                    onChange={(e) => setSelectedTime(e.target.value)} 
+                    disabled={isSubmitting}
+                  >
+                    {TIME_OPTIONS.map(option => (
+                      <MenuItem key={option.value} value={option.value}>
+                        {option.label}
+                      </MenuItem>
+                    ))}
                   </Select>
-                </TooltipTrigger>
-                <TooltipContent>Select a time to schedule your post</TooltipContent>
+                </FormControl>
               </Tooltip>
             </div>
           </div>
@@ -475,39 +475,31 @@ export default function PostComposer({ platforms: propPlatforms }: { platforms?:
           {/* ARIA live region for toasts */}
           <div aria-live="polite" className="sr-only" id="post-composer-aria-live">{ariaMessage}</div>
         </CardContent>
-        <CardFooter className="flex justify-end space-x-2">
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button 
-                variant="outline" 
-                onClick={handleSaveDraft} 
-                disabled={isSubmitting || (!contentText && uploadedMediaUrls.length === 0)}
-                className="transition-colors focus-visible:ring-2 focus-visible:ring-primary"
-                aria-label="Save as draft"
-              >
-                {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />} 
-                Save Draft
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>Save this post as a draft</TooltipContent>
+        <CardContent sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2 }}>
+          <Tooltip title="Save this post as a draft">
+            <Button 
+              variant="outlined" 
+              onClick={handleSaveDraft} 
+              disabled={isSubmitting || (!contentText && uploadedMediaUrls.length === 0)}
+              className="transition-colors focus-visible:ring-2 focus-visible:ring-primary"
+              aria-label="Save as draft"
+            >
+              {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />} 
+              Save Draft
+            </Button>
           </Tooltip>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <span>
-                <Button 
-                  onClick={handleSchedule} 
-                  disabled={isSubmitting || !scheduledAt || selectedPlatforms.length === 0 || (!contentText && uploadedMediaUrls.length === 0)}
-                  className="transition-colors focus-visible:ring-2 focus-visible:ring-primary"
-                  aria-label="Schedule post"
-                >
-                  {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />} 
-                  Schedule Post
-                </Button>
-              </span>
-            </TooltipTrigger>
-            <TooltipContent>{!scheduledAt ? 'Pick a date and time to enable scheduling' : 'Schedule this post for later'}</TooltipContent>
+          <Tooltip title={!scheduledAt ? 'Pick a date and time to enable scheduling' : 'Schedule this post for later'}>
+            <Button 
+              onClick={handleSchedule} 
+              disabled={isSubmitting || !scheduledAt || selectedPlatforms.length === 0 || (!contentText && uploadedMediaUrls.length === 0)}
+              className="transition-colors focus-visible:ring-2 focus-visible:ring-primary"
+              aria-label="Schedule post"
+            >
+              {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />} 
+              Schedule Post
+            </Button>
           </Tooltip>
-        </CardFooter>
+        </CardContent>
       </Card>
 
       {/* Bottom Spacer to Clear Bottom Navigation */}
@@ -515,6 +507,6 @@ export default function PostComposer({ platforms: propPlatforms }: { platforms?:
         height: { xs: '120px', sm: '40px' },
         width: '100%'
       }} />
-    </TooltipProvider>
+    </Box>
   );
 } 

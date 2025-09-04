@@ -181,7 +181,7 @@ export function CreateVideoModal({ open, onClose, onVideoCreated }: CreateVideoM
       
       onVideoCreated?.(videoData);
       toast.success('Video exported successfully!');
-      onOpenChange(false);
+      onClose();
     } catch (error) {
       toast.error('Failed to export video');
     } finally {
@@ -235,8 +235,8 @@ export function CreateVideoModal({ open, onClose, onVideoCreated }: CreateVideoM
             {/* Video Controls */}
             <div className="flex items-center gap-4 mb-4">
               <Button
-                variant="outline"
-                size="sm"
+                variant="outlined"
+                size="small"
                 onClick={handlePlayPause}
               >
                 {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
@@ -301,16 +301,16 @@ export function CreateVideoModal({ open, onClose, onVideoCreated }: CreateVideoM
             {/* Tabs */}
             <div className="flex border-b mb-4">
               <Button
-                variant="ghost"
-                size="sm"
+                variant="text"
+                size="small"
                 className="flex-1"
                 onClick={() => setShowMediaSelector(false)}
               >
                 Timeline
               </Button>
               <Button
-                variant="ghost"
-                size="sm"
+                variant="text"
+                size="small"
                 className="flex-1"
                 onClick={() => setShowMediaSelector(true)}
               >
@@ -325,8 +325,8 @@ export function CreateVideoModal({ open, onClose, onVideoCreated }: CreateVideoM
                   <div className="flex items-center justify-between">
                     <h3 className="font-medium">Add Media</h3>
                     <Button
-                      variant="outline"
-                      size="sm"
+                      variant="outlined"
+                      size="small"
                       onClick={() => setShowMediaSelector(false)}
                     >
                       Back to Timeline
@@ -364,8 +364,8 @@ export function CreateVideoModal({ open, onClose, onVideoCreated }: CreateVideoM
                     <div className="flex items-center justify-between mb-2">
                       <h3 className="font-medium">Timeline</h3>
                       <Button
-                        variant="outline"
-                        size="sm"
+                        variant="outlined"
+                        size="small"
                         onClick={handleAddTextOverlay}
                       >
                         <Type className="h-4 w-4 mr-2" />
@@ -393,8 +393,8 @@ export function CreateVideoModal({ open, onClose, onVideoCreated }: CreateVideoM
                               <span className="px-2 py-1 text-xs bg-gray-100 text-gray-700 rounded-full">{clip.duration}s</span>
                             </div>
                             <Button
-                              variant="ghost"
-                              size="sm"
+                              variant="text"
+                              size="small"
                               onClick={(e) => {
                                 e.stopPropagation();
                                 handleDeleteClip(clip.id);
@@ -463,8 +463,8 @@ export function CreateVideoModal({ open, onClose, onVideoCreated }: CreateVideoM
                               <span className="text-sm font-medium">Text Overlay</span>
                             </div>
                             <Button
-                              variant="ghost"
-                              size="sm"
+                              variant="text"
+                              size="small"
                               onClick={(e) => {
                                 e.stopPropagation();
                                 handleDeleteOverlay(overlay.id);
@@ -521,7 +521,7 @@ export function CreateVideoModal({ open, onClose, onVideoCreated }: CreateVideoM
                                 <Select
                                   value={overlay.animation}
                                   onChange={(e) => 
-                                    handleUpdateOverlay(overlay.id, { animation: e.target.value })
+                                    handleUpdateOverlay(overlay.id, { animation: e.target.value as "none" | "fade" | "slide" | "bounce" })
                                   }
                                   className="w-full text-xs"
                                 >

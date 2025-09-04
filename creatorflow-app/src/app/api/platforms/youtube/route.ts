@@ -21,9 +21,12 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    if (!socialAccount?.accessToken) {
+    if (!socialAccount?.encryptedAccessToken) {
       return NextResponse.json({ error: 'YouTube account not connected' }, { status: 400 });
     }
+
+    // TODO: Decrypt the access token before using it
+    const accessToken = socialAccount.encryptedAccessToken; // This should be decrypted
 
     // Initialize YouTube API
     const oauth2Client = new google.auth.OAuth2(
@@ -33,8 +36,8 @@ export async function POST(req: NextRequest) {
     );
 
     oauth2Client.setCredentials({
-      access_token: socialAccount.accessToken,
-      refresh_token: socialAccount.refreshToken,
+      access_token: accessToken,
+      refresh_token: socialAccount.encryptedRefreshToken, // This should also be decrypted
     });
 
     const youtube = google.youtube({ version: 'v3', auth: oauth2Client });

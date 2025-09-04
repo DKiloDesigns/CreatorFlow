@@ -56,7 +56,7 @@ export function AIContentVoice({ onVoiceSelect, className }: AIContentVoiceProps
   };
 
   return (
-    <Card sx={{ height: '100%', ...(className && { className })}>
+    <Card sx={{ height: '100%' }} className={className}>
       <CardHeader
         title="AI Content Voice Generator"
         subheader="Generate content with different voice styles"

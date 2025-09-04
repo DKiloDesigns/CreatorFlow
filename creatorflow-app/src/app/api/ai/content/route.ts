@@ -29,20 +29,20 @@ export async function POST(req: NextRequest) {
       targetAudience,
     });
 
-    // Log content generation
-    await prisma.analyticsEvent.create({
+    // Log content generation (using existing analytics model)
+    await prisma.analyticsAggregation.create({
       data: {
         userId: session.user.id,
-        eventType: 'AI_CONTENT_GENERATED',
-        eventData: JSON.stringify({
-          type,
+        type: 'AI_CONTENT_GENERATED',
+        startDate: new Date(),
+        endDate: new Date(),
+        data: {
           platform,
           topic,
           tone,
           length,
           contentLength: content.length,
-        }),
-        timestamp: new Date(),
+        },
       },
     });
 
@@ -95,14 +95,17 @@ export async function GET(req: NextRequest) {
       };
     }
 
-    const history = await prisma.analyticsEvent.findMany({
-      where,
-      orderBy: { timestamp: 'desc' },
+    const history = await prisma.analyticsAggregation.findMany({
+      where: {
+        userId: session.user.id,
+        type: 'AI_CONTENT_GENERATED',
+      },
+      orderBy: { createdAt: 'desc' },
       take: limit,
     });
 
-    const formattedHistory = history.map(event => {
-      const data = JSON.parse(event.eventData);
+    const formattedHistory = history.map((event: any) => {
+      const data = event.data;
       return {
         id: event.id,
         content: data.content || 'Generated content',
@@ -111,7 +114,7 @@ export async function GET(req: NextRequest) {
         topic: data.topic,
         tone: data.tone,
         length: data.length,
-        generatedAt: event.timestamp,
+        generatedAt: event.createdAt,
       };
     });
 

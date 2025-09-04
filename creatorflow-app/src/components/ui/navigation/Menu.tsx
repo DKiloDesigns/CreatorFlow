@@ -84,8 +84,8 @@ export function Menu({ children, open: controlledOpen, onOpenChange, modal = tru
   const contextValue: MenuContextValue = {
     open,
     setOpen,
-    triggerRef,
-    contentRef,
+    triggerRef: triggerRef as React.RefObject<HTMLButtonElement>,
+    contentRef: contentRef as React.RefObject<HTMLDivElement>,
   };
 
   return (
@@ -138,7 +138,7 @@ export function MenuTrigger({ children, asChild = false, className, disabled }: 
       'aria-controls': 'menu-content',
       disabled,
       sx: { ...(className && { className }), ...(children.props.className && { className: children.props.className }) },
-    });
+    } as any);
   }
 
   return (

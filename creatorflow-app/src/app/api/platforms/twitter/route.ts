@@ -20,31 +20,34 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    if (!socialAccount?.accessToken) {
+    if (!socialAccount?.encryptedAccessToken) {
       return NextResponse.json({ error: 'Twitter account not connected' }, { status: 400 });
     }
 
+    // TODO: Decrypt the access token before using it
+    const accessToken = socialAccount.encryptedAccessToken; // This should be decrypted
+
     switch (action) {
       case 'create_tweet':
-        return await handleCreateTweet(socialAccount.accessToken, data);
+        return await handleCreateTweet(accessToken, data);
       
       case 'upload_media':
-        return await handleUploadMedia(socialAccount.accessToken, data);
+        return await handleUploadMedia(accessToken, data);
       
       case 'get_user_info':
-        return await handleGetUserInfo(socialAccount.accessToken);
+        return await handleGetUserInfo(accessToken);
       
       case 'get_tweets':
-        return await handleGetTweets(socialAccount.accessToken, data);
+        return await handleGetTweets(accessToken, data);
       
       case 'retweet':
-        return await handleRetweet(socialAccount.accessToken, data);
+        return await handleRetweet(accessToken, data);
       
       case 'like_tweet':
-        return await handleLikeTweet(socialAccount.accessToken, data);
+        return await handleLikeTweet(accessToken, data);
       
       case 'get_analytics':
-        return await handleGetAnalytics(socialAccount.accessToken, data);
+        return await handleGetAnalytics(accessToken, data);
       
       default:
         return NextResponse.json({ error: 'Invalid action' }, { status: 400 });

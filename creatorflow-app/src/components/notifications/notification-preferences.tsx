@@ -7,7 +7,7 @@ import {
   Bell, 
   Activity
 } from 'lucide-react';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Tabs, Tab, TabPanel } from '@mui/material';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Separator } from '@/components/ui/separator';
@@ -75,6 +75,7 @@ export function NotificationPreferences({ className }: NotificationPreferencesPr
   const [isLoading, setIsLoading] = useState(true);
   const [isSaving, setIsSaving] = useState(false);
   const [toast, setToast] = useState<{ title: string; message?: string; variant: 'success' | 'error' | 'info' } | null>(null);
+  const [activeTab, setActiveTab] = useState(0);
 
   // Load preferences
   useEffect(() => {
@@ -219,15 +220,13 @@ export function NotificationPreferences({ className }: NotificationPreferencesPr
         </Button>
       </div>
 
-      <Tabs defaultValue="global" className="space-y-6">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="global">Global Settings</TabsTrigger>
-          <TabsTrigger value="types">Notification Types</TabsTrigger>
-          <TabsTrigger value="categories">Categories</TabsTrigger>
-          <TabsTrigger value="channels">Channels</TabsTrigger>
-        </TabsList>
+      <Tabs value={activeTab} onChange={(e, newValue) => setActiveTab(newValue)} className="space-y-6">
+        <Tab label="Global Settings" />
+        <Tab label="Notification Types" />
+        <Tab label="Categories" />
+        <Tab label="Channels" />
 
-        <TabsContent value="global" className="space-y-6">
+        <TabPanel value={activeTab} index={0} className="space-y-6">
           <Card>
             <CardHeader>
               <Typography variant="h5" component="div" className="flex items-center gap-2">
@@ -248,7 +247,7 @@ export function NotificationPreferences({ className }: NotificationPreferencesPr
                 <Switch
                   id="global-enabled"
                   checked={preferences.global.enabled}
-                  onCheckedChange={(checked) => updateGlobalSettings('enabled', checked)}
+                  onChange={(e) => updateGlobalSettings('enabled', e.target.checked)}
                 />
               </div>
 
@@ -263,7 +262,8 @@ export function NotificationPreferences({ className }: NotificationPreferencesPr
                     <div key={channel.key} className="flex items-center space-x-2">
                       <Switch
                         checked={preferences.global.channels.includes(channel.key)}
-                        onCheckedChange={(checked) => {
+                        onChange={(e) => {
+                          const checked = e.target.checked;
                           const currentChannels = preferences.global.channels;
                           const newChannels = checked
                             ? [...currentChannels, channel.key]
@@ -291,8 +291,8 @@ export function NotificationPreferences({ className }: NotificationPreferencesPr
                   </div>
                   <Switch
                     checked={preferences.global.quietHours.enabled}
-                    onCheckedChange={(checked) => 
-                      updateGlobalSettings('quietHours', { ...preferences.global.quietHours, enabled: checked })
+                    onChange={(e) => 
+                      updateGlobalSettings('quietHours', { ...preferences.global.quietHours, enabled: e.target.checked })
                     }
                   />
                 </div>
@@ -345,9 +345,9 @@ export function NotificationPreferences({ className }: NotificationPreferencesPr
               </div>
             </CardContent>
           </Card>
-        </TabsContent>
+        </TabPanel>
 
-        <TabsContent value="types" className="space-y-6">
+        <TabPanel value={activeTab} index={1} className="space-y-6">
           <Card>
             <CardHeader>
               <Typography variant="h5" component="div">
@@ -417,9 +417,9 @@ export function NotificationPreferences({ className }: NotificationPreferencesPr
               </div>
             </CardContent>
           </Card>
-        </TabsContent>
+        </TabPanel>
 
-        <TabsContent value="categories" className="space-y-6">
+        <TabPanel value={activeTab} index={2} className="space-y-6">
           <Card>
             <CardHeader>
               <Typography variant="h5" component="div">
@@ -489,9 +489,9 @@ export function NotificationPreferences({ className }: NotificationPreferencesPr
               </div>
             </CardContent>
           </Card>
-        </TabsContent>
+        </TabPanel>
 
-        <TabsContent value="channels" className="space-y-6">
+        <TabPanel value={activeTab} index={3} className="space-y-6">
           <Card>
             <CardHeader>
               <Typography variant="h5" component="div">
@@ -513,16 +513,14 @@ export function NotificationPreferences({ className }: NotificationPreferencesPr
                         <Typography variant="subtitle1">{channel.label}</Typography>
                         <Typography variant="body2" color="text.secondary">{channel.description}</Typography>
                       </div>
-                        <Badge variant="secondary">
-                          {preferences.global.channels.includes(channel.key) ? 'Enabled' : 'Disabled'}
-                        </Badge>
+                        <Badge variant="secondary" label={preferences.global.channels.includes(channel.key) ? 'Enabled' : 'Disabled'} />
                     </div>
                   </div>
                 ))}
               </div>
             </CardContent>
           </Card>
-        </TabsContent>
+        </TabPanel>
       </Tabs>
 
       {toast && (

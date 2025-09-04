@@ -62,9 +62,7 @@ export default function UsageModal({ open, onOpenChange, template, type }: {
         </div>
       )}
       <div className="flex justify-end mt-4">
-        <AlertDialogCancel asChild>
-          <Button variant="text" onClick={() => onOpenChange(false)}>Close</Button>
-        </AlertDialogCancel>
+        <Button variant="text" onClick={() => onOpenChange(false)}>Close</Button>
       </div>
     </AlertDialogContent>
   );

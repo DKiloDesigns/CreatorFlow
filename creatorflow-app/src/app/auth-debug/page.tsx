@@ -11,7 +11,11 @@ import {
   Box,
   Typography,
   Alert,
-  AlertTitle
+  AlertTitle,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem
 } from '@mui/material';
 import { Shield, Key, Activity } from 'lucide-react';
 
@@ -119,13 +123,13 @@ export default function AuthDebugPage() {
         <Card>
           <CardHeader>
                           <Typography variant="h6">Auth Debug</Typography>
-            <CardDescription>Test the auth flow step by step</CardDescription>
+            <Typography variant="body2" color="text.secondary">Test the auth flow step by step</Typography>
           </CardHeader>
           <CardContent className="space-y-4">
             {/* Email Field */}
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <Input
+              <Typography variant="body2" component="label" htmlFor="email">Email</Typography>
+              <TextField
                 id="email"
                 type="email"
                 placeholder="Enter your email"
@@ -142,27 +146,29 @@ export default function AuthDebugPage() {
             {/* Name Field - Only show for new users */}
             {isNewUser && (
               <div className="space-y-2">
-                <Label htmlFor="name">Full Name</Label>
-                <Input
+                <Typography variant="body2" component="label" htmlFor="name">Full Name</Typography>
+                <TextField
                   id="name"
                   type="text"
                   placeholder="Enter your full name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   required={isNewUser}
+                  fullWidth
                 />
               </div>
             )}
 
             {/* Password Field */}
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
-              <Input
+              <Typography variant="body2" component="label" htmlFor="password">Password</Typography>
+              <TextField
                 id="password"
                 type="password"
                 placeholder={isNewUser ? 'Create a password' : 'Enter your password'}
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                fullWidth
                 required
               />
             </div>
@@ -174,8 +180,8 @@ export default function AuthDebugPage() {
 
             {/* Error Display */}
             {error && (
-              <Alert variant="destructive">
-                <AlertDescription>{error}</AlertDescription>
+              <Alert severity="error">
+                <Typography variant="body2">{error}</Typography>
               </Alert>
             )}
           </CardContent>
@@ -185,7 +191,7 @@ export default function AuthDebugPage() {
         <Card>
           <CardHeader>
                           <Typography variant="h6">Debug Information</Typography>
-            <CardDescription>Step-by-step execution log</CardDescription>
+            <Typography variant="body2" color="text.secondary">Step-by-step execution log</Typography>
           </CardHeader>
           <CardContent>
             <div className="space-y-2 max-h-96 overflow-y-auto">
@@ -201,10 +207,10 @@ export default function AuthDebugPage() {
             </div>
             {debugInfo.length > 0 && (
               <Button 
-                variant="outline" 
-                size="sm" 
+                variant="outlined" 
+                size="small" 
                 onClick={() => setDebugInfo([])}
-                className="mt-4"
+                sx={{ mt: 2 }}
               >
                 Clear Log
               </Button>

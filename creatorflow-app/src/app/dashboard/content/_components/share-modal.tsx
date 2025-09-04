@@ -152,16 +152,14 @@ export default function ShareModal({ open, onOpenChange, template, type, onUpdat
                     /> {p.label}
                   </label>
                 ))}
-                <Button size="sm" variant="ghost" onClick={() => handleRemove(share)} aria-label="Remove share" disabled={loading}>Remove</Button>
+                <Button size="small" variant="text" onClick={() => handleRemove(share)} aria-label="Remove share" disabled={loading}>Remove</Button>
               </li>
             ))}
           </ul>
         )}
       </div>
       <div className="flex justify-end mt-4">
-        <AlertDialogCancel asChild>
-          <Button variant="ghost" onClick={() => onOpenChange(false)}>Close</Button>
-        </AlertDialogCancel>
+        <Button variant="text" onClick={() => onOpenChange(false)}>Close</Button>
       </div>
     </AlertDialogContent>
   );

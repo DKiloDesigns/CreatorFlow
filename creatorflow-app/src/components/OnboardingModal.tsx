@@ -135,8 +135,8 @@ export default function OnboardingModal({ isOpen, onClose, onComplete }: Onboard
   const currentStepData = steps[currentStep];
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent sx={{ maxWidth: '42rem' }}>
+    <Dialog open={isOpen} onClose={onClose}>
+      <DialogContent style={{ maxWidth: '42rem' }}>
         <DialogHeader>
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <DialogTitle className="text-xl font-bold">

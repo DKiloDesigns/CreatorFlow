@@ -17,8 +17,8 @@ import {
 } from '@mui/material';
 import { Shield, Activity, RefreshCw, AlertTriangle, Lock, Eye, Download } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import { TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
+import { Tabs, Tab, TabPanel } from '@mui/material';
+import { Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 
 interface SecurityEvent {
   id: string;
@@ -60,6 +60,7 @@ export default function SecurityPage() {
   const [refreshing, setRefreshing] = useState(false);
   const [severityFilter, setSeverityFilter] = useState('all');
   const [eventTypeFilter, setEventTypeFilter] = useState('all');
+  const [activeTab, setActiveTab] = useState(0);
 
   useEffect(() => {
     fetchSecurityData();
@@ -175,34 +176,30 @@ export default function SecurityPage() {
           <Typography variant="body1" color="text.secondary">Threat monitoring and security management</Typography>
         </Box>
         <Box sx={{ display: 'flex', gap: 1 }}>
-          <Select value={severityFilter} onValueChange={setSeverityFilter}>
-            <SelectTrigger className="w-40">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Severities</SelectItem>
-              <SelectItem value="critical">Critical</SelectItem>
-              <SelectItem value="high">High</SelectItem>
-              <SelectItem value="medium">Medium</SelectItem>
-              <SelectItem value="low">Low</SelectItem>
-            </SelectContent>
-          </Select>
-          <Select value={eventTypeFilter} onValueChange={setEventTypeFilter}>
-            <SelectTrigger className="w-40">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Events</SelectItem>
-              <SelectItem value="LOGIN">Login</SelectItem>
-              <SelectItem value="ACCESS">Access</SelectItem>
-              <SelectItem value="THREAT">Threat</SelectItem>
-            </SelectContent>
-          </Select>
-          <Button onClick={refreshData} disabled={refreshing} variant="outline">
+          <FormControl className="w-40">
+            <InputLabel>Severity</InputLabel>
+            <Select value={severityFilter} onChange={(e) => setSeverityFilter(e.target.value)}>
+              <MenuItem value="all">All Severities</MenuItem>
+              <MenuItem value="critical">Critical</MenuItem>
+              <MenuItem value="high">High</MenuItem>
+              <MenuItem value="medium">Medium</MenuItem>
+              <MenuItem value="low">Low</MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl className="w-40">
+            <InputLabel>Event Type</InputLabel>
+            <Select value={eventTypeFilter} onChange={(e) => setEventTypeFilter(e.target.value)}>
+              <MenuItem value="all">All Events</MenuItem>
+              <MenuItem value="LOGIN">Login</MenuItem>
+              <MenuItem value="ACCESS">Access</MenuItem>
+              <MenuItem value="THREAT">Threat</MenuItem>
+            </Select>
+          </FormControl>
+          <Button onClick={refreshData} disabled={refreshing} variant="outlined">
             <RefreshCw className={`h-4 w-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} />
             Refresh
           </Button>
-          <Button onClick={exportSecurityData} variant="outline">
+          <Button onClick={exportSecurityData} variant="outlined">
             <Download className="h-4 w-4 mr-2" />
             Export
           </Button>
@@ -216,7 +213,7 @@ export default function SecurityPage() {
             <Card>
               <CardHeader sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', pb: 1 }}>
                 <Typography variant="h6" sx={{ fontSize: '0.875rem', fontWeight: 500 }}>Total Events</Typography>
-                <Activity sx={{ height: 16, width: 16, color: 'text.secondary' }} />
+                <Activity style={{ height: 16, width: 16, color: 'inherit' }} />
               </CardHeader>
               <CardContent>
                 <Typography variant="h4" sx={{ fontWeight: 'bold' }}>{stats.total}</Typography>
@@ -231,7 +228,7 @@ export default function SecurityPage() {
             <Card>
               <CardHeader sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', pb: 1 }}>
                 <Typography variant="h6" sx={{ fontSize: '0.875rem', fontWeight: 500 }}>Critical Events</Typography>
-                <AlertTriangle sx={{ height: 16, width: 16, color: 'error.main' }} />
+                <AlertTriangle style={{ height: 16, width: 16, color: 'inherit' }} />
               </CardHeader>
               <CardContent>
                 <Typography variant="h4" sx={{ fontWeight: 'bold', color: 'error.main' }}>
@@ -248,7 +245,7 @@ export default function SecurityPage() {
             <Card>
               <CardHeader sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', pb: 1 }}>
                 <Typography variant="h6" sx={{ fontSize: '0.875rem', fontWeight: 500 }}>Active Threats</Typography>
-                <Shield sx={{ height: 16, width: 16, color: 'warning.main' }} />
+                <Shield style={{ height: 16, width: 16, color: 'inherit' }} />
               </CardHeader>
               <CardContent>
                 <Typography variant="h4" sx={{ fontWeight: 'bold', color: 'warning.main' }}>
@@ -265,7 +262,7 @@ export default function SecurityPage() {
             <Card>
               <CardHeader sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', pb: 1 }}>
                 <Typography variant="h6" sx={{ fontSize: '0.875rem', fontWeight: 500 }}>Security Score</Typography>
-                <Lock sx={{ height: 16, width: 16, color: 'text.secondary' }} />
+                <Lock style={{ height: 16, width: 16, color: 'inherit' }} />
               </CardHeader>
               <CardContent>
                 <Typography variant="h4" sx={{ fontWeight: 'bold', color: 'success.main' }}>85%</Typography>
@@ -278,14 +275,12 @@ export default function SecurityPage() {
         </Grid>
       )}
 
-      <Tabs defaultValue="events" className="space-y-6">
-        <TabsList>
-          <TabsTrigger value="events">Security Events</TabsTrigger>
-          <TabsTrigger value="threats">Threat Detection</TabsTrigger>
-          <TabsTrigger value="analytics">Security Analytics</TabsTrigger>
-        </TabsList>
+      <Tabs value={activeTab} onChange={(e, newValue) => setActiveTab(newValue)} className="space-y-6">
+        <Tab label="Security Events" />
+        <Tab label="Threat Detection" />
+        <Tab label="Security Analytics" />
 
-        <TabsContent value="events" className="space-y-4">
+        <TabPanel value={activeTab} index={0} className="space-y-4">
           <Card>
             <CardHeader>
               <Typography variant="h6" className="flex items-center gap-2">
@@ -309,9 +304,7 @@ export default function SecurityPage() {
                         <div className="flex-1">
                           <div className="flex items-center gap-2 mb-2">
                             <h3 className="font-semibold">{event.eventType}</h3>
-                            <Badge className={getSeverityColor(event.severity)}>
-                              {event.severity.toUpperCase()}
-                            </Badge>
+                            <Badge className={getSeverityColor(event.severity)} label={event.severity.toUpperCase()} />
                           </div>
                           <p className="text-sm mb-2">{event.description}</p>
                           <div className="text-xs space-y-1">
@@ -321,7 +314,7 @@ export default function SecurityPage() {
                           </div>
                         </div>
                         <div className="flex gap-2">
-                          <Button size="sm" variant="outline">
+                          <Button size="small" variant="outlined">
                             <Eye className="h-3 w-3" />
                           </Button>
                         </div>
@@ -332,9 +325,9 @@ export default function SecurityPage() {
               </div>
             </CardContent>
           </Card>
-        </TabsContent>
+        </TabPanel>
 
-        <TabsContent value="threats" className="space-y-4">
+        <TabPanel value={activeTab} index={1} className="space-y-4">
           <Card>
             <CardHeader>
               <Typography variant="h6" className="flex items-center gap-2">
@@ -358,15 +351,9 @@ export default function SecurityPage() {
                         <div className="flex-1">
                           <div className="flex items-center gap-2 mb-2">
                             <h3 className="font-semibold">{threat.type.replace('_', ' ').toUpperCase()}</h3>
-                            <Badge className={getThreatTypeColor(threat.type)}>
-                              {threat.type.replace('_', ' ')}
-                            </Badge>
-                            <Badge className={getStatusColor(threat.status)}>
-                              {threat.status}
-                            </Badge>
-                            <Badge variant="outline">
-                              {Math.round(threat.confidence * 100)}% confidence
-                            </Badge>
+                            <Badge className={getThreatTypeColor(threat.type)} label={threat.type.replace('_', ' ')} />
+                            <Badge className={getStatusColor(threat.status)} label={threat.status} />
+                            <Badge variant="outlined" label={`${Math.round(threat.confidence * 100)}% confidence`} />
                           </div>
                           <p className="text-sm mb-2">
                             Threat ID: {threat.threatId}
@@ -379,24 +366,24 @@ export default function SecurityPage() {
                           {threat.status === 'active' && (
                             <div className="flex gap-2">
                               <Button 
-                                size="sm" 
-                                variant="outline"
+                                size="small" 
+                                variant="outlined"
                                 onClick={() => handleThreatAction(threat.threatId, 'investigate')}
                               >
                                 <Eye className="h-3 w-3 mr-1" />
                                 Investigate
                               </Button>
                               <Button 
-                                size="sm" 
-                                variant="outline"
+                                size="small" 
+                                variant="outlined"
                                 onClick={() => handleThreatAction(threat.threatId, 'resolve')}
                               >
                                 <CheckCircle className="h-3 w-3 mr-1" />
                                 Resolve
                               </Button>
                               <Button 
-                                size="sm" 
-                                variant="outline"
+                                size="small" 
+                                variant="outlined"
                                 onClick={() => handleThreatAction(threat.threatId, 'false_positive')}
                               >
                                 <XCircle className="h-3 w-3 mr-1" />
@@ -412,9 +399,9 @@ export default function SecurityPage() {
               </div>
             </CardContent>
           </Card>
-        </TabsContent>
+        </TabPanel>
 
-        <TabsContent value="analytics" className="space-y-4">
+        <TabPanel value={activeTab} index={2} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
@@ -485,7 +472,7 @@ export default function SecurityPage() {
               </CardContent>
             </Card>
           </div>
-        </TabsContent>
+        </TabPanel>
       </Tabs>
 
       {/* Bottom Spacer to Clear Bottom Navigation */}

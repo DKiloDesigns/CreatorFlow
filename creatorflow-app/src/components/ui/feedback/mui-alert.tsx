@@ -142,7 +142,7 @@ export const Alert = forwardRef<HTMLDivElement, AlertProps>(
     return (
       <StyledAlert
         ref={ref}
-        variant={variant}
+        variant={variant as 'outlined' | 'filled' | undefined}
         size={size}
         severity={severity}
         action={actionElements.length > 0 ? actionElements : undefined}

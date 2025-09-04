@@ -144,8 +144,8 @@ class EnterpriseManager {
         members: team.members.map(member => ({
           ...member,
           permissions: JSON.parse(member.permissions),
-        })),
-      };
+        })) as any,
+      } as any;
     } catch (error) {
       console.error('Error creating team:', error);
       throw new Error('Failed to create team');
@@ -173,8 +173,8 @@ class EnterpriseManager {
         members: team.members.map(member => ({
           ...member,
           permissions: JSON.parse(member.permissions),
-        })),
-      };
+        })) as any,
+      } as any;
     } catch (error) {
       console.error('Error getting team:', error);
       return null;
@@ -187,7 +187,7 @@ class EnterpriseManager {
         data: {
           teamId,
           userId,
-          role: role as 'owner' | 'admin' | 'editor' | 'viewer',
+          role: role as any,
           permissions: JSON.stringify(permissions),
         },
         include: {
@@ -215,7 +215,7 @@ class EnterpriseManager {
           },
         },
         data: {
-          role: role as 'owner' | 'admin' | 'editor' | 'viewer',
+          role: role as any,
           permissions: JSON.stringify(permissions),
         },
         include: {
@@ -496,7 +496,7 @@ class EnterpriseManager {
         }
       }
 
-      return await this.getApprovalRequest(requestId);
+      return await this.getApprovalRequest(requestId) as any;
     } catch (error) {
       console.error('Error approving content:', error);
       throw new Error('Failed to approve content');

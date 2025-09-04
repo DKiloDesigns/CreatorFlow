@@ -18,12 +18,11 @@ import {
   Moon,
   Clock
 } from 'lucide-react';
-import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
-import { Switch } from '@/components/ui/switch';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Select, MenuItem, FormControl, InputLabel } from '@mui/material';
+import { TextField } from '@mui/material';
+import { Switch, FormControlLabel } from '@mui/material';
+import { Chip } from '@mui/material';
+import { Tabs, Tab } from '@mui/material';
 import { toast } from 'sonner';
 import { Box } from '@mui/material';
 
@@ -105,6 +104,7 @@ export function OptimalPostingTimePredictor({ provider }: OptimalPostingTimePred
   const [contentType, setContentType] = useState('all');
   const [audienceSize, setAudienceSize] = useState<'small' | 'medium' | 'large'>('medium');
   const [engagementGoal, setEngagementGoal] = useState<'reach' | 'engagement' | 'conversions'>('engagement');
+  const [activeTab, setActiveTab] = useState(0);
 
   const analyzePostingTimes = async () => {
     if (!targetAudience.trim() && !industry.trim()) {
@@ -327,96 +327,86 @@ export function OptimalPostingTimePredictor({ provider }: OptimalPostingTimePred
         <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
           {/* Basic Input */}
           <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' }, gap: 3 }}>
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-              <Label>Target Audience</Label>
-              <Input
-                placeholder="e.g., entrepreneurs, fitness enthusiasts..."
-                value={targetAudience}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTargetAudience(e.target.value)}
-              />
-            </Box>
+            <TextField
+              label="Target Audience"
+              placeholder="e.g., entrepreneurs, fitness enthusiasts..."
+              value={targetAudience}
+              onChange={(e) => setTargetAudience(e.target.value)}
+              fullWidth
+              sx={{ mb: 2 }}
+            />
             
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-              <Label>Industry/Niche</Label>
-              <Input
-                placeholder="e.g., tech, fitness, business..."
-                value={industry}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setIndustry(e.target.value)}
-              />
-            </Box>
+            <TextField
+              label="Industry/Niche"
+              placeholder="e.g., tech, fitness, business..."
+              value={industry}
+              onChange={(e) => setIndustry(e.target.value)}
+              fullWidth
+              sx={{ mb: 2 }}
+            />
 
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-              <Label>Timezone</Label>
-              <Select value={timezone} onValueChange={setTimezone}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {TIMEZONES.map((tz) => (
-                    <SelectItem key={tz} value={tz}>
-                      {tz}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
+            <FormControl fullWidth sx={{ mb: 2 }}>
+              <InputLabel>Timezone</InputLabel>
+              <Select value={timezone} onChange={(e) => setTimezone(e.target.value)} label="Timezone">
+                {TIMEZONES.map((tz) => (
+                  <MenuItem key={tz} value={tz}>
+                    {tz}
+                  </MenuItem>
+                ))}
               </Select>
-            </Box>
+            </FormControl>
           </Box>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-2">
-              <Label>Platforms</Label>
+              <Typography variant="subtitle2" sx={{ fontWeight: 'medium', mb: 1 }}>Platforms</Typography>
               <div className="grid grid-cols-2 gap-2">
                 {PLATFORMS.map((platform) => (
-                  <div key={platform.id} className="flex items-center space-x-2">
-                    <Switch
-                      checked={selectedPlatforms.includes(platform.id)}
-                      onCheckedChange={(checked) => {
-                        if (checked) {
-                          setSelectedPlatforms([...selectedPlatforms, platform.id]);
-                        } else {
-                          setSelectedPlatforms(selectedPlatforms.filter(p => p !== platform.id));
-                        }
-                      }}
-                    />
-                    <Label className="text-sm flex items-center gap-1">
-                      <span>{platform.icon}</span>
-                      {platform.name}
-                    </Label>
-                  </div>
+                  <FormControlLabel
+                    key={platform.id}
+                    control={
+                      <Switch
+                        checked={selectedPlatforms.includes(platform.id)}
+                        onChange={(e) => {
+                          if (e.target.checked) {
+                            setSelectedPlatforms([...selectedPlatforms, platform.id]);
+                          } else {
+                            setSelectedPlatforms(selectedPlatforms.filter(p => p !== platform.id));
+                          }
+                        }}
+                      />
+                    }
+                    label={
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <span>{platform.icon}</span>
+                        {platform.name}
+                      </Box>
+                    }
+                  />
                 ))}
               </div>
             </div>
 
             <div className="space-y-4">
-              <div className="space-y-2">
-                <Label>Content Type</Label>
-                <Select value={contentType} onValueChange={setContentType}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">All Content Types</SelectItem>
-                    <SelectItem value="video">Video Content</SelectItem>
-                    <SelectItem value="image">Image Content</SelectItem>
-                    <SelectItem value="text">Text Content</SelectItem>
-                    <SelectItem value="story">Story Content</SelectItem>
-                  </SelectContent>
+              <FormControl fullWidth sx={{ mb: 2 }}>
+                <InputLabel>Content Type</InputLabel>
+                <Select value={contentType} onChange={(e) => setContentType(e.target.value)} label="Content Type">
+                  <MenuItem value="all">All Content Types</MenuItem>
+                  <MenuItem value="video">Video Content</MenuItem>
+                  <MenuItem value="image">Image Content</MenuItem>
+                  <MenuItem value="text">Text Content</MenuItem>
+                  <MenuItem value="story">Story Content</MenuItem>
                 </Select>
-              </div>
+              </FormControl>
 
-              <div className="space-y-2">
-                <Label>Engagement Goal</Label>
-                <Select value={engagementGoal} onValueChange={(value: 'reach' | 'engagement' | 'conversions') => setEngagementGoal(value)}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="reach">Maximum Reach</SelectItem>
-                    <SelectItem value="engagement">High Engagement</SelectItem>
-                    <SelectItem value="conversions">Conversions</SelectItem>
-                  </SelectContent>
+              <FormControl fullWidth sx={{ mb: 2 }}>
+                <InputLabel>Engagement Goal</InputLabel>
+                <Select value={engagementGoal} onChange={(e) => setEngagementGoal(e.target.value as 'reach' | 'engagement' | 'conversions')} label="Engagement Goal">
+                  <MenuItem value="reach">Maximum Reach</MenuItem>
+                  <MenuItem value="engagement">High Engagement</MenuItem>
+                  <MenuItem value="conversions">Conversions</MenuItem>
                 </Select>
-              </div>
+              </FormControl>
             </div>
           </div>
 
@@ -435,36 +425,31 @@ export function OptimalPostingTimePredictor({ provider }: OptimalPostingTimePred
               <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 3, p: 2, bgcolor: 'grey.50', borderRadius: '8px' }}>
                 <div className="space-y-4">
                   <div className="space-y-2">
-                    <Label>Analysis Features</Label>
-                    <div className="space-y-2">
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm">Competitor Analysis</span>
-                        <Switch checked={includeCompetitorAnalysis} onCheckedChange={setIncludeCompetitorAnalysis} />
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm">Seasonal Factors</span>
-                        <Switch checked={includeSeasonalFactors} onCheckedChange={setIncludeSeasonalFactors} />
-                      </div>
-                      <div className="flex items-center justify-between">
-                        <span className="text-sm">Audience Demographics</span>
-                        <Switch checked={includeAudienceDemographics} onCheckedChange={setIncludeAudienceDemographics} />
-                      </div>
-                    </div>
+                    <Typography variant="subtitle2" sx={{ fontWeight: 'medium', mb: 1 }}>Analysis Features</Typography>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                      <FormControlLabel
+                        control={<Switch checked={includeCompetitorAnalysis} onChange={(e) => setIncludeCompetitorAnalysis(e.target.checked)} />}
+                        label="Competitor Analysis"
+                      />
+                      <FormControlLabel
+                        control={<Switch checked={includeSeasonalFactors} onChange={(e) => setIncludeSeasonalFactors(e.target.checked)} />}
+                        label="Seasonal Factors"
+                      />
+                      <FormControlLabel
+                        control={<Switch checked={includeAudienceDemographics} onChange={(e) => setIncludeAudienceDemographics(e.target.checked)} />}
+                        label="Audience Demographics"
+                      />
+                    </Box>
                   </div>
 
-                  <div className="space-y-2">
-                    <Label>Audience Size</Label>
-                    <Select value={audienceSize} onValueChange={(value: 'small' | 'medium' | 'large') => setAudienceSize(value)}>
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="small">Small (1K-10K followers)</SelectItem>
-                        <SelectItem value="medium">Medium (10K-100K followers)</SelectItem>
-                        <SelectItem value="large">Large (100K+ followers)</SelectItem>
-                      </SelectContent>
+                  <FormControl fullWidth sx={{ mb: 2 }}>
+                    <InputLabel>Audience Size</InputLabel>
+                    <Select value={audienceSize} onChange={(e) => setAudienceSize(e.target.value as 'small' | 'medium' | 'large')} label="Audience Size">
+                      <MenuItem value="small">Small (1K-10K followers)</MenuItem>
+                      <MenuItem value="medium">Medium (10K-100K followers)</MenuItem>
+                      <MenuItem value="large">Large (100K+ followers)</MenuItem>
                     </Select>
-                  </div>
+                  </FormControl>
                 </div>
 
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -510,19 +495,22 @@ export function OptimalPostingTimePredictor({ provider }: OptimalPostingTimePred
         <div className="space-y-6">
           <div className="flex items-center justify-between">
             <h2 className="text-xl font-semibold">Optimal Posting Times</h2>
-            <Badge variant="secondary">
-              {optimalTimes.length} time slots analyzed
-            </Badge>
+            <Chip 
+              label={`${optimalTimes.length} time slots analyzed`}
+              color="secondary"
+              variant="outlined"
+            />
           </div>
 
-          <Tabs defaultValue="times" className="space-y-4">
-            <TabsList>
-              <TabsTrigger value="times">Optimal Times</TabsTrigger>
-              <TabsTrigger value="behavior">Audience Behavior</TabsTrigger>
-              <TabsTrigger value="analysis">Detailed Analysis</TabsTrigger>
-            </TabsList>
+          <Box sx={{ width: '100%' }}>
+            <Tabs value={activeTab} onChange={(e, newValue) => setActiveTab(newValue)} sx={{ borderBottom: 1, borderColor: 'divider' }}>
+              <Tab label="Optimal Times" />
+              <Tab label="Audience Behavior" />
+              <Tab label="Detailed Analysis" />
+            </Tabs>
 
-            <TabsContent value="times" className="space-y-4">
+            {activeTab === 0 && (
+              <Box sx={{ mt: 3 }}>
               {optimalTimes.map((time, index) => (
                 <Card key={index}>
                   <CardContent className="pt-6">
@@ -537,10 +525,12 @@ export function OptimalPostingTimePredictor({ provider }: OptimalPostingTimePred
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
-                        <Badge className={getCompetitionColor(time.competition_level)}>
-                          {time.competition_level} competition
-                        </Badge>
-                        <Badge variant="outline">{time.local_time}</Badge>
+                        <Chip 
+                          label={`${time.competition_level} competition`}
+                          color={time.competition_level === 'low' ? 'success' : time.competition_level === 'medium' ? 'warning' : 'error'}
+                          size="small"
+                        />
+                        <Chip label={time.local_time} variant="outlined" size="small" />
                       </div>
                     </div>
 
@@ -579,18 +569,16 @@ export function OptimalPostingTimePredictor({ provider }: OptimalPostingTimePred
 
                     <div className="space-y-3">
                       <div>
-                        <Label className="text-sm font-medium">Best Content Types</Label>
+                        <Typography variant="subtitle2" sx={{ fontWeight: 'medium', mb: 1 }}>Best Content Types</Typography>
                         <div className="flex flex-wrap gap-1 mt-1">
                           {time.best_content_types.map((type, idx) => (
-                            <Badge key={idx} variant="outline" className="text-xs">
-                              {type}
-                            </Badge>
+                            <Chip key={idx} label={type} variant="outlined" size="small" />
                           ))}
                         </div>
                       </div>
 
                       <div>
-                        <Label className="text-sm font-medium">Recommendations</Label>
+                        <Typography variant="subtitle2" sx={{ fontWeight: 'medium', mb: 1 }}>Recommendations</Typography>
                         <ul className="text-sm text-gray-600 mt-1 space-y-1">
                           {time.recommendations.slice(0, 3).map((rec, idx) => (
                             <li key={idx}>• {rec}</li>
@@ -601,9 +589,11 @@ export function OptimalPostingTimePredictor({ provider }: OptimalPostingTimePred
                   </CardContent>
                 </Card>
               ))}
-            </TabsContent>
+              </Box>
+            )}
 
-            <TabsContent value="behavior" className="space-y-4">
+            {activeTab === 1 && (
+              <Box sx={{ mt: 3 }}>
               <Card>
                 <CardHeader>
                   <Typography variant="h6" className="flex items-center gap-2">
@@ -631,9 +621,11 @@ export function OptimalPostingTimePredictor({ provider }: OptimalPostingTimePred
                   </div>
                 </CardContent>
               </Card>
-            </TabsContent>
+              </Box>
+            )}
 
-            <TabsContent value="analysis" className="space-y-4">
+            {activeTab === 2 && (
+              <Box sx={{ mt: 3 }}>
               <Card>
                 <CardHeader>
                   <Typography variant="h6" className="flex items-center gap-2">
@@ -665,7 +657,7 @@ export function OptimalPostingTimePredictor({ provider }: OptimalPostingTimePred
                           <div key={index} className="p-2 border rounded">
                             <div className="flex items-center justify-between mb-1">
                               <span className="font-medium">{time.platform}</span>
-                              <Badge variant="outline">{time.competition_level}</Badge>
+                              <Chip label={time.competition_level} variant="outlined" size="small" />
                             </div>
                             <p className="text-sm text-gray-600">{time.reasoning}</p>
                           </div>
@@ -675,8 +667,9 @@ export function OptimalPostingTimePredictor({ provider }: OptimalPostingTimePred
                   </div>
                 </CardContent>
               </Card>
-            </TabsContent>
-          </Tabs>
+              </Box>
+            )}
+          </Box>
         </div>
       )}
     </Box>

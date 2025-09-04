@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { 
-  Button
+  Button,
+  TextField,
+  Typography
 } from '@mui/material';
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
+import { Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Checkbox } from '@/components/ui/mui-checkbox';
@@ -58,7 +60,7 @@ export default function EditPostForm({ post, onSave, onCancel }: EditPostFormPro
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
       <div>
-        <Label htmlFor="contentText">Content</Label>
+        <Typography component="label" htmlFor="contentText">Content</Typography>
         <Textarea
           id="contentText"
           value={formData.contentText}
@@ -78,33 +80,35 @@ export default function EditPostForm({ post, onSave, onCancel }: EditPostFormPro
                 checked={formData.platforms.includes(platform)}
                 onChange={() => handlePlatformToggle(platform)}
               />
-              <Label htmlFor={platform} className="text-sm capitalize">
+              <Typography component="label" htmlFor={platform} className="text-sm capitalize">
                 {platform}
-              </Label>
+              </Typography>
             </div>
           ))}
         </div>
       </div>
 
       <div>
-        <Label htmlFor="status">Status</Label>
-        <Select value={formData.status} onValueChange={(value) => setFormData(prev => ({ ...prev, status: value }))}>
-          <SelectTrigger>
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
+        <Typography component="label" htmlFor="status">Status</Typography>
+        <FormControl fullWidth>
+          <InputLabel>Status</InputLabel>
+          <Select 
+            value={formData.status} 
+            onChange={(e) => setFormData(prev => ({ ...prev, status: e.target.value }))}
+            label="Status"
+          >
             {STATUSES.map((status) => (
-              <SelectItem key={status} value={status}>
+              <MenuItem key={status} value={status}>
                 {status}
-              </SelectItem>
+              </MenuItem>
             ))}
-          </SelectContent>
-        </Select>
+          </Select>
+        </FormControl>
       </div>
 
       {formData.status === 'SCHEDULED' && (
         <div>
-          <Label htmlFor="scheduledAt">Scheduled Date</Label>
+          <Typography component="label" htmlFor="scheduledAt">Scheduled Date</Typography>
           <TextField
             id="scheduledAt"
             type="datetime-local"

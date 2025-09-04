@@ -15,7 +15,7 @@ import { cn } from '@/lib/utils';
 
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Tab, TabPanel } from '@mui/material';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
 interface NotificationCenterProps {
@@ -209,8 +209,8 @@ export function NotificationCenter({ className: _className, onNotificationClick 
 
   return (
     <>
-      <Popover open={isOpen} onOpenChange={setIsOpen}>
-        <PopoverTrigger asChild>
+      <Popover open={isOpen} onClose={() => setIsOpen(false)}>
+        <PopoverTrigger>
           <Button
             variant="text"
             size="small"
@@ -222,13 +222,12 @@ export function NotificationCenter({ className: _className, onNotificationClick 
               <Badge
                 variant="destructive"
                 sx={{ position: 'absolute', top: -4, right: -4, height: 20, width: 20, borderRadius: '50%', p: 0, fontSize: '0.75rem' }}
-              >
-                {unreadCount > 99 ? '99+' : unreadCount}
-              </Badge>
+                label={unreadCount > 99 ? '99+' : unreadCount.toString()}
+              />
             )}
           </Button>
         </PopoverTrigger>
-        <PopoverContent className="w-96 p-0" align="end">
+        <PopoverContent className="w-96 p-0">
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', p: 2, borderBottom: '1px solid', borderColor: 'divider' }}>
             <Typography variant="h6" sx={{ fontWeight: 600 }}>Notifications</Typography>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -242,8 +241,8 @@ export function NotificationCenter({ className: _className, onNotificationClick 
               </Button>
               {unreadCount > 0 && (
                 <Button
-                  variant="ghost"
-                  size="sm"
+                  variant="text"
+                  size="small"
                   onClick={markAllAsRead}
                   sx={{ fontSize: '0.75rem' }}
                 >
@@ -253,18 +252,15 @@ export function NotificationCenter({ className: _className, onNotificationClick 
             </Box>
           </Box>
 
-          <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as any)}>
-            <TabsList sx={{ display: 'grid', width: '100%', gridTemplateColumns: 'repeat(5, 1fr)' }}>
-              <TabsTrigger value="all" sx={{ fontSize: '0.75rem' }}>All</TabsTrigger>
-              <TabsTrigger value="unread" sx={{ fontSize: '0.75rem' }}>
-                Unread {unreadCount > 0 && `(${unreadCount})`}
-              </TabsTrigger>
-              <TabsTrigger value="system" sx={{ fontSize: '0.75rem' }}>System</TabsTrigger>
-              <TabsTrigger value="security" sx={{ fontSize: '0.75rem' }}>Security</TabsTrigger>
-              <TabsTrigger value="content" sx={{ fontSize: '0.75rem' }}>Content</TabsTrigger>
-            </TabsList>
+          <Tabs value={activeTab} onChange={(e, newValue) => setActiveTab(newValue)} sx={{ mb: 2 }}>
+            <Tab value="all" label="All" sx={{ fontSize: '0.75rem' }} />
+            <Tab value="unread" label={`Unread ${unreadCount > 0 ? `(${unreadCount})` : ''}`} sx={{ fontSize: '0.75rem' }} />
+            <Tab value="system" label="System" sx={{ fontSize: '0.75rem' }} />
+            <Tab value="security" label="Security" sx={{ fontSize: '0.75rem' }} />
+            <Tab value="content" label="Content" sx={{ fontSize: '0.75rem' }} />
+          </Tabs>
 
-            <TabsContent value={activeTab} className="mt-0">
+          <TabPanel value={activeTab} sx={{ p: 0 }}>
               <ScrollArea className="h-80">
                 {isLoading ? (
                   <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', p: 4 }}>
@@ -319,9 +315,8 @@ export function NotificationCenter({ className: _className, onNotificationClick 
                               <Badge
                                 variant="secondary"
                                 className={cn("text-xs", SEVERITY_COLORS[notification.severity])}
-                              >
-                                {notification.severity}
-                              </Badge>
+                                label={notification.severity}
+                              />
                             </Box>
                             
                             <Typography variant="body2" sx={{ 
@@ -339,8 +334,8 @@ export function NotificationCenter({ className: _className, onNotificationClick 
                               
                               {notification.actionUrl && (
                                 <Button
-                                  variant="ghost"
-                                  size="sm"
+                                  variant="text"
+                                  size="small"
                                   sx={{ fontSize: '0.75rem' }}
                                   onClick={(e) => {
                                     e.stopPropagation();
@@ -363,9 +358,8 @@ export function NotificationCenter({ className: _className, onNotificationClick 
                           }}>
                             {!notification.read && (
                               <Button
-                                variant="ghost"
-                                size="icon"
-                                sx={{ height: 24, width: 24 }}
+                                variant="text"
+                                sx={{ height: 24, width: 24, minWidth: 24 }}
                                 onClick={(e) => {
                                   e.stopPropagation();
                                   markAsRead(notification.id);
@@ -375,11 +369,11 @@ export function NotificationCenter({ className: _className, onNotificationClick 
                               </Button>
                             )}
                             <Button
-                              variant="ghost"
-                              size="icon"
+                              variant="text"
                               sx={{ 
                                 height: 24, 
                                 width: 24, 
+                                minWidth: 24,
                                 color: 'error.main',
                                 '&:hover': { color: 'error.dark' }
                               }}
@@ -397,8 +391,7 @@ export function NotificationCenter({ className: _className, onNotificationClick 
                   </Box>
                 )}
               </ScrollArea>
-            </TabsContent>
-          </Tabs>
+          </TabPanel>
         </PopoverContent>
       </Popover>
 

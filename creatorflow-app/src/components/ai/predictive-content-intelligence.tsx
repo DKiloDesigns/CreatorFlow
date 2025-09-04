@@ -412,7 +412,11 @@ export default function PredictiveContentIntelligence() {
           platform,
           predictedMetrics: contentPrediction.data.predictions,
           confidence: contentPrediction.data.confidence,
-          factors: contentPrediction.data.factors,
+          factors: contentPrediction.data.factors.map(factor => ({
+            ...factor,
+            id: factor.name.toLowerCase().replace(/\s+/g, '-'),
+            trend: 'stable' as const
+          })),
           recommendations: contentPrediction.data.recommendations,
           predictedPerformance: contentPrediction.data.predictions.engagement > 0.1 ? 'high' : 'medium',
           aiInsights: [],

@@ -109,7 +109,7 @@ export function APIKeySetup({ onKeyAdded, className }: APIKeySetupProps) {
     <Card sx={className ? { className } : undefined}>
       <CardHeader>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <Activity sx={{ width: 20, height: 20, color: 'secondary.main' }} />
+          <Activity style={{ width: 20, height: 20, color: 'inherit' }} />
           <Typography variant="h5" component="div">
             OpenAI API Key Setup
           </Typography>
@@ -125,7 +125,7 @@ export function APIKeySetup({ onKeyAdded, className }: APIKeySetupProps) {
           
           <Grid container alignItems="center" spacing={1}>
             <Grid item>
-              <Key sx={{ width: 20, height: 20, color: 'primary.main' }} />
+              <Key style={{ width: 20, height: 20, color: 'inherit' }} />
             </Grid>
             <Grid item xs>
               <Typography variant="body2">Don&apos;t have an API key?</Typography>
@@ -236,7 +236,7 @@ export function APIKeySetup({ onKeyAdded, className }: APIKeySetupProps) {
           >
             {isValidating ? (
               <>
-                <LoadingSpinner size="sm" sx={{ mr: 1 }} />
+                <LoadingSpinner size="sm" className="mr-1" />
                 Validating...
               </>
             ) : (

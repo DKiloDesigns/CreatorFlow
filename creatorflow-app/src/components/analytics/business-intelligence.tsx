@@ -216,7 +216,7 @@ export default function BusinessIntelligence() {
       case 'positive': return designTokens.colors.success[600];
       case 'negative': return designTokens.colors.error[600];
       case 'neutral': return designTokens.colors.info[600];
-      default: return designTokens.colors.grey[600];
+      default: return 'grey'[600];
     }
   };
 
@@ -225,7 +225,7 @@ export default function BusinessIntelligence() {
       case 'high': return designTokens.colors.error[600];
       case 'medium': return designTokens.colors.warning[600];
       case 'low': return designTokens.colors.success[600];
-      default: return designTokens.colors.grey[600];
+      default: return 'grey'[600];
     }
   };
 
@@ -234,7 +234,7 @@ export default function BusinessIntelligence() {
       case 'high': return designTokens.colors.error[600];
       case 'medium': return designTokens.colors.warning[600];
       case 'low': return designTokens.colors.success[600];
-      default: return designTokens.colors.grey[600];
+      default: return 'grey'[600];
     }
   };
 

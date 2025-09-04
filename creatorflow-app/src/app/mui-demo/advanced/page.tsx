@@ -109,7 +109,7 @@ export default function MuiAdvancedDemo() {
   };
 
   const renderSimpleDialog = () => (
-    <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+    <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
       <DialogHeader>
         <DialogTitle>Simple Dialog</DialogTitle>
       </DialogHeader>
@@ -128,7 +128,7 @@ export default function MuiAdvancedDemo() {
   );
 
   const renderFormDialog = () => (
-    <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+    <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
       <DialogHeader>
         <DialogTitle>User Settings</DialogTitle>
       </DialogHeader>
@@ -199,7 +199,7 @@ export default function MuiAdvancedDemo() {
   );
 
   const renderConfirmDialog = () => (
-    <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+    <Dialog open={dialogOpen} onClose={() => setDialogOpen(false)}>
       <DialogHeader>
         <DialogTitle>Confirm Action</DialogTitle>
       </DialogHeader>

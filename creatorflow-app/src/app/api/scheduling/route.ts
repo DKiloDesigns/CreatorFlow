@@ -83,15 +83,15 @@ async function handleCreateSchedule(userId: string, data: any) {
     // Create scheduled posts in database
     const createdPosts = await Promise.all(
       scheduledPosts.map(post => 
-        prisma.scheduledPost.create({
+        prisma.post.create({
           data: {
             userId,
-            content: post.content,
+            contentText: post.content,
             platforms: post.platforms,
             scheduledAt: post.scheduledAt,
-            metadata: post.metadata || {},
-            scheduleType,
-            scheduleData,
+            status: 'SCHEDULED',
+            // Note: metadata, scheduleType, scheduleData fields don't exist in Post model
+            // Might need to store in errorMessage or create separate scheduling table
           },
         })
       )
@@ -154,15 +154,14 @@ async function handleBulkSchedule(userId: string, data: any) {
     // Create scheduled posts
     const createdPosts = await Promise.all(
       scheduledPosts.map(post => 
-        prisma.scheduledPost.create({
+        prisma.post.create({
           data: {
             userId,
-            content: post.content,
+            contentText: post.content,
             platforms: post.platforms,
             scheduledAt: post.scheduledAt,
-            metadata: post.metadata,
-            scheduleType: 'bulk',
-            scheduleData: { strategy: scheduleStrategy },
+            status: 'SCHEDULED',
+            // Note: metadata, scheduleType, scheduleData fields don't exist in Post model
           },
         })
       )
@@ -184,15 +183,15 @@ async function handleUpdateSchedule(userId: string, data: any) {
   const { scheduleId, updates } = data;
 
   try {
-    const scheduledPost = await prisma.scheduledPost.findFirst({
-      where: { id: scheduleId, userId },
+    const scheduledPost = await prisma.post.findFirst({
+      where: { id: scheduleId, userId, status: 'SCHEDULED' },
     });
 
     if (!scheduledPost) {
       return NextResponse.json({ error: 'Schedule not found' }, { status: 404 });
     }
 
-    const updatedPost = await prisma.scheduledPost.update({
+    const updatedPost = await prisma.post.update({
       where: { id: scheduleId },
       data: updates,
     });
@@ -212,15 +211,15 @@ async function handleDeleteSchedule(userId: string, data: any) {
   const { scheduleId } = data;
 
   try {
-    const scheduledPost = await prisma.scheduledPost.findFirst({
-      where: { id: scheduleId, userId },
+    const scheduledPost = await prisma.post.findFirst({
+      where: { id: scheduleId, userId, status: 'SCHEDULED' },
     });
 
     if (!scheduledPost) {
       return NextResponse.json({ error: 'Schedule not found' }, { status: 404 });
     }
 
-    await prisma.scheduledPost.delete({
+    await prisma.post.delete({
       where: { id: scheduleId },
     });
 
@@ -243,14 +242,15 @@ async function handleGetOptimalTimes(userId: string, data: any) {
     const historicalPosts = await prisma.post.findMany({
       where: {
         userId,
-        platform: platform || undefined,
+        platforms: platform ? (Array.isArray(platform) ? platform.filter((p): p is string => typeof p === 'string') : [platform as string]) as any : undefined,
         createdAt: dateRange ? {
           gte: new Date(dateRange.start),
           lte: new Date(dateRange.end),
         } : undefined,
       },
       include: {
-        analytics: true,
+        // TODO: Add analytics relation to Post model
+        // analytics: true,
       },
       orderBy: { createdAt: 'desc' },
       take: 100,
@@ -280,9 +280,10 @@ async function handleGetScheduleAnalytics(userId: string, data: any) {
   const { dateRange } = data;
 
   try {
-    const scheduledPosts = await prisma.scheduledPost.findMany({
+    const scheduledPosts = await prisma.post.findMany({
       where: {
         userId,
+        status: 'SCHEDULED',
         scheduledAt: dateRange ? {
           gte: new Date(dateRange.start),
           lte: new Date(dateRange.end),
@@ -300,7 +301,8 @@ async function handleGetScheduleAnalytics(userId: string, data: any) {
         } : undefined,
       },
       include: {
-        analytics: true,
+        // TODO: Add analytics relation to Post model
+        // analytics: true,
       },
     });
 

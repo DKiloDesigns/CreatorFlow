@@ -1,13 +1,11 @@
 "use client";
 import Link from "next/link";
 import { format } from 'date-fns';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader } from '@/components/ui/card';
-import { Typography, Box, Container, Grid, Alert, AlertTitle, AlertDescription, Chip } from '@mui/material';
+import { Button, Card, CardContent, CardHeader, Typography } from '@mui/material';
+import { Box, Container, Grid, Alert, AlertTitle, Chip, Tabs, Tab } from '@mui/material';
 import { createPortalSession } from './actions';
 import { ArrowRight, CreditCard, History, TrendingUp, BarChart3, Users, Zap, Download, FileText, BarChart2 } from 'lucide-react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Progress } from '@/components/ui/progress';
+import { LinearProgress } from '@mui/material';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
@@ -102,6 +100,7 @@ export default function BillingClientComponent({ user, searchParams, upcomingCha
   });
 
   const [billingFrequency, setBillingFrequency] = useState<'monthly' | 'yearly'>('monthly');
+  const [activeTab, setActiveTab] = useState(0);
   const router = useRouter();
   
   console.log("BillingClientComponent: Hooks initialized");
@@ -123,9 +122,9 @@ export default function BillingClientComponent({ user, searchParams, upcomingCha
         <AlertTitle sx={{ fontSize: '0.875rem', fontWeight: 500, color: 'success.dark' }}>
           Payment successful!
         </AlertTitle>
-        <AlertDescription sx={{ mt: 1, color: 'success.dark' }}>
+        <Typography sx={{ mt: 1, color: 'success.dark' }}>
           Your subscription has been activated. You can now access all premium features.
-        </AlertDescription>
+        </Typography>
         <Box sx={{ mt: 2 }}>
           <Link
             href="/dashboard"
@@ -150,9 +149,9 @@ export default function BillingClientComponent({ user, searchParams, upcomingCha
         <AlertTitle sx={{ fontSize: '0.875rem', fontWeight: 500, color: 'warning.dark' }}>
           Payment canceled
         </AlertTitle>
-        <AlertDescription sx={{ mt: 1, color: 'warning.dark' }}>
+        <Typography sx={{ mt: 1, color: 'warning.dark' }}>
           Your payment was canceled. You can try again or choose a different plan.
-        </AlertDescription>
+        </Typography>
       </Alert>
     );
   }
@@ -165,18 +164,19 @@ export default function BillingClientComponent({ user, searchParams, upcomingCha
         Billing & Subscription
       </Typography>
       <Typography variant="body2" sx={{ mb: 2 }}>Debug: Main component rendering</Typography>
-      <Tabs defaultValue="overview">
-        <TabsList>
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="usage">Usage</TabsTrigger>
-          <TabsTrigger value="plans">Plans</TabsTrigger>
-        </TabsList>
-        <TabsContent value="overview" className="space-y-6">
+      <Tabs value={activeTab} onChange={(e, newValue) => setActiveTab(newValue)}>
+        <Tab label="Overview" />
+        <Tab label="Usage" />
+        <Tab label="Plans" />
+      </Tabs>
+      
+      {activeTab === 0 && (
+        <Box className="space-y-6">
           {/* Current Plan Section */}
           <Card>
             <CardHeader>
               <Typography variant="h5">Current Plan</Typography>
-              <CardDescription>Your current subscription details</CardDescription>
+              <Typography variant="body2" color="text.secondary">Your current subscription details</Typography>
             </CardHeader>
             <CardContent>
               <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -195,7 +195,7 @@ export default function BillingClientComponent({ user, searchParams, upcomingCha
                         const { url } = await response.json();
                         if (url) window.location.href = url;
                       }}
-                      variant="outline"
+                      variant="outlined"
                     >
                       Manage Subscription
                     </Button>
@@ -217,18 +217,18 @@ export default function BillingClientComponent({ user, searchParams, upcomingCha
           <Card>
             <CardHeader>
               <Typography variant="h5">Usage Statistics</Typography>
-              <CardDescription>Your current usage and limits</CardDescription>
+              <Typography variant="body2" color="text.secondary">Your current usage and limits</Typography>
             </CardHeader>
             <CardContent>
               <Grid container spacing={3}>
                 <Grid item xs={12} md={6}>
                   <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                      <TrendingUp sx={{ height: 20, width: 20, color: 'text.secondary' }} />
+                      <TrendingUp style={{ height: 20, width: 20, color: 'var(--mui-palette-text-secondary)' }} />
                       <Typography variant="body2" sx={{ fontWeight: 500 }}>Scheduled Posts</Typography>
                     </Box>
                     <Typography variant="h4" sx={{ fontWeight: 'bold' }}>{user?._count.posts || 0}</Typography>
-                    <Progress value={postUsage} className="h-2" />
+                    <LinearProgress variant="determinate" value={postUsage} sx={{ height: 8 }} />
                     <Typography variant="body2" color="text.secondary">
                       {user?.plan === 'Free' ? 'Limited to 5 posts' : 'Unlimited posts'}
                     </Typography>
@@ -237,11 +237,11 @@ export default function BillingClientComponent({ user, searchParams, upcomingCha
                 <Grid item xs={12} md={6}>
                   <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                      <CreditCard sx={{ height: 20, width: 20, color: 'text.secondary' }} />
+                      <CreditCard style={{ height: 20, width: 20, color: 'var(--mui-palette-text-secondary)' }} />
                       <Typography variant="body2" sx={{ fontWeight: 500 }}>Connected Accounts</Typography>
                     </Box>
                     <Typography variant="h4" sx={{ fontWeight: 'bold' }}>{user?._count.socialAccounts || 0}</Typography>
-                    <Progress value={accountUsage} className="h-2" />
+                    <LinearProgress variant="determinate" value={accountUsage} sx={{ height: 8 }} />
                     <Typography variant="body2" color="text.secondary">
                       {user?.plan === 'Free' ? 'Limited to 2 accounts' : 'Unlimited accounts'}
                     </Typography>
@@ -256,7 +256,7 @@ export default function BillingClientComponent({ user, searchParams, upcomingCha
             <Card>
               <CardHeader>
                 <Typography variant="h5">Upcoming Charges</Typography>
-                <CardDescription>Your next billing details</CardDescription>
+                <Typography variant="body2" color="text.secondary">Your next billing details</Typography>
               </CardHeader>
               <CardContent>
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -281,7 +281,7 @@ export default function BillingClientComponent({ user, searchParams, upcomingCha
             <Card>
               <CardHeader>
                 <Typography variant="h5">Payment History</Typography>
-                <CardDescription>Your recent transactions</CardDescription>
+                <Typography variant="body2" color="text.secondary">Your recent transactions</Typography>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
@@ -298,8 +298,8 @@ export default function BillingClientComponent({ user, searchParams, upcomingCha
                           ${(payment.amount / 100).toFixed(2)}
                         </p>
                         <Button
-                          variant="ghost"
-                          size="sm"
+                          variant="text"
+                          size="small"
                           onClick={() => window.open(payment.invoice_pdf, '_blank')}
                         >
                           <History className="h-4 w-4 mr-2" />
@@ -312,17 +312,19 @@ export default function BillingClientComponent({ user, searchParams, upcomingCha
               </CardContent>
             </Card>
           )}
-        </TabsContent>
+          </Box>
+        )}
 
-        <TabsContent value="usage" className="space-y-6">
+        {activeTab === 1 && (
+          <Box className="space-y-6">
           <div className="flex justify-between items-center mb-6">
             <Typography variant="h4">Usage Analytics</Typography>
             <div className="flex gap-2">
-              <Button variant="outline" size="sm" onClick={() => window.print()}>
+              <Button variant="outlined" size="small" onClick={() => window.print()}>
                 <FileText className="h-4 w-4 mr-2" />
                 Export Report
               </Button>
-              <Button variant="outline" size="sm" onClick={() => {
+              <Button variant="outlined" size="small" onClick={() => {
                 const data = {
                   posts: user?._count.posts || 0,
                   accounts: user?._count.socialAccounts || 0,
@@ -351,7 +353,7 @@ export default function BillingClientComponent({ user, searchParams, upcomingCha
           <Card>
             <CardHeader>
               <Typography variant="h5">Content Performance</Typography>
-              <CardDescription>Track your content engagement and reach</CardDescription>
+              <Typography variant="body2" color="text.secondary">Track your content engagement and reach</Typography>
             </CardHeader>
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -409,9 +411,11 @@ export default function BillingClientComponent({ user, searchParams, upcomingCha
               </div>
             </CardContent>
           </Card>
-        </TabsContent>
+          </Box>
+        )}
 
-        <TabsContent value="plans" className="space-y-6">
+        {activeTab === 2 && (
+          <Box className="space-y-6">
           <div className="flex justify-between items-center mb-6">
             <Typography variant="h4">Subscription Plans</Typography>
             <div className="flex items-center space-x-4">
@@ -443,7 +447,7 @@ export default function BillingClientComponent({ user, searchParams, upcomingCha
                 )}
                 <CardHeader>
                   <Typography variant="h5">{tier.name}</Typography>
-                  <CardDescription>{tier.description}</CardDescription>
+                  <Typography variant="body2" color="text.secondary">{tier.description}</Typography>
                   <div className="mt-4">
                     <p className="text-3xl font-bold">
                       {billingFrequency === 'monthly' ? tier.price : tier.yearlyPrice || tier.price}
@@ -500,8 +504,8 @@ export default function BillingClientComponent({ user, searchParams, upcomingCha
               </Card>
             ))}
           </div>
-        </TabsContent>
-      </Tabs>
-    </div>
+          </Box>
+        )}
+    </Container>
   );
 }

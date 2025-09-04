@@ -59,21 +59,27 @@ DialogPortal.displayName = "DialogPortal"
 // Dialog Close button
 const DialogClose = React.forwardRef<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>(
   ({ children, ...props }, ref) => (
-    <IconButton
+    <button
       ref={ref}
       {...props}
-      sx={{
+      style={{
         position: 'absolute',
         right: 16,
         top: 16,
         color: 'grey.500',
-        '&:hover': {
-          color: 'grey.700'
-        }
+        background: 'none',
+        border: 'none',
+        cursor: 'pointer',
+        padding: 8,
+        borderRadius: 4,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        ...props.style
       }}
     >
-      <CloseIcon />
-    </IconButton>
+      {children || <CloseIcon />}
+    </button>
   )
 )
 DialogClose.displayName = "DialogClose"
@@ -134,6 +140,25 @@ const DialogFooter = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLD
 )
 DialogFooter.displayName = "DialogFooter"
 
+// Dialog Description
+const DialogDescription = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<HTMLParagraphElement>>(
+  ({ children, ...props }, ref) => (
+    <Typography
+      ref={ref}
+      variant="body2"
+      color="text.secondary"
+      {...props}
+      sx={{
+        mb: 2,
+        ...props.sx
+      }}
+    >
+      {children}
+    </Typography>
+  )
+)
+DialogDescription.displayName = "DialogDescription"
+
 export {
   Dialog,
   DialogTrigger,
@@ -143,6 +168,7 @@ export {
   DialogClose,
   DialogHeader,
   DialogFooter,
+  DialogDescription,
   MuiDialogTitle as DialogTitle,
   MuiDialogActions as DialogActions,
   MuiDialogContentText as DialogContentText

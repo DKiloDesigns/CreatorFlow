@@ -91,7 +91,7 @@ import {
   Delete,
   Visibility,
   MoreVert,
-  Workflow,
+  AccountTree,
   Hub,
   AccountTree,
   Schema,
@@ -104,12 +104,12 @@ import {
   Storage,
   NetworkCheck,
   Router,
-  Firewall,
-  Antivirus,
+  Security,
+  Shield,
   Encryption,
-  TwoFactorAuth,
+  VerifiedUser,
   Password,
-  UserCheck,
+  PersonAdd,
   DeviceHub,
   Compare,
   Assessment,
@@ -574,7 +574,7 @@ export default function PredictiveAnalyticsEngine() {
   if (isLoading) {
     return (
       <Box sx={{ p: 3 }}>
-        <Typography variant="h4" sx={{ mb: 3, color: designTokens.colors.text.primary }}>
+        <Typography variant="h4" sx={{ mb: 3, color: 'text.primary' }}>
           Predictive Analytics Engine
         </Typography>
         <Grid container spacing={3}>
@@ -591,7 +591,7 @@ export default function PredictiveAnalyticsEngine() {
   return (
     <Box sx={{ p: 3 }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-        <Typography variant="h4" sx={{ color: designTokens.colors.text.primary }}>
+        <Typography variant="h4" sx={{ color: 'text.primary' }}>
           Predictive Analytics Engine
         </Typography>
         <Button
@@ -682,16 +682,16 @@ export default function PredictiveAnalyticsEngine() {
                         boxShadow: 8,
                         borderColor: designTokens.colors.ai[300]
                       },
-                      border: `1px solid ${designTokens.colors.border}`
+                      border: `1px solid ${theme.palette.divider}`
                     }}
                   >
                     <CardContent>
                       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
                         <Box>
-                          <Typography variant="h6" sx={{ color: designTokens.colors.text.primary, mb: 1 }}>
+                          <Typography variant="h6" sx={{ color: 'text.primary', mb: 1 }}>
                             {model.name}
                           </Typography>
-                          <Typography variant="body2" sx={{ color: designTokens.colors.text.secondary, mb: 2 }}>
+                          <Typography variant="body2" sx={{ color: 'text.secondary', mb: 2 }}>
                             {model.category.charAt(0).toUpperCase() + model.category.slice(1)} • {model.dataPoints.toLocaleString()} data points
                           </Typography>
                         </Box>
@@ -721,12 +721,12 @@ export default function PredictiveAnalyticsEngine() {
                       </Stack>
 
                       <Box sx={{ mb: 2 }}>
-                        <Typography variant="body2" sx={{ color: designTokens.colors.text.secondary, mb: 1 }}>
+                        <Typography variant="body2" sx={{ color: 'text.secondary', mb: 1 }}>
                           Model Performance
                         </Typography>
                         <Grid container spacing={1}>
                           <Grid xs={6}>
-                            <Typography variant="caption" sx={{ color: designTokens.colors.text.secondary }}>
+                            <Typography variant="caption" sx={{ color: 'text.secondary' }}>
                               R² Score
                             </Typography>
                             <Typography variant="body2" sx={{ color: designTokens.colors.success[600] }}>
@@ -734,7 +734,7 @@ export default function PredictiveAnalyticsEngine() {
                             </Typography>
                           </Grid>
                           <Grid xs={6}>
-                            <Typography variant="caption" sx={{ color: designTokens.colors.text.secondary }}>
+                            <Typography variant="caption" sx={{ color: 'text.secondary' }}>
                               Confidence
                             </Typography>
                             <Typography variant="body2" sx={{ color: designTokens.colors.info[600] }}>
@@ -745,7 +745,7 @@ export default function PredictiveAnalyticsEngine() {
                       </Box>
 
                       <Box sx={{ mb: 2 }}>
-                        <Typography variant="body2" sx={{ color: designTokens.colors.text.secondary, mb: 1 }}>
+                        <Typography variant="body2" sx={{ color: 'text.secondary', mb: 1 }}>
                           Features
                         </Typography>
                         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
@@ -770,7 +770,7 @@ export default function PredictiveAnalyticsEngine() {
                       </Box>
 
                       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <Typography variant="caption" sx={{ color: designTokens.colors.text.secondary }}>
+                        <Typography variant="caption" sx={{ color: 'text.secondary' }}>
                           Updated: {formatDate(model.lastUpdated)}
                         </Typography>
                         <Button
@@ -798,11 +798,11 @@ export default function PredictiveAnalyticsEngine() {
                 <CardContent>
                   <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
                     <Box>
-                      <Typography variant="h6" sx={{ color: designTokens.colors.text.primary, mb: 1 }}>
+                      <Typography variant="h6" sx={{ color: 'text.primary', mb: 1 }}>
                         {forecast.metric}
                       </Typography>
-                      <Typography variant="body2" sx={{ color: designTokens.colors.text.secondary, mb: 2 }}>
-                        Current: {formatNumber(forecast.current)} • Confidence: {forecast.confidence}%
+                      <Typography variant="body2" sx={{ color: 'text.secondary', mb: 2 }}>
+                        Current: {formatNumber(forecast.currentValue || 0)} • Confidence: {forecast.confidence}%
                       </Typography>
                     </Box>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -816,14 +816,14 @@ export default function PredictiveAnalyticsEngine() {
                   </Box>
 
                   <Box sx={{ mb: 2 }}>
-                    <Typography variant="body2" sx={{ color: designTokens.colors.text.primary, mb: 1, fontWeight: 'medium' }}>
+                    <Typography variant="body2" sx={{ color: 'text.primary', mb: 1, fontWeight: 'medium' }}>
                       Forecasted Values
                     </Typography>
                     <Grid container spacing={2}>
                       {Object.entries(forecast.forecastedValues).map(([horizon, value]) => (
                         <Grid key={horizon} xs={4}>
                           <Box sx={{ textAlign: 'center' }}>
-                            <Typography variant="caption" sx={{ color: designTokens.colors.text.secondary }}>
+                            <Typography variant="caption" sx={{ color: 'text.secondary' }}>
                               {horizon}
                             </Typography>
                             <Typography variant="h6" sx={{ color: designTokens.colors.info[600] }}>
@@ -836,7 +836,7 @@ export default function PredictiveAnalyticsEngine() {
                   </Box>
 
                   <Box sx={{ mb: 2 }}>
-                    <Typography variant="body2" sx={{ color: designTokens.colors.text.primary, mb: 1, fontWeight: 'medium' }}>
+                    <Typography variant="body2" sx={{ color: 'text.primary', mb: 1, fontWeight: 'medium' }}>
                       Recommendations
                     </Typography>
                     <List dense>
@@ -878,10 +878,10 @@ export default function PredictiveAnalyticsEngine() {
                 <CardContent>
                   <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
                     <Box>
-                      <Typography variant="h6" sx={{ color: designTokens.colors.text.primary, mb: 1 }}>
+                      <Typography variant="h6" sx={{ color: 'text.primary', mb: 1 }}>
                         {insight.title}
                       </Typography>
-                      <Typography variant="body2" sx={{ color: designTokens.colors.text.secondary, mb: 2 }}>
+                      <Typography variant="body2" sx={{ color: 'text.secondary', mb: 2 }}>
                         {insight.description}
                       </Typography>
                     </Box>
@@ -908,15 +908,15 @@ export default function PredictiveAnalyticsEngine() {
                   </Stack>
 
                   <Box sx={{ mb: 2 }}>
-                    <Typography variant="body2" sx={{ color: designTokens.colors.text.primary, mb: 1, fontWeight: 'medium' }}>
+                    <Typography variant="body2" sx={{ color: 'text.primary', mb: 1, fontWeight: 'medium' }}>
                       Predicted Change
                     </Typography>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                       <Box sx={{ textAlign: 'center' }}>
-                        <Typography variant="h6" sx={{ color: designTokens.colors.text.primary }}>
+                        <Typography variant="h6" sx={{ color: 'text.primary' }}>
                           {formatNumber(insight.metrics.current)}
                         </Typography>
-                        <Typography variant="caption" sx={{ color: designTokens.colors.text.secondary }}>
+                        <Typography variant="caption" sx={{ color: 'text.secondary' }}>
                           Current
                         </Typography>
                       </Box>
@@ -924,7 +924,7 @@ export default function PredictiveAnalyticsEngine() {
                         <Typography variant="h6" sx={{ color: designTokens.colors.info[600] }}>
                           {formatNumber(insight.metrics.predicted)}
                         </Typography>
-                        <Typography variant="caption" sx={{ color: designTokens.colors.text.secondary }}>
+                        <Typography variant="caption" sx={{ color: 'text.secondary' }}>
                           Predicted
                         </Typography>
                       </Box>
@@ -936,7 +936,7 @@ export default function PredictiveAnalyticsEngine() {
                         }}>
                           {insight.metrics.changePercent >= 0 ? '+' : ''}{insight.metrics.changePercent}%
                         </Typography>
-                        <Typography variant="caption" sx={{ color: designTokens.colors.text.secondary }}>
+                        <Typography variant="caption" sx={{ color: 'text.secondary' }}>
                           Change
                         </Typography>
                       </Box>
@@ -944,7 +944,7 @@ export default function PredictiveAnalyticsEngine() {
                   </Box>
 
                   <Box sx={{ mb: 2 }}>
-                    <Typography variant="body2" sx={{ color: designTokens.colors.text.primary, mb: 1, fontWeight: 'medium' }}>
+                    <Typography variant="body2" sx={{ color: 'text.primary', mb: 1, fontWeight: 'medium' }}>
                       Action Items:
                     </Typography>
                     <List dense>
@@ -962,7 +962,7 @@ export default function PredictiveAnalyticsEngine() {
                     </List>
                   </Box>
 
-                  <Typography variant="caption" sx={{ color: designTokens.colors.text.secondary }}>
+                  <Typography variant="caption" sx={{ color: 'text.secondary' }}>
                     Timeframe: {insight.timeframe}
                   </Typography>
                 </CardContent>

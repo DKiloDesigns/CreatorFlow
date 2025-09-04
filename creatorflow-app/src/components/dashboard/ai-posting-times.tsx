@@ -8,7 +8,7 @@ import {
   Info,
   Zap
 } from 'lucide-react';
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
+import { Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 import { Badge } from '@/components/ui/badge';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { PostingTimeSuggestion } from '@/lib/ai-service';
@@ -86,18 +86,16 @@ export function AIPostingTimes({ className }: AIPostingTimesProps) {
         <div className="space-y-3">
           <div>
             <label className="text-sm font-medium mb-2 block">Platform</label>
-            <Select value={platform} onValueChange={setPlatform}>
-              <SelectTrigger>
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
+            <FormControl>
+              <InputLabel>Platform</InputLabel>
+              <Select value={platform} onChange={(e) => setPlatform(e.target.value)}>
                 {platforms.map((p) => (
-                  <SelectItem key={p.value} value={p.value}>
+                  <MenuItem key={p.value} value={p.value}>
                     {p.label}
-                  </SelectItem>
+                  </MenuItem>
                 ))}
-              </SelectContent>
-            </Select>
+              </Select>
+            </FormControl>
           </div>
         </div>
 
@@ -109,7 +107,7 @@ export function AIPostingTimes({ className }: AIPostingTimesProps) {
         >
           {isLoading ? (
             <>
-              <LoadingSpinner size="sm" sx={{ marginRight: 8 }} />
+              <LoadingSpinner size="sm" className="mr-2" />
               Analyzing Posting Times...
             </>
           ) : (
@@ -147,12 +145,9 @@ export function AIPostingTimes({ className }: AIPostingTimesProps) {
                       <Chip 
                         label={`${engagement.level} Engagement`} 
                         color={engagement.color as any}
-                        size="small"
                       />
                     </Box>
-                    <Chip variant="outlined" size="small">
-                      {suggestion.timezone}
-                    </Chip>
+                    <Chip variant="filled" label={suggestion.timezone} />
                   </Box>
 
                   <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>

@@ -8,7 +8,7 @@ import {
   Typography,
   Grid
 } from '@mui/material';
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
+import { Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 import { Badge } from '@/components/ui/badge';
 
 import { 
@@ -145,50 +145,44 @@ export function AIContentIdeas({ onIdeaSelect, className }: AIContentIdeasProps)
           <Grid container spacing={2}>
             <Grid xs={12} md={4}>
               <Typography variant="body2" component="label" sx={{ display: 'block', mb: 0.5 }}>Platform</Typography>
-              <Select value={platform} onValueChange={setPlatform}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
+              <FormControl>
+                <InputLabel>Platform</InputLabel>
+                <Select value={platform} onChange={(e) => setPlatform(e.target.value)}>
                   {platforms.map((p) => (
-                    <SelectItem key={p.value} value={p.value}>
+                    <MenuItem key={p.value} value={p.value}>
                       {p.label}
-                    </SelectItem>
+                    </MenuItem>
                   ))}
-                </SelectContent>
-              </Select>
+                </Select>
+              </FormControl>
             </Grid>
 
             <Grid xs={12} md={4}>
               <Typography variant="body2" component="label" sx={{ display: 'block', mb: 0.5 }}>Industry</Typography>
-              <Select value={industry} onValueChange={setIndustry}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
+              <FormControl>
+                <InputLabel>Industry</InputLabel>
+                <Select value={industry} onChange={(e) => setIndustry(e.target.value)}>
                   {industries.map((i) => (
-                    <SelectItem key={i.value} value={i.value}>
+                    <MenuItem key={i.value} value={i.value}>
                       {i.label}
-                    </SelectItem>
+                    </MenuItem>
                   ))}
-                </SelectContent>
-              </Select>
+                </Select>
+              </FormControl>
             </Grid>
 
             <Grid xs={12} md={4}>
               <Typography variant="body2" component="label" sx={{ display: 'block', mb: 0.5 }}>Target Audience</Typography>
-              <Select value={targetAudience} onValueChange={setTargetAudience}>
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
+              <FormControl>
+                <InputLabel>Target Audience</InputLabel>
+                <Select value={targetAudience} onChange={(e) => setTargetAudience(e.target.value)}>
                   {audiences.map((a) => (
-                    <SelectItem key={a.value} value={a.value}>
+                    <MenuItem key={a.value} value={a.value}>
                       {a.label}
-                    </SelectItem>
+                    </MenuItem>
                   ))}
-                </SelectContent>
-              </Select>
+                </Select>
+              </FormControl>
             </Grid>
           </Grid>
 
@@ -231,10 +225,7 @@ export function AIContentIdeas({ onIdeaSelect, className }: AIContentIdeasProps)
                   <Grid item xs={12} md={8} component="div">
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, mb: 0.5 }}>
                       <Typography variant="subtitle2" component="h4">{idea.title}</Typography>
-                      <Badge variant="outline" sx={{ fontSize: '0.75rem' }}>
-                        {getContentTypeIcon(idea.content_type)}
-                        <Box sx={{ ml: 0.5, textTransform: 'capitalize' }}>{idea.content_type}</Box>
-                      </Badge>
+                      <Badge variant="outline" sx={{ fontSize: '0.75rem' }} label={`${getContentTypeIcon(idea.content_type)} ${idea.content_type}`} />
                     </Box>
                     <Typography variant="body2" sx={{ color: 'text.muted' }}>{idea.description}</Typography>
                     
@@ -243,9 +234,7 @@ export function AIContentIdeas({ onIdeaSelect, className }: AIContentIdeasProps)
                         <Typography variant="body2" sx={{ fontWeight: 'medium' }}>Platforms:</Typography>
                         <Box sx={{ display: 'flex', gap: 0.5 }}>
                           {idea.platforms.map((platform, pIndex) => (
-                            <Badge key={pIndex} variant="secondary" sx={{ fontSize: '0.75rem' }}>
-                              {platform}
-                            </Badge>
+                            <Badge key={pIndex} variant="secondary" sx={{ fontSize: '0.75rem' }} label={platform} />
                           ))}
                         </Box>
                       </Box>
@@ -254,9 +243,7 @@ export function AIContentIdeas({ onIdeaSelect, className }: AIContentIdeasProps)
                         <Typography variant="body2" sx={{ fontWeight: 'medium' }}>Suggested Hashtags:</Typography>
                         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                           {idea.hashtags.slice(0, 3).map((hashtag, hIndex) => (
-                            <Badge key={hIndex} variant="outline" sx={{ fontSize: '0.75rem' }}>
-                              {hashtag}
-                            </Badge>
+                            <Badge key={hIndex} variant="outline" sx={{ fontSize: '0.75rem' }} label={hashtag} />
                           ))}
                           {idea.hashtags.length > 3 && (
                             <Typography variant="body2" sx={{ color: 'text.muted' }}>

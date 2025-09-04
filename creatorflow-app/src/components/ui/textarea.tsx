@@ -78,7 +78,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
           inputRef={ref}
           error={hasError}
           {...ariaProps}
-          {...props}
+          {...(props as any)}
         />
         
         {/* SACA: Error message for screen readers */}

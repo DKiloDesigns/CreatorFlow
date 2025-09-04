@@ -38,7 +38,7 @@ import {
   Activity
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import { TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tab, TabPanel } from '@mui/material';
 
 interface Team {
   id: string;
@@ -253,15 +253,14 @@ export default function EnterprisePage() {
         </Card>
       </Box>
 
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-        <TabsList>
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="teams">Teams</TabsTrigger>
-          <TabsTrigger value="approvals">Approvals</TabsTrigger>
-          <TabsTrigger value="analytics">Analytics</TabsTrigger>
-        </TabsList>
+      <Tabs value={activeTab} onChange={(e, newValue) => setActiveTab(newValue)} sx={{ mb: 3 }}>
+        <Tab value="overview" label="Overview" />
+        <Tab value="teams" label="Teams" />
+        <Tab value="approvals" label="Approvals" />
+        <Tab value="analytics" label="Analytics" />
+      </Tabs>
 
-        <TabsContent value="overview" className="space-y-6">
+      <TabPanel value="overview" sx={{ p: 0 }}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
@@ -281,13 +280,11 @@ export default function EnterprisePage() {
                         <h3 className="font-semibold">{team.name}</h3>
                         <p className="text-sm text-muted-foreground">{team.description}</p>
                         <div className="flex items-center gap-2 mt-1">
-                          <Badge variant="outline">{team.members.length} members</Badge>
-                          <Badge className={getRoleColor(team.members.find(m => m.role === 'owner')?.role || '')}>
-                            {team.members.find(m => m.role === 'owner')?.role || 'Unknown'}
-                          </Badge>
+                          <Badge variant="outlined" label={`${team.members.length} members`} />
+                          <Badge className={getRoleColor(team.members.find(m => m.role === 'owner')?.role || '')} label={team.members.find(m => m.role === 'owner')?.role || 'Unknown'} />
                         </div>
                       </div>
-                      <Button size="sm" variant="outline">
+                      <Button size="small" variant="outlined">
                         <Eye className="h-3 w-3" />
                       </Button>
                     </div>
@@ -316,15 +313,13 @@ export default function EnterprisePage() {
                           Step {approval.currentStep} of {approval.workflow.steps.length}
                         </p>
                         <div className="flex items-center gap-2 mt-1">
-                          <Badge className={getStatusColor(approval.status)}>
-                            {approval.status}
-                          </Badge>
+                          <Badge className={getStatusColor(approval.status)} label={approval.status} />
                           <span className="text-xs text-muted-foreground">
                             {new Date(approval.createdAt).toLocaleDateString()}
                           </span>
                         </div>
                       </div>
-                      <Button size="sm" variant="outline">
+                      <Button size="small" variant="outlined">
                         <Eye className="h-3 w-3" />
                       </Button>
                     </div>
@@ -333,9 +328,9 @@ export default function EnterprisePage() {
               </CardContent>
             </Card>
           </div>
-        </TabsContent>
+      </TabPanel>
 
-        <TabsContent value="teams" className="space-y-6">
+      <TabPanel value="teams" sx={{ p: 0 }}>
           <Card>
             <CardHeader>
               <Typography variant="h6" className="flex items-center gap-2">
@@ -360,9 +355,7 @@ export default function EnterprisePage() {
                         <div className="flex-1">
                           <div className="flex items-center gap-2 mb-2">
                             <h3 className="font-semibold">{team.name}</h3>
-                            <Badge className={getRoleColor(team.members.find(m => m.role === 'owner')?.role || '')}>
-                              {team.members.find(m => m.role === 'owner')?.role || 'Unknown'}
-                            </Badge>
+                            <Badge className={getRoleColor(team.members.find(m => m.role === 'owner')?.role || '')} label={team.members.find(m => m.role === 'owner')?.role || 'Unknown'} />
                           </div>
                           <p className="text-sm text-muted-foreground mb-3">{team.description}</p>
                           <div className="flex items-center gap-4 text-sm">
@@ -371,10 +364,10 @@ export default function EnterprisePage() {
                           </div>
                         </div>
                         <div className="flex gap-2">
-                          <Button size="sm" variant="outline">
+                          <Button size="small" variant="outlined">
                             <UserPlus className="h-3 w-3" />
                           </Button>
-                          <Button size="sm" variant="outline">
+                          <Button size="small" variant="outlined">
                             <Settings className="h-3 w-3" />
                           </Button>
                         </div>
@@ -385,9 +378,9 @@ export default function EnterprisePage() {
               </div>
             </CardContent>
           </Card>
-        </TabsContent>
+      </TabPanel>
 
-        <TabsContent value="approvals" className="space-y-6">
+      <TabPanel value="approvals" sx={{ p: 0 }}>
           <Card>
             <CardHeader>
               <Typography variant="h6" className="flex items-center gap-2">
@@ -412,9 +405,7 @@ export default function EnterprisePage() {
                         <div className="flex-1">
                           <div className="flex items-center gap-2 mb-2">
                             <h3 className="font-semibold">{approval.workflow.name}</h3>
-                            <Badge className={getStatusColor(approval.status)}>
-                              {approval.status}
-                            </Badge>
+                            <Badge className={getStatusColor(approval.status)} label={approval.status} />
                           </div>
                           <p className="text-sm text-muted-foreground mb-2">
                             Step {approval.currentStep} of {approval.workflow.steps.length}
@@ -427,15 +418,15 @@ export default function EnterprisePage() {
                         <div className="flex gap-2">
                           {approval.status === 'pending' && (
                             <>
-                              <Button size="sm" variant="outline">
+                              <Button size="small" variant="outlined">
                                 <CheckCircle className="h-3 w-3" />
                               </Button>
-                              <Button size="sm" variant="outline">
+                              <Button size="small" variant="outlined">
                                 <AlertTriangle className="h-3 w-3" />
                               </Button>
                             </>
                           )}
-                          <Button size="sm" variant="outline">
+                          <Button size="small" variant="outlined">
                             <Eye className="h-3 w-3" />
                           </Button>
                         </div>
@@ -446,9 +437,9 @@ export default function EnterprisePage() {
               </div>
             </CardContent>
           </Card>
-        </TabsContent>
+      </TabPanel>
 
-        <TabsContent value="analytics" className="space-y-6">
+      <TabPanel value="analytics" sx={{ p: 0 }}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
@@ -514,8 +505,7 @@ export default function EnterprisePage() {
               </CardContent>
             </Card>
           </div>
-        </TabsContent>
-      </Tabs>
+      </TabPanel>
 
       {/* Create Team Modal */}
       {showCreateTeam && (
@@ -543,7 +533,7 @@ export default function EnterprisePage() {
                 <Button onClick={createTeam} disabled={!newTeam.name}>
                   Create Team
                 </Button>
-                <Button variant="outline" onClick={() => setShowCreateTeam(false)}>
+                <Button variant="outlined" onClick={() => setShowCreateTeam(false)}>
                   Cancel
                 </Button>
               </div>

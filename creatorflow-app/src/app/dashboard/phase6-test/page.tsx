@@ -105,7 +105,6 @@ export default function Phase6TestPage() {
         <Chip 
           label="100% Complete" 
           color="success" 
-          size="large"
           sx={{ fontSize: '1.1rem', px: 2, py: 1 }}
         />
       </Box>
@@ -123,7 +122,7 @@ export default function Phase6TestPage() {
                   boxShadow: 12,
                   borderColor: designTokens.colors.ai[400]
                 },
-                border: `2px solid ${designTokens.colors.border}`,
+                border: `2px solid ${theme.palette.divider}`,
                 '&:hover .component-icon': {
                   transform: 'scale(1.1)',
                   color: designTokens.colors.ai[700]

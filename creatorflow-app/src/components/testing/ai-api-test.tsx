@@ -136,7 +136,7 @@ export default function AIAPITest() {
       } else {
         updateTestResult(testId, 'error', undefined, contentOptimization.error);
       }
-    } catch (error) {
+    } catch (error: unknown) {
       updateTestResult(testId, 'error', undefined, error instanceof Error ? error.message : 'Unknown error');
     }
   };
@@ -166,7 +166,7 @@ export default function AIAPITest() {
       } else {
         updateTestResult(testId, 'error', undefined, contentPrediction.error);
       }
-    } catch (error) {
+    } catch (error: unknown) {
       updateTestResult(testId, 'error', undefined, error instanceof Error ? error.message : 'Unknown error');
     }
   };
@@ -196,7 +196,7 @@ export default function AIAPITest() {
       } else {
         updateTestResult(testId, 'error', undefined, audienceAnalysis.error);
       }
-    } catch (error) {
+    } catch (error: unknown) {
       updateTestResult(testId, 'error', undefined, error instanceof Error ? error.message : 'Unknown error');
     }
   };
@@ -226,7 +226,7 @@ export default function AIAPITest() {
       } else {
         updateTestResult(testId, 'error', undefined, workflowExecution.error);
       }
-    } catch (error) {
+    } catch (error: unknown) {
       updateTestResult(testId, 'error', undefined, error instanceof Error ? error.message : 'Unknown error');
     }
   };
@@ -259,7 +259,7 @@ export default function AIAPITest() {
       } else {
         updateTestResult(testId, 'error', undefined, workflowOptimization.error);
       }
-    } catch (error) {
+    } catch (error: unknown) {
       updateTestResult(testId, 'error', undefined, error instanceof Error ? error.message : 'Unknown error');
     }
   };
@@ -290,7 +290,7 @@ export default function AIAPITest() {
       } else {
         updateTestResult(testId, 'error', undefined, batchAnalysis.error);
       }
-    } catch (error) {
+    } catch (error: unknown) {
       updateTestResult(testId, 'error', undefined, error instanceof Error ? error.message : 'Unknown error');
     }
   };
@@ -322,7 +322,7 @@ export default function AIAPITest() {
       } else {
         updateTestResult(testId, 'error', undefined, aiInsights.error);
       }
-    } catch (error) {
+    } catch (error: unknown) {
       updateTestResult(testId, 'error', undefined, error instanceof Error ? error.message : 'Unknown error');
     }
   };
@@ -347,7 +347,7 @@ export default function AIAPITest() {
       } else {
         updateTestResult(testId, 'error', undefined, aiStatus.error);
       }
-    } catch (error) {
+    } catch (error: unknown) {
       updateTestResult(testId, 'error', undefined, error instanceof Error ? error.message : 'Unknown error');
     }
   };

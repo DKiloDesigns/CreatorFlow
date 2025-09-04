@@ -434,12 +434,8 @@ export default function TestingSummaryPage() {
                       <p className="text-sm text-muted-foreground">{feature.description}</p>
                     </div>
                     <div className="flex gap-2">
-                      <Badge className={getStatusColor(feature.status)}>
-                        {feature.status}
-                      </Badge>
-                      <Badge className={getPriorityColor(feature.priority)}>
-                        {feature.priority}
-                      </Badge>
+                      <Badge className={getStatusColor(feature.status)} label={feature.status} />
+                      <Badge className={getPriorityColor(feature.priority)} label={feature.priority} />
                     </div>
                   </div>
                   {feature.testResults && (

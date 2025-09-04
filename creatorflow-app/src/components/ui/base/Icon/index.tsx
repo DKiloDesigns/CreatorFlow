@@ -144,7 +144,7 @@ const Icon = forwardRef<HTMLSpanElement, IconProps>(
       <StyledIcon
         ref={ref}
         size={size}
-        color={color}
+        color={color as 'error' | 'success' | 'info' | 'warning' | 'primary' | 'secondary' | 'inherit' | undefined}
         weight={weight}
         className={className}
         {...props}
@@ -237,7 +237,7 @@ export const IconButton = forwardRef<
         className={className}
         {...props}
       >
-        <Icon name={name} size={size} color={color} />
+        <Icon name={name} size={size as 'sm' | 'md' | 'lg' | 'xl' | 'xs' | '2xl' | '3xl' | '4xl' | undefined} color={color} />
       </StyledIconButton>
     );
   }

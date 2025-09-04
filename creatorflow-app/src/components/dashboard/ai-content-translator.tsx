@@ -69,7 +69,7 @@ export function AIContentTranslator({ onTranslation, className }: AIContentTrans
   };
 
   return (
-    <Card sx={{ height: '100%', ...(className && { className })}>
+    <Card sx={{ height: '100%' }} className={className}>
       <CardHeader
         title="AI Content Translator"
         subheader="Translate your content to multiple languages"

@@ -226,7 +226,7 @@ export function MetricCard({
             )}
           </Box>
           {Icon && (
-            <Icon style={{ width: 32, height: 32, color: 'text.secondary' }} />
+            <Icon className="w-8 h-8 text-gray-500" />
           )}
         </Box>
       </CardContent>

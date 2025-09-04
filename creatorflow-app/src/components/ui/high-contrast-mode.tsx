@@ -247,7 +247,7 @@ export default function HighContrastMode({
           checked={enabled}
           onChange={(e) => handleToggle(e.target.checked)}
           color="primary"
-          size="large"
+          size="medium"
           aria-label="Enable high contrast mode"
           role="switch"
           aria-checked={enabled}

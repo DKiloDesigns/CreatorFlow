@@ -135,7 +135,7 @@ const Card = forwardRef<HTMLDivElement, CardProps>(
     return (
       <StyledCard
         ref={ref}
-        variant={muiVariant}
+        variant={muiVariant as any}
         hover={hover}
         clickable={clickable}
         loading={loading}
@@ -160,21 +160,21 @@ const Card = forwardRef<HTMLDivElement, CardProps>(
         {/* Header */}
         {header && (
           <CardHeader
-            title={header}
-            sx={{
-              px: 3,
-              pt: 3,
-              pb: 0,
-              borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
+            title={header as string}
+            style={{
+              paddingLeft: 24,
+              paddingTop: 24,
+              paddingBottom: 0,
+              borderBottom: '1px solid #e0e0e0',
             }}
           />
         )}
         
         {/* Content */}
         <CardContent
-          sx={{
-            p: paddingMap[padding],
-            pt: header ? 0 : paddingMap[padding],
+          style={{
+            padding: paddingMap[padding] * 8,
+            paddingTop: header ? 0 : paddingMap[padding] * 8,
           }}
         >
           {loading ? (

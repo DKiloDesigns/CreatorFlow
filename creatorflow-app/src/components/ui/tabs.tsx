@@ -3,7 +3,6 @@
 import * as React from "react"
 import {
   Tabs as MuiTabs,
-  TabsList as MuiTabsList,
   Tab as MuiTab,
   Box
 } from "@mui/material"
@@ -35,8 +34,7 @@ const TabsTrigger = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof MuiTab>
 >(({ className, ...props }, ref) => (
   <MuiTab
-    ref={ref}
-    className={className}
+    ref={ref as any}
     sx={{
       display: 'inline-flex',
       alignItems: 'center',

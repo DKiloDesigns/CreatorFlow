@@ -7,7 +7,14 @@ import {
   CardHeader, 
   Button,
   Typography,
-  Tabs
+  Tabs,
+  Tab,
+  Box,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Chip
 } from '@mui/material';
 import { 
   Target, 
@@ -18,8 +25,6 @@ import {
   RefreshCw
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import { TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
 
 interface CampaignData {
   campaign: {
@@ -57,6 +62,7 @@ export default function CampaignDashboard() {
   const [error, setError] = useState<string | null>(null);
   const [timeRange, setTimeRange] = useState('30');
   const [refreshing, setRefreshing] = useState(false);
+  const [activeTab, setActiveTab] = useState('overview');
 
   useEffect(() => {
     fetchCampaignData();
@@ -120,20 +126,18 @@ export default function CampaignDashboard() {
           <p className="text-muted-foreground">Marketing campaign performance for Renee</p>
         </div>
         <div className="flex gap-2">
-          <Select value={timeRange} onValueChange={setTimeRange}>
-            <SelectTrigger className="w-32">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="7">7 days</SelectItem>
-              <SelectItem value="30">30 days</SelectItem>
-              <SelectItem value="90">90 days</SelectItem>
-            </SelectContent>
-          </Select>
-          <Button onClick={refreshData} disabled={refreshing} variant="outline" size="sm">
+          <FormControl size="small" sx={{ minWidth: 120 }}>
+            <InputLabel>Time Range</InputLabel>
+            <Select value={timeRange} onChange={(e) => setTimeRange(e.target.value)}>
+              <MenuItem value="7">7 days</MenuItem>
+              <MenuItem value="30">30 days</MenuItem>
+              <MenuItem value="90">90 days</MenuItem>
+            </Select>
+          </FormControl>
+          <Button onClick={refreshData} disabled={refreshing} variant="outlined" size="small">
             <RefreshCw className={`h-4 w-4 ${refreshing ? 'animate-spin' : ''}`} />
           </Button>
-          <Button onClick={exportData} variant="outline" size="sm">
+          <Button onClick={exportData} variant="outlined" size="small">
             <Download className="h-4 w-4" />
           </Button>
         </div>
@@ -152,9 +156,11 @@ export default function CampaignDashboard() {
               {data.campaign.usagePercentage}% used
             </p>
             <div className="mt-2">
-              <Badge variant={data.campaign.isActive ? "default" : "secondary"}>
-                {data.campaign.isActive ? "Active" : "Inactive"}
-              </Badge>
+              <Chip 
+                label={data.campaign.isActive ? "Active" : "Inactive"}
+                color={data.campaign.isActive ? "success" : "default"}
+                size="small"
+              />
             </div>
           </CardContent>
         </Card>
@@ -200,15 +206,15 @@ export default function CampaignDashboard() {
       </div>
 
       {/* Detailed Analytics */}
-      <Tabs defaultValue="overview" className="space-y-4">
-        <TabsList>
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="users">Trial Users</TabsTrigger>
-          <TabsTrigger value="conversions">Conversions</TabsTrigger>
-          <TabsTrigger value="trends">Trends</TabsTrigger>
-        </TabsList>
+      <Tabs value={activeTab} onChange={(e, value) => setActiveTab(value)} sx={{ mb: 3 }}>
+        <Tab label="Overview" value="overview" />
+        <Tab label="Trial Users" value="users" />
+        <Tab label="Conversions" value="conversions" />
+        <Tab label="Trends" value="trends" />
+      </Tabs>
 
-        <TabsContent value="overview" className="space-y-4">
+        {activeTab === 'overview' && (
+          <Box sx={{ mt: 3 }}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
@@ -254,9 +260,11 @@ export default function CampaignDashboard() {
               </CardContent>
             </Card>
           </div>
-        </TabsContent>
+          </Box>
+        )}
 
-        <TabsContent value="users" className="space-y-4">
+        {activeTab === 'users' && (
+          <Box sx={{ mt: 3 }}>
           <Card>
             <CardHeader>
               <Typography variant="h6">Trial Users ({data.trialUsers.total})</Typography>
@@ -272,17 +280,21 @@ export default function CampaignDashboard() {
                         Started: {new Date(user.trialStartDate).toLocaleDateString()}
                       </div>
                     </div>
-                    <Badge variant={user.trialEndDate && new Date() < user.trialEndDate ? "default" : "secondary"}>
-                      {user.trialEndDate && new Date() < user.trialEndDate ? "Active" : "Expired"}
-                    </Badge>
+                    <Chip 
+                      label={user.trialEndDate && new Date() < user.trialEndDate ? "Active" : "Expired"}
+                      color={user.trialEndDate && new Date() < user.trialEndDate ? "success" : "default"}
+                      size="small"
+                    />
                   </div>
                 ))}
               </div>
             </CardContent>
           </Card>
-        </TabsContent>
+          </Box>
+        )}
 
-        <TabsContent value="conversions" className="space-y-4">
+        {activeTab === 'conversions' && (
+          <Box sx={{ mt: 3 }}>
           <Card>
             <CardHeader>
               <Typography variant="h6">Converted Users ({data.conversions.total})</Typography>
@@ -304,9 +316,11 @@ export default function CampaignDashboard() {
               </div>
             </CardContent>
           </Card>
-        </TabsContent>
+          </Box>
+        )}
 
-        <TabsContent value="trends" className="space-y-4">
+        {activeTab === 'trends' && (
+          <Box sx={{ mt: 3 }}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
@@ -345,8 +359,8 @@ export default function CampaignDashboard() {
               </CardContent>
             </Card>
           </div>
-        </TabsContent>
-      </Tabs>
+          </Box>
+        )}
 
       <div className="text-xs text-muted-foreground text-center">
         Last updated: {new Date(data.lastUpdated).toLocaleString()}

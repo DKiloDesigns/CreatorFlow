@@ -245,6 +245,6 @@ export function AIProviderSelector({
           </Grid>
         </Grid>
       </div>
-    </div>
+    </Box>
   );
 } 

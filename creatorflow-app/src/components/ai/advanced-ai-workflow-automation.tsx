@@ -63,7 +63,7 @@ import {
   Timeline,
   AutoAwesome,
   Psychology,
-  Target,
+  GpsFixed,
   Speed,
   Timer,
   FlashOn,
@@ -89,7 +89,7 @@ import {
   Delete,
   Visibility,
   MoreVert,
-  Workflow,
+  AccountTree,
   Hub,
   AccountTree,
   Schema,
@@ -102,12 +102,12 @@ import {
   Storage,
   NetworkCheck,
   Router,
-  Firewall,
-  Antivirus,
+  Security,
+  Shield,
   Encryption,
-  TwoFactorAuth,
+  VerifiedUser,
   Password,
-  UserCheck,
+  PersonAdd,
   DeviceHub,
   Compare,
   Assessment,
@@ -393,7 +393,7 @@ export default function AdvancedAIWorkflowAutomation() {
   if (isLoading) {
     return (
       <Box sx={{ p: 3 }}>
-        <Typography variant="h4" sx={{ mb: 3, color: designTokens.colors.text.primary }}>
+        <Typography variant="h4" sx={{ mb: 3, color: 'text.primary' }}>
           Advanced AI Workflow Automation
         </Typography>
         <Grid container spacing={3}>
@@ -410,7 +410,7 @@ export default function AdvancedAIWorkflowAutomation() {
   return (
     <Box sx={{ p: 3 }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-        <Typography variant="h4" sx={{ color: designTokens.colors.text.primary }}>
+        <Typography variant="h4" sx={{ color: 'text.primary' }}>
           Advanced AI Workflow Automation
         </Typography>
         <Button
@@ -468,16 +468,16 @@ export default function AdvancedAIWorkflowAutomation() {
                       boxShadow: 8,
                       borderColor: designTokens.colors.ai[300]
                     },
-                    border: `1px solid ${designTokens.colors.border}`
+                    border: `1px solid ${theme.palette.divider}`
                   }}
                 >
                   <CardContent>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
                       <Box>
-                        <Typography variant="h6" sx={{ color: designTokens.colors.text.primary, mb: 1 }}>
+                        <Typography variant="h6" sx={{ color: 'text.primary', mb: 1 }}>
                           {workflow.name}
                         </Typography>
-                        <Typography variant="body2" sx={{ color: designTokens.colors.text.secondary, mb: 2 }}>
+                        <Typography variant="body2" sx={{ color: 'text.secondary', mb: 2 }}>
                           {workflow.description}
                         </Typography>
                       </Box>
@@ -509,7 +509,7 @@ export default function AdvancedAIWorkflowAutomation() {
                     </Stack>
 
                     <Box sx={{ mb: 2 }}>
-                      <Typography variant="body2" sx={{ color: designTokens.colors.text.secondary, mb: 1 }}>
+                      <Typography variant="body2" sx={{ color: 'text.secondary', mb: 1 }}>
                         Performance
                       </Typography>
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
@@ -517,7 +517,7 @@ export default function AdvancedAIWorkflowAutomation() {
                           <Typography variant="h6" sx={{ color: designTokens.colors.success[600] }}>
                             {workflow.performance.successRate}%
                           </Typography>
-                          <Typography variant="caption" sx={{ color: designTokens.colors.text.secondary }}>
+                          <Typography variant="caption" sx={{ color: 'text.secondary' }}>
                             Success Rate
                           </Typography>
                         </Box>
@@ -525,7 +525,7 @@ export default function AdvancedAIWorkflowAutomation() {
                           <Typography variant="h6" sx={{ color: designTokens.colors.info[600] }}>
                             {workflow.performance.optimizationScore}%
                           </Typography>
-                          <Typography variant="caption" sx={{ color: designTokens.colors.text.secondary }}>
+                          <Typography variant="caption" sx={{ color: 'text.secondary' }}>
                             AI Score
                           </Typography>
                         </Box>
@@ -533,7 +533,7 @@ export default function AdvancedAIWorkflowAutomation() {
                     </Box>
 
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <Typography variant="caption" sx={{ color: designTokens.colors.text.secondary }}>
+                      <Typography variant="caption" sx={{ color: 'text.secondary' }}>
                         Last: {formatDate(workflow.lastExecuted)}
                       </Typography>
                       <Button
@@ -560,10 +560,10 @@ export default function AdvancedAIWorkflowAutomation() {
                 <CardContent>
                   <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
                     <Box>
-                      <Typography variant="h6" sx={{ color: designTokens.colors.text.primary, mb: 1 }}>
+                      <Typography variant="h6" sx={{ color: 'text.primary', mb: 1 }}>
                         {optimization.type.charAt(0).toUpperCase() + optimization.type.slice(1)} Optimization
                       </Typography>
-                      <Typography variant="body2" sx={{ color: designTokens.colors.text.secondary, mb: 2 }}>
+                      <Typography variant="body2" sx={{ color: 'text.secondary', mb: 2 }}>
                         {optimization.description}
                       </Typography>
                     </Box>
@@ -584,7 +584,7 @@ export default function AdvancedAIWorkflowAutomation() {
                   </Stack>
 
                   <Box sx={{ mb: 2 }}>
-                    <Typography variant="body2" sx={{ color: designTokens.colors.text.secondary, mb: 1 }}>
+                    <Typography variant="body2" sx={{ color: 'text.secondary', mb: 1 }}>
                       Improvement
                     </Typography>
                     <Typography variant="h6" sx={{ color: designTokens.colors.success[600] }}>
@@ -592,7 +592,7 @@ export default function AdvancedAIWorkflowAutomation() {
                     </Typography>
                   </Box>
 
-                  <Typography variant="caption" sx={{ color: designTokens.colors.text.secondary }}>
+                  <Typography variant="caption" sx={{ color: 'text.secondary' }}>
                     Applied: {formatDate(optimization.appliedAt)}
                   </Typography>
                 </CardContent>
@@ -668,7 +668,7 @@ export default function AdvancedAIWorkflowAutomation() {
           <Grid xs={12} md={6}>
             <Card>
               <CardContent>
-                <Typography variant="h6" sx={{ mb: 2, color: designTokens.colors.text.primary }}>
+                <Typography variant="h6" sx={{ mb: 2, color: 'text.primary' }}>
                   Overall Performance
                 </Typography>
                 <Box sx={{ display: 'flex', justifyContent: 'space-around', textAlign: 'center' }}>
@@ -676,7 +676,7 @@ export default function AdvancedAIWorkflowAutomation() {
                     <Typography variant="h4" sx={{ color: designTokens.colors.success[600] }}>
                       91.2%
                     </Typography>
-                    <Typography variant="body2" sx={{ color: designTokens.colors.text.secondary }}>
+                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                       Success Rate
                     </Typography>
                   </Box>
@@ -684,7 +684,7 @@ export default function AdvancedAIWorkflowAutomation() {
                     <Typography variant="h4" sx={{ color: designTokens.colors.info[600] }}>
                       87.5%
                     </Typography>
-                    <Typography variant="body2" sx={{ color: designTokens.colors.text.secondary }}>
+                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                       AI Efficiency
                     </Typography>
                   </Box>
@@ -695,7 +695,7 @@ export default function AdvancedAIWorkflowAutomation() {
           <Grid xs={12} md={6}>
             <Card>
               <CardContent>
-                <Typography variant="h6" sx={{ mb: 2, color: designTokens.colors.text.primary }}>
+                <Typography variant="h6" sx={{ mb: 2, color: 'text.primary' }}>
                   Optimization Impact
                 </Typography>
                 <Box sx={{ display: 'flex', justifyContent: 'space-around', textAlign: 'center' }}>
@@ -703,7 +703,7 @@ export default function AdvancedAIWorkflowAutomation() {
                     <Typography variant="h4" sx={{ color: designTokens.colors.warning[600] }}>
                       -28.9%
                     </Typography>
-                    <Typography variant="body2" sx={{ color: designTokens.colors.text.secondary }}>
+                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                       Execution Time
                     </Typography>
                   </Box>
@@ -711,7 +711,7 @@ export default function AdvancedAIWorkflowAutomation() {
                     <Typography variant="h4" sx={{ color: designTokens.colors.success[600] }}>
                       +59.6%
                     </Typography>
-                    <Typography variant="body2" sx={{ color: designTokens.colors.text.secondary }}>
+                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                       Error Reduction
                     </Typography>
                   </Box>

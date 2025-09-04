@@ -115,10 +115,10 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(
     return (
       <StyledTabs
         ref={ref}
-        variant={muiVariant}
-        size={size}
+        variant={muiVariant as any}
+        size={size as any}
         disabled={disabled}
-        {...props}
+        {...(props as any)}
       >
         {children}
       </StyledTabs>
@@ -190,7 +190,7 @@ export const TabsTrigger = forwardRef<HTMLButtonElement, TabsTriggerProps>(
   }, ref) => {
     return (
       <StyledTab
-        ref={ref}
+        ref={ref as any}
         label={children}
         value={value}
         variant={variant}

@@ -3,7 +3,8 @@
 import React, { useEffect, useState } from 'react';
 import { NotificationToast } from '@/components/ui/notification-badge';
 import { 
-  Tooltip
+  Tooltip,
+  Box
 } from '@mui/material';
 
 import { Loader2, LogOut, Info } from 'lucide-react';

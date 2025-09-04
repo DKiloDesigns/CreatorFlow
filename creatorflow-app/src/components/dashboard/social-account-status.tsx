@@ -205,7 +205,7 @@ export function SocialAccountStatus({ accounts, onRefresh, onReauth }: SocialAcc
           </Box>
           <Button
             variant="outlined"
-            size="small"
+            size="sm"
             onClick={checkAllHealth}
             disabled={loading}
             className="flex items-center gap-2"
@@ -325,7 +325,7 @@ export function SocialAccountStatus({ accounts, onRefresh, onReauth }: SocialAcc
                       {account.status === 'active' && (
                         <UiButton
                           variant="outlined"
-                          size="small"
+                          size="sm"
                           onClick={() => onRefresh(account.id)}
                           disabled={isChecking}
                           className="flex items-center gap-1"
@@ -337,7 +337,7 @@ export function SocialAccountStatus({ accounts, onRefresh, onReauth }: SocialAcc
                       {account.status === 'needs_reauth' && (
                         <UiButton
                           variant="outlined"
-                          size="small"
+                          size="sm"
                           onClick={() => onReauth(account.platform)}
                           className="flex items-center gap-1 text-orange-600 border-orange-200 hover:bg-orange-50"
                         >

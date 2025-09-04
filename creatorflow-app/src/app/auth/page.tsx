@@ -299,7 +299,7 @@ export default function AuthPage() {
                 type="submit"
                 variant="contained"
                 fullWidth
-                disabled={isLoading || !isEmailValid || (isNewUser && !name.trim())}
+                disabled={isLoading || !isEmailValid || (isNewUser === true && !name.trim())}
                 sx={{ mt: 2, height: 48 }}
               >
                 {isLoading ? (

@@ -182,9 +182,9 @@ export const StatusBadge = forwardRef<HTMLDivElement, StatusBadgeProps>(
     return (
       <StyledChip
         ref={ref}
-        variant={variant}
-        size={size}
-        color={config.color}
+        variant={variant as any}
+        size={size as any}
+        color={config.color as any}
         icon={showIcon ? <span>{config.icon}</span> : undefined}
         label={label}
         {...props}

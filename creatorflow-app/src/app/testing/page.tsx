@@ -10,8 +10,9 @@ import {
 } from '@mui/material';
 import { TestTube, Activity } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { CardDescription, Input, Textarea, Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui';
+import { Tab, TabPanel } from '@mui/material';
+import { CardDescription, Input, Textarea } from '@/components/ui';
+import { Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 
 interface TestSuite {
   id: string;
@@ -207,7 +208,7 @@ export default function TestingPage() {
           <p className="text-muted-foreground">Comprehensive testing framework and quality assurance</p>
         </div>
         <div className="flex gap-2">
-          <Button onClick={runContinuousTests} variant="outline">
+          <Button onClick={runContinuousTests} variant="outlined">
             <RefreshCw className="h-4 w-4 mr-2" />
             Run All Tests
           </Button>
@@ -279,16 +280,15 @@ export default function TestingPage() {
         </Card>
       </div>
 
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-        <TabsList>
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="suites">Test Suites</TabsTrigger>
-          <TabsTrigger value="results">Test Results</TabsTrigger>
-          <TabsTrigger value="performance">Performance</TabsTrigger>
-          <TabsTrigger value="security">Security</TabsTrigger>
-        </TabsList>
+      <Tabs value={activeTab} onChange={(e, newValue) => setActiveTab(newValue)} sx={{ mb: 3 }}>
+        <Tab value="overview" label="Overview" />
+        <Tab value="suites" label="Test Suites" />
+        <Tab value="results" label="Test Results" />
+        <Tab value="performance" label="Performance" />
+        <Tab value="security" label="Security" />
+      </Tabs>
 
-        <TabsContent value="overview" className="space-y-6">
+      <TabPanel value="overview" sx={{ p: 0 }}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
@@ -344,9 +344,7 @@ export default function TestingPage() {
                             <h3 className="font-semibold">{test.name}</h3>
                             <p className="text-sm text-muted-foreground">{suite.name}</p>
                             <div className="flex items-center gap-2 mt-1">
-                              <Badge className={getStatusColor(test.status)}>
-                                {test.status}
-                              </Badge>
+                              <Badge className={getStatusColor(test.status)} label={test.status} />
                               {latestResult && (
                                 <span className="text-xs text-muted-foreground">
                                   {new Date(latestResult.timestamp).toLocaleDateString()}
@@ -356,7 +354,7 @@ export default function TestingPage() {
                           </div>
                           <div className="flex items-center gap-2">
                             {getTypeIcon(test.type)}
-                            <Button size="sm" variant="outline">
+                            <Button size="small" variant="outlined">
                               <Play className="h-3 w-3" />
                             </Button>
                           </div>
@@ -368,9 +366,9 @@ export default function TestingPage() {
               </CardContent>
             </Card>
           </div>
-        </TabsContent>
+      </TabPanel>
 
-        <TabsContent value="suites" className="space-y-6">
+      <TabPanel value="suites" sx={{ p: 0 }}>
           <Card>
             <CardHeader>
               <Typography variant="h6" className="flex items-center gap-2">
@@ -396,9 +394,7 @@ export default function TestingPage() {
                           <div className="flex items-center gap-2 mb-2">
                             {getCategoryIcon(suite.category)}
                             <h3 className="font-semibold">{suite.name}</h3>
-                            <Badge className={getStatusColor(suite.status)}>
-                              {suite.status}
-                            </Badge>
+                            <Badge className={getStatusColor(suite.status)} label={suite.status} />
                           </div>
                           <p className="text-sm text-muted-foreground mb-3">{suite.description}</p>
                           <div className="flex items-center gap-4 text-sm">
@@ -408,10 +404,10 @@ export default function TestingPage() {
                           </div>
                         </div>
                         <div className="flex gap-2">
-                          <Button size="sm" variant="outline" onClick={() => runTestSuite(suite.id)}>
+                          <Button size="small" variant="outlined" onClick={() => runTestSuite(suite.id)}>
                             <Play className="h-3 w-3" />
                           </Button>
-                          <Button size="sm" variant="outline">
+                          <Button size="small" variant="outlined">
                             <Settings className="h-3 w-3" />
                           </Button>
                         </div>
@@ -422,9 +418,9 @@ export default function TestingPage() {
               </div>
             </CardContent>
           </Card>
-        </TabsContent>
+      </TabPanel>
 
-        <TabsContent value="results" className="space-y-6">
+      <TabPanel value="results" sx={{ p: 0 }}>
           <Card>
             <CardHeader>
               <Typography variant="h6" className="flex items-center gap-2">
@@ -445,9 +441,7 @@ export default function TestingPage() {
                           <div className="flex-1">
                             <div className="flex items-center gap-2 mb-2">
                               <h3 className="font-semibold">{test.name}</h3>
-                              <Badge className={getStatusColor(result.status)}>
-                                {result.status}
-                              </Badge>
+                              <Badge className={getStatusColor(result.status)} label={result.status} />
                             </div>
                             <p className="text-sm text-muted-foreground mb-2">{suite.name}</p>
                             <div className="flex items-center gap-4 text-sm">
@@ -459,10 +453,10 @@ export default function TestingPage() {
                             </div>
                           </div>
                           <div className="flex gap-2">
-                            <Button size="sm" variant="outline">
+                            <Button size="small" variant="outlined">
                               <Eye className="h-3 w-3" />
                             </Button>
-                            <Button size="sm" variant="outline">
+                            <Button size="small" variant="outlined">
                               <Download className="h-3 w-3" />
                             </Button>
                           </div>
@@ -474,9 +468,9 @@ export default function TestingPage() {
               </div>
             </CardContent>
           </Card>
-        </TabsContent>
+      </TabPanel>
 
-        <TabsContent value="performance" className="space-y-6">
+      <TabPanel value="performance" sx={{ p: 0 }}>
           <Card>
             <CardHeader>
               <Typography variant="h6" className="flex items-center gap-2">
@@ -500,9 +494,7 @@ export default function TestingPage() {
                           <div className="flex-1">
                             <div className="flex items-center gap-2 mb-2">
                               <h3 className="font-semibold">{test.name}</h3>
-                              <Badge className={getStatusColor(test.status)}>
-                                {test.status}
-                              </Badge>
+                              <Badge className={getStatusColor(test.status)} label={test.status} />
                             </div>
                             <p className="text-sm text-muted-foreground mb-2">{test.description}</p>
                             <div className="space-y-2">
@@ -517,10 +509,10 @@ export default function TestingPage() {
                             </div>
                           </div>
                           <div className="flex gap-2">
-                            <Button size="sm" variant="outline">
+                            <Button size="small" variant="outlined">
                               <Play className="h-3 w-3" />
                             </Button>
-                            <Button size="sm" variant="outline">
+                            <Button size="small" variant="outlined">
                               <BarChart3 className="h-3 w-3" />
                             </Button>
                           </div>
@@ -531,9 +523,9 @@ export default function TestingPage() {
               </div>
             </CardContent>
           </Card>
-        </TabsContent>
+      </TabPanel>
 
-        <TabsContent value="security" className="space-y-6">
+      <TabPanel value="security" sx={{ p: 0 }}>
           <Card>
             <CardHeader>
               <Typography variant="h6" className="flex items-center gap-2">
@@ -557,9 +549,7 @@ export default function TestingPage() {
                           <div className="flex-1">
                             <div className="flex items-center gap-2 mb-2">
                               <h3 className="font-semibold">{test.name}</h3>
-                              <Badge className={getStatusColor(test.status)}>
-                                {test.status}
-                              </Badge>
+                              <Badge className={getStatusColor(test.status)} label={test.status} />
                             </div>
                             <p className="text-sm text-muted-foreground mb-2">{test.description}</p>
                             <div className="space-y-2">
@@ -581,10 +571,10 @@ export default function TestingPage() {
                             </div>
                           </div>
                           <div className="flex gap-2">
-                            <Button size="sm" variant="outline">
+                            <Button size="small" variant="outlined">
                               <Play className="h-3 w-3" />
                             </Button>
-                            <Button size="sm" variant="outline">
+                            <Button size="small" variant="outlined">
                               <Shield className="h-3 w-3" />
                             </Button>
                           </div>
@@ -595,8 +585,7 @@ export default function TestingPage() {
               </div>
             </CardContent>
           </Card>
-        </TabsContent>
-      </Tabs>
+      </TabPanel>
 
       {/* Create Test Suite Modal */}
       {showCreateSuite && (
@@ -622,29 +611,28 @@ export default function TestingPage() {
               </div>
               <div>
                 <label className="text-sm font-medium">Category</label>
-                <Select
-                  value={newSuite.category}
-                  onValueChange={(value: 'unit' | 'integration' | 'e2e' | 'performance' | 'security') => 
-                    setNewSuite({ ...newSuite, category: value })
-                  }
-                >
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="unit">Unit Tests</SelectItem>
-                    <SelectItem value="integration">Integration Tests</SelectItem>
-                    <SelectItem value="e2e">End-to-End Tests</SelectItem>
-                    <SelectItem value="performance">Performance Tests</SelectItem>
-                    <SelectItem value="security">Security Tests</SelectItem>
-                  </SelectContent>
-                </Select>
+                <FormControl>
+                  <InputLabel>Category</InputLabel>
+                  <Select
+                    value={newSuite.category}
+                    onChange={(e) => {
+                      const value = e.target.value as 'unit' | 'integration' | 'e2e' | 'performance' | 'security';
+                      setNewSuite(prev => ({ ...prev, category: value }));
+                    }}
+                  >
+                    <MenuItem value="unit">Unit Tests</MenuItem>
+                    <MenuItem value="integration">Integration Tests</MenuItem>
+                    <MenuItem value="e2e">End-to-End Tests</MenuItem>
+                    <MenuItem value="performance">Performance Tests</MenuItem>
+                    <MenuItem value="security">Security Tests</MenuItem>
+                  </Select>
+                </FormControl>
               </div>
               <div className="flex gap-2">
                 <Button onClick={createTestSuite} disabled={!newSuite.name}>
                   Create Test Suite
                 </Button>
-                <Button variant="outline" onClick={() => setShowCreateSuite(false)}>
+                <Button variant="outlined" onClick={() => setShowCreateSuite(false)}>
                   Cancel
                 </Button>
               </div>

@@ -5,7 +5,7 @@ export const dynamic = 'force-dynamic';
 import { signOut } from "next-auth/react"
 import Link from "next/link"
 import { usePathname } from 'next/navigation';
-import { BarChart2, Users, FileText, Handshake, CreditCard, Menu, Bell, BarChart3, Target, MessageSquare, CalendarIcon, Activity, Shield, Settings, Sparkles, Star, Building2, Smartphone, Plug, TestTube, Home, Calendar, Brain, HelpCircle, HardDrive, Bot, Zap, Accessibility, Code } from 'lucide-react';
+import { BarChart2, Users, FileText, Handshake, CreditCard, Menu, Bell, BarChart3, Target, MessageSquare, CalendarIcon, Activity, Shield, Settings, Sparkles, Star, Building2, Smartphone, Plug, TestTube, Home, Calendar, Brain, HelpCircle, HardDrive, Bot, Zap, Accessibility, Code, Layout } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { 
   AppBar, 
@@ -27,9 +27,9 @@ import {
 import { 
   MuiEnhancedNavigation
 } from '@/components/ui/mui-components';
-import { NotificationCenter } from '@/components/notifications/notification-center';
+import { MinimalCollaborationPanel } from '@/components/collaboration/MinimalCollaborationPanel';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
-import { ThemeToggle } from '@/components/theme-toggle';
+import { MinimalThemeToggle } from '@/components/ui/MinimalThemeToggle';
 import { MobileLayout } from '@/components/layout/mobile-layout';
 import { useRealTimeNotifications } from '@/components/notifications/real-time-provider';
 import { useSession } from 'next-auth/react';
@@ -54,8 +54,16 @@ export default function DashboardLayout({
   useEffect(() => {
     async function fetchUnread() {
       try {
-        const res = await fetch('/api/announcements');
-        if (!res.ok) return;
+        const res = await fetch('/api/announcements', {
+          credentials: 'include'
+        });
+        if (!res.ok) {
+          if (res.status === 401) {
+            console.warn('User not authenticated, skipping announcements fetch');
+            return;
+          }
+          return;
+        }
         const data = await res.json();
         // Try to get user id from first readBy or from session
         let userId = null;
@@ -81,6 +89,7 @@ export default function DashboardLayout({
     { href: '/dashboard/phase7-test', label: 'Phase 7 Test', icon: Settings },
     { href: '/dashboard/analytics', label: 'Analytics', icon: BarChart2 },
     { href: '/dashboard/content', label: 'Content', icon: FileText },
+    { href: '/dashboard/content-builder', label: 'Content Builder', icon: Layout },
     { href: '/dashboard/accounts', label: 'Accounts', icon: Users },
     { href: '/dashboard/scheduling', label: 'Scheduling', icon: Calendar },
     { href: '/dashboard/ai-tools', label: 'AI Tools', icon: Brain },
@@ -241,8 +250,8 @@ export default function DashboardLayout({
               </Box>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 {/* MuiUserMenu */}
-                <NotificationCenter />
-                <ThemeToggle />
+                <MinimalCollaborationPanel />
+                <MinimalThemeToggle />
               </Box>
             </Box>
 
@@ -250,26 +259,20 @@ export default function DashboardLayout({
             <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 1, sm: 2 } }}>
               {/* Theme Toggle */}
               <Box sx={{ minWidth: 44, minHeight: 44, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <ThemeToggle _isLandingPage={false} />
+                <MinimalThemeToggle />
               </Box>
               
               {/* Notification Center - Only render on client */}
               {isClient && (
                 <Box sx={{ position: 'relative', minWidth: 44, minHeight: 44, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <NotificationCenter />
-                  {unreadCount > 0 && (
-                    <Badge
-                      badgeContent={unreadCount > 99 ? '99+' : unreadCount}
-                      color="error"
-                      aria-label={`${unreadCount} unread notifications`}
-                      sx={{
-                        '& .MuiBadge-badge': {
-                          fontSize: '0.75rem',
-                          fontWeight: 'bold'
-                        }
-                      }}
-                    />
-                  )}
+                  <MinimalCollaborationPanel />
+                </Box>
+              )}
+              
+              {/* Collaboration Panel - Only render on client */}
+              {isClient && (
+                <Box sx={{ position: 'relative', minWidth: 44, minHeight: 44, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <MinimalCollaborationPanel />
                 </Box>
               )}
               

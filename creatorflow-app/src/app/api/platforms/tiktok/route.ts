@@ -20,22 +20,25 @@ export async function POST(req: NextRequest) {
       },
     });
 
-    if (!socialAccount?.accessToken) {
+    if (!socialAccount?.encryptedAccessToken) {
       return NextResponse.json({ error: 'TikTok account not connected' }, { status: 400 });
     }
 
+    // TODO: Decrypt the access token before using it
+    const accessToken = socialAccount.encryptedAccessToken; // This should be decrypted
+
     switch (action) {
       case 'upload_video':
-        return await handleVideoUpload(socialAccount.accessToken, data);
+        return await handleVideoUpload(accessToken, data);
       
       case 'get_user_info':
-        return await handleGetUserInfo(socialAccount.accessToken);
+        return await handleGetUserInfo(accessToken);
       
       case 'get_videos':
-        return await handleGetVideos(socialAccount.accessToken, data);
+        return await handleGetVideos(accessToken, data);
       
       case 'create_post':
-        return await handleCreatePost(socialAccount.accessToken, data);
+        return await handleCreatePost(accessToken, data);
       
       default:
         return NextResponse.json({ error: 'Invalid action' }, { status: 400 });

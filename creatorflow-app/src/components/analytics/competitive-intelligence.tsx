@@ -878,7 +878,7 @@ export default function CompetitiveIntelligence() {
           severity="error" 
           sx={{ mt: 2 }}
           action={
-            <Button color="inherit" size="small" onClick={aiInsights.retry}>
+            <Button color="inherit" size="small" onClick={() => aiInsights.execute({})}>
               Retry
             </Button>
           }

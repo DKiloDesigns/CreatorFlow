@@ -1,6 +1,7 @@
 import { NextRequest } from 'next/server';
 import { GET as getAnalytics } from '@/app/api/analytics/route';
 import { GET as getInsights, POST as generateInsights } from '@/app/api/analytics/insights/route';
+import { expect, jest, describe, it, beforeEach, afterEach } from '@jest/globals';
 
 // Mock the auth module
 jest.mock('@/auth', () => ({

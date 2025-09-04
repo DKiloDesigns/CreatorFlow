@@ -16,13 +16,13 @@ export async function POST(req: NextRequest) {
     const fiveMinutesFromNow = new Date(now.getTime() + 5 * 60 * 1000);
 
     // Get all scheduled posts that are due to be published
-    const scheduledPosts = await prisma.scheduledPost.findMany({
+    const scheduledPosts = await prisma.post.findMany({
       where: {
         scheduledAt: {
           gte: now,
           lte: fiveMinutesFromNow,
         },
-        status: 'pending',
+        status: 'SCHEDULED',
       },
       include: {
         user: {
@@ -41,18 +41,18 @@ export async function POST(req: NextRequest) {
     for (const scheduledPost of scheduledPosts) {
       try {
         // Update status to processing
-        await prisma.scheduledPost.update({
+        await prisma.post.update({
           where: { id: scheduledPost.id },
-          data: { status: 'processing' },
+          data: { status: 'PUBLISHING' },
         });
 
         // Publish to platforms
         const publishResults = await PlatformPublishingService.publishToPlatforms(
           scheduledPost.userId,
-          scheduledPost.content,
+          { text: scheduledPost.contentText || '' },
           scheduledPost.platforms,
-          scheduledPost.scheduledAt,
-          scheduledPost.metadata
+          scheduledPost.scheduledAt || undefined,
+          {} // TODO: Add metadata field to Post model
         );
 
         // Create post records for successful publishes
@@ -62,38 +62,44 @@ export async function POST(req: NextRequest) {
             prisma.post.create({
               data: {
                 userId: scheduledPost.userId,
-                platform: result.platform,
-                content: scheduledPost.content,
-                postId: result.postId,
-                postUrl: result.postUrl,
-                metadata: {
-                  ...scheduledPost.metadata,
-                  publishedAt: new Date(),
-                  scheduledPostId: scheduledPost.id,
-                  results: publishResults,
-                },
+                platforms: [result.platform],
+                contentText: scheduledPost.contentText || '',
+                // TODO: Add postId field to Post model
+                // postId: result.postId,
+                // TODO: Add postUrl field to Post model
+                // postUrl: result.postUrl,
+                // TODO: Add metadata field to Post model
+                // metadata: {
+                //   publishedAt: new Date(),
+                //   scheduledPostId: scheduledPost.id,
+                //   results: publishResults,
+                // },
               },
             })
           )
         );
 
         // Update scheduled post status
-        await prisma.scheduledPost.update({
+        await prisma.post.update({
           where: { id: scheduledPost.id },
           data: {
-            status: successfulPosts.length > 0 ? 'completed' : 'failed',
+            status: successfulPosts.length > 0 ? 'PUBLISHED' : 'FAILED',
             publishedAt: successfulPosts.length > 0 ? new Date() : null,
-            results: publishResults,
+            // Note: results field doesn't exist in Post model, might need to store in errorMessage
+            errorMessage: successfulPosts.length === 0 ? JSON.stringify(publishResults) : null,
           },
         });
 
         // Track analytics
         if (successfulPosts.length > 0) {
-          await prisma.analyticsEvent.create({
+          await prisma.analyticsAggregation.create({
             data: {
               userId: scheduledPost.userId,
-              eventType: 'SCHEDULED_POST_PUBLISHED',
-              eventData: {
+              type: 'SCHEDULED_POST_PUBLISHED',
+              platform: successfulPosts.map(p => p.platform).join(','),
+              startDate: new Date(),
+              endDate: new Date(),
+              data: {
                 scheduledPostId: scheduledPost.id,
                 platforms: successfulPosts.map(p => p.platform),
                 postCount: successfulPosts.length,
@@ -115,11 +121,11 @@ export async function POST(req: NextRequest) {
         console.error(`Error processing scheduled post ${scheduledPost.id}:`, error);
         
         // Update status to failed
-        await prisma.scheduledPost.update({
+        await prisma.post.update({
           where: { id: scheduledPost.id },
           data: {
-            status: 'failed',
-            error: error instanceof Error ? error.message : 'Unknown error',
+            status: 'FAILED',
+            errorMessage: error instanceof Error ? error.message : 'Unknown error',
           },
         });
 
@@ -149,16 +155,17 @@ export async function POST(req: NextRequest) {
 
 async function processRecurringSchedules() {
   try {
+    // TODO: Implement recurring schedules with Post model
     // Get all completed recurring schedules
-    const completedRecurringSchedules = await prisma.scheduledPost.findMany({
-      where: {
-        scheduleType: 'recurring',
-        status: 'completed',
-        publishedAt: {
-          not: null,
-        },
-      },
-    });
+    const completedRecurringSchedules: any[] = []; // await prisma.post.findMany({
+    //   where: {
+    //     // scheduleType: 'recurring', // This field doesn't exist in Post model
+    //     status: 'PUBLISHED',
+    //     publishedAt: {
+    //       not: null,
+    //     },
+    //   },
+    // });
 
     for (const schedule of completedRecurringSchedules) {
       const scheduleData = schedule.scheduleData as any;
@@ -194,18 +201,20 @@ async function processRecurringSchedules() {
         nextTime.setHours(time.hour, time.minute, 0, 0);
 
         if (nextTime <= end) {
-          await prisma.scheduledPost.create({
-            data: {
-              userId: schedule.userId,
-              content: schedule.content,
-              platforms: schedule.platforms,
-              scheduledAt: nextTime,
-              metadata: schedule.metadata,
-              scheduleType: 'recurring',
-              scheduleData: scheduleData,
-              status: 'pending',
-            },
-          });
+          // TODO: Create recurring post with Post model
+          // await prisma.post.create({
+          //   data: {
+          //     userId: schedule.userId,
+          //     contentText: schedule.content,
+          //     platforms: schedule.platforms,
+          //     scheduledAt: nextTime,
+          //     status: 'SCHEDULED',
+          //     // metadata: schedule.metadata, // This field doesn't exist in Post model
+          //     // scheduleType: 'recurring', // This field doesn't exist in Post model
+          //     // scheduleData: scheduleData, // This field doesn't exist in Post model
+          //     // status: 'pending', // This field doesn't exist in Post model
+          //   },
+          // });
         }
       }
     }

@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader } from '@/components/ui/mui-card';
-import { Typography, Button, Box } from '@mui/material';
+import { Typography, Button } from '@mui/material';
 import { 
   RefreshCw, 
   Sparkles, 
@@ -16,13 +16,12 @@ import {
   Target, 
   BarChart3 
 } from 'lucide-react';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
-import { Input } from '@/components/ui/input';
-import { Switch } from '@/components/ui/switch';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+
+import { Select, MenuItem, FormControl, InputLabel } from '@mui/material';
+import { TextField } from '@mui/material';
+import { Switch, FormControlLabel } from '@mui/material';
+import { Chip } from '@mui/material';
+import { Tabs, Tab, Box } from '@mui/material';
 import { TrendingUp, Activity, Crown, Trophy, Medal, Star, TrendingDown, Minus, Brain } from 'lucide-react';
 import { toast } from 'sonner';
 
@@ -142,6 +141,7 @@ export function ContentPerformancePredictor({ provider }: ContentPerformancePred
   const [historicalData, setHistoricalData] = useState(true);
   const [trendingTopics, setTrendingTopics] = useState<string[]>([]);
   const [brandVoice, setBrandVoice] = useState('friendly');
+  const [activeTab, setActiveTab] = useState(0);
 
   const analyzePerformance = async () => {
     if (!content.trim() && !industry.trim()) {
@@ -342,91 +342,77 @@ export function ContentPerformancePredictor({ provider }: ContentPerformancePred
         <CardContent className="space-y-6">
           {/* Basic Input */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-2">
-              <Label>Content Description</Label>
-              <Textarea
-                placeholder="Describe your content, key message, or what you want to achieve..."
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-                rows={4}
-              />
-            </div>
+            <TextField
+              label="Content Description"
+              placeholder="Describe your content, key message, or what you want to achieve..."
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              multiline
+              rows={4}
+              fullWidth
+              sx={{ mb: 2 }}
+            />
             
             <div className="space-y-4">
-              <div className="space-y-2">
-                <Label>Content Type</Label>
-                <Select value={contentType} onValueChange={setContentType}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {CONTENT_TYPES.map((type) => (
-                      <SelectItem key={type.id} value={type.id}>
-                        <div className="flex items-center gap-2">
-                          <span>{type.icon}</span>
-                          <span>{type.name}</span>
-                        </div>
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
+              <FormControl fullWidth sx={{ mb: 2 }}>
+                <InputLabel>Content Type</InputLabel>
+                <Select value={contentType} onChange={(e) => setContentType(e.target.value)} label="Content Type">
+                  {CONTENT_TYPES.map((type) => (
+                    <MenuItem key={type.id} value={type.id}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <span>{type.icon}</span>
+                        <span>{type.name}</span>
+                      </Box>
+                    </MenuItem>
+                  ))}
                 </Select>
-              </div>
+              </FormControl>
 
-              <div className="space-y-2">
-                <Label>Platform</Label>
-                <Select value={platform} onValueChange={setPlatform}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {PLATFORMS.map((p) => (
-                      <SelectItem key={p.id} value={p.id}>
-                        <div className="flex items-center gap-2">
-                          <span>{p.icon}</span>
-                          <span>{p.name}</span>
-                        </div>
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
+              <FormControl fullWidth sx={{ mb: 2 }}>
+                <InputLabel>Platform</InputLabel>
+                <Select value={platform} onChange={(e) => setPlatform(e.target.value)} label="Platform">
+                  {PLATFORMS.map((p) => (
+                    <MenuItem key={p.id} value={p.id}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <span>{p.icon}</span>
+                        <span>{p.name}</span>
+                      </Box>
+                    </MenuItem>
+                  ))}
                 </Select>
-              </div>
+              </FormControl>
 
-              <div className="space-y-2">
-                <Label>Audience Size</Label>
-                <Select value={audienceSize} onValueChange={setAudienceSize}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {AUDIENCE_SIZES.map((size) => (
-                      <SelectItem key={size.id} value={size.id}>
-                        {size.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
+              <FormControl fullWidth sx={{ mb: 2 }}>
+                <InputLabel>Audience Size</InputLabel>
+                <Select value={audienceSize} onChange={(e) => setAudienceSize(e.target.value)} label="Audience Size">
+                  {AUDIENCE_SIZES.map((size) => (
+                    <MenuItem key={size.id} value={size.id}>
+                      {size.name}
+                    </MenuItem>
+                  ))}
                 </Select>
-              </div>
+              </FormControl>
             </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-2">
-              <Label>Industry/Niche</Label>
-              <Input
-                placeholder="e.g., tech, fitness, fashion, business..."
-                value={industry}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setIndustry(e.target.value)}
-              />
-            </div>
+            <TextField
+              label="Industry/Niche"
+              placeholder="e.g., tech, fitness, fashion, business..."
+              value={industry}
+              onChange={(e) => setIndustry(e.target.value)}
+              fullWidth
+              sx={{ mb: 2 }}
+            />
 
-            <div className="space-y-2">
-              <Label>Target Audience</Label>
-              <Input
-                placeholder="e.g., entrepreneurs, fitness enthusiasts..."
-                value={targetAudience}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTargetAudience(e.target.value)}
-              />
-            </div>
+            <TextField
+              label="Target Audience"
+              placeholder="e.g., entrepreneurs, fitness enthusiasts..."
+              value={targetAudience}
+              onChange={(e) => setTargetAudience(e.target.value)}
+              fullWidth
+              sx={{ mb: 2 }}
+            />
           </div>
 
           {/* Advanced Settings */}
@@ -444,42 +430,37 @@ export function ContentPerformancePredictor({ provider }: ContentPerformancePred
               <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 3, p: 2, bgcolor: 'grey.50', borderRadius: '8px' }}>
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
                   <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                    <Label>Analysis Features</Label>
+                    <Typography variant="subtitle2" sx={{ fontWeight: 'medium', mb: 1 }}>Analysis Features</Typography>
                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <Typography variant="body2">Competitor Analysis</Typography>
-                        <Switch checked={includeCompetitorAnalysis} onCheckedChange={setIncludeCompetitorAnalysis} />
-                      </Box>
-                      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <Typography variant="body2">Seasonal Factors</Typography>
-                        <Switch checked={includeSeasonalFactors} onCheckedChange={setIncludeSeasonalFactors} />
-                      </Box>
-                      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <Typography variant="body2">ROI Analysis</Typography>
-                        <Switch checked={includeROIAnalysis} onCheckedChange={setIncludeROIAnalysis} />
-                      </Box>
-                      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                        <Typography variant="body2">Risk Assessment</Typography>
-                        <Switch checked={includeRiskAssessment} onCheckedChange={setIncludeRiskAssessment} />
-                      </Box>
+                      <FormControlLabel
+                        control={<Switch checked={includeCompetitorAnalysis} onChange={(e) => setIncludeCompetitorAnalysis(e.target.checked)} />}
+                        label="Competitor Analysis"
+                      />
+                      <FormControlLabel
+                        control={<Switch checked={includeSeasonalFactors} onChange={(e) => setIncludeSeasonalFactors(e.target.checked)} />}
+                        label="Seasonal Factors"
+                      />
+                      <FormControlLabel
+                        control={<Switch checked={includeROIAnalysis} onChange={(e) => setIncludeROIAnalysis(e.target.checked)} />}
+                        label="ROI Analysis"
+                      />
+                      <FormControlLabel
+                        control={<Switch checked={includeRiskAssessment} onChange={(e) => setIncludeRiskAssessment(e.target.checked)} />}
+                        label="Risk Assessment"
+                      />
                     </Box>
                   </Box>
 
-                  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                    <Label>Brand Voice</Label>
-                    <Select value={brandVoice} onValueChange={setBrandVoice}>
-                      <SelectTrigger>
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="friendly">Friendly & Approachable</SelectItem>
-                        <SelectItem value="professional">Professional & Authoritative</SelectItem>
-                        <SelectItem value="energetic">Energetic & Motivational</SelectItem>
-                        <SelectItem value="humorous">Humorous & Entertaining</SelectItem>
-                        <SelectItem value="luxury">Luxury & Premium</SelectItem>
-                      </SelectContent>
+                  <FormControl fullWidth sx={{ mb: 2 }}>
+                    <InputLabel>Brand Voice</InputLabel>
+                    <Select value={brandVoice} onChange={(e) => setBrandVoice(e.target.value)} label="Brand Voice">
+                      <MenuItem value="friendly">Friendly & Approachable</MenuItem>
+                      <MenuItem value="professional">Professional & Authoritative</MenuItem>
+                      <MenuItem value="energetic">Energetic & Motivational</MenuItem>
+                      <MenuItem value="humorous">Humorous & Entertaining</MenuItem>
+                      <MenuItem value="luxury">Luxury & Premium</MenuItem>
                     </Select>
-                  </Box>
+                  </FormControl>
                 </Box>
 
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
@@ -529,24 +510,25 @@ export function ContentPerformancePredictor({ provider }: ContentPerformancePred
               Performance Prediction
             </Typography>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-              <Badge variant="secondary" className="bg-green-100 text-green-800">
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                  <CheckCircle className="w-3 h-3" />
-                  {prediction.confidence_score}% Confidence
-                </Box>
-              </Badge>
+              <Chip 
+                label={`${prediction.confidence_score}% Confidence`}
+                color="success" 
+                icon={<CheckCircle size={16} />}
+                sx={{ bgcolor: 'green.100', color: 'green.800' }}
+              />
             </Box>
           </Box>
 
-          <Tabs defaultValue="overview" className="space-y-4">
-            <TabsList>
-              <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="predictions">Detailed Predictions</TabsTrigger>
-              <TabsTrigger value="optimization">Optimization</TabsTrigger>
-              <TabsTrigger value="analysis">Analysis</TabsTrigger>
-            </TabsList>
+          <Box sx={{ width: '100%' }}>
+            <Tabs value={activeTab} onChange={(e, newValue) => setActiveTab(newValue)} sx={{ borderBottom: 1, borderColor: 'divider' }}>
+              <Tab label="Overview" />
+              <Tab label="Detailed Predictions" />
+              <Tab label="Optimization" />
+              <Tab label="Analysis" />
+            </Tabs>
 
-            <TabsContent value="overview" className="space-y-4">
+            {activeTab === 0 && (
+              <Box sx={{ mt: 3 }}>
               {/* Key Metrics */}
               <Box sx={{ display: 'grid', gridTemplateColumns: { xs: 'repeat(2, 1fr)', md: 'repeat(4, 1fr)' }, gap: 4 }}>
                 <Card>
@@ -641,9 +623,11 @@ export function ContentPerformancePredictor({ provider }: ContentPerformancePred
                   </Box>
                 </CardContent>
               </Card>
-            </TabsContent>
+              </Box>
+            )}
 
-            <TabsContent value="predictions" className="space-y-4">
+            {activeTab === 1 && (
+              <Box sx={{ mt: 3 }}>
               <Card>
                 <CardHeader>
                   <Typography variant="h6">Detailed Performance Predictions</Typography>
@@ -688,9 +672,7 @@ export function ContentPerformancePredictor({ provider }: ContentPerformancePred
                             <Typography variant="body2" sx={{ fontWeight: 'medium' }}>Engagement Drivers:</Typography>
                             <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mt: 1 }}>
                               {prediction.audience_insights.engagement_drivers.map((driver, index) => (
-                                <Badge key={index} variant="outline" className="text-xs">
-                                  {driver}
-                                </Badge>
+                                <Chip key={index} label={driver} variant="outlined" size="small" />
                               ))}
                             </Box>
                           </Box>
@@ -700,9 +682,11 @@ export function ContentPerformancePredictor({ provider }: ContentPerformancePred
                   </Box>
                 </CardContent>
               </Card>
-            </TabsContent>
+              </Box>
+            )}
 
-            <TabsContent value="optimization" className="space-y-4">
+            {activeTab === 2 && (
+              <Box sx={{ mt: 3 }}>
               <Card>
                 <CardHeader>
                   <Typography variant="h6">Optimization Recommendations</Typography>
@@ -749,7 +733,7 @@ export function ContentPerformancePredictor({ provider }: ContentPerformancePred
                       <Typography variant="h6" sx={{ fontWeight: 'semibold' }}>Content Optimization</Typography>
                       <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 4 }}>
                         <Box>
-                          <Label className="text-sm font-medium">Hashtag Strategy</Label>
+                          <Typography variant="subtitle2" sx={{ fontWeight: 'medium', mb: 1 }}>Hashtag Strategy</Typography>
                           <Box component="ul" sx={{ fontSize: '0.875rem', color: 'text.secondary', mt: 1, display: 'flex', flexDirection: 'column', gap: 1, listStyle: 'none', p: 0 }}>
                             {prediction.optimization_suggestions.hashtag_strategy.map((suggestion, index) => (
                               <Box component="li" key={index}>
@@ -759,7 +743,7 @@ export function ContentPerformancePredictor({ provider }: ContentPerformancePred
                           </Box>
                         </Box>
                         <Box>
-                          <Label className="text-sm font-medium">Caption Enhancements</Label>
+                          <Typography variant="subtitle2" sx={{ fontWeight: 'medium', mb: 1 }}>Caption Enhancements</Typography>
                           <Box component="ul" sx={{ fontSize: '0.875rem', color: 'text.secondary', mt: 1, display: 'flex', flexDirection: 'column', gap: 1, listStyle: 'none', p: 0 }}>
                             {prediction.optimization_suggestions.caption_enhancements.map((suggestion, index) => (
                               <Box component="li" key={index}>
@@ -773,9 +757,11 @@ export function ContentPerformancePredictor({ provider }: ContentPerformancePred
                   </Box>
                 </CardContent>
               </Card>
-            </TabsContent>
+              </Box>
+            )}
 
-            <TabsContent value="analysis" className="space-y-4">
+            {activeTab === 3 && (
+              <Box sx={{ mt: 3 }}>
               <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 6 }}>
                 <Card>
                   <CardHeader>
@@ -827,8 +813,9 @@ export function ContentPerformancePredictor({ provider }: ContentPerformancePred
                   </CardContent>
                 </Card>
               </Box>
-            </TabsContent>
-          </Tabs>
+              </Box>
+            )}
+          </Box>
         </Box>
       )}
     </Box>

@@ -89,7 +89,7 @@ import {
   Delete,
   Visibility,
   MoreVert,
-  Workflow,
+  AccountTree,
   Hub,
   AccountTree,
   Schema,
@@ -102,12 +102,12 @@ import {
   Storage,
   NetworkCheck,
   Router,
-  Firewall,
-  Antivirus,
+  Security,
+  Shield,
   Encryption,
-  TwoFactorAuth,
+  VerifiedUser,
   Password,
-  UserCheck,
+  PersonAdd,
   DeviceHub,
   Compare,
   Assessment,
@@ -452,7 +452,7 @@ export default function IntelligentContentOptimization() {
   if (isLoading) {
     return (
       <Box sx={{ p: 3 }}>
-        <Typography variant="h4" sx={{ mb: 3, color: designTokens.colors.text.primary }}>
+        <Typography variant="h4" sx={{ mb: 3, color: 'text.primary' }}>
           Intelligent Content Optimization
         </Typography>
         <Grid container spacing={3}>
@@ -469,7 +469,7 @@ export default function IntelligentContentOptimization() {
   return (
     <Box sx={{ p: 3 }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-        <Typography variant="h4" sx={{ color: designTokens.colors.text.primary }}>
+        <Typography variant="h4" sx={{ color: 'text.primary' }}>
           Intelligent Content Optimization
         </Typography>
         <Button
@@ -560,16 +560,16 @@ export default function IntelligentContentOptimization() {
                         boxShadow: 8,
                         borderColor: designTokens.colors.ai[300]
                       },
-                      border: `1px solid ${designTokens.colors.border}`
+                      border: `1px solid ${theme.palette.divider}`
                     }}
                   >
                     <CardContent>
                       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
                         <Box sx={{ flex: 1 }}>
-                          <Typography variant="h6" sx={{ color: designTokens.colors.text.primary, mb: 1 }}>
+                          <Typography variant="h6" sx={{ color: 'text.primary', mb: 1 }}>
                             {content.title}
                           </Typography>
-                          <Typography variant="body2" sx={{ color: designTokens.colors.text.secondary, mb: 2 }}>
+                          <Typography variant="body2" sx={{ color: 'text.secondary', mb: 2 }}>
                             {content.type.charAt(0).toUpperCase() + content.type.slice(1)} • {content.platform.charAt(0).toUpperCase() + content.platform.slice(1)}
                           </Typography>
                         </Box>
@@ -600,12 +600,12 @@ export default function IntelligentContentOptimization() {
 
                       {content.actualPerformance && (
                         <Box sx={{ mb: 2 }}>
-                          <Typography variant="body2" sx={{ color: designTokens.colors.text.secondary, mb: 1 }}>
+                          <Typography variant="body2" sx={{ color: 'text.secondary', mb: 1 }}>
                             Actual Performance
                           </Typography>
                           <Grid container spacing={1}>
                             <Grid xs={6}>
-                              <Typography variant="caption" sx={{ color: designTokens.colors.text.secondary }}>
+                              <Typography variant="caption" sx={{ color: 'text.secondary' }}>
                                 Engagement
                               </Typography>
                               <Typography variant="body2" sx={{ color: designTokens.colors.success[600] }}>
@@ -613,7 +613,7 @@ export default function IntelligentContentOptimization() {
                               </Typography>
                             </Grid>
                             <Grid xs={6}>
-                              <Typography variant="caption" sx={{ color: designTokens.colors.text.secondary }}>
+                              <Typography variant="caption" sx={{ color: 'text.secondary' }}>
                                 Reach
                               </Typography>
                               <Typography variant="body2" sx={{ color: designTokens.colors.info[600] }}>
@@ -625,12 +625,12 @@ export default function IntelligentContentOptimization() {
                       )}
 
                       <Box sx={{ mb: 2 }}>
-                        <Typography variant="body2" sx={{ color: designTokens.colors.text.secondary, mb: 1 }}>
+                        <Typography variant="body2" sx={{ color: 'text.secondary', mb: 1 }}>
                           Predicted Performance
                         </Typography>
                         <Grid container spacing={1}>
                           <Grid xs={6}>
-                            <Typography variant="caption" sx={{ color: designTokens.colors.text.secondary }}>
+                            <Typography variant="caption" sx={{ color: 'text.secondary' }}>
                               Engagement
                             </Typography>
                             <Typography variant="body2" sx={{ color: designTokens.colors.success[600] }}>
@@ -638,7 +638,7 @@ export default function IntelligentContentOptimization() {
                             </Typography>
                           </Grid>
                           <Grid xs={6}>
-                            <Typography variant="caption" sx={{ color: designTokens.colors.text.secondary }}>
+                            <Typography variant="caption" sx={{ color: 'text.secondary' }}>
                               Reach
                             </Typography>
                             <Typography variant="body2" sx={{ color: designTokens.colors.info[600] }}>
@@ -649,7 +649,7 @@ export default function IntelligentContentOptimization() {
                       </Box>
 
                       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <Typography variant="caption" sx={{ color: designTokens.colors.text.secondary }}>
+                        <Typography variant="caption" sx={{ color: 'text.secondary' }}>
                           {content.status === 'published' ? `Published: ${formatDate(content.publishedAt!)}` : 
                            content.status === 'scheduled' ? `Scheduled: ${formatDate(content.scheduledFor!)}` : 
                            `Created: ${formatDate(content.createdAt)}`}
@@ -682,7 +682,7 @@ export default function IntelligentContentOptimization() {
                       <Box sx={{ color: designTokens.colors.ai[600] }}>
                         {getCategoryIcon(insight.category)}
                       </Box>
-                      <Typography variant="h6" sx={{ color: designTokens.colors.text.primary }}>
+                      <Typography variant="h6" sx={{ color: 'text.primary' }}>
                         {insight.title}
                       </Typography>
                     </Box>
@@ -693,12 +693,12 @@ export default function IntelligentContentOptimization() {
                     />
                   </Box>
 
-                  <Typography variant="body2" sx={{ color: designTokens.colors.text.secondary, mb: 2 }}>
+                  <Typography variant="body2" sx={{ color: 'text.secondary', mb: 2 }}>
                     {insight.description}
                   </Typography>
 
                   <Box sx={{ mb: 2 }}>
-                    <Typography variant="body2" sx={{ color: designTokens.colors.text.secondary, mb: 1 }}>
+                    <Typography variant="body2" sx={{ color: 'text.secondary', mb: 1 }}>
                       AI Confidence: {insight.confidence}%
                     </Typography>
                     <LinearProgress 
@@ -710,7 +710,7 @@ export default function IntelligentContentOptimization() {
 
                   {insight.actionable && (
                     <Box sx={{ mb: 2 }}>
-                      <Typography variant="body2" sx={{ color: designTokens.colors.text.primary, mb: 1, fontWeight: 'medium' }}>
+                      <Typography variant="body2" sx={{ color: 'text.primary', mb: 1, fontWeight: 'medium' }}>
                         Action Items:
                       </Typography>
                       <List dense>
@@ -746,16 +746,16 @@ export default function IntelligentContentOptimization() {
 
       {activeTab === 2 && (
         <Grid container spacing={3}>
-          {predictions.map((prediction) => (
-            <Grid key={prediction.id} xs={12} md={6}>
+          {predictions.map((prediction, index) => (
+            <Grid key={index} xs={12} md={6}>
               <Card>
                 <CardContent>
-                  <Typography variant="h6" sx={{ mb: 2, color: designTokens.colors.text.primary }}>
+                  <Typography variant="h6" sx={{ mb: 2, color: 'text.primary' }}>
                     {prediction.title}
                   </Typography>
 
                   <Box sx={{ mb: 2 }}>
-                    <Typography variant="body2" sx={{ color: designTokens.colors.text.secondary, mb: 1 }}>
+                    <Typography variant="body2" sx={{ color: 'text.secondary', mb: 1 }}>
                       AI Confidence: {prediction.confidence}%
                     </Typography>
                     <LinearProgress 
@@ -767,7 +767,7 @@ export default function IntelligentContentOptimization() {
 
                   <Grid container spacing={2} sx={{ mb: 2 }}>
                     <Grid xs={6}>
-                      <Typography variant="caption" sx={{ color: designTokens.colors.text.secondary }}>
+                      <Typography variant="caption" sx={{ color: 'text.secondary' }}>
                         Predicted Engagement
                       </Typography>
                       <Typography variant="h6" sx={{ color: designTokens.colors.success[600] }}>
@@ -775,7 +775,7 @@ export default function IntelligentContentOptimization() {
                       </Typography>
                     </Grid>
                     <Grid xs={6}>
-                      <Typography variant="caption" sx={{ color: designTokens.colors.text.secondary }}>
+                      <Typography variant="caption" sx={{ color: 'text.secondary' }}>
                         Predicted Reach
                       </Typography>
                       <Typography variant="h6" sx={{ color: designTokens.colors.info[600] }}>
@@ -783,7 +783,7 @@ export default function IntelligentContentOptimization() {
                       </Typography>
                     </Grid>
                     <Grid xs={6}>
-                      <Typography variant="caption" sx={{ color: designTokens.colors.text.secondary }}>
+                      <Typography variant="caption" sx={{ color: 'text.secondary' }}>
                         Predicted Clicks
                       </Typography>
                       <Typography variant="h6" sx={{ color: designTokens.colors.warning[600] }}>
@@ -791,7 +791,7 @@ export default function IntelligentContentOptimization() {
                       </Typography>
                     </Grid>
                     <Grid xs={6}>
-                      <Typography variant="caption" sx={{ color: designTokens.colors.text.secondary }}>
+                      <Typography variant="caption" sx={{ color: 'text.secondary' }}>
                         Virality Score
                       </Typography>
                       <Typography variant="h6" sx={{ color: designTokens.colors.error[600] }}>
@@ -801,7 +801,7 @@ export default function IntelligentContentOptimization() {
                   </Grid>
 
                   <Box sx={{ mb: 2 }}>
-                    <Typography variant="body2" sx={{ color: designTokens.colors.text.primary, mb: 1, fontWeight: 'medium' }}>
+                    <Typography variant="body2" sx={{ color: 'text.primary', mb: 1, fontWeight: 'medium' }}>
                       Key Factors:
                     </Typography>
                     <List dense>

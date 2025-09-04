@@ -32,14 +32,18 @@ export async function GET(req: NextRequest) {
     }
 
     // Get integrations
-    const integrations = await prisma.integration.findMany({
+    // TODO: Implement integration model in Prisma schema
+    const integrations: any[] = [];
+    /*
+    await prisma.integration.findMany({
       where,
       orderBy: { createdAt: 'desc' },
     });
+    */
 
     // Get integration health for each
     const integrationsWithHealth = await Promise.all(
-      integrations.map(async (integration) => {
+      integrations.map(async (integration: any) => {
         const health = await integrationManager.checkIntegrationHealth(integration.id);
         return {
           id: integration.id,

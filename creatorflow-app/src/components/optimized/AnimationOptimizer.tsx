@@ -218,7 +218,7 @@ export function ScrollAnimation({
         
         if (element) {
           const elementTop = element.getBoundingClientRect().top;
-          const elementHeight = element.offsetHeight;
+          const elementHeight = (element as HTMLElement).offsetHeight;
           
           if (scrollTop + windowHeight > elementTop + elementHeight * threshold) {
             setIsTriggered(true);

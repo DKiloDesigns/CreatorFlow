@@ -7,10 +7,8 @@ import {
   Card,
   CardHeader,
 
-  CardDescription,
   CardContent,
-  CardFooter,
-  Input,
+  TextField,
   Box,
   Container,
   Grid,
@@ -285,12 +283,12 @@ export default function MuiDemoPage() {
                     Buttons
                   </Typography>
                   <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
-                    <Button variant="default">Default</Button>
-                    <Button variant="outline">Outline</Button>
-                    <Button variant="secondary">Secondary</Button>
-                    <Button variant="destructive">Destructive</Button>
-                    <Button variant="ghost">Ghost</Button>
-                    <Button variant="link">Link</Button>
+                    <Button variant="contained">Default</Button>
+                    <Button variant="outlined">Outline</Button>
+                    <Button variant="outlined">Secondary</Button>
+                    <Button variant="contained" color="error">Destructive</Button>
+                    <Button variant="text">Ghost</Button>
+                    <Button variant="text">Link</Button>
                   </Stack>
                 </Box>
 
@@ -301,9 +299,9 @@ export default function MuiDemoPage() {
                     Input Fields
                   </Typography>
                   <Stack spacing={2}>
-                    <Input placeholder="Basic input" />
-                    <Input placeholder="With label" label="Label" />
-                    <Input placeholder="With helper text" label="Helper Text" helperText="This is helper text" />
+                    <TextField placeholder="Basic input" />
+                    <TextField placeholder="With label" label="Label" />
+                    <TextField placeholder="With helper text" label="Helper Text" helperText="This is helper text" />
                   </Stack>
                 </Box>
 
@@ -590,7 +588,7 @@ export default function MuiDemoPage() {
                     <StepContent>
                       <Typography>This is step 1 content</Typography>
                       <Box sx={{ mb: 2 }}>
-                        <Button variant="default" onClick={handleNext}>
+                        <Button variant="contained" onClick={handleNext}>
                           Continue
                         </Button>
                       </Box>
@@ -601,10 +599,10 @@ export default function MuiDemoPage() {
                     <StepContent>
                       <Typography>This is step 2 content</Typography>
                       <Box sx={{ mb: 2 }}>
-                        <Button variant="default" onClick={handleNext}>
+                        <Button variant="contained" onClick={handleNext}>
                           Continue
                         </Button>
-                        <Button variant="outline" onClick={handleBack}>
+                        <Button variant="outlined" onClick={handleBack}>
                           Back
                         </Button>
                       </Box>
@@ -615,10 +613,10 @@ export default function MuiDemoPage() {
                     <StepContent>
                       <Typography>This is step 3 content</Typography>
                       <Box sx={{ mb: 2 }}>
-                        <Button variant="outline" onClick={handleBack}>
+                        <Button variant="outlined" onClick={handleBack}>
                           Back
                         </Button>
-                        <Button variant="default" onClick={handleReset}>
+                        <Button variant="contained" onClick={handleReset}>
                           Reset
                         </Button>
                       </Box>
@@ -697,13 +695,13 @@ export default function MuiDemoPage() {
                   Buttons for Dialogs & Menus
                 </Typography>
                 <Stack direction="row" spacing={2}>
-                  <Button variant="default" onClick={() => setDialogOpen(true)}>
+                  <Button variant="contained" onClick={() => setDialogOpen(true)}>
                     Open Dialog
                   </Button>
-                  <Button variant="outline" onClick={(event) => setMenuAnchor(event.currentTarget)}>
+                  <Button variant="outlined" onClick={(event) => setMenuAnchor(event.currentTarget)}>
                     Open Menu
                   </Button>
-                  <Button variant="secondary" onClick={() => setSnackbarOpen(true)}>
+                  <Button variant="outlined" onClick={() => setSnackbarOpen(true)}>
                     Show Snackbar
                   </Button>
                 </Stack>
@@ -732,7 +730,7 @@ export default function MuiDemoPage() {
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setDialogOpen(false)}>Cancel</Button>
-          <Button variant="default" onClick={() => setDialogOpen(false)}>Confirm</Button>
+          <Button variant="contained" onClick={() => setDialogOpen(false)}>Confirm</Button>
         </DialogActions>
       </Dialog>
 

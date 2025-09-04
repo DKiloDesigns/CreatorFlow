@@ -142,8 +142,8 @@ export default function ContentManagementPage() {
     setEditModalOpen(true);
   };
 
-  const handleDelete = (postId: string) => {
-    setPosts(posts.filter(p => p.id !== postId));
+  const handleDelete = (post: Post) => {
+    setPosts(posts.filter(p => p.id !== post.id));
     toast.success('Post deleted successfully');
   };
 
@@ -329,8 +329,21 @@ export default function ContentManagementPage() {
       </Container>
 
       {/* Modals */}
-      <UploadMediaModal open={uploadModalOpen} onClose={() => setUploadModalOpen(false)} />
-      <MediaLibrary open={mediaLibraryOpen} onClose={() => setMediaLibraryOpen(false)} />
+      <UploadMediaModal 
+        open={uploadModalOpen} 
+        onClose={() => setUploadModalOpen(false)} 
+        onUploadComplete={() => {
+          // Refresh media library or handle upload completion
+          setUploadModalOpen(false);
+        }}
+      />
+      <MediaLibrary 
+        onSelect={(media) => {
+          // Handle media selection
+          console.log('Selected media:', media);
+          setMediaLibraryOpen(false);
+        }}
+      />
       <CreateVideoModal open={createVideoModalOpen} onClose={() => setCreateVideoModalOpen(false)} />
       <UseTemplateModal open={useTemplateModalOpen} onClose={() => setUseTemplateModalOpen(false)} />
       <BulkScheduleModal open={bulkScheduleModalOpen} onClose={() => setBulkScheduleModalOpen(false)} />
@@ -338,8 +351,7 @@ export default function ContentManagementPage() {
       {editingPost && (
         <EditPostForm
           post={editingPost}
-          open={editModalOpen}
-          onClose={() => {
+          onCancel={() => {
             setEditModalOpen(false);
             setEditingPost(null);
           }}

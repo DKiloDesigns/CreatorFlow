@@ -809,7 +809,7 @@ export class SACAAccessibilityTester {
         cpuUsage: performanceData.cpuUsage,
         cacheHitRate: this.calculateCacheHitRate()
       },
-      componentBreakdown: this.generateComponentBreakdown(enhancedViolations),
+      componentBreakdown: this.generateComponentBreakdown(enhancedViolations) as any,
       recommendations: this.generateRecommendations(enhancedViolations)
     };
 
@@ -818,7 +818,7 @@ export class SACAAccessibilityTester {
       this.cacheResult(url, this.testResults);
     }
 
-    return this.testResults;
+    return this.testResults as any;
   }
 
   /**
@@ -1028,10 +1028,10 @@ export class SACAAccessibilityTester {
         elementsTested,
         violationsPerSecond: enhancedViolations.length / (testDuration / 1000)
       },
-      componentBreakdown: this.generateComponentBreakdown(enhancedViolations)
+      componentBreakdown: this.generateComponentBreakdown(enhancedViolations) as any
     };
 
-    return this.testResults;
+    return this.testResults as any;
   }
 
   /**

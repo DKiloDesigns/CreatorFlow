@@ -130,7 +130,7 @@ export function MuiEnhancedNavigation() {
               minWidth: 40,
             }}
           >
-            <Icon style={{ width: 16, height: 16 }} />
+            <Icon className="w-4 h-4" />
           </ListItemIcon>
           <ListItemText
             primary={item.label}

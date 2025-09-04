@@ -111,8 +111,16 @@ export function RealTimeNotificationProvider({ children }: RealTimeNotificationP
   useEffect(() => {
     const fetchNotifications = async () => {
       try {
-        const response = await fetch('/api/notifications/enhanced?limit=50');
-        if (!response.ok) throw new Error('Failed to fetch notifications');
+        const response = await fetch('/api/notifications/enhanced?limit=50', {
+          credentials: 'include'
+        });
+        if (!response.ok) {
+          if (response.status === 401) {
+            console.warn('User not authenticated, skipping notifications fetch');
+            return;
+          }
+          throw new Error('Failed to fetch notifications');
+        }
         
         const data = await response.json();
         setNotifications(data.notifications || []);

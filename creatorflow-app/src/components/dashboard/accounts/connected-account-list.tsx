@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from 'react';
 import ConnectedAccountCard from './connected-account-card';
-import { Skeleton } from "@/components/ui/feedback/Skeleton";
+import { Skeleton } from "@mui/material";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/feedback/mui-alert";
 import { Box } from '@mui/material';
 import { Terminal } from 'lucide-react';

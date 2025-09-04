@@ -97,7 +97,7 @@ export default function Phase3HubPage() {
       estimatedTime: '12-18 min',
       aiPowered: true,
       proFeature: false,
-      category: 'optimization'
+      category: 'automation'
     },
     {
       id: 'ai-content-generation',
@@ -110,7 +110,7 @@ export default function Phase3HubPage() {
       estimatedTime: '10-15 min',
       aiPowered: true,
       proFeature: false,
-      category: 'generation'
+      category: 'intelligence'
     },
     {
       id: 'automated-a-b-testing',
@@ -123,7 +123,7 @@ export default function Phase3HubPage() {
       estimatedTime: '18-25 min',
       aiPowered: true,
       proFeature: true,
-      category: 'testing'
+      category: 'automation'
     },
     {
       id: 'intelligent-scheduling-ai',

@@ -137,7 +137,7 @@ export function AIProviderSetupModal({
   const instructions = getSetupInstructions();
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
+    <Dialog open={isOpen} onClose={onClose}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
@@ -219,7 +219,7 @@ export function AIProviderSetupModal({
                   size="small"
                   onClick={() => window.open(instructions.link, '_blank')}
                 >
-                  <ExternalLink sx={{ width: 16, height: 16, mr: 0.5 }} />
+                  <ExternalLink style={{ width: 16, height: 16, marginRight: 4 }} />
                   Visit Website
                 </Button>
               </Box>
@@ -253,7 +253,7 @@ export function AIProviderSetupModal({
 
               {instructions.note && (
                 <Alert severity="warning" sx={{ borderRadius: 2 }}>
-                  <AlertCircle sx={{ width: 16, height: 16, mt: 0.125, flexShrink: 0 }} />
+                  <AlertCircle style={{ width: 16, height: 16, marginTop: 2, flexShrink: 0 }} />
                   <AlertTitle sx={{ fontSize: '0.875rem' }}>Note</AlertTitle>
                   <AlertDescription sx={{ fontSize: '0.875rem' }}>
                     {instructions.note}

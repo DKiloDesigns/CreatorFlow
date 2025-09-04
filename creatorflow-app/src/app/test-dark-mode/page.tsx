@@ -6,7 +6,7 @@ export default function TestDarkModePage() {
     <Box sx={{ p: 4, display: 'flex', flexDirection: 'column', gap: 2 }}>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <Typography variant="h3" sx={{ fontWeight: 'bold' }}>Dark Mode Test Page</Typography>
-        <ThemeToggle isLandingPage={false} />
+        <ThemeToggle />
       </Box>
       
       {/* Classic solid cards, no gradients */}

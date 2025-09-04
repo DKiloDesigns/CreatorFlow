@@ -8,7 +8,7 @@ import {
   Box,
   Typography,
   Grid,
-  Chip
+  MenuItem
 } from '@mui/material';
 import { MessageSquare, Activity } from 'lucide-react';
 import { CaptionSuggestion } from '@/lib/ai-service';
@@ -137,7 +137,9 @@ export function AICaptionGenerator({ onCaptionSelect, className }: AICaptionGene
                 onChange={(e) => setPlatform(e.target.value as string)}
               >
                 {platforms.map((p) => (
-                  <Chip key={p.value} label={p.label} value={p.value} />
+                  <MenuItem key={p.value} value={p.value}>
+                    {p.label}
+                  </MenuItem>
                 ))}
               </TextField>
             </Grid>
@@ -152,7 +154,9 @@ export function AICaptionGenerator({ onCaptionSelect, className }: AICaptionGene
                 onChange={(e) => setTone(e.target.value as string)}
               >
                 {tones.map((t) => (
-                  <Chip key={t.value} label={t.label} value={t.value} />
+                  <MenuItem key={t.value} value={t.value}>
+                    {t.label}
+                  </MenuItem>
                 ))}
               </TextField>
             </Grid>
@@ -168,7 +172,9 @@ export function AICaptionGenerator({ onCaptionSelect, className }: AICaptionGene
                 placeholder="Select industry"
               >
                 {industries.map((i) => (
-                  <Chip key={i.value} label={i.label} value={i.value} />
+                  <MenuItem key={i.value} value={i.value}>
+                    {i.label}
+                  </MenuItem>
                 ))}
               </TextField>
             </Grid>

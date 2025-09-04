@@ -2,6 +2,7 @@ import React from 'react'
 import { render, screen } from '@testing-library/react'
 import { FeatureCard } from '@/components/FeatureCard'
 import '@testing-library/jest-dom'
+import { expect, describe, it } from '@jest/globals'
 
 const mockPost = {
   id: '1',

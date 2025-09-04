@@ -30,7 +30,7 @@ export function PublicHeader() {
             </Typography>
           </Link>
           <Box sx={{ ml: 'auto', display: 'flex', alignItems: 'center', gap: 2 }}>
-            <ThemeToggle isLandingPage={true} />
+            <ThemeToggle />
             <Link 
               href="/auth" 
               style={{ textDecoration: 'none' }}

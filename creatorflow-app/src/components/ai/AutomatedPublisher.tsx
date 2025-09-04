@@ -313,7 +313,7 @@ export default function AutomatedPublisher() {
 
       setCampaigns(mockCampaigns);
       setAutomationRules(mockRules);
-    } catch (err) {
+    } catch (err: unknown) {
       setError(err instanceof Error ? err.message : 'Failed to load data');
     } finally {
       setLoading(false);

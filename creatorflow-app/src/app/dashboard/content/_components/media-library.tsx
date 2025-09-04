@@ -4,7 +4,13 @@ import React, { useState, useEffect } from 'react';
 import { 
   Card, 
   CardContent, 
-  Button
+  Button,
+  TextField,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Chip
 } from '@mui/material';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
@@ -243,16 +249,16 @@ export function MediaLibrary({ onSelect, selectedMedia = [], multiple = false }:
         
         <div className="flex items-center gap-2">
           <Button
-            variant="outline"
-            size="sm"
+            
+            size="small"
             onClick={handleRefresh}
             disabled={refreshing}
           >
             <RefreshCw className={`h-4 w-4 ${refreshing ? 'animate-spin' : ''}`} />
           </Button>
           <Button
-            variant="outline"
-            size="sm"
+            
+            size="small"
             onClick={() => setViewMode(viewMode === 'grid' ? 'list' : 'grid')}
           >
             {viewMode === 'grid' ? <List className="h-4 w-4" /> : <GridIcon className="h-4 w-4" />}
@@ -278,27 +284,23 @@ export function MediaLibrary({ onSelect, selectedMedia = [], multiple = false }:
           />
         </div>
         
-        <Select value={typeFilter} onValueChange={(value: any) => setTypeFilter(value)}>
-          <SelectTrigger className="w-32">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Types</SelectItem>
-            <SelectItem value="image">Images</SelectItem>
-            <SelectItem value="video">Videos</SelectItem>
-          </SelectContent>
-        </Select>
+        <FormControl size="small" sx={{ minWidth: 120 }}>
+          <InputLabel>Type</InputLabel>
+          <Select value={typeFilter} onChange={(e) => setTypeFilter(e.target.value as "image" | "video" | "all")}>
+            <MenuItem value="all">All Types</MenuItem>
+            <MenuItem value="image">Images</MenuItem>
+            <MenuItem value="video">Videos</MenuItem>
+          </Select>
+        </FormControl>
         
-        <Select value={sortBy} onValueChange={(value: any) => setSortBy(value)}>
-          <SelectTrigger className="w-32">
-            <SelectValue />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="date">Date</SelectItem>
-            <SelectItem value="name">Name</SelectItem>
-            <SelectItem value="size">Size</SelectItem>
-          </SelectContent>
-        </Select>
+        <FormControl size="small" sx={{ minWidth: 120 }}>
+          <InputLabel>Sort By</InputLabel>
+          <Select value={sortBy} onChange={(e) => setSortBy(e.target.value as "date" | "name" | "size")}>
+            <MenuItem value="date">Date</MenuItem>
+            <MenuItem value="name">Name</MenuItem>
+            <MenuItem value="size">Size</MenuItem>
+          </Select>
+        </FormControl>
       </div>
 
       {/* Media Grid/List */}
@@ -329,8 +331,8 @@ export function MediaLibrary({ onSelect, selectedMedia = [], multiple = false }:
                   {/* Overlay Actions */}
                   <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
                     <Button
-                      size="sm"
-                      variant="secondary"
+                      size="small"
+                      
                       onClick={(e) => {
                         e.stopPropagation();
                         setSelectedItem(item);
@@ -340,8 +342,8 @@ export function MediaLibrary({ onSelect, selectedMedia = [], multiple = false }:
                       <Eye className="h-3 w-3" />
                     </Button>
                     <Button
-                      size="sm"
-                      variant="secondary"
+                      size="small"
+                      
                       onClick={(e) => {
                         e.stopPropagation();
                         handleDownload(item);
@@ -350,8 +352,9 @@ export function MediaLibrary({ onSelect, selectedMedia = [], multiple = false }:
                       <Download className="h-3 w-3" />
                     </Button>
                     <Button
-                      size="sm"
-                      variant="destructive"
+                      size="small"
+                      
+                      color="error"
                       onClick={(e) => {
                         e.stopPropagation();
                         handleDelete(item.id);
@@ -367,14 +370,14 @@ export function MediaLibrary({ onSelect, selectedMedia = [], multiple = false }:
                   <p className="text-xs text-gray-500">{formatFileSize(item.size)}</p>
                   <div className="flex flex-wrap gap-1">
                     {item.tags.slice(0, 2).map((tag) => (
-                      <Badge key={tag} variant="outline" className="text-xs">
+                      <span key={tag} className="inline-block bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">
                         {tag}
-                      </Badge>
+                      </span>
                     ))}
                     {item.tags.length > 2 && (
-                      <Badge variant="outline" className="text-xs">
+                      <span className="inline-block bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">
                         +{item.tags.length - 2}
-                      </Badge>
+                      </span>
                     )}
                   </div>
                 </div>
@@ -411,9 +414,9 @@ export function MediaLibrary({ onSelect, selectedMedia = [], multiple = false }:
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-2 mb-1">
                       <p className="font-medium truncate">{item.name}</p>
-                      <Badge variant="outline" className="text-xs">
+                      <span className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">
                         {item.type}
-                      </Badge>
+                      </span>
                     </div>
                     <p className="text-sm text-gray-500 mb-2">{item.description}</p>
                     <div className="flex items-center gap-4 text-xs text-gray-500">
@@ -422,17 +425,17 @@ export function MediaLibrary({ onSelect, selectedMedia = [], multiple = false }:
                     </div>
                     <div className="flex flex-wrap gap-1 mt-2">
                       {item.tags.map((tag) => (
-                        <Badge key={tag} variant="outline" className="text-xs">
+                        <span key={tag} className="inline-block bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">
                           {tag}
-                        </Badge>
+                        </span>
                       ))}
                     </div>
                   </div>
                   
                   <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                     <Button
-                      size="sm"
-                      variant="outline"
+                      size="small"
+                      
                       onClick={(e) => {
                         e.stopPropagation();
                         setSelectedItem(item);
@@ -442,8 +445,8 @@ export function MediaLibrary({ onSelect, selectedMedia = [], multiple = false }:
                       <Eye className="h-4 w-4" />
                     </Button>
                     <Button
-                      size="sm"
-                      variant="outline"
+                      size="small"
+                      
                       onClick={(e) => {
                         e.stopPropagation();
                         copyUrl(item.url);
@@ -452,8 +455,8 @@ export function MediaLibrary({ onSelect, selectedMedia = [], multiple = false }:
                       <Copy className="h-4 w-4" />
                     </Button>
                     <Button
-                      size="sm"
-                      variant="outline"
+                      size="small"
+                      
                       onClick={(e) => {
                         e.stopPropagation();
                         handleDownload(item);
@@ -462,8 +465,9 @@ export function MediaLibrary({ onSelect, selectedMedia = [], multiple = false }:
                       <Download className="h-4 w-4" />
                     </Button>
                     <Button
-                      size="sm"
-                      variant="destructive"
+                      size="small"
+                      
+                      color="error"
                       onClick={(e) => {
                         e.stopPropagation();
                         handleDelete(item.id);
@@ -483,7 +487,7 @@ export function MediaLibrary({ onSelect, selectedMedia = [], multiple = false }:
       {pagination.page < pagination.pages && (
         <div className="flex justify-center">
           <Button
-            variant="outline"
+            
             onClick={handleLoadMore}
             disabled={loading}
           >
@@ -500,7 +504,7 @@ export function MediaLibrary({ onSelect, selectedMedia = [], multiple = false }:
       )}
 
       {/* Preview Dialog */}
-      <Dialog open={previewOpen} onOpenChange={setPreviewOpen}>
+      <Dialog open={previewOpen} onClose={() => setPreviewOpen(false)}>
         <DialogContent className="max-w-4xl">
           <DialogHeader>
             <DialogTitle>{selectedItem?.name}</DialogTitle>
@@ -541,9 +545,9 @@ export function MediaLibrary({ onSelect, selectedMedia = [], multiple = false }:
                     <p className="font-medium">Tags</p>
                     <div className="flex flex-wrap gap-1 mt-1">
                       {selectedItem.tags.map((tag) => (
-                        <Badge key={tag} variant="outline" className="text-xs">
+                        <span key={tag} className="inline-block bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">
                           {tag}
-                        </Badge>
+                        </span>
                       ))}
                     </div>
                   </div>
@@ -551,14 +555,14 @@ export function MediaLibrary({ onSelect, selectedMedia = [], multiple = false }:
                 
                 <div className="flex gap-2">
                   <Button
-                    variant="outline"
+                    
                     onClick={() => copyUrl(selectedItem.url)}
                   >
                     <Copy className="h-4 w-4 mr-2" />
                     Copy URL
                   </Button>
                   <Button
-                    variant="outline"
+                    
                     onClick={() => handleDownload(selectedItem)}
                   >
                     <Download className="h-4 w-4 mr-2" />

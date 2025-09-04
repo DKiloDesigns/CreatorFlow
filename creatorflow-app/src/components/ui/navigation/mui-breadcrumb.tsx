@@ -165,7 +165,7 @@ export const BreadcrumbItem = forwardRef<HTMLAnchorElement, BreadcrumbItemProps>
         <StyledLink
           ref={ref}
           href={href}
-          variant={variant}
+          variant={variant as any}
           size={size}
           active={active}
           component={Link}

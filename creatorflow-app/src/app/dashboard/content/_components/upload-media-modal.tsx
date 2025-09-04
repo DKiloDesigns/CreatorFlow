@@ -263,7 +263,7 @@ export function UploadMediaModal({ open, onClose, onUploadComplete }: UploadMedi
     setFiles([]);
     setSelectedFile(null);
     setUploading(false);
-    onOpenChange(false);
+    onClose();
   };
 
   const copyUrl = (url: string) => {
@@ -305,7 +305,7 @@ export function UploadMediaModal({ open, onClose, onUploadComplete }: UploadMedi
                   Supports images and videos up to 100MB
                 </p>
                 <Button
-                  variant="outline"
+                  variant="outlined"
                   onClick={() => fileInputRef.current?.click()}
                   disabled={uploading}
                 >
@@ -450,8 +450,8 @@ export function UploadMediaModal({ open, onClose, onUploadComplete }: UploadMedi
                     <div className="flex gap-2">
                       <Input value={selectedFile.uploadedUrl} readOnly />
                       <Button
-                        size="sm"
-                        variant="outline"
+                        size="small"
+                        variant="outlined"
                         onClick={() => copyUrl(selectedFile.uploadedUrl!)}
                       >
                         <Copy className="h-4 w-4" />
@@ -487,7 +487,7 @@ export function UploadMediaModal({ open, onClose, onUploadComplete }: UploadMedi
         </div>
 
         <DialogFooter>
-          <Button variant="outline" onClick={handleClose} disabled={uploading}>
+          <Button variant="outlined" onClick={handleClose} disabled={uploading}>
             Cancel
           </Button>
           <Button 

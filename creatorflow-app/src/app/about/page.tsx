@@ -72,7 +72,7 @@ export default function AboutPage() {
                   mb: 2,
                   '& .dark &': { bgcolor: 'blue.900' }
                 }}>
-                  <Target sx={{ height: 32, width: 32, color: 'primary.main' }} />
+                  <Target style={{ height: 32, width: 32, color: 'var(--mui-palette-primary-main)' }} />
                 </Box>
                 <Typography variant="h5" component="h3" sx={{ 
                   fontWeight: 600, 
@@ -105,7 +105,7 @@ export default function AboutPage() {
                   mb: 2,
                   '& .dark &': { bgcolor: 'purple.900' }
                 }}>
-                  <Heart sx={{ height: 32, width: 32, color: 'secondary.main' }} />
+                  <Heart style={{ height: 32, width: 32, color: 'var(--mui-palette-secondary-main)' }} />
                 </Box>
                 <Typography variant="h5" component="h3" sx={{ 
                   fontWeight: 600, 
@@ -138,7 +138,7 @@ export default function AboutPage() {
                   mb: 2,
                   '& .dark &': { bgcolor: 'green.900' }
                 }}>
-                  <Zap sx={{ height: 32, width: 32, color: 'green.600' }} />
+                  <Zap style={{ height: 32, width: 32, color: '#16a34a' }} />
                 </Box>
                 <Typography variant="h5" component="h3" sx={{ 
                   fontWeight: 600, 
@@ -187,7 +187,7 @@ export default function AboutPage() {
                   flexShrink: 0,
                   '& .dark &': { bgcolor: 'blue.900' }
                 }}>
-                  <Users sx={{ height: 24, width: 24, color: 'blue.600' }} />
+                  <Users style={{ height: 24, width: 24, color: '#2563eb' }} />
                 </Box>
                 <Box>
                   <Typography variant="h6" component="h3" sx={{ 
@@ -221,7 +221,7 @@ export default function AboutPage() {
                   flexShrink: 0,
                   '& .dark &': { bgcolor: 'purple.900' }
                 }}>
-                  <Shield sx={{ height: 24, width: 24, color: 'purple.600' }} />
+                  <Shield style={{ height: 24, width: 24, color: '#9333ea' }} />
                 </Box>
                 <Box>
                   <Typography variant="h6" component="h3" sx={{ 
@@ -255,7 +255,7 @@ export default function AboutPage() {
                   flexShrink: 0,
                   '& .dark &': { bgcolor: 'green.900' }
                 }}>
-                  <Globe sx={{ height: 24, width: 24, color: 'green.600' }} />
+                  <Globe style={{ height: 24, width: 24, color: '#16a34a' }} />
                 </Box>
                 <Box>
                   <Typography variant="h6" component="h3" sx={{ 
@@ -289,7 +289,7 @@ export default function AboutPage() {
                   flexShrink: 0,
                   '& .dark &': { bgcolor: 'orange.900' }
                 }}>
-                  <Zap sx={{ height: 24, width: 24, color: 'orange.600' }} />
+                  <Zap style={{ height: 24, width: 24, color: '#ea580c' }} />
                 </Box>
                 <Box>
                   <Typography variant="h6" component="h3" sx={{ 

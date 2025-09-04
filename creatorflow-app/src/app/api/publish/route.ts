@@ -34,7 +34,7 @@ export async function POST(req: NextRequest) {
     });
 
     const connectedPlatforms = userAccounts.map(account => account.platform);
-    const missingPlatforms = platforms.filter(p => !connectedPlatforms.includes(p));
+    const missingPlatforms = platforms.filter((p: any) => !connectedPlatforms.includes(p));
 
     if (missingPlatforms.length > 0) {
       return NextResponse.json({ 
@@ -44,13 +44,13 @@ export async function POST(req: NextRequest) {
 
     // If scheduled for future, save to database
     if (scheduledAt && new Date(scheduledAt) > new Date()) {
-      const scheduledPost = await prisma.scheduledPost.create({
+      const scheduledPost = await prisma.post.create({
         data: {
           userId: session.user.id,
-          content: content,
+          contentText: content,
           platforms: platforms,
           scheduledAt: new Date(scheduledAt),
-          metadata: metadata || {},
+          status: 'SCHEDULED',
         },
       });
 
@@ -79,15 +79,18 @@ export async function POST(req: NextRequest) {
           prisma.post.create({
             data: {
               userId: session.user.id,
-              platform: result.platform,
-              content: content,
-              postId: result.postId,
-              postUrl: result.postUrl,
-              metadata: {
-                ...metadata,
-                publishedAt: new Date(),
-                results: results,
-              },
+              platforms: [result.platform],
+              contentText: content,
+              // TODO: Add postId field to Post model
+              // postId: result.postId,
+              // TODO: Add postUrl field to Post model
+              // postUrl: result.postUrl,
+              // TODO: Add metadata field to Post model
+              // metadata: {
+              //   ...metadata,
+              //   publishedAt: new Date(),
+              //   results: results,
+              // },
             },
           })
         )
@@ -96,11 +99,14 @@ export async function POST(req: NextRequest) {
     // Track analytics
     const successfulPosts = results.filter(r => r.success);
     if (successfulPosts.length > 0) {
-      await prisma.analyticsEvent.create({
+      await prisma.analyticsAggregation.create({
         data: {
           userId: session.user.id,
-          eventType: 'POST_PUBLISHED',
-          eventData: {
+          type: 'POST_PUBLISHED',
+          platform: successfulPosts.map(p => p.platform).join(','),
+          startDate: new Date(),
+          endDate: new Date(),
+          data: {
             platforms: successfulPosts.map(p => p.platform),
             postCount: successfulPosts.length,
             totalPlatforms: platforms.length,
@@ -145,20 +151,24 @@ export async function GET(req: NextRequest) {
       where,
       orderBy: { createdAt: 'desc' },
       take: limit,
-      include: {
-        analytics: {
-          select: {
-            impressions: true,
-            engagement: true,
-            reach: true,
-          },
-        },
-      },
+      // TODO: Add analytics relation to Post model
+      // include: {
+      //   analytics: {
+      //     select: {
+      //       impressions: true,
+      //       engagement: true,
+      //       reach: true,
+      //     },
+      //   },
+      // },
     });
 
     // Get scheduled posts
-    const scheduledPosts = await prisma.scheduledPost.findMany({
-      where: { userId: session.user.id },
+    const scheduledPosts = await prisma.post.findMany({
+      where: { 
+        userId: session.user.id,
+        status: 'SCHEDULED'
+      },
       orderBy: { scheduledAt: 'asc' },
       take: limit,
     });
@@ -170,7 +180,9 @@ export async function GET(req: NextRequest) {
         total: posts.length,
         scheduled: scheduledPosts.length,
         byPlatform: posts.reduce((acc, post) => {
-          acc[post.platform] = (acc[post.platform] || 0) + 1;
+          post.platforms.forEach(platform => {
+            acc[platform] = (acc[platform] || 0) + 1;
+          });
           return acc;
         }, {} as Record<string, number>),
       },

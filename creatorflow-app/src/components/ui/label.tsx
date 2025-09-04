@@ -4,22 +4,20 @@ import * as React from "react"
 import { Typography } from "@mui/material"
 
 const Label = React.forwardRef<
-  React.ElementRef<typeof Typography>,
-  React.ComponentPropsWithoutRef<typeof Typography>
+  HTMLLabelElement,
+  React.LabelHTMLAttributes<HTMLLabelElement> & { className?: string }
 >(({ className, ...props }, ref) => (
-  <Typography
+  <label
     ref={ref}
-    component="label"
-    variant="body2"
     className={className}
-    sx={{
+    style={{
       fontWeight: 500,
       lineHeight: 1,
-      cursor: 'pointer',
-      '&.peer-disabled': {
-        cursor: 'not-allowed',
-        opacity: 0.7
-      }
+      fontSize: '0.875rem',
+      color: 'inherit',
+      display: 'block',
+      marginBottom: '4px',
+      cursor: 'pointer'
     }}
     {...props}
   />

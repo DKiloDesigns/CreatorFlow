@@ -65,7 +65,7 @@ import {
   Timeline,
   AutoAwesome,
   Psychology,
-  Target,
+  GpsFixed,
   Speed,
   Timer,
   FlashOn,
@@ -91,7 +91,7 @@ import {
   Delete,
   Visibility,
   MoreVert,
-  Workflow,
+  AccountTree,
   Hub,
   AccountTree,
   Schema,
@@ -669,7 +669,7 @@ export default function SmartWorkflowOrchestration() {
   if (isLoading) {
     return (
       <Box sx={{ p: 3 }}>
-        <Typography variant="h4" sx={{ mb: 3, color: designTokens.colors.text.primary }}>
+        <Typography variant="h4" sx={{ mb: 3, color: 'text.primary' }}>
           Smart Workflow Orchestration
         </Typography>
         <Grid container spacing={3}>
@@ -686,7 +686,7 @@ export default function SmartWorkflowOrchestration() {
   return (
     <Box sx={{ p: 3 }}>
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-        <Typography variant="h4" sx={{ color: designTokens.colors.text.primary }}>
+        <Typography variant="h4" sx={{ color: 'text.primary' }}>
           Smart Workflow Orchestration
         </Typography>
         <Button
@@ -777,16 +777,16 @@ export default function SmartWorkflowOrchestration() {
                         boxShadow: 8,
                         borderColor: designTokens.colors.ai[300]
                       },
-                      border: `1px solid ${designTokens.colors.border}`
+                      border: `1px solid ${theme.palette.divider}`
                     }}
                   >
                     <CardContent>
                       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
                         <Box>
-                          <Typography variant="h6" sx={{ color: designTokens.colors.text.primary, mb: 1 }}>
+                          <Typography variant="h6" sx={{ color: 'text.primary', mb: 1 }}>
                             {rule.name}
                           </Typography>
-                          <Typography variant="body2" sx={{ color: designTokens.colors.text.secondary, mb: 2 }}>
+                          <Typography variant="body2" sx={{ color: 'text.secondary', mb: 2 }}>
                             {rule.description}
                           </Typography>
                         </Box>
@@ -815,12 +815,12 @@ export default function SmartWorkflowOrchestration() {
                       </Stack>
 
                       <Box sx={{ mb: 2 }}>
-                        <Typography variant="body2" sx={{ color: designTokens.colors.text.secondary, mb: 1 }}>
+                        <Typography variant="body2" sx={{ color: 'text.secondary', mb: 1 }}>
                           Performance
                         </Typography>
                         <Grid container spacing={1}>
                           <Grid xs={6}>
-                            <Typography variant="caption" sx={{ color: designTokens.colors.text.secondary }}>
+                            <Typography variant="caption" sx={{ color: 'text.secondary' }}>
                               Success Rate
                             </Typography>
                             <Typography variant="body2" sx={{ color: designTokens.colors.success[600] }}>
@@ -828,7 +828,7 @@ export default function SmartWorkflowOrchestration() {
                             </Typography>
                           </Grid>
                           <Grid xs={6}>
-                            <Typography variant="caption" sx={{ color: designTokens.colors.text.secondary }}>
+                            <Typography variant="caption" sx={{ color: 'text.secondary' }}>
                               AI Score
                             </Typography>
                             <Typography variant="body2" sx={{ color: designTokens.colors.info[600] }}>
@@ -839,7 +839,7 @@ export default function SmartWorkflowOrchestration() {
                       </Box>
 
                       <Box sx={{ mb: 2 }}>
-                        <Typography variant="body2" sx={{ color: designTokens.colors.text.secondary, mb: 1 }}>
+                        <Typography variant="body2" sx={{ color: 'text.secondary', mb: 1 }}>
                           Conditions
                         </Typography>
                         <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
@@ -864,7 +864,7 @@ export default function SmartWorkflowOrchestration() {
                       </Box>
 
                       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                        <Typography variant="caption" sx={{ color: designTokens.colors.text.secondary }}>
+                        <Typography variant="caption" sx={{ color: 'text.secondary' }}>
                           Executed: {rule.executionCount.toLocaleString()} times
                         </Typography>
                         <Button
@@ -892,10 +892,10 @@ export default function SmartWorkflowOrchestration() {
                 <CardContent>
                   <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
                     <Box>
-                      <Typography variant="h6" sx={{ color: designTokens.colors.text.primary, mb: 1 }}>
+                      <Typography variant="h6" sx={{ color: 'text.primary', mb: 1 }}>
                         {engine.name}
                       </Typography>
-                      <Typography variant="body2" sx={{ color: designTokens.colors.text.secondary, mb: 2 }}>
+                      <Typography variant="body2" sx={{ color: 'text.secondary', mb: 2 }}>
                         {engine.type.charAt(0).toUpperCase() + engine.type.slice(1)} • {engine.dataPoints.toLocaleString()} data points
                       </Typography>
                     </Box>
@@ -922,12 +922,12 @@ export default function SmartWorkflowOrchestration() {
                   </Stack>
 
                   <Box sx={{ mb: 2 }}>
-                    <Typography variant="body2" sx={{ color: designTokens.colors.text.primary, mb: 1, fontWeight: 'medium' }}>
+                    <Typography variant="body2" sx={{ color: 'text.primary', mb: 1, fontWeight: 'medium' }}>
                       Learning Metrics
                     </Typography>
                     <Grid container spacing={1}>
                       <Grid xs={6}>
-                        <Typography variant="caption" sx={{ color: designTokens.colors.text.secondary }}>
+                        <Typography variant="caption" sx={{ color: 'text.secondary' }}>
                           Precision
                         </Typography>
                         <Typography variant="body2" sx={{ color: designTokens.colors.success[600] }}>
@@ -935,7 +935,7 @@ export default function SmartWorkflowOrchestration() {
                         </Typography>
                       </Grid>
                       <Grid xs={6}>
-                        <Typography variant="caption" sx={{ color: designTokens.colors.text.secondary }}>
+                        <Typography variant="caption" sx={{ color: 'text.secondary' }}>
                           F1 Score
                         </Typography>
                         <Typography variant="body2" sx={{ color: designTokens.colors.info[600] }}>
@@ -947,10 +947,10 @@ export default function SmartWorkflowOrchestration() {
 
                   {engine.decisions.length > 0 && (
                     <Box sx={{ mb: 2 }}>
-                      <Typography variant="body2" sx={{ color: designTokens.colors.text.primary, mb: 1, fontWeight: 'medium' }}>
+                      <Typography variant="body2" sx={{ color: 'text.primary', mb: 1, fontWeight: 'medium' }}>
                         Recent Decision
                       </Typography>
-                      <Box sx={{ p: 1, backgroundColor: designTokens.colors.background.secondary, borderRadius: 1 }}>
+                      <Box sx={{ p: 1, backgroundColor: 'background.paper', borderRadius: 1 }}>
                         <Typography variant="body2" sx={{ fontSize: '0.875rem', mb: 1 }}>
                           {engine.decisions[0].decision}
                         </Typography>
@@ -963,7 +963,7 @@ export default function SmartWorkflowOrchestration() {
                     </Box>
                   )}
 
-                  <Typography variant="caption" sx={{ color: designTokens.colors.text.secondary }}>
+                  <Typography variant="caption" sx={{ color: 'text.secondary' }}>
                     Updated: {formatDate(engine.lastUpdated)}
                   </Typography>
                 </CardContent>
@@ -981,10 +981,10 @@ export default function SmartWorkflowOrchestration() {
                 <CardContent>
                   <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
                     <Box>
-                      <Typography variant="h6" sx={{ color: designTokens.colors.text.primary, mb: 1 }}>
+                      <Typography variant="h6" sx={{ color: 'text.primary', mb: 1 }}>
                         {optimization.process}
                       </Typography>
-                      <Typography variant="body2" sx={{ color: designTokens.colors.text.secondary, mb: 2 }}>
+                      <Typography variant="body2" sx={{ color: 'text.secondary', mb: 2 }}>
                         Current: {optimization.currentEfficiency}% → Target: {optimization.targetEfficiency}%
                       </Typography>
                     </Box>
@@ -1011,7 +1011,7 @@ export default function SmartWorkflowOrchestration() {
                   </Stack>
 
                   <Box sx={{ mb: 2 }}>
-                    <Typography variant="body2" sx={{ color: designTokens.colors.text.primary, mb: 1, fontWeight: 'medium' }}>
+                    <Typography variant="body2" sx={{ color: 'text.primary', mb: 1, fontWeight: 'medium' }}>
                       AI Recommendations
                     </Typography>
                     <List dense>
@@ -1030,7 +1030,7 @@ export default function SmartWorkflowOrchestration() {
                   </Box>
 
                   <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <Typography variant="caption" sx={{ color: designTokens.colors.text.secondary }}>
+                    <Typography variant="caption" sx={{ color: 'text.secondary' }}>
                       Timeline: {optimization.timeline}
                     </Typography>
                     <Button
@@ -1241,22 +1241,22 @@ export default function SmartWorkflowOrchestration() {
               <Typography variant="h6" sx={{ mb: 1 }}>Performance Metrics</Typography>
               <Grid container spacing={2}>
                 <Grid xs={6}>
-                  <Typography variant="body2" sx={{ color: designTokens.colors.text.secondary }}>
+                  <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                     Success Rate: {selectedRule.performance.successRate}%
                   </Typography>
                 </Grid>
                 <Grid xs={6}>
-                  <Typography variant="body2" sx={{ color: designTokens.colors.text.secondary }}>
+                  <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                     AI Score: {selectedRule.performance.optimizationScore}%
                   </Typography>
                 </Grid>
                 <Grid xs={6}>
-                  <Typography variant="body2" sx={{ color: designTokens.colors.text.secondary }}>
+                  <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                     Execution Count: {selectedRule.executionCount.toLocaleString()}
                   </Typography>
                 </Grid>
                 <Grid xs={6}>
-                  <Typography variant="body2" sx={{ color: designTokens.colors.text.secondary }}>
+                  <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                     Avg Execution Time: {selectedRule.performance.avgExecutionTime}s
                   </Typography>
                 </Grid>

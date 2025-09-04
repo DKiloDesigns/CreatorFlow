@@ -103,16 +103,16 @@ export default function SnippetManager({ open, onOpenChange, onInsert }: { open:
                   <>
                     <input value={editingName} onChange={e => setEditingName(e.target.value)} className="border rounded px-2 py-1 w-24" />
                     <input value={editingContent} onChange={e => setEditingContent(e.target.value)} className="border rounded px-2 py-1 w-48" />
-                    <Button size="sm" onClick={handleSaveEdit}>Save</Button>
-                    <Button size="sm" variant="ghost" onClick={() => setEditingId(null)}>Cancel</Button>
+                    <Button size="small" onClick={handleSaveEdit}>Save</Button>
+                    <Button size="small" variant="text" onClick={() => setEditingId(null)}>Cancel</Button>
                   </>
                 ) : (
                   <>
                     <span className="w-24 truncate font-semibold">{sn.name}</span>
                     <span className="w-48 truncate">{sn.content}</span>
-                    <Button size="sm" onClick={() => onInsert(sn.content)}>Insert</Button>
-                    <Button size="sm" variant="ghost" onClick={() => handleEdit(sn.id, sn.name, sn.content)}>Edit</Button>
-                    <Button size="sm" variant="ghost" onClick={() => handleDelete(sn.id)}>Delete</Button>
+                    <Button size="small" onClick={() => onInsert(sn.content)}>Insert</Button>
+                    <Button size="small" variant="text" onClick={() => handleEdit(sn.id, sn.name, sn.content)}>Edit</Button>
+                    <Button size="small" variant="text" onClick={() => handleDelete(sn.id)}>Delete</Button>
                   </>
                 )}
               </li>
@@ -123,7 +123,7 @@ export default function SnippetManager({ open, onOpenChange, onInsert }: { open:
           <h3 className="font-semibold mb-1">Insert Variable</h3>
           <div className="flex gap-2 flex-wrap">
             {COMMON_VARIABLES.map(v => (
-              <Button key={v.key} size="sm" variant="outline" onClick={() => onInsert(`{${v.key}}`)}>{v.label}</Button>
+              <Button key={v.key} size="small" variant="outlined" onClick={() => onInsert(`{${v.key}}`)}>{v.label}</Button>
             ))}
           </div>
         </div>

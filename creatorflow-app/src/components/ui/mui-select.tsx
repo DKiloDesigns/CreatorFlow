@@ -68,7 +68,7 @@ export function Select({
 }: SelectProps) {
   const [value, setValue] = React.useState<string>('');
 
-  const handleChange = (event: SelectChangeEvent<string>) => {
+  const handleChange = (event: SelectChangeEvent<unknown>) => {
     setValue(event.target.value);
     if (props.onChange) {
       props.onChange(event);

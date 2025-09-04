@@ -19,7 +19,7 @@ import {
 import {
   Close,
   CheckCircle,
-  Error,
+  Error as ErrorIcon,
   Warning,
   Info,
   NotificationsNone,
@@ -53,7 +53,8 @@ const NotificationContext = createContext<NotificationContextType | undefined>(u
 export function useNotifications() {
   const context = useContext(NotificationContext);
   if (!context) {
-    throw new Error('useNotifications must be used within a NotificationProvider');
+    const error = new Error('useNotifications must be used within a NotificationProvider');
+    throw error;
   }
   return context;
 }

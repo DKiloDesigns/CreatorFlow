@@ -431,9 +431,9 @@ Provide content variations with predicted performance and test parameters.
           orderBy: { createdAt: 'desc' },
           take: 50
         }),
-        prisma.analyticsEvent.findMany({
+        prisma.analyticsAggregation.findMany({
           where: { userId },
-          orderBy: { timestamp: 'desc' },
+          orderBy: { createdAt: 'desc' },
           take: 100
         })
       ]);
@@ -453,12 +453,14 @@ Provide content variations with predicted performance and test parameters.
 
   private async logAIActivity(type: string, input: any, output: any): Promise<void> {
     try {
-      await prisma.analyticsEvent.create({
+      await prisma.analyticsAggregation.create({
         data: {
           userId: 'system', // AI activities are system-level
-          eventType: `AI_${type.toUpperCase()}`,
-          eventData: JSON.stringify({ input, output }),
-          timestamp: new Date(),
+          type: `AI_${type.toUpperCase()}`,
+          platform: 'ai-engine',
+          startDate: new Date(),
+          endDate: new Date(),
+          data: { input, output },
         },
       });
     } catch (error) {

@@ -17,9 +17,9 @@ import {
   MenuItem
 } from '@mui/material';
 import { BarChart3, TrendingUp, Activity, Settings, RefreshCw, AlertTriangle, Eye, Users, Target, Lightbulb, Zap, Download, Brain } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
+
 import { TabsContent } from '@/components/ui/tabs';
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
+
 
 interface AnalyticsInsight {
   type: 'trend' | 'anomaly' | 'opportunity' | 'risk' | 'segment' | 'funnel';
@@ -139,27 +139,31 @@ export default function AnalyticsPage() {
           </Typography>
         </Box>
         <Box sx={{ display: 'flex', gap: 1 }}>
-          <Select value={insightType} onValueChange={setInsightType}>
-            <SelectTrigger className="w-40">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Insights</SelectItem>
-              <SelectItem value="predictive">Predictive</SelectItem>
-              <SelectItem value="segments">Segments</SelectItem>
-              <SelectItem value="funnel">Funnel</SelectItem>
-            </SelectContent>
-          </Select>
-          <Select value={timeRange} onValueChange={setTimeRange}>
-            <SelectTrigger className="w-32">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="7">7 days</SelectItem>
-              <SelectItem value="30">30 days</SelectItem>
-              <SelectItem value="90">90 days</SelectItem>
-            </SelectContent>
-          </Select>
+          <FormControl size="small" sx={{ minWidth: 160 }}>
+            <InputLabel>Insight Type</InputLabel>
+            <MuiSelect
+              value={insightType}
+              onChange={(e) => setInsightType(e.target.value)}
+              label="Insight Type"
+            >
+              <MenuItem value="all">All Insights</MenuItem>
+              <MenuItem value="predictive">Predictive</MenuItem>
+              <MenuItem value="segments">Segments</MenuItem>
+              <MenuItem value="funnel">Funnel</MenuItem>
+            </MuiSelect>
+          </FormControl>
+          <FormControl size="small" sx={{ minWidth: 128 }}>
+            <InputLabel>Time Range</InputLabel>
+            <MuiSelect
+              value={timeRange}
+              onChange={(e) => setTimeRange(e.target.value)}
+              label="Time Range"
+            >
+              <MenuItem value="7">7 days</MenuItem>
+              <MenuItem value="30">30 days</MenuItem>
+              <MenuItem value="90">90 days</MenuItem>
+            </MuiSelect>
+          </FormControl>
           <Button onClick={refreshData} disabled={refreshing} variant="outlined">
             <RefreshCw style={{ width: 16, height: 16, marginRight: 8 }} className={refreshing ? 'animate-spin' : ''} />
             Refresh
@@ -178,7 +182,7 @@ export default function AnalyticsPage() {
             <Card>
               <CardHeader sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', pb: 1 }}>
                 <Typography variant="subtitle2" sx={{ fontSize: '0.875rem', fontWeight: 500 }}>Active Users</Typography>
-                <Activity sx={{ height: 16, width: 16, color: 'text.secondary' }} />
+                <Activity style={{ height: 16, width: 16, color: 'var(--mui-palette-text-secondary)' }} />
               </CardHeader>
               <CardContent>
                 <Typography variant="h4" sx={{ fontWeight: 'bold' }}>{realTimeMetrics.activeUsers}</Typography>
@@ -193,7 +197,7 @@ export default function AnalyticsPage() {
             <Card>
               <CardHeader sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', pb: 1 }}>
                 <Typography variant="subtitle2" sx={{ fontSize: '0.875rem', fontWeight: 500 }}>New Users</Typography>
-                <Users sx={{ height: 16, width: 16, color: 'text.secondary' }} />
+                <Users style={{ height: 16, width: 16, color: 'var(--mui-palette-text-secondary)' }} />
               </CardHeader>
               <CardContent>
                 <Typography variant="h4" sx={{ fontWeight: 'bold' }}>{realTimeMetrics.newUsers}</Typography>
@@ -208,7 +212,7 @@ export default function AnalyticsPage() {
             <Card>
               <CardHeader sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', pb: 1 }}>
                 <Typography variant="h6" sx={{ fontSize: '0.875rem', fontWeight: 500 }}>Total Events</Typography>
-                <BarChart3 sx={{ height: 16, width: 16, color: 'text.secondary' }} />
+                <BarChart3 style={{ height: 16, width: 16, color: 'var(--mui-palette-text-secondary)' }} />
               </CardHeader>
               <CardContent>
                 <Typography variant="h4" sx={{ fontWeight: 'bold' }}>{realTimeMetrics.totalEvents}</Typography>
@@ -223,7 +227,7 @@ export default function AnalyticsPage() {
             <Card>
               <CardHeader sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', pb: 1 }}>
                 <Typography variant="h6" sx={{ fontSize: '0.875rem', fontWeight: 500 }}>Platform Usage</Typography>
-                <Zap sx={{ height: 16, width: 16, color: 'text.secondary' }} />
+                <Zap style={{ height: 16, width: 16, color: 'var(--mui-palette-text-secondary)' }} />
               </CardHeader>
               <CardContent>
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
@@ -261,9 +265,7 @@ export default function AnalyticsPage() {
             <Box sx={{ flex: 1 }}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
                 <Typography variant="h6" sx={{ fontWeight: 600 }}>AI-Powered Insights</Typography>
-                                 <Badge className={getImpactColor('insights')} variant="outline">
-                   Insights
-                 </Badge>
+                                 <Chip label="Insights" variant="outlined" size="small" />
               </Box>
               <Typography variant="body2" sx={{ color: 'text.secondary', mb: 1.5 }}>
                 Intelligent recommendations and trend analysis
@@ -281,14 +283,18 @@ export default function AnalyticsPage() {
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
                           <Typography variant="h6" sx={{ fontWeight: 600 }}>{insight.title}</Typography>
                           {insight.impact && (
-                            <Badge className={getImpactColor(insight.impact)}>
-                              {insight.impact.toUpperCase()}
-                            </Badge>
+                            <Chip 
+                              label={insight.impact.toUpperCase()}
+                              color={insight.impact === 'high' ? 'error' : insight.impact === 'medium' ? 'warning' : 'success'}
+                              size="small"
+                            />
                           )}
                           {insight.confidence && (
-                            <Badge variant="outline">
-                              {Math.round(insight.confidence * 100)}% confidence
-                            </Badge>
+                            <Chip 
+                              label={`${Math.round(insight.confidence * 100)}% confidence`}
+                              variant="outlined"
+                              size="small"
+                            />
                           )}
                         </Box>
                         <Typography variant="body2" sx={{ color: 'text.secondary', mb: 1.5 }}>
@@ -322,9 +328,7 @@ export default function AnalyticsPage() {
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
             <TrendingUp className="h-5 w-5" />
             <Typography variant="h6" sx={{ fontWeight: 600 }}>Predictive Analytics</Typography>
-                         <Badge className={getImpactColor('predictive')} variant="outline">
-               Predictive
-             </Badge>
+                         <Chip label="Predictive" variant="outlined" size="small" />
           </Box>
           <Typography variant="body2" sx={{ color: 'text.secondary', mb: 1.5 }}>
             AI-powered predictions and trend forecasting
@@ -344,9 +348,11 @@ export default function AnalyticsPage() {
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
                         <Typography variant="h6" sx={{ fontWeight: 600 }}>{insight.title}</Typography>
                         {insight.impact && (
-                          <Badge className={getImpactColor(insight.impact)}>
-                            {insight.impact.toUpperCase()}
-                          </Badge>
+                          <Chip 
+                            label={insight.impact.toUpperCase()}
+                            color={insight.impact === 'high' ? 'error' : insight.impact === 'medium' ? 'warning' : 'success'}
+                            size="small"
+                          />
                         )}
                       </Box>
                       <Typography variant="body2" sx={{ color: 'text.secondary' }}>
@@ -363,9 +369,7 @@ export default function AnalyticsPage() {
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
             <Users className="h-5 w-5" />
             <Typography variant="h6" sx={{ fontWeight: 600 }}>User Segments</Typography>
-                         <Badge className={getImpactColor('segment')} variant="outline">
-               Segments
-             </Badge>
+                         <Chip label="Segments" variant="outlined" size="small" />
           </Box>
           <Typography variant="body2" sx={{ color: 'text.secondary', mb: 1.5 }}>
             AI-identified user groups and behavior patterns
@@ -384,9 +388,7 @@ export default function AnalyticsPage() {
                     <Box sx={{ flex: 1 }}>
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
                         <Typography variant="h6" sx={{ fontWeight: 600 }}>{insight.title}</Typography>
-                        <Badge variant="outline">
-                          {insight.data?.userCount || 0} users
-                        </Badge>
+                        <Chip label={`${insight.data?.userCount || 0} users`} variant="outlined" size="small" />
                       </Box>
                       <Typography variant="body2" sx={{ color: 'text.secondary', mb: 1.5 }}>
                         {insight.description}
@@ -424,9 +426,7 @@ export default function AnalyticsPage() {
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
             <Target className="h-5 w-5" />
             <Typography variant="h6" sx={{ fontWeight: 600 }}>Conversion Funnel</Typography>
-                         <Badge className={getImpactColor('funnel')} variant="outline">
-               Funnel
-             </Badge>
+                         <Chip label="Funnel" variant="outlined" size="small" />
           </Box>
           <Typography variant="body2" sx={{ color: 'text.secondary', mb: 1.5 }}>
             User journey analysis and conversion optimization

@@ -47,7 +47,7 @@ const navItems = [
   }
 ];
 
-function ProfilePicture({ session, isActive }: { session: { user?: { image?: string | null; name?: string } } | null; isActive: boolean }) {
+function ProfilePicture({ session, isActive }: { session: any; isActive: boolean }) {
   const [isUploading, setIsUploading] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   

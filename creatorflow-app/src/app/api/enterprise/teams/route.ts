@@ -50,10 +50,10 @@ export async function GET(req: NextRequest) {
 
       const teams = userTeams.map(ut => ({
         ...ut.team,
-        settings: JSON.parse(ut.team.settings),
+        settings: JSON.parse(ut.team.settings as string),
         members: ut.team.members.map(member => ({
           ...member,
-          permissions: JSON.parse(member.permissions),
+          permissions: member.role, // Use role as permissions
         })),
       }));
 
@@ -145,10 +145,10 @@ export async function PUT(req: NextRequest) {
       success: true,
       team: {
         ...updatedTeam,
-        settings: JSON.parse(updatedTeam.settings),
+        settings: JSON.parse(updatedTeam.settings as string),
         members: updatedTeam.members.map(member => ({
           ...member,
-          permissions: JSON.parse(member.permissions),
+          permissions: member.role, // Use role as permissions
         })),
       },
       message: 'Team updated successfully',

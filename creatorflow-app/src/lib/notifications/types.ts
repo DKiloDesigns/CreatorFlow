@@ -302,7 +302,7 @@ export const DEFAULT_NOTIFICATION_PREFERENCES: NotificationPreferences = {
     collaboration_request: { enabled: true, channels: ['in_app', 'email'], priority: 'normal' },
     data_export_ready: { enabled: true, channels: ['in_app', 'email'], priority: 'normal' },
     api_rate_limit: { enabled: true, channels: ['in_app'], priority: 'high' },
-    storage_warning: { enabled: true, channels: ['in_app', 'email'], priority: 'medium' },
+    storage_warning: { enabled: true, channels: ['in_app', 'email'], priority: 'medium' as any },
     subscription_expiry: { enabled: true, channels: ['in_app', 'email', 'push'], priority: 'high' },
     trial_ending: { enabled: true, channels: ['in_app', 'email', 'push'], priority: 'high' },
   },
@@ -321,7 +321,7 @@ export const DEFAULT_NOTIFICATION_PREFERENCES: NotificationPreferences = {
     collaboration: { enabled: true, channels: ['in_app', 'email'], priority: 'normal' },
     data: { enabled: true, channels: ['in_app', 'email'], priority: 'normal' },
     api: { enabled: true, channels: ['in_app'], priority: 'high' },
-    storage: { enabled: true, channels: ['in_app', 'email'], priority: 'medium' },
+    storage: { enabled: true, channels: ['in_app', 'email'], priority: 'medium' as any },
     subscription: { enabled: true, channels: ['in_app', 'email', 'push'], priority: 'high' },
   },
 }; 

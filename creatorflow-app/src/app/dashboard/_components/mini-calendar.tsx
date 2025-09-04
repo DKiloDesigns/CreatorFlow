@@ -55,10 +55,11 @@ const platformIcons: Record<string, any> = {
 
 // Status color mapping
 const statusColors: Record<PostStatus, string> = {
-  'draft': '#9e9e9e',
-  'scheduled': '#2196f3',
-  'published': '#4caf50',
-  'failed': '#f44336',
+  'SCHEDULED': '#2196f3',
+  'PUBLISHED': '#4caf50',
+  'FAILED': '#f44336',
+  'PUBLISHING': '#ff9800',
+  'DRAFT': '#9e9e9e',
 };
 
 // Custom event render for mini calendar
@@ -102,6 +103,10 @@ export default function MiniCalendar({
       });
       
       if (!response.ok) {
+        if (response.status === 401) {
+          console.warn('User not authenticated, skipping calendar data fetch');
+          return;
+        }
         throw new Error(`Failed to fetch calendar data (HTTP ${response.status})`);
       }
       

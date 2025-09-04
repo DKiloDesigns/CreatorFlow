@@ -5,7 +5,8 @@ import {
   Card, 
   CardContent, 
   CardHeader, 
-  Typography
+  Typography,
+  Box
 } from '@mui/material';
 import { AnalyticsChart } from '@/components/dashboard/analytics-chart';
 

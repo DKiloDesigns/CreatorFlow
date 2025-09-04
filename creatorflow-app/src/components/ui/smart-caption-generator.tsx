@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader } from '@/components/ui/mui-card';
-import { Typography, Button, Slider, Box } from '@mui/material';
+import { Typography, Button, Slider } from '@mui/material';
 import { 
   Star, 
   TrendingUp, 
@@ -19,13 +19,12 @@ import {
   BarChart3
 } from 'lucide-react';
 import { toast } from 'sonner';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from '@/components/ui/select';
-import { Input } from '@/components/ui/input';
-import { Switch } from '@/components/ui/switch';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+
+import { Select, MenuItem, FormControl, InputLabel } from '@mui/material';
+import { TextField } from '@mui/material';
+import { Switch, FormControlLabel } from '@mui/material';
+import { Chip } from '@mui/material';
+import { Tabs, Tab, Box } from '@mui/material';
 
 interface CaptionVariant {
   id: string;
@@ -222,6 +221,7 @@ export function SmartCaptionGenerator({ provider }: SmartCaptionGeneratorProps) 
   const [includeEmojis, setIncludeEmojis] = useState(true);
   const [includeCTA, setIncludeCTA] = useState(true);
   const [useAITweaks, setUseAITweaks] = useState(true);
+  const [activeTab, setActiveTab] = useState(0);
 
   const platformConfig = PLATFORM_CONFIGS.find(p => p.id === selectedPlatform);
   const brandVoice = BRAND_VOICES.find(v => v.id === selectedVoice);
@@ -382,69 +382,60 @@ Which tip resonates most with you? 🤔
         <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
           {/* Basic Settings */}
           <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 3 }}>
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-              <Label>Content Description</Label>
-              <Textarea
-                placeholder="Describe your content, key message, or what you want to achieve..."
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-                rows={4}
-              />
-            </Box>
+            <TextField
+              label="Content Description"
+              placeholder="Describe your content, key message, or what you want to achieve..."
+              value={content}
+              onChange={(e) => setContent(e.target.value)}
+              multiline
+              rows={4}
+              fullWidth
+              sx={{ mb: 2 }}
+            />
             
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-                <Label>Platform</Label>
-                <Select value={selectedPlatform} onValueChange={setSelectedPlatform}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {PLATFORM_CONFIGS.map((platform) => (
-                      <SelectItem key={platform.id} value={platform.id}>
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                          <span>{platform.icon}</span>
-                          <span>{platform.name}</span>
-                        </Box>
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
+              <FormControl fullWidth sx={{ mb: 2 }}>
+                <InputLabel>Platform</InputLabel>
+                <Select value={selectedPlatform} onChange={(e) => setSelectedPlatform(e.target.value)} label="Platform">
+                  {PLATFORM_CONFIGS.map((platform) => (
+                    <MenuItem key={platform.id} value={platform.id}>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                        <span>{platform.icon}</span>
+                        <span>{platform.name}</span>
+                      </Box>
+                    </MenuItem>
+                  ))}
                 </Select>
-              </Box>
+              </FormControl>
 
-              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-                <Label>Brand Voice</Label>
-                <Select value={selectedVoice} onValueChange={setSelectedVoice}>
-                  <SelectTrigger>
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {BRAND_VOICES.map((voice) => (
-                      <SelectItem key={voice.id} value={voice.id}>
-                        {voice.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
+              <FormControl fullWidth sx={{ mb: 2 }}>
+                <InputLabel>Brand Voice</InputLabel>
+                <Select value={selectedVoice} onChange={(e) => setSelectedVoice(e.target.value)} label="Brand Voice">
+                  {BRAND_VOICES.map((voice) => (
+                    <MenuItem key={voice.id} value={voice.id}>
+                      {voice.name}
+                    </MenuItem>
+                  ))}
                 </Select>
-              </Box>
+              </FormControl>
 
-              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-                <Label>Industry/Niche</Label>
-                <Input
-                  placeholder="e.g., fitness, tech, fashion..."
-                  value={industry}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setIndustry(e.target.value)}
-                />
-              </Box>
+              <TextField
+                label="Industry/Niche"
+                placeholder="e.g., fitness, tech, fashion..."
+                value={industry}
+                onChange={(e) => setIndustry(e.target.value)}
+                fullWidth
+                sx={{ mb: 2 }}
+              />
 
-              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-                <Label>Target Audience</Label>
-                <Input
-                  placeholder="e.g., entrepreneurs, fitness enthusiasts..."
-                  value={targetAudience}
-                  onChange={(e: React.ChangeEvent<HTMLInputElement>) => setTargetAudience(e.target.value)}
-                />
-              </Box>
+              <TextField
+                label="Target Audience"
+                placeholder="e.g., entrepreneurs, fitness enthusiasts..."
+                value={targetAudience}
+                onChange={(e) => setTargetAudience(e.target.value)}
+                fullWidth
+                sx={{ mb: 2 }}
+              />
             </Box>
           </Box>
 
@@ -463,10 +454,10 @@ Which tip resonates most with you? 🤔
               <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 3, p: 2, bgcolor: 'grey.50', borderRadius: '8px' }}>
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                   <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-                    <Label>Engagement Focus</Label>
+                    <Typography variant="subtitle2" sx={{ fontWeight: 'medium', mb: 1 }}>Engagement Focus</Typography>
                     <Slider
-                      value={[engagementFocus]}
-                      onValueChange={([value]) => setEngagementFocus(value)}
+                      value={engagementFocus}
+                      onChange={(e, value) => setEngagementFocus(value as number)}
                       max={100}
                       step={5}
                     />
@@ -477,10 +468,10 @@ Which tip resonates most with you? 🤔
                   </Box>
 
                   <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-                    <Label>Virality Potential</Label>
+                    <Typography variant="subtitle2" sx={{ fontWeight: 'medium', mb: 1 }}>Virality Potential</Typography>
                     <Slider
-                      value={[viralityFocus]}
-                      onValueChange={([value]) => setViralityFocus(value)}
+                      value={viralityFocus}
+                      onChange={(e, value) => setViralityFocus(value as number)}
                       max={100}
                       step={5}
                     />
@@ -491,10 +482,10 @@ Which tip resonates most with you? 🤔
                   </Box>
 
                   <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-                    <Label>Brand Alignment</Label>
+                    <Typography variant="subtitle2" sx={{ fontWeight: 'medium', mb: 1 }}>Brand Alignment</Typography>
                     <Slider
-                      value={[brandAlignment]}
-                      onValueChange={([value]) => setBrandAlignment(value)}
+                      value={brandAlignment}
+                      onChange={(e, value) => setBrandAlignment(value as number)}
                       max={100}
                       step={5}
                     />
@@ -507,31 +498,33 @@ Which tip resonates most with you? 🤔
 
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                   <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                    <Label>Call to Action</Label>
-                    <Input
+                    <Typography variant="subtitle2" sx={{ fontWeight: 'medium', mb: 1 }}>Call to Action</Typography>
+                    <TextField
                       placeholder="e.g., Comment below, Save this post..."
                       value={callToAction}
                       onChange={(e) => setCallToAction(e.target.value)}
+                      fullWidth
+                      size="small"
                     />
                   </Box>
 
                   <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                      <Label>Include Hashtags</Label>
-                      <Switch checked={includeHashtags} onCheckedChange={setIncludeHashtags} />
-                    </Box>
-                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                      <Label>Include Emojis</Label>
-                      <Switch checked={includeEmojis} onCheckedChange={setIncludeEmojis} />
-                    </Box>
-                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                      <Label>Include CTA</Label>
-                      <Switch checked={includeCTA} onCheckedChange={setIncludeCTA} />
-                    </Box>
-                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                      <Label>AI Tweaks</Label>
-                      <Switch checked={useAITweaks} onCheckedChange={setUseAITweaks} />
-                    </Box>
+                    <FormControlLabel
+                      control={<Switch checked={includeHashtags} onChange={(e) => setIncludeHashtags(e.target.checked)} />}
+                      label="Include Hashtags"
+                    />
+                    <FormControlLabel
+                      control={<Switch checked={includeEmojis} onChange={(e) => setIncludeEmojis(e.target.checked)} />}
+                      label="Include Emojis"
+                    />
+                    <FormControlLabel
+                      control={<Switch checked={includeCTA} onChange={(e) => setIncludeCTA(e.target.checked)} />}
+                      label="Include CTA"
+                    />
+                    <FormControlLabel
+                      control={<Switch checked={useAITweaks} onChange={(e) => setUseAITweaks(e.target.checked)} />}
+                      label="AI Tweaks"
+                    />
                   </Box>
                 </Box>
               </Box>
@@ -593,19 +586,22 @@ Which tip resonates most with you? 🤔
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <Typography variant="h5" sx={{ fontWeight: 600 }}>Generated Captions</Typography>
-            <Badge variant="secondary">
-              {variants.length} variants created
-            </Badge>
+            <Chip 
+              label={`${variants.length} variants created`}
+              color="secondary"
+              variant="outlined"
+            />
           </Box>
 
-          <Tabs defaultValue="variants" sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-            <TabsList>
-              <TabsTrigger value="variants">Caption Variants</TabsTrigger>
-              <TabsTrigger value="analysis">AI Analysis</TabsTrigger>
-              <TabsTrigger value="comparison">A/B Testing</TabsTrigger>
-            </TabsList>
+          <Box sx={{ width: '100%' }}>
+            <Tabs value={activeTab} onChange={(e, newValue) => setActiveTab(newValue)} sx={{ borderBottom: 1, borderColor: 'divider' }}>
+              <Tab label="Caption Variants" />
+              <Tab label="AI Analysis" />
+              <Tab label="A/B Testing" />
+            </Tabs>
 
-            <TabsContent value="variants" sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+            {activeTab === 0 && (
+              <Box sx={{ mt: 3, display: 'flex', flexDirection: 'column', gap: 2 }}>
               {variants.map((variant, index) => (
                 <Card
                   key={variant.id}
@@ -621,9 +617,9 @@ Which tip resonates most with you? 🤔
                   <CardContent sx={{ pt: 3 }}>
                     <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', mb: 2 }}>
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                        <Badge variant="outline">Variant {index + 1}</Badge>
-                        <Badge variant="secondary">{variant.platform}</Badge>
-                        <Badge variant="secondary">{variant.tone}</Badge>
+                        <Chip label={`Variant ${index + 1}`} variant="outlined" size="small" />
+                        <Chip label={variant.platform} color="secondary" size="small" />
+                        <Chip label={variant.tone} color="secondary" size="small" />
                       </Box>
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                         <Button
@@ -693,9 +689,11 @@ Which tip resonates most with you? 🤔
                   </CardContent>
                 </Card>
               ))}
-            </TabsContent>
+              </Box>
+            )}
 
-            <TabsContent value="analysis" className="space-y-4">
+            {activeTab === 1 && (
+              <Box sx={{ mt: 3 }}>
               {selectedVariant && (
                 <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 6 }}>
                   <Card>
@@ -708,32 +706,26 @@ Which tip resonates most with you? 🤔
                     <CardContent className="space-y-4">
                       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
                         <Box>
-                          <Label className="text-sm font-medium">Hooks Used</Label>
+                          <Typography variant="subtitle2" sx={{ fontWeight: 'medium', mb: 1 }}>Hooks Used</Typography>
                           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mt: 1 }}>
                             {selectedVariant.hooks.map((hook, index) => (
-                              <Badge key={index} variant="outline" className="text-xs">
-                                {hook}
-                              </Badge>
+                              <Chip key={index} label={hook} variant="outlined" size="small" />
                             ))}
                           </Box>
                         </Box>
                         <Box>
-                          <Label className="text-sm font-medium">Pain Points Addressed</Label>
+                          <Typography variant="subtitle2" sx={{ fontWeight: 'medium', mb: 1 }}>Pain Points Addressed</Typography>
                           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mt: 1 }}>
                             {selectedVariant.pain_points.map((point, index) => (
-                              <Badge key={index} variant="outline" className="text-xs">
-                                {point}
-                              </Badge>
+                              <Chip key={index} label={point} variant="outlined" size="small" />
                             ))}
                           </Box>
                         </Box>
                         <Box>
-                          <Label className="text-sm font-medium">Benefits Highlighted</Label>
+                          <Typography variant="subtitle2" sx={{ fontWeight: 'medium', mb: 1 }}>Benefits Highlighted</Typography>
                           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mt: 1 }}>
                             {selectedVariant.benefits.map((benefit, index) => (
-                              <Badge key={index} variant="outline" className="text-xs">
-                                {benefit}
-                              </Badge>
+                              <Chip key={index} label={benefit} variant="outlined" size="small" />
                             ))}
                           </Box>
                         </Box>
@@ -775,9 +767,11 @@ Which tip resonates most with you? 🤔
                   </Card>
                 </Box>
               )}
-            </TabsContent>
+              </Box>
+            )}
 
-            <TabsContent value="comparison" className="space-y-4">
+            {activeTab === 2 && (
+              <Box sx={{ mt: 3 }}>
               <Card>
                 <CardHeader>
                   <Typography variant="h6" className="flex items-center gap-2">
@@ -847,8 +841,9 @@ Which tip resonates most with you? 🤔
                   </Box>
                 </CardContent>
               </Card>
-            </TabsContent>
-          </Tabs>
+              </Box>
+            )}
+          </Box>
         </Box>
       )}
     </Box>
