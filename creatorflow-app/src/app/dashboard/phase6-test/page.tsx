@@ -17,7 +17,7 @@ import {
   Create,
   ShowChart,
   Hub
-} from '@mui/icons-material';
+} from '@/lib/mui-optimized-imports';
 import { designTokens } from '@/lib/design-system';
 import AdvancedAIWorkflowAutomation from '@/components/ai/advanced-ai-workflow-automation';
 import IntelligentContentOptimization from '@/components/ai/intelligent-content-optimization';
@@ -122,7 +122,7 @@ export default function Phase6TestPage() {
                   boxShadow: 12,
                   borderColor: designTokens.colors.ai[400]
                 },
-                border: `2px solid ${theme.palette.divider}`,
+                border: `2px solid ${designTokens.colors.neutral[200]}`,
                 '&:hover .component-icon': {
                   transform: 'scale(1.1)',
                   color: designTokens.colors.ai[700]

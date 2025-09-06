@@ -534,3 +534,92 @@ enum TeamInvitationStatus {
   EXPIRED
   CANCELED
 }
+
+enum ErrorSeverity {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum ErrorType {
+  CLIENT
+  SERVER
+  API
+  DATABASE
+  AUTH
+  VALIDATION
+  NETWORK
+  TIMEOUT
+}
+
+model ErrorLog {
+  id          String        @id @default(cuid())
+  type        ErrorType
+  severity    ErrorSeverity
+  message     String
+  stack       String?
+  context     Json?
+  timestamp   DateTime      @default(now())
+  resolved    Boolean       @default(false)
+  retryable   Boolean       @default(false)
+  userId      String?
+  sessionId   String?
+  requestId   String?
+  endpoint    String?
+  userAgent   String?
+  
+  @@index([timestamp])
+  @@index([type])
+  @@index([severity])
+  @@index([resolved])
+}
+
+model LoginAttempt {
+  id              String    @id @default(cuid())
+  identifier      String    // email or username
+  failedAttempts  Int       @default(0)
+  ipAddress       String
+  userAgent       String
+  createdAt       DateTime  @default(now())
+  lastFailedAt    DateTime?
+  success         Boolean   @default(false)
+  
+  @@index([identifier])
+  @@index([ipAddress])
+  @@index([createdAt])
+}
+
+model SecurityEvent {
+  id          String    @id @default(cuid())
+  userId      String?
+  type        String    // LOGIN_SUCCESS, LOGIN_FAILED, PASSWORD_CHANGE, etc.
+  severity    String    // low, medium, high, critical
+  description String
+  ipAddress   String
+  userAgent   String
+  metadata    Json?
+  timestamp   DateTime  @default(now())
+  
+  @@index([userId])
+  @@index([type])
+  @@index([severity])
+  @@index([timestamp])
+}
+
+model SecurityAudit {
+  id          String    @id @default(cuid())
+  userId      String
+  action      String
+  resource    String
+  success     Boolean
+  ipAddress   String
+  userAgent   String
+  metadata    Json?
+  timestamp   DateTime  @default(now())
+  
+  @@index([userId])
+  @@index([action])
+  @@index([success])
+  @@index([timestamp])
+}

@@ -65,7 +65,7 @@ import {
   Notifications,
   Schedule,
   History
-} from '@mui/icons-material';
+} from '@/lib/mui-optimized-imports';
 import { designTokens } from '@/lib/design-system';
 
 interface APIKey {

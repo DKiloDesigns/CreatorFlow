@@ -1,5 +1,6 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { 
   Box, 
@@ -23,13 +24,41 @@ import {
   LifeBuoy,
   LogOut,
   User,
-  CreditCard
+  CreditCard,
+  ShieldCheck
 } from 'lucide-react';
-import { ExpandMore } from '@mui/icons-material';
+import { ExpandMore } from '@/lib/mui-optimized-imports';
 import Link from 'next/link';
 
 export default function ProfilePage() {
   const { data: session, status } = useSession();
+  const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
+  
+  // Check admin status
+  useEffect(() => {
+    const checkAdminStatus = async () => {
+      if (!session?.user?.id) {
+        setIsAdmin(false);
+        return;
+      }
+
+      try {
+        const response = await fetch('/api/admin/users');
+        if (response.status === 403) {
+          setIsAdmin(false);
+        } else if (response.ok) {
+          setIsAdmin(true);
+        } else {
+          setIsAdmin(false);
+        }
+      } catch (error) {
+        console.error('Error checking admin status:', error);
+        setIsAdmin(false);
+      }
+    };
+
+    checkAdminStatus();
+  }, [session]);
   
   if (status === 'loading') {
     return (
@@ -68,6 +97,7 @@ export default function ProfilePage() {
         { href: '/dashboard/settings', label: 'Settings', icon: Settings, description: 'App preferences and configuration' },
         { href: '/dashboard/security', label: 'Security', icon: Shield, description: 'Password and account security' },
         { href: '/dashboard/notifications', label: 'Notifications', icon: Bell, description: 'Manage notification preferences' },
+        { href: '/dashboard/admin', label: 'Admin Panel', icon: ShieldCheck, description: 'System administration and monitoring', adminOnly: true },
       ]
     },
     {
@@ -127,54 +157,69 @@ export default function ProfilePage() {
                 </AccordionSummary>
                 <AccordionDetails>
                   <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
-                    {section.items.map((item) => {
-                      const Icon = item.icon;
-                      return (
-                        <Button
-                          key={item.href}
-                          component={Link}
-                          href={item.href}
-                          variant="text"
-                          fullWidth
-                          sx={{ 
-                            justifyContent: 'flex-start', 
-                            textAlign: 'left',
-                            p: 2,
-                            borderRadius: 1,
-                            '&:hover': {
-                              bgcolor: 'action.hover'
-                            }
-                          }}
-                        >
-                          <Box sx={{ 
-                            display: 'flex', 
-                            alignItems: 'center', 
-                            gap: 2, 
-                            width: '100%' 
-                          }}>
+                    {section.items
+                      .filter(item => !item.adminOnly || isAdmin)
+                      .map((item) => {
+                        const Icon = item.icon;
+                        return (
+                          <Button
+                            key={item.href}
+                            component={Link}
+                            href={item.href}
+                            variant="text"
+                            fullWidth
+                            sx={{ 
+                              justifyContent: 'flex-start', 
+                              textAlign: 'left',
+                              p: 2,
+                              borderRadius: 1,
+                              '&:hover': {
+                                bgcolor: 'action.hover'
+                              }
+                            }}
+                          >
                             <Box sx={{ 
-                              width: 40, 
-                              height: 40, 
-                              borderRadius: 1, 
-                              bgcolor: 'primary.main', 
                               display: 'flex', 
                               alignItems: 'center', 
-                              justifyContent: 'center' 
+                              gap: 2, 
+                              width: '100%' 
                             }}>
-                              <Icon style={{ width: 20, height: 20, color: 'white' }} />
+                              <Box sx={{ 
+                                width: 40, 
+                                height: 40, 
+                                borderRadius: 1, 
+                                bgcolor: item.adminOnly ? 'error.main' : 'primary.main', 
+                                display: 'flex', 
+                                alignItems: 'center', 
+                                justifyContent: 'center' 
+                              }}>
+                                <Icon style={{ width: 20, height: 20, color: 'white' }} />
+                              </Box>
+                              <Box sx={{ flex: 1, textAlign: 'left' }}>
+                                <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                                  {item.label}
+                                  {item.adminOnly && (
+                                    <Typography component="span" variant="caption" sx={{ 
+                                      ml: 1, 
+                                      px: 1, 
+                                      py: 0.5, 
+                                      bgcolor: 'error.light', 
+                                      color: 'error.contrastText',
+                                      borderRadius: 0.5,
+                                      fontSize: '0.7rem'
+                                    }}>
+                                      ADMIN
+                                    </Typography>
+                                  )}
+                                </Typography>
+                                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                                  {item.description}
+                                </Typography>
+                              </Box>
                             </Box>
-                            <Box sx={{ flex: 1, textAlign: 'left' }}>
-                              <Typography variant="body1" sx={{ fontWeight: 500 }}>
-                                {item.label}
-                              </Typography>
-                              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                                {item.description}
-                              </Typography>
-                            </Box>
-                          </Box>
-                        </Button>
-                      );
-                    })}
+                          </Button>
+                        );
+                      })}
                   </Box>
                 </AccordionDetails>
               </Accordion>

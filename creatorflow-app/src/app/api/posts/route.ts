@@ -3,6 +3,7 @@ import { NextResponse, NextRequest } from 'next/server';
 import { PrismaClient, PostStatus } from '@prisma/client'; 
 import { getSession } from "@/auth";
 import { requireApiKey } from '@/lib/apiKeyAuth';
+import { cacheUtils } from '@/lib/cache';
 // import { getServerSession } from "next-auth/next" // Example import
 // import { authOptions } from "@/lib/auth"; // Example import for auth config
 
@@ -120,7 +121,8 @@ export async function GET(req: NextRequest) {
     }
 }
 
-async function getPostsWithFilters(req: NextRequest, userId: string) {
+// Cached version of getPostsWithFilters
+const cachedGetPostsWithFilters = cacheUtils.cache(async (req: NextRequest, userId: string) => {
     const { searchParams } = new URL(req.url);
     const status = searchParams.get('status');
     const platform = searchParams.get('platform');
@@ -186,4 +188,8 @@ async function getPostsWithFilters(req: NextRequest, userId: string) {
         pageSize,
         totalPages: Math.ceil(total / pageSize)
     });
+}, 300000); // 5 minute cache
+
+async function getPostsWithFilters(req: NextRequest, userId: string) {
+    return await cachedGetPostsWithFilters(req, userId);
 } 

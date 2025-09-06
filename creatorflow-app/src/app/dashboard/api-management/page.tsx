@@ -28,7 +28,7 @@ import {
   Edit,
   Visibility,
   VisibilityOff
-} from '@mui/icons-material';
+} from '@/lib/mui-optimized-imports';
 
 export default function APIManagementPage() {
   const [activeTab, setActiveTab] = useState(0);

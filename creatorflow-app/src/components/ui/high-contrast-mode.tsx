@@ -9,7 +9,7 @@ import {
   Palette,
   Contrast,
   Visibility
-} from '@mui/icons-material';
+} from '@/lib/mui-optimized-imports';
 
 interface HighContrastModeProps {
   onToggle?: (enabled: boolean) => void;

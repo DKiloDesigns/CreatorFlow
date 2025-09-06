@@ -22,12 +22,11 @@ import {
   Card,
   CardHeader,
   CardContent,
-  Button as MuiButton,
-  MuiDialog,
-  MuiDialogTitle,
-  MuiDialogContent,
+  Dialog,
+  DialogTitle,
+  DialogContent,
   DialogActions
-} from '@/components/ui/mui-components';
+} from '@mui/material';
 import { Plus, Calendar, FileText, Image, Video, Upload, Clock, Brain, TrendingUp, Lightbulb, Target, Sparkles } from 'lucide-react';
 import { toast } from 'sonner';
 import dynamicImport from 'next/dynamic';

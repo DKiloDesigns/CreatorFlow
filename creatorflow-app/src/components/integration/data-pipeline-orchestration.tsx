@@ -225,7 +225,7 @@ import {
   CropLandscape as CropLandscapeIcon,
   CropRotate as CropRotateIcon,
   Zap as ZapIcon
-} from '@mui/icons-material';
+} from '@/lib/mui-optimized-imports';
 import { designTokens } from '@/lib/design-system';
 
 interface DataPipeline {

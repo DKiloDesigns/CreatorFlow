@@ -48,7 +48,7 @@ import {
   TrendingDown,
   Memory,
   Monitor
-} from '@mui/icons-material';
+} from '@/lib/mui-optimized-imports';
 import { 
   runSACAAccessibilityTests, 
   generateSACAReport,

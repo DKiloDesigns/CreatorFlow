@@ -67,7 +67,7 @@ import {
   Public,
   Lock,
   ExpandMore
-} from '@mui/icons-material';
+} from '@/lib/mui-optimized-imports';
 
 interface PublishingCampaign {
   id: string;

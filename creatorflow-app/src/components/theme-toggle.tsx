@@ -1,7 +1,7 @@
 'use client';
 
 import { IconButton, Tooltip } from '@mui/material';
-import { DarkMode, LightMode } from '@mui/icons-material';
+import { DarkMode, LightMode } from '@/lib/mui-optimized-imports';
 import { useAppTheme } from '@/components/providers/mui-theme-provider';
 import { useState, useEffect } from 'react';
 

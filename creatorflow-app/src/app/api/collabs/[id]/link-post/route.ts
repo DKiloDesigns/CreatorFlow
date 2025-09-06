@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
       const userId = auth.user.id;
       const { postId } = await req.json();
       // Ensure post belongs to user
-      const post = await prisma.post.findUnique({ where: { id: postId, userId } });
+      const post = await prisma.post.findUnique({ where: { id: postId, userId: userId } });
       if (!post) return NextResponse.json({ error: 'Post not found' }, { status: 404 });
       const updated = await prisma.post.update({ where: { id: postId }, data: { brandCollabId: collabId } });
       return NextResponse.json(updated);
@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
     const userId = session.user.id;
     const { postId } = await req.json();
     // Ensure post belongs to user
-    const post = await prisma.post.findUnique({ where: { id: postId, userId } });
+    const post = await prisma.post.findUnique({ where: { id: postId, userId: userId } });
     if (!post) return NextResponse.json({ error: 'Post not found' }, { status: 404 });
     const updated = await prisma.post.update({ where: { id: postId }, data: { brandCollabId: collabId } });
     return NextResponse.json(updated);

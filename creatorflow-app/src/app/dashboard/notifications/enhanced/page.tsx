@@ -1,17 +1,18 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Card, 
   CardContent, 
   CardHeader, 
   Button,
   Typography,
-  Box
+  Box,
+  Tabs, 
+  Tab
 } from '@mui/material';
 import { Bell, Activity, Settings, Search, RefreshCw } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import { Tabs, Tab, TabPanel } from '@mui/material';
 import { CardDescription } from '@/components/ui/base/Card';
 import { Input } from '@/components/ui/input';
 import { NotificationCenter } from '@/components/notifications/notification-center';
@@ -22,6 +23,15 @@ export default function EnhancedNotificationsPage() {
   const { notifications, unreadCount, isConnected, markAllAsRead } = useRealTimeNotifications();
   const [searchTerm, setSearchTerm] = useState('');
   const [activeTab, setActiveTab] = useState('notifications');
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return <div>Loading...</div>;
+  }
 
   const filteredNotifications = notifications.filter(notification =>
     notification.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -145,7 +155,8 @@ export default function EnhancedNotificationsPage() {
         />
       </Tabs>
 
-      <TabPanel value="notifications" sx={{ p: 0 }}>
+      {activeTab === 'notifications' && (
+        <Box sx={{ p: 0 }}>
           <Card>
             <CardHeader>
               <div className="flex items-center justify-between">
@@ -234,11 +245,14 @@ export default function EnhancedNotificationsPage() {
               </div>
             </CardContent>
           </Card>
-      </TabPanel>
+        </Box>
+      )}
 
-      <TabPanel value="preferences" sx={{ p: 0 }}>
-        <NotificationPreferences />
-      </TabPanel>
+      {activeTab === 'preferences' && (
+        <Box sx={{ p: 0 }}>
+          <NotificationPreferences />
+        </Box>
+      )}
 
       {/* Bottom Spacer to Clear Bottom Navigation */}
       <Box sx={{

@@ -173,69 +173,76 @@ export default function MiniCalendar({
         borderColor: 'divider',
         backgroundColor: 'background.default'
       }}>
-                <Box sx={{
+                {/* Content Calendar Title */}
+        <Typography variant="h6" sx={{ fontWeight: 600, textAlign: 'center', mb: 2 }}>
+          Content Calendar
+        </Typography>
+
+        <Box sx={{
           display: 'flex',
           alignItems: 'center', 
           justifyContent: 'space-between',
           mb: 2,
-          gap: 0.5
+          gap: 0.5,
+          flexWrap: 'nowrap',
+          minWidth: 0
         }}>
-          {/* View Full Calendar Button */}
+          {/* Full View Button */}
           <Button
             variant="outlined"
             size="small"
             onClick={onViewFullCalendar}
-            startIcon={<Calendar size={12} />}
+            startIcon={<Calendar size={10} />}
             sx={{ 
-              fontSize: '0.7rem',
+              fontSize: '0.65rem',
               minWidth: 'auto',
-              px: 1,
-              py: 0.5,
+              px: 0.8,
+              py: 0.4,
               whiteSpace: 'nowrap',
-              flex: '0 0 auto'
+              flex: '0 0 auto',
+              height: '28px'
             }}
           >
-            View Full
+            Full View
           </Button>
 
-          <Typography variant="h6" sx={{ fontWeight: 600, flex: 1, textAlign: 'center', mx: 1 }}>
-            Content Calendar
-          </Typography>
+          {/* Bulk Button */}
+          <Button
+            variant="outlined"
+            size="small"
+            onClick={onBulkSchedule}
+            startIcon={<Calendar size={10} />}
+            sx={{ 
+              fontSize: '0.65rem',
+              minWidth: 'auto',
+              px: 0.8,
+              py: 0.4,
+              whiteSpace: 'nowrap',
+              flex: '0 0 auto',
+              height: '28px'
+            }}
+          >
+            Bulk
+          </Button>
 
-          {/* Action Buttons */}
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, flex: '0 0 auto' }}>
-            {/* Bulk Schedule Button */}
-            <Button
-              variant="outlined"
-              size="small"
-              onClick={onBulkSchedule}
-              startIcon={<Calendar size={12} />}
-              sx={{ 
-                fontSize: '0.7rem',
-                minWidth: 'auto',
-                px: 1,
-                py: 0.5
-              }}
-            >
-              Bulk
-            </Button>
-
-            {/* Create Content Button */}
-            <Button
-              variant="contained"
-              startIcon={<Plus size={12} />}
-              onClick={onCreatePost}
-              size="small"
-              sx={{ 
-                fontSize: '0.7rem',
-                minWidth: 'auto',
-                px: 1,
-                py: 0.5
-              }}
-            >
-              Create
-            </Button>
-          </Box>
+          {/* Create Button */}
+          <Button
+            variant="contained"
+            startIcon={<Plus size={10} />}
+            onClick={onCreatePost}
+            size="small"
+            sx={{ 
+              fontSize: '0.65rem',
+              minWidth: 'auto',
+              px: 0.8,
+              py: 0.4,
+              whiteSpace: 'nowrap',
+              flex: '0 0 auto',
+              height: '28px'
+            }}
+          >
+            Create
+          </Button>
         </Box>
       </Box>
 
@@ -254,7 +261,7 @@ export default function MiniCalendar({
         )}
 
         {!isLoading && !error && (
-          <Box sx={{ height: '300px' }}>
+          <Box sx={{ height: '350px', minHeight: '350px' }}>
             <style jsx global>{`
               .mini-calendar-event {
                 font-size: 10px !important;
@@ -293,8 +300,8 @@ export default function MiniCalendar({
                 right: 'next'
               }}
               height="auto"
-              aspectRatio={1.2}
-              dayMaxEvents={2}
+              aspectRatio={1.35}
+              dayMaxEvents={3}
               eventContent={renderEventContent}
               eventClick={handleEventClick}
               buttonText={{

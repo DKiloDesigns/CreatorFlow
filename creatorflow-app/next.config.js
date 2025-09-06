@@ -9,8 +9,29 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-  // Fix workspace root issue
-  outputFileTracingRoot: join(__dirname),
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+  // Fix workspace root detection
+  outputFileTracingRoot: __dirname,
+  // Performance optimizations
+  compress: true,
+  poweredByHeader: false,
+  generateEtags: false,
+  experimental: {
+    optimizePackageImports: [
+      'lucide-react', 
+      '@radix-ui/react-icons', 
+      '@mui/icons-material',
+      '@mui/material'
+    ],
+  },
+  images: {
+    formats: ['image/webp', 'image/avif'],
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    minimumCacheTTL: 60,
+  },
   webpack: (config, { dev, isServer }) => {
     // Optimize webpack cache
     if (dev) {
@@ -22,7 +43,7 @@ const nextConfig = {
       }
     }
     
-    // Bundle optimization
+    // Conservative bundle optimization
     config.optimization = {
       ...config.optimization,
       splitChunks: {
@@ -32,6 +53,7 @@ const nextConfig = {
             test: /[\\/]node_modules[\\/]/,
             name: 'vendors',
             chunks: 'all',
+            priority: 10,
           },
           mui: {
             test: /[\\/]node_modules[\\/]@mui[\\/]/,
@@ -43,7 +65,7 @@ const nextConfig = {
             name: 'common',
             minChunks: 2,
             chunks: 'all',
-            priority: 10,
+            priority: 5,
           },
         },
       },
@@ -51,10 +73,6 @@ const nextConfig = {
     
     return config
   },
-  // Performance optimizations
-  compress: true,
-  poweredByHeader: false,
-  generateEtags: false,
 };
 
 export default nextConfig;

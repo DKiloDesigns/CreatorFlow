@@ -59,7 +59,7 @@ import {
   Timeline,
   Forecast,
   TrendingFlat
-} from '@mui/icons-material';
+} from '@/lib/mui-optimized-imports';
 
 interface PredictiveModel {
   id: string;

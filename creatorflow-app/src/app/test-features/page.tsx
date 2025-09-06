@@ -4,6 +4,7 @@ import { ThemeToggle } from '@/components/ui/ThemeToggle';
 import { SmartNotificationCenter } from '@/components/notifications/SmartNotificationCenter';
 import { CollaborationPanel } from '@/components/collaboration/CollaborationPanel';
 import { DragDropContentBuilder } from '@/components/content-builder/DragDropContentBuilder';
+import { CollaborationProvider } from '@/contexts/CollaborationContext';
 import { Box, Typography, Container, Paper, Grid } from '@mui/material';
 
 export default function TestFeaturesPage() {
@@ -49,7 +50,9 @@ export default function TestFeaturesPage() {
             <Typography variant="body2" sx={{ mb: 2 }}>
               Multi-user collaboration features
             </Typography>
-            <CollaborationPanel />
+            <CollaborationProvider>
+              <CollaborationPanel />
+            </CollaborationProvider>
           </Paper>
         </Grid>
 

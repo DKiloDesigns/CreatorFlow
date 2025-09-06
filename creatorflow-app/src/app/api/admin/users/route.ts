@@ -1,62 +1,74 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/auth';
-import { prisma } from '@/lib/prisma';
+import { AdminUtils } from '@/lib/admin-utils';
 
 export async function GET(req: NextRequest) {
-  const session = await getSession(req);
-  if (!session?.user?.id) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  const user = await prisma.user.findUnique({ where: { id: session.user.id }, select: { role: true } });
-  if (!user || user.role !== 'ADMIN') return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
-  const { searchParams } = new URL(req.url);
-  const limit = parseInt(searchParams.get('limit') || '20', 10);
-  const offset = parseInt(searchParams.get('offset') || '0', 10);
-  const q = searchParams.get('q') || '';
-  const where: any = {};
-  if (q) {
-    where.OR = [
-      { name: { contains: q, mode: 'insensitive' } },
-      { email: { contains: q, mode: 'insensitive' } },
-    ];
+  try {
+    const session = await getSession(req);
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    // Check if user is admin
+    const isAdmin = await AdminUtils.isAdmin(session.user.id);
+    if (!isAdmin) {
+      return NextResponse.json({ error: 'Forbidden - Admin access required' }, { status: 403 });
+    }
+
+    const users = await AdminUtils.getAllUsers();
+    return NextResponse.json({ users });
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    return NextResponse.json(
+      { error: 'Failed to fetch users' },
+      { status: 500 }
+    );
   }
-  const [users, total] = await Promise.all([
-    prisma.user.findMany({
-      where,
-      orderBy: { createdAt: 'desc' },
-      skip: offset,
-      take: limit,
-      select: { id: true, name: true, email: true, role: true, deactivated: true },
-    }),
-    prisma.user.count({ where }),
-  ]);
-  return NextResponse.json({ users, total });
 }
 
 export async function POST(req: NextRequest) {
-  const session = await getSession(req);
-  if (!session?.user?.id) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  const user = await prisma.user.findUnique({ where: { id: session.user.id }, select: { role: true } });
-  if (!user || user.role !== 'ADMIN') return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
-  const { action, ids } = await req.json();
-  if (!Array.isArray(ids) || !action) return NextResponse.json({ error: 'Missing ids or action' }, { status: 400 });
-  let result;
-  switch (action) {
-    case 'promote':
-      result = await prisma.user.updateMany({ where: { id: { in: ids } }, data: { role: 'ADMIN' } });
-      break;
-    case 'demote':
-      result = await prisma.user.updateMany({ where: { id: { in: ids } }, data: { role: 'USER' } });
-      break;
-    case 'deactivate':
-      result = await prisma.user.updateMany({ where: { id: { in: ids } }, data: { deactivated: true } });
-      break;
-    case 'reactivate':
-      result = await prisma.user.updateMany({ where: { id: { in: ids } }, data: { deactivated: false } });
-      break;
-    case 'delete':
-      result = await prisma.user.deleteMany({ where: { id: { in: ids } } });
-      break;
-    default:
-      return NextResponse.json({ error: 'Unknown action' }, { status: 400 });
+  try {
+    const session = await getSession(req);
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
+    // Check if user is admin
+    const isAdmin = await AdminUtils.isAdmin(session.user.id);
+    if (!isAdmin) {
+      return NextResponse.json({ error: 'Forbidden - Admin access required' }, { status: 403 });
+    }
+
+    const { action, userId } = await req.json();
+
+    if (!action || !userId) {
+      return NextResponse.json(
+        { error: 'Missing action or userId' },
+        { status: 400 }
+      );
+    }
+
+    let result;
+    switch (action) {
+      case 'promote':
+        result = await AdminUtils.promoteToAdmin(userId, session.user.id);
+        break;
+      case 'demote':
+        result = await AdminUtils.demoteFromAdmin(userId, session.user.id);
+        break;
+      default:
+        return NextResponse.json(
+          { error: 'Invalid action' },
+          { status: 400 }
+        );
+    }
+
+    return NextResponse.json(result);
+  } catch (error) {
+    console.error('Error processing user action:', error);
+    return NextResponse.json(
+      { error: 'Failed to process user action' },
+      { status: 500 }
+    );
   }
-  return NextResponse.json({ success: true, result });
-} 
+}

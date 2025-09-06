@@ -15,7 +15,7 @@ import {
   VisibilityOff, 
   Search, 
   Clear 
-} from '@mui/icons-material';
+} from '@/lib/mui-optimized-imports';
 
 export interface InputProps extends Omit<MuiTextFieldProps, 'variant' | 'size' | 'color'> {
   variant?: 'default' | 'outlined' | 'filled' | 'minimal';

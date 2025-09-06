@@ -51,7 +51,7 @@ import {
   Tabs,
   Tab,
   Avatar
-} from '@mui/material';
+} from '@/lib/mui-optimized-imports';
 import {
   TrendingUp,
   TrendingDown,
@@ -207,7 +207,7 @@ import {
   CropLandscape as Crop32Icon,
   CropRotate as Crop32Icon,
   Zap as ZapIcon
-} from '@mui/icons-material';
+} from '@/lib/mui-optimized-imports';
 import { designTokens } from '@/lib/design-system';
 
 interface PerformanceMetric {

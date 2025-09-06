@@ -226,39 +226,48 @@ export default function BillingClient({ user, searchParams, upcomingCharges, pay
           )}
 
           {/* Payment History */}
-      {paymentHistory && paymentHistory.length > 0 && (
         <Card sx={{ mb: 4 }}>
           <CardHeader title="Payment History" />
           <CardContent>
-            <Grid container spacing={2}>
-              {paymentHistory.map((payment) => (
-                <Grid item xs={12} key={payment.id} component="div">
-                  <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 2, border: '1px solid', borderColor: 'divider', borderRadius: 1 }}>
-                    <Box>
-                      <Typography variant="body1" fontWeight="medium">
-                        {payment.description}
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary">
-                        {format(new Date(payment.date * 1000), 'MMMM d, yyyy')}
-                      </Typography>
+            {paymentHistory && paymentHistory.length > 0 ? (
+              <Grid container spacing={2}>
+                {paymentHistory.map((payment) => (
+                  <Grid item xs={12} key={payment.id} component="div">
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', p: 2, border: '1px solid', borderColor: 'divider', borderRadius: 1 }}>
+                      <Box>
+                        <Typography variant="body1" fontWeight="medium">
+                          {payment.description}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary">
+                          {format(new Date(payment.date * 1000), 'MMMM d, yyyy')}
+                        </Typography>
+                      </Box>
+                      <Box sx={{ textAlign: 'right' }}>
+                        <Typography variant="h6" color="primary.main">
+                          ${payment.amount / 100}
+                        </Typography>
+                        <Chip 
+                          label={payment.status} 
+                          color={payment.status === 'paid' ? 'success' : 'warning'}
+                          size="small"
+                        />
+                      </Box>
                     </Box>
-                    <Box sx={{ textAlign: 'right' }}>
-                      <Typography variant="h6" color="primary.main">
-                        ${payment.amount / 100}
-                      </Typography>
-                      <Chip 
-                        label={payment.status} 
-                        color={payment.status === 'paid' ? 'success' : 'warning'}
-                        size="small"
-                      />
-                    </Box>
-                  </Box>
-                </Grid>
-              ))}
-            </Grid>
+                  </Grid>
+                ))}
+              </Grid>
+            ) : (
+              <Box sx={{ textAlign: 'center', py: 4 }}>
+                <Typography variant="body1" color="text.secondary">
+                  {paymentHistory === null 
+                    ? 'Unable to load payment history. Please try again later.' 
+                    : 'No payment history found. Your payments will appear here once you make your first purchase.'
+                  }
+                </Typography>
+              </Box>
+            )}
           </CardContent>
         </Card>
-      )}
 
       {/* Pricing Plans */}
       <Card>

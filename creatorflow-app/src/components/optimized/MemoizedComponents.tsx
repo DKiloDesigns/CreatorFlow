@@ -19,7 +19,7 @@ import {
   MoreVert,
   Edit,
   Delete
-} from '@mui/icons-material';
+} from '@/lib/mui-optimized-imports';
 
 // Memoized Stats Card
 export const MemoizedStatsCard = memo(({ 

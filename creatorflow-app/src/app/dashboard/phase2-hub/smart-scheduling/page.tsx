@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Box, Container, Typography, Alert, AlertTitle, Skeleton } from '@mui/material';
-import { Schedule, AutoAwesome } from '@mui/icons-material';
+import { Schedule, AutoAwesome } from '@/lib/mui-optimized-imports';
 import SmartScheduling from '@/components/ui/smart-scheduling';
 import { designTokens } from '@/lib/design-system';
 

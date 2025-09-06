@@ -17,8 +17,7 @@ import {
 } from '@mui/material';
 import { Shield, Activity, RefreshCw, AlertTriangle, Lock, Eye, Download } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import { Tabs, Tab, TabPanel } from '@mui/material';
-import { Select, MenuItem, FormControl, InputLabel } from '@mui/material';
+import { Select } from '@mui/material';
 
 interface SecurityEvent {
   id: string;

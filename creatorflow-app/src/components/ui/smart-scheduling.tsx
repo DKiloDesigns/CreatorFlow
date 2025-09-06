@@ -101,7 +101,7 @@ import {
   Notifications,
   Settings,
   Refresh
-} from '@mui/icons-material';
+} from '@/lib/mui-optimized-imports';
 import { designTokens } from '@/lib/design-system';
 
 // Optimal time interface

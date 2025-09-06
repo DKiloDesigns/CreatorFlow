@@ -44,7 +44,7 @@ import {
   Star,
   TrendingUp,
   TrendingDown,
-} from '@mui/icons-material';
+} from '@/lib/mui-optimized-imports';
 
 interface FormData {
   firstName: string;

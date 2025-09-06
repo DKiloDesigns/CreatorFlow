@@ -25,7 +25,7 @@ import {
   Refresh,
   Palette,
   Contrast
-} from '@mui/icons-material';
+} from '@/lib/mui-optimized-imports';
 import { 
   checkWCAGCompliance, 
   suggestAlternativeColors,

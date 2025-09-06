@@ -2,10 +2,12 @@ import { NextResponse, NextRequest } from 'next/server';
 import { PrismaClient, PostStatus } from '@prisma/client';
 import { getSession } from "@/auth";
 import { requireApiKey } from '@/lib/apiKeyAuth';
+import { withAPIErrorHandling, APIErrors, createErrorResponse, handleDatabaseError } from '@/lib/api-error-handler';
+import { validatePostQuery, USER_FIELD } from '@/lib/database-validation';
 
 const prisma = new PrismaClient();
 
-export async function GET(req: NextRequest) {
+export const GET = async (req: NextRequest) => {
     const { searchParams } = new URL(req.url);
     const startDate = searchParams.get('startDate');
     const endDate = searchParams.get('endDate');
@@ -23,20 +25,22 @@ export async function GET(req: NextRequest) {
     }
     
     // Fallback to session auth
+    const session = await getSession(req);
+    console.log('Calendar API - Session:', session);
+    const userId = session?.user?.id;
+    console.log('Calendar API - UserId:', userId);
+
+    if (!userId) {
+        return NextResponse.json({ error: 'User not logged in' }, { status: 401 });
+    }
+
     try {
-        const session = await getSession(req);
-        const userId = session?.user?.id;
-
-        if (!userId) {
-            return NextResponse.json({ error: 'Unauthorized: User not logged in' }, { status: 401 });
-        }
-
         return await fetchCalendarPosts(userId, startDate, endDate);
     } catch (error) {
         console.error('Calendar API error:', error);
-        return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+        return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
     }
-}
+};
 
 async function fetchCalendarPosts(userId: string, startDate: string | null, endDate: string | null) {
     try {
@@ -45,9 +49,18 @@ async function fetchCalendarPosts(userId: string, startDate: string | null, endD
         const start = startDate ? new Date(startDate) : new Date(now.getFullYear(), now.getMonth(), now.getDate() - 7);
         const end = endDate ? new Date(endDate) : new Date(now.getFullYear(), now.getMonth(), now.getDate() + 7);
 
+        // Validate date range
+        if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+            throw APIErrors.VALIDATION_ERROR('Invalid date format');
+        }
+
+        if (start > end) {
+            throw APIErrors.VALIDATION_ERROR('Start date must be before end date');
+        }
+
         const posts = await prisma.post.findMany({
             where: {
-                userId,
+                userId: userId,
                 OR: [
                     { scheduledAt: { gte: start, lte: end } },
                     { createdAt: { gte: start, lte: end } },
@@ -93,7 +106,9 @@ async function fetchCalendarPosts(userId: string, startDate: string | null, endD
             dateRange: { start: start.toISOString(), end: end.toISOString() }
         });
     } catch (error) {
-        console.error('Error fetching calendar posts:', error);
-        return NextResponse.json({ error: 'Failed to fetch calendar posts' }, { status: 500 });
+        if (error instanceof Error && error.message.includes('Prisma')) {
+            handleDatabaseError(error);
+        }
+        throw error;
     }
 }

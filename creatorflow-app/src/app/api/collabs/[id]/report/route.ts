@@ -16,7 +16,7 @@ export async function GET(req: NextRequest) {
     const auth = await requireApiKey(req);
     if ('user' in auth) {
       const userId = auth.user.id;
-      const posts = await prisma.post.findMany({ where: { userId, brandCollabId: collabId } });
+      const posts = await prisma.post.findMany({ where: { userId: userId, brandCollabId: collabId } });
       const totalPosts = posts.length;
       const totalViews = posts.reduce((sum, p) => sum + (p.views || 0), 0);
       const totalEngagements = posts.reduce((sum, p) => sum + (p.likes || 0) + (p.comments || 0) + (p.shares || 0), 0);
@@ -33,7 +33,7 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
     const userId = session.user.id;
-    const posts = await prisma.post.findMany({ where: { userId, brandCollabId: collabId } });
+    const posts = await prisma.post.findMany({ where: { userId: userId, brandCollabId: collabId } });
     const totalPosts = posts.length;
     const totalViews = posts.reduce((sum, p) => sum + (p.views || 0), 0);
     const totalEngagements = posts.reduce((sum, p) => sum + (p.likes || 0) + (p.comments || 0) + (p.shares || 0), 0);

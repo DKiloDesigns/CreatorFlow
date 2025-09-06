@@ -58,7 +58,7 @@ import {
   PlayArrow,
   Pause,
   Stop,
-} from '@mui/icons-material';
+} from '@/lib/mui-optimized-imports';
 
 export default function MuiAdvancedDemo() {
   const [activeTab, setActiveTab] = useState(0);

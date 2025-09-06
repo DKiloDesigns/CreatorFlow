@@ -5,7 +5,7 @@ export const dynamic = 'force-dynamic';
 import { signOut } from "next-auth/react"
 import Link from "next/link"
 import { usePathname } from 'next/navigation';
-import { BarChart2, Users, FileText, Handshake, CreditCard, Menu, Bell, BarChart3, Target, MessageSquare, CalendarIcon, Activity, Shield, Settings, Sparkles, Star, Building2, Smartphone, Plug, TestTube, Home, Calendar, Brain, HelpCircle, HardDrive, Bot, Zap, Accessibility, Code, Layout } from 'lucide-react';
+import { BarChart2, Users, FileText, Handshake, CreditCard, Menu, Bell, BarChart3, Target, MessageSquare, CalendarIcon, Activity, Shield, Settings, Sparkles, Star, Building2, Smartphone, Plug, TestTube, Home, Calendar, Brain, HelpCircle, HardDrive, Bot, Zap, Accessibility, Code, Layout, Image } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { 
   AppBar, 
@@ -80,6 +80,9 @@ export default function DashboardLayout({
 
   const navigationItems = [
     { href: '/dashboard', label: 'Dashboard', icon: Home },
+    { href: '/dashboard/content', label: 'Content', icon: FileText },
+    { href: '/dashboard/media', label: 'Media Library', icon: Image },
+    { href: '/dashboard/analytics', label: 'Analytics', icon: BarChart2 },
     { href: '/dashboard/phase2-hub', label: 'Phase 2 Hub', icon: Brain },
     { href: '/dashboard/phase3-hub', label: 'Phase 3 Hub', icon: Bot },
     { href: '/dashboard/ai-api-test', label: 'AI API Test', icon: TestTube },
@@ -87,8 +90,6 @@ export default function DashboardLayout({
     { href: '/dashboard/phase4-test', label: 'Phase 4 Test', icon: BarChart3 },
     { href: '/dashboard/phase6-test', label: 'Phase 6 Test', icon: Zap },
     { href: '/dashboard/phase7-test', label: 'Phase 7 Test', icon: Settings },
-    { href: '/dashboard/analytics', label: 'Analytics', icon: BarChart2 },
-    { href: '/dashboard/content', label: 'Content', icon: FileText },
     { href: '/dashboard/content-builder', label: 'Content Builder', icon: Layout },
     { href: '/dashboard/accounts', label: 'Accounts', icon: Users },
     { href: '/dashboard/scheduling', label: 'Scheduling', icon: Calendar },
@@ -108,9 +109,7 @@ export default function DashboardLayout({
     { href: '/dashboard/settings', label: 'Settings', icon: Settings },
     { href: '/dashboard/support', label: 'Support', icon: HelpCircle },
     { href: '/dashboard/notifications/enhanced', label: 'Notifications', icon: Bell },
-    { href: '/admin/campaign', label: 'Campaign', icon: Target },
-    { href: '/admin/feedback', label: 'Feedback', icon: MessageSquare },
-    { href: '/admin/performance', label: 'Performance', icon: HardDrive },
+    { href: '/dashboard/admin', label: 'Admin Panel', icon: Shield },
   ];
 
   return (
@@ -250,7 +249,6 @@ export default function DashboardLayout({
               </Box>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 {/* MuiUserMenu */}
-                <MinimalCollaborationPanel />
                 <MinimalThemeToggle />
               </Box>
             </Box>
@@ -262,10 +260,36 @@ export default function DashboardLayout({
                 <MinimalThemeToggle />
               </Box>
               
-              {/* Notification Center - Only render on client */}
+              {/* Notification Icon - Only render on client */}
               {isClient && (
                 <Box sx={{ position: 'relative', minWidth: 44, minHeight: 44, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <MinimalCollaborationPanel />
+                  <IconButton
+                    component={Link}
+                    href="/dashboard/notifications/enhanced"
+                    sx={{
+                      color: 'text.primary',
+                      backgroundColor: 'background.paper',
+                      border: '2px solid',
+                      borderColor: 'primary.main',
+                      '&:hover': {
+                        backgroundColor: 'primary.main',
+                        color: 'primary.contrastText',
+                        borderColor: 'primary.dark',
+                      },
+                      minWidth: 44,
+                      minHeight: 44,
+                      boxShadow: 1,
+                      '&:focus-visible': {
+                        outline: '2px solid',
+                        outlineColor: 'primary.main',
+                        outlineOffset: 2,
+                      }
+                    }}
+                  >
+                    <Badge badgeContent={unreadCount} color="error" max={99}>
+                      <Bell size={20} />
+                    </Badge>
+                  </IconButton>
                 </Box>
               )}
               
@@ -302,4 +326,4 @@ export default function DashboardLayout({
       </Box>
     </MobileLayout>
   );
-} 
+}

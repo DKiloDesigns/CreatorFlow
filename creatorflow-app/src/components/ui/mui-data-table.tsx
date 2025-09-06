@@ -24,7 +24,7 @@ import {
   Delete,
   Visibility,
   Search,
-} from '@mui/icons-material';
+} from '@/lib/mui-optimized-imports';
 
 export interface Column<T> {
   id: keyof T;

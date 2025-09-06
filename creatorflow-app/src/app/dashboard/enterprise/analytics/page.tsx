@@ -31,7 +31,7 @@ import {
   Settings,
   Analytics,
   Campaign
-} from '@mui/icons-material';
+} from '@/lib/mui-optimized-imports';
 
 export default function EnterpriseAnalyticsPage() {
   const [activeTab, setActiveTab] = useState(0);

@@ -76,7 +76,7 @@ import {
   Business,
   School,
   Work
-} from '@mui/icons-material';
+} from '@/lib/mui-optimized-imports';
 
 interface TeamMember {
   id: string;

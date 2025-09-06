@@ -29,7 +29,7 @@ import {
   Warning,
   Info,
   Lightbulb
-} from '@mui/icons-material';
+} from '@/lib/mui-optimized-imports';
 import { 
   UnifiedDashboardLayout, 
   DashboardSection, 
@@ -377,7 +377,7 @@ export default function UnifiedDemoPage() {
             
             <Grid item xs={12} sm={6} md={3}>
               <Box sx={{ textAlign: 'center', p: 2 }}>
-                <Brain sx={{ fontSize: 40, color: designTokens.colors.secondary[500], mb: 1 }} />
+                <Psychology sx={{ fontSize: 40, color: designTokens.colors.secondary[500], mb: 1 }} />
                 <Typography variant="subtitle2" sx={{ color: designTokens.colors.neutral[800] }}>
                   AI Insights
                 </Typography>

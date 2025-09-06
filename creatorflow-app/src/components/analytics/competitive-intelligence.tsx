@@ -92,7 +92,7 @@ import {
   Compare,
   Assessment,
   Insights
-} from '@mui/icons-material';
+} from '@/lib/mui-optimized-imports';
 import { designTokens } from '@/lib/design-system';
 import { useAIInsights } from '@/hooks/use-ai-api';
 

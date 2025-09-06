@@ -57,7 +57,7 @@ import {
   Tag,
   Event,
   TrendingDown
-} from '@mui/icons-material';
+} from '@/lib/mui-optimized-imports';
 import { toast } from 'sonner';
 
 interface ContentIntelligenceData {

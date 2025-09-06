@@ -30,6 +30,7 @@ export function ThemeToggle({ variant = 'icon', size = 'medium' }: ThemeTogglePr
   const { isDark, toggleMode } = useMinimalTheme();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+  const mode = isDark ? 'dark' : 'light';
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);

@@ -41,7 +41,6 @@ import {
   TableRow,
   Rating,
   Autocomplete,
-  TextField,
   Menu,
   MenuItem,
   List,
@@ -184,7 +183,7 @@ import {
   ViewSidebarRounded,
   ViewSidebarSharp,
   ViewSidebarTwoTone,
-} from '@mui/icons-material';
+} from '@/lib/mui-optimized-imports';
 
 export default function MuiDemoPage() {
   const { theme, setTheme } = useTheme();

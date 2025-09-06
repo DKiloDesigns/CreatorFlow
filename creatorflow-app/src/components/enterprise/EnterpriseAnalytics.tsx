@@ -90,7 +90,7 @@ import {
   Notifications,
   Lock,
   Public
-} from '@mui/icons-material';
+} from '@/lib/mui-optimized-imports';
 
 interface DashboardTemplate {
   id: string;

@@ -98,7 +98,7 @@ import {
   Person,
   TrendingDown,
   TrendingUp as TrendingUpIcon
-} from '@mui/icons-material';
+} from '@/lib/mui-optimized-imports';
 import { designTokens } from '@/lib/design-system';
 
 // Content type interface

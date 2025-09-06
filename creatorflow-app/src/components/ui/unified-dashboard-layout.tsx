@@ -64,7 +64,7 @@ import {
   ThumbUp as ThumbUpIcon,
   Share as ShareIcon,
   Message as MessageIcon
-} from '@mui/icons-material';
+} from '@/lib/mui-optimized-imports';
 import { designTokens } from '@/lib/design-system';
 import ConnectedAccountsStory from './connected-accounts-story';
 import EnhancedBottomNavigation from './enhanced-bottom-navigation';

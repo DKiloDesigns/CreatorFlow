@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Box, Container, Typography, Alert, AlertTitle, Skeleton } from '@mui/material';
-import { Analytics, TrendingUp } from '@mui/icons-material';
+import { Analytics, TrendingUp } from '@/lib/mui-optimized-imports';
 import PerformanceTracking from '@/components/ui/performance-tracking';
 import { designTokens } from '@/lib/design-system';
 

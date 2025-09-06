@@ -90,7 +90,7 @@ import {
   LocationOn,
   Phone,
   Fax
-} from '@mui/icons-material';
+} from '@/lib/mui-optimized-imports';
 
 interface Integration {
   id: string;

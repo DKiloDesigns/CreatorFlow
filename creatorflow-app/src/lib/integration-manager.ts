@@ -53,8 +53,9 @@ class IntegrationManager {
   private syncIntervals: Map<string, NodeJS.Timeout> = new Map();
 
   constructor() {
-    this.initializeIntegrations();
     this.setupWebhookHandlers();
+    // Initialize integrations lazily to avoid build-time errors
+    this.initializeIntegrationsLazy();
   }
 
   // Integration management
@@ -480,41 +481,68 @@ class IntegrationManager {
     }
   }
 
-  private initializeIntegrations(): void {
-    // Initialize with default integrations
-    const defaultIntegrations = [
-      {
-        name: 'Stripe Payment',
-        type: 'api' as const,
-        provider: 'stripe',
-        config: { webhookEndpoint: '/api/webhooks/stripe' },
-      },
-      {
-        name: 'Slack Notifications',
-        type: 'webhook' as const,
-        provider: 'slack',
-        config: { webhookUrl: process.env.SLACK_WEBHOOK_URL },
-      },
-      {
-        name: 'Google Analytics',
-        type: 'api' as const,
-        provider: 'google',
-        config: { trackingId: process.env.GA_TRACKING_ID },
-      },
-    ];
+  private initializeIntegrationsLazy(): void {
+    // Only initialize integrations in runtime, not during build
+    if (typeof window !== 'undefined' || process.env.NODE_ENV === 'development') {
+      // Use setTimeout to defer initialization until after module loading
+      setTimeout(() => {
+        this.initializeIntegrations();
+      }, 1000);
+    }
+  }
 
-    defaultIntegrations.forEach(async (integration) => {
-      try {
-        await this.createIntegration(
-          integration.name,
-          integration.type,
-          integration.provider,
-          integration.config
-        );
-      } catch (error) {
-        console.error(`Failed to initialize ${integration.name}:`, error);
+  private async initializeIntegrations(): Promise<void> {
+    try {
+      // Check if database is available
+      await prisma.$connect();
+      
+      // Initialize with default integrations
+      const defaultIntegrations = [
+        {
+          name: 'Stripe Payment',
+          type: 'api' as const,
+          provider: 'stripe',
+          config: { webhookEndpoint: '/api/webhooks/stripe' },
+        },
+        {
+          name: 'Slack Notifications',
+          type: 'webhook' as const,
+          provider: 'slack',
+          config: { webhookUrl: process.env.SLACK_WEBHOOK_URL },
+        },
+        {
+          name: 'Google Analytics',
+          type: 'api' as const,
+          provider: 'google',
+          config: { trackingId: process.env.GA_TRACKING_ID },
+        },
+      ];
+
+      for (const integration of defaultIntegrations) {
+        try {
+          // Check if integration already exists
+          const existing = await prisma.integration.findFirst({
+            where: {
+              name: integration.name,
+              provider: integration.provider,
+            },
+          });
+
+          if (!existing) {
+            await this.createIntegration(
+              integration.name,
+              integration.type,
+              integration.provider,
+              integration.config
+            );
+          }
+        } catch (error) {
+          console.error(`Failed to initialize ${integration.name}:`, error);
+        }
       }
-    });
+    } catch (error) {
+      console.error('Failed to initialize integrations:', error);
+    }
   }
 
   private setupWebhookHandlers(): void {

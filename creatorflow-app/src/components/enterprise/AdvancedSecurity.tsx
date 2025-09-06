@@ -119,7 +119,7 @@ import {
   PlayArrow,
   Pause,
   Stop
-} from '@mui/icons-material';
+} from '@/lib/mui-optimized-imports';
 
 interface SecurityEvent {
   id: string;

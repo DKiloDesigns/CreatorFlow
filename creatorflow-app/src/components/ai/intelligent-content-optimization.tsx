@@ -51,7 +51,7 @@ import {
   Rating,
   Avatar,
   ListItemAvatar
-} from '@mui/material';
+} from '@/lib/mui-optimized-imports';
 import {
   TrendingUp,
   TrendingDown,
@@ -135,7 +135,7 @@ import {
   ViewModule,
   GridView,
   List as ListIcon
-} from '@mui/icons-material';
+} from '@/lib/mui-optimized-imports';
 import { designTokens } from '@/lib/design-system';
 
 interface ContentPiece {

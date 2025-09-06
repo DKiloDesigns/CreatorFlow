@@ -30,7 +30,7 @@ import {
   FlashOn,
   CheckCircle,
   Warning
-} from '@mui/icons-material';
+} from '@/lib/mui-optimized-imports';
 import { useRouter, usePathname } from 'next/navigation';
 import { designTokens } from '@/lib/design-system';
 

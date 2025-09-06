@@ -15,7 +15,7 @@ import {
   Close,
   ExpandMore,
   ExpandLess
-} from '@mui/icons-material';
+} from '@/lib/mui-optimized-imports';
 
 // Styled MUI Alert
 const StyledAlert = styled(MuiAlert)<{

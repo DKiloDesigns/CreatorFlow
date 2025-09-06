@@ -28,7 +28,7 @@ import {
   Lightbulb,
   CheckCircle,
   Star
-} from '@mui/icons-material';
+} from '@/lib/mui-optimized-imports';
 import { useRouter } from 'next/navigation';
 import { designTokens } from '@/lib/design-system';
 

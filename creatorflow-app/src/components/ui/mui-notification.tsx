@@ -23,7 +23,7 @@ import {
   Warning,
   Info,
   NotificationsNone,
-} from '@mui/icons-material';
+} from '@/lib/mui-optimized-imports';
 
 export interface Notification {
   id: string;

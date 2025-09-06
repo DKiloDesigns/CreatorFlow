@@ -35,7 +35,29 @@ export function MinimalCollaborationPanel() {
   return (
     <>
       <Tooltip title="Collaboration">
-        <IconButton onClick={handleClick} color="inherit">
+        <IconButton 
+          onClick={handleClick} 
+          sx={{
+            color: 'text.primary',
+            backgroundColor: 'background.paper',
+            border: '2px solid',
+            borderColor: 'primary.main',
+            '&:hover': {
+              backgroundColor: 'primary.main',
+              color: 'primary.contrastText',
+              borderColor: 'primary.dark',
+            },
+            // Ensure visibility in both light and dark modes
+            minWidth: 44,
+            minHeight: 44,
+            boxShadow: 1,
+            '&:focus-visible': {
+              outline: '2px solid',
+              outlineColor: 'primary.main',
+              outlineOffset: 2,
+            }
+          }}
+        >
           <Users size={20} />
         </IconButton>
       </Tooltip>

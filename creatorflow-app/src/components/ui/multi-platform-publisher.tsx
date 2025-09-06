@@ -57,7 +57,7 @@ import {
   BarChart,
   TrackChanges,
   FlashOn
-} from '@mui/icons-material';
+} from '@/lib/mui-optimized-imports';
 import { toast } from 'sonner';
 
 interface PlatformConfig {

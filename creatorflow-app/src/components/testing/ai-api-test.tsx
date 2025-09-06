@@ -58,7 +58,7 @@ import {
   Code,
   DataUsage,
   Sync
-} from '@mui/icons-material';
+} from '@/lib/mui-optimized-imports';
 import { designTokens } from '@/lib/design-system';
 import {
   useContentOptimization,
@@ -456,7 +456,7 @@ export default function AIAPITest() {
               color: designTokens.colors.ai[600]
             }}
           >
-            <TestTube sx={{ fontSize: 28 }} />
+            <Science sx={{ fontSize: 28 }} />
           </Box>
           <Box>
             <Typography 
@@ -625,7 +625,7 @@ export default function AIAPITest() {
         
         {testResults.length === 0 ? (
           <Box sx={{ textAlign: 'center', py: 8 }}>
-            <TestTube sx={{ fontSize: 64, color: designTokens.colors.neutral[300], mb: 2 }} />
+            <Science sx={{ fontSize: 64, color: designTokens.colors.neutral[300], mb: 2 }} />
             <Typography variant="h6" sx={{ color: designTokens.colors.neutral[500] }}>
               No tests run yet
             </Typography>

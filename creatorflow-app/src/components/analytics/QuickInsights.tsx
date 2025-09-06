@@ -23,7 +23,7 @@ import {
   FileText,
   CheckCircle,
   Warning
-} from '@mui/icons-material';
+} from '@/lib/mui-optimized-imports';
 
 interface QuickInsightsProps {
   user: {

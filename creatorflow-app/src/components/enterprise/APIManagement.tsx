@@ -104,7 +104,7 @@ import {
   BugReport,
   Build,
   IntegrationInstructions
-} from '@mui/icons-material';
+} from '@/lib/mui-optimized-imports';
 
 interface APIKey {
   id: string;

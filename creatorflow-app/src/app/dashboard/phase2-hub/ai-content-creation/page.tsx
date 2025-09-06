@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { Box, Container, Typography, Alert, AlertTitle, Skeleton } from '@mui/material';
-import { AutoAwesome, Brain } from '@mui/icons-material';
+import { AutoAwesome, Psychology as Brain } from '@/lib/mui-optimized-imports';
 import AIContentCreation from '@/components/ui/ai-content-creation';
 import { designTokens } from '@/lib/design-system';
 

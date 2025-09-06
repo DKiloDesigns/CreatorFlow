@@ -52,7 +52,7 @@ import {
   PieChart,
   ShowChart,
   Add as AddIcon
-} from '@mui/icons-material';
+} from '@/lib/mui-optimized-imports';
 import { toast } from 'sonner';
 
 interface PerformanceMetrics {

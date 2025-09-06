@@ -31,7 +31,13 @@ import {
   ChevronUp
 } from 'lucide-react';
 import { useAPIKey } from '@/hooks/use-api-key';
-import MiniCalendar from './_components/mini-calendar';
+import dynamic from 'next/dynamic';
+
+// Lazy load heavy components
+const MiniCalendar = dynamic(() => import('./_components/mini-calendar'), {
+  loading: () => <div>Loading calendar...</div>,
+  ssr: false
+});
 
 export default function DashboardPage() {
   const router = useRouter();
@@ -49,8 +55,8 @@ export default function DashboardPage() {
   });
 
   // State for expandable sections
-  const [contentHubExpanded, setContentHubExpanded] = useState(true);
-  const [analyticsCenterExpanded, setAnalyticsCenterExpanded] = useState(true);
+  const [contentHubExpanded, setContentHubExpanded] = useState(false);
+  const [analyticsCenterExpanded, setAnalyticsCenterExpanded] = useState(false);
 
   // State for calendar modals
   const [createModalOpen, setCreateModalOpen] = useState(false);

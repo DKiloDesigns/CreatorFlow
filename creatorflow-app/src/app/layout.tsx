@@ -5,6 +5,7 @@ import { Providers } from "./providers";
 import { RealTimeNotificationProvider } from "@/components/notifications/real-time-provider";
 import { ServiceWorkerRegistration } from "@/components/ServiceWorkerRegistration";
 import { CriticalCSS } from "@/components/CriticalCSS";
+import ErrorBoundary from "@/components/error/ErrorBoundary";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,12 +25,14 @@ export default function RootLayout({
         <CriticalCSS />
       </head>
       <body className={inter.className}>
-        <Providers>
-          <RealTimeNotificationProvider>
-            {children}
-            <ServiceWorkerRegistration />
-          </RealTimeNotificationProvider>
-        </Providers>
+        <ErrorBoundary>
+          <Providers>
+            <RealTimeNotificationProvider>
+              {children}
+              <ServiceWorkerRegistration />
+            </RealTimeNotificationProvider>
+          </Providers>
+        </ErrorBoundary>
       </body>
     </html>
   );

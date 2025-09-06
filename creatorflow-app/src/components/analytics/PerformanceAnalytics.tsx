@@ -32,7 +32,7 @@ import {
   Message,
   Share,
   CalendarToday
-} from '@mui/icons-material';
+} from '@/lib/mui-optimized-imports';
 
 interface AnalyticsData {
   overview: {

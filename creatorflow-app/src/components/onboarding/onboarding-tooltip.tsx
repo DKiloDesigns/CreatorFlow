@@ -18,7 +18,7 @@ import {
   CheckCircle,
   ArrowForwardIos,
   Help
-} from '@mui/icons-material';
+} from '@/lib/mui-optimized-imports';
 import { designTokens } from '@/lib/design-system';
 
 interface OnboardingTooltipProps {

@@ -53,7 +53,7 @@ import {
   ListItemAvatar,
   Tabs,
   Tab
-} from '@mui/material';
+} from '@/lib/mui-optimized-imports';
 import {
   TrendingUp,
   TrendingDown,
@@ -250,7 +250,7 @@ import {
   CropPortrait as CropPortraitIcon2,
   CropLandscape as CropLandscapeIcon2,
   CropRotate as CropRotateIcon2
-} from '@mui/icons-material';
+} from '@/lib/mui-optimized-imports';
 import { designTokens } from '@/lib/design-system';
 
 interface OrchestrationRule {

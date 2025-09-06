@@ -71,37 +71,21 @@ export default function AnalyticsPage() {
   const renderTabContent = () => {
     switch (activeTab) {
       case 0:
-        return <QuickInsights 
-          user={user} 
-          analyticsData={{
-            totalEngagement: 12500,
-            engagementRate: 4.2,
-            growthRate: 15
-          }}
-        />;
-      case 1:
         return <PerformanceAnalytics />;
-      case 2:
+      case 1:
         return <BusinessIntelligence />;
-      case 3:
+      case 2:
         return <PredictiveAnalytics />;
-      case 4:
+      case 3:
         return <EnterpriseAnalytics />;
-      case 5:
+      case 4:
         return <AdvancedPerformanceMetrics />;
-      case 6:
+      case 5:
         return <AdvancedAudienceIntelligence />;
-      case 7:
+      case 6:
         return <CompetitiveIntelligence />;
       default:
-        return <QuickInsights 
-          user={user} 
-          analyticsData={{
-            totalEngagement: 12500,
-            engagementRate: 4.2,
-            growthRate: 15
-          }}
-        />;
+        return <PerformanceAnalytics />;
     }
   };
 
@@ -111,6 +95,21 @@ export default function AnalyticsPage() {
         <Typography variant="h4" gutterBottom>
           Analytics Dashboard
         </Typography>
+        
+        {/* Quick Insights Section - Always visible above tabs */}
+        <Box sx={{ mb: 4 }}>
+          <Typography variant="h6" sx={{ mb: 2 }}>
+            Quick Insights
+          </Typography>
+          <QuickInsights 
+            user={user} 
+            analyticsData={{
+              totalEngagement: 12500,
+              engagementRate: 4.2,
+              growthRate: 15
+            }}
+          />
+        </Box>
         
         {/* Conditional Rendering: Mobile Buttons vs Desktop Tabs */}
         {isMobile ? (
@@ -202,7 +201,6 @@ export default function AnalyticsPage() {
           // Desktop: Show traditional tabs
           <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 2 }}>
             <Tabs value={activeTab} onChange={(_, newValue) => setActiveTab(newValue)}>
-              <Tab label="Quick Insights" />
               <Tab label="Performance Analytics" />
               <Tab label="Business Intelligence" />
               <Tab label="Predictive Analytics" />

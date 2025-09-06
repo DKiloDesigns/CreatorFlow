@@ -38,7 +38,7 @@ import {
   TrendingDown,
   Schedule,
   Lock
-} from '@mui/icons-material';
+} from '@/lib/mui-optimized-imports';
 import { designTokens } from '@/lib/design-system';
 
 // Platform configuration with icons and colors

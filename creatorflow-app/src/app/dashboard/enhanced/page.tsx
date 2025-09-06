@@ -31,7 +31,7 @@ import {
   Schedule,
   Analytics,
   AutoAwesome
-} from '@mui/icons-material';
+} from '@/lib/mui-optimized-imports';
 
 // Import Phase 2 components
 import AIContentIntelligence from '@/components/ui/ai-content-intelligence';

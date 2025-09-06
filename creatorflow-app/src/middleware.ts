@@ -1,11 +1,8 @@
-// File temporarily disabled for troubleshooting. See middleware.ts.bak
-
-// creatorflow-app/src/middleware.ts
-// Keep Node.js runtime explicit for now
-export const runtime = 'nodejs'; 
-
 import { NextRequest, NextResponse } from 'next/server';
 import { securityManager } from '@/lib/security-manager';
+import { applySecurityHeaders, getSecurityConfig } from '@/lib/security-headers';
+import { RateLimiter } from '@/lib/input-validation';
+import { authSecurity } from '@/lib/auth-security';
 
 export async function middleware(request: NextRequest) {
   try {
@@ -20,17 +17,29 @@ export async function middleware(request: NextRequest) {
       pathname.startsWith('/api/health') ||
       pathname.includes('.')
     ) {
-      return NextResponse.next();
+      const response = NextResponse.next();
+      return applySecurityHeaders(response, getSecurityConfig());
+    }
+
+    // Rate limiting for all requests
+    const rateLimitCheck = RateLimiter.checkLimit(ipAddress, 100, 60 * 1000); // 100 requests per minute
+    if (!rateLimitCheck.allowed) {
+      const response = NextResponse.json(
+        { error: 'Rate limit exceeded', retryAfter: rateLimitCheck.resetTime },
+        { status: 429 }
+      );
+      return applySecurityHeaders(response, getSecurityConfig());
     }
 
     // Security checks for API routes
     if (pathname.startsWith('/api/')) {
       const securityCheck = await performAPISecurityCheck(request, ipAddress, userAgent);
       if (!securityCheck.allowed) {
-        return NextResponse.json(
+        const response = NextResponse.json(
           { error: 'Security check failed', reason: securityCheck.reason },
           { status: 403 }
         );
+        return applySecurityHeaders(response, getSecurityConfig());
       }
     }
 
@@ -38,18 +47,20 @@ export async function middleware(request: NextRequest) {
     if (pathname.startsWith('/admin/') || pathname.startsWith('/security')) {
       const adminCheck = await performAdminSecurityCheck(request, ipAddress, userAgent);
       if (!adminCheck.allowed) {
-        return NextResponse.redirect(new URL('/dashboard', request.url));
+        const response = NextResponse.redirect(new URL('/dashboard', request.url));
+        return applySecurityHeaders(response, getSecurityConfig());
       }
     }
 
-    // Rate limiting for sensitive operations
+    // Enhanced rate limiting for sensitive operations
     if (pathname.startsWith('/api/auth/') || pathname.includes('login')) {
-      const rateLimitCheck = await performRateLimitCheck(request, ipAddress);
-      if (!rateLimitCheck.allowed) {
-        return NextResponse.json(
-          { error: 'Rate limit exceeded', retryAfter: rateLimitCheck.retryAfter },
+      const authRateLimit = RateLimiter.checkLimit(ipAddress, 5, 15 * 60 * 1000); // 5 attempts per 15 minutes
+      if (!authRateLimit.allowed) {
+        const response = NextResponse.json(
+          { error: 'Too many authentication attempts', retryAfter: authRateLimit.resetTime },
           { status: 429 }
         );
+        return applySecurityHeaders(response, getSecurityConfig());
       }
     }
 
@@ -59,22 +70,21 @@ export async function middleware(request: NextRequest) {
       // Log threats but don't block unless critical
       const criticalThreats = threatCheck.threats.filter(t => t.confidence > 0.8);
       if (criticalThreats.length > 0) {
-        return NextResponse.json(
+        const response = NextResponse.json(
           { error: 'Security threat detected', threats: criticalThreats },
           { status: 403 }
         );
+        return applySecurityHeaders(response, getSecurityConfig());
       }
     }
 
-    // Add security headers
     const response = NextResponse.next();
-    addSecurityHeaders(response);
-
-    return response;
+    return applySecurityHeaders(response, getSecurityConfig());
 
   } catch (error) {
     console.error('Security middleware error:', error);
-    return NextResponse.next();
+    const response = NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return applySecurityHeaders(response, getSecurityConfig());
   }
 }
 
@@ -133,16 +143,22 @@ async function performAdminSecurityCheck(
       return { allowed: false, reason: 'Authentication required' };
     }
 
-    // Check if user has admin permissions
-    if (session.user.email !== 'renee@creatorflow.com') {
+    // Check if user has admin role in database
+    const user = await prisma.user.findUnique({
+      where: { id: session.user.id },
+      select: { role: true, email: true }
+    });
+
+    if (!user || user.role !== 'ADMIN') {
       await securityManager.logSecurityEvent('UNAUTHORIZED_ADMIN_ACCESS', 'high', {
         userId: session.user.id,
         email: session.user.email,
+        userRole: user?.role || 'unknown',
         pathname: request.nextUrl.pathname,
         ipAddress,
         userAgent,
       });
-      return { allowed: false, reason: 'Insufficient permissions' };
+      return { allowed: false, reason: 'Insufficient permissions - Admin role required' };
     }
 
     return { allowed: true };

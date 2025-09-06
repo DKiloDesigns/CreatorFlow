@@ -28,6 +28,7 @@ import {
   IconButton,
   Tooltip,
   Divider,
+  InputAdornment,
   FormControl,
   FormLabel,
   FormGroup,
@@ -283,10 +284,58 @@ export default function AccountsPage() {
   const [connecting, setConnecting] = useState<string | null>(null);
   const [showMastodonDialog, setShowMastodonDialog] = useState(false);
   const [mastodonInstance, setMastodonInstance] = useState('');
+  
+  // Search and filter state
+  const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState<'all' | 'social' | 'content' | 'business'>('all');
+  const [showAllProviders, setShowAllProviders] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     fetchData();
   }, []);
+
+  // Mobile detection
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Filter providers based on search and category
+  const filteredProviders = React.useMemo(() => {
+    let filtered = PROVIDERS;
+    
+    // Filter by search term
+    if (searchTerm) {
+      filtered = filtered.filter(provider => 
+        provider.name.toLowerCase().includes(searchTerm.toLowerCase())
+      );
+    }
+    
+    // Filter by category
+    if (selectedCategory !== 'all') {
+      const categoryMap = {
+        social: ['facebook', 'instagram', 'twitter', 'linkedin', 'youtube', 'tiktok', 'pinterest', 'threads', 'whatsapp', 'messenger', 'wechat', 'telegram', 'reddit', 'snapchat', 'gmb', 'mastodon'],
+        content: ['github', 'discord', 'slack', 'medium', 'substack', 'twitch', 'vimeo', 'producthunt'],
+        business: ['notion', 'mailchimp', 'klaviyo', 'sms']
+      };
+      filtered = filtered.filter(provider => 
+        categoryMap[selectedCategory].includes(provider.id)
+      );
+    }
+    
+    // Limit on mobile if not showing all
+    if (isMobile && !showAllProviders) {
+      filtered = filtered.slice(0, 12);
+    }
+    
+    return filtered;
+  }, [searchTerm, selectedCategory, isMobile, showAllProviders]);
 
   const fetchData = async () => {
     setLoading(true);
@@ -489,23 +538,106 @@ export default function AccountsPage() {
             avatar={<Plus style={{ width: 24, height: 24, color: '#10b981' }} />}
           />
           <CardContent>
-            <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(3, 1fr)', lg: 'repeat(4, 1fr)' }, gap: 2 }}>
-              {PROVIDERS.map((provider) => {
+            {/* Search/Filter for Mobile */}
+            <Box sx={{ mb: 3 }}>
+              <TextField
+                fullWidth
+                placeholder="Search platforms..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Search size={20} />
+                    </InputAdornment>
+                  ),
+                }}
+                sx={{ mb: 2 }}
+              />
+              <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+                <Chip
+                  label="All"
+                  onClick={() => setSelectedCategory('all')}
+                  color={selectedCategory === 'all' ? 'primary' : 'default'}
+                  size="small"
+                />
+                <Chip
+                  label="Social Media"
+                  onClick={() => setSelectedCategory('social')}
+                  color={selectedCategory === 'social' ? 'primary' : 'default'}
+                  size="small"
+                />
+                <Chip
+                  label="Content"
+                  onClick={() => setSelectedCategory('content')}
+                  color={selectedCategory === 'content' ? 'primary' : 'default'}
+                  size="small"
+                />
+                <Chip
+                  label="Business"
+                  onClick={() => setSelectedCategory('business')}
+                  color={selectedCategory === 'business' ? 'primary' : 'default'}
+                  size="small"
+                />
+              </Box>
+            </Box>
+
+            {/* Mobile-Optimized Grid */}
+            <Box sx={{ 
+              display: 'grid', 
+              gridTemplateColumns: { 
+                xs: 'repeat(2, 1fr)', 
+                sm: 'repeat(3, 1fr)', 
+                md: 'repeat(4, 1fr)', 
+                lg: 'repeat(5, 1fr)' 
+              }, 
+              gap: { xs: 1.5, sm: 2 },
+              maxHeight: { xs: '400px', sm: 'none' },
+              overflowY: { xs: 'auto', sm: 'visible' }
+            }}>
+              {filteredProviders.map((provider) => {
                 const isConnected = socialAccounts.some(acc => acc.platform === provider.id);
                 const isConnecting = connecting === provider.id;
                 
                 return (
                   <Box key={provider.id}>
-                    <Card variant="outlined">
-                      <CardContent sx={{ textAlign: 'center', py: 2 }}>
-                        <Typography variant="h4" sx={{ mb: 1 }}>
+                    <Card 
+                      variant="outlined" 
+                      sx={{ 
+                        height: '100%',
+                        transition: 'all 0.2s ease-in-out',
+                        '&:hover': {
+                          transform: 'translateY(-2px)',
+                          boxShadow: 2
+                        }
+                      }}
+                    >
+                      <CardContent sx={{ 
+                        textAlign: 'center', 
+                        py: { xs: 1.5, sm: 2 },
+                        px: { xs: 1, sm: 2 }
+                      }}>
+                        <Typography variant="h4" sx={{ mb: 1, fontSize: { xs: '1.5rem', sm: '2rem' } }}>
                           {provider.icon}
                         </Typography>
-                        <Typography variant="body2" sx={{ fontWeight: 'bold', mb: 1 }}>
+                        <Typography 
+                          variant="body2" 
+                          sx={{ 
+                            fontWeight: 'bold', 
+                            mb: 1,
+                            fontSize: { xs: '0.75rem', sm: '0.875rem' },
+                            lineHeight: 1.2
+                          }}
+                        >
                           {provider.name}
                         </Typography>
                         {isConnected ? (
-                          <Chip label="Connected" color="success" size="small" />
+                          <Chip 
+                            label="Connected" 
+                            color="success" 
+                            size="small"
+                            sx={{ fontSize: { xs: '0.7rem', sm: '0.75rem' } }}
+                          />
                         ) : (
                           <Button
                             variant="outlined"
@@ -518,7 +650,12 @@ export default function AccountsPage() {
                                 handleConnect(provider.id);
                               }
                             }}
-                            startIcon={isConnecting ? <CircularProgress size={16} /> : <Plus style={{ width: 16, height: 16 }} />}
+                            startIcon={isConnecting ? <CircularProgress size={14} /> : <Plus style={{ width: 14, height: 14 }} />}
+                            sx={{ 
+                              fontSize: { xs: '0.7rem', sm: '0.75rem' },
+                              minWidth: { xs: 'auto', sm: '80px' },
+                              px: { xs: 1, sm: 2 }
+                            }}
                           >
                             {isConnecting ? 'Connecting...' : 'Connect'}
                           </Button>
@@ -529,6 +666,19 @@ export default function AccountsPage() {
                 );
               })}
             </Box>
+
+            {/* Show More/Less for Mobile */}
+            {isMobile && filteredProviders.length > 12 && (
+              <Box sx={{ textAlign: 'center', mt: 2 }}>
+                <Button
+                  variant="outlined"
+                  onClick={() => setShowAllProviders(!showAllProviders)}
+                  endIcon={showAllProviders ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                >
+                  {showAllProviders ? 'Show Less' : `Show All ${PROVIDERS.length} Platforms`}
+                </Button>
+              </Box>
+            )}
           </CardContent>
         </Card>
 

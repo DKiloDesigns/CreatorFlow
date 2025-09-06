@@ -7,6 +7,7 @@ import {
   Home, 
   PenTool, 
   BarChart3, 
+  Image,
   User,
   Upload
 } from 'lucide-react';
@@ -27,6 +28,12 @@ const navItems = [
     activePattern: /^\/dashboard$/
   },
   {
+    href: '/dashboard/media',
+    icon: Image,
+    label: 'Media',
+    activePattern: /^\/dashboard\/media/
+  },
+  {
     href: '/dashboard/content',
     icon: PenTool,
     label: 'Create',
@@ -38,7 +45,6 @@ const navItems = [
     label: 'Analytics',
     activePattern: /^\/dashboard\/analytics/
   },
-
   {
     href: '/dashboard/profile',
     icon: User,

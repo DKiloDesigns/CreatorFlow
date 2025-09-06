@@ -35,7 +35,7 @@ import {
   CheckCircle as PublishedIcon,
   Drafts as DraftIcon,
   Close as CloseIcon
-} from '@mui/icons-material';
+} from '@/lib/mui-optimized-imports';
 
 interface ContentItem {
   id: string;

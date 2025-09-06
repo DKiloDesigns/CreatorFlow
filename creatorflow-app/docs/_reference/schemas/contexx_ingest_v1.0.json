@@ -1,0 +1,91 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Contexx Ingest Schema v1.0",
+  "description": "Schema for ingesting session data into Contexx.ai knowledge base",
+  "type": "object",
+  "required": ["schemaVersion", "eventTimestampUTC", "source", "content"],
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "description": "Version of the schema being used",
+      "example": "1.0.0"
+    },
+    "eventTimestampUTC": {
+      "type": "string",
+      "format": "date-time",
+      "description": "UTC timestamp when the event occurred",
+      "example": "2025-09-06T03:29:27Z"
+    },
+    "source": {
+      "type": "object",
+      "required": ["agent", "sessionId", "project"],
+      "properties": {
+        "agent": {
+          "type": "string",
+          "description": "Name of the AI agent",
+          "example": "Lloyd Alexander"
+        },
+        "sessionId": {
+          "type": "string",
+          "description": "Unique session identifier",
+          "example": "dfai_session_20250906_001"
+        },
+        "project": {
+          "type": "string",
+          "description": "Project name",
+          "example": "CreatorFlow"
+        }
+      }
+    },
+    "content": {
+      "type": "object",
+      "required": ["type", "title", "summary"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["session_summary", "technical_implementation", "problem_solution", "learning_insight"],
+          "description": "Type of content being ingested"
+        },
+        "title": {
+          "type": "string",
+          "description": "Title of the content",
+          "example": "Admin Panel UI/UX Optimization Complete"
+        },
+        "summary": {
+          "type": "string",
+          "description": "Brief summary of the content",
+          "example": "Successfully completed admin panel optimization with bottom bar overlap fixes, compact card redesign, and role-based access control."
+        },
+        "details": {
+          "type": "string",
+          "description": "Detailed description of the content"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Tags for categorization",
+          "example": ["admin-panel", "ui-ux", "mobile-optimization", "role-based-access"]
+        },
+        "metrics": {
+          "type": "object",
+          "description": "Quantitative metrics related to the content",
+          "properties": {
+            "completion_percentage": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 100
+            },
+            "files_modified": {
+              "type": "number"
+            },
+            "features_implemented": {
+              "type": "number"
+            }
+          }
+        }
+      }
+    }
+  }
+}

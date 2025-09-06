@@ -51,7 +51,7 @@ import {
   ExpandMore,
   NavigateNext,
   NavigateBefore
-} from '@mui/icons-material';
+} from '@/lib/mui-optimized-imports';
 
 interface BusinessMetrics {
   roi: {

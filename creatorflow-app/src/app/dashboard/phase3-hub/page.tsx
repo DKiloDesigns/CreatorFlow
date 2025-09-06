@@ -19,7 +19,7 @@ import {
 } from '@mui/material';
 import {
   AutoAwesome,
-
+  Psychology,
   TrendingUp,
   ContentCopy,
   Schedule,
@@ -28,11 +28,10 @@ import {
   Lightbulb,
   CheckCircle,
   Star,
-  Psychology,
   SmartToy,
   Hub,
   Code
-} from '@mui/icons-material';
+} from '@/lib/mui-optimized-imports';
 import { useRouter } from 'next/navigation';
 import { designTokens } from '@/lib/design-system';
 
@@ -155,7 +154,7 @@ export default function Phase3HubPage() {
       id: 'content-performance-ai',
       title: 'Content Performance AI',
       description: 'AI-powered content analysis that provides actionable insights and optimization recommendations.',
-      icon: Brain,
+      icon: Psychology,
       route: '/dashboard/phase3-hub/content-performance-ai',
       status: 'available',
       difficulty: 'intermediate',
@@ -495,7 +494,7 @@ export default function Phase3HubPage() {
                     <Chip
                       label="AI Powered"
                       size="small"
-                      icon={<Brain sx={{ fontSize: 12 }} />}
+                      icon={<Psychology sx={{ fontSize: 12 }} />}
                       sx={{
                         background: designTokens.colors.ai[100],
                         color: designTokens.colors.ai[700],

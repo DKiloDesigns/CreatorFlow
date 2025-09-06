@@ -76,7 +76,7 @@ import {
   TrendingUp as TrendingUpIcon,
   TrendingDown as TrendingDownIcon,
   TrendingFlat as TrendingFlatIcon
-} from '@mui/icons-material';
+} from '@/lib/mui-optimized-imports';
 import { designTokens } from '@/lib/design-system';
 import { useContentPrediction, useAudienceAnalysis, useAIInsights } from '@/hooks/use-ai-api';
 

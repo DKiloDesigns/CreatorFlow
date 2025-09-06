@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Box, Typography, CircularProgress, Card, CardContent, Button } from '@mui/material';
-import { AutoAwesome, Rocket } from '@mui/icons-material';
+import { AutoAwesome, Rocket } from '@/lib/mui-optimized-imports';
 
 export default function AIToolsRedirect() {
   const router = useRouter();

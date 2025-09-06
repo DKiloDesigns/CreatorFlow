@@ -50,7 +50,8 @@ import {
   Users,
   Eye,
   Heart,
-  Share2
+  Share2,
+  CalendarDays
 } from 'lucide-react';
 
 // Mock data for now - will be replaced with real API calls
@@ -97,8 +98,7 @@ export default function ContentPage() {
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [uploadModalOpen, setUploadModalOpen] = useState(false);
   const [bulkScheduleModalOpen, setBulkScheduleModalOpen] = useState(false);
-  const [contentHubExpanded, setContentHubExpanded] = useState(true);
-  const [analyticsExpanded, setAnalyticsExpanded] = useState(true);
+  const [contentHubExpanded, setContentHubExpanded] = useState(false);
   const [calendarView, setCalendarView] = useState<'day' | 'week' | 'month'>('week');
   const [selectedDate, setSelectedDate] = useState(new Date());
 
@@ -213,7 +213,7 @@ export default function ContentPage() {
       }}>
         {/* View Switcher */}
         <Box sx={{ display: 'flex', gap: 1 }}>
-          {(['day', 'week'] as const).map((view) => (
+          {(['day', 'week', 'month'] as const).map((view) => (
             <Tooltip key={view} title={`${view.charAt(0).toUpperCase() + view.slice(1)} View`}>
               <IconButton
                 size="small"
@@ -226,7 +226,9 @@ export default function ContentPage() {
                   }
                 }}
               >
-                <Calendar size={16} />
+                {view === 'day' && <Calendar size={16} />}
+                {view === 'week' && <CalendarDays size={16} />}
+                {view === 'month' && <Calendar size={16} />}
               </IconButton>
             </Tooltip>
           ))}
@@ -282,9 +284,10 @@ export default function ContentPage() {
           <>
             {calendarView === 'day' && renderDayView(now)}
             {calendarView === 'week' && renderWeekView(now)}
+            {calendarView === 'month' && renderMonthView(now)}
           </>
         )}
-                  </Box>
+      </Box>
     );
   };
 
@@ -525,6 +528,136 @@ export default function ContentPage() {
     </Box>
   );
 
+  const renderMonthView = (date: Date) => (
+    <Box sx={{ 
+      height: 'calc(100% - 80px)',
+      overflow: 'auto',
+      p: 1,
+      pb: 2
+    }}>
+      <Grid container spacing={0.5}>
+        {/* Month Header */}
+        <Grid item xs={12}>
+          <Box sx={{ 
+            height: 40, 
+            display: 'flex', 
+            alignItems: 'center', 
+            justifyContent: 'center',
+            borderBottom: '1px solid',
+            borderColor: 'divider',
+            backgroundColor: 'action.hover'
+          }}>
+            <Typography variant="h6" sx={{ fontWeight: 600 }}>
+              {date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+            </Typography>
+          </Box>
+        </Grid>
+
+        {/* Day Headers */}
+        {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
+          <Grid item xs key={day}>
+            <Box sx={{ 
+              height: 40, 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'center',
+              borderBottom: '1px solid',
+              borderColor: 'divider',
+              backgroundColor: 'action.hover'
+            }}>
+              <Typography variant="caption" sx={{ fontWeight: 600 }}>
+                {day}
+              </Typography>
+            </Box>
+          </Grid>
+        ))}
+
+        {/* Month Days */}
+        {Array.from({ length: 42 }, (_, dayIndex) => {
+          const monthStart = new Date(date.getFullYear(), date.getMonth(), 1);
+          const firstDay = monthStart.getDay();
+          const dayDate = new Date(monthStart);
+          dayDate.setDate(dayIndex - firstDay + 1);
+          
+          const dateKey = dayDate.toISOString().split('T')[0];
+          const dayPosts = calendarPosts[dateKey] || [];
+          const isCurrentMonth = dayDate.getMonth() === date.getMonth();
+          const isToday = dayDate.toDateString() === new Date().toDateString();
+          
+          return (
+            <Grid item xs key={dayIndex}>
+              <Box
+                sx={{
+                  height: 80,
+                  border: '1px solid',
+                  borderColor: 'divider',
+                  p: 0.5,
+                  cursor: 'pointer',
+                  backgroundColor: isToday ? 'primary.light' : 
+                                 isCurrentMonth ? 'background.paper' : 'action.hover',
+                  '&:hover': {
+                    backgroundColor: isToday ? 'primary.main' : 'action.hover'
+                  }
+                }}
+                onClick={() => {
+                  setSelectedDate(dayDate);
+                  if (dayPosts.length > 0) {
+                    console.log('Posts for this day:', dayPosts);
+                  }
+                }}
+              >
+                <Typography 
+                  variant="caption" 
+                  sx={{ 
+                    color: isCurrentMonth ? 'text.primary' : 'text.secondary',
+                    fontWeight: isToday ? 600 : 400
+                  }}
+                >
+                  {dayDate.getDate()}
+                </Typography>
+                
+                {/* Show posts for this day */}
+                {dayPosts.slice(0, 2).map((post, postIndex) => (
+                  <Box
+                    key={post.id}
+                    sx={{
+                      mt: 0.5,
+                      p: 0.5,
+                      backgroundColor: post.status === 'scheduled' ? 'primary.main' : 
+                                     post.status === 'published' ? 'success.main' : 'warning.main',
+                      borderRadius: 0.5,
+                      overflow: 'hidden'
+                    }}
+                  >
+                    <Typography 
+                      variant="caption" 
+                      sx={{ 
+                        color: 'white',
+                        fontSize: '0.65rem',
+                        display: 'block',
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis'
+                      }}
+                    >
+                      {post.contentText?.substring(0, 15)}...
+                    </Typography>
+                  </Box>
+                ))}
+                
+                {dayPosts.length > 2 && (
+                  <Typography variant="caption" sx={{ color: 'text.secondary', fontSize: '0.6rem' }}>
+                    +{dayPosts.length - 2} more
+                  </Typography>
+                )}
+              </Box>
+            </Grid>
+          );
+        })}
+      </Grid>
+    </Box>
+  );
+
   
 
   const renderContentHub = () => (
@@ -591,69 +724,6 @@ export default function ContentPage() {
                 </Card>
   );
 
-  const renderAnalyticsCenter = () => (
-    <Card sx={{ mb: 3 }}>
-      <CardHeader
-        action={
-          <IconButton onClick={() => setAnalyticsExpanded(!analyticsExpanded)}>
-            {analyticsExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
-          </IconButton>
-        }
-        title="Analytics Center"
-        subheader="Key performance metrics"
-      />
-      <Collapse in={analyticsExpanded}>
-        <CardContent>
-          <Grid container spacing={3}>
-            <Grid item xs={12} sm={6} md={3}>
-              <Box sx={{ textAlign: 'center', p: 2 }}>
-                <Eye size={32} color="#1976d2" />
-                <Typography variant="h6" sx={{ mt: 1, fontWeight: 600 }}>
-                  {posts.reduce((sum, post) => sum + (post.views || 0), 0).toLocaleString()}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Total Views
-                </Typography>
-              </Box>
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <Box sx={{ textAlign: 'center', p: 2 }}>
-                <Heart size={32} color="#e91e63" />
-                <Typography variant="h6" sx={{ mt: 1, fontWeight: 600 }}>
-                  {posts.reduce((sum, post) => sum + (post.likes || 0), 0).toLocaleString()}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Total Likes
-                </Typography>
-              </Box>
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <Box sx={{ textAlign: 'center', p: 2 }}>
-                <Share2 size={32} color="#4caf50" />
-                <Typography variant="h6" sx={{ mt: 1, fontWeight: 600 }}>
-                  {posts.reduce((sum, post) => sum + (post.comments || 0), 0).toLocaleString()}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Total Comments
-                </Typography>
-              </Box>
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <Box sx={{ textAlign: 'center', p: 2 }}>
-                <TrendingUp size={32} color="#ff9800" />
-                <Typography variant="h6" sx={{ mt: 1, fontWeight: 600 }}>
-                  {posts.filter(post => post.status === 'published').length}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  Published Posts
-                </Typography>
-              </Box>
-            </Grid>
-          </Grid>
-        </CardContent>
-      </Collapse>
-    </Card>
-  );
 
   const renderContentSection = () => {
     switch (activeTab) {
@@ -692,9 +762,6 @@ export default function ContentPage() {
           
       {/* Content Hub */}
       {renderContentHub()}
-
-      {/* Analytics Center */}
-      {renderAnalyticsCenter()}
 
       {/* Main Content Area */}
       <Card>

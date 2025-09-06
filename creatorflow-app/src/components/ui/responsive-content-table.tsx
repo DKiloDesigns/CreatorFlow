@@ -23,7 +23,7 @@ import {
   Edit as EditIcon,
   ContentCopy as CopyIcon,
   Delete as DeleteIcon
-} from '@mui/icons-material';
+} from '@/lib/mui-optimized-imports';
 
 interface ContentItem {
   id: string;

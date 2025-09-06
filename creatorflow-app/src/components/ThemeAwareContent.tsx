@@ -4,8 +4,8 @@ import Link from "next/link";
 import { FEATURES, HOW_IT_WORKS, TESTIMONIALS } from "@/data/landing";
 import { FeatureCard } from "@/components/FeatureCard";
 import { TestimonialCard } from "@/components/TestimonialCard";
-import { useAppTheme } from "@/components/providers/mui-theme-provider";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { useMinimalTheme } from "@/contexts/MinimalThemeContext";
+import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { Footer } from "@/components/Footer";
 import { 
   Button, 
@@ -49,8 +49,7 @@ const PLANS = [
 ];
 
 export default function ThemeAwareContent() {
-  const { theme } = useAppTheme();
-  const isDark = theme === 'dark';
+  const { isDark } = useMinimalTheme();
   
   return (
     <Box sx={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', bgcolor: 'background.default', overflowX: 'hidden' }}>

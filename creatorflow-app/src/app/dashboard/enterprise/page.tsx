@@ -22,7 +22,7 @@ import {
   Campaign,
   Business,
   IntegrationInstructions
-} from '@mui/icons-material';
+} from '@/lib/mui-optimized-imports';
 
 export default function EnterpriseDashboard() {
   const [activeTab, setActiveTab] = useState(0);

@@ -112,7 +112,7 @@ import {
   ContentCopy,
   Schedule,
   Settings as SettingsIcon
-} from '@mui/icons-material';
+} from '@/lib/mui-optimized-imports';
 import { designTokens } from '@/lib/design-system';
 
 // Performance metric interface

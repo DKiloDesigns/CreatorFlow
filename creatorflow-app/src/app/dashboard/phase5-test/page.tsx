@@ -20,7 +20,7 @@ import {
   Security,
   Rocket,
   Star
-} from '@mui/icons-material';
+} from '@/lib/mui-optimized-imports';
 import { designTokens } from '@/lib/design-system';
 import EnhancedTeamManagement from '@/components/enterprise/enhanced-team-management';
 import EnhancedEnterpriseAnalytics from '@/components/enterprise/enhanced-enterprise-analytics';

@@ -11,8 +11,10 @@ import {
   Grid,
   Chip
 } from '@mui/material';
-import { Bell, Activity, Settings, AlertTriangle, CheckCircle } from 'lucide-react';
+import { Bell, Activity, Settings, AlertTriangle, CheckCircle, Zap, Info, Send } from 'lucide-react';
 import { NotificationToast } from '@/components/ui/notification-badge';
+import { CardDescription } from '@/components/ui/base/Card';
+import { Badge } from '@/components/ui/badge';
 
 export default function NotificationTestPage() {
   const [isLoading, setIsLoading] = useState(false);
