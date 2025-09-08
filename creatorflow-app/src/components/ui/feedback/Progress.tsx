@@ -1,6 +1,7 @@
 'use client';
 
 import React, { forwardRef } from 'react';
+import { Box, Typography, LinearProgress } from '@mui/material';
 import { cn } from '@/lib/utils';
 
 export interface ProgressProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -37,119 +38,153 @@ const Progress = forwardRef<HTMLDivElement, ProgressProps>(
   }, ref) => {
     const percentage = Math.min(Math.max((value / max) * 100, 0), 100);
     
-    const variantClasses = {
-      default: 'bg-primary',
-      success: 'bg-success',
-      warning: 'bg-warning',
-      error: 'bg-error',
-      info: 'bg-info',
+    const getVariantColor = () => {
+      switch (variant) {
+        case 'success': return 'success';
+        case 'warning': return 'warning';
+        case 'error': return 'error';
+        case 'info': return 'info';
+        default: return 'primary';
+      }
     };
 
-    const sizeClasses = {
-      sm: 'h-2',
-      md: 'h-3',
-      lg: 'h-4',
+    const getSize = () => {
+      switch (size) {
+        case 'sm': return 4;
+        case 'md': return 6;
+        case 'lg': return 8;
+        default: return 6;
+      }
     };
 
-    const roundedClasses = {
-      sm: 'rounded',
-      md: 'rounded-md',
-      lg: 'rounded-lg',
-      full: 'rounded-full',
-    };
-
-    const valuePositionClasses = {
-      top: 'flex-col-reverse',
-      bottom: 'flex-col',
-      left: 'flex-row-reverse items-center gap-3',
-      right: 'flex-row items-center gap-3',
-      inside: 'relative',
-    };
-
-    const valueDisplay = (
-      <div className="text-sm font-medium text-muted-foreground min-w-[3rem] text-right">
+    const valueDisplay = showValue ? (
+      <Typography 
+        variant="body2" 
+        sx={{ 
+          fontWeight: 500, 
+          color: 'text.secondary', 
+          minWidth: '3rem', 
+          textAlign: 'right' 
+        }}
+      >
         {Math.round(percentage)}%
-      </div>
-    );
+      </Typography>
+    ) : null;
 
     const progressBar = (
-      <div className={cn(
-        'relative w-full bg-muted overflow-hidden',
-        sizeClasses[size],
-        roundedClasses[rounded],
-        fullWidth && 'w-full'
-      )}>
-        <div
-          className={cn(
-            'h-full transition-all duration-500 ease-out',
-            variantClasses[variant],
-            roundedClasses[rounded],
-            animated && 'animate-pulse',
-            striped && 'bg-gradient-to-r from-transparent via-white/20 to-transparent bg-[length:20px_100%] animate-pulse'
-          )}
-          style={{ width: `${percentage}%` }}
-          role="progressbar"
-          aria-valuenow={value}
-          aria-valuemin={0}
-          aria-valuemax={max}
-          aria-label={label}
+      <Box sx={{ position: 'relative', width: '100%' }}>
+        <LinearProgress
+          variant="determinate"
+          value={percentage}
+          color={getVariantColor()}
+          sx={{
+            height: getSize(),
+            borderRadius: rounded === 'full' ? '50px' : rounded === 'lg' ? 2 : rounded === 'sm' ? 0.5 : 1,
+            backgroundColor: 'action.hover',
+            '& .MuiLinearProgress-bar': {
+              borderRadius: rounded === 'full' ? '50px' : rounded === 'lg' ? 2 : rounded === 'sm' ? 0.5 : 1,
+            }
+          }}
         />
-      </div>
+        {valuePosition === 'inside' && showValue && (
+          <Box
+            sx={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <Typography
+              variant="caption"
+              sx={{
+                fontWeight: 500,
+                color: 'primary.contrastText',
+                fontSize: '0.75rem',
+              }}
+            >
+              {Math.round(percentage)}%
+            </Typography>
+          </Box>
+        )}
+      </Box>
     );
 
     if (valuePosition === 'inside') {
       return (
-        <div ref={ref} className={cn('space-y-2', fullWidth && 'w-full', className)} {...props}>
+        <Box
+          ref={ref}
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 1,
+            width: fullWidth ? '100%' : 'auto',
+          }}
+          className={cn(className)}
+          {...props}
+        >
           {label && (
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-medium text-foreground">{label}</span>
-              {showValue && valueDisplay}
-            </div>
+            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <Typography variant="body2" sx={{ fontWeight: 500, color: 'text.primary' }}>
+                {label}
+              </Typography>
+            </Box>
           )}
-          
-          <div className="relative">
-            {progressBar}
-            {showValue && (
-              <div className="absolute inset-0 flex items-center justify-center">
-                <span className="text-xs font-medium text-primary-foreground">
-                  {Math.round(percentage)}%
-                </span>
-              </div>
-            )}
-          </div>
-          
+          {progressBar}
           {helperText && (
-            <p className="text-xs text-muted-foreground">{helperText}</p>
+            <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+              {helperText}
+            </Typography>
           )}
-        </div>
+        </Box>
       );
     }
 
+    const getFlexDirection = () => {
+      switch (valuePosition) {
+        case 'top': return 'column-reverse';
+        case 'bottom': return 'column';
+        case 'left': return 'row-reverse';
+        case 'right': return 'row';
+        default: return 'column';
+      }
+    };
+
     return (
-      <div ref={ref} className={cn('space-y-2', fullWidth && 'w-full', className)} {...props}>
+      <Box
+        ref={ref}
+        sx={{
+          display: 'flex',
+          flexDirection: getFlexDirection(),
+          gap: valuePosition === 'left' || valuePosition === 'right' ? 2 : 1,
+          alignItems: valuePosition === 'left' || valuePosition === 'right' ? 'center' : 'stretch',
+          width: fullWidth ? '100%' : 'auto',
+        }}
+        className={cn(className)}
+        {...props}
+      >
         {label && (
-          <div className="flex items-center justify-between">
-            <span className="text-sm font-medium text-foreground">{label}</span>
-            {showValue && valuePosition === 'top' && valueDisplay}
-          </div>
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <Typography variant="body2" sx={{ fontWeight: 500, color: 'text.primary' }}>
+              {label}
+            </Typography>
+            {showValue && valuePosition !== 'left' && valuePosition !== 'right' && valueDisplay}
+          </Box>
         )}
-        
-        <div className={cn('flex', valuePositionClasses[valuePosition])}>
-          {valuePosition === 'left' && showValue && valueDisplay}
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          {showValue && (valuePosition === 'left' || valuePosition === 'right') && valueDisplay}
           {progressBar}
-          {valuePosition === 'right' && showValue && valueDisplay}
-        </div>
-        
-        {valuePosition === 'bottom' && showValue && (
-          <div className="flex justify-end">
-            {valueDisplay}
-          </div>
-        )}
-        
+        </Box>
         {helperText && (
-          <p className="text-xs text-muted-foreground">{helperText}</p>
+          <Typography variant="caption" sx={{ color: 'text.secondary' }}>
+            {helperText}
+          </Typography>
         )}
-      </div>
+      </Box>
     );
   }
 );

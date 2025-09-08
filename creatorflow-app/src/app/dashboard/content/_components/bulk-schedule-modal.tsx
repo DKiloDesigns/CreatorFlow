@@ -187,16 +187,35 @@ export function BulkScheduleModal({ open, onClose, onBulkScheduled }: BulkSchedu
       onClose={onClose}
       maxWidth="lg"
       fullWidth
+      sx={{
+        '& .MuiDialog-paper': {
+          m: { xs: 1, sm: 2 },
+          maxHeight: { xs: '95vh', sm: '90vh' },
+          overflow: 'hidden'
+        }
+      }}
     >
       <DialogTitle>
-        <Box display="flex" alignItems="center" gap={2}>
+        <Box display="flex" alignItems="center" gap={2} sx={{ flexWrap: 'wrap' }}>
           <Calendar className="h-6 w-6" />
-          <Typography variant="h6">Bulk Schedule Posts</Typography>
+          <Typography variant="h6" sx={{ wordBreak: 'break-word' }}>Bulk Schedule Posts</Typography>
         </Box>
       </DialogTitle>
       
-      <DialogContent>
-        <Box sx={{ height: '70vh', display: 'flex', flexDirection: 'column' }}>
+      <DialogContent sx={{ 
+        p: { xs: 2, sm: 3 }, 
+        pb: { xs: 6, sm: 3 },
+        maxWidth: '100%',
+        overflow: 'hidden',
+        '& *': { maxWidth: '100%' }
+      }}>
+        <Box sx={{ 
+          height: { xs: '60vh', sm: '70vh' }, 
+          display: 'flex', 
+          flexDirection: 'column',
+          maxWidth: '100%',
+          overflow: 'hidden'
+        }}>
           {/* Step Navigation */}
           <Box sx={{ 
             display: 'flex', 
@@ -296,38 +315,65 @@ export function BulkScheduleModal({ open, onClose, onBulkScheduled }: BulkSchedu
           </Box>
 
           {/* Step Content */}
-          <Box sx={{ flex: 1, overflowY: 'auto' }}>
+          <Box sx={{ 
+            flex: 1, 
+            overflowY: 'auto',
+            maxWidth: '100%',
+            overflow: 'hidden'
+          }}>
             {currentStep === 1 && (
-              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+              <Box sx={{ 
+                display: 'flex', 
+                flexDirection: 'column', 
+                gap: 2,
+                maxWidth: '100%',
+                overflow: 'hidden'
+              }}>
                 <Box sx={{ 
                   display: 'flex', 
                   flexDirection: { xs: 'column', sm: 'row' }, 
                   alignItems: { xs: 'flex-start', sm: 'center' }, 
                   justifyContent: 'space-between', 
-                  gap: 2 
+                  gap: 2,
+                  width: '100%'
                 }}>
-                  <Typography variant="h6">Create Posts</Typography>
+                  <Typography variant="h6" sx={{ wordBreak: 'break-word' }}>Create Posts</Typography>
                   <Button
                     onClick={handleAddPost}
                     variant="contained"
                     startIcon={<Plus size={16} />}
+                    sx={{ whiteSpace: 'nowrap' }}
                   >
                     Add Post
                   </Button>
                 </Box>
 
-                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                <Box sx={{ 
+                  display: 'flex', 
+                  flexDirection: 'column', 
+                  gap: 2,
+                  maxWidth: '100%',
+                  overflow: 'hidden'
+                }}>
                   {posts.map((post, index) => (
-                    <Box key={post.id} sx={{ border: 1, borderColor: 'grey.300', borderRadius: 1, p: 2 }}>
+                    <Box key={post.id} sx={{ 
+                      border: 1, 
+                      borderColor: 'grey.300', 
+                      borderRadius: 1, 
+                      p: { xs: 1.5, sm: 2 },
+                      maxWidth: '100%',
+                      overflow: 'hidden'
+                    }}>
                       <Box sx={{ 
                         display: 'flex', 
                         flexDirection: { xs: 'column', sm: 'row' }, 
                         alignItems: { xs: 'flex-start', sm: 'center' }, 
                         justifyContent: 'space-between', 
                         gap: 2, 
-                        mb: 2 
+                        mb: 2,
+                        width: '100%'
                       }}>
-                        <Typography variant="subtitle1" fontWeight={500}>Post {index + 1}</Typography>
+                        <Typography variant="subtitle1" fontWeight={500} sx={{ wordBreak: 'break-word' }}>Post {index + 1}</Typography>
                         <Button
                           variant="text"
                           size="small"
@@ -338,8 +384,14 @@ export function BulkScheduleModal({ open, onClose, onBulkScheduled }: BulkSchedu
                         </Button>
                       </Box>
 
-                      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                        <Box>
+                      <Box sx={{ 
+                        display: 'flex', 
+                        flexDirection: 'column', 
+                        gap: 2,
+                        maxWidth: '100%',
+                        overflow: 'hidden'
+                      }}>
+                        <Box sx={{ maxWidth: '100%', overflow: 'hidden' }}>
                           <Typography variant="body2" color="text.secondary" gutterBottom>Content</Typography>
                           <TextField
                             value={post.content}
@@ -349,11 +401,12 @@ export function BulkScheduleModal({ open, onClose, onBulkScheduled }: BulkSchedu
                             rows={3}
                             fullWidth
                             size="small"
+                            sx={{ maxWidth: '100%' }}
                           />
                         </Box>
 
-                        <Grid container spacing={2}>
-                          <Grid item xs={12} sm={6}>
+                        <Grid container spacing={2} sx={{ width: '100%', margin: 0 }}>
+                          <Grid item xs={12} sm={6} sx={{ minWidth: 0 }}>
                             <Typography variant="body2" color="text.secondary" gutterBottom>Hashtags</Typography>
                             <TextField
                               value={post.hashtags.join(' ')}
@@ -363,9 +416,10 @@ export function BulkScheduleModal({ open, onClose, onBulkScheduled }: BulkSchedu
                               placeholder="#hashtag1 #hashtag2"
                               fullWidth
                               size="small"
+                              sx={{ maxWidth: '100%' }}
                             />
                           </Grid>
-                          <Grid item xs={12} sm={6}>
+                          <Grid item xs={12} sm={6} sx={{ minWidth: 0 }}>
                             <Typography variant="body2" color="text.secondary" gutterBottom>Mentions</Typography>
                             <TextField
                               value={post.mentions.join(' ')}
@@ -375,6 +429,7 @@ export function BulkScheduleModal({ open, onClose, onBulkScheduled }: BulkSchedu
                               placeholder="@username1 @username2"
                               fullWidth
                               size="small"
+                              sx={{ maxWidth: '100%' }}
                             />
                           </Grid>
                         </Grid>

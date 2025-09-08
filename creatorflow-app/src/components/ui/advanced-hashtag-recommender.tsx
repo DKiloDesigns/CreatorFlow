@@ -383,7 +383,7 @@ export function AdvancedHashtagRecommender({ provider: _provider }: AdvancedHash
           >
             {isAnalyzing ? (
               <>
-                <Activity className="w-4 h-4 mr-2 animate-spin" />
+                <Activity style={{ width: 16, height: 16, marginRight: 8, animation: 'spin 1s linear infinite' }} />
                 Analyzing Hashtags...
               </>
             ) : (

@@ -13,6 +13,16 @@ import {
   Chip
 } from '@mui/material';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { 
+  Dialog as MuiDialog, 
+  DialogContent as MuiDialogContent, 
+  DialogTitle as MuiDialogTitle,
+  Typography,
+  Box,
+  Grid,
+  IconButton
+} from '@mui/material';
+import { Close as CloseIcon } from '@mui/icons-material';
 
 import { toast } from 'sonner';
 import { 
@@ -504,76 +514,131 @@ export function MediaLibrary({ onSelect, selectedMedia = [], multiple = false }:
       )}
 
       {/* Preview Dialog */}
-      <Dialog open={previewOpen} onClose={() => setPreviewOpen(false)}>
-        <DialogContent className="max-w-4xl">
-          <DialogHeader>
-            <DialogTitle>{selectedItem?.name}</DialogTitle>
-          </DialogHeader>
-          <div className="space-y-4">
-            {selectedItem && (
-              <>
-                <div className="aspect-video bg-gray-100 rounded-lg overflow-hidden">
-                  {selectedItem.type === 'image' ? (
-                    <img
-                      src={selectedItem.url}
-                      alt={selectedItem.name}
-                      className="w-full h-full object-contain"
-                    />
-                  ) : (
-                    <video
-                      src={selectedItem.url}
-                      controls
-                      className="w-full h-full"
-                    />
-                  )}
-                </div>
-                
-                <div className="grid grid-cols-2 gap-4 text-sm">
-                  <div>
-                    <p className="font-medium">File Size</p>
-                    <p className="text-gray-500">{formatFileSize(selectedItem.size)}</p>
-                  </div>
-                  <div>
-                    <p className="font-medium">Upload Date</p>
-                    <p className="text-gray-500">{formatDate(selectedItem.uploadedAt)}</p>
-                  </div>
-                  <div>
-                    <p className="font-medium">Description</p>
-                    <p className="text-gray-500">{selectedItem.description || 'No description'}</p>
-                  </div>
-                  <div>
-                    <p className="font-medium">Tags</p>
-                    <div className="flex flex-wrap gap-1 mt-1">
-                      {selectedItem.tags.map((tag) => (
-                        <span key={tag} className="inline-block bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">
-                          {tag}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="flex gap-2">
-                  <Button
-                    
-                    onClick={() => copyUrl(selectedItem.url)}
-                  >
-                    <Copy className="h-4 w-4 mr-2" />
-                    Copy URL
-                  </Button>
-                  <Button
-                    
-                    onClick={() => handleDownload(selectedItem)}
-                  >
-                    <Download className="h-4 w-4 mr-2" />
-                    Download
-                  </Button>
-                </div>
-              </>
-            )}
-          </div>
-        </DialogContent>
-      </Dialog>
+      <MuiDialog 
+        open={previewOpen} 
+        onClose={() => setPreviewOpen(false)}
+        maxWidth="lg"
+        fullWidth
+        sx={{
+          '& .MuiDialog-paper': {
+            m: { xs: 1, sm: 2 },
+            maxHeight: { xs: '95vh', sm: '90vh' },
+            overflow: 'hidden'
+          }
+        }}
+      >
+        <MuiDialogTitle>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <Typography variant="h6" sx={{ wordBreak: 'break-word' }}>{selectedItem?.name}</Typography>
+            <IconButton onClick={() => setPreviewOpen(false)}>
+              <CloseIcon />
+            </IconButton>
+          </Box>
+        </MuiDialogTitle>
+        <MuiDialogContent sx={{ 
+          p: { xs: 2, sm: 3 }, 
+          pb: { xs: 6, sm: 3 },
+          maxWidth: '100%',
+          overflow: 'hidden',
+          '& *': { maxWidth: '100%' }
+        }}>
+          {selectedItem && (
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, maxWidth: '100%', overflow: 'hidden' }}>
+              <Box sx={{ 
+                aspectRatio: '16/9', 
+                bgcolor: 'grey.100', 
+                borderRadius: 1, 
+                overflow: 'hidden',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
+              }}>
+                {selectedItem.type === 'image' ? (
+                  <img
+                    src={selectedItem.url}
+                    alt={selectedItem.name}
+                    style={{ 
+                      width: '100%', 
+                      height: '100%', 
+                      objectFit: 'contain',
+                      maxWidth: '100%',
+                      maxHeight: '100%'
+                    }}
+                  />
+                ) : (
+                  <video
+                    src={selectedItem.url}
+                    controls
+                    style={{ 
+                      width: '100%', 
+                      height: '100%',
+                      maxWidth: '100%',
+                      maxHeight: '100%'
+                    }}
+                  />
+                )}
+              </Box>
+              
+              <Grid container spacing={2} sx={{ width: '100%', margin: 0 }}>
+                <Grid item xs={12} sm={6} sx={{ minWidth: 0 }}>
+                  <Typography variant="subtitle2" sx={{ fontWeight: 500, mb: 0.5 }}>File Size</Typography>
+                  <Typography variant="body2" color="text.secondary">{formatFileSize(selectedItem.size)}</Typography>
+                </Grid>
+                <Grid item xs={12} sm={6} sx={{ minWidth: 0 }}>
+                  <Typography variant="subtitle2" sx={{ fontWeight: 500, mb: 0.5 }}>Upload Date</Typography>
+                  <Typography variant="body2" color="text.secondary">{formatDate(selectedItem.uploadedAt)}</Typography>
+                </Grid>
+                <Grid item xs={12} sm={6} sx={{ minWidth: 0 }}>
+                  <Typography variant="subtitle2" sx={{ fontWeight: 500, mb: 0.5 }}>Description</Typography>
+                  <Typography variant="body2" color="text.secondary" sx={{ wordBreak: 'break-word' }}>
+                    {selectedItem.description || 'No description'}
+                  </Typography>
+                </Grid>
+                <Grid item xs={12} sm={6} sx={{ minWidth: 0 }}>
+                  <Typography variant="subtitle2" sx={{ fontWeight: 500, mb: 0.5 }}>Tags</Typography>
+                  <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                    {selectedItem.tags.map((tag) => (
+                      <Chip
+                        key={tag}
+                        label={tag}
+                        size="small"
+                        variant="outlined"
+                        sx={{ fontSize: '0.7rem' }}
+                      />
+                    ))}
+                  </Box>
+                </Grid>
+              </Grid>
+              
+              <Box sx={{ 
+                display: 'flex', 
+                gap: 1, 
+                flexDirection: { xs: 'column', sm: 'row' },
+                pt: 2,
+                borderTop: 1,
+                borderColor: 'divider'
+              }}>
+                <Button
+                  variant="outlined"
+                  onClick={() => copyUrl(selectedItem.url)}
+                  startIcon={<Copy size={16} />}
+                  fullWidth
+                >
+                  Copy URL
+                </Button>
+                <Button
+                  variant="outlined"
+                  onClick={() => handleDownload(selectedItem)}
+                  startIcon={<Download size={16} />}
+                  fullWidth
+                >
+                  Download
+                </Button>
+              </Box>
+            </Box>
+          )}
+        </MuiDialogContent>
+      </MuiDialog>
     </div>
   );
 } 

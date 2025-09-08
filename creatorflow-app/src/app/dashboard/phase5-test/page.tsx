@@ -73,7 +73,7 @@ export default function Phase5TestPage() {
           >
             ← Back to Phase 5 Overview
           </Button>
-          <Typography variant="h4" sx={{ color: designTokens.colors.neutral[800] }}>
+          <Typography variant="h4" sx={{ color: 'text.primary' }}>
             {selectedComponent?.name}
           </Typography>
         </Box>
@@ -207,12 +207,12 @@ export default function Phase5TestPage() {
 
       {/* Features Summary */}
       <Box sx={{ mt: 6, p: 4, background: designTokens.colors.neutral[50], borderRadius: designTokens.borderRadius.lg }}>
-        <Typography variant="h4" sx={{ color: designTokens.colors.neutral[800], mb: 3, textAlign: 'center' }}>
+        <Typography variant="h4" sx={{ color: 'text.primary', mb: 3, textAlign: 'center' }}>
           What's Been Implemented
         </Typography>
         <Grid container spacing={3}>
           <Grid xs={12} md={6}>
-            <Typography variant="h6" sx={{ color: designTokens.colors.neutral[700], mb: 2 }}>
+            <Typography variant="h6" sx={{ color: 'text.primary', mb: 2 }}>
               🚀 Enhanced Team Management
             </Typography>
             <Typography variant="body2" sx={{ color: designTokens.colors.neutral[600], mb: 1 }}>
@@ -229,7 +229,7 @@ export default function Phase5TestPage() {
             </Typography>
           </Grid>
           <Grid xs={12} md={6}>
-            <Typography variant="h6" sx={{ color: designTokens.colors.neutral[700], mb: 2 }}>
+            <Typography variant="h6" sx={{ color: 'text.primary', mb: 2 }}>
               📊 Enhanced Enterprise Analytics
             </Typography>
             <Typography variant="body2" sx={{ color: designTokens.colors.neutral[600], mb: 1 }}>
@@ -246,7 +246,7 @@ export default function Phase5TestPage() {
             </Typography>
           </Grid>
           <Grid xs={12} md={6}>
-            <Typography variant="h6" sx={{ color: designTokens.colors.neutral[700], mb: 2 }}>
+            <Typography variant="h6" sx={{ color: 'text.primary', mb: 2 }}>
               🔌 Enhanced API Management
             </Typography>
             <Typography variant="body2" sx={{ color: designTokens.colors.neutral[600], mb: 1 }}>
@@ -263,7 +263,7 @@ export default function Phase5TestPage() {
             </Typography>
           </Grid>
           <Grid xs={12} md={6}>
-            <Typography variant="h6" sx={{ color: designTokens.colors.neutral[700], mb: 2 }}>
+            <Typography variant="h6" sx={{ color: 'text.primary', mb: 2 }}>
               🛡️ Enhanced Advanced Security
             </Typography>
             <Typography variant="body2" sx={{ color: designTokens.colors.neutral[600], mb: 1 }}>

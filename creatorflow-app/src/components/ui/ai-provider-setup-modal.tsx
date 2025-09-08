@@ -138,7 +138,7 @@ export function AIProviderSetupModal({
 
   return (
     <Dialog open={isOpen} onClose={onClose}>
-      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
+      <DialogContent sx={{ maxWidth: '2xl', maxHeight: '90vh', overflowY: 'auto' }}>
         <DialogHeader>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
             <Box sx={{ 

@@ -119,26 +119,35 @@ export function AIProviderSelector({
           >
             {/* Provider Header */}
             <CardHeader className="pb-3">
-              <div className="flex items-start justify-between">
-                <div className="flex items-center gap-3">
-                  <div className={`w-12 h-12 rounded-lg flex items-center justify-center text-2xl ${provider.color}`}>
+              <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
+                  <Box sx={{ 
+                    width: 48, 
+                    height: 48, 
+                    borderRadius: 2, 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'center', 
+                    fontSize: '1.5rem',
+                    bgcolor: provider.color
+                  }}>
                     {provider.icon}
-                  </div>
-                  <div>
+                  </Box>
+                  <Box>
                     <Typography variant="h6">{provider.name}</Typography>
                     <Typography variant="body2">
                       {provider.description}
                     </Typography>
-                  </div>
-                </div>
-                <div className="flex flex-col gap-1">
+                  </Box>
+                </Box>
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
                   {getPricingBadge(provider)}
                   {getStatusBadge(provider)}
-                </div>
-              </div>
+                </Box>
+              </Box>
             </CardHeader>
 
-            <CardContent className="space-y-4">
+            <CardContent sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
               {/* Pricing Info */}
               <Box sx={{ bgcolor: 'grey.50', borderRadius: '8px', p: 1.5 }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -178,7 +187,7 @@ export function AIProviderSelector({
               </div>
 
               {/* Setup Requirements */}
-              <div className="flex items-center justify-between pt-2 border-t">
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', pt: 2, borderTop: 1, borderColor: 'divider' }}>
                 <Typography variant="body2" className="text-gray-500">
                   {provider.setupRequired ? (
                     <Chip label="Setup required" variant="outlined" className="flex items-center gap-1" />
@@ -215,7 +224,7 @@ export function AIProviderSelector({
                     )}
                   </Button>
                 )}
-              </div>
+              </Box>
             </CardContent>
           </Card>
         ))}

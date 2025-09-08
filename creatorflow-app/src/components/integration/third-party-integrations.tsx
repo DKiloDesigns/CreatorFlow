@@ -878,63 +878,88 @@ export default function ThirdPartyIntegrations() {
       </Paper>
 
       {/* Integration Details Dialog */}
-      <Dialog open={!!selectedIntegration} onClose={() => setSelectedIntegration(null)} maxWidth="md" fullWidth>
-        <DialogTitle>Integration Details</DialogTitle>
-        <DialogContent>
+      <Dialog 
+        open={!!selectedIntegration} 
+        onClose={() => setSelectedIntegration(null)} 
+        maxWidth="md" 
+        fullWidth
+        sx={{
+          '& .MuiDialog-paper': {
+            m: { xs: 1, sm: 2 },
+            maxHeight: { xs: '95vh', sm: '90vh' },
+            overflow: 'hidden'
+          }
+        }}
+      >
+        <DialogTitle sx={{ wordBreak: 'break-word' }}>Integration Details</DialogTitle>
+        <DialogContent sx={{ 
+          p: { xs: 2, sm: 3 }, 
+          pb: { xs: 6, sm: 3 },
+          maxWidth: '100%',
+          overflow: 'hidden',
+          '& *': { maxWidth: '100%' }
+        }}>
           {selectedIntegration && (
-            <Box>
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 3 }}>
-                <Avatar sx={{ bgcolor: designTokens.colors.primary[100], color: designTokens.colors.primary[600] }}>
+            <Box sx={{ maxWidth: '100%', overflow: 'hidden' }}>
+              <Box sx={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: 2, 
+                mb: 3,
+                flexDirection: { xs: 'column', sm: 'row' },
+                textAlign: { xs: 'center', sm: 'left' }
+              }}>
+                <Avatar sx={{ bgcolor: 'primary.100', color: 'primary.600' }}>
                   {getIntegrationIcon(selectedIntegration.icon)}
                 </Avatar>
-                <Box>
-                  <Typography variant="h6">{selectedIntegration.name}</Typography>
-                  <Typography variant="body2" sx={{ color: designTokens.colors.neutral[600] }}>
+                <Box sx={{ minWidth: 0, flex: 1 }}>
+                  <Typography variant="h6" sx={{ wordBreak: 'break-word' }}>{selectedIntegration.name}</Typography>
+                  <Typography variant="body2" color="text.secondary" sx={{ wordBreak: 'break-word' }}>
                     {selectedIntegration.platform}
                   </Typography>
                 </Box>
               </Box>
               
-              <Typography variant="body2" sx={{ mb: 3, color: designTokens.colors.neutral[600] }}>
+              <Typography variant="body2" sx={{ mb: 3, color: 'text.secondary', wordBreak: 'break-word' }}>
                 {selectedIntegration.description}
               </Typography>
               
-              <Grid container spacing={2}>
-                <Grid xs={6}>
-                  <Typography variant="body2" sx={{ color: designTokens.colors.neutral[600] }}>Status</Typography>
+              <Grid container spacing={2} sx={{ width: '100%', margin: 0 }}>
+                <Grid item xs={12} sm={6} sx={{ minWidth: 0 }}>
+                  <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>Status</Typography>
                   <Chip label={selectedIntegration.status} color={getStatusColor(selectedIntegration.status) as any} />
                 </Grid>
-                <Grid xs={6}>
-                  <Typography variant="body2" sx={{ color: designTokens.colors.neutral[600] }}>Type</Typography>
+                <Grid item xs={12} sm={6} sx={{ minWidth: 0 }}>
+                  <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>Type</Typography>
                   <Chip label={selectedIntegration.type.replace('_', ' ')} color={getTypeColor(selectedIntegration.type) as any} />
                 </Grid>
-                <Grid xs={6}>
-                  <Typography variant="body2" sx={{ color: designTokens.colors.neutral[600] }}>API Version</Typography>
-                  <Typography variant="body1">v{selectedIntegration.apiVersion}</Typography>
+                <Grid item xs={12} sm={6} sx={{ minWidth: 0 }}>
+                  <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>API Version</Typography>
+                  <Typography variant="body1" sx={{ wordBreak: 'break-word' }}>v{selectedIntegration.apiVersion}</Typography>
                 </Grid>
-                <Grid xs={6}>
-                  <Typography variant="body2" sx={{ color: designTokens.colors.neutral[600] }}>Rate Limit</Typography>
-                  <Typography variant="body1">{selectedIntegration.rateLimit}</Typography>
+                <Grid item xs={12} sm={6} sx={{ minWidth: 0 }}>
+                  <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>Rate Limit</Typography>
+                  <Typography variant="body1" sx={{ wordBreak: 'break-word' }}>{selectedIntegration.rateLimit}</Typography>
                 </Grid>
-                <Grid xs={6}>
-                  <Typography variant="body2" sx={{ color: designTokens.colors.neutral[600] }}>Last Sync</Typography>
-                  <Typography variant="body1">{new Date(selectedIntegration.lastSync).toLocaleString()}</Typography>
+                <Grid item xs={12} sm={6} sx={{ minWidth: 0 }}>
+                  <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>Last Sync</Typography>
+                  <Typography variant="body1" sx={{ wordBreak: 'break-word' }}>{new Date(selectedIntegration.lastSync).toLocaleString()}</Typography>
                 </Grid>
-                <Grid xs={6}>
-                  <Typography variant="body2" sx={{ color: designTokens.colors.neutral[600] }}>Sync Frequency</Typography>
-                  <Typography variant="body1">{selectedIntegration.syncFrequency}</Typography>
+                <Grid item xs={12} sm={6} sx={{ minWidth: 0 }}>
+                  <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>Sync Frequency</Typography>
+                  <Typography variant="body1" sx={{ wordBreak: 'break-word' }}>{selectedIntegration.syncFrequency}</Typography>
                 </Grid>
-                <Grid xs={6}>
-                  <Typography variant="body2" sx={{ color: designTokens.colors.neutral[600] }}>Data Points</Typography>
+                <Grid item xs={12} sm={6} sx={{ minWidth: 0 }}>
+                  <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>Data Points</Typography>
                   <Typography variant="body1">{selectedIntegration.dataPoints.toLocaleString()}</Typography>
                 </Grid>
-                <Grid xs={6}>
-                  <Typography variant="body2" sx={{ color: designTokens.colors.neutral[600] }}>API Calls</Typography>
+                <Grid item xs={12} sm={6} sx={{ minWidth: 0 }}>
+                  <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>API Calls</Typography>
                   <Typography variant="body1">{selectedIntegration.apiCalls.toLocaleString()}</Typography>
                 </Grid>
               </Grid>
 
-              <Box sx={{ mt: 3 }}>
+              <Box sx={{ mt: 3, maxWidth: '100%', overflow: 'hidden' }}>
                 <Typography variant="h6" sx={{ mb: 2 }}>Features</Typography>
                 <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
                   {selectedIntegration.features.map((feature, index) => (
@@ -945,9 +970,9 @@ export default function ThirdPartyIntegrations() {
             </Box>
           )}
         </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setSelectedIntegration(null)}>Close</Button>
-          <Button variant="contained">Configure</Button>
+        <DialogActions sx={{ p: 2, flexDirection: { xs: 'column', sm: 'row' }, gap: 1 }}>
+          <Button onClick={() => setSelectedIntegration(null)} fullWidth={false}>Close</Button>
+          <Button variant="contained" fullWidth={false}>Configure</Button>
         </DialogActions>
       </Dialog>
     </Box>

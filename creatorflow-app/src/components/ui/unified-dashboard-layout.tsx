@@ -258,9 +258,9 @@ export default function UnifiedDashboardLayout({
       case 'down':
         return designTokens.colors.error[500];
       case 'flat':
-        return designTokens.colors.neutral[500];
+        return 'text.secondary';
       default:
-        return designTokens.colors.neutral[500];
+        return 'text.secondary';
     }
   };
 
@@ -316,7 +316,7 @@ export default function UnifiedDashboardLayout({
     <Box 
       sx={{ 
         minHeight: '100vh',
-        background: designTokens.colors.neutral[50],
+        background: 'background.default',
         pb: showBottomNavigation ? (compact ? 8 : 9) : 0
       }}
       className={className}
@@ -324,7 +324,8 @@ export default function UnifiedDashboardLayout({
       {/* Header Section */}
       <Box sx={{ 
         background: 'linear-gradient(135deg, rgba(37, 99, 235, 0.05) 0%, rgba(124, 58, 237, 0.05) 100%)',
-        borderBottom: `1px solid ${designTokens.colors.neutral[200]}`,
+        borderBottom: '1px solid',
+        borderBottomColor: 'divider',
         mb: 3
       }}>
         <Container maxWidth="xl">
@@ -341,7 +342,7 @@ export default function UnifiedDashboardLayout({
                 variant={compact ? "h5" : "h4"} 
                 sx={{ 
                   fontWeight: designTokens.typography.fontWeight.bold,
-                  color: designTokens.colors.neutral[900],
+                  color: 'text.primary',
                   mb: 0.5,
                   display: 'flex',
                   alignItems: 'center',
@@ -354,7 +355,7 @@ export default function UnifiedDashboardLayout({
               <Typography 
                 variant="body1" 
                 sx={{ 
-                  color: designTokens.colors.neutral[600],
+                  color: 'text.secondary',
                   display: 'flex',
                   alignItems: 'center',
                   gap: 1
@@ -371,7 +372,7 @@ export default function UnifiedDashboardLayout({
                   <IconButton 
                     onClick={onRefresh}
                     sx={{ 
-                      color: designTokens.colors.neutral[600],
+                      color: 'text.secondary',
                       '&:hover': { 
                         color: designTokens.colors.primary[500],
                         background: designTokens.colors.primary[50]
@@ -388,7 +389,7 @@ export default function UnifiedDashboardLayout({
                   <IconButton 
                     onClick={onSettings}
                     sx={{ 
-                      color: designTokens.colors.neutral[600],
+                      color: 'text.secondary',
                       '&:hover': { 
                         color: designTokens.colors.primary[500],
                         background: designTokens.colors.primary[50]
@@ -446,7 +447,7 @@ export default function UnifiedDashboardLayout({
                     variant="h6" 
                     sx={{ 
                       fontWeight: designTokens.typography.fontWeight.semibold,
-                      color: designTokens.colors.neutral[800]
+                      color: 'text.primary'
                     }}
                   >
                     AI Insights
@@ -481,7 +482,8 @@ export default function UnifiedDashboardLayout({
                           p: 2,
                           background: 'white',
                           borderRadius: designTokens.borderRadius.lg,
-                          border: `1px solid ${designTokens.colors.neutral[200]}`,
+                          border: '1px solid',
+                          borderColor: 'divider',
                           display: 'flex',
                           alignItems: 'flex-start',
                           gap: 2
@@ -502,7 +504,7 @@ export default function UnifiedDashboardLayout({
                           <Typography 
                             variant="body2" 
                             sx={{ 
-                              color: designTokens.colors.neutral[800],
+                              color: 'text.primary',
                               mb: 1
                             }}
                           >
@@ -527,7 +529,7 @@ export default function UnifiedDashboardLayout({
                             <Typography 
                               variant="caption" 
                               sx={{ 
-                                color: designTokens.colors.neutral[500],
+                                color: 'text.secondary',
                                 fontSize: '0.7rem'
                               }}
                             >
@@ -553,7 +555,8 @@ export default function UnifiedDashboardLayout({
                   elevation={0}
                   sx={{
                     background: 'white',
-                    border: `1px solid ${designTokens.colors.neutral[200]}`,
+                    border: '1px solid',
+                    borderColor: 'divider',
                     borderRadius: designTokens.borderRadius.xl,
                     transition: designTokens.animation.micro.cardHover,
                     '&:hover': {
@@ -604,7 +607,7 @@ export default function UnifiedDashboardLayout({
                       variant="h4" 
                       sx={{ 
                         fontWeight: designTokens.typography.fontWeight.bold,
-                        color: designTokens.colors.neutral[900],
+                        color: 'text.primary',
                         mb: 1
                       }}
                     >
@@ -614,7 +617,7 @@ export default function UnifiedDashboardLayout({
                     <Typography 
                       variant="body2" 
                       sx={{ 
-                        color: designTokens.colors.neutral[600],
+                        color: 'text.secondary',
                         mb: 1
                       }}
                     >
@@ -672,7 +675,8 @@ export default function UnifiedDashboardLayout({
                     elevation={0}
                     sx={{
                       background: 'white',
-                      border: `1px solid ${designTokens.colors.neutral[200]}`,
+                      border: '1px solid',
+                    borderColor: 'divider',
                       borderRadius: designTokens.borderRadius.xl,
                       overflow: 'hidden',
                       mb: 2,
@@ -686,7 +690,8 @@ export default function UnifiedDashboardLayout({
                     <Box sx={{ 
                       p: 3,
                       background: 'linear-gradient(90deg, rgba(37, 99, 235, 0.02) 0%, rgba(124, 58, 237, 0.02) 100%)',
-                      borderBottom: `1px solid ${designTokens.colors.neutral[200]}`,
+                      borderBottom: '1px solid',
+        borderBottomColor: 'divider',
                       cursor: section.collapsible ? 'pointer' : 'default'
                     }}
                     onClick={() => section.collapsible && toggleSection(section.id)}
@@ -717,7 +722,7 @@ export default function UnifiedDashboardLayout({
                               variant="h6" 
                               sx={{ 
                                 fontWeight: designTokens.typography.fontWeight.semibold,
-                                color: designTokens.colors.neutral[800],
+                                color: 'text.primary',
                                 mb: 0.5
                               }}
                             >
@@ -728,7 +733,7 @@ export default function UnifiedDashboardLayout({
                               <Typography 
                                 variant="body2" 
                                 sx={{ 
-                                  color: designTokens.colors.neutral[600]
+                                  color: 'text.secondary'
                                 }}
                               >
                                 {section.subtitle}

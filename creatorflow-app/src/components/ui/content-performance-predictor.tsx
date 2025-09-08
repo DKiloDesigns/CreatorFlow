@@ -489,7 +489,7 @@ export function ContentPerformancePredictor({ provider }: ContentPerformancePred
           >
             {isAnalyzing ? (
               <>
-                <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
+                <RefreshCw style={{ width: 16, height: 16, marginRight: 8, animation: 'spin 1s linear infinite' }} />
                 Analyzing Performance...
               </>
             ) : (
@@ -547,7 +547,7 @@ export function ContentPerformancePredictor({ provider }: ContentPerformancePred
                   <CardContent sx={{ pt: 6 }}>
                     <Box sx={{ textAlign: 'center' }}>
                       <Box sx={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'blue.600' }}>
-                        <Users className="w-6 h-6 mx-auto" />
+                        <Users style={{ width: 24, height: 24, margin: '0 auto' }} />
                       </Box>
                       <Typography variant="body2" sx={{ color: 'text.secondary', fontSize: '0.875rem' }}>Predicted Reach</Typography>
                       <Typography variant="h6" sx={{ fontWeight: 'bold' }}>{prediction.predicted_reach.toLocaleString()}</Typography>
@@ -559,7 +559,7 @@ export function ContentPerformancePredictor({ provider }: ContentPerformancePred
                   <CardContent sx={{ pt: 6 }}>
                     <Box sx={{ textAlign: 'center' }}>
                       <Box sx={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'purple.600' }}>
-                        <Eye className="w-6 h-6 mx-auto" />
+                        <Eye style={{ width: 24, height: 24, margin: '0 auto' }} />
                       </Box>
                       <Typography variant="body2" sx={{ color: 'text.secondary', fontSize: '0.875rem' }}>Impressions</Typography>
                       <Typography variant="h6" sx={{ fontWeight: 'bold' }}>{prediction.predicted_impressions.toLocaleString()}</Typography>
@@ -571,7 +571,7 @@ export function ContentPerformancePredictor({ provider }: ContentPerformancePred
                   <CardContent sx={{ pt: 6 }}>
                     <Box sx={{ textAlign: 'center' }}>
                       <Box sx={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'green.600' }}>
-                        <DollarSign className="w-6 h-6 mx-auto" />
+                        <DollarSign style={{ width: 24, height: 24, margin: '0 auto' }} />
                       </Box>
                       <Typography variant="body2" sx={{ color: 'text.secondary', fontSize: '0.875rem' }}>Estimated Value</Typography>
                       <Typography variant="h6" sx={{ fontWeight: 'bold' }}>${prediction.roi_prediction.estimated_value}</Typography>

@@ -345,7 +345,7 @@ export default function AdvancedPerformanceMetrics() {
       case 'critical':
         return designTokens.colors.error[600];
       default:
-        return designTokens.colors.neutral[500];
+        return 'text.secondary';
     }
   };
 
@@ -358,9 +358,9 @@ export default function AdvancedPerformanceMetrics() {
       case 'medium':
         return designTokens.colors.primary[500];
       case 'low':
-        return designTokens.colors.neutral[500];
+        return 'text.secondary';
       default:
-        return designTokens.colors.neutral[500];
+        return 'text.secondary';
     }
   };
 
@@ -371,9 +371,9 @@ export default function AdvancedPerformanceMetrics() {
       case 'down':
         return <TrendingDown sx={{ color: designTokens.colors.error[500] }} />;
       case 'flat':
-        return <TrendingFlat sx={{ color: designTokens.colors.neutral[500] }} />;
+        return <TrendingFlat sx={{ color: 'text.secondary' }} />;
       default:
-        return <TrendingFlat sx={{ color: designTokens.colors.neutral[500] }} />;
+        return <TrendingFlat sx={{ color: 'text.secondary' }} />;
     }
   };
 
@@ -384,15 +384,15 @@ export default function AdvancedPerformanceMetrics() {
       case 'down':
         return designTokens.colors.error[500];
       case 'flat':
-        return designTokens.colors.neutral[500];
+        return 'text.secondary';
       default:
-        return designTokens.colors.neutral[500];
+        return 'text.secondary';
     }
   };
 
   const renderMetricsTab = () => (
     <Box>
-      <Typography variant="h6" sx={{ mb: 3, color: designTokens.colors.neutral[800] }}>
+      <Typography variant="h6" sx={{ mb: 3, color: 'text.primary' }}>
         Performance Metrics Overview
       </Typography>
       
@@ -415,7 +415,7 @@ export default function AdvancedPerformanceMetrics() {
             >
               <CardContent>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
-                  <Typography variant="h6" sx={{ color: designTokens.colors.neutral[800] }}>
+                  <Typography variant="h6" sx={{ color: 'text.primary' }}>
                     {metric.name}
                   </Typography>
                   <Chip
@@ -431,10 +431,10 @@ export default function AdvancedPerformanceMetrics() {
                 </Box>
 
                 <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 1, mb: 2 }}>
-                  <Typography variant="h4" sx={{ fontWeight: 'bold', color: designTokens.colors.neutral[900] }}>
+                  <Typography variant="h4" sx={{ fontWeight: 'bold', color: 'text.primary' }}>
                     {metric.currentValue}
                   </Typography>
-                  <Typography variant="body2" sx={{ color: designTokens.colors.neutral[600] }}>
+                  <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                     {metric.unit}
                   </Typography>
                 </Box>
@@ -457,10 +457,10 @@ export default function AdvancedPerformanceMetrics() {
 
                 <Box sx={{ mb: 2 }}>
                   <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-                    <Typography variant="body2" sx={{ color: designTokens.colors.neutral[600] }}>
+                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                       Progress to Target
                     </Typography>
-                    <Typography variant="body2" sx={{ color: designTokens.colors.neutral[600] }}>
+                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                       {Math.round((metric.currentValue / metric.targetValue) * 100)}%
                     </Typography>
                   </Box>
@@ -507,7 +507,7 @@ export default function AdvancedPerformanceMetrics() {
 
   const renderTrendAnalysisTab = () => (
     <Box>
-      <Typography variant="h6" sx={{ mb: 3, color: designTokens.colors.neutral[800] }}>
+      <Typography variant="h6" sx={{ mb: 3, color: 'text.primary' }}>
         Trend Analysis & Forecasting
       </Typography>
       
@@ -517,7 +517,7 @@ export default function AdvancedPerformanceMetrics() {
             <Card elevation={0} sx={{ border: `1px solid ${designTokens.colors.neutral[200]}` }}>
               <CardContent>
                 <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-                  <Typography variant="h6" sx={{ color: designTokens.colors.neutral[800] }}>
+                  <Typography variant="h6" sx={{ color: 'text.primary' }}>
                     {trend.period}
                   </Typography>
                   <Chip
@@ -533,16 +533,16 @@ export default function AdvancedPerformanceMetrics() {
                 </Box>
 
                 <Box sx={{ mb: 3 }}>
-                  <Typography variant="body2" sx={{ color: designTokens.colors.neutral[600], mb: 2 }}>
+                  <Typography variant="body2" sx={{ color: 'text.secondary', mb: 2 }}>
                     Historical Data & Predictions
                   </Typography>
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flexWrap: 'wrap' }}>
                     {trend.data.map((point, pointIndex) => (
                       <Box key={pointIndex} sx={{ textAlign: 'center' }}>
-                        <Typography variant="body2" sx={{ color: designTokens.colors.neutral[600], fontSize: '0.75rem' }}>
+                        <Typography variant="body2" sx={{ color: 'text.secondary', fontSize: '0.75rem' }}>
                           {new Date(point.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
                         </Typography>
-                        <Typography variant="h6" sx={{ color: designTokens.colors.neutral[800], fontWeight: 'bold' }}>
+                        <Typography variant="h6" sx={{ color: 'text.primary', fontWeight: 'bold' }}>
                           {point.value}
                         </Typography>
                         {point.predicted && (
@@ -567,20 +567,20 @@ export default function AdvancedPerformanceMetrics() {
                   <Grid container spacing={2}>
                     <Grid item xs={6} component="div">
                       <Box sx={{ textAlign: 'center' }}>
-                        <Typography variant="body2" sx={{ color: designTokens.colors.neutral[600] }}>
+                        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                           Next Period
                         </Typography>
-                        <Typography variant="h5" sx={{ color: designTokens.colors.primary[600], fontWeight: 'bold' }}>
+                        <Typography variant="h5" sx={{ color: 'primary.main', fontWeight: 'bold' }}>
                           {trend.forecast.nextPeriod}
                         </Typography>
                       </Box>
                     </Grid>
                     <Grid item xs={6} component="div">
                       <Box sx={{ textAlign: 'center' }}>
-                        <Typography variant="body2" sx={{ color: designTokens.colors.neutral[600] }}>
+                        <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                           Confidence
                         </Typography>
-                        <Typography variant="h5" sx={{ color: designTokens.colors.ai[600], fontWeight: 'bold' }}>
+                        <Typography variant="h5" sx={{ color: 'primary.main', fontWeight: 'bold' }}>
                           {(trend.forecast.confidence * 100).toFixed(0)}%
                         </Typography>
                       </Box>
@@ -588,7 +588,7 @@ export default function AdvancedPerformanceMetrics() {
                   </Grid>
 
                   <Box sx={{ mt: 2 }}>
-                    <Typography variant="body2" sx={{ color: designTokens.colors.neutral[600], mb: 1 }}>
+                    <Typography variant="body2" sx={{ color: 'text.secondary', mb: 1 }}>
                       Key Factors:
                     </Typography>
                     <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
@@ -617,7 +617,7 @@ export default function AdvancedPerformanceMetrics() {
 
   const renderAIInsightsTab = () => (
     <Box>
-      <Typography variant="h6" sx={{ mb: 3, color: designTokens.colors.neutral[800] }}>
+      <Typography variant="h6" sx={{ mb: 3, color: 'text.primary' }}>
         AI-Powered Insights & Recommendations
       </Typography>
       
@@ -647,7 +647,7 @@ export default function AdvancedPerformanceMetrics() {
                       {insight.type === 'trend' && <TrendingUp sx={{ fontSize: 16 }} />}
                     </Box>
                     <Box>
-                      <Typography variant="h6" sx={{ color: designTokens.colors.neutral[800] }}>
+                      <Typography variant="h6" sx={{ color: 'text.primary' }}>
                         {insight.title}
                       </Typography>
                       <Typography variant="body2" sx={{ color: designTokens.colors.neutral[500] }}>
@@ -713,7 +713,7 @@ export default function AdvancedPerformanceMetrics() {
                 )}
 
                 <Box sx={{ mt: 2 }}>
-                  <Typography variant="body2" sx={{ color: designTokens.colors.neutral[600], mb: 1 }}>
+                  <Typography variant="body2" sx={{ color: 'text.secondary', mb: 1 }}>
                     Tags:
                   </Typography>
                   <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
@@ -724,7 +724,7 @@ export default function AdvancedPerformanceMetrics() {
                         size="small"
                         sx={{
                           background: designTokens.colors.neutral[100],
-                          color: designTokens.colors.neutral[600],
+                          color: 'text.secondary',
                           fontSize: '0.6rem'
                         }}
                       />
@@ -790,7 +790,7 @@ export default function AdvancedPerformanceMetrics() {
             <Typography 
               variant="h6" 
               sx={{ 
-                color: designTokens.colors.neutral[600],
+                color: 'text.secondary',
                 fontWeight: designTokens.typography.fontWeight.normal
               }}
             >

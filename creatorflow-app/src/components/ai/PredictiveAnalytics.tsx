@@ -47,7 +47,6 @@ import {
   Warning,
   Info,
   Lightbulb,
-  GpsFixed,
   Speed,
   Visibility,
   ThumbUp,
@@ -57,7 +56,6 @@ import {
   BarChart,
   PieChart,
   Timeline,
-  Forecast,
   TrendingFlat
 } from '@/lib/mui-optimized-imports';
 
@@ -409,20 +407,38 @@ export default function PredictiveAnalytics() {
   }
 
   return (
-    <Box sx={{ p: 2 }}>
+    <Box sx={{ 
+      p: { xs: 1, sm: 2 }, 
+      maxWidth: '100%', 
+      overflow: 'hidden',
+      '& *': { maxWidth: '100%' }
+    }}>
       {/* Header */}
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-        <Box>
-          <Typography variant="h4" gutterBottom>
+      <Box sx={{ 
+        display: 'flex', 
+        justifyContent: 'space-between', 
+        alignItems: 'center', 
+        mb: 3,
+        flexDirection: { xs: 'column', sm: 'row' },
+        gap: 2
+      }}>
+        <Box sx={{ minWidth: 0, flex: 1 }}>
+          <Typography variant="h4" gutterBottom sx={{ fontSize: { xs: '1.5rem', sm: '2rem' } }}>
             Predictive Analytics
           </Typography>
-          <Typography variant="body2" color="text.secondary">
+          <Typography variant="body2" color="text.secondary" sx={{ wordBreak: 'break-word' }}>
             Machine learning-powered insights and forecasting for content performance
           </Typography>
         </Box>
         
-        <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-          <FormControl size="small" sx={{ minWidth: 120 }}>
+        <Box sx={{ 
+          display: 'flex', 
+          gap: 2, 
+          alignItems: 'center',
+          flexDirection: { xs: 'column', sm: 'row' },
+          width: { xs: '100%', sm: 'auto' }
+        }}>
+          <FormControl size="small" sx={{ minWidth: 120, width: { xs: '100%', sm: 'auto' } }}>
             <InputLabel>Timeframe</InputLabel>
             <Select
               value={selectedTimeframe}
@@ -445,6 +461,7 @@ export default function PredictiveAnalytics() {
               />
             }
             label="Auto-Learning"
+            sx={{ whiteSpace: 'nowrap' }}
           />
         </Box>
       </Box>
@@ -459,7 +476,7 @@ export default function PredictiveAnalytics() {
       )}
 
       {/* Model Overview */}
-      <Grid container spacing={3} sx={{ mb: 4 }}>
+      <Grid container spacing={3} sx={{ mb: 4, width: '100%', margin: 0 }}>
         <Grid item xs={12} md={3}>
           <Card>
             <CardContent>
@@ -520,17 +537,17 @@ export default function PredictiveAnalytics() {
             AI Predictive Models
           </Typography>
           
-          <Grid container spacing={2}>
+          <Grid container spacing={2} sx={{ width: '100%', margin: 0 }}>
             {predictiveModels.map((model) => (
-              <Grid item xs={12} md={6} key={model.id}>
+              <Grid item xs={12} md={6} key={model.id} sx={{ minWidth: 0 }}>
                 <Card variant="outlined">
                   <CardContent>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
-                      <Box>
-                        <Typography variant="h6" gutterBottom>
+                      <Box sx={{ minWidth: 0, flex: 1, mr: 2 }}>
+                        <Typography variant="h6" gutterBottom sx={{ wordBreak: 'break-word' }}>
                           {model.name}
                         </Typography>
-                        <Box sx={{ display: 'flex', gap: 1, mb: 1 }}>
+                        <Box sx={{ display: 'flex', gap: 1, mb: 1, flexWrap: 'wrap' }}>
                           <Chip 
                             label={model.type} 
                             size="small" 
@@ -624,8 +641,8 @@ export default function PredictiveAnalytics() {
                     {forecast.title}
                   </Typography>
                   
-                  <Grid container spacing={3} sx={{ mb: 3 }}>
-                    <Grid item xs={12} md={6}>
+                  <Grid container spacing={3} sx={{ mb: 3, width: '100%', margin: 0 }}>
+                    <Grid item xs={12} md={6} sx={{ minWidth: 0 }}>
                       <Typography variant="subtitle2" gutterBottom>
                         Predicted Performance
                       </Typography>
@@ -649,7 +666,7 @@ export default function PredictiveAnalytics() {
                       </Stack>
                     </Grid>
                     
-                    <Grid item xs={12} md={6}>
+                    <Grid item xs={12} md={6} sx={{ minWidth: 0 }}>
                       <Typography variant="subtitle2" gutterBottom>
                         AI Content Score
                       </Typography>
@@ -727,9 +744,9 @@ export default function PredictiveAnalytics() {
             Trend Analysis & Predictions
           </Typography>
           
-          <Grid container spacing={2}>
+          <Grid container spacing={2} sx={{ width: '100%', margin: 0 }}>
             {trendAnalysis.map((trend, index) => (
-              <Grid item xs={12} md={4} key={index}>
+              <Grid item xs={12} md={4} key={index} sx={{ minWidth: 0 }}>
                 <Card variant="outlined">
                   <CardContent>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>

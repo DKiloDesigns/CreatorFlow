@@ -784,60 +784,60 @@ Which tip resonates most with you? 🤔
                 </CardHeader>
                 <CardContent>
                   <Box sx={{ overflowX: 'auto' }}>
-                    <table className="w-full text-sm">
+                    <Box component="table" sx={{ width: '100%', fontSize: '0.875rem' }}>
                       <thead>
-                        <tr className="border-b">
-                          <th className="text-left py-2">Metric</th>
+                        <Box component="tr" sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                          <Box component="th" sx={{ textAlign: 'left', py: 2 }}>Metric</Box>
                           {variants.map((_, index) => (
-                            <th key={index} className="text-center py-2">
+                            <Box key={index} component="th" sx={{ textAlign: 'center', py: 2 }}>
                               Variant {index + 1}
-                            </th>
+                            </Box>
                           ))}
-                        </tr>
+                        </Box>
                       </thead>
                       <tbody>
-                        <tr className="border-b">
-                          <td className="py-2 font-medium">Engagement Score</td>
+                        <Box component="tr" sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                          <Box component="td" sx={{ py: 2, fontWeight: 500 }}>Engagement Score</Box>
                           {variants.map((variant) => (
-                            <td key={variant.id} className="text-center py-2">
-                              <span className={`font-semibold ${getScoreColor(variant.engagement_score)}`}>
+                            <Box key={variant.id} component="td" sx={{ textAlign: 'center', py: 2 }}>
+                              <Typography sx={{ fontWeight: 600, color: getScoreColor(variant.engagement_score) }}>
                                 {variant.engagement_score}%
-                              </span>
-                            </td>
+                              </Typography>
+                            </Box>
                           ))}
-                        </tr>
-                        <tr className="border-b">
-                          <td className="py-2 font-medium">Virality Potential</td>
+                        </Box>
+                        <Box component="tr" sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                          <Box component="td" sx={{ py: 2, fontWeight: 500 }}>Virality Potential</Box>
                           {variants.map((variant) => (
-                            <td key={variant.id} className="text-center py-2">
-                              <span className={`font-semibold ${getScoreColor(variant.virality_potential)}`}>
+                            <Box key={variant.id} component="td" sx={{ textAlign: 'center', py: 2 }}>
+                              <Typography sx={{ fontWeight: 600, color: getScoreColor(variant.virality_potential) }}>
                                 {variant.virality_potential}%
-                              </span>
-                            </td>
+                              </Typography>
+                            </Box>
                           ))}
-                        </tr>
-                        <tr className="border-b">
-                          <td className="py-2 font-medium">Brand Alignment</td>
+                        </Box>
+                        <Box component="tr" sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                          <Box component="td" sx={{ py: 2, fontWeight: 500 }}>Brand Alignment</Box>
                           {variants.map((variant) => (
-                            <td key={variant.id} className="text-center py-2">
-                              <span className={`font-semibold ${getScoreColor(variant.brand_alignment)}`}>
+                            <Box key={variant.id} component="td" sx={{ textAlign: 'center', py: 2 }}>
+                              <Typography sx={{ fontWeight: 600, color: getScoreColor(variant.brand_alignment) }}>
                                 {variant.brand_alignment}%
-                              </span>
-                            </td>
+                              </Typography>
+                            </Box>
                           ))}
-                        </tr>
-                        <tr>
-                          <td className="py-2 font-medium">Readability</td>
+                        </Box>
+                        <Box component="tr">
+                          <Box component="td" sx={{ py: 2, fontWeight: 500 }}>Readability</Box>
                           {variants.map((variant) => (
-                            <td key={variant.id} className="text-center py-2">
-                              <span className={`font-semibold ${getScoreColor(variant.readability_score)}`}>
+                            <Box key={variant.id} component="td" sx={{ textAlign: 'center', py: 2 }}>
+                              <Typography sx={{ fontWeight: 600, color: getScoreColor(variant.readability_score) }}>
                                 {variant.readability_score}%
-                              </span>
-                            </td>
+                              </Typography>
+                            </Box>
                           ))}
-                        </tr>
+                        </Box>
                       </tbody>
-                    </table>
+                    </Box>
                   </Box>
                 </CardContent>
               </Card>

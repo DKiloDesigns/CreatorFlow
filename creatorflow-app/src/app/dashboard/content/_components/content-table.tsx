@@ -1,5 +1,17 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Edit, Trash2, Copy, ChevronLeft, ChevronRight } from 'lucide-react';
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Typography,
+  Box,
+  Button,
+  IconButton,
+  Chip
+} from '@mui/material';
+import { Close as CloseIcon } from '@mui/icons-material';
 
 interface Post {
   id: string;
@@ -21,12 +33,12 @@ interface ContentTableProps {
   onDuplicate: (post: Post) => void;
 }
 
-const statusColors: Record<string, { bg: string; text: string }> = {
-  DRAFT: { bg: 'bg-gray-200', text: 'text-gray-700' },
-  SCHEDULED: { bg: 'bg-blue-100', text: 'text-blue-700' },
-  PUBLISHING: { bg: 'bg-yellow-100', text: 'text-yellow-700' },
-  PUBLISHED: { bg: 'bg-green-100', text: 'text-green-700' },
-  FAILED: { bg: 'bg-red-100', text: 'text-red-700' },
+const statusColors: Record<string, { color: 'default' | 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning' }> = {
+  DRAFT: { color: 'default' },
+  SCHEDULED: { color: 'info' },
+  PUBLISHING: { color: 'warning' },
+  PUBLISHED: { color: 'success' },
+  FAILED: { color: 'error' },
 };
 
 export default function ContentTable({ posts, loading, error, onEdit, onDelete, onDuplicate }: ContentTableProps) {
@@ -80,7 +92,7 @@ export default function ContentTable({ posts, loading, error, onEdit, onDelete, 
   };
 
   const getStatusConfig = (status: string) => {
-    return statusColors[status] || { bg: 'bg-gray-100', text: 'text-gray-700' };
+    return statusColors[status] || { color: 'default' };
   };
 
   const nextCard = () => {
@@ -219,7 +231,7 @@ export default function ContentTable({ posts, loading, error, onEdit, onDelete, 
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px' }}>
                       <h6 style={{ 
                         fontWeight: '600',
-                        color: '#111827',
+                        color: 'var(--mui-palette-text-primary)',
                         flex: 1,
                         lineHeight: '1.4',
                         overflow: 'hidden',
@@ -356,97 +368,135 @@ export default function ContentTable({ posts, loading, error, onEdit, onDelete, 
 
       {/* Detail Modal */}
       {detailModalOpen && selectedItem && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-          <div className="bg-white rounded-lg max-w-md w-full max-h-[80vh] overflow-y-auto">
-            <div className="p-6">
-              <div className="flex justify-between items-start mb-4">
-                <h3 className="text-lg font-semibold text-gray-900">Content Details</h3>
-                <button
-                  onClick={closeDetailModal}
-                  className="text-gray-400 hover:text-gray-600"
+        <Dialog
+          open={detailModalOpen}
+          onClose={closeDetailModal}
+          maxWidth="sm"
+          fullWidth
+          sx={{
+            '& .MuiDialog-paper': {
+              m: { xs: 1, sm: 2 },
+              maxHeight: { xs: '95vh', sm: '90vh' },
+              overflow: 'hidden'
+            }
+          }}
+        >
+          <DialogTitle>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <Typography variant="h6" sx={{ wordBreak: 'break-word' }}>Content Details</Typography>
+              <IconButton onClick={closeDetailModal}>
+                <CloseIcon />
+              </IconButton>
+            </Box>
+          </DialogTitle>
+          <DialogContent sx={{ 
+            p: { xs: 2, sm: 3 }, 
+            pb: { xs: 6, sm: 3 },
+            maxWidth: '100%',
+            overflow: 'hidden',
+            '& *': { maxWidth: '100%' }
+          }}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, maxWidth: '100%', overflow: 'hidden' }}>
+              {/* Title */}
+              <Box>
+                <Typography variant="subtitle1" sx={{ fontWeight: 500, mb: 1, wordBreak: 'break-word' }}>Title</Typography>
+                <Typography variant="body2" color="text.secondary" sx={{ wordBreak: 'break-word' }}>
+                  {selectedItem.contentText || 'No content'}
+                </Typography>
+              </Box>
+
+              {/* Status and Platforms */}
+              <Box>
+                <Typography variant="subtitle1" sx={{ fontWeight: 500, mb: 1 }}>Status</Typography>
+                <Chip
+                  label={selectedItem.status}
+                  color={getStatusConfig(selectedItem.status).color as any}
+                  size="small"
+                  variant="filled"
+                />
+              </Box>
+
+              <Box>
+                <Typography variant="subtitle1" sx={{ fontWeight: 500, mb: 1 }}>Platforms</Typography>
+                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                  {selectedItem.platforms.map((platform) => (
+                    <Chip
+                      key={platform}
+                      label={platform}
+                      size="small"
+                      variant="outlined"
+                      sx={{ fontSize: '0.7rem' }}
+                    />
+                  ))}
+                </Box>
+              </Box>
+
+              {/* Schedule Information */}
+              {selectedItem.scheduledAt && (
+                <Box>
+                  <Typography variant="subtitle1" sx={{ fontWeight: 500, mb: 1 }}>Scheduled</Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {new Date(selectedItem.scheduledAt).toLocaleDateString()}
+                  </Typography>
+                </Box>
+              )}
+
+              {selectedItem.publishedAt && (
+                <Box>
+                  <Typography variant="subtitle1" sx={{ fontWeight: 500, mb: 1 }}>Published</Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {new Date(selectedItem.publishedAt).toLocaleDateString()}
+                  </Typography>
+                </Box>
+              )}
+
+              {/* Actions */}
+              <Box sx={{ 
+                display: 'flex', 
+                gap: 1, 
+                pt: 2, 
+                borderTop: 1, 
+                borderColor: 'divider',
+                flexDirection: { xs: 'column', sm: 'row' }
+              }}>
+                <Button
+                  onClick={() => {
+                    onEdit(selectedItem);
+                    closeDetailModal();
+                  }}
+                  variant="contained"
+                  fullWidth
+                  sx={{ flex: 1 }}
                 >
-                  ✕
-                </button>
-              </div>
-              
-              <div className="space-y-4">
-                {/* Title */}
-                <div>
-                  <h4 className="font-medium text-gray-900 mb-2">Title</h4>
-                  <p className="text-gray-700">{selectedItem.contentText || 'No content'}</p>
-                </div>
-
-                {/* Status and Platforms */}
-                <div>
-                  <h4 className="font-medium text-gray-900 mb-2">Status</h4>
-                  <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusConfig(selectedItem.status).bg} ${getStatusConfig(selectedItem.status).text}`}>
-                    {selectedItem.status}
-                  </span>
-                </div>
-
-                <div>
-                  <h4 className="font-medium text-gray-900 mb-2">Platforms</h4>
-                  <div className="flex flex-wrap gap-1">
-                    {selectedItem.platforms.map((platform) => (
-                      <span
-                        key={platform}
-                        className="inline-flex px-2 py-1 text-xs bg-gray-100 text-gray-700 rounded border"
-                      >
-                        {platform}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Schedule Information */}
-                {selectedItem.scheduledAt && (
-                  <div>
-                    <h4 className="font-medium text-gray-900 mb-2">Scheduled</h4>
-                    <p className="text-gray-700">{new Date(selectedItem.scheduledAt).toLocaleDateString()}</p>
-                  </div>
-                )}
-
-                {selectedItem.publishedAt && (
-                  <div>
-                    <h4 className="font-medium text-gray-900 mb-2">Published</h4>
-                    <p className="text-gray-700">{new Date(selectedItem.publishedAt).toLocaleDateString()}</p>
-                  </div>
-                )}
-
-                {/* Actions */}
-                <div className="flex gap-2 pt-4 border-t">
-                  <button
-                    onClick={() => {
-                      onEdit(selectedItem);
-                      closeDetailModal();
-                    }}
-                    className="flex-1 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition-colors"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    onClick={() => {
-                      onDuplicate(selectedItem);
-                      closeDetailModal();
-                    }}
-                    className="flex-1 bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700 transition-colors"
-                  >
-                    Duplicate
-                  </button>
-                  <button
-                    onClick={() => {
-                      onDelete(selectedItem);
-                      closeDetailModal();
-                    }}
-                    className="flex-1 bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-colors"
-                  >
-                    Delete
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+                  Edit
+                </Button>
+                <Button
+                  onClick={() => {
+                    onDuplicate(selectedItem);
+                    closeDetailModal();
+                  }}
+                  variant="outlined"
+                  fullWidth
+                  sx={{ flex: 1 }}
+                >
+                  Duplicate
+                </Button>
+                <Button
+                  onClick={() => {
+                    onDelete(selectedItem);
+                    closeDetailModal();
+                  }}
+                  variant="outlined"
+                  color="error"
+                  fullWidth
+                  sx={{ flex: 1 }}
+                >
+                  Delete
+                </Button>
+              </Box>
+            </Box>
+          </DialogContent>
+        </Dialog>
       )}
 
       {/* Bottom Spacer to Clear Bottom Navigation */}

@@ -89,11 +89,14 @@ export default function AdminOverview() {
 
   return (
     <Box sx={{ 
-      pb: { xs: 20, sm: 8 } // 80px on mobile, 32px on desktop for consistent bottom spacing
+      px: { xs: 1, sm: 0 }, // Add horizontal padding on mobile
+      pb: { xs: 20, sm: 8 }, // 80px on mobile, 32px on desktop for consistent bottom spacing
+      maxWidth: '100%',
+      overflow: 'hidden' // Prevent horizontal overflow
     }}>
       {/* Header */}
       <Box sx={{ mb: 4 }}>
-        <Typography variant="h4" sx={{ fontWeight: 600, mb: 1 }}>
+        <Typography variant="h4" sx={{ fontWeight: 600, mb: 1, color: 'text.primary' }}>
           Admin Overview
         </Typography>
         <Typography variant="body1" color="text.secondary">
@@ -114,66 +117,39 @@ export default function AdminOverview() {
                 transition: 'all 0.2s ease-in-out'
               }
             }}>
-              <CardContent sx={{ p: 2, '&:last-child': { pb: 2 } }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', height: '100%' }}>
-                  {/* Left side: Icon + Value + Label */}
-                  <Box sx={{ display: 'flex', alignItems: 'center', flex: 1, minHeight: 36 }}>
-                    <Box 
-                      sx={{ 
-                        p: 0.75, 
-                        borderRadius: 1.5, 
-                        backgroundColor: `${stat.color}.light`,
-                        color: `${stat.color}.main`,
-                        mr: 1.5,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        minWidth: 32,
-                        height: 32,
-                        flexShrink: 0
-                      }}
-                    >
-                      {React.cloneElement(stat.icon, { sx: { fontSize: 18 } })}
-                    </Box>
-                    <Box sx={{ minWidth: 0, flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
-                      <Typography variant="h6" sx={{ 
-                        fontWeight: 600, 
-                        fontSize: '1.1rem',
-                        lineHeight: 1.2,
-                        mb: 0.25,
-                        color: 'text.primary'
-                      }}>
-                        {stat.value}
-                      </Typography>
-                      <Typography variant="caption" color="text.secondary" sx={{
-                        fontSize: '0.75rem',
-                        fontWeight: 500,
-                        lineHeight: 1.1,
-                        color: 'text.secondary'
-                      }}>
-                        {stat.title}
-                      </Typography>
-                    </Box>
-                  </Box>
-                  
-                  {/* Right side: Trend indicator */}
+              <CardContent sx={{ p: { xs: 2, sm: 3 } }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                   <Box sx={{ 
-                    textAlign: 'right', 
-                    ml: 1, 
                     display: 'flex', 
-                    flexDirection: 'column', 
+                    alignItems: 'center', 
                     justifyContent: 'center',
-                    minWidth: 60
+                    width: 40,
+                    height: 40,
+                    borderRadius: '50%',
+                    bgcolor: 'primary.main',
+                    color: 'primary.contrastText'
                   }}>
-                    <Typography variant="caption" color="text.secondary" sx={{
-                      fontSize: '0.7rem',
-                      fontWeight: 500,
-                      lineHeight: 1.1,
-                      color: 'text.secondary'
-                    }}>
-                      {stat.trend}
+                    {stat.icon}
+                  </Box>
+                  <Box sx={{ flex: 1 }}>
+                    <Typography variant="h6" sx={{ color: 'text.primary' }}>
+                      {stat.value}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary">
+                      {stat.title}
                     </Typography>
                   </Box>
+                </Box>
+                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mt: 1 }}>
+                  <Typography variant="caption" color="text.secondary">
+                    Last updated
+                  </Typography>
+                  <Chip 
+                    label={stat.trend}
+                    size="small" 
+                    color={stat.trend.startsWith('+') ? 'error' : 'success'}
+                    variant="filled"
+                  />
                 </Box>
               </CardContent>
             </Card>
@@ -263,9 +239,9 @@ export default function AdminOverview() {
       </Grid>
 
       {/* Quick Actions */}
-      <Card sx={{ mt: 3 }}>
+      <Card sx={{ mt: 3, mb: { xs: 8, sm: 0 } }}>
         <CardHeader title="Quick Actions" />
-        <CardContent>
+        <CardContent sx={{ pb: { xs: 6, sm: 3 } }}>
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
             <Button
               variant="contained"

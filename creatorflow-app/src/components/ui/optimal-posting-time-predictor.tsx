@@ -415,7 +415,7 @@ export function OptimalPostingTimePredictor({ provider }: OptimalPostingTimePred
             <Button
               variant="outlined"
               onClick={() => setShowAdvanced(!showAdvanced)}
-              className="w-full"
+              sx={{ width: '100%' }}
             >
               <Brain className="w-4 h-4 mr-2" />
               {showAdvanced ? 'Hide' : 'Show'} Advanced Analysis
@@ -472,12 +472,12 @@ export function OptimalPostingTimePredictor({ provider }: OptimalPostingTimePred
           <Button
             onClick={analyzePostingTimes}
             disabled={isAnalyzing || (!targetAudience.trim() && !industry.trim())}
-            className="w-full"
+            sx={{ width: '100%' }}
             size="large"
           >
             {isAnalyzing ? (
               <>
-                <RefreshCw className="w-4 h-4 mr-2 animate-spin" />
+                <RefreshCw style={{ width: 16, height: 16, marginRight: 8, animation: 'spin 1s linear infinite' }} />
                 Analyzing Posting Times...
               </>
             ) : (
@@ -492,15 +492,15 @@ export function OptimalPostingTimePredictor({ provider }: OptimalPostingTimePred
 
       {/* Results Section */}
       {optimalTimes.length > 0 && (
-        <div className="space-y-6">
-          <div className="flex items-center justify-between">
-            <h2 className="text-xl font-semibold">Optimal Posting Times</h2>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <Typography variant="h5" sx={{ fontWeight: 600 }}>Optimal Posting Times</Typography>
             <Chip 
               label={`${optimalTimes.length} time slots analyzed`}
               color="secondary"
               variant="outlined"
             />
-          </div>
+          </Box>
 
           <Box sx={{ width: '100%' }}>
             <Tabs value={activeTab} onChange={(e, newValue) => setActiveTab(newValue)} sx={{ borderBottom: 1, borderColor: 'divider' }}>
@@ -518,9 +518,9 @@ export function OptimalPostingTimePredictor({ provider }: OptimalPostingTimePred
                       <div className="flex items-center gap-3">
                         {getTimeIcon(time.time)}
                         <div>
-                          <h3 className="text-lg font-semibold">
+                          <Typography variant="h6" sx={{ fontWeight: 600 }}>
                             {time.time} - {time.day}
-                          </h3>
+                          </Typography>
                           <p className="text-sm text-gray-600">{time.platform}</p>
                         </div>
                       </div>
@@ -537,34 +537,34 @@ export function OptimalPostingTimePredictor({ provider }: OptimalPostingTimePred
                     <p className="text-gray-700 mb-4">{time.reasoning}</p>
 
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm mb-4">
-                      <div className="text-center">
-                        <div className={`font-semibold ${getScoreColor(time.engagement_score)}`}>
+                      <Box sx={{ textAlign: 'center' }}>
+                        <Box sx={{ fontWeight: 600, color: getScoreColor(time.engagement_score) }}>
                           {getScoreIcon(time.engagement_score)}
-                        </div>
-                        <p className="text-gray-600">Engagement</p>
-                        <p className="font-medium">{time.engagement_score}%</p>
-                      </div>
-                      <div className="text-center">
-                        <div className={`font-semibold ${getScoreColor(time.reach_potential)}`}>
+                        </Box>
+                        <Typography sx={{ color: 'text.secondary' }}>Engagement</Typography>
+                        <Typography sx={{ fontWeight: 500 }}>{time.engagement_score}%</Typography>
+                      </Box>
+                      <Box sx={{ textAlign: 'center' }}>
+                        <Box sx={{ fontWeight: 600, color: getScoreColor(time.reach_potential) }}>
                           {getScoreIcon(time.reach_potential)}
-                        </div>
-                        <p className="text-gray-600">Reach</p>
-                        <p className="font-medium">{time.reach_potential}%</p>
-                      </div>
-                      <div className="text-center">
-                        <div className={`font-semibold ${getScoreColor(time.audience_activity)}`}>
+                        </Box>
+                        <Typography sx={{ color: 'text.secondary' }}>Reach</Typography>
+                        <Typography sx={{ fontWeight: 500 }}>{time.reach_potential}%</Typography>
+                      </Box>
+                      <Box sx={{ textAlign: 'center' }}>
+                        <Box sx={{ fontWeight: 600, color: getScoreColor(time.audience_activity) }}>
                           {getScoreIcon(time.audience_activity)}
-                        </div>
-                        <p className="text-gray-600">Activity</p>
-                        <p className="font-medium">{time.audience_activity}%</p>
-                      </div>
-                      <div className="text-center">
-                        <div className={`font-semibold ${getScoreColor(time.content_performance)}`}>
+                        </Box>
+                        <Typography sx={{ color: 'text.secondary' }}>Activity</Typography>
+                        <Typography sx={{ fontWeight: 500 }}>{time.audience_activity}%</Typography>
+                      </Box>
+                      <Box sx={{ textAlign: 'center' }}>
+                        <Box sx={{ fontWeight: 600, color: getScoreColor(time.content_performance) }}>
                           {getScoreIcon(time.content_performance)}
-                        </div>
-                        <p className="text-gray-600">Performance</p>
-                        <p className="font-medium">{time.content_performance}%</p>
-                      </div>
+                        </Box>
+                        <Typography sx={{ color: 'text.secondary' }}>Performance</Typography>
+                        <Typography sx={{ fontWeight: 500 }}>{time.content_performance}%</Typography>
+                      </Box>
                     </div>
 
                     <div className="space-y-3">
@@ -604,19 +604,19 @@ export function OptimalPostingTimePredictor({ provider }: OptimalPostingTimePred
                 <CardContent>
                   <div className="space-y-4">
                     {audienceBehavior.map((behavior, index) => (
-                      <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                      <Box key={index} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', p: 3, bgcolor: 'grey.50', borderRadius: 2 }}>
                         <div className="flex items-center gap-3">
                           {getTimeIcon(behavior.time_slot)}
                           <div>
-                            <p className="font-medium">{behavior.time_slot}</p>
-                            <p className="text-sm text-gray-600">{behavior.content_preference}</p>
+                            <Typography sx={{ fontWeight: 500 }}>{behavior.time_slot}</Typography>
+                            <Typography variant="body2" sx={{ color: 'text.secondary' }}>{behavior.content_preference}</Typography>
                           </div>
                         </div>
-                        <div className="text-right">
-                          <p className="font-semibold">{behavior.activity_level}% activity</p>
-                          <p className="text-sm text-gray-600">{behavior.device_usage}</p>
-                        </div>
-                      </div>
+                        <Box sx={{ textAlign: 'right' }}>
+                          <Typography sx={{ fontWeight: 600 }}>{behavior.activity_level}% activity</Typography>
+                          <Typography variant="body2" sx={{ color: 'text.secondary' }}>{behavior.device_usage}</Typography>
+                        </Box>
+                      </Box>
                     ))}
                   </div>
                 </CardContent>
@@ -636,31 +636,31 @@ export function OptimalPostingTimePredictor({ provider }: OptimalPostingTimePred
                 <CardContent>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div className="space-y-4">
-                      <h3 className="font-semibold">Top Performing Times</h3>
+                      <Typography variant="h6" sx={{ fontWeight: 600 }}>Top Performing Times</Typography>
                       <div className="space-y-2">
                         {optimalTimes
                           .sort((a, b) => b.engagement_score - a.engagement_score)
                           .slice(0, 3)
                           .map((time, index) => (
-                            <div key={index} className="flex items-center justify-between p-2 bg-gray-50 rounded">
-                              <span className="font-medium">{time.time} - {time.day}</span>
-                              <span className="text-green-600 font-semibold">{time.engagement_score}%</span>
-                            </div>
+                            <Box key={index} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', p: 2, bgcolor: 'grey.50', borderRadius: 1 }}>
+                              <Typography sx={{ fontWeight: 500 }}>{time.time} - {time.day}</Typography>
+                              <Typography sx={{ color: 'success.main', fontWeight: 600 }}>{time.engagement_score}%</Typography>
+                            </Box>
                           ))}
                       </div>
                     </div>
 
                     <div className="space-y-4">
-                      <h3 className="font-semibold">Platform Insights</h3>
+                      <Typography variant="h6" sx={{ fontWeight: 600 }}>Platform Insights</Typography>
                       <div className="space-y-2">
                         {optimalTimes.map((time, index) => (
-                          <div key={index} className="p-2 border rounded">
-                            <div className="flex items-center justify-between mb-1">
-                              <span className="font-medium">{time.platform}</span>
+                          <Box key={index} sx={{ p: 2, border: 1, borderColor: 'divider', borderRadius: 1 }}>
+                            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1 }}>
+                              <Typography sx={{ fontWeight: 500 }}>{time.platform}</Typography>
                               <Chip label={time.competition_level} variant="outlined" size="small" />
-                            </div>
-                            <p className="text-sm text-gray-600">{time.reasoning}</p>
-                          </div>
+                            </Box>
+                            <Typography variant="body2" sx={{ color: 'text.secondary' }}>{time.reasoning}</Typography>
+                          </Box>
                         ))}
                       </div>
                     </div>
@@ -670,7 +670,7 @@ export function OptimalPostingTimePredictor({ provider }: OptimalPostingTimePred
               </Box>
             )}
           </Box>
-        </div>
+        </Box>
       )}
     </Box>
   );

@@ -6,11 +6,17 @@ import {
   TextField,
   Box,
   Typography,
-  Grid
+  Grid,
+  Card,
+  CardContent,
+  IconButton,
+  Chip,
+  InputAdornment
 } from '@mui/material';
 import { FileText, Activity, Heart, Star, Image as ImageIcon, Sparkles, Copy, Download } from 'lucide-react';
 import { toast } from 'sonner';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Dialog as MuiDialog, DialogContent as MuiDialogContent, DialogTitle as MuiDialogTitle } from '@mui/material';
 import { Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 import { Badge } from '@/components/ui/feedback/mui-badge';
 import { Label } from '@/components/ui/label';
@@ -228,30 +234,63 @@ export function UseTemplateModal({ open, onClose, onTemplateUsed }: UseTemplateM
   };
 
   return (
-            <Dialog open={open} onClose={onClose}>
-      <DialogContent className="max-w-6xl max-h-[95vh] overflow-hidden">
-        <DialogHeader>
-          <DialogTitle>Use Template</DialogTitle>
-        </DialogHeader>
-        
-        <div className="flex flex-col lg:flex-row gap-6 h-[85vh]">
+    <MuiDialog 
+      open={open} 
+      onClose={onClose}
+      maxWidth="lg"
+      fullWidth
+      sx={{
+        '& .MuiDialog-paper': {
+          m: { xs: 1, sm: 2 },
+          maxHeight: { xs: '95vh', sm: '90vh' },
+          overflow: 'hidden'
+        }
+      }}
+    >
+      <MuiDialogTitle>Use Template</MuiDialogTitle>
+      <MuiDialogContent sx={{ p: 0, overflow: 'hidden' }}>
+        <Box sx={{ 
+          display: 'flex', 
+          flexDirection: { xs: 'column', lg: 'row' }, 
+          gap: 3, 
+          height: { xs: '85vh', sm: '80vh' },
+          p: 3,
+          maxWidth: '100%',
+          overflow: 'hidden'
+        }}>
           {/* Template Browser */}
-          <div className="flex-1 flex flex-col">
+          <Box sx={{ 
+            flex: 1, 
+            display: 'flex', 
+            flexDirection: 'column',
+            minWidth: 0,
+            overflow: 'hidden'
+          }}>
             {/* Filters */}
-            <div className="flex flex-col sm:flex-row gap-4 mb-6">
-              <div className="flex-1">
-                <div className="relative">
-                  <Activity className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                  <TextField
-                    placeholder="Search templates..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="pl-10"
-                  />
-                </div>
-              </div>
+            <Box sx={{ 
+              display: 'flex', 
+              flexDirection: { xs: 'column', sm: 'row' }, 
+              gap: 2, 
+              mb: 3,
+              width: '100%'
+            }}>
+              <Box sx={{ flex: 1, minWidth: 0 }}>
+                <TextField
+                  placeholder="Search templates..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  fullWidth
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <Activity />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              </Box>
               
-              <FormControl className="w-full sm:w-48">
+              <FormControl sx={{ minWidth: { xs: '100%', sm: 120 } }}>
                 <InputLabel>Category</InputLabel>
                 <Select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
                   {categories.map(category => (
@@ -262,7 +301,7 @@ export function UseTemplateModal({ open, onClose, onTemplateUsed }: UseTemplateM
                 </Select>
               </FormControl>
               
-              <FormControl className="w-full sm:w-48">
+              <FormControl sx={{ minWidth: { xs: '100%', sm: 120 } }}>
                 <InputLabel>Platform</InputLabel>
                 <Select value={selectedPlatform} onChange={(e) => setSelectedPlatform(e.target.value)}>
                   {platforms.map(platform => (
@@ -272,76 +311,137 @@ export function UseTemplateModal({ open, onClose, onTemplateUsed }: UseTemplateM
                   ))}
                 </Select>
               </FormControl>
-            </div>
+            </Box>
             
             {/* Template Grid */}
-            <div className="flex-1 overflow-y-auto">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <Box sx={{ 
+              flex: 1, 
+              overflowY: 'auto',
+              maxWidth: '100%',
+              overflow: 'hidden'
+            }}>
+              <Grid container spacing={2} sx={{ width: '100%', margin: 0 }}>
                 {filteredTemplates.map(template => (
-                  <div
-                    key={template.id}
-                    className={`border rounded-lg p-4 cursor-pointer transition-all hover:shadow-md ${
-                      selectedTemplate?.id === template.id ? 'border-blue-500 bg-blue-50' : 'hover:border-gray-300'
-                    }`}
-                    onClick={() => handleTemplateSelect(template)}
-                  >
-                    {/* Template Preview */}
-                    <div className="aspect-video bg-gray-100 rounded-lg mb-3 flex items-center justify-center">
-                      <div className="text-center">
-                        <Activity className="h-8 w-8 text-gray-400 mx-auto mb-2" />
-                        <p className="text-sm text-gray-500">Template Preview</p>
-                      </div>
-                    </div>
-                    
-                    {/* Template Info */}
-                    <div className="space-y-2">
-                      <div className="flex items-start justify-between">
-                        <div className="flex-1">
-                          <h3 className="font-medium text-sm">{template.name}</h3>
-                          <p className="text-xs text-muted-foreground mt-1">{template.description}</p>
-                        </div>
-                        <div className="flex items-center gap-1">
-                          {template.isPremium && (
-                            <span className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">PRO</span>
-                          )}
-                          <Button
-                            variant="text"
-                            size="small"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleFavoriteToggle(template.id);
-                            }}
-                          >
-                            <Heart className={`h-4 w-4 ${template.isFavorite ? 'fill-red-500 text-red-500' : 'text-gray-400'}`} />
-                          </Button>
-                        </div>
-                      </div>
-                      
-                      {/* Tags and Stats */}
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-1">
-                          <Badge variant="outline" className="text-xs">{template.platform}</Badge>
-                          <Badge variant="outline" className="text-xs">{template.type}</Badge>
-                        </div>
-                        <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                          <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                          <span>{template.rating}</span>
-                          <span>•</span>
-                          <span>{template.usageCount} uses</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <Grid item xs={12} sm={6} key={template.id} sx={{ minWidth: 0 }}>
+                    <Card
+                      sx={{
+                        cursor: 'pointer',
+                        transition: 'all 0.2s ease-in-out',
+                        '&:hover': {
+                          boxShadow: 2,
+                          transform: 'translateY(-1px)'
+                        },
+                        border: selectedTemplate?.id === template.id ? 2 : 1,
+                        borderColor: selectedTemplate?.id === template.id ? 'primary.main' : 'divider',
+                        bgcolor: selectedTemplate?.id === template.id ? 'primary.50' : 'background.paper'
+                      }}
+                      onClick={() => handleTemplateSelect(template)}
+                    >
+                      <CardContent sx={{ p: 2 }}>
+                        {/* Template Preview */}
+                        <Box sx={{ 
+                          aspectRatio: '16/9', 
+                          bgcolor: 'grey.100', 
+                          borderRadius: 1, 
+                          mb: 2, 
+                          display: 'flex', 
+                          alignItems: 'center', 
+                          justifyContent: 'center' 
+                        }}>
+                          <Box sx={{ textAlign: 'center' }}>
+                            <Activity style={{ fontSize: 32, color: '#9e9e9e', marginBottom: 8 }} />
+                            <Typography variant="body2" color="text.secondary">
+                              Template Preview
+                            </Typography>
+                          </Box>
+                        </Box>
+                        
+                        {/* Template Info */}
+                        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                            <Box sx={{ flex: 1, minWidth: 0, mr: 1 }}>
+                              <Typography variant="subtitle2" sx={{ fontWeight: 500, wordBreak: 'break-word' }}>
+                                {template.name}
+                              </Typography>
+                              <Typography variant="caption" color="text.secondary" sx={{ mt: 0.5, display: 'block' }}>
+                                {template.description}
+                              </Typography>
+                            </Box>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                              {template.isPremium && (
+                                <Chip 
+                                  label="PRO" 
+                                  size="small" 
+                                  color="primary" 
+                                  variant="outlined"
+                                  sx={{ fontSize: '0.7rem', height: 20 }}
+                                />
+                              )}
+                              <IconButton
+                                size="small"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleFavoriteToggle(template.id);
+                                }}
+                              >
+                                <Heart style={{ 
+                                  fontSize: 16, 
+                                  color: template.isFavorite ? '#f44336' : '#9e9e9e',
+                                  fill: template.isFavorite ? '#f44336' : 'none'
+                                }} />
+                              </IconButton>
+                            </Box>
+                          </Box>
+                          
+                          {/* Tags and Stats */}
+                          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                            <Box sx={{ display: 'flex', gap: 0.5, flexWrap: 'wrap' }}>
+                              <Chip 
+                                label={template.platform} 
+                                size="small" 
+                                variant="outlined"
+                                sx={{ fontSize: '0.7rem', height: 20 }}
+                              />
+                              <Chip 
+                                label={template.type} 
+                                size="small" 
+                                variant="outlined"
+                                sx={{ fontSize: '0.7rem', height: 20 }}
+                              />
+                            </Box>
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                              <Star style={{ fontSize: 12, color: '#ff9800' }} />
+                              <Typography variant="caption" color="text.secondary">
+                                {template.rating}
+                              </Typography>
+                              <Typography variant="caption" color="text.secondary">•</Typography>
+                              <Typography variant="caption" color="text.secondary">
+                                {template.usageCount} uses
+                              </Typography>
+                            </Box>
+                          </Box>
+                        </Box>
+                      </CardContent>
+                    </Card>
+                  </Grid>
                 ))}
-              </div>
-            </div>
-          </div>
+              </Grid>
+            </Box>
+          </Box>
           
           {/* Template Customization */}
           {selectedTemplate && (
-            <div className="w-full lg:w-96 flex flex-col">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="font-medium">Customize Template</h3>
+            <Box sx={{ 
+              width: { xs: '100%', lg: 384 }, 
+              display: 'flex', 
+              flexDirection: 'column',
+              minWidth: 0,
+              overflow: 'hidden'
+            }}>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+                <Typography variant="h6" sx={{ fontWeight: 500 }}>
+                  Customize Template
+                </Typography>
                 <Button
                   variant="outlined"
                   size="small"
@@ -349,113 +449,154 @@ export function UseTemplateModal({ open, onClose, onTemplateUsed }: UseTemplateM
                 >
                   Back to Browse
                 </Button>
-              </div>
+              </Box>
               
-              <div className="flex-1 overflow-y-auto space-y-4">
+              <Box sx={{ 
+                flex: 1, 
+                overflowY: 'auto',
+                maxWidth: '100%',
+                overflow: 'hidden'
+              }}>
                 {/* Template Preview */}
-                <div className="aspect-video bg-gray-100 rounded-lg flex items-center justify-center">
-                  <div className="text-center">
-                    <Activity className="h-8 w-8 text-gray-400 mx-auto mb-2" />
-                    <p className="text-sm text-gray-500">Live Preview</p>
-                  </div>
-                </div>
+                <Box sx={{ 
+                  aspectRatio: '16/9', 
+                  bgcolor: 'grey.100', 
+                  borderRadius: 1, 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center',
+                  mb: 3
+                }}>
+                  <Box sx={{ textAlign: 'center' }}>
+                    <Activity style={{ fontSize: 32, color: '#9e9e9e', marginBottom: 8 }} />
+                    <Typography variant="body2" color="text.secondary">
+                      Live Preview
+                    </Typography>
+                  </Box>
+                </Box>
                 
                 {/* Template Variables */}
-                <div className="space-y-4">
-                  <h4 className="font-medium text-sm">Customize Content</h4>
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                  <Typography variant="subtitle2" sx={{ fontWeight: 500 }}>
+                    Customize Content
+                  </Typography>
                   
                   {selectedTemplate.variables.map(variable => (
-                    <div key={variable.id} className="space-y-2">
-                      <Label className="text-sm">
+                    <Box key={variable.id} sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
+                      <Typography variant="body2" sx={{ fontWeight: 500 }}>
                         {variable.name}
-                        {variable.required && <span className="text-red-500 ml-1">*</span>}
-                      </Label>
+                        {variable.required && <Typography component="span" color="error.main" sx={{ ml: 0.5 }}>*</Typography>}
+                      </Typography>
                       
                       {variable.type === 'text' && (
-                        <Input
+                        <TextField
                           value={templateVariables[variable.id] || ''}
                           onChange={(e) => handleVariableChange(variable.id, e.target.value)}
                           placeholder={variable.placeholder}
-                          className="text-sm"
+                          size="small"
+                          fullWidth
                         />
                       )}
                       
                       {variable.type === 'textarea' && (
-                        <Textarea
+                        <TextField
                           value={templateVariables[variable.id] || ''}
                           onChange={(e) => handleVariableChange(variable.id, e.target.value)}
                           placeholder={variable.placeholder}
-                          className="text-sm"
+                          multiline
                           rows={3}
+                          size="small"
+                          fullWidth
                         />
                       )}
                       
                       {variable.type === 'color' && (
-                        <div className="flex items-center gap-2">
-                          <Input
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                          <TextField
                             type="color"
                             value={templateVariables[variable.id] || '#000000'}
                             onChange={(e) => handleVariableChange(variable.id, e.target.value)}
-                            className="w-16 h-10"
+                            size="small"
+                            sx={{ width: 64, height: 40 }}
                           />
-                          <Input
+                          <TextField
                             value={templateVariables[variable.id] || ''}
                             onChange={(e) => handleVariableChange(variable.id, e.target.value)}
                             placeholder={variable.placeholder}
-                            className="text-sm flex-1"
+                            size="small"
+                            fullWidth
                           />
-                        </div>
+                        </Box>
                       )}
                       
                       {variable.type === 'image' && (
-                        <div className="border-2 border-dashed border-gray-300 rounded-lg p-4 text-center">
-                          <ImageIcon className="h-8 w-8 text-gray-400 mx-auto mb-2" />
-                          <p className="text-sm text-gray-500">{variable.placeholder}</p>
-                          <Button variant="outlined" size="small" className="mt-2">
+                        <Box sx={{ 
+                          border: 2, 
+                          borderColor: 'grey.300', 
+                          borderStyle: 'dashed', 
+                          borderRadius: 1, 
+                          p: 2, 
+                          textAlign: 'center' 
+                        }}>
+                          <ImageIcon style={{ fontSize: 32, color: '#9e9e9e', marginBottom: 8 }} />
+                          <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                            {variable.placeholder}
+                          </Typography>
+                          <Button variant="outlined" size="small">
                             Upload Image
                           </Button>
-                        </div>
+                        </Box>
                       )}
-                    </div>
+                    </Box>
                   ))}
-                </div>
-              </div>
+                </Box>
+              </Box>
               
               {/* Action Buttons */}
-              <div className="pt-4 border-t space-y-2">
+              <Box sx={{ pt: 2, borderTop: 1, borderColor: 'divider', display: 'flex', flexDirection: 'column', gap: 1 }}>
                 <Button
                   onClick={handleUseTemplate}
                   disabled={isCreating}
-                  className="w-full"
+                  fullWidth
+                  variant="contained"
                 >
                   {isCreating ? (
                     <>
-                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
+                      <Box sx={{ 
+                        width: 16, 
+                        height: 16, 
+                        border: '2px solid', 
+                        borderColor: 'white', 
+                        borderTopColor: 'transparent', 
+                        borderRadius: '50%', 
+                        animation: 'spin 1s linear infinite',
+                        mr: 1 
+                      }} />
                       Creating...
                     </>
                   ) : (
                     <>
-                      <Sparkles className="h-4 w-4 mr-2" />
+                      <Sparkles style={{ fontSize: 16, marginRight: 8 }} />
                       Use Template
                     </>
                   )}
                 </Button>
                 
-                <div className="flex gap-2">
-                  <Button variant="outlined" size="small" className="flex-1">
-                    <Copy className="h-4 w-4 mr-2" />
+                <Box sx={{ display: 'flex', gap: 1 }}>
+                  <Button variant="outlined" size="small" sx={{ flex: 1 }}>
+                    <Copy style={{ fontSize: 16, marginRight: 8 }} />
                     Duplicate
                   </Button>
-                  <Button variant="outlined" size="small" className="flex-1">
-                    <Download className="h-4 w-4 mr-2" />
+                  <Button variant="outlined" size="small" sx={{ flex: 1 }}>
+                    <Download style={{ fontSize: 16, marginRight: 8 }} />
                     Download
                   </Button>
-                </div>
-              </div>
-            </div>
+                </Box>
+              </Box>
+            </Box>
           )}
-        </div>
-      </DialogContent>
-    </Dialog>
+        </Box>
+      </MuiDialogContent>
+    </MuiDialog>
   );
 } 

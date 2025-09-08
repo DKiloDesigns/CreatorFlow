@@ -1,6 +1,12 @@
 # CreatorFlow UI Component Library
 
-A comprehensive, accessible component library built with modern design principles and WCAG 2.1 AA compliance.
+A comprehensive, accessible component library built with Material-UI (MUI) and modern design principles with WCAG 2.1 AA compliance.
+
+## 📚 Documentation
+
+- **[MUI Component Library](./MUI_COMPONENT_LIBRARY.md)** - Complete component documentation
+- **[Developer Guide](../../docs/MUI_DEVELOPER_GUIDE.md)** - Developer usage guide
+- **[Migration Guide](../../docs/TAILWIND_TO_MUI_MIGRATION.md)** - Tailwind to MUI migration guide
 
 ## 🎨 Design Principles
 

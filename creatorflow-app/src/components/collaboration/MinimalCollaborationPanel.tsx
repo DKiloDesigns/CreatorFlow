@@ -39,18 +39,12 @@ export function MinimalCollaborationPanel() {
           onClick={handleClick} 
           sx={{
             color: 'text.primary',
-            backgroundColor: 'background.paper',
-            border: '2px solid',
-            borderColor: 'primary.main',
             '&:hover': {
-              backgroundColor: 'primary.main',
-              color: 'primary.contrastText',
-              borderColor: 'primary.dark',
+              backgroundColor: 'action.hover',
+              color: 'primary.main',
             },
-            // Ensure visibility in both light and dark modes
             minWidth: 44,
             minHeight: 44,
-            boxShadow: 1,
             '&:focus-visible': {
               outline: '2px solid',
               outlineColor: 'primary.main',

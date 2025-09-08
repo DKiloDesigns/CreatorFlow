@@ -268,17 +268,12 @@ export default function DashboardLayout({
                     href="/dashboard/notifications/enhanced"
                     sx={{
                       color: 'text.primary',
-                      backgroundColor: 'background.paper',
-                      border: '2px solid',
-                      borderColor: 'primary.main',
                       '&:hover': {
-                        backgroundColor: 'primary.main',
-                        color: 'primary.contrastText',
-                        borderColor: 'primary.dark',
+                        backgroundColor: 'action.hover',
+                        color: 'primary.main',
                       },
                       minWidth: 44,
                       minHeight: 44,
-                      boxShadow: 1,
                       '&:focus-visible': {
                         outline: '2px solid',
                         outlineColor: 'primary.main',

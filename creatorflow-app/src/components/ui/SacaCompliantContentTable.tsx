@@ -356,19 +356,32 @@ export default function SacaCompliantContentTable({
           onClose={closeDetailModal}
           maxWidth="md"
           fullWidth
+          sx={{
+            '& .MuiDialog-paper': {
+              m: { xs: 1, sm: 2 },
+              maxHeight: { xs: '95vh', sm: '90vh' },
+              overflow: 'hidden'
+            }
+          }}
         >
           <DialogTitle>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <Typography variant="h6">Content Details</Typography>
+              <Typography variant="h6" sx={{ wordBreak: 'break-word' }}>Content Details</Typography>
               <IconButton onClick={closeDetailModal}>
                 <CloseIcon />
               </IconButton>
             </Box>
           </DialogTitle>
-          <DialogContent>
+          <DialogContent sx={{ 
+            p: { xs: 2, sm: 3 }, 
+            pb: { xs: 6, sm: 3 },
+            maxWidth: '100%',
+            overflow: 'hidden',
+            '& *': { maxWidth: '100%' }
+          }}>
             {selectedItem && (
-              <Box sx={{ mt: 2 }}>
-                <Typography variant="h5" gutterBottom>{selectedItem.title}</Typography>
+              <Box sx={{ mt: 2, maxWidth: '100%', overflow: 'hidden' }}>
+                <Typography variant="h5" gutterBottom sx={{ wordBreak: 'break-word' }}>{selectedItem.title}</Typography>
                 
                 <Box sx={{ mb: 3 }}>
                   <Typography variant="subtitle1" color="text.secondary" gutterBottom>
@@ -405,12 +418,13 @@ export default function SacaCompliantContentTable({
                   <Box sx={{ 
                     mb: 4, 
                     mt: 2,
-                    p: 3, 
+                    p: { xs: 2, sm: 3 }, 
                     bgcolor: 'primary.50', 
                     borderRadius: 2,
                     border: `2px solid ${theme.palette.primary.light}`,
                     position: 'relative',
                     overflow: 'hidden',
+                    maxWidth: '100%',
                     '&::before': {
                       content: '""',
                       position: 'absolute',
@@ -478,16 +492,20 @@ export default function SacaCompliantContentTable({
                 )}
 
                 {/* Content Preview with better spacing */}
-                <Box sx={{ mb: 3, mt: 2 }}>
+                <Box sx={{ mb: 3, mt: 2, maxWidth: '100%', overflow: 'hidden' }}>
                   <Typography variant="subtitle1" color="text.secondary" gutterBottom>
                     Content Preview
                   </Typography>
                   <Typography variant="body2" sx={{ 
-                    p: 2, 
+                    p: { xs: 1.5, sm: 2 }, 
                     bgcolor: 'grey.50', 
                     borderRadius: 1,
                     fontFamily: 'monospace',
-                    fontSize: '0.875rem'
+                    fontSize: { xs: '0.75rem', sm: '0.875rem' },
+                    wordBreak: 'break-word',
+                    whiteSpace: 'pre-wrap',
+                    overflow: 'hidden',
+                    maxWidth: '100%'
                   }}>
                     {selectedItem.content}
                   </Typography>
