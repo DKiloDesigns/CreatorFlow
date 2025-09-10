@@ -72,8 +72,8 @@ import {
   Stop,
   Pause,
   Add,
-  Remove,
-  Update,
+  Delete as Remove,
+  Refresh as Update,
   Build,
   Code,
   Cloud,
@@ -89,7 +89,7 @@ import {
   CalendarToday,
   LocationOn,
   Phone,
-  Fax
+  Phone as Fax
 } from '@/lib/mui-optimized-imports';
 
 interface Integration {

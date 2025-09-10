@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useRef, ReactNode } from 'react';
+import React, { useEffect, useRef, ReactNode, useState } from 'react';
 import { Box } from '@mui/material';
 
 interface KeyboardNavigationProps {
@@ -251,15 +251,15 @@ export const AccessibleButtonGroup: React.FC<AccessibleButtonGroupProps> = ({
   'aria-label': ariaLabel,
   'aria-describedby': ariaDescribedBy,
 }) => {
-  const { currentIndex, totalItems, startNavigation, stopNavigation, moveUp, moveDown, moveLeft, moveRight } = useKeyboardNavigation();
+  const { isNavigating, currentIndex, totalItems, startNavigation, stopNavigation, moveUp, moveDown, moveLeft, moveRight } = useKeyboardNavigation();
   const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   // Count children and set up refs
   useEffect(() => {
     const buttonCount = React.Children.count(children);
-    setTotalItems(buttonCount);
+    startNavigation(buttonCount);
     buttonRefs.current = buttonRefs.current.slice(0, buttonCount);
-  }, [children]);
+  }, [children, startNavigation]);
 
   // Focus current button
   useEffect(() => {

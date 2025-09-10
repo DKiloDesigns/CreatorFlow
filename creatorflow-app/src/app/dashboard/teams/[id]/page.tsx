@@ -16,6 +16,13 @@ import { Users, Activity, Settings, Edit, ArrowLeft } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useSession } from 'next-auth/react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger } from '@/components/ui/dialog';
+import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
+import { Badge } from '@/components/ui/badge';
+import { Avatar } from '@mui/material';
+import { Tabs, Tab } from '@mui/material';
+import { Textarea } from '@/components/ui/textarea';
+import { Users2, UserPlus, Crown, Shield, Trash2, Mail, User } from 'lucide-react';
 
 interface Team {
   id: string;
@@ -449,14 +456,15 @@ export default function TeamDetailPage() {
         )}
       </div>
 
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
-        <TabsList>
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="members">Members ({team.members.length})</TabsTrigger>
-          <TabsTrigger value="invitations">Invitations ({team.invitations.length})</TabsTrigger>
-        </TabsList>
+      <Box>
+        <Tabs value={activeTab} onChange={(e, newValue) => setActiveTab(newValue)} className="space-y-6">
+          <Tab label="Overview" value="overview" />
+          <Tab label={`Members (${team.members.length})`} value="members" />
+          <Tab label={`Invitations (${team.invitations.length})`} value="invitations" />
+        </Tabs>
 
-        <TabsContent value="overview" className="space-y-6">
+        {activeTab === 'overview' && (
+          <Box className="space-y-6">
           <div className="grid gap-6 md:grid-cols-2">
             <Card>
               <CardHeader>
@@ -476,10 +484,7 @@ export default function TeamDetailPage() {
                   <Label className="text-sm font-medium">Owner</Label>
                   <div className="flex items-center space-x-2 mt-1">
                     <Avatar className="h-6 w-6">
-                      <AvatarImage src={team.owner.image || ''} />
-                      <AvatarFallback className="text-xs">
-                        {getInitials(team.owner.name || 'U')}
-                      </AvatarFallback>
+                      {team.owner.image ? <img src={team.owner.image} alt={team.owner.name} className="w-full h-full object-cover" /> : team.owner.name?.charAt(0) || 'O'}
                     </Avatar>
                     <span className="text-sm">{team.owner.name}</span>
                   </div>
@@ -568,9 +573,11 @@ export default function TeamDetailPage() {
               </CardContent>
             </Card>
           </div>
-        </TabsContent>
+          </Box>
+        )}
 
-        <TabsContent value="members" className="space-y-4">
+        {activeTab === 'members' && (
+          <Box className="space-y-4">
           <div className="flex items-center justify-between">
             <h3 className="text-lg font-semibold">Team Members</h3>
             {isOwner && (
@@ -629,10 +636,7 @@ export default function TeamDetailPage() {
                 <CardContent className="flex items-center justify-between p-4">
                   <div className="flex items-center space-x-3">
                     <Avatar>
-                      <AvatarImage src={member.user?.image || ''} />
-                      <AvatarFallback>
-                        {getInitials(member.user?.name || 'U')}
-                      </AvatarFallback>
+                      {member.user?.image ? <img src={member.user.image} alt={member.user.name} className="w-full h-full object-cover" /> : member.user?.name?.charAt(0) || 'U'}
                     </Avatar>
                     <div>
                       <p className="font-medium">{member.user?.name}</p>
@@ -659,9 +663,11 @@ export default function TeamDetailPage() {
               </Card>
             ))}
           </div>
-        </TabsContent>
+          </Box>
+        )}
 
-        <TabsContent value="invitations" className="space-y-4">
+        {activeTab === 'invitations' && (
+          <Box className="space-y-4">
           <div className="flex items-center justify-between">
             <h3 className="text-lg font-semibold">Team Invitations</h3>
             {isOwner && (
@@ -730,17 +736,17 @@ export default function TeamDetailPage() {
                 const getStatusBadge = (status: string) => {
                   switch (status) {
                     case 'PENDING':
-                      return <Badge variant="default">Pending</Badge>;
+                      return <Badge variant="default" label="Pending" />;
                     case 'ACCEPTED':
-                      return <Badge variant="secondary" className="bg-green-100 text-green-800">Accepted</Badge>;
+                      return <Badge variant="secondary" className="bg-green-100 text-green-800" label="Accepted" />;
                     case 'DECLINED':
-                      return <Badge variant="secondary" className="bg-red-100 text-red-800">Declined</Badge>;
+                      return <Badge variant="secondary" className="bg-red-100 text-red-800" label="Declined" />;
                     case 'EXPIRED':
-                      return <Badge variant="secondary" className="bg-gray-100 text-gray-800">Expired</Badge>;
+                      return <Badge variant="secondary" className="bg-gray-100 text-gray-800" label="Expired" />;
                     case 'CANCELED':
-                      return <Badge variant="secondary" className="bg-gray-100 text-gray-800">Canceled</Badge>;
+                      return <Badge variant="secondary" className="bg-gray-100 text-gray-800" label="Canceled" />;
                     default:
-                      return <Badge variant="secondary">{status}</Badge>;
+                      return <Badge variant="secondary" label={status} />;
                   }
                 };
 
@@ -790,13 +796,15 @@ export default function TeamDetailPage() {
               })}
             </div>
           )}
-        </TabsContent>
-      </Tabs>
-    </div>
-  );
-{/* Bottom Spacer to Clear Bottom Navigation */}
+          </Box>
+        )}
+      </Box>
+
+      {/* Bottom Spacer to Clear Bottom Navigation */}
       <Box sx={{
         height: { xs: '120px', sm: '40px' },
         width: '100%'
       }} />
+    </div>
+  );
 } 

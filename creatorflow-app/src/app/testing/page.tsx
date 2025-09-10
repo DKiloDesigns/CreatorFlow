@@ -10,7 +10,7 @@ import {
 } from '@mui/material';
 import { TestTube, Activity } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import { Tab, TabPanel } from '@mui/material';
+import { Tab, Tabs, Box } from '@mui/material';
 import { CardDescription, Input, Textarea } from '@/components/ui';
 import { Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 

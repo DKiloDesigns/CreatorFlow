@@ -32,7 +32,6 @@ import {
   LogOut,
   User,
   Bell,
-  Brain,
   Home,
   TrendingUp,
   MessageSquare,
@@ -50,7 +49,6 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   { href: '/dashboard/content', label: 'Content', icon: FileText },
-  { href: '/dashboard/ai-tools', label: 'AI Tools', icon: Brain },
   { href: '/dashboard/accounts', label: 'Accounts', icon: Users },
   { href: '/dashboard/teams', label: 'Teams', icon: Users2 },
   { href: '/dashboard/analytics', label: 'Analytics', icon: BarChart2 },

@@ -87,7 +87,7 @@ interface Post {
 }
 
 export default function ContentPage() {
-  const [activeTab, setActiveTab] = useState(1);
+  const [activeTab, setActiveTab] = useState(0); // Default to calendar view
   const [isUploading, setIsUploading] = useState(false);
   const [isCreatingVideo, setIsCreatingVideo] = useState(false);
   const [isUsingTemplate, setIsUsingTemplate] = useState(false);
@@ -129,9 +129,10 @@ export default function ContentPage() {
   // Handle responsive tab behavior
   useEffect(() => {
     const handleResize = () => {
-      // On mobile, always show content management tab
-      if (window.innerWidth < 768 && activeTab !== 1) {
-        setActiveTab(1);
+      // On mobile, ensure we start with calendar view
+      if (window.innerWidth < 768) {
+        // Keep current tab, but ensure calendar is accessible
+        return;
       }
     };
 
@@ -140,7 +141,7 @@ export default function ContentPage() {
     
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, [activeTab]);
+  }, []);
 
   // Debug modal state
   useEffect(() => {
@@ -426,102 +427,74 @@ export default function ContentPage() {
             </Card>
 
             {/* Overview Cards */}
-            <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(4, 1fr)' }, gap: 3, mb: 4 }}>
-              <Box>
-                <Card>
-                  <CardHeader
-                    sx={{ 
-                      display: 'flex', 
-                      flexDirection: 'row', 
-                      alignItems: 'center', 
-                      justifyContent: 'space-between',
-                      pb: 1
-                    }}
-                  >
-                    <Typography variant="h6" sx={{ fontSize: '0.875rem', fontWeight: 500 }}>
+            <Box sx={{ display: 'flex', gap: 2, mb: 4, flexWrap: 'wrap' }}>
+              <Card sx={{ minWidth: 120, flex: '1 1 auto' }}>
+                <CardContent sx={{ p: 2, '&:last-child': { pb: 2 } }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1 }}>
+                    <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.75rem', fontWeight: 500 }}>
                       Drafts
                     </Typography>
-                    <FileText style={{ width: 16, height: 16, color: 'text.secondary' }} />
-                  </CardHeader>
-                  <CardContent>
-                    <Typography variant="h4" component="div" sx={{ fontWeight: 'bold' }}>
-                      {overview?.drafts || 0}
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </Box>
+                    <FileText style={{ width: 14, height: 14, color: 'text.secondary' }} />
+                  </Box>
+                  <Typography variant="h5" component="div" sx={{ fontWeight: 'bold', mb: 0.5 }}>
+                    {overview?.drafts || 0}
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary" sx={{ fontSize: '0.7rem' }}>
+                    {overview?.drafts === 1 ? 'draft post' : 'draft posts'}
+                  </Typography>
+                </CardContent>
+              </Card>
 
-              <Box>
-                <Card>
-                  <CardHeader
-                    sx={{ 
-                      display: 'flex', 
-                      flexDirection: 'row', 
-                      alignItems: 'center', 
-                      justifyContent: 'space-between',
-                      pb: 1
-                    }}
-                  >
-                    <Typography variant="h6" sx={{ fontSize: '0.875rem', fontWeight: 500 }}>
+              <Card sx={{ minWidth: 120, flex: '1 1 auto' }}>
+                <CardContent sx={{ p: 2, '&:last-child': { pb: 2 } }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1 }}>
+                    <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.75rem', fontWeight: 500 }}>
                       Scheduled
                     </Typography>
-                    <Clock style={{ width: 16, height: 16, color: 'text.secondary' }} />
-                  </CardHeader>
-                  <CardContent>
-                    <Typography variant="h4" component="div" sx={{ fontWeight: 'bold' }}>
-                      {overview?.scheduled || 0}
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </Box>
+                    <Clock style={{ width: 14, height: 14, color: 'text.secondary' }} />
+                  </Box>
+                  <Typography variant="h5" component="div" sx={{ fontWeight: 'bold', mb: 0.5 }}>
+                    {overview?.scheduled || 0}
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary" sx={{ fontSize: '0.7rem' }}>
+                    {overview?.scheduled === 1 ? 'scheduled post' : 'scheduled posts'}
+                  </Typography>
+                </CardContent>
+              </Card>
 
-              <Box>
-                <Card>
-                  <CardHeader
-                    sx={{ 
-                      display: 'flex', 
-                      flexDirection: 'row', 
-                      alignItems: 'center', 
-                      justifyContent: 'space-between',
-                      pb: 1
-                    }}
-                  >
-                    <Typography variant="h6" sx={{ fontSize: '0.875rem', fontWeight: 500 }}>
+              <Card sx={{ minWidth: 120, flex: '1 1 auto' }}>
+                <CardContent sx={{ p: 2, '&:last-child': { pb: 2 } }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1 }}>
+                    <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.75rem', fontWeight: 500 }}>
                       Published
                     </Typography>
-                    <TrendingUp style={{ width: 16, height: 16, color: 'text.secondary' }} />
-                  </CardHeader>
-                  <CardContent>
-                    <Typography variant="h4" component="div" sx={{ fontWeight: 'bold' }}>
-                      {overview?.published || 0}
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </Box>
+                    <TrendingUp style={{ width: 14, height: 14, color: 'text.secondary' }} />
+                  </Box>
+                  <Typography variant="h5" component="div" sx={{ fontWeight: 'bold', mb: 0.5 }}>
+                    {overview?.published || 0}
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary" sx={{ fontSize: '0.7rem' }}>
+                    {overview?.published === 1 ? 'published post' : 'published posts'}
+                  </Typography>
+                </CardContent>
+              </Card>
 
-              <Box>
-                <Card>
-                  <CardHeader
-                    sx={{ 
-                      display: 'flex', 
-                      flexDirection: 'row', 
-                      alignItems: 'center', 
-                      justifyContent: 'space-between',
-                      pb: 1
-                    }}
-                  >
-                    <Typography variant="h6" sx={{ fontSize: '0.875rem', fontWeight: 500 }}>
+              <Card sx={{ minWidth: 120, flex: '1 1 auto' }}>
+                <CardContent sx={{ p: 2, '&:last-child': { pb: 2 } }}>
+                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 1 }}>
+                    <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.75rem', fontWeight: 500 }}>
                       AI Insights
                     </Typography>
-                    <Brain style={{ width: 16, height: 16, color: 'text.secondary' }} />
-                  </CardHeader>
-                  <CardContent>
-                    <Typography variant="h4" component="div" sx={{ fontWeight: 'bold' }}>
-                      {aiInsights?.length || 0}
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </Box>
+                    <Brain style={{ width: 14, height: 14, color: 'text.secondary' }} />
+                  </Box>
+                  <Typography variant="h5" component="div" sx={{ fontWeight: 'bold', mb: 0.5 }}>
+                    {aiInsights?.length || 0}
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary" sx={{ fontSize: '0.7rem' }}>
+                    {(aiInsights?.length || 0) === 1 ? 'AI insight' : 'AI insights'}
+                  </Typography>
+                </CardContent>
+              </Card>
             </Box>
 
             {/* Content Table */}
@@ -703,35 +676,38 @@ export default function ContentPage() {
           </Box>
         </Box>
 
-        {/* Navigation Tabs - Hidden on mobile */}
+        {/* Navigation Tabs - Now visible on mobile */}
         <Box sx={{ 
           borderBottom: 1, 
           borderColor: 'divider',
-          display: { xs: 'none', md: 'block' }
+          display: 'block'
         }}>
           <Tabs 
             value={activeTab} 
             onChange={(_, newValue) => setActiveTab(newValue)}
+            variant="scrollable"
+            scrollButtons="auto"
             sx={{
-              px: 3,
+              px: { xs: 1, md: 3 },
               pt: 2,
               flexShrink: 0,
               '& .MuiTabs-flexContainer': {
-                flexWrap: 'wrap',
-                gap: 1
+                flexWrap: 'nowrap',
+                gap: { xs: 0.5, md: 1 }
               },
               '& .MuiTab-root': {
                 minWidth: 'auto',
                 fontSize: { xs: '0.75rem', sm: '0.875rem' },
                 px: { xs: 1, sm: 2 },
-                py: 1
+                py: 1,
+                whiteSpace: 'nowrap'
               }
             }}
           >
-            <Tab label="Calendar View" />
-            <Tab label="Content Management" />
-            <Tab label="AI Content Optimization" />
-            <Tab label="Automated Publishing" />
+            <Tab label="Calendar" />
+            <Tab label="Content" />
+            <Tab label="AI Tools" />
+            <Tab label="Publishing" />
           </Tabs>
         </Box>
 

@@ -15,7 +15,6 @@ import {
   AccordionDetails
 } from '@mui/material';
 import { 
-  Brain, 
   Users, 
   Users2, 
   Settings, 
@@ -80,7 +79,6 @@ export default function ProfilePage() {
     {
       title: 'Account Management',
       items: [
-        { href: '/dashboard/ai-tools', label: 'AI Tools', icon: Brain, description: 'AI-powered content tools' },
         { href: '/dashboard/accounts', label: 'Social Accounts', icon: Users, description: 'Manage connected platforms' },
         { href: '/dashboard/teams', label: 'Teams', icon: Users2, description: 'Collaborate with team members' },
       ]

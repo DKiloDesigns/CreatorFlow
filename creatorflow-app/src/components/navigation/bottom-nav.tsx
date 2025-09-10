@@ -49,7 +49,7 @@ const navItems = [
     href: '/dashboard/profile',
     icon: User,
     label: 'Profile',
-    activePattern: /^\/dashboard\/(profile|security|collabs|ai-tools|accounts|teams|settings|notifications|support)$/
+    activePattern: /^\/dashboard\/(profile|security|collabs|accounts|teams|settings|notifications|support)$/
   }
 ];
 

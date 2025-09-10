@@ -4,7 +4,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Card, CardContent, CardHeader } from '@/components/ui/mui-card';
 import { Button } from '@/components/ui/mui-button';
 import { Textarea } from '@/components/ui/textarea';
-import { Tabs, Tab, TabPanel } from '@mui/material';
+import { Tabs, Tab, Box } from '@mui/material';
 import { Badge } from '@/components/ui/feedback/mui-badge';
 import { AlertDialog } from '@/components/ui/alert-dialog';
 import { 
@@ -358,7 +358,8 @@ export function EnhancedComposer({ onSubmit, className }: EnhancedComposerProps)
           <Tab label="Compose" />
           <Tab label="Schedule" />
 
-          <TabPanel value={activeTab} index={0} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+          {activeTab === 0 && (
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             {/* Platform Selection */}
             <div className="space-y-2">
               <label className="text-sm font-medium">Select Platforms</label>
@@ -529,14 +530,17 @@ export function EnhancedComposer({ onSubmit, className }: EnhancedComposerProps)
                 Post Now
               </Button>
             </div>
-          </TabPanel>
+            </Box>
+          )}
 
-          <TabPanel value={activeTab} index={1} className="space-y-4">
+          {activeTab === 1 && (
+            <Box className="space-y-4">
             <div className="text-center py-8 text-muted-foreground">
               <Calendar className="h-12 w-12 mx-auto mb-4 opacity-50" />
               <p>Scheduling feature coming soon!</p>
             </div>
-          </TabPanel>
+            </Box>
+          )}
         </Tabs>
       </CardContent>
 

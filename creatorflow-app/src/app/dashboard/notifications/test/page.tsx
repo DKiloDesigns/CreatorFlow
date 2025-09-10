@@ -172,12 +172,8 @@ export default function NotificationTestPage() {
                   <Typography variant="h6" className="text-lg">{notification.title}</Typography>
                 </div>
                 <div className="flex gap-1">
-                  <Badge variant="secondary" className="text-xs">
-                    {notification.severity}
-                  </Badge>
-                  <Badge variant="outline" className="text-xs">
-                    {notification.category}
-                  </Badge>
+                  <Badge variant="secondary" className="text-xs" label={notification.severity} />
+                  <Badge variant="outline" className="text-xs" label={notification.category} />
                 </div>
               </div>
               <CardDescription>

@@ -308,7 +308,7 @@ export function MediaLibrary({ onSelect, selectedMedia = [], multiple = false }:
             onChange={(e) => setSearchTerm(e.target.value)}
             fullWidth
             InputProps={{
-              startAdornment: <Search size={16} sx={{ mr: 1, color: 'text.secondary' }} />,
+              startAdornment: <Search size={16} className="mr-1 text-gray-500" />,
             }}
           />
         </Box>
@@ -654,34 +654,28 @@ export function MediaLibrary({ onSelect, selectedMedia = [], multiple = false }:
     </Stack>
 
     {/* Preview Dialog */}
-    <MuiDialog 
+    <Dialog 
         open={previewOpen} 
         onClose={() => setPreviewOpen(false)}
         maxWidth="lg"
         fullWidth
         sx={{
-          '& .MuiDialog-paper': {
+          '& .Dialog-paper': {
             m: { xs: 1, sm: 2 },
             maxHeight: { xs: '95vh', sm: '90vh' },
             overflow: 'hidden'
           }
         }}
       >
-        <MuiDialogTitle>
+        <DialogTitle>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
             <Typography variant="h6" sx={{ wordBreak: 'break-word' }}>{selectedItem?.name}</Typography>
             <IconButton onClick={() => setPreviewOpen(false)}>
               <CloseIcon />
             </IconButton>
           </Box>
-        </MuiDialogTitle>
-        <MuiDialogContent sx={{ 
-          p: { xs: 2, sm: 3 }, 
-          pb: { xs: 6, sm: 3 },
-          maxWidth: '100%',
-          overflow: 'hidden',
-          '& *': { maxWidth: '100%' }
-        }}>
+        </DialogTitle>
+        <DialogContent className="p-2 sm:p-3 pb-6 sm:pb-3 max-w-full overflow-hidden">
           {selectedItem && (
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, maxWidth: '100%', overflow: 'hidden' }}>
               <Box sx={{ 
@@ -777,8 +771,8 @@ export function MediaLibrary({ onSelect, selectedMedia = [], multiple = false }:
               </Box>
             </Box>
           )}
-        </MuiDialogContent>
-      </MuiDialog>
+        </DialogContent>
+      </Dialog>
     </>
   );
 } 

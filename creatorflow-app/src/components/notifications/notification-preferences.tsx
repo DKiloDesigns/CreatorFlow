@@ -7,7 +7,7 @@ import {
   Bell, 
   Activity
 } from 'lucide-react';
-import { Tabs, Tab, TabPanel } from '@mui/material';
+import { Tabs, Tab, Box } from '@mui/material';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Separator } from '@/components/ui/separator';

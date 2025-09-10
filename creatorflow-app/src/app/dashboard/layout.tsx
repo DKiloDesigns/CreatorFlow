@@ -242,7 +242,7 @@ export default function DashboardLayout({
                         }
                       }}
                     >
-                      <Icon sx={{ width: 20, height: 20 }} />
+                      <Icon size={20} style={{ width: 20, height: 20 }} />
                     </IconButton>
                   );
                 })}

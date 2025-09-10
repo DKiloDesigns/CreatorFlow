@@ -22,7 +22,7 @@ import {
 import { Calendar, Activity, Edit, Trash2, Play, TrendingUp } from 'lucide-react';
 import { format } from 'date-fns';
 import { Badge } from '@/components/ui/badge';
-import { Tab, TabPanel } from '@mui/material';
+import { Tab, Tabs, Box } from '@mui/material';
 import { CardDescription } from '@/components/ui/base/Card';
 
 interface ScheduledPost {
@@ -221,7 +221,8 @@ export default function SchedulingPage() {
         </Box>
 
         <div>
-          <TabPanel value="schedule" sx={{ p: 0 }}>
+          {activeTab === 'schedule' && (
+            <Box sx={{ p: 0 }}>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Schedule Form */}
               <Card>
@@ -387,9 +388,11 @@ export default function SchedulingPage() {
                 </CardContent>
               </Card>
             </div>
-          </TabPanel>
+            </Box>
+          )}
 
-          <TabPanel value="scheduled" sx={{ p: 0 }}>
+          {activeTab === 'scheduled' && (
+            <Box sx={{ p: 0 }}>
             <Card>
               <CardHeader>
                 <Typography variant="h6">Scheduled Posts</Typography>
@@ -440,9 +443,11 @@ export default function SchedulingPage() {
                 )}
               </CardContent>
             </Card>
-          </TabPanel>
+            </Box>
+          )}
 
-          <TabPanel value="analytics" sx={{ p: 0 }}>
+          {activeTab === 'analytics' && (
+            <Box sx={{ p: 0 }}>
             <Card>
               <CardHeader>
                 <Typography variant="h6">Schedule Analytics</Typography>
@@ -485,9 +490,11 @@ export default function SchedulingPage() {
                 )}
               </CardContent>
             </Card>
-          </TabPanel>
+            </Box>
+          )}
 
-          <TabPanel value="optimal" sx={{ p: 0 }}>
+          {activeTab === 'optimal' && (
+            <Box sx={{ p: 0 }}>
             <Card>
               <CardHeader>
                 <Typography variant="h6">Optimal Posting Times</Typography>
@@ -531,7 +538,8 @@ export default function SchedulingPage() {
                 )}
               </CardContent>
             </Card>
-          </TabPanel>
+            </Box>
+          )}
         </div>
       </Box>
 

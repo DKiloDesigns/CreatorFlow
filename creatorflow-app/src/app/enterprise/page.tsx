@@ -11,6 +11,7 @@ import {
   Typography,
   Grid,
   Tabs,
+  Tab,
   Chip
 } from '@mui/material';
 import { 
@@ -38,7 +39,9 @@ import {
   Activity
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import { Tab, TabPanel } from '@mui/material';
+import { CardDescription } from '@/components/ui/base/Card';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 
 interface Team {
   id: string;
@@ -260,7 +263,8 @@ export default function EnterprisePage() {
         <Tab value="analytics" label="Analytics" />
       </Tabs>
 
-      <TabPanel value="overview" sx={{ p: 0 }}>
+      {activeTab === 'overview' && (
+        <Box sx={{ p: 0 }}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
@@ -280,7 +284,7 @@ export default function EnterprisePage() {
                         <h3 className="font-semibold">{team.name}</h3>
                         <p className="text-sm text-muted-foreground">{team.description}</p>
                         <div className="flex items-center gap-2 mt-1">
-                          <Badge variant="outlined" label={`${team.members.length} members`} />
+                          <Badge variant="outline" className="text-xs">{team.members.length} members</Badge>
                           <Badge className={getRoleColor(team.members.find(m => m.role === 'owner')?.role || '')} label={team.members.find(m => m.role === 'owner')?.role || 'Unknown'} />
                         </div>
                       </div>
@@ -328,9 +332,11 @@ export default function EnterprisePage() {
               </CardContent>
             </Card>
           </div>
-      </TabPanel>
+        </Box>
+      )}
 
-      <TabPanel value="teams" sx={{ p: 0 }}>
+      {activeTab === 'teams' && (
+        <Box sx={{ p: 0 }}>
           <Card>
             <CardHeader>
               <Typography variant="h6" className="flex items-center gap-2">
@@ -378,9 +384,11 @@ export default function EnterprisePage() {
               </div>
             </CardContent>
           </Card>
-      </TabPanel>
+        </Box>
+      )}
 
-      <TabPanel value="approvals" sx={{ p: 0 }}>
+      {activeTab === 'approvals' && (
+        <Box sx={{ p: 0 }}>
           <Card>
             <CardHeader>
               <Typography variant="h6" className="flex items-center gap-2">
@@ -437,9 +445,11 @@ export default function EnterprisePage() {
               </div>
             </CardContent>
           </Card>
-      </TabPanel>
+        </Box>
+      )}
 
-      <TabPanel value="analytics" sx={{ p: 0 }}>
+      {activeTab === 'analytics' && (
+        <Box sx={{ p: 0 }}>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
@@ -505,7 +515,8 @@ export default function EnterprisePage() {
               </CardContent>
             </Card>
           </div>
-      </TabPanel>
+        </Box>
+      )}
 
       {/* Create Team Modal */}
       {showCreateTeam && (

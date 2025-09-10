@@ -27,8 +27,9 @@ import {
   Rocket,
   Lightbulb,
   CheckCircle,
-  Star
+  Star,
 } from '@/lib/mui-optimized-imports';
+import { Brain } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { designTokens } from '@/lib/design-system';
 
@@ -426,7 +427,7 @@ export default function Phase2HubPage() {
                     <Chip
                       label="AI Powered"
                       size="small"
-                      icon={<Brain sx={{ fontSize: 12 }} />}
+                      icon={<Brain size={12} />}
                       sx={{
                         background: designTokens.colors.ai[100],
                         color: designTokens.colors.ai[700],

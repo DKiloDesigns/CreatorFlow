@@ -62,6 +62,7 @@ export default function DashboardPage() {
   // State for expandable sections
   const [contentHubExpanded, setContentHubExpanded] = useState(false);
   const [analyticsCenterExpanded, setAnalyticsCenterExpanded] = useState(false);
+  const [aiInsightsExpanded, setAiInsightsExpanded] = useState(false);
 
   // State for calendar modals
   const [createModalOpen, setCreateModalOpen] = useState(false);
@@ -464,7 +465,74 @@ export default function DashboardPage() {
         </Grid>
       </Grid>
 
-
+      {/* AI Insights Section */}
+      <Card sx={{ mb: 5 }}>
+        <CardHeader
+          avatar={<Brain size={32} color="#667eea" />}
+          title="AI Insights"
+          subheader="Get AI-powered recommendations and insights"
+          action={
+            <IconButton 
+              onClick={() => setAiInsightsExpanded(!aiInsightsExpanded)}
+              size="small"
+            >
+              {aiInsightsExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+            </IconButton>
+          }
+          sx={{ cursor: 'pointer' }}
+          onClick={() => setAiInsightsExpanded(!aiInsightsExpanded)}
+        />
+        <Collapse in={aiInsightsExpanded}>
+          <CardContent>
+            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+              AI-powered insights and recommendations to optimize your content strategy
+            </Typography>
+            <Grid container spacing={2}>
+              <Grid item xs={12} sm={4}>
+                <Box sx={{ textAlign: 'center', p: 2, bgcolor: 'background.default', borderRadius: 1 }}>
+                  <Typography variant="h6" color="primary.main">+23%</Typography>
+                  <Typography variant="caption" color="text.secondary">Engagement Boost</Typography>
+                </Box>
+              </Grid>
+              <Grid item xs={12} sm={4}>
+                <Box sx={{ textAlign: 'center', p: 2, bgcolor: 'background.default', borderRadius: 1 }}>
+                  <Typography variant="h6" color="success.main">4.2k</Typography>
+                  <Typography variant="caption" color="text.secondary">Predicted Views</Typography>
+                </Box>
+              </Grid>
+              <Grid item xs={12} sm={4}>
+                <Box sx={{ textAlign: 'center', p: 2, bgcolor: 'background.default', borderRadius: 1 }}>
+                  <Typography variant="h6" color="warning.main">2</Typography>
+                  <Typography variant="caption" color="text.secondary">AI Suggestions</Typography>
+                </Box>
+              </Grid>
+            </Grid>
+            <Box sx={{ mt: 2, display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+              <Button
+                variant="contained"
+                startIcon={<Zap size={16} />}
+                onClick={() => setAiInsightsModalOpen(true)}
+                sx={{
+                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                  '&:hover': {
+                    background: 'linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%)',
+                  }
+                }}
+              >
+                View Full Insights
+              </Button>
+              <Button
+                variant="outlined"
+                startIcon={<Target size={16} />}
+                onClick={() => handleAnalyticsNavigation('ai-insights')}
+                sx={{ borderColor: 'primary.main', color: 'primary.main' }}
+              >
+                Quick Analysis
+              </Button>
+            </Box>
+          </CardContent>
+        </Collapse>
+      </Card>
 
       {/* Content Calendar Widget */}
       <Box sx={{ mb: 5 }}>
@@ -475,51 +543,6 @@ export default function DashboardPage() {
         />
       </Box>
 
-      {/* AI Insights Widget */}
-      <Card sx={{ mb: 5 }}>
-        <CardHeader
-          avatar={<Brain size={32} color="#667eea" />}
-          title="AI Insights"
-          subheader="Get AI-powered recommendations and insights"
-          action={
-            <Button
-              variant="contained"
-              startIcon={<Zap size={16} />}
-              onClick={() => setAiInsightsModalOpen(true)}
-              sx={{
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                '&:hover': {
-                  background: 'linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%)',
-                }
-              }}
-            >
-              View Insights
-            </Button>
-          }
-        />
-        <CardContent>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={4}>
-              <Box sx={{ textAlign: 'center', p: 2, bgcolor: 'background.default', borderRadius: 1 }}>
-                <Typography variant="h6" color="primary.main">+23%</Typography>
-                <Typography variant="caption" color="text.secondary">Engagement Boost</Typography>
-              </Box>
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <Box sx={{ textAlign: 'center', p: 2, bgcolor: 'background.default', borderRadius: 1 }}>
-                <Typography variant="h6" color="success.main">4.2k</Typography>
-                <Typography variant="caption" color="text.secondary">Predicted Views</Typography>
-              </Box>
-            </Grid>
-            <Grid item xs={12} sm={4}>
-              <Box sx={{ textAlign: 'center', p: 2, bgcolor: 'background.default', borderRadius: 1 }}>
-                <Typography variant="h6" color="warning.main">2</Typography>
-                <Typography variant="caption" color="text.secondary">AI Suggestions</Typography>
-              </Box>
-            </Grid>
-          </Grid>
-        </CardContent>
-      </Card>
 
       {/* Recent Activity Feed */}
       <Card sx={{ mb: 4 }}>

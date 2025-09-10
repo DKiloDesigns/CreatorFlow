@@ -10,6 +10,7 @@ import {
   Typography,
   Grid,
   Tabs,
+  Tab,
   Chip,
   MenuItem,
   FormControl,
@@ -18,6 +19,7 @@ import {
 import { Shield, Activity, RefreshCw, AlertTriangle, Lock, Eye, Download } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Select } from '@mui/material';
+import { CardDescription } from '@/components/ui/card';
 
 interface SecurityEvent {
   id: string;
@@ -279,7 +281,8 @@ export default function SecurityPage() {
         <Tab label="Threat Detection" />
         <Tab label="Security Analytics" />
 
-        <TabPanel value={activeTab} index={0} className="space-y-4">
+        {activeTab === 0 && (
+          <Box className="space-y-4">
           <Card>
             <CardHeader>
               <Typography variant="h6" className="flex items-center gap-2">
@@ -324,9 +327,11 @@ export default function SecurityPage() {
               </div>
             </CardContent>
           </Card>
-        </TabPanel>
+          </Box>
+        )}
 
-        <TabPanel value={activeTab} index={1} className="space-y-4">
+        {activeTab === 1 && (
+          <Box className="space-y-4">
           <Card>
             <CardHeader>
               <Typography variant="h6" className="flex items-center gap-2">
@@ -398,9 +403,11 @@ export default function SecurityPage() {
               </div>
             </CardContent>
           </Card>
-        </TabPanel>
+          </Box>
+        )}
 
-        <TabPanel value={activeTab} index={2} className="space-y-4">
+        {activeTab === 2 && (
+          <Box className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <Card>
               <CardHeader>
@@ -471,7 +478,8 @@ export default function SecurityPage() {
               </CardContent>
             </Card>
           </div>
-        </TabPanel>
+          </Box>
+        )}
       </Tabs>
 
       {/* Bottom Spacer to Clear Bottom Navigation */}

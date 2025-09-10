@@ -21,7 +21,7 @@ import {
   Activity
 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
-import { Tabs, Tab, TabPanel } from '@mui/material';
+import { Tabs, Tab, Box } from '@mui/material';
 import { Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 import { CardDescription } from '@/components/ui/base/Card';
 
@@ -266,7 +266,8 @@ export function AdvancedAnalyticsDashboard({
         <Tab label="Performance" />
         <Tab label="Top Posts" />
 
-        <TabPanel value={activeTab} index={0} className="space-y-4">
+        {activeTab === 0 && (
+          <Box className="space-y-4">
           <Grid container spacing={3}>
             <Grid item xs={12} lg={6} component="div">
               <Card>
@@ -296,9 +297,11 @@ export function AdvancedAnalyticsDashboard({
               </Card>
             </Grid>
           </Grid>
-        </TabPanel>
+          </Box>
+        )}
 
-        <TabPanel value={activeTab} index={1} className="space-y-4">
+        {activeTab === 1 && (
+          <Box className="space-y-4">
           <Card>
             <CardHeader>
               <Typography variant="h6">Platform Performance</Typography>
@@ -327,9 +330,11 @@ export function AdvancedAnalyticsDashboard({
               </div>
             </CardContent>
           </Card>
-        </TabPanel>
+          </Box>
+        )}
 
-        <TabPanel value={activeTab} index={2} className="space-y-4">
+        {activeTab === 2 && (
+          <Box className="space-y-4">
           <Card>
             <CardHeader>
               <Typography variant="h6">Recent Performance</Typography>
@@ -362,9 +367,11 @@ export function AdvancedAnalyticsDashboard({
               </div>
             </CardContent>
           </Card>
-        </TabPanel>
+          </Box>
+        )}
 
-        <TabPanel value={activeTab} index={3} className="space-y-4">
+        {activeTab === 3 && (
+          <Box className="space-y-4">
           <Card>
             <CardHeader>
               <Typography variant="h6">Top Performing Posts</Typography>
@@ -396,7 +403,8 @@ export function AdvancedAnalyticsDashboard({
               </div>
             </CardContent>
           </Card>
-        </TabPanel>
+          </Box>
+        )}
       </Tabs>
     </Box>
   );

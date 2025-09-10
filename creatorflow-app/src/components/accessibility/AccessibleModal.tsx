@@ -47,15 +47,30 @@ export const AccessibleModal: React.FC<AccessibleModalProps> = ({
   const { announceModalOpen, announceModalClose } = useAccessibilityAnnouncements();
 
   // Announce modal state changes
+  const hasAnnounced = useRef(false);
+  const lastAnnouncedState = useRef<{ open: boolean; title: string } | null>(null);
+
   useEffect(() => {
-    if (open) {
-      announceModalOpen(title);
-      // Focus the title after a brief delay to ensure it's rendered
-      setTimeout(() => {
-        titleRef.current?.focus();
-      }, 100);
-    } else {
-      announceModalClose(title);
+    const currentState = { open, title };
+    
+    // Only announce if the state has actually changed
+    if (!lastAnnouncedState.current || 
+        lastAnnouncedState.current.open !== open || 
+        lastAnnouncedState.current.title !== title) {
+      
+      if (open && !hasAnnounced.current) {
+        announceModalOpen(title);
+        hasAnnounced.current = true;
+        // Focus the title after a brief delay to ensure it's rendered
+        setTimeout(() => {
+          titleRef.current?.focus();
+        }, 100);
+      } else if (!open && hasAnnounced.current) {
+        announceModalClose(title);
+        hasAnnounced.current = false;
+      }
+      
+      lastAnnouncedState.current = currentState;
     }
   }, [open, title, announceModalOpen, announceModalClose]);
 

@@ -274,12 +274,12 @@ export default function ContentTable({ posts, loading, error, onEdit, onDelete, 
                         fontSize: '12px',
                         fontWeight: '600',
                         borderRadius: '9999px',
-                        backgroundColor: statusConfig.bg === 'bg-green-100' ? '#dcfce7' : 
-                                       statusConfig.bg === 'bg-yellow-100' ? '#fef3c7' : 
-                                       statusConfig.bg === 'bg-blue-100' ? '#dbeafe' : '#f3f4f6',
-                        color: statusConfig.bg === 'bg-green-100' ? '#166534' : 
-                               statusConfig.bg === 'bg-yellow-100' ? '#92400e' : 
-                               statusConfig.bg === 'bg-blue-100' ? '#1e40af' : '#374151'
+                        backgroundColor: statusConfig.color === 'success' ? '#dcfce7' : 
+                                       statusConfig.color === 'warning' ? '#fef3c7' : 
+                                       statusConfig.color === 'info' ? '#dbeafe' : '#f3f4f6',
+                        color: statusConfig.color === 'success' ? '#166534' : 
+                               statusConfig.color === 'warning' ? '#92400e' : 
+                               statusConfig.color === 'info' ? '#1e40af' : '#374151'
                       }}>
                   {post.status}
                 </span>

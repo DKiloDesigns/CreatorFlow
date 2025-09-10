@@ -49,25 +49,29 @@ import {
   Trash2,
   Settings,
   Link,
-  ExternalLink
+  ExternalLink,
+  Search,
+  ChevronUp,
+  ChevronDown
 } from 'lucide-react';
+import InstagramStoriesPlatforms, { createPlatformWithIcon } from '@/components/ui/instagram-stories-platforms';
 
 const PROVIDERS = [
-  // Social Media Platforms
-  { name: 'Facebook', id: 'facebook', icon: '📘', color: '#1877F3' },
+  // Most Popular Platforms First (Social Media)
   { name: 'Instagram', id: 'instagram', icon: '📸', color: '#E1306C' },
+  { name: 'TikTok', id: 'tiktok', icon: '🎵', color: '#010101' },
+  { name: 'YouTube', id: 'youtube', icon: '▶️', color: '#FF0000' },
+  { name: 'Facebook', id: 'facebook', icon: '📘', color: '#1877F3' },
   { name: 'X', id: 'twitter', icon: '🐦', color: '#000000' },
   { name: 'LinkedIn', id: 'linkedin', icon: '💼', color: '#0077B5' },
-  { name: 'YouTube', id: 'youtube', icon: '▶️', color: '#FF0000' },
-  { name: 'TikTok', id: 'tiktok', icon: '🎵', color: '#010101' },
   { name: 'Pinterest', id: 'pinterest', icon: '📌', color: '#E60023' },
   { name: 'Threads', id: 'threads', icon: '🧵', color: '#000000' },
   { name: 'WhatsApp', id: 'whatsapp', icon: '💬', color: '#25D366' },
   { name: 'Messenger', id: 'messenger', icon: '💭', color: '#0084FF' },
-  { name: 'WeChat', id: 'wechat', icon: '🟩', color: '#09B83E' },
-  { name: 'Telegram', id: 'telegram', icon: '✈️', color: '#229ED9' },
-  { name: 'Reddit', id: 'reddit', icon: '👽', color: '#FF4500' },
   { name: 'Snapchat', id: 'snapchat', icon: '👻', color: '#FFFC00' },
+  { name: 'Reddit', id: 'reddit', icon: '👽', color: '#FF4500' },
+  { name: 'Telegram', id: 'telegram', icon: '✈️', color: '#229ED9' },
+  { name: 'WeChat', id: 'wechat', icon: '🟩', color: '#09B83E' },
   { name: 'Google My Business', id: 'gmb', icon: '🏢', color: '#4285F4' },
   { name: 'Mastodon', id: 'mastodon', icon: '🐘', color: '#6364FF', requiresInstance: true },
   
@@ -86,6 +90,8 @@ const PROVIDERS = [
   { name: 'Mailchimp', id: 'mailchimp', icon: '📧', color: '#FFE01B' },
   { name: 'Klaviyo', id: 'klaviyo', icon: '📊', color: '#E31C79' },
   { name: 'SMS', id: 'sms', icon: '📱', color: '#00C851' },
+  { name: 'Behance', id: 'behance', icon: '🎨', color: '#1769FF' },
+  { name: 'Dribbble', id: 'dribbble', icon: '🏀', color: '#EA4C89' },
 ];
 
 type SocialAccount = {
@@ -321,7 +327,7 @@ export default function AccountsPage() {
     if (selectedCategory !== 'all') {
       const categoryMap = {
         social: ['facebook', 'instagram', 'twitter', 'linkedin', 'youtube', 'tiktok', 'pinterest', 'threads', 'whatsapp', 'messenger', 'wechat', 'telegram', 'reddit', 'snapchat', 'gmb', 'mastodon'],
-        content: ['github', 'discord', 'slack', 'medium', 'substack', 'twitch', 'vimeo', 'producthunt'],
+        content: ['github', 'discord', 'slack', 'medium', 'substack', 'twitch', 'vimeo', 'producthunt', 'behance', 'dribbble'],
         business: ['notion', 'mailchimp', 'klaviyo', 'sms']
       };
       filtered = filtered.filter(provider => 
@@ -329,13 +335,9 @@ export default function AccountsPage() {
       );
     }
     
-    // Limit on mobile if not showing all
-    if (isMobile && !showAllProviders) {
-      filtered = filtered.slice(0, 12);
-    }
-    
+    // No mobile limitation - show all platforms
     return filtered;
-  }, [searchTerm, selectedCategory, isMobile, showAllProviders]);
+  }, [searchTerm, selectedCategory]);
 
   const fetchData = async () => {
     setLoading(true);
@@ -474,6 +476,34 @@ export default function AccountsPage() {
     }
   };
 
+  // Create platform data for Instagram Stories component
+  const storiesPlatforms = React.useMemo(() => {
+    return filteredProviders.map(provider => {
+      const isConnected = socialAccounts.some(acc => acc.platform === provider.id);
+      const isConnecting = connecting === provider.id;
+      
+      return createPlatformWithIcon(
+        provider.id,
+        provider.name,
+        provider.color,
+        isConnected,
+        isConnecting,
+        provider.requiresInstance
+      );
+    });
+  }, [filteredProviders, socialAccounts, connecting]);
+
+  const handlePlatformClick = (platformId: string) => {
+    const provider = PROVIDERS.find(p => p.id === platformId);
+    if (!provider) return;
+
+    if (provider.requiresInstance) {
+      setShowMastodonDialog(true);
+    } else {
+      handleConnect(platformId);
+    }
+  };
+
   if (loading) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}>
@@ -582,18 +612,23 @@ export default function AccountsPage() {
               </Box>
             </Box>
 
-            {/* Mobile-Optimized Grid */}
+            {/* Mobile Instagram Stories Style */}
+            <Box sx={{ display: { xs: 'block', md: 'none' } }}>
+              <InstagramStoriesPlatforms
+                platforms={storiesPlatforms}
+                onPlatformClick={handlePlatformClick}
+                searchTerm={searchTerm}
+              />
+            </Box>
+
+            {/* Desktop Grid */}
             <Box sx={{ 
-              display: 'grid', 
+              display: { xs: 'none', md: 'grid' },
               gridTemplateColumns: { 
-                xs: 'repeat(2, 1fr)', 
-                sm: 'repeat(3, 1fr)', 
                 md: 'repeat(4, 1fr)', 
                 lg: 'repeat(5, 1fr)' 
               }, 
-              gap: { xs: 1.5, sm: 2 },
-              maxHeight: { xs: '400px', sm: 'none' },
-              overflowY: { xs: 'auto', sm: 'visible' }
+              gap: 2
             }}>
               {filteredProviders.map((provider) => {
                 const isConnected = socialAccounts.some(acc => acc.platform === provider.id);
@@ -614,10 +649,10 @@ export default function AccountsPage() {
                     >
                       <CardContent sx={{ 
                         textAlign: 'center', 
-                        py: { xs: 1.5, sm: 2 },
-                        px: { xs: 1, sm: 2 }
+                        py: 2,
+                        px: 2
                       }}>
-                        <Typography variant="h4" sx={{ mb: 1, fontSize: { xs: '1.5rem', sm: '2rem' } }}>
+                        <Typography variant="h4" sx={{ mb: 1, fontSize: '2rem' }}>
                           {provider.icon}
                         </Typography>
                         <Typography 
@@ -625,7 +660,7 @@ export default function AccountsPage() {
                           sx={{ 
                             fontWeight: 'bold', 
                             mb: 1,
-                            fontSize: { xs: '0.75rem', sm: '0.875rem' },
+                            fontSize: '0.875rem',
                             lineHeight: 1.2
                           }}
                         >
@@ -636,7 +671,7 @@ export default function AccountsPage() {
                             label="Connected" 
                             color="success" 
                             size="small"
-                            sx={{ fontSize: { xs: '0.7rem', sm: '0.75rem' } }}
+                            sx={{ fontSize: '0.75rem' }}
                           />
                         ) : (
                           <Button
@@ -652,9 +687,9 @@ export default function AccountsPage() {
                             }}
                             startIcon={isConnecting ? <CircularProgress size={14} /> : <Plus style={{ width: 14, height: 14 }} />}
                             sx={{ 
-                              fontSize: { xs: '0.7rem', sm: '0.75rem' },
-                              minWidth: { xs: 'auto', sm: '80px' },
-                              px: { xs: 1, sm: 2 }
+                              fontSize: '0.75rem',
+                              minWidth: '80px',
+                              px: 2
                             }}
                           >
                             {isConnecting ? 'Connecting...' : 'Connect'}
@@ -667,18 +702,6 @@ export default function AccountsPage() {
               })}
             </Box>
 
-            {/* Show More/Less for Mobile */}
-            {isMobile && filteredProviders.length > 12 && (
-              <Box sx={{ textAlign: 'center', mt: 2 }}>
-                <Button
-                  variant="outlined"
-                  onClick={() => setShowAllProviders(!showAllProviders)}
-                  endIcon={showAllProviders ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-                >
-                  {showAllProviders ? 'Show Less' : `Show All ${PROVIDERS.length} Platforms`}
-                </Button>
-              </Box>
-            )}
           </CardContent>
         </Card>
 

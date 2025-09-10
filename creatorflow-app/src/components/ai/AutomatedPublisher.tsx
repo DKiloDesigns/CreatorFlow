@@ -596,21 +596,21 @@ export default function AutomatedPublisher() {
         sx={{ mb: 4 }}
       >
         <AccordionSummary expandIcon={<ExpandMore />}>
-          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', width: '100%', mr: 2 }}>
-            <Typography variant="h6">
-              AI Automation Rules
-            </Typography>
+          <Typography variant="h6">
+            AI Automation Rules
+          </Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Box sx={{ display: 'flex', justifyContent: 'flex-end', mb: 2 }}>
             <Button
               size="small"
               variant="outlined"
               startIcon={<Add />}
-              onClick={(e) => { e.stopPropagation(); setShowRuleDialog(true); }}
+              onClick={() => setShowRuleDialog(true)}
             >
               Add Rule
             </Button>
           </Box>
-        </AccordionSummary>
-        <AccordionDetails>
           <Box sx={{ 
             display: 'grid', 
             gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' },

@@ -80,7 +80,8 @@ export default function PerformanceMonitorPage() {
       id: '2',
       message: 'API endpoint /api/posts/calendar returned 500 error',
       timestamp: '1 hour ago',
-      resolved: true
+      resolved: true,
+      severity: 'error'
     }
   ]);
 

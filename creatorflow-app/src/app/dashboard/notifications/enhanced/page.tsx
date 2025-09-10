@@ -70,10 +70,7 @@ export default function EnhancedNotificationsPage() {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <Badge variant={isConnected ? "default" : "secondary"} className="flex items-center gap-1">
-            <div className={`w-2 h-2 rounded-full ${isConnected ? 'bg-green-500' : 'bg-gray-400'}`} />
-            {isConnected ? 'Connected' : 'Disconnected'}
-          </Badge>
+          <Badge variant={isConnected ? "default" : "secondary"} className="flex items-center gap-1" label={isConnected ? 'Connected' : 'Disconnected'} />
           <NotificationCenter />
         </div>
       </div>

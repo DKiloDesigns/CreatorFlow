@@ -307,28 +307,36 @@ export default function SecurityCenter() {
       value: `${securityData.overallScore}/100`,
       icon: <Shield />,
       color: securityData.overallScore >= 80 ? 'success' : securityData.overallScore >= 60 ? 'warning' : 'error',
-      description: 'Overall security rating'
+      description: 'Overall security rating',
+      change: '+5%',
+      changeColor: 'success'
     },
     {
       title: 'Active Threats',
       value: securityData.activeThreats,
       icon: <Warning />,
       color: securityData.activeThreats === 0 ? 'success' : 'error',
-      description: 'Current threats detected'
+      description: 'Current threats detected',
+      change: securityData.activeThreats === 0 ? '0' : '-2',
+      changeColor: securityData.activeThreats === 0 ? 'success' : 'error'
     },
     {
       title: 'Blocked Attempts',
       value: securityData.blockedAttempts,
       icon: <Security />,
       color: 'info',
-      description: 'Last 24 hours'
+      description: 'Last 24 hours',
+      change: '+12',
+      changeColor: 'info'
     },
     {
       title: 'Security Events',
       value: securityData.securityEvents,
       icon: <Info />,
       color: 'primary',
-      description: 'Total events logged'
+      description: 'Total events logged',
+      change: '+8',
+      changeColor: 'primary'
     }
   ];
 
@@ -434,7 +442,7 @@ export default function SecurityCenter() {
                   <Chip 
                     label={card.change}
                     size="small" 
-                    color={card.changeColor}
+                    color={card.changeColor as any}
                     variant="filled"
                   />
                 </Box>

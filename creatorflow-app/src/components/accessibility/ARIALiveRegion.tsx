@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useRef, useEffect, useState } from 'react';
+import React, { createContext, useContext, useRef, useEffect, useState, useCallback, useMemo } from 'react';
 import { Box } from '@mui/material';
 
 interface ARIALiveRegionContextType {
@@ -32,34 +32,64 @@ export const ARIALiveRegionProvider: React.FC<ARIALiveRegionProviderProps> = ({ 
     timestamp: number;
   }>>([]);
 
-  const announce = (message: string, priority: 'polite' | 'assertive' = 'polite') => {
-    const id = `announcement-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+  // Use ref to track recent announcements without causing re-renders
+  const recentAnnouncements = useRef<Map<string, number>>(new Map());
+
+  // Clean up old entries from the ref periodically
+  useEffect(() => {
+    const cleanup = setInterval(() => {
+      const now = Date.now();
+      const entries = Array.from(recentAnnouncements.current.entries());
+      entries.forEach(([key, timestamp]) => {
+        if (now - timestamp > 10000) { // Remove entries older than 10 seconds
+          recentAnnouncements.current.delete(key);
+        }
+      });
+    }, 5000); // Run cleanup every 5 seconds
+
+    return () => clearInterval(cleanup);
+  }, []);
+
+  const announce = useCallback((message: string, priority: 'polite' | 'assertive' = 'polite') => {
+    const now = Date.now();
+    const announcementKey = `${message}-${priority}`;
+    
+    // Check if we've already announced this recently using ref
+    const lastAnnouncement = recentAnnouncements.current.get(announcementKey);
+    if (lastAnnouncement && now - lastAnnouncement < 2000) {
+      return; // Skip duplicate announcement
+    }
+
+    // Update the ref with current timestamp
+    recentAnnouncements.current.set(announcementKey, now);
+
+    const id = `announcement-${now}-${Math.random().toString(36).substr(2, 9)}`;
     const newAnnouncement = {
       id,
       message,
       priority,
-      timestamp: Date.now(),
+      timestamp: now,
     };
 
     setAnnouncements(prev => [...prev, newAnnouncement]);
 
     // Remove announcement after 5 seconds to prevent accumulation
     setTimeout(() => {
-      setAnnouncements(prev => prev.filter(announcement => announcement.id !== id));
+      setAnnouncements(current => current.filter(announcement => announcement.id !== id));
     }, 5000);
-  };
+  }, []);
 
-  const announceError = (message: string) => {
+  const announceError = useCallback((message: string) => {
     announce(`Error: ${message}`, 'assertive');
-  };
+  }, [announce]);
 
-  const announceSuccess = (message: string) => {
+  const announceSuccess = useCallback((message: string) => {
     announce(`Success: ${message}`, 'polite');
-  };
+  }, [announce]);
 
-  const announceInfo = (message: string) => {
+  const announceInfo = useCallback((message: string) => {
     announce(`Info: ${message}`, 'polite');
-  };
+  }, [announce]);
 
   return (
     <ARIALiveRegionContext.Provider value={{ announce, announceError, announceSuccess, announceInfo }}>
@@ -116,7 +146,7 @@ export const ARIALiveRegionProvider: React.FC<ARIALiveRegionProviderProps> = ({ 
 export const useAccessibilityAnnouncements = () => {
   const { announce, announceError, announceSuccess, announceInfo } = useARIALiveRegion();
 
-  return {
+  return useMemo(() => ({
     // Form announcements
     announceFormError: (fieldName: string, error: string) => {
       announceError(`${fieldName}: ${error}`);
@@ -154,5 +184,5 @@ export const useAccessibilityAnnouncements = () => {
     announceModalClose: (modalName: string) => {
       announceInfo(`${modalName} dialog closed`);
     },
-  };
+  }), [announce, announceError, announceSuccess, announceInfo]);
 };

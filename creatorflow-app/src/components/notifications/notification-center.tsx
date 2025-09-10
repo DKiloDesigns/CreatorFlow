@@ -15,7 +15,7 @@ import { cn } from '@/lib/utils';
 
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import { Badge } from '@/components/ui/badge';
-import { Tab, TabPanel } from '@mui/material';
+import { Tab, Tabs, Box } from '@mui/material';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
 interface NotificationCenterProps {
@@ -260,7 +260,8 @@ export function NotificationCenter({ className: _className, onNotificationClick 
             <Tab value="content" label="Content" sx={{ fontSize: '0.75rem' }} />
           </Tabs>
 
-          <TabPanel value={activeTab} sx={{ p: 0 }}>
+          {activeTab === 0 && (
+            <Box sx={{ p: 0 }}>
               <ScrollArea className="h-80">
                 {isLoading ? (
                   <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', p: 4 }}>
@@ -391,7 +392,8 @@ export function NotificationCenter({ className: _className, onNotificationClick 
                   </Box>
                 )}
               </ScrollArea>
-          </TabPanel>
+            </Box>
+          )}
         </PopoverContent>
       </Popover>
 
