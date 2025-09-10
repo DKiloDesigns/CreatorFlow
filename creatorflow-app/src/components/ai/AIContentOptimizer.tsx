@@ -39,7 +39,7 @@ import {
   Warning,
   Info,
   Lightbulb,
-  GpsFixed,
+  MyLocation,
   Analytics,
   Speed,
   Visibility,
@@ -96,7 +96,7 @@ interface ContentOptimizationData {
   }>;
 }
 
-export default function AIContentOptimizer() {
+function AIContentOptimizer() {
   const [optimizationData, setOptimizationData] = useState<ContentOptimizationData | null>(null);
   const [contentInput, setContentInput] = useState('');
   const [selectedPlatform, setSelectedPlatform] = useState('instagram');
@@ -682,3 +682,5 @@ export default function AIContentOptimizer() {
     </Box>
   );
 }
+
+export default AIContentOptimizer;

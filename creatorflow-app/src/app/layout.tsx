@@ -6,6 +6,11 @@ import { RealTimeNotificationProvider } from "@/components/notifications/real-ti
 import { ServiceWorkerRegistration } from "@/components/ServiceWorkerRegistration";
 import { CriticalCSS } from "@/components/CriticalCSS";
 import ErrorBoundary from "@/components/error/ErrorBoundary";
+import { 
+  ARIALiveRegionProvider, 
+  MotionReductionProvider, 
+  ColorContrastProvider 
+} from "@/components/accessibility";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,12 +31,18 @@ export default function RootLayout({
       </head>
       <body className={inter.className}>
         <ErrorBoundary>
-          <Providers>
-            <RealTimeNotificationProvider>
-              {children}
-              <ServiceWorkerRegistration />
-            </RealTimeNotificationProvider>
-          </Providers>
+          <ARIALiveRegionProvider>
+            <MotionReductionProvider>
+              <ColorContrastProvider>
+                <Providers>
+                  <RealTimeNotificationProvider>
+                    {children}
+                    <ServiceWorkerRegistration />
+                  </RealTimeNotificationProvider>
+                </Providers>
+              </ColorContrastProvider>
+            </MotionReductionProvider>
+          </ARIALiveRegionProvider>
         </ErrorBoundary>
       </body>
     </html>

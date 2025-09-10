@@ -16,6 +16,15 @@ const StyledTabs = styled(MuiTabs)<{
   variant?: 'default' | 'outlined' | 'pills' | 'underline';
   size?: 'sm' | 'md' | 'lg';
 }>(({ theme, variant = 'default', size = 'md' }) => ({
+  // Make tabs responsive and fit in view
+  '& .MuiTabs-flexContainer': {
+    flexWrap: 'wrap',
+    gap: theme.spacing(0.5),
+    [theme.breakpoints.down('sm')]: {
+      flexDirection: 'column',
+      alignItems: 'stretch',
+    },
+  },
   '& .MuiTabs-indicator': {
     ...(variant === 'default' && {
       backgroundColor: theme.palette.primary.main,
@@ -38,24 +47,48 @@ const StyledTabs = styled(MuiTabs)<{
   },
   '& .MuiTab-root': {
     ...(size === 'sm' && {
-      fontSize: '0.875rem',
-      padding: '6px 12px',
-      minHeight: 36,
+      fontSize: '0.75rem',
+      padding: '4px 8px',
+      minHeight: 32,
+      minWidth: 'auto',
+      [theme.breakpoints.down('sm')]: {
+        fontSize: '0.875rem',
+        padding: '8px 12px',
+        minHeight: 40,
+        width: '100%',
+        justifyContent: 'flex-start',
+      },
     }),
     ...(size === 'md' && {
+      fontSize: '0.875rem',
+      padding: '6px 12px',
+      minHeight: 40,
+      minWidth: 'auto',
+      [theme.breakpoints.down('sm')]: {
+        fontSize: '1rem',
+        padding: '10px 16px',
+        minHeight: 44,
+        width: '100%',
+        justifyContent: 'flex-start',
+      },
+    }),
+    ...(size === 'lg' && {
       fontSize: '1rem',
       padding: '8px 16px',
       minHeight: 48,
-    }),
-    ...(size === 'lg' && {
-      fontSize: '1.125rem',
-      padding: '12px 20px',
-      minHeight: 56,
+      minWidth: 'auto',
+      [theme.breakpoints.down('sm')]: {
+        fontSize: '1.125rem',
+        padding: '12px 20px',
+        minHeight: 52,
+        width: '100%',
+        justifyContent: 'flex-start',
+      },
     }),
     ...(variant === 'outlined' && {
       border: `1px solid ${theme.palette.divider}`,
       borderRadius: theme.shape.borderRadius,
-      margin: '0 4px',
+      margin: '0 2px',
       '&.Mui-selected': {
         backgroundColor: theme.palette.primary.main,
         color: theme.palette.primary.contrastText,
@@ -66,7 +99,7 @@ const StyledTabs = styled(MuiTabs)<{
     }),
     ...(variant === 'pills' && {
       borderRadius: theme.shape.borderRadius,
-      margin: '0 2px',
+      margin: '0 1px',
       '&.Mui-selected': {
         color: theme.palette.primary.contrastText,
       },

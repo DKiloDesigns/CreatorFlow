@@ -154,29 +154,30 @@ export default function SettingsPage() {
 
   if (loading) {
     return (
-      <div className="p-8 flex items-center justify-center">
-        <Activity className="h-6 w-6 animate-spin" />
-      </div>
+      <Box sx={{ p: 4, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <Activity size={24} />
+      </Box>
     );
   }
 
   return (
-    <div className="p-8 space-y-8">
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold flex items-center gap-2">
-            <Settings className="h-8 w-8" />
+    <Box sx={{ p: 4, '& > * + *': { mt: 4 } }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Box>
+          <Typography variant="h3" sx={{ fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
+            <Settings size={32} />
             Settings
-          </h1>
-          <p className="text-muted-foreground">Manage your preferences and account settings</p>
-        </div>
-        <Button onClick={saveAllPreferences} disabled={saving}>
-          {saving ? <Activity className="h-4 w-4 mr-2 animate-spin" /> : <Settings className="h-4 w-4 mr-2" />}
+          </Typography>
+          <Typography variant="body1" color="text.secondary">
+            Manage your preferences and account settings
+          </Typography>
+        </Box>
+        <Button onClick={saveAllPreferences} disabled={saving} startIcon={saving ? <Activity size={16} /> : <Settings size={16} />}>
           Save Changes
         </Button>
-      </div>
+      </Box>
 
-      <Tabs defaultValue="accessibility" className="space-y-6">
+      <Tabs defaultValue="accessibility" sx={{ '& > * + *': { mt: 3 } }}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tab label="Accessibility" value="accessibility" />
           <Tab label="Notifications" value="notifications" />
@@ -184,18 +185,18 @@ export default function SettingsPage() {
           <Tab label="Data" value="data" />
         </Box>
 
-        <TabPanel value="accessibility" className="space-y-6">
+        <TabPanel value="accessibility" sx={{ '& > * + *': { mt: 3 } }}>
           <Card>
             <CardHeader>
-              <Typography variant="h5" component="div" className="flex items-center gap-2">
-                <Activity className="h-5 w-5" />
+              <Typography variant="h5" component="div" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <Activity size={20} />
                 Accessibility Settings
               </Typography>
               <Typography variant="body2" color="text.secondary">
                 Customize your experience for better accessibility
               </Typography>
             </CardHeader>
-            <CardContent className="space-y-6">
+            <CardContent sx={{ '& > * + *': { mt: 3 } }}>
               <Grid container spacing={2}>
                 <Grid item xs={12} md={6}>
                   <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -298,18 +299,18 @@ export default function SettingsPage() {
           </Card>
         </TabPanel>
 
-        <TabPanel value="notifications" className="space-y-6">
+        <TabPanel value="notifications" sx={{ '& > * + *': { mt: 3 } }}>
           <Card>
             <CardHeader>
-              <Typography variant="h5" component="div" className="flex items-center gap-2">
-                <Activity className="h-5 w-5" />
+              <Typography variant="h5" component="div" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <Activity size={20} />
                 Notification Preferences
               </Typography>
               <Typography variant="body2" color="text.secondary">
                 Control how and when you receive notifications
               </Typography>
             </CardHeader>
-            <CardContent className="space-y-6">
+            <CardContent sx={{ '& > * + *': { mt: 3 } }}>
               <Grid container spacing={2}>
                 <Grid item xs={12} md={6} component="div">
                   <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -357,18 +358,18 @@ export default function SettingsPage() {
           </Card>
         </TabPanel>
 
-        <TabPanel value="privacy" className="space-y-6">
+        <TabPanel value="privacy" sx={{ '& > * + *': { mt: 3 } }}>
           <Card>
             <CardHeader>
-              <Typography variant="h5" component="div" className="flex items-center gap-2">
-                <Activity className="h-5 w-5" />
+              <Typography variant="h5" component="div" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <Activity size={20} />
                 Privacy & Security
               </Typography>
               <Typography variant="body2" color="text.secondary">
                 Manage your privacy and security settings
               </Typography>
             </CardHeader>
-            <CardContent className="space-y-6">
+            <CardContent sx={{ '& > * + *': { mt: 3 } }}>
               <Grid container spacing={2}>
                 <Grid item xs={12} md={6} component="div">
                   <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -429,18 +430,18 @@ export default function SettingsPage() {
           </Card>
         </TabPanel>
 
-        <TabPanel value="data" className="space-y-6">
+        <TabPanel value="data" sx={{ '& > * + *': { mt: 3 } }}>
           <Card>
             <CardHeader>
-              <Typography variant="h5" component="div" className="flex items-center gap-2">
-                <Activity className="h-5 w-5" />
+              <Typography variant="h5" component="div" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <Activity size={20} />
                 Data Management
               </Typography>
               <Typography variant="body2" color="text.secondary">
                 Export your data or manage your account
               </Typography>
             </CardHeader>
-            <CardContent className="space-y-6">
+            <CardContent sx={{ '& > * + *': { mt: 3 } }}>
               <Grid container spacing={2}>
                 <Grid item xs={12} md={6} component="div">
                   <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
@@ -450,8 +451,7 @@ export default function SettingsPage() {
                         Download all your data and content
                       </Typography>
                     </Box>
-                    <Button variant="outlined" onClick={exportData}>
-                      <Activity className="h-4 w-4 mr-2" />
+                    <Button variant="outlined" onClick={exportData} startIcon={<Activity size={16} />}>
                       Export
                     </Button>
                   </Box>
@@ -463,8 +463,7 @@ export default function SettingsPage() {
                         Permanently delete your account and all data
                       </Typography>
                     </Box>
-                    <Button variant="outlined" color="error" onClick={deleteAccount}>
-                      <Activity className="h-4 w-4 mr-2" />
+                    <Button variant="outlined" color="error" onClick={deleteAccount} startIcon={<Activity size={16} />}>
                       Delete
                     </Button>
                   </Box>
@@ -490,7 +489,7 @@ export default function SettingsPage() {
         height: { xs: '120px', sm: '40px' },
         width: '100%'
       }} />
-    </div>
+    </Box>
   );
 }
 

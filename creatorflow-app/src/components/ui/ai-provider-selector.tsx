@@ -50,11 +50,11 @@ export function AIProviderSelector({
   const getStatusBadge = (provider: AIProvider) => {
     switch (provider.status) {
       case 'available':
-        return <Chip label="Available" variant="outlined" className="bg-green-500" />;
+        return <Chip label="Available" variant="outlined" sx={{ bgcolor: 'success.main', color: 'white' }} />;
       case 'beta':
-        return <Chip label="Beta" variant="outlined" className="bg-yellow-100 text-yellow-800" />;
+        return <Chip label="Beta" variant="outlined" sx={{ bgcolor: 'warning.light', color: 'warning.contrastText' }} />;
       case 'coming_soon':
-        return <Chip label="Coming Soon" variant="outlined" className="border-gray-300 text-gray-600" />;
+        return <Chip label="Coming Soon" variant="outlined" sx={{ borderColor: 'grey.300', color: 'grey.600' }} />;
       default:
         return null;
     }
@@ -106,19 +106,28 @@ export function AIProviderSelector({
       </Box>
 
       {/* Provider Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <Grid container spacing={3}>
         {filteredProviders.map((provider) => (
-          <Card
-            key={provider.id}
-            className={`relative transition-all duration-200 hover:shadow-lg cursor-pointer ${
-              selectedProvider === provider.id
-                ? 'ring-2 ring-blue-500 bg-blue-50'
-                : 'hover:bg-gray-50'
-            }`}
-            onClick={() => onProviderSelect(provider.id)}
-          >
+          <Grid item xs={12} md={6} lg={4} key={provider.id}>
+            <Card
+              sx={{
+                position: 'relative',
+                transition: 'all 0.2s ease-in-out',
+                cursor: 'pointer',
+                '&:hover': {
+                  boxShadow: 3,
+                  bgcolor: 'grey.50',
+                },
+                ...(selectedProvider === provider.id && {
+                  border: 2,
+                  borderColor: 'primary.main',
+                  bgcolor: 'primary.50',
+                }),
+              }}
+              onClick={() => onProviderSelect(provider.id)}
+            >
             {/* Provider Header */}
-            <CardHeader className="pb-3">
+            <CardHeader sx={{ pb: 1.5 }}>
               <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
                   <Box sx={{ 
@@ -169,32 +178,40 @@ export function AIProviderSelector({
               </Box>
 
               {/* Features */}
-              <div>
-                <Typography variant="body2" className="text-gray-700 font-medium mb-2">Key Features</Typography>
-                <div className="space-y-1">
+              <Box>
+                <Typography variant="body2" sx={{ color: 'text.primary', fontWeight: 500, mb: 1 }}>
+                  Key Features
+                </Typography>
+                <Box sx={{ '& > * + *': { mt: 0.5 } }}>
                   {provider.features.slice(0, 3).map((feature, index) => (
-                    <div key={index} className="flex items-center gap-2 text-sm text-gray-600">
-                      <Chip label={<Brain className="w-3 h-3 text-green-500 flex-shrink-0" />} />
-                      {feature}
-                    </div>
+                    <Box key={index} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                      <Chip 
+                        label={<Brain size={12} color="green" />} 
+                        size="small"
+                        sx={{ '& .MuiChip-label': { p: 0.5 } }}
+                      />
+                      <Typography variant="body2" sx={{ color: 'text.secondary', fontSize: '0.875rem' }}>
+                        {feature}
+                      </Typography>
+                    </Box>
                   ))}
                   {provider.features.length > 3 && (
-                    <Typography variant="body2" className="text-gray-500 mt-1">
+                    <Typography variant="body2" sx={{ color: 'text.secondary', mt: 0.5 }}>
                       +{provider.features.length - 3} more features
                     </Typography>
                   )}
-                </div>
-              </div>
+                </Box>
+              </Box>
 
               {/* Setup Requirements */}
               <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', pt: 2, borderTop: 1, borderColor: 'divider' }}>
-                <Typography variant="body2" className="text-gray-500">
+                <Box>
                   {provider.setupRequired ? (
-                    <Chip label="Setup required" variant="outlined" className="flex items-center gap-1" />
+                    <Chip label="Setup required" variant="outlined" sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }} />
                   ) : (
-                    <Chip label="Ready to use" variant="outlined" className="flex items-center gap-1 text-green-600" />
+                    <Chip label="Ready to use" variant="outlined" sx={{ display: 'flex', alignItems: 'center', gap: 0.5, color: 'success.main' }} />
                   )}
-                </Typography>
+                </Box>
                 
                 {provider.status === 'available' && (
                   <Button
@@ -210,50 +227,65 @@ export function AIProviderSelector({
                     }}
                   >
                     {selectedProvider === provider.id ? (
-                      <>
-                        <Chip label="Selected" variant="outlined" className="flex items-center gap-1" />
-                      </>
+                      <Chip label="Selected" variant="outlined" sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }} />
                     ) : provider.setupRequired ? (
-                      <>
-                        <Chip label="Setup" variant="outlined" className="flex items-center gap-1" />
-                      </>
+                      <Chip label="Setup" variant="outlined" sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }} />
                     ) : (
-                      <>
-                        <Chip label="Select" variant="outlined" className="flex items-center gap-1" />
-                      </>
+                      <Chip label="Select" variant="outlined" sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }} />
                     )}
                   </Button>
                 )}
               </Box>
             </CardContent>
           </Card>
+          </Grid>
         ))}
-      </div>
+      </Grid>
 
       {/* Recommendations */}
-      <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-6">
-        <Typography variant="h6" className="text-lg font-semibold text-gray-900 mb-3">💡 Recommendations</Typography>
+      <Box 
+        sx={{ 
+          background: 'linear-gradient(to right, #e3f2fd, #f3e5f5)',
+          borderRadius: 2,
+          p: 3
+        }}
+      >
+        <Typography variant="h6" sx={{ fontSize: '1.125rem', fontWeight: 600, color: 'text.primary', mb: 2 }}>
+          💡 Recommendations
+        </Typography>
         <Grid container spacing={2}>
-          <Grid item xs={12} md={4} component="div">
-            <Box className="space-y-2">
-              <Typography variant="subtitle1" className="font-medium text-gray-800">🎯 For Beginners</Typography>
-              <Typography variant="body2" className="text-gray-600">Start with <strong>CreatorFlow AI</strong> or <strong>DeepSeek</strong> - both free and easy to use.</Typography>
+          <Grid item xs={12} md={4}>
+            <Box sx={{ '& > * + *': { mt: 1 } }}>
+              <Typography variant="subtitle1" sx={{ fontWeight: 500, color: 'text.primary' }}>
+                🎯 For Beginners
+              </Typography>
+              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                Start with <strong>CreatorFlow AI</strong> or <strong>DeepSeek</strong> - both free and easy to use.
+              </Typography>
             </Box>
           </Grid>
-          <Grid item xs={12} md={4} component="div">
-            <Box className="space-y-2">
-              <Typography variant="subtitle1" className="font-medium text-gray-800">💰 For Budget-Conscious</Typography>
-              <Typography variant="body2" className="text-gray-600">Try <strong>Google AI</strong> or <strong>Hugging Face</strong> - excellent quality at low cost.</Typography>
+          <Grid item xs={12} md={4}>
+            <Box sx={{ '& > * + *': { mt: 1 } }}>
+              <Typography variant="subtitle1" sx={{ fontWeight: 500, color: 'text.primary' }}>
+                💰 For Budget-Conscious
+              </Typography>
+              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                Try <strong>Google AI</strong> or <strong>Hugging Face</strong> - excellent quality at low cost.
+              </Typography>
             </Box>
           </Grid>
-          <Grid item xs={12} md={4} component="div">
-            <Box className="space-y-2">
-              <Typography variant="subtitle1" className="font-medium text-gray-800">🔒 For Privacy</Typography>
-              <Typography variant="body2" className="text-gray-600">Use <strong>Local AI (Ollama)</strong> - runs completely on your device.</Typography>
+          <Grid item xs={12} md={4}>
+            <Box sx={{ '& > * + *': { mt: 1 } }}>
+              <Typography variant="subtitle1" sx={{ fontWeight: 500, color: 'text.primary' }}>
+                🔒 For Privacy
+              </Typography>
+              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                Use <strong>Local AI (Ollama)</strong> - runs completely on your device.
+              </Typography>
             </Box>
           </Grid>
         </Grid>
-      </div>
+      </Box>
     </Box>
   );
 } 

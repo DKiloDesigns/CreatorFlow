@@ -10,18 +10,19 @@ import {
   InputLabel,
   Select,
   MenuItem,
-  Chip
-} from '@mui/material';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { 
-  Dialog as MuiDialog, 
-  DialogContent as MuiDialogContent, 
-  DialogTitle as MuiDialogTitle,
-  Typography,
+  Chip,
   Box,
   Grid,
-  IconButton
+  Typography,
+  IconButton,
+  CircularProgress,
+  Stack,
+  Paper,
+  Avatar,
+  Tooltip,
+  Fade
 } from '@mui/material';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Close as CloseIcon } from '@mui/icons-material';
 
 import { toast } from 'sonner';
@@ -237,62 +238,80 @@ export function MediaLibrary({ onSelect, selectedMedia = [], multiple = false }:
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-64">
-        <div className="text-center">
-          <Loader2 className="h-8 w-8 animate-spin mx-auto mb-4" />
-          <p className="text-gray-500">Loading media library...</p>
-        </div>
-      </div>
+      <Box 
+        sx={{ 
+          display: 'flex', 
+          alignItems: 'center', 
+          justifyContent: 'center', 
+          height: 256,
+          flexDirection: 'column',
+          gap: 2
+        }}
+      >
+        <CircularProgress size={32} />
+        <Typography variant="body2" color="text.secondary">
+          Loading media library...
+        </Typography>
+      </Box>
     );
   }
 
   return (
-    <div className="space-y-4">
+    <>
+    <Stack spacing={3}>
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div>
-          <h2 className="text-xl font-semibold">Media Library</h2>
-          <p className="text-sm text-gray-500">
+      <Box 
+        sx={{ 
+          display: 'flex', 
+          flexDirection: { xs: 'column', sm: 'row' },
+          alignItems: { xs: 'stretch', sm: 'center' },
+          justifyContent: 'space-between',
+          gap: 2
+        }}
+      >
+        <Box>
+          <Typography variant="h5" sx={{ fontWeight: 600, mb: 0.5 }}>
+            Media Library
+          </Typography>
+          <Typography variant="body2" color="text.secondary">
             {filteredMedia.length} of {pagination.total} items
-          </p>
-        </div>
+          </Typography>
+        </Box>
         
-        <div className="flex items-center gap-2">
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <Button
-            
+            variant="outlined"
             size="small"
             onClick={handleRefresh}
             disabled={refreshing}
+            startIcon={refreshing ? <CircularProgress size={16} /> : <RefreshCw size={16} />}
           >
-            <RefreshCw className={`h-4 w-4 ${refreshing ? 'animate-spin' : ''}`} />
+            Refresh
           </Button>
           <Button
-            
+            variant="outlined"
             size="small"
             onClick={() => setViewMode(viewMode === 'grid' ? 'list' : 'grid')}
+            startIcon={viewMode === 'grid' ? <List size={16} /> : <GridIcon size={16} />}
           >
-            {viewMode === 'grid' ? <List className="h-4 w-4" /> : <GridIcon className="h-4 w-4" />}
+            {viewMode === 'grid' ? 'List' : 'Grid'}
           </Button>
-        </div>
-      </div>
+        </Box>
+      </Box>
 
       {/* Filters */}
-      <div className="flex flex-col sm:flex-row gap-4">
-        <div className="relative flex-1">
-          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+      <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2 }}>
+        <Box sx={{ flex: 1 }}>
           <TextField
             placeholder="Search media..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="pl-10"
             fullWidth
             InputProps={{
-              startAdornment: (
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
-              ),
+              startAdornment: <Search size={16} sx={{ mr: 1, color: 'text.secondary' }} />,
             }}
           />
-        </div>
+        </Box>
         
         <FormControl size="small" sx={{ minWidth: 120 }}>
           <InputLabel>Type</InputLabel>
@@ -311,210 +330,331 @@ export function MediaLibrary({ onSelect, selectedMedia = [], multiple = false }:
             <MenuItem value="size">Size</MenuItem>
           </Select>
         </FormControl>
-      </div>
+      </Box>
 
       {/* Media Grid/List */}
       {viewMode === 'grid' ? (
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+        <Grid container spacing={2}>
           {filteredMedia.map((item) => (
-            <Card
-              key={item.id}
-              className={`relative group cursor-pointer transition-all hover:shadow-md ${
-                isSelected(item) ? 'ring-2 ring-primary' : ''
-              }`}
-              onClick={() => handleSelect(item)}
-            >
-              <CardContent className="p-3">
-                <div className="aspect-square bg-gray-100 rounded-lg overflow-hidden mb-2 relative">
-                  {item.type === 'image' ? (
-                    <img
-                      src={item.thumbnailUrl || item.url}
-                      alt={item.name}
-                      className="w-full h-full object-cover"
-                    />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center bg-gray-200">
-                      <Video className="h-8 w-8 text-gray-400" />
-                    </div>
-                  )}
-                  
-                  {/* Overlay Actions */}
-                  <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
-                    <Button
-                      size="small"
-                      
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setSelectedItem(item);
-                        setPreviewOpen(true);
-                      }}
-                    >
-                      <Eye className="h-3 w-3" />
-                    </Button>
-                    <Button
-                      size="small"
-                      
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleDownload(item);
-                      }}
-                    >
-                      <Download className="h-3 w-3" />
-                    </Button>
-                    <Button
-                      size="small"
-                      
-                      color="error"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleDelete(item.id);
-                      }}
-                    >
-                      <Trash2 className="h-3 w-3" />
-                    </Button>
-                  </div>
-                </div>
-                
-                <div className="space-y-1">
-                  <p className="text-sm font-medium truncate">{item.name}</p>
-                  <p className="text-xs text-gray-500">{formatFileSize(item.size)}</p>
-                  <div className="flex flex-wrap gap-1">
-                    {item.tags.slice(0, 2).map((tag) => (
-                      <span key={tag} className="inline-block bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">
-                        {tag}
-                      </span>
-                    ))}
-                    {item.tags.length > 2 && (
-                      <span className="inline-block bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">
-                        +{item.tags.length - 2}
-                      </span>
-                    )}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
-      ) : (
-        <div className="space-y-2">
-          {filteredMedia.map((item) => (
-            <Card
-              key={item.id}
-              className={`group cursor-pointer transition-all hover:shadow-md ${
-                isSelected(item) ? 'ring-2 ring-primary' : ''
-              }`}
-              onClick={() => handleSelect(item)}
-            >
-              <CardContent className="p-4">
-                <div className="flex items-center gap-4">
-                  <div className="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
+            <Grid item xs={6} sm={4} md={3} lg={2} key={item.id}>
+              <Card
+                sx={{
+                  position: 'relative',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s ease-in-out',
+                  '&:hover': {
+                    boxShadow: 3,
+                  },
+                  ...(isSelected(item) && {
+                    border: 2,
+                    borderColor: 'primary.main',
+                  }),
+                }}
+                onClick={() => handleSelect(item)}
+              >
+                <CardContent sx={{ p: 1.5 }}>
+                  <Box
+                    sx={{
+                      aspectRatio: '1/1',
+                      bgcolor: 'grey.100',
+                      borderRadius: 1,
+                      overflow: 'hidden',
+                      mb: 1,
+                      position: 'relative',
+                    }}
+                  >
                     {item.type === 'image' ? (
                       <img
                         src={item.thumbnailUrl || item.url}
                         alt={item.name}
-                        className="w-full h-full object-cover"
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          objectFit: 'cover',
+                        }}
                       />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center">
-                        <Video className="h-6 w-6 text-gray-400" />
-                      </div>
+                      <Box
+                        sx={{
+                          width: '100%',
+                          height: '100%',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          bgcolor: 'grey.200',
+                        }}
+                      >
+                        <Video size={32} color="grey" />
+                      </Box>
                     )}
-                  </div>
+                    
+                    {/* Overlay Actions */}
+                    <Fade in={true}>
+                      <Box
+                        sx={{
+                          position: 'absolute',
+                          top: 0,
+                          left: 0,
+                          right: 0,
+                          bottom: 0,
+                          bgcolor: 'rgba(0, 0, 0, 0.5)',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          gap: 1,
+                          opacity: 0,
+                          '&:hover': {
+                            opacity: 1,
+                          },
+                          transition: 'opacity 0.2s ease-in-out',
+                        }}
+                      >
+                        <Tooltip title="Preview">
+                          <IconButton
+                            size="small"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              setSelectedItem(item);
+                              setPreviewOpen(true);
+                            }}
+                            sx={{ color: 'white' }}
+                          >
+                            <Eye size={16} />
+                          </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Download">
+                          <IconButton
+                            size="small"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleDownload(item);
+                            }}
+                            sx={{ color: 'white' }}
+                          >
+                            <Download size={16} />
+                          </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Delete">
+                          <IconButton
+                            size="small"
+                            color="error"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleDelete(item.id);
+                            }}
+                            sx={{ color: 'white' }}
+                          >
+                            <Trash2 size={16} />
+                          </IconButton>
+                        </Tooltip>
+                      </Box>
+                    </Fade>
+                  </Box>
                   
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center gap-2 mb-1">
-                      <p className="font-medium truncate">{item.name}</p>
-                      <span className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded">
-                        {item.type}
-                      </span>
-                    </div>
-                    <p className="text-sm text-gray-500 mb-2">{item.description}</p>
-                    <div className="flex items-center gap-4 text-xs text-gray-500">
-                      <span>{formatFileSize(item.size)}</span>
-                      <span>{formatDate(item.uploadedAt)}</span>
-                    </div>
-                    <div className="flex flex-wrap gap-1 mt-2">
-                      {item.tags.map((tag) => (
-                        <span key={tag} className="inline-block bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">
-                          {tag}
-                        </span>
+                  <Stack spacing={0.5}>
+                    <Typography variant="body2" sx={{ fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      {item.name}
+                    </Typography>
+                    <Typography variant="caption" color="text.secondary">
+                      {formatFileSize(item.size)}
+                    </Typography>
+                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                      {item.tags.slice(0, 2).map((tag) => (
+                        <Chip
+                          key={tag}
+                          label={tag}
+                          size="small"
+                          sx={{ fontSize: '0.75rem', height: 20 }}
+                        />
                       ))}
-                    </div>
-                  </div>
+                      {item.tags.length > 2 && (
+                        <Chip
+                          label={`+${item.tags.length - 2}`}
+                          size="small"
+                          sx={{ fontSize: '0.75rem', height: 20 }}
+                        />
+                      )}
+                    </Box>
+                  </Stack>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      ) : (
+        <Stack spacing={1}>
+          {filteredMedia.map((item) => (
+            <Card
+              key={item.id}
+              sx={{
+                cursor: 'pointer',
+                transition: 'all 0.2s ease-in-out',
+                '&:hover': {
+                  boxShadow: 3,
+                },
+                ...(isSelected(item) && {
+                  border: 2,
+                  borderColor: 'primary.main',
+                }),
+              }}
+              onClick={() => handleSelect(item)}
+            >
+              <CardContent sx={{ p: 2 }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                  <Box
+                    sx={{
+                      width: 64,
+                      height: 64,
+                      bgcolor: 'grey.100',
+                      borderRadius: 1,
+                      overflow: 'hidden',
+                      flexShrink: 0,
+                    }}
+                  >
+                    {item.type === 'image' ? (
+                      <img
+                        src={item.thumbnailUrl || item.url}
+                        alt={item.name}
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          objectFit: 'cover',
+                        }}
+                      />
+                    ) : (
+                      <Box
+                        sx={{
+                          width: '100%',
+                          height: '100%',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}
+                      >
+                        <Video size={24} color="grey" />
+                      </Box>
+                    )}
+                  </Box>
                   
-                  <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <Button
-                      size="small"
-                      
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setSelectedItem(item);
-                        setPreviewOpen(true);
-                      }}
-                    >
-                      <Eye className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      size="small"
-                      
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        copyUrl(item.url);
-                      }}
-                    >
-                      <Copy className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      size="small"
-                      
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleDownload(item);
-                      }}
-                    >
-                      <Download className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      size="small"
-                      
-                      color="error"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleDelete(item.id);
-                      }}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </div>
-                </div>
+                  <Box sx={{ flex: 1, minWidth: 0 }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.5 }}>
+                      <Typography variant="body1" sx={{ fontWeight: 500, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                        {item.name}
+                      </Typography>
+                      <Chip
+                        label={item.type}
+                        size="small"
+                        color="primary"
+                        variant="outlined"
+                        sx={{ fontSize: '0.75rem', height: 20 }}
+                      />
+                    </Box>
+                    <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                      {item.description}
+                    </Typography>
+                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 1 }}>
+                      <Typography variant="caption" color="text.secondary">
+                        {formatFileSize(item.size)}
+                      </Typography>
+                      <Typography variant="caption" color="text.secondary">
+                        {formatDate(item.uploadedAt)}
+                      </Typography>
+                    </Box>
+                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
+                      {item.tags.map((tag) => (
+                        <Chip
+                          key={tag}
+                          label={tag}
+                          size="small"
+                          sx={{ fontSize: '0.75rem', height: 20 }}
+                        />
+                      ))}
+                    </Box>
+                  </Box>
+                  
+                  <Box
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 1,
+                      opacity: 0,
+                      '&:hover': {
+                        opacity: 1,
+                      },
+                      transition: 'opacity 0.2s ease-in-out',
+                    }}
+                  >
+                    <Tooltip title="Preview">
+                      <IconButton
+                        size="small"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedItem(item);
+                          setPreviewOpen(true);
+                        }}
+                      >
+                        <Eye size={16} />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Copy URL">
+                      <IconButton
+                        size="small"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          copyUrl(item.url);
+                        }}
+                      >
+                        <Copy size={16} />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Download">
+                      <IconButton
+                        size="small"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDownload(item);
+                        }}
+                      >
+                        <Download size={16} />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="Delete">
+                      <IconButton
+                        size="small"
+                        color="error"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDelete(item.id);
+                        }}
+                      >
+                        <Trash2 size={16} />
+                      </IconButton>
+                    </Tooltip>
+                  </Box>
+                </Box>
               </CardContent>
             </Card>
           ))}
-        </div>
+        </Stack>
       )}
 
       {/* Load More Button */}
       {pagination.page < pagination.pages && (
-        <div className="flex justify-center">
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
           <Button
-            
+            variant="outlined"
             onClick={handleLoadMore}
             disabled={loading}
+            startIcon={loading ? <CircularProgress size={16} /> : undefined}
           >
-            {loading ? (
-              <>
-                <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                Loading...
-              </>
-            ) : (
-              'Load More'
-            )}
+            {loading ? 'Loading...' : 'Load More'}
           </Button>
-        </div>
+        </Box>
       )}
+    </Stack>
 
-      {/* Preview Dialog */}
-      <MuiDialog 
+    {/* Preview Dialog */}
+    <MuiDialog 
         open={previewOpen} 
         onClose={() => setPreviewOpen(false)}
         maxWidth="lg"
@@ -639,6 +779,6 @@ export function MediaLibrary({ onSelect, selectedMedia = [], multiple = false }:
           )}
         </MuiDialogContent>
       </MuiDialog>
-    </div>
+    </>
   );
 } 

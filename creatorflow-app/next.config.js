@@ -43,34 +43,6 @@ const nextConfig = {
       }
     }
     
-    // Conservative bundle optimization
-    config.optimization = {
-      ...config.optimization,
-      splitChunks: {
-        chunks: 'all',
-        cacheGroups: {
-          vendor: {
-            test: /[\\/]node_modules[\\/]/,
-            name: 'vendors',
-            chunks: 'all',
-            priority: 10,
-          },
-          mui: {
-            test: /[\\/]node_modules[\\/]@mui[\\/]/,
-            name: 'mui',
-            chunks: 'all',
-            priority: 20,
-          },
-          common: {
-            name: 'common',
-            minChunks: 2,
-            chunks: 'all',
-            priority: 5,
-          },
-        },
-      },
-    };
-    
     return config
   },
 };

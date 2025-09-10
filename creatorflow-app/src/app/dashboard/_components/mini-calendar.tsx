@@ -67,15 +67,15 @@ function renderEventContent(eventInfo: any) {
   const { status, platforms, contentText } = eventInfo.event.extendedProps;
   
   return (
-    <div className="flex items-center gap-1 text-xs">
+    <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, fontSize: '0.75rem' }}>
       {platforms.slice(0, 2).map((platform: string) => {
         const IconComponent = platformIcons[platform.toLowerCase()];
         return IconComponent ? (
           <IconComponent key={platform} size={10} />
         ) : null;
       })}
-      {platforms.length > 2 && <span className="text-xs">+{platforms.length - 2}</span>}
-    </div>
+      {platforms.length > 2 && <Typography variant="caption">+{platforms.length - 2}</Typography>}
+    </Box>
   );
 }
 

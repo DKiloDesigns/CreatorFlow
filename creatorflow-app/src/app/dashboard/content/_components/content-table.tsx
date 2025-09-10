@@ -64,21 +64,21 @@ export default function ContentTable({ posts, loading, error, onEdit, onDelete, 
   }, [autoPlay, posts.length]);
 
   if (loading) return (
-    <div className="py-8 text-center text-gray-500">
+    <Box sx={{ py: 4, textAlign: 'center', color: 'text.secondary' }}>
       Loading content...
-    </div>
+    </Box>
   );
-  
+
   if (error) return (
-    <div className="py-8 text-center text-red-500">
+    <Box sx={{ py: 4, textAlign: 'center', color: 'error.main' }}>
       Error loading content: {error}
-    </div>
+    </Box>
   );
-  
+
   if (!posts || posts.length === 0) return (
-    <div className="py-8 text-center text-gray-500">
+    <Box sx={{ py: 4, textAlign: 'center', color: 'text.secondary' }}>
       No content found. Posts array: {JSON.stringify(posts)}
-    </div>
+    </Box>
   );
 
   const handleCardClick = (post: Post) => {
@@ -130,7 +130,7 @@ export default function ContentTable({ posts, loading, error, onEdit, onDelete, 
   const visibleCards = getVisibleCards();
 
   return (
-    <div className="mb-20 sm:mb-8"> {/* Bottom margin to clear bottom navigation */}
+    <Box sx={{ mb: { xs: 20, sm: 8 } }}> {/* Bottom margin to clear bottom navigation */}
       {/* Carousel Container */}
       <div style={{ 
         position: 'relative', 
@@ -500,7 +500,7 @@ export default function ContentTable({ posts, loading, error, onEdit, onDelete, 
       )}
 
       {/* Bottom Spacer to Clear Bottom Navigation */}
-      <div className="h-32 sm:h-10 w-full"></div>
-    </div>
+      <Box sx={{ height: { xs: 32, sm: 10 }, width: '100%' }} />
+    </Box>
   );
 } 

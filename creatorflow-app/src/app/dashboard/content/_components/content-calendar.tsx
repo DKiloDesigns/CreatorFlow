@@ -86,35 +86,83 @@ export default function ContentCalendar() {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch('/api/posts');
+      // Use the calendar API endpoint with date range
+      const startDate = '2024-01-01';
+      const endDate = '2024-12-31';
+      const response = await fetch(`/api/posts/calendar?startDate=${startDate}&endDate=${endDate}`, {
+        credentials: 'include'
+      });
+      
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}));
-        throw new Error(errorData.error || `Failed to fetch posts (HTTP ${response.status})`);
+        if (response.status === 401) {
+          console.warn('User not authenticated, skipping calendar data fetch');
+          setError('Please log in to view your content calendar');
+          setCalendarEvents([]);
+          return;
+        }
+        
+        // Try to parse error response, but handle cases where it's not valid JSON
+        let errorMessage = `Failed to fetch posts (HTTP ${response.status})`;
+        try {
+          const errorData = await response.json();
+          errorMessage = errorData.error || errorMessage;
+        } catch {
+          // If JSON parsing fails, use the response text or status
+          const responseText = await response.text().catch(() => '');
+          errorMessage = responseText || errorMessage;
+        }
+        throw new Error(errorMessage);
       }
-      const data = await response.json();
-      const posts: FetchedPost[] = data.posts || data; // Handle both formats
-      // Format fetched posts into calendar events
-      const formattedEvents = posts
-        .filter(post => post.scheduledAt)
-        .map((post): CalendarEvent => ({
-          id: post.id,
-          title: (post.contentText || '').substring(0, 30) + ((post.contentText || '').length > 30 ? '...' : ''),
-          start: new Date(post.scheduledAt!),
-          allDay: true,
-          extendedProps: {
-            postId: post.id,
-            status: post.status,
-            platforms: post.platforms,
-            contentText: post.contentText || '',
-            errorMessage: post.errorMessage,
-          },
-        }));
-      setCalendarEvents(formattedEvents);
+      
+      // Parse the response JSON
+      let data;
+      try {
+        data = await response.json();
+      } catch (jsonError) {
+        console.error('JSON parsing error:', jsonError);
+        throw new Error('Invalid response format from server');
+      }
+      
+      // The calendar API returns posts grouped by date
+      const postsByDate = data.posts || {};
+      
+      // Convert grouped posts to flat array of calendar events
+      const events: CalendarEvent[] = [];
+      Object.entries(postsByDate).forEach(([dateKey, posts]: [string, any]) => {
+        if (Array.isArray(posts)) {
+          posts.forEach((post: FetchedPost) => {
+            if (post && post.scheduledAt) {
+              events.push({
+                id: post.id,
+                title: (post.contentText || '').substring(0, 30) + ((post.contentText || '').length > 30 ? '...' : ''),
+                start: new Date(post.scheduledAt),
+                allDay: true,
+                extendedProps: {
+                  postId: post.id,
+                  status: post.status,
+                  platforms: post.platforms,
+                  contentText: post.contentText || '',
+                  errorMessage: post.errorMessage,
+                },
+              });
+            }
+          });
+        }
+      });
+      
+      setCalendarEvents(events);
     } catch (err) {
       console.error("Error fetching posts for calendar:", err);
       const errorMessage = err instanceof Error ? err.message : 'Unknown error';
-      setError(errorMessage);
-      toast.error(`Failed to load calendar data: ${errorMessage}`);
+      
+      // Handle authentication errors gracefully
+      if (errorMessage.includes('Unauthorized') || errorMessage.includes('not logged in')) {
+        setError('Please log in to view your content calendar');
+        setCalendarEvents([]); // Clear events
+      } else {
+        setError(errorMessage);
+        toast.error(`Failed to load calendar data: ${errorMessage}`);
+      }
     } finally {
       setIsLoading(false);
     }

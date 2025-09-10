@@ -242,7 +242,8 @@ class DatabaseCache {
 // Hybrid cache that uses memory for hot data and database for persistence
 class HybridCache {
   private memoryCache = new MemoryCache();
-  private dbCache = new DatabaseCache();
+  // Temporarily disable database cache until CacheEntry model is added to schema
+  // private dbCache = new DatabaseCache();
 
   async get<T>(key: string): Promise<T | null> {
     // Try memory cache first
@@ -251,42 +252,39 @@ class HybridCache {
       return value;
     }
 
-    // Try database cache
-    value = await this.dbCache.get<T>(key);
-    if (value !== null) {
-      // Store in memory cache for faster future access
-      await this.memoryCache.set(key, value, 60000); // 1 minute TTL in memory
-      return value;
-    }
+    // Database cache disabled until CacheEntry model is added
+    // value = await this.dbCache.get<T>(key);
+    // if (value !== null) {
+    //   // Store in memory cache for faster future access
+    //   await this.memoryCache.set(key, value, 60000); // 1 minute TTL in memory
+    //   return value;
+    // }
 
     return null;
   }
 
   async set<T>(key: string, value: T, ttl: number = 300000): Promise<void> {
-    // Store in both caches
-    await Promise.all([
-      this.memoryCache.set(key, value, Math.min(ttl, 60000)), // Max 1 minute in memory
-      this.dbCache.set(key, value, ttl),
-    ]);
+    // Store in memory cache only for now
+    await this.memoryCache.set(key, value, Math.min(ttl, 60000)); // Max 1 minute in memory
+    // Database cache disabled until CacheEntry model is added
+    // await this.dbCache.set(key, value, ttl);
   }
 
   async delete(key: string): Promise<boolean> {
-    const [memoryResult, dbResult] = await Promise.all([
-      this.memoryCache.delete(key),
-      this.dbCache.delete(key),
-    ]);
-    return memoryResult || dbResult;
+    const memoryResult = await this.memoryCache.delete(key);
+    // Database cache disabled until CacheEntry model is added
+    // const dbResult = await this.dbCache.delete(key);
+    return memoryResult; // || dbResult;
   }
 
   async clear(): Promise<void> {
-    await Promise.all([
-      this.memoryCache.clear(),
-      this.dbCache.clear(),
-    ]);
+    await this.memoryCache.clear();
+    // Database cache disabled until CacheEntry model is added
+    // await this.dbCache.clear();
   }
 
   async has(key: string): Promise<boolean> {
-    return await this.memoryCache.has(key) || await this.dbCache.has(key);
+    return await this.memoryCache.has(key); // || await this.dbCache.has(key);
   }
 
   getStats() {

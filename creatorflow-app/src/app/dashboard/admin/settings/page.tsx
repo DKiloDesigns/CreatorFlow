@@ -29,6 +29,7 @@ import {
   DialogContent,
   DialogActions
 } from '@mui/material';
+import { AccessibleModal } from '@/components/accessibility';
 import { 
   Settings, 
   Save,
@@ -1066,21 +1067,25 @@ export default function SystemSettings() {
       </Dialog>
 
       {/* Backup Dialog */}
-      <Dialog open={backupDialogOpen} onClose={() => setBackupDialogOpen(false)}>
-        <DialogTitle>Create System Backup</DialogTitle>
-        <DialogContent>
-          <Typography>
-            This will create a complete backup of your system settings, user data, and content.
-            The backup process may take several minutes depending on the amount of data.
-          </Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setBackupDialogOpen(false)}>Cancel</Button>
-          <Button variant="contained" onClick={() => setBackupDialogOpen(false)}>
-            Create Backup
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <AccessibleModal
+        open={backupDialogOpen}
+        onClose={() => setBackupDialogOpen(false)}
+        title="Create System Backup"
+        ariaDescribedBy="backup-description"
+        actions={
+          <>
+            <Button onClick={() => setBackupDialogOpen(false)}>Cancel</Button>
+            <Button variant="contained" onClick={() => setBackupDialogOpen(false)}>
+              Create Backup
+            </Button>
+          </>
+        }
+      >
+        <Typography id="backup-description">
+          This will create a complete backup of your system settings, user data, and content.
+          The backup process may take several minutes depending on the amount of data.
+        </Typography>
+      </AccessibleModal>
     </Box>
   );
 }

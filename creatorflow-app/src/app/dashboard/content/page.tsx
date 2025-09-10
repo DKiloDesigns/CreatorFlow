@@ -16,1422 +16,918 @@ import {
   Chip,
   Alert,
   Tabs,
-  Tab,
+  Tab
+} from '@mui/material';
+import { 
   Card,
   CardHeader,
   CardContent,
-  CardActions,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  Collapse,
-  IconButton,
-  Tooltip,
-  Divider
-} from '@mui/material';
-import { 
-  Plus, 
-  Calendar, 
-  FileText, 
-  Image, 
-  Video, 
-  Upload, 
-  Clock, 
-  Brain, 
-  TrendingUp, 
-  Lightbulb, 
-  Target, 
-  Sparkles, 
-  Zap,
-  ChevronDown,
-  ChevronUp,
-  BarChart3,
-  Users,
-  Eye,
-  Heart,
-  Share2,
-  CalendarDays
-} from 'lucide-react';
+  Button as MuiButton,
+  MuiDialog,
+  MuiDialogTitle,
+  MuiDialogContent,
+  DialogActions
+} from '@/components/ui/mui-components';
+import { Plus, Calendar, FileText, Image, Video, Upload, Clock, Brain, TrendingUp, Lightbulb, Target, Sparkles } from 'lucide-react';
+import { toast } from 'sonner';
+import dynamicImport from 'next/dynamic';
 
-// Mock data for now - will be replaced with real API calls
-const mockPosts: Post[] = [
-  {
-    id: '1',
-    contentText: 'Excited to share our latest product launch! 🚀',
-    platforms: ['Instagram', 'Twitter'],
-    status: 'scheduled' as const,
-    scheduledAt: '2024-01-15T10:00:00Z',
-    views: 1200,
-    likes: 89,
-    comments: 12
-  },
-  {
-    id: '2',
-    contentText: 'Behind the scenes of our creative process ✨',
-    platforms: ['Instagram'],
-    status: 'published' as const,
-    publishedAt: '2024-01-14T15:30:00Z',
-    views: 2100,
-    likes: 156,
-    comments: 23
-  }
-];
+// Import new components
+import { UploadMediaModal } from './_components/upload-media-modal';
+import { MediaLibrary } from './_components/media-library';
+import { CreateVideoModal } from './_components/create-video-modal';
+import { UseTemplateModal } from './_components/use-template-modal';
+import { BulkScheduleModal } from './_components/bulk-schedule-modal';
+import PostComposer from './_components/post-composer';
+import ContentCalendar from './_components/content-calendar';
+import ContentTable from './_components/content-table';
+import EditPostForm from './_components/edit-post-form';
+
+// Import Phase 5 AI components
+import AIContentOptimizer from '@/components/ai/AIContentOptimizer';
+import AutomatedPublisher from '@/components/ai/AutomatedPublisher';
+
+// Dynamically import AIOnboarding to prevent SSR issues
+const AIOnboarding = dynamicImport(() => import('@/components/ui/ai-onboarding').then(mod => ({ default: mod.AIOnboarding })), {
+  ssr: false,
+  loading: () => (
+    <Box sx={{ 
+      background: 'linear-gradient(45deg, #f3e8ff 30%, #dbeafe 90%)',
+      border: 1,
+      borderColor: 'purple.200',
+      borderRadius: 2,
+      p: 2
+    }}>
+      Loading AI setup...
+    </Box>
+  )
+});
+
+interface MediaItem {
+  id: string;
+  name: string;
+  url: string;
+  type: 'image' | 'video';
+  size: number;
+  uploadedAt: string;
+  tags: string[];
+  description: string;
+  thumbnail?: string;
+}
 
 interface Post {
   id: string;
-  contentText: string;
+  contentText?: string;
+  status: string;
   platforms: string[];
-  status: 'draft' | 'scheduled' | 'published';
   scheduledAt?: string;
   publishedAt?: string;
-  views?: number;
-  likes?: number;
-  comments?: number;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export default function ContentPage() {
-  const [activeTab, setActiveTab] = useState(0);
-  const [posts, setPosts] = useState<Post[]>(mockPosts);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [createModalOpen, setCreateModalOpen] = useState(false);
-  const [uploadModalOpen, setUploadModalOpen] = useState(false);
-  const [bulkScheduleModalOpen, setBulkScheduleModalOpen] = useState(false);
-  const [contentHubExpanded, setContentHubExpanded] = useState(false);
-  const [calendarView, setCalendarView] = useState<'day' | 'week' | 'month'>('week');
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [aiIntelligenceModalOpen, setAiIntelligenceModalOpen] = useState(false);
+  const [activeTab, setActiveTab] = useState(1);
+  const [isUploading, setIsUploading] = useState(false);
+  const [isCreatingVideo, setIsCreatingVideo] = useState(false);
+  const [isUsingTemplate, setIsUsingTemplate] = useState(false);
+  const [isBulkScheduling, setIsBulkScheduling] = useState(false);
+  const [isClient, setIsClient] = useState(false);
   
-  // State for individual AI tool modals
-  const [contentAnalysisModalOpen, setContentAnalysisModalOpen] = useState(false);
-  const [competitorIntelligenceModalOpen, setCompetitorIntelligenceModalOpen] = useState(false);
-  const [trendPredictionModalOpen, setTrendPredictionModalOpen] = useState(false);
-  const [contentOptimizationModalOpen, setContentOptimizationModalOpen] = useState(false);
+  // Upload Media Modal State
+  const [uploadModalOpen, setUploadModalOpen] = useState(false);
+  const [mediaLibraryOpen, setMediaLibraryOpen] = useState(false);
+  const [createVideoModalOpen, setCreateVideoModalOpen] = useState(false);
+  const [useTemplateModalOpen, setUseTemplateModalOpen] = useState(false);
+  const [bulkScheduleModalOpen, setBulkScheduleModalOpen] = useState(false);
+  const [uploadedMedia, setUploadedMedia] = useState<MediaItem[]>([]);
 
-  // Calendar data state
-  const [calendarPosts, setCalendarPosts] = useState<Record<string, Post[]>>({});
-  const [calendarLoading, setCalendarLoading] = useState(false);
+  // Add state for posts, loading, error, filters, search, pagination
+  const [posts, setPosts] = useState<Post[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [statusFilter, setStatusFilter] = useState('ALL');
+  const [platformFilter, setPlatformFilter] = useState('ALL');
+  const [search, setSearch] = useState('');
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [total, setTotal] = useState(0);
+  const [overview, setOverview] = useState({ drafts: 0, scheduled: 0, published: 0 });
+  const [aiInsights, setAiInsights] = useState<any>(null);
+  const [aiInsightsLoading, setAiInsightsLoading] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false);
+  const [selectedPost, setSelectedPost] = useState<Post | null>(null);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [postToDelete, setPostToDelete] = useState<Post | null>(null);
+  const [hasAiKey, setHasAiKey] = useState(true); // Default to true, will check API
 
-  // Fetch calendar data
-  const fetchCalendarData = async () => {
-    setCalendarLoading(true);
-    try {
-      const now = new Date();
-      const startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 7);
-      const endDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 7);
-      
-      const response = await fetch(`/api/posts/calendar?startDate=${startDate.toISOString()}&endDate=${endDate.toISOString()}`, {
-        credentials: 'include', // Include cookies for session auth
-        headers: {
-          'Content-Type': 'application/json',
-        }
-      });
-      
-      if (response.ok) {
-        const data = await response.json();
-        setCalendarPosts(data.posts);
-      } else if (response.status === 401) {
-        console.log('Calendar API: User not authenticated, using mock data');
-        // For now, use mock data if not authenticated
-        setCalendarPosts({
-          [new Date().toISOString().split('T')[0]]: mockPosts
-        });
-      } else {
-        console.error('Failed to fetch calendar data:', response.status);
+  // Client-side hydration check
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  // Handle responsive tab behavior
+  useEffect(() => {
+    const handleResize = () => {
+      // On mobile, always show content management tab
+      if (window.innerWidth < 768 && activeTab !== 1) {
+        setActiveTab(1);
       }
+    };
+
+    // Set initial tab based on screen size
+    handleResize();
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [activeTab]);
+
+  // Debug modal state
+  useEffect(() => {
+    console.log('Modal state changed:', {
+      uploadModalOpen,
+      createVideoModalOpen,
+      useTemplateModalOpen,
+      bulkScheduleModalOpen
+    });
+  }, [uploadModalOpen, createVideoModalOpen, useTemplateModalOpen, bulkScheduleModalOpen]);
+
+  // Listen for custom events from the composer
+  useEffect(() => {
+    const handleUploadModal = () => setUploadModalOpen(true);
+    const handleCreateVideoModal = () => setCreateVideoModalOpen(true);
+    const handleUseTemplateModal = () => setUseTemplateModalOpen(true);
+    const handleBulkScheduleModal = () => setBulkScheduleModalOpen(true);
+
+    window.addEventListener('openUploadModal', handleUploadModal);
+    window.addEventListener('openCreateVideoModal', handleCreateVideoModal);
+    window.addEventListener('openUseTemplateModal', handleUseTemplateModal);
+    window.addEventListener('openBulkScheduleModal', handleBulkScheduleModal);
+
+    return () => {
+      window.removeEventListener('openUploadModal', handleUploadModal);
+      window.removeEventListener('openCreateVideoModal', handleCreateVideoModal);
+      window.removeEventListener('openUseTemplateModal', handleUseTemplateModal);
+      window.removeEventListener('openBulkScheduleModal', handleBulkScheduleModal);
+    };
+  }, []);
+
+  const handleUploadMedia = async () => {
+    setIsUploading(true);
+    // Simulate upload process
+    setTimeout(() => setIsUploading(false), 2000);
+  };
+
+  const handleUploadComplete = (files: any[]) => {
+    const newMedia: MediaItem[] = files.map((file, index) => ({
+      id: `media-${Date.now()}-${index}`,
+      name: file.name,
+      url: file.url,
+      type: file.type.startsWith('image/') ? 'image' : 'video',
+      size: file.size,
+      uploadedAt: new Date().toISOString(),
+      tags: [],
+      description: '',
+      thumbnail: file.type.startsWith('image/') ? file.url : undefined
+    }));
+
+    setUploadedMedia(prev => [...prev, ...newMedia]);
+    setUploadModalOpen(false);
+    toast.success(`${files.length} media file(s) uploaded successfully!`);
+  };
+
+  const handleMediaSelect = (media: MediaItem) => {
+    // Handle media selection
+    console.log('Selected media:', media);
+  };
+
+  const handleCreateVideo = async () => {
+    setIsCreatingVideo(true);
+    // Simulate video creation process
+    setTimeout(() => setIsCreatingVideo(false), 3000);
+  };
+
+  const handleVideoCreated = (videoData: any) => {
+    setCreateVideoModalOpen(false);
+    toast.success('Video created successfully!');
+    // Handle the created video data
+    console.log('Video created:', videoData);
+  };
+
+  const handleUseTemplate = async () => {
+    setIsUsingTemplate(true);
+    // Simulate template usage process
+    setTimeout(() => setIsUsingTemplate(false), 2000);
+  };
+
+  const handleTemplateUsed = (templateData: any) => {
+    setUseTemplateModalOpen(false);
+    toast.success('Template applied successfully!');
+    // Handle the template data
+    console.log('Template used:', templateData);
+  };
+
+  const handleBulkSchedule = async () => {
+    setIsBulkScheduling(true);
+    // Simulate bulk scheduling process
+    setTimeout(() => setIsBulkScheduling(false), 3000);
+  };
+
+  const handleBulkScheduled = (scheduleData: any) => {
+    setBulkScheduleModalOpen(false);
+    toast.success('Posts scheduled successfully!');
+    // Handle the schedule data
+    console.log('Bulk scheduled:', scheduleData);
+  };
+
+  const handleEdit = (post: Post) => {
+    setSelectedPost(post);
+    setEditModalOpen(true);
+  };
+
+  const handleEditSave = async (updatedData: any) => {
+    try {
+      // Simulate API call to update post
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      setPosts(prev => prev.map(post => 
+        post.id === updatedData.id ? { ...post, ...updatedData } : post
+      ));
+      
+      setEditModalOpen(false);
+      setSelectedPost(null);
+      toast.success('Post updated successfully!');
     } catch (error) {
-      console.error('Error fetching calendar data:', error);
-      // Fallback to mock data on error
-      setCalendarPosts({
-        [new Date().toISOString().split('T')[0]]: mockPosts
-      });
-    } finally {
-      setCalendarLoading(false);
+      toast.error('Failed to update post');
+      console.error('Error updating post:', error);
     }
   };
 
+  const handleDelete = (post: Post) => {
+    setPostToDelete(post);
+    setDeleteDialogOpen(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!postToDelete) return;
+
+    try {
+      // Simulate API call to delete post
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      setPosts(prev => prev.filter(post => post.id !== postToDelete.id));
+      setDeleteDialogOpen(false);
+      setPostToDelete(null);
+      toast.success('Post deleted successfully!');
+    } catch (error) {
+      toast.error('Failed to delete post');
+      console.error('Error deleting post:', error);
+    }
+  };
+
+  const handleDuplicate = async (post: Post) => {
+    try {
+      // Simulate API call to duplicate post
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      const duplicatedPost: Post = {
+        ...post,
+        id: `duplicate-${Date.now()}`,
+        contentText: `${post.contentText || 'Content'} (Copy)`,
+        status: 'DRAFT',
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString()
+      };
+      
+      setPosts(prev => [duplicatedPost, ...prev]);
+      toast.success('Post duplicated successfully!');
+    } catch (error) {
+      toast.error('Failed to duplicate post');
+      console.error('Error duplicating post:', error);
+    }
+  };
+
+  // Load data on component mount
   useEffect(() => {
-    fetchCalendarData();
-    // Refresh every 30 seconds
-    const interval = setInterval(fetchCalendarData, 30000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const handleTabChange = (event: React.SyntheticEvent, newValue: number) => {
-    setActiveTab(newValue);
-  };
-
-  const renderCalendarHeader = () => (
-    <Box sx={{ 
-      mb: 2,
-      p: 2,
-      backgroundColor: 'background.paper',
-      borderRadius: 1,
-      border: '1px solid',
-      borderColor: 'divider'
-    }}>
-      {/* Row 1: Title + Create Button */}
-      <Box sx={{ 
-        display: 'flex', 
-        alignItems: 'center', 
-        justifyContent: 'space-between',
-        mb: 3,
-        flexWrap: { xs: 'wrap', sm: 'nowrap' },
-        gap: { xs: 2, sm: 0 }
-      }}>
-        <Typography variant="h6" sx={{ fontWeight: 600, color: 'text.primary' }}>
-          Content Calendar
-        </Typography>
+    const loadData = async () => {
+      try {
+        setLoading(true);
         
-        {/* Action Buttons */}
-        <Box sx={{ 
-          display: 'flex', 
-          alignItems: 'center', 
-          gap: { xs: 0.5, sm: 1 },
-          flexWrap: 'wrap'
-        }}>
-          {/* Bulk Schedule Button */}
-          <Tooltip title="Bulk Schedule">
-            <IconButton 
-              onClick={() => setBulkScheduleModalOpen(true)}
-              size="small"
-              sx={{ 
-                backgroundColor: 'background.default',
-                border: '1px solid',
-                borderColor: 'divider'
-              }}
-            >
-              <Calendar size={18} />
-            </IconButton>
-          </Tooltip>
-
-          {/* Create Content Button */}
-          <Tooltip title="Create Content">
-            <Button
-              variant="contained"
-              startIcon={<Plus size={16} />}
-              onClick={() => setCreateModalOpen(true)}
-              size="small"
-              sx={{ 
-                fontSize: { xs: '0.75rem', sm: '0.875rem' },
-                px: { xs: 1, sm: 2 }
-              }}
-            >
-              <Box sx={{ display: { xs: 'none', sm: 'inline' } }}>Create</Box>
-              <Box sx={{ display: { xs: 'inline', sm: 'none' } }}>+</Box>
-            </Button>
-          </Tooltip>
-        </Box>
-      </Box>
-
-      {/* Row 2: View Switcher + Other Actions */}
-      <Box sx={{ 
-        display: 'flex', 
-        alignItems: 'center', 
-        justifyContent: 'space-between',
-        flexWrap: { xs: 'wrap', sm: 'nowrap' },
-        gap: { xs: 2, sm: 0 }
-      }}>
-        {/* View Switcher */}
-        <Box sx={{ 
-          display: 'flex', 
-          gap: { xs: 0.5, sm: 1 },
-          flexWrap: 'wrap'
-        }}>
-          {(['day', 'week', 'month'] as const).map((view) => (
-            <Tooltip key={view} title={`${view.charAt(0).toUpperCase() + view.slice(1)} View`}>
-              <IconButton
-                size="small"
-                onClick={() => setCalendarView(view)}
-                sx={{
-                  backgroundColor: calendarView === view ? 'primary.main' : 'transparent',
-                  color: calendarView === view ? 'white' : 'text.primary',
-                  minWidth: { xs: 32, sm: 40 },
-                  height: { xs: 32, sm: 40 },
-                  '&:hover': {
-                    backgroundColor: calendarView === view ? 'primary.dark' : 'action.hover'
-                  }
-                }}
-              >
-                {view === 'day' && <Calendar size={14} />}
-                {view === 'week' && <CalendarDays size={14} />}
-                {view === 'month' && <Calendar size={14} />}
-              </IconButton>
-            </Tooltip>
-          ))}
-        </Box>
-
-        {/* Other Actions */}
-        <Box sx={{ 
-          display: 'flex', 
-          alignItems: 'center', 
-          gap: { xs: 0.5, sm: 1 }
-        }}>
-          {/* Today Button */}
-          <Button
-            variant="outlined"
-            size="small"
-            onClick={() => setSelectedDate(new Date())}
-            sx={{ 
-              fontSize: { xs: '0.75rem', sm: '0.875rem' },
-              px: { xs: 1, sm: 2 }
-            }}
-          >
-            <Box sx={{ display: { xs: 'none', sm: 'inline' } }}>Today</Box>
-            <Box sx={{ display: { xs: 'inline', sm: 'none' } }}>Now</Box>
-          </Button>
-        </Box>
-      </Box>
-    </Box>
-  );
-
-    const renderCalendar = () => {
-    const now = new Date();
-    const currentHour = now.getHours();
-    
-    return (
-      <Box sx={{ 
-        height: { xs: 300, sm: 400 },
-        minHeight: 300,
-        border: '1px solid',
-        borderColor: 'divider',
-        borderRadius: 1,
-        backgroundColor: 'background.paper',
-        display: 'flex',
-        flexDirection: 'column'
-      }}>
-        {/* Calendar Header */}
-        <Box sx={{ flexShrink: 0 }}>
-          {renderCalendarHeader()}
-        </Box>
+        // Mock data for now since API doesn't exist
+        const mockPosts: Post[] = [
+          {
+            id: '1',
+            contentText: 'AI-powered content creation strategies for modern marketers',
+            status: 'DRAFT',
+            platforms: ['LinkedIn', 'Twitter'],
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString()
+          },
+          {
+            id: '2',
+            contentText: 'How to optimize your social media presence in 2025',
+            status: 'SCHEDULED',
+            platforms: ['Instagram', 'LinkedIn'],
+            scheduledAt: new Date(Date.now() + 86400000).toISOString(),
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString()
+          },
+          {
+            id: '3',
+            contentText: 'The future of content marketing: AI and automation',
+            status: 'PUBLISHED',
+            platforms: ['LinkedIn', 'Twitter', 'Facebook'],
+            publishedAt: new Date(Date.now() - 86400000).toISOString(),
+            createdAt: new Date(Date.now() - 172800000).toISOString(),
+            updatedAt: new Date(Date.now() - 86400000).toISOString()
+          }
+        ];
         
-        {/* Calendar Content Area */}
-        <Box sx={{ 
-          flex: 1,
-          overflow: 'auto',
-          display: 'flex',
-          flexDirection: 'column'
-        }}>
-          {/* Loading State */}
-          {calendarLoading && (
-            <Box sx={{ 
-              display: 'flex', 
-              justifyContent: 'center', 
-              alignItems: 'center', 
-              flex: 1,
-              p: 3
-            }}>
-              <CircularProgress size={40} />
-              <Typography sx={{ ml: 2 }}>Loading calendar...</Typography>
-            </Box>
-          )}
-          
-          {/* Calendar Content Based on View */}
-          {!calendarLoading && (
-            <Box sx={{ flex: 1, overflow: 'auto' }}>
-              {calendarView === 'day' && renderDayView(now)}
-              {calendarView === 'week' && renderWeekView(now)}
-              {calendarView === 'month' && renderMonthView(now)}
-            </Box>
-          )}
-        </Box>
-      </Box>
-    );
-  };
+        setPosts(mockPosts);
+        setTotal(mockPosts.length);
+        setOverview({ 
+          drafts: mockPosts.filter(p => p.status === 'DRAFT').length,
+          scheduled: mockPosts.filter(p => p.status === 'SCHEDULED').length,
+          published: mockPosts.filter(p => p.status === 'PUBLISHED').length
+        });
+        
+        setLoading(false);
+        
+      } catch (error) {
+        console.error('Error loading data:', error);
+        setError('Failed to load data');
+        setLoading(false);
+      }
+    };
 
-  const renderDayView = (date: Date) => (
-    <Box sx={{ 
-      height: '100%',
-      overflow: 'auto',
-      p: 1,
-      pb: 2
-    }}>
-      <Grid container spacing={0.5}>
-        {/* Time Column */}
-        <Grid item xs={3}>
-          <Box sx={{ height: 40, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Typography variant="caption" sx={{ fontWeight: 600, color: 'text.secondary' }}>
-              Time
-            </Typography>
-          </Box>
-          {Array.from({ length: 24 }, (_, hour) => (
-            <Box
-              key={hour}
-              sx={{ 
-                height: 40,
-                display: 'flex', 
-                alignItems: 'center', 
-                justifyContent: 'center',
-                borderBottom: '1px solid',
-                borderColor: 'divider',
-                backgroundColor: hour === date.getHours() ? 'action.hover' : 'transparent'
-              }}
-            >
-              <Typography variant="caption" sx={{ color: 'text.secondary', fontSize: '0.7rem' }}>
-                {hour === 0 ? '12 AM' : hour === 12 ? '12 PM' : hour > 12 ? `${hour - 12} PM` : `${hour} AM`}
-              </Typography>
-            </Box>
-          ))}
-        </Grid>
+    loadData();
+  }, [page, pageSize, statusFilter, platformFilter, search]);
 
-        {/* Single Day Column */}
-        <Grid item xs={9}>
-          <Box sx={{ 
-            height: 40, 
-            display: 'flex', 
-            alignItems: 'center', 
-            justifyContent: 'center',
-            borderBottom: '1px solid',
-            borderColor: 'divider',
-            backgroundColor: 'action.hover'
-          }}>
-            <Typography variant="h6" sx={{ fontWeight: 600, fontSize: '1rem', color: 'text.primary' }}>
-              {date.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
-            </Typography>
-          </Box>
-
-          {Array.from({ length: 24 }, (_, hour) => {
-            const dateKey = date.toISOString().split('T')[0];
-            const dayPosts = calendarPosts[dateKey] || [];
-            const hourPosts = dayPosts.filter(post => {
-              const postHour = post.scheduledAt ? new Date(post.scheduledAt).getHours() : 0;
-              return postHour === hour;
-            });
-            
-            return (
-              <Box
-                key={hour}
-                sx={{
-                  height: 40,
-                  borderBottom: '1px solid',
-                  borderColor: 'divider',
-                  position: 'relative',
-                  cursor: 'pointer',
-                  '&:hover': {
-                    backgroundColor: 'action.hover'
-                  }
-                }}
-                onClick={() => {
-                  if (hourPosts.length > 0) {
-                    console.log('Posts at this time:', hourPosts);
-                  }
-                }}
-              >
-                {hourPosts.map((post, postIndex) => (
-                  <Box
-                    key={post.id}
-                    sx={{ 
-                      position: 'absolute',
-                      top: postIndex * 18 + 2,
-                      left: 2,
-                      right: 2,
-                      height: 14,
-                      backgroundColor: post.status === 'scheduled' ? 'primary.main' : 
-                                    post.status === 'published' ? 'success.main' : 'warning.main',
-                      borderRadius: 0.5,
-                      p: 0.25,
-                      zIndex: 1
-                    }}
-                  >
-                    <Typography variant="caption" sx={{ 
-                      color: 'white', 
-                      fontSize: '0.55rem',
-                      lineHeight: 1,
-                      display: 'block',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'nowrap'
-                    }}>
-                      {post.contentText?.substring(0, 20)}...
-                    </Typography>
-                  </Box>
-                ))}
-              </Box>
-            );
-          })}
-        </Grid>
-      </Grid>
-    </Box>
-  );
-
-  const renderWeekView = (date: Date) => (
-    <Box sx={{ 
-      height: '100%',
-      overflow: 'auto',
-      p: 1,
-      pb: 2
-    }}>
-      <Grid container spacing={0.5}>
-        {/* Time Column */}
-        <Grid item xs={2}>
-          <Box sx={{ height: 40, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Typography variant="caption" sx={{ fontWeight: 600, color: 'text.secondary' }}>
-              Time
-            </Typography>
-          </Box>
-          {Array.from({ length: 24 }, (_, hour) => (
-            <Box
-              key={hour}
-              sx={{ 
-                height: 40,
-                display: 'flex', 
-                alignItems: 'center', 
-                justifyContent: 'center',
-                borderBottom: '1px solid',
-                borderColor: 'divider',
-                backgroundColor: hour === date.getHours() ? 'action.hover' : 'transparent'
-              }}
-            >
-              <Typography variant="caption" sx={{ color: 'text.secondary', fontSize: '0.7rem' }}>
-                {hour === 0 ? '12 AM' : hour === 12 ? '12 PM' : hour > 12 ? `${hour - 12} PM` : `${hour} AM`}
-              </Typography>
-            </Box>
-          ))}
-        </Grid>
-
-        {/* Week Days Columns */}
-        {Array.from({ length: 7 }, (_, dayIndex) => {
-          const weekDate = new Date(date);
-          weekDate.setDate(date.getDate() - 3 + dayIndex);
-          const dateKey = weekDate.toISOString().split('T')[0];
-          const dayPosts = calendarPosts[dateKey] || [];
-          
-          return (
-            <Grid item xs key={dayIndex}>
-              <Box sx={{ 
-                height: 40, 
-                display: 'flex', 
-                alignItems: 'center', 
-                justifyContent: 'center',
-                borderBottom: '1px solid',
-                borderColor: 'divider',
-                backgroundColor: 'action.hover'
-              }}>
-                <Typography variant="caption" sx={{ fontWeight: 600, fontSize: '0.7rem' }}>
-                  {weekDate.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })}
-                </Typography>
-              </Box>
-
-              {Array.from({ length: 24 }, (_, hour) => {
-                const hourPosts = dayPosts.filter(post => {
-                  const postHour = post.scheduledAt ? new Date(post.scheduledAt).getHours() : 0;
-                  return postHour === hour;
-                });
-                
-                return (
-                  <Box
-                    key={hour}
-                    sx={{ 
-                      height: 40,
-                      borderBottom: '1px solid',
-                      borderColor: 'divider',
-                      position: 'relative',
-                      cursor: 'pointer',
-                      '&:hover': {
-                        backgroundColor: 'action.hover'
-                      }
-                    }}
-                    onClick={() => {
-                      if (hourPosts.length > 0) {
-                        console.log('Posts at this time:', hourPosts);
-                      }
-                    }}
-                  >
-                    {hourPosts.map((post, postIndex) => (
-                      <Box
-                        key={post.id}
-                        sx={{
-                          position: 'absolute',
-                          top: postIndex * 18 + 2,
-                          left: 2,
-                          right: 2,
-                          height: 14,
-                          backgroundColor: post.status === 'scheduled' ? 'primary.main' : 
-                                        post.status === 'published' ? 'success.main' : 'warning.main',
-                          borderRadius: 0.5,
-                          p: 0.25,
-                          zIndex: 1
-                        }}
-                      >
-                        <Typography variant="caption" sx={{ 
-                          color: 'white', 
-                          fontSize: '0.55rem',
-                          lineHeight: 1,
-                          display: 'block',
-                          overflow: 'hidden',
-                          textOverflow: 'ellipsis',
-                          whiteSpace: 'nowrap'
-                        }}>
-                          {post.contentText?.substring(0, 18)}...
-                        </Typography>
-                      </Box>
-                    ))}
-                  </Box>
-                );
-              })}
-            </Grid>
-          );
-        })}
-      </Grid>
-    </Box>
-  );
-
-  const renderMonthView = (date: Date) => (
-    <Box sx={{ 
-      height: '100%',
-      overflow: 'auto',
-      p: 1,
-      pb: 2
-    }}>
-      <Grid container spacing={0.5}>
-        {/* Month Header */}
-        <Grid item xs={12}>
-          <Box sx={{ 
-            height: 40, 
-            display: 'flex', 
-            alignItems: 'center', 
-            justifyContent: 'center',
-            borderBottom: '1px solid',
-            borderColor: 'divider',
-            backgroundColor: 'action.hover'
-          }}>
-            <Typography variant="h6" sx={{ fontWeight: 600, color: 'text.primary' }}>
-              {date.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
-            </Typography>
-          </Box>
-        </Grid>
-
-        {/* Day Headers */}
-        {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
-          <Grid item xs key={day}>
-            <Box sx={{ 
-              height: 40, 
-              display: 'flex', 
-              alignItems: 'center', 
-              justifyContent: 'center',
-              borderBottom: '1px solid',
-              borderColor: 'divider',
-              backgroundColor: 'action.hover'
-            }}>
-              <Typography variant="caption" sx={{ fontWeight: 600 }}>
-                {day}
-              </Typography>
-            </Box>
-          </Grid>
-        ))}
-
-        {/* Month Days */}
-        {Array.from({ length: 42 }, (_, dayIndex) => {
-          const monthStart = new Date(date.getFullYear(), date.getMonth(), 1);
-          const firstDay = monthStart.getDay();
-          const dayDate = new Date(monthStart);
-          dayDate.setDate(dayIndex - firstDay + 1);
-          
-          const dateKey = dayDate.toISOString().split('T')[0];
-          const dayPosts = calendarPosts[dateKey] || [];
-          const isCurrentMonth = dayDate.getMonth() === date.getMonth();
-          const isToday = dayDate.toDateString() === new Date().toDateString();
-          
-          return (
-            <Grid item xs key={dayIndex}>
-              <Box
-                sx={{
-                  height: 80,
-                  border: '1px solid',
-                  borderColor: 'divider',
-                  p: 0.5,
-                  cursor: 'pointer',
-                  backgroundColor: isToday ? 'primary.light' : 
-                                 isCurrentMonth ? 'background.paper' : 'action.hover',
-                  '&:hover': {
-                    backgroundColor: isToday ? 'primary.main' : 'action.hover'
-                  }
-                }}
-                onClick={() => {
-                  setSelectedDate(dayDate);
-                  if (dayPosts.length > 0) {
-                    console.log('Posts for this day:', dayPosts);
-                  }
-                }}
-              >
-                <Typography 
-                  variant="caption" 
-                  sx={{ 
-                    color: isCurrentMonth ? 'text.primary' : 'text.secondary',
-                    fontWeight: isToday ? 600 : 400
-                  }}
-                >
-                  {dayDate.getDate()}
-                </Typography>
-                
-                {/* Show posts for this day */}
-                {dayPosts.slice(0, 2).map((post, postIndex) => (
-                  <Box
-                    key={post.id}
-                    sx={{
-                      mt: 0.5,
-                      p: 0.5,
-                      backgroundColor: post.status === 'scheduled' ? 'primary.main' : 
-                                     post.status === 'published' ? 'success.main' : 'warning.main',
-                      borderRadius: 0.5,
-                      overflow: 'hidden'
-                    }}
-                  >
-                    <Typography 
-                      variant="caption" 
-                      sx={{ 
-                        color: 'white',
-                        fontSize: '0.65rem',
-                        display: 'block',
-                        whiteSpace: 'nowrap',
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis'
-                      }}
-                    >
-                      {post.contentText?.substring(0, 15)}...
-                    </Typography>
-                  </Box>
-                ))}
-                
-                {dayPosts.length > 2 && (
-                  <Typography variant="caption" sx={{ color: 'text.secondary', fontSize: '0.6rem' }}>
-                    +{dayPosts.length - 2} more
-                  </Typography>
-                )}
-              </Box>
-            </Grid>
-          );
-        })}
-      </Grid>
-    </Box>
-  );
-
-  
-
-  const renderContentHub = () => (
-    <Card sx={{ mb: 3 }}>
-      <CardHeader
-        action={
-          <IconButton onClick={() => setContentHubExpanded(!contentHubExpanded)}>
-            {contentHubExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
-          </IconButton>
-        }
-        title="Content Hub"
-        subheader="Quick access to content creation tools"
-      />
-      <Collapse in={contentHubExpanded}>
-                  <CardContent>
-          <Grid container spacing={2}>
-            <Grid item xs={12} sm={6} md={3}>
-              <Button
-                fullWidth
-                variant="outlined"
-                startIcon={<FileText size={20} />}
-                onClick={() => setCreateModalOpen(true)}
-                sx={{ height: 80, flexDirection: 'column', gap: 1 }}
-              >
-                <Typography variant="body2">Text Posts</Typography>
-              </Button>
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <Button
-                fullWidth
-                variant="outlined"
-                startIcon={<Image size={20} />}
-                onClick={() => setUploadModalOpen(true)}
-                sx={{ height: 80, flexDirection: 'column', gap: 1 }}
-              >
-                <Typography variant="body2">Image Posts</Typography>
-              </Button>
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <Button
-                fullWidth
-                variant="outlined"
-                startIcon={<Video size={20} />}
-                onClick={() => setUploadModalOpen(true)}
-                sx={{ height: 80, flexDirection: 'column', gap: 1 }}
-              >
-                <Typography variant="body2">Video Posts</Typography>
-              </Button>
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <Button
-                fullWidth
-                variant="outlined"
-                startIcon={<Upload size={20} />}
-                onClick={() => setUploadModalOpen(true)}
-                sx={{ height: 80, flexDirection: 'column', gap: 1 }}
-              >
-                <Typography variant="body2">Media Library</Typography>
-              </Button>
-            </Grid>
-            <Grid item xs={12} sm={6} md={3}>
-              <Button
-                fullWidth
-                variant="contained"
-                startIcon={<Brain size={20} />}
-                onClick={() => setAiIntelligenceModalOpen(true)}
-                sx={{ 
-                  height: 80, 
-                  flexDirection: 'column', 
-                  gap: 1,
-                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                  '&:hover': {
-                    background: 'linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%)',
-                  }
-                }}
-              >
-                <Typography variant="body2" sx={{ color: 'white', fontWeight: 600 }}>AI Intelligence</Typography>
-              </Button>
-            </Grid>
-          </Grid>
-                  </CardContent>
-      </Collapse>
-                </Card>
-  );
-
-
-  const renderContentSection = () => {
+  const renderTabContent = () => {
     switch (activeTab) {
       case 0: // Calendar View
-        return (
-          <Box sx={{ 
-            mt: 3,
-            height: { xs: 300, sm: 400 },
-            minHeight: 300
-          }}>
-            {renderCalendar()}
-          </Box>
-        );
-      
+        return <ContentCalendar />;
       case 1: // Content Management
         return (
-          <Box sx={{ 
-            mt: 3,
-            height: { xs: 300, sm: 400 },
-            minHeight: 300,
-            overflow: 'hidden',
-            display: 'flex',
-            flexDirection: 'column'
-          }}>
-            {/* Content Management Header */}
-            <Box sx={{ 
-              mb: 2,
-              p: 2,
-              backgroundColor: 'background.paper',
-              borderRadius: 1,
-              border: '1px solid',
-              borderColor: 'divider',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              flexWrap: { xs: 'wrap', sm: 'nowrap' },
-              gap: { xs: 2, sm: 0 }
-            }}>
-              <Typography variant="h6" sx={{ fontWeight: 600, color: 'text.primary' }}>
-                Content Management
-              </Typography>
-              
-              {/* Action Buttons */}
-              <Box sx={{ 
-                display: 'flex', 
-                alignItems: 'center', 
-                gap: { xs: 0.5, sm: 1 },
-                flexWrap: 'wrap'
-              }}>
-                <Button
-                  variant="outlined"
-                  startIcon={<Upload size={16} />}
-                  onClick={() => setUploadModalOpen(true)}
-                  size="small"
-                  sx={{ 
-                    fontSize: { xs: '0.75rem', sm: '0.875rem' },
-                    px: { xs: 1, sm: 2 }
-                  }}
-                >
-                  <Box sx={{ display: { xs: 'none', sm: 'inline' } }}>Upload Media</Box>
-                  <Box sx={{ display: { xs: 'inline', sm: 'none' } }}>Upload</Box>
-                </Button>
-                <Button
-                  variant="contained"
-                  startIcon={<Plus size={16} />}
-                  onClick={() => setCreateModalOpen(true)}
-                  size="small"
-                  sx={{ 
-                    fontSize: { xs: '0.75rem', sm: '0.875rem' },
-                    px: { xs: 1, sm: 2 }
-                  }}
-                >
-                  <Box sx={{ display: { xs: 'none', sm: 'inline' } }}>Create Content</Box>
-                  <Box sx={{ display: { xs: 'inline', sm: 'none' } }}>Create</Box>
-                </Button>
+          <>
+            {/* Quick Actions - Content Creation Tools - Hidden on mobile since we have mobile buttons above */}
+            <Card sx={{ mb: 4, display: { xs: 'none', md: 'block' } }}>
+              <CardHeader>
+                <Typography variant="h6">Content Creation Tools</Typography>
+              </CardHeader>
+              <CardContent>
+                <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(4, 1fr)' }, gap: 2 }}>
+                  <Box>
+                    <MuiButton
+                      variant="outline"
+                      fullWidth
+                      startIcon={<Upload style={{ width: 16, height: 16 }} />}
+                      onClick={() => setUploadModalOpen(true)}
+                      sx={{ height: 48 }}
+                    >
+                      Upload Media
+                    </MuiButton>
+                  </Box>
+                  <Box>
+                    <MuiButton
+                      variant="outline"
+                      fullWidth
+                      startIcon={<Video style={{ width: 16, height: 16 }} />}
+                      onClick={() => setCreateVideoModalOpen(true)}
+                      sx={{ height: 48 }}
+                    >
+                      Create Video
+                    </MuiButton>
+                  </Box>
+                  <Box>
+                    <MuiButton
+                      variant="outline"
+                      fullWidth
+                      startIcon={<FileText style={{ width: 16, height: 16 }} />}
+                      onClick={() => setUseTemplateModalOpen(true)}
+                      sx={{ height: 48 }}
+                    >
+                      Use Template
+                    </MuiButton>
+                  </Box>
+                  <Box>
+                    <MuiButton
+                      variant="outline"
+                      fullWidth
+                      startIcon={<Calendar style={{ width: 16, height: 16 }} />}
+                      onClick={() => setBulkScheduleModalOpen(true)}
+                      sx={{ height: 48 }}
+                    >
+                      Bulk Schedule
+                    </MuiButton>
+                  </Box>
+                </Box>
+              </CardContent>
+            </Card>
+
+            {/* Overview Cards */}
+            <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(4, 1fr)' }, gap: 3, mb: 4 }}>
+              <Box>
+                <Card>
+                  <CardHeader
+                    sx={{ 
+                      display: 'flex', 
+                      flexDirection: 'row', 
+                      alignItems: 'center', 
+                      justifyContent: 'space-between',
+                      pb: 1
+                    }}
+                  >
+                    <Typography variant="h6" sx={{ fontSize: '0.875rem', fontWeight: 500 }}>
+                      Drafts
+                    </Typography>
+                    <FileText style={{ width: 16, height: 16, color: 'text.secondary' }} />
+                  </CardHeader>
+                  <CardContent>
+                    <Typography variant="h4" component="div" sx={{ fontWeight: 'bold' }}>
+                      {overview?.drafts || 0}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Box>
+
+              <Box>
+                <Card>
+                  <CardHeader
+                    sx={{ 
+                      display: 'flex', 
+                      flexDirection: 'row', 
+                      alignItems: 'center', 
+                      justifyContent: 'space-between',
+                      pb: 1
+                    }}
+                  >
+                    <Typography variant="h6" sx={{ fontSize: '0.875rem', fontWeight: 500 }}>
+                      Scheduled
+                    </Typography>
+                    <Clock style={{ width: 16, height: 16, color: 'text.secondary' }} />
+                  </CardHeader>
+                  <CardContent>
+                    <Typography variant="h4" component="div" sx={{ fontWeight: 'bold' }}>
+                      {overview?.scheduled || 0}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Box>
+
+              <Box>
+                <Card>
+                  <CardHeader
+                    sx={{ 
+                      display: 'flex', 
+                      flexDirection: 'row', 
+                      alignItems: 'center', 
+                      justifyContent: 'space-between',
+                      pb: 1
+                    }}
+                  >
+                    <Typography variant="h6" sx={{ fontSize: '0.875rem', fontWeight: 500 }}>
+                      Published
+                    </Typography>
+                    <TrendingUp style={{ width: 16, height: 16, color: 'text.secondary' }} />
+                  </CardHeader>
+                  <CardContent>
+                    <Typography variant="h4" component="div" sx={{ fontWeight: 'bold' }}>
+                      {overview?.published || 0}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Box>
+
+              <Box>
+                <Card>
+                  <CardHeader
+                    sx={{ 
+                      display: 'flex', 
+                      flexDirection: 'row', 
+                      alignItems: 'center', 
+                      justifyContent: 'space-between',
+                      pb: 1
+                    }}
+                  >
+                    <Typography variant="h6" sx={{ fontSize: '0.875rem', fontWeight: 500 }}>
+                      AI Insights
+                    </Typography>
+                    <Brain style={{ width: 16, height: 16, color: 'text.secondary' }} />
+                  </CardHeader>
+                  <CardContent>
+                    <Typography variant="h4" component="div" sx={{ fontWeight: 'bold' }}>
+                      {aiInsights?.length || 0}
+                    </Typography>
+                  </CardContent>
+                </Card>
               </Box>
             </Box>
 
-            {/* Content List */}
-            <Box sx={{ 
-              flex: 1,
-              overflow: 'auto',
-              border: '1px solid',
-              borderColor: 'divider',
-              borderRadius: 1,
-              backgroundColor: 'background.paper'
-            }}>
-              {posts.length === 0 ? (
-                <Box sx={{ 
-                  display: 'flex', 
-                  flexDirection: 'column',
-                  alignItems: 'center', 
-                  justifyContent: 'center', 
-                  height: '100%',
-                  p: 4,
-                  textAlign: 'center'
-                }}>
-                  <FileText size={48} style={{ color: '#9e9e9e', marginBottom: 16 }} />
-                  <Typography variant="h6" color="text.secondary" sx={{ mb: 1 }}>
-                    No content yet
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
-                    Create your first post to get started
-                  </Typography>
-                  <Button
-                    variant="contained"
-                    startIcon={<Plus size={18} />}
-                    onClick={() => setCreateModalOpen(true)}
-                  >
-                    Create Content
-                  </Button>
-                </Box>
-              ) : (
-                <Box sx={{ p: 2 }}>
-                  {posts.map((post) => (
-                    <Card key={post.id} sx={{ mb: 2, '&:last-child': { mb: 0 } }}>
-                      <CardContent>
-                        <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', mb: 2 }}>
-                          <Box sx={{ flex: 1 }}>
-                            <Typography variant="body1" sx={{ mb: 1 }}>
-                              {post.contentText}
-                            </Typography>
-                            <Box sx={{ display: 'flex', gap: 1, mb: 1 }}>
-                              {post.platforms.map((platform) => (
-                                <Chip 
-                                  key={platform} 
-                                  label={platform} 
-                                  size="small" 
-                                  variant="outlined"
-                                />
-                              ))}
-                            </Box>
-                            <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-                              <Chip 
-                                label={post.status} 
-                                size="small" 
-                                color={post.status === 'published' ? 'success' : 
-                                       post.status === 'scheduled' ? 'primary' : 'warning'}
-                              />
-                              {post.scheduledAt && (
-                                <Typography variant="caption" color="text.secondary">
-                                  Scheduled: {new Date(post.scheduledAt).toLocaleString()}
-                                </Typography>
-                              )}
-                              {post.publishedAt && (
-                                <Typography variant="caption" color="text.secondary">
-                                  Published: {new Date(post.publishedAt).toLocaleString()}
-                                </Typography>
-                              )}
-                            </Box>
-                          </Box>
-                          
-                          {/* Post Stats */}
-                          {post.views && (
-                            <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-                              <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                                <Eye size={16} />
-                                <Typography variant="caption">{post.views}</Typography>
-                              </Box>
-                              <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                                <Heart size={16} />
-                                <Typography variant="caption">{post.likes}</Typography>
-                              </Box>
-                              <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                                <Share2 size={16} />
-                                <Typography variant="caption">{post.comments}</Typography>
-                              </Box>
-                            </Box>
-                          )}
-                        </Box>
-                      </CardContent>
-                      <CardActions>
-                        <Button size="small">Edit</Button>
-                        <Button size="small" color="error">Delete</Button>
-                      </CardActions>
-                    </Card>
-                  ))}
-                </Box>
-              )}
+            {/* Content Table */}
+            <Box sx={{ mb: { xs: 8, sm: 6 } }}>
+              <ContentTable 
+                posts={posts}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+                onDuplicate={handleDuplicate}
+                loading={loading}
+                error={error}
+              />
             </Box>
-          </Box>
+          </>
         );
-      
+      case 2: // AI Content Optimization
+        return <AIContentOptimizer />;
+      case 3: // Automated Publishing
+        return <AutomatedPublisher />;
       default:
         return null;
     }
   };
 
+  // Temporarily disable loading state to see content
+  // if (loading) {
+  //   return (
+  //     <Box sx={{ 
+  //       display: 'flex', 
+  //       alignItems: 'center', 
+  //       justifyContent: 'center', 
+  //       minHeight: 400 
+  //     }}>
+  //       <CircularProgress />
+  //     </Box>
+  //   );
+  // }
+
+  if (error) {
+    return (
+      <Alert severity="error" sx={{ mb: 2 }}>
+        {error}
+      </Alert>
+    );
+  }
+
   return (
-    <Container maxWidth="xl" sx={{ py: 4, pb: 8 }}>
-      <Box sx={{ mb: 4 }}>
-        <Typography variant="h4" sx={{ fontWeight: 700, mb: 1, color: 'text.primary' }}>
-          Content Dashboard
+    <Box sx={{ pb: { xs: 12, sm: 8 } }}>
+      <Typography variant="h4" gutterBottom>
+        Content Hub
       </Typography>
-        <Typography variant="body1" color="text.secondary">
-          Manage your content calendar and track performance
+      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+        {/* Header */}
+        <Box sx={{ 
+          display: 'flex', 
+          flexDirection: { xs: 'column', sm: 'row' }, 
+          alignItems: { sm: 'center' }, 
+          justifyContent: 'space-between', 
+          gap: 2,
+          mb: 2
+        }}>
+          <Box>
+            <Typography 
+              variant="h4" 
+              component="h1" 
+              sx={{ 
+                fontWeight: 'bold', 
+                color: 'text.primary',
+                wordBreak: 'break-word'
+              }}
+            >
+              Content Management
+            </Typography>
+            <Typography 
+              variant="body2" 
+              sx={{ 
+                color: 'text.secondary',
+                mt: 0.5
+              }}
+            >
+              Create, schedule, and manage your content across all platforms
             </Typography>
           </Box>
           
-      {/* Content Hub */}
-      {renderContentHub()}
+          <Box sx={{ 
+            display: 'flex', 
+            flexDirection: { xs: 'column', sm: 'row' }, 
+            gap: 1,
+            width: { xs: '100%', sm: 'auto' }
+          }}>
+            <MuiButton
+              variant="default"
+              startIcon={<Plus style={{ width: 16, height: 16 }} />}
+              onClick={() => setUploadModalOpen(true)}
+              sx={{ 
+                width: { xs: '100%', sm: 'auto' },
+                minWidth: 44,
+                minHeight: 44
+              }}
+            >
+              Create Post
+            </MuiButton>
+            
+            <MuiButton
+              variant="outline"
+              startIcon={<Sparkles style={{ width: 16, height: 16 }} />}
+              onClick={() => window.location.href = '/dashboard/content/smart-workflow'}
+              sx={{ 
+                width: { xs: '100%', sm: 'auto' },
+                minWidth: 44,
+                minHeight: 44,
+                borderColor: 'primary.main',
+                color: 'primary.main',
+                '&:hover': {
+                  borderColor: 'primary.dark',
+                  bgcolor: 'primary.50'
+                }
+              }}
+            >
+              Smart Workflow
+            </MuiButton>
+          </Box>
+        </Box>
 
-      {/* Main Content Area */}
-      <Card sx={{ minHeight: 500 }}>
-        <CardContent sx={{ p: 0, display: 'flex', flexDirection: 'column' }}>
-          <Tabs value={activeTab} onChange={handleTabChange} sx={{ px: 3, pt: 2, flexShrink: 0 }}>
+        {/* Mobile Action Buttons - Only visible on mobile */}
+        <Box sx={{ 
+          display: { xs: 'flex', md: 'none' }, 
+          flexDirection: 'column', 
+          gap: 2, 
+          mb: 3 
+        }}>
+          <Typography variant="h6" sx={{ mb: 1 }}>
+            Quick Actions
+          </Typography>
+          <Box sx={{ 
+            display: 'grid', 
+            gridTemplateColumns: 'repeat(2, 1fr)', 
+            gap: 2 
+          }}>
+            <Button
+              variant="contained"
+              fullWidth
+              startIcon={<Upload style={{ width: 16, height: 16 }} />}
+              onClick={() => {
+                console.log('Upload button clicked, setting modal to open');
+                setUploadModalOpen(true);
+              }}
+              sx={{ height: 48 }}
+            >
+              Upload Media
+            </Button>
+            <Button
+              variant="contained"
+              fullWidth
+              startIcon={<Video style={{ width: 16, height: 16 }} />}
+              onClick={() => setCreateVideoModalOpen(true)}
+              sx={{ height: 48 }}
+            >
+              Create Video
+            </Button>
+            <Button
+              variant="contained"
+              fullWidth
+              startIcon={<FileText style={{ width: 16, height: 16 }} />}
+              onClick={() => setUseTemplateModalOpen(true)}
+              sx={{ height: 48 }}
+            >
+              Use Template
+            </Button>
+            <Button
+              variant="contained"
+              fullWidth
+              startIcon={<Calendar style={{ width: 16, height: 16 }} />}
+              onClick={() => setBulkScheduleModalOpen(true)}
+              sx={{ height: 48 }}
+            >
+              Bulk Schedule
+          </Button>
+          </Box>
+        </Box>
+
+        {/* Navigation Tabs - Hidden on mobile */}
+        <Box sx={{ 
+          borderBottom: 1, 
+          borderColor: 'divider',
+          display: { xs: 'none', md: 'block' }
+        }}>
+          <Tabs 
+            value={activeTab} 
+            onChange={(_, newValue) => setActiveTab(newValue)}
+            sx={{
+              px: 3,
+              pt: 2,
+              flexShrink: 0,
+              '& .MuiTabs-flexContainer': {
+                flexWrap: 'wrap',
+                gap: 1
+              },
+              '& .MuiTab-root': {
+                minWidth: 'auto',
+                fontSize: { xs: '0.75rem', sm: '0.875rem' },
+                px: { xs: 1, sm: 2 },
+                py: 1
+              }
+            }}
+          >
             <Tab label="Calendar View" />
             <Tab label="Content Management" />
+            <Tab label="AI Content Optimization" />
+            <Tab label="Automated Publishing" />
           </Tabs>
-          <Divider />
-          <Box sx={{ flex: 1 }}>
-            {renderContentSection()}
-          </Box>
-        </CardContent>
-      </Card>
+        </Box>
+
+        {/* Tab Content */}
+        {renderTabContent()}
 
         {/* Modals */}
-      <Dialog open={createModalOpen} onClose={() => setCreateModalOpen(false)} maxWidth="md" fullWidth>
-        <DialogTitle>Create New Content</DialogTitle>
-        <DialogContent>
-          <Typography>Content creation form will be implemented here.</Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setCreateModalOpen(false)}>Cancel</Button>
-          <Button variant="contained">Create</Button>
-        </DialogActions>
-      </Dialog>
+        {/* Modals */}
+        <UploadMediaModal
+          open={uploadModalOpen}
+          onClose={() => setUploadModalOpen(false)}
+          onUploadComplete={handleUploadComplete}
+        />
 
-      <Dialog open={uploadModalOpen} onClose={() => setUploadModalOpen(false)} maxWidth="md" fullWidth>
-        <DialogTitle>Upload Media</DialogTitle>
-        <DialogContent>
-          <Typography>Media upload form will be implemented here.</Typography>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={() => setUploadModalOpen(false)}>Cancel</Button>
-          <Button variant="contained">Upload</Button>
-        </DialogActions>
-      </Dialog>
+        {/* Original Modals - Commented out for testing */}
+        {/*
+        <UploadMediaModal
+          open={uploadModalOpen}
+          onClose={() => setUploadModalOpen(false)}
+          onUploadComplete={handleUploadComplete}
+        />
+        */}
 
-      <Dialog open={bulkScheduleModalOpen} onClose={() => setBulkScheduleModalOpen(false)} maxWidth="md" fullWidth>
-        <DialogTitle>Bulk Schedule Posts</DialogTitle>
-        <DialogContent>
-          <Typography>Bulk scheduling form will be implemented here.</Typography>
-        </DialogContent>
+        {/* Create Video Modal */}
+        <MuiDialog
+          open={createVideoModalOpen}
+          onClose={() => setCreateVideoModalOpen(false)}
+          maxWidth="md"
+          fullWidth
+        >
+          <MuiDialogTitle>Create Video</MuiDialogTitle>
+          <MuiDialogContent>
+            <Box sx={{ p: 2 }}>
+              <Typography variant="h6" sx={{ mb: 2 }}>
+                Create New Video Content
+              </Typography>
+              <Typography variant="body2" sx={{ mb: 3 }}>
+                Use AI-powered tools to create engaging video content for your audience.
+              </Typography>
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                <Button
+                  variant="outlined"
+                  startIcon={<Video />}
+                  fullWidth
+                  onClick={() => {
+                    toast.info('Video creation feature coming soon!');
+                    setCreateVideoModalOpen(false);
+                  }}
+                >
+                  AI Video Generator
+                </Button>
+                <Button
+                  variant="outlined"
+                  startIcon={<Image />}
+                  fullWidth
+                  onClick={() => {
+                    toast.info('Image to video feature coming soon!');
+                    setCreateVideoModalOpen(false);
+                  }}
+                >
+                  Image to Video
+                </Button>
+                <Button
+                  variant="outlined"
+                  startIcon={<FileText />}
+                  fullWidth
+                  onClick={() => {
+                    toast.info('Text to video feature coming soon!');
+                    setCreateVideoModalOpen(false);
+                  }}
+                >
+                  Text to Video
+                </Button>
+              </Box>
+            </Box>
+          </MuiDialogContent>
           <DialogActions>
-          <Button onClick={() => setBulkScheduleModalOpen(false)}>Cancel</Button>
-          <Button variant="contained">Schedule</Button>
+            <MuiButton onClick={() => setCreateVideoModalOpen(false)} variant="outline">
+              Cancel
+            </MuiButton>
           </DialogActions>
-      </Dialog>
+        </MuiDialog>
 
-      {/* AI Intelligence Modal */}
-      <Dialog 
-        open={aiIntelligenceModalOpen} 
-        onClose={() => setAiIntelligenceModalOpen(false)} 
-        maxWidth="lg" 
-        fullWidth
-        PaperProps={{
-          sx: {
-            m: { xs: 1, sm: 2 },
-            maxHeight: { xs: '95vh', sm: '90vh' },
-            overflow: 'hidden'
-          }
-        }}
-      >
-        <DialogTitle sx={{ 
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-          color: 'white',
-          fontWeight: 600
-        }}>
-          AI Intelligence Suite
-        </DialogTitle>
-        <DialogContent sx={{ 
-          p: { xs: 2, sm: 3 },
-          pb: { xs: 6, sm: 3 },
-          maxWidth: '100%',
-          overflow: 'hidden',
-          '& *': { maxWidth: '100%' }
-        }}>
-          <Grid container spacing={3}>
-            {/* Advanced Content Analysis */}
-            <Grid item xs={12} md={6}>
-              <Card sx={{ height: '100%', p: 2 }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
-                  <Box sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    width: 40,
-                    height: 40,
-                    borderRadius: '50%',
-                    bgcolor: 'primary.main',
-                    color: 'primary.contrastText'
-                  }}>
-                    <Brain size={20} />
-                  </Box>
-                  <Typography variant="h6" sx={{ color: 'text.primary' }}>
-                    Advanced Content Analysis
-                  </Typography>
-                </Box>
-                <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                  Deep analysis of content performance, engagement patterns, and optimization opportunities.
-                </Typography>
-                <Button 
-                  variant="outlined" 
-                  fullWidth
-                  onClick={() => setContentAnalysisModalOpen(true)}
-                >
-                  Analyze Content
-                </Button>
-              </Card>
-            </Grid>
+        {/* Test Use Template Modal */}
+        <MuiDialog
+          open={useTemplateModalOpen}
+          onClose={() => setUseTemplateModalOpen(false)}
+          maxWidth="sm"
+          fullWidth
+        >
+          <MuiDialogTitle>Test Use Template Modal</MuiDialogTitle>
+          <MuiDialogContent>
+            <Typography>
+              This is a test modal for using templates.
+            </Typography>
+          </MuiDialogContent>
+          <DialogActions>
+            <MuiButton onClick={() => setUseTemplateModalOpen(false)} variant="outline">
+              Close
+            </MuiButton>
+          </DialogActions>
+        </MuiDialog>
 
-            {/* Competitor Intelligence */}
-            <Grid item xs={12} md={6}>
-              <Card sx={{ height: '100%', p: 2 }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
-                  <Box sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    width: 40,
-                    height: 40,
-                    borderRadius: '50%',
-                    bgcolor: 'secondary.main',
-                    color: 'secondary.contrastText'
-                  }}>
-                    <Target size={20} />
-                  </Box>
-                  <Typography variant="h6" sx={{ color: 'text.primary' }}>
-                    Competitor Intelligence
-                  </Typography>
-                </Box>
-                <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                  Monitor competitor content strategies, trending topics, and market positioning.
-                </Typography>
-                <Button 
-                  variant="outlined" 
-                  fullWidth
-                  onClick={() => setCompetitorIntelligenceModalOpen(true)}
-                >
-                  Monitor Competitors
-                </Button>
-              </Card>
-            </Grid>
+        {/* Test Bulk Schedule Modal */}
+        <MuiDialog
+          open={bulkScheduleModalOpen}
+          onClose={() => setBulkScheduleModalOpen(false)}
+          maxWidth="sm"
+          fullWidth
+        >
+          <MuiDialogTitle>Test Bulk Schedule Modal</MuiDialogTitle>
+          <MuiDialogContent>
+            <Typography>
+              This is a test modal for bulk scheduling.
+            </Typography>
+          </MuiDialogContent>
+          <DialogActions>
+            <MuiButton onClick={() => setBulkScheduleModalOpen(false)} variant="outline">
+              Close
+            </MuiButton>
+          </DialogActions>
+        </MuiDialog>
 
-            {/* Trend Prediction */}
-            <Grid item xs={12} md={6}>
-              <Card sx={{ height: '100%', p: 2 }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
-                  <Box sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    width: 40,
-                    height: 40,
-                    borderRadius: '50%',
-                    bgcolor: 'success.main',
-                    color: 'success.contrastText'
-                  }}>
-                    <TrendingUp size={20} />
-                  </Box>
-                  <Typography variant="h6" sx={{ color: 'text.primary' }}>
-                    Trend Prediction
-                  </Typography>
-                </Box>
-                <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                  AI-powered forecasting of content trends and viral potential.
-                </Typography>
-                <Button 
-                  variant="outlined" 
-                  fullWidth
-                  onClick={() => setTrendPredictionModalOpen(true)}
-                >
-                  Predict Trends
-                </Button>
-              </Card>
-            </Grid>
+        {/* Original Modals - Commented out for testing */}
+        {/*
+        <CreateVideoModal
+          open={createVideoModalOpen}
+          onClose={() => setCreateVideoModalOpen(false)}
+          onVideoCreated={handleVideoCreated}
+        />
 
-            {/* Content Optimization */}
-            <Grid item xs={12} md={6}>
-              <Card sx={{ height: '100%', p: 2 }}>
-                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
-                  <Box sx={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    width: 40,
-                    height: 40,
-                    borderRadius: '50%',
-                    bgcolor: 'warning.main',
-                    color: 'warning.contrastText'
-                  }}>
-                    <Zap size={20} />
-                  </Box>
-                  <Typography variant="h6" sx={{ color: 'text.primary' }}>
-                    Content Optimization
-                  </Typography>
-                </Box>
-                <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                  Real-time suggestions for improving content performance across platforms.
-                </Typography>
-                <Button 
-                  variant="outlined" 
-                  fullWidth
-                  onClick={() => setContentOptimizationModalOpen(true)}
-                >
-                  Optimize Content
-                </Button>
-              </Card>
-            </Grid>
-          </Grid>
-        </DialogContent>
-        <DialogActions sx={{ p: 2 }}>
-          <Button onClick={() => setAiIntelligenceModalOpen(false)}>Close</Button>
-        </DialogActions>
-      </Dialog>
+        <UseTemplateModal
+          open={useTemplateModalOpen}
+          onClose={() => setUseTemplateModalOpen(false)}
+          onTemplateUsed={handleTemplateUsed}
+        />
 
-      {/* Content Analysis Modal */}
-      <Dialog
-        open={contentAnalysisModalOpen}
-        onClose={() => setContentAnalysisModalOpen(false)}
-        maxWidth="md"
-        fullWidth
-        PaperProps={{
-          sx: {
-            m: { xs: 1, sm: 2 },
-            maxHeight: { xs: '95vh', sm: '90vh' },
-            overflow: 'hidden'
-          }
-        }}
-      >
-        <DialogTitle sx={{
-          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-          color: 'white',
-          fontWeight: 600
-        }}>
-          Advanced Content Analysis
-        </DialogTitle>
-        <DialogContent sx={{
-          p: { xs: 2, sm: 3 },
-          pb: { xs: 6, sm: 3 },
-          maxWidth: '100%',
-          overflow: 'hidden',
-          '& *': { maxWidth: '100%' }
-        }}>
-          <Typography variant="body1" sx={{ mb: 2 }}>
-            Analyze your content performance with AI-powered insights:
-          </Typography>
-          <Box sx={{ mb: 3 }}>
-            <Typography variant="h6" sx={{ mb: 1, color: 'text.primary' }}>Engagement Analysis</Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-              Deep dive into likes, comments, shares, and engagement rates across all platforms.
-            </Typography>
-          </Box>
-          <Box sx={{ mb: 3 }}>
-            <Typography variant="h6" sx={{ mb: 1, color: 'text.primary' }}>Content Performance</Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-              Identify your top-performing content types, optimal posting times, and audience preferences.
-            </Typography>
-          </Box>
-          <Box sx={{ mb: 3 }}>
-            <Typography variant="h6" sx={{ mb: 1, color: 'text.primary' }}>Optimization Recommendations</Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-              Get personalized suggestions to improve your content strategy and increase engagement.
-            </Typography>
-          </Box>
-        </DialogContent>
-        <DialogActions sx={{ p: 2 }}>
-          <Button onClick={() => setContentAnalysisModalOpen(false)}>Close</Button>
-          <Button variant="contained">Start Analysis</Button>
-        </DialogActions>
-      </Dialog>
+        <BulkScheduleModal
+          open={bulkScheduleModalOpen}
+          onClose={() => setBulkScheduleModalOpen(false)}
+          onBulkScheduled={handleBulkScheduled}
+        />
+        */}
 
-      {/* Competitor Intelligence Modal */}
-      <Dialog
-        open={competitorIntelligenceModalOpen}
-        onClose={() => setCompetitorIntelligenceModalOpen(false)}
-        maxWidth="md"
-        fullWidth
-        PaperProps={{
-          sx: {
-            m: { xs: 1, sm: 2 },
-            maxHeight: { xs: '95vh', sm: '90vh' },
-            overflow: 'hidden'
-          }
-        }}
-      >
-        <DialogTitle sx={{
-          background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
-          color: 'white',
-          fontWeight: 600
-        }}>
-          Competitor Intelligence
-        </DialogTitle>
-        <DialogContent sx={{
-          p: { xs: 2, sm: 3 },
-          pb: { xs: 6, sm: 3 },
-          maxWidth: '100%',
-          overflow: 'hidden',
-          '& *': { maxWidth: '100%' }
-        }}>
-          <Typography variant="body1" sx={{ mb: 2 }}>
-            Monitor your competitors and stay ahead of the competition:
-          </Typography>
-          <Box sx={{ mb: 3 }}>
-            <Typography variant="h6" sx={{ mb: 1, color: 'text.primary' }}>Competitor Tracking</Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-              Track competitor content strategies, posting frequency, and engagement patterns.
-            </Typography>
-          </Box>
-          <Box sx={{ mb: 3 }}>
-            <Typography variant="h6" sx={{ mb: 1, color: 'text.primary' }}>Trending Topics</Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-              Discover what topics and hashtags are trending in your industry.
-            </Typography>
-          </Box>
-          <Box sx={{ mb: 3 }}>
-            <Typography variant="h6" sx={{ mb: 1, color: 'text.primary' }}>Market Positioning</Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-              Understand how your content compares to competitors and identify opportunities.
-            </Typography>
-          </Box>
-        </DialogContent>
-        <DialogActions sx={{ p: 2 }}>
-          <Button onClick={() => setCompetitorIntelligenceModalOpen(false)}>Close</Button>
-          <Button variant="contained">Start Monitoring</Button>
-        </DialogActions>
-      </Dialog>
+        <MuiDialog
+          open={editModalOpen}
+          onClose={() => setEditModalOpen(false)}
+          maxWidth="md"
+          fullWidth
+        >
+          <MuiDialogTitle>Edit Post</MuiDialogTitle>
+          <MuiDialogContent>
+            {selectedPost && (
+              <EditPostForm
+                post={selectedPost}
+                onSave={handleEditSave}
+                onCancel={() => setEditModalOpen(false)}
+              />
+            )}
+          </MuiDialogContent>
+        </MuiDialog>
 
-      {/* Trend Prediction Modal */}
-      <Dialog
-        open={trendPredictionModalOpen}
-        onClose={() => setTrendPredictionModalOpen(false)}
-        maxWidth="md"
-        fullWidth
-        PaperProps={{
-          sx: {
-            m: { xs: 1, sm: 2 },
-            maxHeight: { xs: '95vh', sm: '90vh' },
-            overflow: 'hidden'
-          }
-        }}
-      >
-        <DialogTitle sx={{
-          background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-          color: 'white',
-          fontWeight: 600
-        }}>
-          Trend Prediction
-        </DialogTitle>
-        <DialogContent sx={{
-          p: { xs: 2, sm: 3 },
-          pb: { xs: 6, sm: 3 },
-          maxWidth: '100%',
-          overflow: 'hidden',
-          '& *': { maxWidth: '100%' }
-        }}>
-          <Typography variant="body1" sx={{ mb: 2 }}>
-            Predict future trends and viral content opportunities:
-          </Typography>
-          <Box sx={{ mb: 3 }}>
-            <Typography variant="h6" sx={{ mb: 1, color: 'text.primary' }}>Viral Potential</Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-              AI-powered analysis to predict which content has the highest viral potential.
+        {/* Delete Confirmation Dialog */}
+        <MuiDialog
+          open={deleteDialogOpen}
+          onClose={() => setDeleteDialogOpen(false)}
+          maxWidth="sm"
+          fullWidth
+        >
+          <MuiDialogTitle>Delete Post</MuiDialogTitle>
+          <MuiDialogContent>
+            <Typography>
+              Are you sure you want to delete this post? This action cannot be undone.
             </Typography>
-          </Box>
-          <Box sx={{ mb: 3 }}>
-            <Typography variant="h6" sx={{ mb: 1, color: 'text.primary' }}>Trend Forecasting</Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-              Get early insights into emerging trends before they become mainstream.
-            </Typography>
-          </Box>
-          <Box sx={{ mb: 3 }}>
-            <Typography variant="h6" sx={{ mb: 1, color: 'text.primary' }}>Content Timing</Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-              Optimal timing recommendations for maximum reach and engagement.
-            </Typography>
-          </Box>
-        </DialogContent>
-        <DialogActions sx={{ p: 2 }}>
-          <Button onClick={() => setTrendPredictionModalOpen(false)}>Close</Button>
-          <Button variant="contained">Start Prediction</Button>
-        </DialogActions>
-      </Dialog>
+          </MuiDialogContent>
+          <DialogActions>
+            <MuiButton onClick={() => setDeleteDialogOpen(false)} variant="outline">
+              Cancel
+            </MuiButton>
+            <MuiButton onClick={handleDeleteConfirm} variant="default" color="error">
+              Delete
+            </MuiButton>
+          </DialogActions>
+        </MuiDialog>
 
-      {/* Content Optimization Modal */}
-      <Dialog
-        open={contentOptimizationModalOpen}
-        onClose={() => setContentOptimizationModalOpen(false)}
-        maxWidth="md"
-        fullWidth
-        PaperProps={{
-          sx: {
-            m: { xs: 1, sm: 2 },
-            maxHeight: { xs: '95vh', sm: '90vh' },
-            overflow: 'hidden'
-          }
-        }}
-      >
-        <DialogTitle sx={{
-          background: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
-          color: 'white',
-          fontWeight: 600
-        }}>
-          Content Optimization
-        </DialogTitle>
-        <DialogContent sx={{
-          p: { xs: 2, sm: 3 },
-          pb: { xs: 6, sm: 3 },
-          maxWidth: '100%',
-          overflow: 'hidden',
-          '& *': { maxWidth: '100%' }
-        }}>
-          <Typography variant="body1" sx={{ mb: 2 }}>
-            Get real-time suggestions to improve your content performance:
-          </Typography>
-          <Box sx={{ mb: 3 }}>
-            <Typography variant="h6" sx={{ mb: 1, color: 'text.primary' }}>Real-time Suggestions</Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-              Live recommendations for improving your content as you create it.
-            </Typography>
-          </Box>
-          <Box sx={{ mb: 3 }}>
-            <Typography variant="h6" sx={{ mb: 1, color: 'text.primary' }}>Platform Optimization</Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-              Tailored suggestions for each social media platform's best practices.
-            </Typography>
-          </Box>
-          <Box sx={{ mb: 3 }}>
-            <Typography variant="h6" sx={{ mb: 1, color: 'text.primary' }}>Performance Boost</Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-              Proven strategies to increase engagement, reach, and conversion rates.
-            </Typography>
-          </Box>
-        </DialogContent>
-        <DialogActions sx={{ p: 2 }}>
-          <Button onClick={() => setContentOptimizationModalOpen(false)}>Close</Button>
-          <Button variant="contained">Start Optimization</Button>
-        </DialogActions>
-      </Dialog>
-    </Container>
+        {/* AI Onboarding */}
+        {isClient && !hasAiKey && (
+          <AIOnboarding />
+        )}
+
+        {/* Bottom Spacer to Clear Bottom Navigation */}
+        <Box sx={{
+          height: { xs: '120px', sm: '40px' },
+          width: '100%'
+        }} />
+      </Box>
+    </Box>
   );
 } 
