@@ -51,12 +51,16 @@ interface Platform {
 interface InstagramStoriesPlatformsProps {
   platforms: Platform[];
   onPlatformClick: (platformId: string) => void;
+  onConnect?: (platformId: string) => void;
+  onDisconnect?: (platformId: string) => void;
   searchTerm?: string;
 }
 
 export default function InstagramStoriesPlatforms({ 
   platforms, 
   onPlatformClick, 
+  onConnect,
+  onDisconnect,
   searchTerm = '' 
 }: InstagramStoriesPlatformsProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -66,8 +70,14 @@ export default function InstagramStoriesPlatforms({
     platform.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handlePlatformClick = (platformId: string) => {
-    onPlatformClick(platformId);
+  const handlePlatformClick = (platformId: string, isConnected: boolean) => {
+    if (isConnected && onDisconnect) {
+      onDisconnect(platformId);
+    } else if (!isConnected && onConnect) {
+      onConnect(platformId);
+    } else {
+      onPlatformClick(platformId);
+    }
   };
 
   return (
@@ -109,22 +119,22 @@ export default function InstagramStoriesPlatforms({
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              minWidth: '70px',
+              minWidth: '60px',
               cursor: 'pointer',
               transition: 'transform 0.2s ease-in-out',
               '&:hover': {
                 transform: 'scale(1.05)',
               },
             }}
-            onClick={() => handlePlatformClick(platform.id)}
+            onClick={() => handlePlatformClick(platform.id, platform.isConnected)}
           >
             {/* Platform Circle */}
             <Box
               sx={{
-                width: 60,
-                height: 60,
+                width: 50,
+                height: 50,
                 borderRadius: '50%',
-                border: '3px solid',
+                border: '2px solid',
                 borderColor: platform.isConnected ? platform.color : '#e0e0e0',
                 display: 'flex',
                 alignItems: 'center',
@@ -141,10 +151,10 @@ export default function InstagramStoriesPlatforms({
               }}
             >
               {platform.isConnecting ? (
-                <CircularProgress size={24} sx={{ color: platform.color }} />
+                <CircularProgress size={20} sx={{ color: platform.color }} />
               ) : (
                 <platform.icon 
-                  size={24} 
+                  size={20} 
                   color={platform.isConnected ? platform.color : '#666'} 
                 />
               )}
@@ -154,10 +164,10 @@ export default function InstagramStoriesPlatforms({
                 <Box
                   sx={{
                     position: 'absolute',
-                    bottom: -2,
-                    right: -2,
-                    width: 18,
-                    height: 18,
+                    bottom: -1,
+                    right: -1,
+                    width: 16,
+                    height: 16,
                     borderRadius: '50%',
                     background: '#4CAF50',
                     border: '2px solid white',
@@ -168,8 +178,8 @@ export default function InstagramStoriesPlatforms({
                 >
                   <Box
                     sx={{
-                      width: 6,
-                      height: 6,
+                      width: 5,
+                      height: 5,
                       borderRadius: '50%',
                       background: 'white',
                     }}

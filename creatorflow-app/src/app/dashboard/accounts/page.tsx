@@ -617,6 +617,13 @@ export default function AccountsPage() {
               <InstagramStoriesPlatforms
                 platforms={storiesPlatforms}
                 onPlatformClick={handlePlatformClick}
+                onConnect={(platformId) => handleConnect(platformId)}
+                onDisconnect={(platformId) => {
+                  const account = socialAccounts.find(acc => acc.platform === platformId);
+                  if (account) {
+                    handleDisconnect(account.id);
+                  }
+                }}
                 searchTerm={searchTerm}
               />
             </Box>
