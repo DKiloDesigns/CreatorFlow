@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getSession } from '@/auth';
 import { PrismaClient } from '@prisma/client';
+import { randomBytes, createHash, randomUUID } from 'crypto';
 
 const prisma = new PrismaClient();
 
@@ -17,9 +18,9 @@ const PLATFORM_CONFIGS: Record<string, {
 }> = {
   instagram: {
     name: 'Instagram',
-    authUrl: 'https://api.instagram.com/oauth/authorize',
-    tokenUrl: 'https://api.instagram.com/oauth/access_token',
-    scopes: ['basic', 'comments', 'relationships', 'likes'],
+    authUrl: 'https://www.facebook.com/v18.0/dialog/oauth',
+    tokenUrl: 'https://graph.facebook.com/v18.0/oauth/access_token',
+    scopes: ['instagram_basic', 'pages_show_list', 'pages_read_engagement'],
     clientId: process.env.INSTAGRAM_CLIENT_ID,
     clientSecret: process.env.INSTAGRAM_CLIENT_SECRET,
     redirectUri: `${process.env.NEXTAUTH_URL}/api/accounts/callback/instagram`,
@@ -62,10 +63,10 @@ const PLATFORM_CONFIGS: Record<string, {
   },
   tiktok: {
     name: 'TikTok',
-    authUrl: 'https://www.tiktok.com/v2/auth/authorize',
+    authUrl: 'https://www.tiktok.com/auth/authorize/',
     tokenUrl: 'https://open.tiktokapis.com/v2/oauth/token/',
-    scopes: ['user.info.basic', 'video.list', 'video.upload'],
-    clientId: process.env.TIKTOK_CLIENT_ID,
+    scopes: ['user.info.basic', 'user.info.profile'],
+    clientId: process.env.TIKTOK_CLIENT_KEY,
     clientSecret: process.env.TIKTOK_CLIENT_SECRET,
     redirectUri: `${process.env.NEXTAUTH_URL}/api/accounts/callback/tiktok`,
   },
@@ -79,6 +80,87 @@ const PLATFORM_CONFIGS: Record<string, {
     redirectUri: `${process.env.NEXTAUTH_URL}/api/accounts/callback/mastodon`,
     requiresInstance: true,
   },
+  github: {
+    name: 'GitHub',
+    authUrl: 'https://github.com/login/oauth/authorize',
+    tokenUrl: 'https://github.com/login/oauth/access_token',
+    scopes: ['user:email', 'repo', 'public_repo'],
+    clientId: process.env.GITHUB_CLIENT_ID,
+    clientSecret: process.env.GITHUB_CLIENT_SECRET,
+    redirectUri: `${process.env.NEXTAUTH_URL}/api/accounts/callback/github`,
+  },
+  whatsapp: {
+    name: 'WhatsApp',
+    authUrl: 'https://www.facebook.com/v18.0/dialog/oauth',
+    tokenUrl: 'https://graph.facebook.com/v18.0/oauth/access_token',
+    scopes: ['whatsapp_business_management', 'whatsapp_business_messaging'],
+    clientId: process.env.WHATSAPP_CLIENT_ID,
+    clientSecret: process.env.WHATSAPP_CLIENT_SECRET,
+    redirectUri: `${process.env.NEXTAUTH_URL}/api/accounts/callback/whatsapp`,
+  },
+  reddit: {
+    name: 'Reddit',
+    authUrl: 'https://www.reddit.com/api/v1/authorize',
+    tokenUrl: 'https://www.reddit.com/api/v1/access_token',
+    scopes: ['identity', 'submit', 'read'],
+    clientId: process.env.REDDIT_CLIENT_ID,
+    clientSecret: process.env.REDDIT_CLIENT_SECRET,
+    redirectUri: `${process.env.NEXTAUTH_URL}/api/accounts/callback/reddit`,
+  },
+  snapchat: {
+    name: 'Snapchat',
+    authUrl: 'https://accounts.snapchat.com/login/oauth2/authorize',
+    tokenUrl: 'https://accounts.snapchat.com/login/oauth2/access_token',
+    scopes: ['user.display_name', 'user.bitmoji.avatar'],
+    clientId: process.env.SNAPCHAT_CLIENT_ID,
+    clientSecret: process.env.SNAPCHAT_CLIENT_SECRET,
+    redirectUri: `${process.env.NEXTAUTH_URL}/api/accounts/callback/snapchat`,
+  },
+  discord: {
+    name: 'Discord',
+    authUrl: 'https://discord.com/api/oauth2/authorize',
+    tokenUrl: 'https://discord.com/api/oauth2/token',
+    scopes: ['identify', 'guilds'],
+    clientId: process.env.DISCORD_CLIENT_ID,
+    clientSecret: process.env.DISCORD_CLIENT_SECRET,
+    redirectUri: `${process.env.NEXTAUTH_URL}/api/accounts/callback/discord`,
+  },
+  twitch: {
+    name: 'Twitch',
+    authUrl: 'https://id.twitch.tv/oauth2/authorize',
+    tokenUrl: 'https://id.twitch.tv/oauth2/token',
+    scopes: ['user:read:email', 'channel:read:stream_key'],
+    clientId: process.env.TWITCH_CLIENT_ID,
+    clientSecret: process.env.TWITCH_CLIENT_SECRET,
+    redirectUri: `${process.env.NEXTAUTH_URL}/api/accounts/callback/twitch`,
+  },
+  vimeo: {
+    name: 'Vimeo',
+    authUrl: 'https://api.vimeo.com/oauth/authorize',
+    tokenUrl: 'https://api.vimeo.com/oauth/access_token',
+    scopes: ['public', 'private', 'create', 'edit', 'delete', 'upload'],
+    clientId: process.env.VIMEO_CLIENT_ID,
+    clientSecret: process.env.VIMEO_CLIENT_SECRET,
+    redirectUri: `${process.env.NEXTAUTH_URL}/api/accounts/callback/vimeo`,
+  },
+  dribbble: {
+    name: 'Dribbble',
+    authUrl: 'https://dribbble.com/oauth/authorize',
+    tokenUrl: 'https://dribbble.com/oauth/token',
+    scopes: ['public', 'upload'],
+    clientId: process.env.DRIBBBLE_CLIENT_ID,
+    clientSecret: process.env.DRIBBBLE_CLIENT_SECRET,
+    redirectUri: `${process.env.NEXTAUTH_URL}/api/accounts/callback/dribbble`,
+  },
+  slack: {
+    name: 'Slack',
+    authUrl: 'https://slack.com/oauth/v2/authorize',
+    tokenUrl: 'https://slack.com/api/oauth.v2.access',
+    scopes: ['chat:write', 'channels:read', 'groups:read', 'im:read', 'mpim:read'],
+    clientId: process.env.SLACK_CLIENT_ID,
+    clientSecret: process.env.SLACK_CLIENT_SECRET,
+    redirectUri: `${process.env.NEXTAUTH_URL}/api/accounts/callback/slack`,
+  },
 };
 
 export async function POST(request: Request) {
@@ -86,11 +168,13 @@ export async function POST(request: Request) {
     // Extract platform from URL
     const url = new URL(request.url);
     const pathParts = url.pathname.split('/');
-    const platform = pathParts[pathParts.length - 2];
+    const platform = pathParts[pathParts.length - 1];
     
-    // Get query parameters for instance-specific platforms
+    
+    // Get query parameters for instance-specific platforms and force re-auth
     const { searchParams } = url;
     const instance = searchParams.get('instance');
+    const forceReauth = searchParams.get('force') === 'true';
     
     // Get session
     const session = await getSession();
@@ -128,14 +212,36 @@ export async function POST(request: Request) {
       },
     });
 
-    if (existingAccount) {
+    if (existingAccount && !forceReauth) {
       return NextResponse.json({ 
-        error: `You already have a ${config.name} account connected` 
+        error: `You already have a ${config.name} account connected`,
+        existingAccount: {
+          id: existingAccount.id,
+          username: existingAccount.username,
+          status: existingAccount.status
+        }
       }, { status: 409 });
     }
 
+    // If force re-auth and account exists, delete the existing account
+    if (existingAccount && forceReauth) {
+      await prisma.socialAccount.delete({
+        where: { id: existingAccount.id }
+      });
+    }
+
     // Generate state parameter for security
-    const state = crypto.randomUUID();
+    const state = randomUUID();
+    
+    // Generate PKCE parameters for TikTok
+    let codeChallenge = '';
+    let codeVerifier = '';
+    if (platform === 'tiktok') {
+      // Generate code verifier (43-128 characters, URL-safe)
+      codeVerifier = randomBytes(32).toString('base64url');
+      // Generate code challenge (SHA256 hash of code verifier, base64url encoded)
+      codeChallenge = createHash('sha256').update(codeVerifier).digest('base64url');
+    }
     
     // Store state in database for verification
     await prisma.socialAccount.create({
@@ -147,8 +253,9 @@ export async function POST(request: Request) {
         status: 'pending',
         encryptedAccessToken: state, // Temporarily store state here
         tokenExpiresAt: new Date(Date.now() + 10 * 60 * 1000), // 10 minutes expiry
-        // Store instance information for Mastodon
+        // Store instance information for Mastodon and PKCE for TikTok
         ...(instance && { metadata: { instance } }),
+        ...(platform === 'tiktok' && { metadata: { codeVerifier } }),
       },
     });
 
@@ -161,14 +268,28 @@ export async function POST(request: Request) {
     }
     
     const params = new URLSearchParams({
-      client_id: config.clientId!,
+      // Use client_key for TikTok, client_id for others
+      ...(platform === 'tiktok' ? { client_key: config.clientId! } : { client_id: config.clientId! }),
       redirect_uri: config.redirectUri,
       response_type: 'code',
       scope: config.scopes.join(' '),
       state: state,
+      // Add PKCE parameters for TikTok
+      ...(platform === 'tiktok' && {
+        code_challenge: codeChallenge,
+        code_challenge_method: 'S256',
+      }),
+      // Force re-authorization if requested
+      ...(forceReauth && { prompt: 'consent' }),
     });
 
     const finalAuthUrl = `${authUrl}?${params.toString()}`;
+    
+    // Debug logging for TikTok
+    if (platform === 'tiktok') {
+      console.log('TikTok OAuth URL:', finalAuthUrl);
+      console.log('TikTok OAuth parameters:', Object.fromEntries(params));
+    }
 
     return NextResponse.json({ 
       url: finalAuthUrl,

@@ -8,7 +8,7 @@ const prisma = new PrismaClient();
 const PLATFORM_CONFIGS = {
   instagram: {
     name: 'Instagram',
-    tokenUrl: 'https://api.instagram.com/oauth/access_token',
+    tokenUrl: 'https://graph.facebook.com/v18.0/oauth/access_token',
     clientId: process.env.INSTAGRAM_CLIENT_ID,
     clientSecret: process.env.INSTAGRAM_CLIENT_SECRET,
     redirectUri: `${process.env.NEXTAUTH_URL}/api/accounts/callback/instagram`,
@@ -44,7 +44,7 @@ const PLATFORM_CONFIGS = {
   tiktok: {
     name: 'TikTok',
     tokenUrl: 'https://open.tiktokapis.com/v2/oauth/token/',
-    clientId: process.env.TIKTOK_CLIENT_ID,
+    clientId: process.env.TIKTOK_CLIENT_KEY,
     clientSecret: process.env.TIKTOK_CLIENT_SECRET,
     redirectUri: `${process.env.NEXTAUTH_URL}/api/accounts/callback/tiktok`,
   },
@@ -63,16 +63,31 @@ export async function GET(request: Request) {
     const state = searchParams.get('state');
     const error = searchParams.get('error');
 
+    console.log('🔍 TikTok Callback Debug:', {
+      platform,
+      code: code ? 'present' : 'missing',
+      state: state ? 'present' : 'missing',
+      error: error || 'none',
+      fullUrl: request.url,
+      allParams: Object.fromEntries(searchParams.entries())
+    });
+
     // Handle OAuth errors
     if (error) {
-      console.error('OAuth error:', error);
+      console.error('🚨 TikTok OAuth Error:', {
+        error,
+        errorDescription: searchParams.get('error_description'),
+        errorCode: searchParams.get('error_code'),
+        allParams: Object.fromEntries(searchParams.entries())
+      });
       return NextResponse.redirect(
-        `${process.env.NEXTAUTH_URL}/dashboard/accounts?error=oauth_failed&platform=${platform}`
+        `${process.env.NEXTAUTH_URL}/dashboard/accounts?error=oauth_failed&platform=${platform}&tiktok_error=${error}`
       );
     }
 
     // Validate required parameters
     if (!code || !state) {
+      console.error('Missing required parameters:', { code: !!code, state: !!state });
       return NextResponse.redirect(
         `${process.env.NEXTAUTH_URL}/dashboard/accounts?error=no_code&platform=${platform}`
       );
@@ -80,7 +95,15 @@ export async function GET(request: Request) {
 
     // Get session
     const session = await getSession();
+    console.log('🔍 Session Debug:', {
+      hasSession: !!session,
+      hasUser: !!session?.user,
+      hasUserId: !!session?.user?.id,
+      userId: session?.user?.id
+    });
+    
     if (!session?.user?.id) {
+      console.error('No valid session found');
       return NextResponse.redirect(
         `${process.env.NEXTAUTH_URL}/dashboard/accounts?error=unauthorized&platform=${platform}`
       );
@@ -111,18 +134,26 @@ export async function GET(request: Request) {
     }
 
     // Exchange code for access token
+    const tokenParams = new URLSearchParams({
+      // Use client_key for TikTok, client_id for others
+      ...(platform === 'tiktok' ? { client_key: config.clientId! } : { client_id: config.clientId! }),
+      client_secret: config.clientSecret!,
+      code: code,
+      grant_type: 'authorization_code',
+      redirect_uri: config.redirectUri,
+    });
+
+    // Add PKCE code verifier for TikTok
+    if (platform === 'tiktok' && pendingAccount.metadata?.codeVerifier) {
+      tokenParams.append('code_verifier', pendingAccount.metadata.codeVerifier);
+    }
+
     const tokenResponse = await fetch(config.tokenUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
       },
-      body: new URLSearchParams({
-        client_id: config.clientId!,
-        client_secret: config.clientSecret!,
-        code: code,
-        grant_type: 'authorization_code',
-        redirect_uri: config.redirectUri,
-      }),
+      body: tokenParams,
     });
 
     if (!tokenResponse.ok) {
@@ -133,6 +164,18 @@ export async function GET(request: Request) {
     }
 
     const tokenData = await tokenResponse.json();
+    console.log('Token response for', platform, ':', tokenData);
+    
+    // For TikTok, log the specific response structure
+    if (platform === 'tiktok') {
+      console.log('TikTok token data structure:', {
+        access_token: tokenData.access_token ? 'present' : 'missing',
+        open_id: tokenData.open_id ? 'present' : 'missing',
+        refresh_token: tokenData.refresh_token ? 'present' : 'missing',
+        expires_in: tokenData.expires_in,
+        scope: tokenData.scope
+      });
+    }
 
     // Extract user info based on platform
     let platformUserId = '';
@@ -141,14 +184,23 @@ export async function GET(request: Request) {
     try {
       switch (platform) {
         case 'instagram':
-          // Instagram Basic Display API
+          // Instagram Graph API - Get user's Instagram Business Account
           const instagramUserResponse = await fetch(
-            `https://graph.instagram.com/me?fields=id,username&access_token=${tokenData.access_token}`
+            `https://graph.facebook.com/v18.0/me/accounts?access_token=${tokenData.access_token}`
           );
           if (instagramUserResponse.ok) {
-            const userData = await instagramUserResponse.json();
-            platformUserId = userData.id;
-            username = userData.username;
+            const accountsData = await instagramUserResponse.json();
+            // Find Instagram Business Account
+            const instagramAccount = accountsData.data?.find((account: any) => 
+              account.instagram_business_account && account.category === 'Instagram Business'
+            );
+            
+            if (instagramAccount?.instagram_business_account) {
+              const instagramId = instagramAccount.instagram_business_account.id;
+              const instagramUsername = instagramAccount.name || instagramAccount.instagram_business_account.username;
+              platformUserId = instagramId;
+              username = instagramUsername;
+            }
           }
           break;
 
@@ -213,19 +265,36 @@ export async function GET(request: Request) {
           break;
 
         case 'tiktok':
-          // TikTok API
+          // TikTok API - Get user info (POST request with form data)
           const tiktokUserResponse = await fetch(
-            'https://open.tiktokapis.com/v2/user/info/',
+            'https://open-api.tiktok.com/user/info/',
             {
+              method: 'POST',
               headers: {
-                'Authorization': `Bearer ${tokenData.access_token}`,
+                'Content-Type': 'application/x-www-form-urlencoded',
               },
+              body: new URLSearchParams({
+                access_token: tokenData.access_token,
+                open_id: tokenData.open_id || '',
+                fields: 'open_id,union_id,display_name,avatar_url,username'
+              })
             }
           );
           if (tiktokUserResponse.ok) {
             const userData = await tiktokUserResponse.json();
-            platformUserId = userData.data.user.open_id;
-            username = userData.data.user.display_name;
+            console.log('TikTok user data received:', userData);
+            if (userData.data && userData.data.user) {
+              platformUserId = userData.data.user.open_id;
+              username = userData.data.user.display_name || userData.data.user.username;
+            }
+          } else {
+            const errorText = await tiktokUserResponse.text();
+            console.error('TikTok user info failed:', errorText);
+            // Try to extract open_id from token response as fallback
+            if (tokenData.open_id) {
+              platformUserId = tokenData.open_id;
+              username = 'TikTok User';
+            }
           }
           break;
       }
@@ -235,19 +304,23 @@ export async function GET(request: Request) {
     }
 
     // Update account with tokens and user info
+    const updateData = {
+      platformUserId: platformUserId || 'unknown',
+      username: username || 'Unknown User',
+      encryptedAccessToken: tokenData.access_token, // In production, encrypt this
+      encryptedRefreshToken: tokenData.refresh_token || null,
+      tokenExpiresAt: tokenData.expires_in 
+        ? new Date(Date.now() + tokenData.expires_in * 1000)
+        : null,
+      scopes: tokenData.scope || null,
+      status: 'active',
+    };
+    
+    console.log('Updating account with data:', updateData);
+    
     await prisma.socialAccount.update({
       where: { id: pendingAccount.id },
-      data: {
-        platformUserId: platformUserId || 'unknown',
-        username: username || 'Unknown User',
-        encryptedAccessToken: tokenData.access_token, // In production, encrypt this
-        encryptedRefreshToken: tokenData.refresh_token || null,
-        tokenExpiresAt: tokenData.expires_in 
-          ? new Date(Date.now() + tokenData.expires_in * 1000)
-          : null,
-        scopes: tokenData.scope || null,
-        status: 'active',
-      },
+      data: updateData,
     });
 
     // Redirect back to accounts page with success

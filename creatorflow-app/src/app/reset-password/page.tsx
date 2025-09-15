@@ -8,11 +8,17 @@ import {
   CardHeader, 
   Button,
   Typography,
-  Alert
+  Alert,
+  AlertTitle,
+  TextField,
+  Box,
+  Container,
+  InputAdornment,
+  IconButton,
+  CircularProgress
 } from '@mui/material';
-import { Lock, Activity, ArrowLeft, Eye, EyeOff } from 'lucide-react';
+import { Lock, ArrowLeft, Eye, EyeOff, Loader2, KeyRound } from 'lucide-react';
 import Link from 'next/link';
-import { CardDescription, Label, Input, AlertDescription } from '@/components/ui';
 
 function ResetPasswordForm() {
   const searchParams = useSearchParams();
@@ -116,141 +122,244 @@ function ResetPasswordForm() {
 
   if (isValidating) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <Card>
-          <CardContent className="p-6">
-            <div className="text-center">Validating reset link...</div>
-          </CardContent>
-        </Card>
-      </div>
+      <Container maxWidth="sm" sx={{ py: 4 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3 }}>
+          <Card sx={{ width: '100%', maxWidth: 400 }}>
+            <CardContent sx={{ textAlign: 'center', py: 4 }}>
+              <CircularProgress sx={{ mb: 2 }} />
+              <Typography variant="body1">Validating reset link...</Typography>
+            </CardContent>
+          </Card>
+        </Box>
+      </Container>
     );
   }
 
   if (!isValidToken) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-md w-full space-y-8">
-          <Card>
-            <CardHeader>
-              <Typography variant="h4" className="text-2xl font-bold text-center">Invalid Reset Link</Typography>
-              <CardDescription className="text-center">
+      <Container maxWidth="sm" sx={{ py: 4 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3 }}>
+          {/* Back to Auth */}
+          <Box sx={{ alignSelf: 'flex-start' }}>
+            <Button
+              component={Link}
+              href="/auth"
+              startIcon={<ArrowLeft style={{ width: 16, height: 16 }} />}
+              variant="text"
+              sx={{ color: 'text.secondary' }}
+            >
+              Back to Sign In
+            </Button>
+          </Box>
+
+          {/* Logo */}
+          <Box sx={{ textAlign: 'center', mb: 2 }}>
+            <Typography variant="h3" component="h1" sx={{ fontWeight: 'bold', mb: 1 }}>
+              CreatorFlow
+            </Typography>
+            <Typography variant="body1" sx={{ color: 'text.secondary' }}>
+              Invalid Reset Link
+            </Typography>
+          </Box>
+
+          {/* Invalid Link Card */}
+          <Card sx={{ width: '100%', maxWidth: 400 }}>
+            <CardHeader
+              title="Invalid Reset Link"
+              titleTypographyProps={{ variant: 'h5', fontWeight: 'bold' }}
+              sx={{ textAlign: 'center', pb: 1 }}
+            />
+            <CardContent>
+              <Typography variant="body2" sx={{ textAlign: 'center', mb: 3, color: 'text.secondary' }}>
                 This password reset link is invalid or has expired.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="text-center">
-              <Link href="/forgot-password">
-                <Button className="w-full">Request New Reset Link</Button>
-              </Link>
-              <div className="mt-4">
-                <Link href="/auth" className="text-sm text-blue-600 hover:text-blue-500">
-                  Back to Sign In
-                </Link>
-              </div>
+              </Typography>
+              
+              <Button
+                component={Link}
+                href="/forgot-password"
+                variant="contained"
+                fullWidth
+                sx={{ mb: 2, height: 48 }}
+              >
+                Request New Reset Link
+              </Button>
+
+              <Box sx={{ textAlign: 'center' }}>
+                <Typography variant="body2">
+                  <Link href="/auth" style={{ color: 'inherit', textDecoration: 'underline' }}>
+                    Back to Sign In
+                  </Link>
+                </Typography>
+              </Box>
             </CardContent>
           </Card>
-        </div>
-      </div>
+        </Box>
+      </Container>
     );
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
-        <Card>
-          <CardHeader className="space-y-1">
-            <div className="flex items-center space-x-2">
-              <Link href="/auth" className="text-gray-500 hover:text-gray-700">
-                <ArrowLeft className="h-4 w-4" />
-              </Link>
-              <Typography variant="h4" className="text-2xl font-bold">Reset Password</Typography>
-            </div>
-            <CardDescription>
-              Enter your new password below.
-            </CardDescription>
-          </CardHeader>
+    <Container maxWidth="sm" sx={{ py: 4 }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3 }}>
+        {/* Back to Auth */}
+        <Box sx={{ alignSelf: 'flex-start' }}>
+          <Button
+            component={Link}
+            href="/auth"
+            startIcon={<ArrowLeft style={{ width: 16, height: 16 }} />}
+            variant="text"
+            sx={{ color: 'text.secondary' }}
+          >
+            Back to Sign In
+          </Button>
+        </Box>
+
+        {/* Logo */}
+        <Box sx={{ textAlign: 'center', mb: 2 }}>
+          <Typography variant="h3" component="h1" sx={{ fontWeight: 'bold', mb: 1 }}>
+            CreatorFlow
+          </Typography>
+          <Typography variant="body1" sx={{ color: 'text.secondary' }}>
+            Set your new password to get back to growing your audience
+          </Typography>
+        </Box>
+
+        {/* Reset Password Card */}
+        <Card sx={{ width: '100%', maxWidth: 400 }}>
+          <CardHeader
+            title="Reset Password"
+            titleTypographyProps={{ variant: 'h5', fontWeight: 'bold' }}
+            sx={{ textAlign: 'center', pb: 1 }}
+          />
           <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="password">New Password</Label>
-                <div className="relative">
-                  <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                  <Input
-                    id="password"
-                    type={showPassword ? 'text' : 'password'}
-                    placeholder="Enter new password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    className="pl-10 pr-10"
-                    required
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
-                  >
-                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                  </button>
-                </div>
-              </div>
+            <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+              {/* New Password Field */}
+              <TextField
+                label="New Password"
+                type={showPassword ? 'text' : 'password'}
+                placeholder="Enter your new password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                fullWidth
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Lock style={{ width: 16, height: 16 }} />
+                    </InputAdornment>
+                  ),
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={() => setShowPassword(!showPassword)}
+                        edge="end"
+                        size="small"
+                      >
+                        {showPassword ? <EyeOff style={{ width: 16, height: 16 }} /> : <Eye style={{ width: 16, height: 16 }} />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
 
-              <div className="space-y-2">
-                <Label htmlFor="confirmPassword">Confirm Password</Label>
-                <div className="relative">
-                  <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                  <Input
-                    id="confirmPassword"
-                    type={showConfirmPassword ? 'text' : 'password'}
-                    placeholder="Confirm new password"
-                    value={confirmPassword}
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    className="pl-10 pr-10"
-                    required
-                  />
-                  <button
-                    type="button"
-                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                    className="absolute right-3 top-3 text-gray-400 hover:text-gray-600"
-                  >
-                    {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                  </button>
-                </div>
-              </div>
+              {/* Confirm Password Field */}
+              <TextField
+                label="Confirm Password"
+                type={showConfirmPassword ? 'text' : 'password'}
+                placeholder="Confirm your new password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                required
+                fullWidth
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Lock style={{ width: 16, height: 16 }} />
+                    </InputAdornment>
+                  ),
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                        edge="end"
+                        size="small"
+                      >
+                        {showConfirmPassword ? <EyeOff style={{ width: 16, height: 16 }} /> : <Eye style={{ width: 16, height: 16 }} />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                }}
+              />
 
+              {/* Message Alert */}
               {message && (
-                <Alert className={message.type === 'error' ? 'border-red-200 bg-red-50' : 'border-green-200 bg-green-50'}>
-                  <AlertDescription className={message.type === 'error' ? 'text-red-800' : 'text-green-800'}>
-                    {message.text}
-                  </AlertDescription>
+                <Alert 
+                  severity={message.type === 'error' ? 'error' : 'success'}
+                  sx={{ mt: 1 }}
+                >
+                  <AlertTitle>
+                    {message.type === 'error' ? 'Error' : 'Success'}
+                  </AlertTitle>
+                  {message.text}
                 </Alert>
               )}
 
-              <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? 'Resetting...' : 'Reset Password'}
+              {/* Submit Button */}
+              <Button
+                type="submit"
+                variant="contained"
+                fullWidth
+                disabled={isLoading || !password || !confirmPassword}
+                sx={{ mt: 2, height: 48 }}
+              >
+                {isLoading ? (
+                  <>
+                    <Loader2 style={{ width: 16, height: 16, marginRight: 8, animation: 'spin 1s linear infinite' }} />
+                    Resetting Password...
+                  </>
+                ) : (
+                  <>
+                    <KeyRound style={{ width: 16, height: 16, marginRight: 8 }} />
+                    Reset Password
+                  </>
+                )}
               </Button>
+            </Box>
 
-              <div className="text-center">
-                <Link href="/auth" className="text-sm text-blue-600 hover:text-blue-500">
+            {/* Help Text */}
+            <Typography variant="body2" sx={{ textAlign: 'center', mt: 3, color: 'text.secondary' }}>
+              Your password must be at least 8 characters long and contain a mix of letters and numbers.
+            </Typography>
+
+            {/* Back to Sign In */}
+            <Box sx={{ textAlign: 'center', mt: 2 }}>
+              <Typography variant="body2">
+                Remember your password?{' '}
+                <Link href="/auth" style={{ color: 'inherit', textDecoration: 'underline' }}>
                   Back to Sign In
                 </Link>
-              </div>
-            </form>
+              </Typography>
+            </Box>
           </CardContent>
         </Card>
-      </div>
-    </div>
+      </Box>
+    </Container>
   );
 }
 
 export default function ResetPasswordPage() {
   return (
     <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <Card>
-          <CardContent className="p-6">
-            <div className="text-center">Loading...</div>
-          </CardContent>
-        </Card>
-      </div>
+      <Container maxWidth="sm" sx={{ py: 4 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3 }}>
+          <Card sx={{ width: '100%', maxWidth: 400 }}>
+            <CardContent sx={{ textAlign: 'center', py: 4 }}>
+              <CircularProgress sx={{ mb: 2 }} />
+              <Typography variant="body1">Loading...</Typography>
+            </CardContent>
+          </Card>
+        </Box>
+      </Container>
     }>
       <ResetPasswordForm />
     </Suspense>

@@ -23,7 +23,6 @@ import {
   FaBehance, 
   FaDribbble, 
   FaProductHunt,
-  FaNotion,
   FaMailchimp,
   FaSms,
   FaWeixin
@@ -31,8 +30,7 @@ import {
 import { 
   SiThreads, 
   SiMastodon, 
-  SiSubstack, 
-  SiKlaviyo 
+  SiSubstack
 } from 'react-icons/si';
 import { 
   MdBusiness 
@@ -95,7 +93,7 @@ export default function InstagramStoriesPlatforms({
           overflowX: 'auto',
           overflowY: 'hidden',
           scrollBehavior: 'smooth',
-          padding: '8px 16px',
+          padding: '80px 16px',
           '&::-webkit-scrollbar': {
             height: '4px',
           },
@@ -119,9 +117,12 @@ export default function InstagramStoriesPlatforms({
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
-              minWidth: '60px',
+              justifyContent: 'center',
+              minWidth: '90px',
+              height: '90px',
               cursor: 'pointer',
               transition: 'transform 0.2s ease-in-out',
+              padding: '0',
               '&:hover': {
                 transform: 'scale(1.05)',
               },
@@ -131,8 +132,8 @@ export default function InstagramStoriesPlatforms({
             {/* Platform Circle */}
             <Box
               sx={{
-                width: 50,
-                height: 50,
+                width: 60,
+                height: 60,
                 borderRadius: '50%',
                 border: '2px solid',
                 borderColor: platform.isConnected ? platform.color : '#e0e0e0',
@@ -151,10 +152,10 @@ export default function InstagramStoriesPlatforms({
               }}
             >
               {platform.isConnecting ? (
-                <CircularProgress size={20} sx={{ color: platform.color }} />
+                <CircularProgress size={24} sx={{ color: platform.color }} />
               ) : (
                 <platform.icon 
-                  size={20} 
+                  size={24} 
                   color={platform.isConnected ? platform.color : '#666'} 
                 />
               )}
@@ -166,8 +167,8 @@ export default function InstagramStoriesPlatforms({
                     position: 'absolute',
                     bottom: -1,
                     right: -1,
-                    width: 16,
-                    height: 16,
+                    width: 18,
+                    height: 18,
                     borderRadius: '50%',
                     background: '#4CAF50',
                     border: '2px solid white',
@@ -178,8 +179,8 @@ export default function InstagramStoriesPlatforms({
                 >
                   <Box
                     sx={{
-                      width: 5,
-                      height: 5,
+                      width: 6,
+                      height: 6,
                       borderRadius: '50%',
                       background: 'white',
                     }}
@@ -192,12 +193,12 @@ export default function InstagramStoriesPlatforms({
             <Typography
               variant="caption"
               sx={{
-                mt: 1,
+                mt: 0.5,
                 textAlign: 'center',
                 fontSize: '0.7rem',
                 fontWeight: platform.isConnected ? 600 : 400,
                 color: platform.isConnected ? platform.color : '#666',
-                maxWidth: '60px',
+                maxWidth: '80px',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis',
                 whiteSpace: 'nowrap',
@@ -264,9 +265,9 @@ export const createPlatformWithIcon = (
     twitch: FaTwitch,
     vimeo: FaVimeo,
     producthunt: FaProductHunt,
-    notion: FaNotion,
+    notion: FaMailchimp, // Using Mailchimp icon as substitute for Notion
     mailchimp: FaMailchimp,
-    klaviyo: SiKlaviyo,
+    klaviyo: FaMailchimp, // Using Mailchimp icon as substitute for Klaviyo
     sms: FaSms,
     behance: FaBehance,
     dribbble: FaDribbble,

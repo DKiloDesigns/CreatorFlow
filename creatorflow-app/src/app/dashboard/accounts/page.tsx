@@ -188,11 +188,12 @@ function MastodonInstanceDialog({
   );
 }
 
-function ConnectedAccountCard({ account, onDisconnect, onRefresh, onReauth, loading }: {
+function ConnectedAccountCard({ account, onDisconnect, onRefresh, onReauth, onContextMenu, loading }: {
   account: SocialAccount;
   onDisconnect: (accountId: string) => void;
   onRefresh: (accountId: string) => void;
   onReauth: (platform: string) => void;
+  onContextMenu?: (event: React.MouseEvent, accountId: string, platform: string) => void;
   loading: boolean;
 }) {
   const getStatusBadge = () => {
@@ -212,8 +213,36 @@ function ConnectedAccountCard({ account, onDisconnect, onRefresh, onReauth, load
 
   const provider = PROVIDERS.find(p => p.id === account.platform);
 
+  const [longPressTimer, setLongPressTimer] = useState<NodeJS.Timeout | null>(null);
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    const timer = setTimeout(() => {
+      // Long press detected - show mobile context menu
+      onContextMenu?.(e as any, account.id, account.platform);
+    }, 500); // 500ms long press
+    setLongPressTimer(timer);
+  };
+
+  const handleTouchEnd = () => {
+    if (longPressTimer) {
+      clearTimeout(longPressTimer);
+      setLongPressTimer(null);
+    }
+  };
+
   return (
-    <Card>
+    <Card
+      onContextMenu={(e) => onContextMenu?.(e, account.id, account.platform)}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+      sx={{ 
+        cursor: 'context-menu',
+        '&:active': {
+          transform: 'scale(0.98)',
+          transition: 'transform 0.1s ease-in-out'
+        }
+      }}
+    >
       <CardHeader
         title={
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -240,11 +269,17 @@ function ConnectedAccountCard({ account, onDisconnect, onRefresh, onReauth, load
                 <RefreshCw style={{ width: 16, height: 16 }} />
               </IconButton>
             </Tooltip>
-            <Tooltip title="Re-authenticate">
+            <Tooltip title="Switch Account (Mobile: Tap to switch)">
               <IconButton 
                 size="small"
                 onClick={() => onReauth(account.platform)}
                 disabled={loading}
+                sx={{ 
+                  '&:hover': { 
+                    bgcolor: 'primary.light',
+                    color: 'primary.contrastText'
+                  }
+                }}
               >
                 <Settings style={{ width: 16, height: 16 }} />
               </IconButton>
@@ -296,6 +331,7 @@ export default function AccountsPage() {
   const [selectedCategory, setSelectedCategory] = useState<'all' | 'social' | 'content' | 'business'>('all');
   const [showAllProviders, setShowAllProviders] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [contextMenu, setContextMenu] = useState<{ mouseX: number; mouseY: number; accountId: string; platform: string } | null>(null);
 
   useEffect(() => {
     fetchData();
@@ -357,7 +393,7 @@ export default function AccountsPage() {
 
   const fetchSocialAccounts = async () => {
     try {
-      const response = await fetch('/api/social-accounts');
+      const response = await fetch('/api/accounts');
       if (response.ok) {
         const data = await response.json();
         setSocialAccounts(data);
@@ -381,7 +417,7 @@ export default function AccountsPage() {
 
   const fetchKeys = async () => {
     try {
-      const response = await fetch('/api/keys');
+      const response = await fetch('/api/api-keys');
       if (response.ok) {
         const data = await response.json();
         setApiKeys(data);
@@ -393,32 +429,61 @@ export default function AccountsPage() {
 
   const fetchPlan = async () => {
     try {
-      const response = await fetch('/api/plan');
-      if (response.ok) {
-        const data = await response.json();
-        setPlan(data);
-      }
+      // Mock plan data for now since /api/plan doesn't exist
+      setPlan({
+        name: 'Free',
+        limits: {
+          socialAccounts: 3,
+          postsPerMonth: 10
+        }
+      });
     } catch (error) {
       console.error('Error fetching plan:', error);
     }
   };
 
-  const handleConnect = async (provider: string, instance?: string) => {
+  const handleConnect = async (provider: string, instance?: string, forceReauth = false) => {
     setConnecting(provider);
     try {
-      const response = await fetch('/api/social-accounts/connect', {
+      console.log('🔗 Attempting to connect to:', provider, forceReauth ? '(force re-auth)' : '');
+      const url = `/api/accounts/connect/${provider}${instance ? `?instance=${instance}` : ''}${forceReauth ? `${instance ? '&' : '?'}force=true` : ''}`;
+      const response = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ provider, instance }),
       });
 
+      console.log('📡 API Response status:', response.status);
+      
       if (response.ok) {
-        toast.success(`Successfully connected to ${provider}`);
-        await fetchSocialAccounts();
+        const data = await response.json();
+        console.log('✅ API Response data:', data);
+        if (data.url) {
+          // Redirect to OAuth URL
+          console.log('🔄 Redirecting to OAuth URL:', data.url);
+          window.location.href = data.url;
+        } else {
+          toast.success(`Successfully connected to ${provider}`);
+          await fetchSocialAccounts();
+        }
       } else {
-        toast.error(`Failed to connect to ${provider}`);
+        const errorData = await response.json();
+        console.log('❌ API Error:', errorData);
+        
+        // If account already exists, show option to switch
+        if (response.status === 409 && errorData.existingAccount) {
+          const shouldSwitch = window.confirm(
+            `You already have a ${provider} account connected (${errorData.existingAccount.username || 'Unknown'}). Do you want to switch to a different account?`
+          );
+          if (shouldSwitch) {
+            await handleConnect(provider, instance, true);
+            return;
+          }
+        } else {
+          toast.error(errorData.error || `Failed to connect to ${provider}`);
+        }
       }
     } catch (error) {
+      console.log('💥 Connection error:', error);
       toast.error(`Error connecting to ${provider}`);
     } finally {
       setConnecting(null);
@@ -427,7 +492,7 @@ export default function AccountsPage() {
 
   const handleDisconnect = async (accountId: string) => {
     try {
-      const response = await fetch(`/api/social-accounts/${accountId}`, {
+      const response = await fetch(`/api/accounts/${accountId}`, {
         method: 'DELETE',
       });
 
@@ -442,9 +507,28 @@ export default function AccountsPage() {
     }
   };
 
+  const handleContextMenu = (event: React.MouseEvent, accountId: string, platform: string) => {
+    event.preventDefault();
+    setContextMenu({
+      mouseX: event.clientX + 2,
+      mouseY: event.clientY - 6,
+      accountId,
+      platform
+    });
+  };
+
+  const handleCloseContextMenu = () => {
+    setContextMenu(null);
+  };
+
+  const handleSwitchAccount = async (platform: string) => {
+    handleCloseContextMenu();
+    await handleConnect(platform, undefined, true);
+  };
+
   const handleRefresh = async (accountId: string) => {
     try {
-      const response = await fetch(`/api/social-accounts/${accountId}/refresh`, {
+      const response = await fetch(`/api/accounts/${accountId}/refresh`, {
         method: 'POST',
       });
 
@@ -461,17 +545,27 @@ export default function AccountsPage() {
 
   const handleReauth = async (platform: string) => {
     try {
-      const response = await fetch(`/api/social-accounts/${platform}/reauth`, {
+      console.log('🔄 Force re-authentication for:', platform);
+      const response = await fetch(`/api/accounts/connect/${platform}?force=true`, {
         method: 'POST',
       });
 
       if (response.ok) {
-        toast.success('Re-authentication initiated');
-        await fetchSocialAccounts();
+        const data = await response.json();
+        if (data.url) {
+          console.log('🔄 Redirecting to OAuth URL for re-auth:', data.url);
+          window.location.href = data.url;
+        } else {
+          toast.success('Re-authentication initiated');
+          await fetchSocialAccounts();
+        }
       } else {
-        toast.error('Failed to re-authenticate');
+        const errorData = await response.json();
+        console.error('❌ Re-auth API Error:', errorData);
+        toast.error(errorData.error || 'Failed to re-authenticate');
       }
     } catch (error) {
+      console.error('🚨 Error in handleReauth:', error);
       toast.error('Error re-authenticating');
     }
   };
@@ -542,6 +636,7 @@ export default function AccountsPage() {
                       onDisconnect={handleDisconnect}
                       onRefresh={handleRefresh}
                       onReauth={handleReauth}
+                      onContextMenu={handleContextMenu}
                       loading={connecting === account.platform}
                     />
                   </Box>
@@ -569,7 +664,7 @@ export default function AccountsPage() {
           />
           <CardContent>
             {/* Search/Filter for Mobile */}
-            <Box sx={{ mb: 3 }}>
+            <Box sx={{ mb: 0 }}>
               <TextField
                 fullWidth
                 placeholder="Search platforms..."
@@ -610,6 +705,10 @@ export default function AccountsPage() {
                   size="small"
                 />
               </Box>
+            </Box>
+
+            {/* Spacer */}
+            <Box sx={{ height: 4.5 }}>
             </Box>
 
             {/* Mobile Instagram Stories Style */}
@@ -718,6 +817,49 @@ export default function AccountsPage() {
           onClose={() => setShowMastodonDialog(false)}
           onConnect={(instance) => handleConnect('mastodon', instance)}
         />
+
+        {/* Context Menu */}
+        <Dialog
+          open={contextMenu !== null}
+          onClose={handleCloseContextMenu}
+          PaperProps={{
+            sx: {
+              position: 'fixed',
+              top: contextMenu?.mouseY || 0,
+              left: contextMenu?.mouseX || 0,
+              m: 0,
+              maxWidth: '200px',
+              minWidth: '150px',
+            }
+          }}
+        >
+          <List dense>
+            <ListItem 
+              button 
+              onClick={() => handleSwitchAccount(contextMenu?.platform || '')}
+            >
+              <ListItemText 
+                primary="Switch Account" 
+                secondary="Connect different account"
+              />
+            </ListItem>
+            <ListItem 
+              button 
+              onClick={() => {
+                if (contextMenu?.accountId) {
+                  handleDisconnect(contextMenu.accountId);
+                }
+                handleCloseContextMenu();
+              }}
+            >
+              <ListItemText 
+                primary="Disconnect" 
+                secondary="Remove this account"
+                sx={{ color: 'error.main' }}
+              />
+            </ListItem>
+          </List>
+        </Dialog>
 
         {/* Bottom Spacer to Clear Bottom Navigation */}
         <Box sx={{

@@ -37,7 +37,7 @@ export async function POST(
   context: any
 ) {
   try {
-    const { id } = context.params;
+    const { id } = await context.params;
     
     // Get session
     const session = await getSession();

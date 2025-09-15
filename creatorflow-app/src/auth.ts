@@ -1,4 +1,3 @@
-import { PrismaAdapter } from "@auth/prisma-adapter"
 import { prisma } from "@/lib/prisma"
 import GitHub from "next-auth/providers/github"
 import { getServerSession } from "next-auth/next"
@@ -18,7 +17,6 @@ export { signIn, signOut } from "next-auth/react"
 
 // LOGIN PROVIDERS: Only Google, Facebook, and Apple are enabled for user authentication.
 export const authOptions: NextAuthOptions = {
-  adapter: PrismaAdapter(prisma),
   logger: {
     error: (...args) => console.error('[NextAuth][error]', ...args),
     warn: (...args) => console.warn('[NextAuth][warn]', ...args),
@@ -37,12 +35,13 @@ export const authOptions: NextAuthOptions = {
         }
         
         try {
-          const user = await prisma.user.findUnique({
+          // First, try to find an existing user
+          let user = await prisma.user.findUnique({
             where: { email: credentials.email }
           });
           
           if (user && user.password) {
-            // Check if password is hashed (bcrypt) or plain text (legacy)
+            // User exists, verify password
             const isHashed = user.password.startsWith('$2a$') || user.password.startsWith('$2b$');
             
             let isValidPassword = false;
@@ -54,14 +53,43 @@ export const authOptions: NextAuthOptions = {
               isValidPassword = user.password === credentials.password;
             }
             
-            if (isValidPassword) {
-              return {
-                id: user.id,
-                name: user.name || "Test User",
-                email: user.email,
-              };
-            }
-          }
+               if (isValidPassword) {
+                 // Check if email is verified
+                 if (!user.emailVerified) {
+                   console.log('[NextAuth][Credentials] Email not verified for user:', user.email);
+                   return null; // Don't allow sign-in if email not verified
+                 }
+                 
+                 return {
+                   id: user.id,
+                   name: user.name || "Test User",
+                   email: user.email,
+                 };
+               }
+             } else if (!user) {
+               // User doesn't exist - create new user (smart sign-up)
+               console.log('[NextAuth][Credentials] Creating new user for:', credentials.email);
+
+               const hashedPassword = await bcrypt.hash(credentials.password, 12);
+
+               user = await prisma.user.create({
+                 data: {
+                   email: credentials.email,
+                   name: credentials.name || credentials.email.split('@')[0], // Use provided name or email prefix
+                   password: hashedPassword,
+                   role: 'USER',
+                   emailVerified: null, // Require email verification
+                 }
+               });
+
+               console.log('[NextAuth][Credentials] New user created:', user.id);
+
+               return {
+                 id: user.id,
+                 name: user.name || "Test User",
+                 email: user.email,
+               };
+             }
           
           return null;
         } catch (error) {
@@ -217,10 +245,11 @@ export const authOptions: NextAuthOptions = {
     sessionToken: {
       name: `next-auth.session-token`,
       options: {
-        httpOnly: true,
+        httpOnly: false, // Allow JavaScript access for debugging
         sameSite: 'lax',
         path: '/',
-        secure: false // Set to false for local development
+        secure: false, // Set to false for local development
+        domain: undefined // Remove domain restriction for localhost
       }
     }
   },
@@ -234,36 +263,42 @@ export const authConfig = authOptions;
 
 // Export the getSession helper for server components and API routes
 export const getSession = async (req?: any, res?: any) => {
-  // Get the base session
-  let session;
-  if (req && res) {
-    session = await getServerSession(req, res, authOptions);
-  } else {
-    session = await getServerSession(authOptions);
-  }
-  if (!session?.user?.id) return session;
-
-  // Try to get impersonation cookie
-  let impersonateId: string | undefined;
-  if (req?.cookies) {
-    impersonateId = req.cookies.get('impersonate_user_id')?.value;
-  } else {
-    // App router: use next/headers
-    try {
-      // TODO: Fix for Next.js 15 compatibility
-      // const cookies = await nextCookies();
-      // impersonateId = cookies.get('impersonate_user_id')?.value;
-    } catch {}
-  }
-  if (impersonateId && impersonateId !== session.user.id) {
-    // Check if the real user is admin
-    const realUser = await prisma.user.findUnique({ where: { id: session.user.id }, select: { role: true } });
-    if (realUser?.role === 'ADMIN') {
-      // Swap user context
-      session.user = { ...session.user, id: impersonateId, impersonated: true, impersonatorId: session.user.id };
+  try {
+    // Get the base session
+    let session;
+    if (req && res) {
+      session = await getServerSession(req, res, authOptions);
+    } else {
+      session = await getServerSession(authOptions);
     }
+    if (!session?.user?.id) return session;
+
+    // Try to get impersonation cookie
+    let impersonateId: string | undefined;
+    if (req?.cookies) {
+      impersonateId = req.cookies.get('impersonate_user_id')?.value;
+    } else {
+      // App router: use next/headers
+      try {
+        // TODO: Fix for Next.js 15 compatibility
+        // const cookies = await nextCookies();
+        // impersonateId = cookies.get('impersonate_user_id')?.value;
+      } catch {}
+    }
+    if (impersonateId && impersonateId !== session.user.id) {
+      // Check if the real user is admin
+      const realUser = await prisma.user.findUnique({ where: { id: session.user.id }, select: { role: true } });
+      if (realUser?.role === 'ADMIN') {
+        // Swap user context
+        session.user = { ...session.user, id: impersonateId, impersonated: true, impersonatorId: session.user.id };
+      }
+    }
+    return session;
+  } catch (error) {
+    console.error('[NextAuth][session error]', error);
+    // Return null session on JWT errors to allow re-authentication
+    return null;
   }
-  return session;
 };
 
 // Export auth function for compatibility with existing imports
