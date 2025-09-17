@@ -1,16 +1,31 @@
 'use client';
 
-import React from 'react';
-import { Box, Typography, Container, Paper, Button } from '@mui/material';
-import { ArrowLeft, Sparkles } from 'lucide-react';
+import React, { useState } from 'react';
+import { Box, Typography, Container, Paper, Button, Chip } from '@mui/material';
+import { ArrowLeft, Sparkles, CheckCircle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import SmartContentWorkflow from '../_components/smart-content-workflow';
+import { ProFeatureGate } from '@/components/ui/pro-feature-gate';
+import { useUserPlan } from '@/hooks/use-user-plan';
 
 export default function SmartWorkflowPage() {
   const router = useRouter();
+  const [activeStep, setActiveStep] = useState(0);
+  const { userPlan, isProUser, isLoading } = useUserPlan();
+
+  // Show loading state
+  if (isLoading) {
+    return (
+      <Container maxWidth="xl" sx={{ py: 3, pb: { xs: 12, sm: 6 } }}>
+        <Box sx={{ textAlign: 'center', py: 8 }}>
+          <Typography variant="h6">Loading...</Typography>
+        </Box>
+      </Container>
+    );
+  }
 
   return (
-    <Container maxWidth="xl" sx={{ py: 3 }}>
+    <Container maxWidth="xl" sx={{ py: 3, pb: { xs: 12, sm: 6 } }}>
       {/* Header */}
       <Box sx={{ mb: 4 }}>
         <Button
@@ -22,11 +37,27 @@ export default function SmartWorkflowPage() {
           Back to Content Dashboard
         </Button>
         
-        <Paper sx={{ p: 3, bgcolor: 'primary.50', border: '1px solid', borderColor: 'primary.200' }}>
+        <Paper sx={{ 
+          p: 3, 
+          bgcolor: 'background.paper', 
+          border: 1, 
+          borderColor: 'divider',
+          borderRadius: 2,
+          boxShadow: 1
+        }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
-            <Sparkles style={{ fontSize: 32, color: 'var(--mui-palette-primary-main)' }} />
+            <Box sx={{ 
+              p: 1, 
+              bgcolor: 'primary.main', 
+              borderRadius: 1,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}>
+              <Sparkles style={{ fontSize: 24, color: 'white' }} />
+            </Box>
             <Box>
-              <Typography variant="h4" component="h1" gutterBottom>
+              <Typography variant="h4" component="h1" gutterBottom sx={{ color: 'text.primary', fontWeight: 'bold' }}>
                 Smart Content Creation Workflow
               </Typography>
               <Typography variant="body1" color="text.secondary">
@@ -35,28 +66,60 @@ export default function SmartWorkflowPage() {
             </Box>
           </Box>
           
-          <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
-            <Button variant="contained" size="small">
-              🚀 AI-Powered Ideation
-            </Button>
-            <Button variant="outlined" size="small">
-              ✍️ Smart Creation
-            </Button>
-            <Button variant="outlined" size="small">
-              🤖 AI Optimization
-            </Button>
-            <Button variant="outlined" size="small">
-              📅 Smart Scheduling
-            </Button>
-            <Button variant="outlined" size="small">
-              ✅ Review & Publish
-            </Button>
+          <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+            {[
+              { id: 0, label: '🚀 AI-Powered Ideation', icon: '🚀' },
+              { id: 1, label: '✍️ Smart Creation', icon: '✍️' },
+              { id: 2, label: '🤖 AI Optimization', icon: '🤖' },
+              { id: 3, label: '📅 Smart Scheduling', icon: '📅' },
+              { id: 4, label: '✅ Review & Publish', icon: '✅' }
+            ].map((step, index) => {
+              const isActive = activeStep === step.id;
+              const isCompleted = activeStep > step.id;
+              const isUpcoming = activeStep < step.id;
+              
+              return (
+                <Chip
+                  key={step.id}
+                  label={step.label}
+                  icon={isCompleted ? <CheckCircle size={16} /> : undefined}
+                  variant={isActive ? "filled" : "outlined"}
+                  color={isActive ? "primary" : isCompleted ? "success" : "default"}
+                  size="small"
+                  sx={{
+                    borderRadius: 2,
+                    fontWeight: isActive ? 600 : 400,
+                    opacity: isUpcoming ? 0.6 : 1,
+                    cursor: isCompleted ? 'pointer' : 'default',
+                    '&:hover': {
+                      opacity: isCompleted ? 0.8 : 1,
+                    },
+                    transition: 'all 0.2s ease-in-out',
+                    transform: isActive ? 'scale(1.05)' : 'scale(1)',
+                    boxShadow: isActive ? 2 : 0,
+                  }}
+                  onClick={() => {
+                    if (isCompleted) {
+                      setActiveStep(step.id);
+                    }
+                  }}
+                />
+              );
+            })}
           </Box>
         </Paper>
       </Box>
 
-      {/* Workflow Component */}
-      <SmartContentWorkflow />
+      {/* Workflow Component with Plan Gate */}
+      <ProFeatureGate
+        featureId="smart-workflow"
+        userPlan={userPlan}
+      >
+        <SmartContentWorkflow 
+          activeStep={activeStep} 
+          onStepChange={setActiveStep} 
+        />
+      </ProFeatureGate>
     </Container>
   );
 }

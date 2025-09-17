@@ -6,14 +6,12 @@ export function useAPIKey() {
   const [isChecking, setIsChecking] = useState(true);
   const { data: session } = useSession();
 
-  useEffect(() => {
-    checkAPIKeyStatus();
-  }, [session]);
-
-  const checkAPIKeyStatus = async () => {
+  const checkAPIKeyStatus = async (isMounted: boolean) => {
     if (!session) {
-      setHasAPIKey(false);
-      setIsChecking(false);
+      if (isMounted) {
+        setHasAPIKey(false);
+        setIsChecking(false);
+      }
       return;
     }
 
@@ -21,14 +19,37 @@ export function useAPIKey() {
       const response = await fetch('/api/ai/check-key');
       const data = await response.json();
       
-      setHasAPIKey(data.hasKey);
+      if (isMounted) {
+        setHasAPIKey(data.hasKey);
+      }
     } catch (error) {
       console.error('Error checking API key status:', error);
-      setHasAPIKey(false);
+      if (isMounted) {
+        setHasAPIKey(false);
+      }
     } finally {
-      setIsChecking(false);
+      if (isMounted) {
+        setIsChecking(false);
+      }
     }
   };
+
+  useEffect(() => {
+    let isMounted = true;
+    
+    if (session?.user?.id) {
+      checkAPIKeyStatus(isMounted);
+    } else {
+      if (isMounted) {
+        setHasAPIKey(false);
+        setIsChecking(false);
+      }
+    }
+    
+    return () => {
+      isMounted = false;
+    };
+  }, [session?.user?.id]);
 
   const setAPIKey = async (apiKey: string) => {
     try {

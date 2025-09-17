@@ -1,157 +1,204 @@
+/**
+ * Notification Center Component
+ * Real-time notification display and management
+ */
+
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
-import { 
-  Button,
+import React, { useState, useEffect } from 'react';
+import {
   Box,
+  Drawer,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemIcon,
+  ListItemSecondaryAction,
+  IconButton,
+  Badge,
   Typography,
+  Button,
+  Chip,
+  Divider,
+  Tooltip,
+  Menu,
+  MenuItem,
+  Switch,
+  FormControlLabel,
+  FormGroup,
   Paper,
-  Chip
+  Fade,
+  Slide,
 } from '@mui/material';
-import { Bell, Check, Trash2, RefreshCw } from 'lucide-react';
-import { Notification, NotificationType, NotificationSeverity, NotificationCategory } from '@/lib/notifications/types';
-import { NotificationToast } from '@/components/ui/notification-badge';
-import { cn } from '@/lib/utils';
+import {
+  Notifications as NotificationsIcon,
+  Close as CloseIcon,
+  CheckCircle as CheckCircleIcon,
+  Error as ErrorIcon,
+  Warning as WarningIcon,
+  Info as InfoIcon,
+  Delete as DeleteIcon,
+  Settings as SettingsIcon,
+  MarkEmailRead as MarkEmailReadIcon,
+  FilterList as FilterListIcon,
+  Refresh as RefreshIcon,
+} from '@mui/icons-material';
+// import { motion, AnimatePresence } from 'framer-motion';
 
-import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
-import { Badge } from '@/components/ui/badge';
-import { Tab, Tabs, Box } from '@mui/material';
-import { ScrollArea } from '@/components/ui/scroll-area';
+interface Notification {
+  id: string;
+  type: 'success' | 'error' | 'warning' | 'info';
+  title: string;
+  message: string;
+  timestamp: string;
+  read: boolean;
+  category: 'post' | 'oauth' | 'system' | 'scheduled' | 'general';
+  actionUrl?: string;
+  actionText?: string;
+  metadata?: Record<string, any>;
+}
 
 interface NotificationCenterProps {
-  className?: string;
+  userId?: string;
   onNotificationClick?: (notification: Notification) => void;
 }
 
-interface NotificationFilters {
-  severity: NotificationSeverity[];
-  category: NotificationCategory[];
-  type: NotificationType[];
-  unreadOnly: boolean;
-}
-
-const SEVERITY_COLORS = {
-  critical: 'bg-red-500 text-white',
-  high: 'bg-orange-500 text-white',
-  medium: 'bg-yellow-500 text-white',
-  low: 'bg-blue-500 text-white',
-  info: 'bg-gray-500 text-white',
-};
-
-const CATEGORY_ICONS = {
-  system: '🔧',
-  security: '🔒',
-  performance: '⚡',
-  content: '📝',
-  billing: '💳',
-  team: '👥',
-  analytics: '📊',
-  platform: '🌐',
-  maintenance: '🛠️',
-  feature: '✨',
-  feedback: '💬',
-  collaboration: '🤝',
-  data: '📊',
-  api: '🔌',
-  storage: '💾',
-  subscription: '📦',
-};
-
-export function NotificationCenter({ className: _className, onNotificationClick }: NotificationCenterProps) {
+export function NotificationCenter({ userId = 'default', onNotificationClick }: NotificationCenterProps) {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [unreadCount, setUnreadCount] = useState(0);
-  const [isOpen, setIsOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-  const [filters, _setFilters] = useState<NotificationFilters>({
-    severity: [],
-    category: [],
-    type: [],
-    unreadOnly: false,
-  });
-  const [activeTab, setActiveTab] = useState<'all' | 'unread' | 'system' | 'security' | 'content'>('all');
-  const [toast, setToast] = useState<{ title: string; message?: string; variant: 'success' | 'error' | 'info' } | null>(null);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [filter, setFilter] = useState<'all' | 'unread' | Notification['category']>('all');
+  const [settingsOpen, setSettingsOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   // Fetch notifications
-  const fetchNotifications = useCallback(async () => {
-    setIsLoading(true);
+  const fetchNotifications = async () => {
+    setLoading(true);
     try {
-      const params = new URLSearchParams();
-      if (filters.unreadOnly) params.append('unreadOnly', 'true');
-      if (filters.type.length > 0) params.append('type', filters.type.join(','));
-      if (filters.category.length > 0) params.append('category', filters.category.join(','));
-      params.append('limit', '50');
+      const params = new URLSearchParams({
+        userId,
+        unreadOnly: filter === 'unread' ? 'true' : 'false',
+        ...(filter !== 'all' && filter !== 'unread' && { category: filter })
+      });
 
-      const response = await fetch(`/api/notifications/enhanced?${params}`);
-      if (!response.ok) throw new Error('Failed to fetch notifications');
-      
+      const response = await fetch(`/api/notifications?${params}`);
       const data = await response.json();
-      setNotifications(data.notifications || []);
-      setUnreadCount(data.notifications?.filter((n: Notification) => !n.read).length || 0);
+
+      if (data.success) {
+        setNotifications(data.notifications);
+        setUnreadCount(data.unreadCount);
+      }
     } catch (error) {
-      console.error('Failed to fetch notifications:', error);
-      setToast({ title: 'Error', message: 'Failed to load notifications', variant: 'error' });
+      console.error('Error fetching notifications:', error);
     } finally {
-      setIsLoading(false);
+      setLoading(false);
     }
-  }, [filters]);
+  };
 
   // Mark notification as read
   const markAsRead = async (notificationId: string) => {
     try {
-      const response = await fetch('/api/notifications/enhanced', {
-        method: 'PATCH',
+      const response = await fetch('/api/notifications', {
+        method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'mark_read', notificationId }),
+        body: JSON.stringify({
+          action: 'markAsRead',
+          notificationId
+        })
       });
 
       if (response.ok) {
-        setNotifications(prev => prev.map(n => 
-          n.id === notificationId ? { ...n, read: true } : n
-        ));
+        setNotifications(prev => 
+          prev.map(notif => 
+            notif.id === notificationId ? { ...notif, read: true } : notif
+          )
+        );
         setUnreadCount(prev => Math.max(0, prev - 1));
       }
     } catch (error) {
-      console.error('Failed to mark notification as read:', error);
+      console.error('Error marking notification as read:', error);
     }
   };
 
-  // Mark all notifications as read
+  // Mark all as read
   const markAllAsRead = async () => {
     try {
-      const response = await fetch('/api/notifications/enhanced', {
-        method: 'PATCH',
+      const response = await fetch('/api/notifications', {
+        method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'mark_all_read' }),
+        body: JSON.stringify({
+          action: 'markAllAsRead',
+          userId
+        })
       });
 
       if (response.ok) {
-        setNotifications(prev => prev.map(n => ({ ...n, read: true })));
+        setNotifications(prev => prev.map(notif => ({ ...notif, read: true })));
         setUnreadCount(0);
       }
     } catch (error) {
-      console.error('Failed to mark all notifications as read:', error);
+      console.error('Error marking all as read:', error);
     }
   };
 
   // Delete notification
   const deleteNotification = async (notificationId: string) => {
     try {
-      const response = await fetch('/api/notifications/enhanced', {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ notificationId }),
+      const response = await fetch(`/api/notifications?notificationId=${notificationId}`, {
+        method: 'DELETE'
       });
 
       if (response.ok) {
-        setNotifications(prev => prev.filter(n => n.id !== notificationId));
-        const deletedNotification = notifications.find(n => n.id === notificationId);
-        if (deletedNotification && !deletedNotification.read) {
-          setUnreadCount(prev => Math.max(0, prev - 1));
-        }
+        setNotifications(prev => prev.filter(notif => notif.id !== notificationId));
+        setUnreadCount(prev => Math.max(0, prev - 1));
       }
     } catch (error) {
-      console.error('Failed to delete notification:', error);
+      console.error('Error deleting notification:', error);
     }
+  };
+
+  // Get notification icon
+  const getNotificationIcon = (type: Notification['type']) => {
+    switch (type) {
+      case 'success':
+        return <CheckCircleIcon color="success" />;
+      case 'error':
+        return <ErrorIcon color="error" />;
+      case 'warning':
+        return <WarningIcon color="warning" />;
+      case 'info':
+        return <InfoIcon color="info" />;
+      default:
+        return <InfoIcon />;
+    }
+  };
+
+  // Get notification color
+  const getNotificationColor = (type: Notification['type']) => {
+    switch (type) {
+      case 'success':
+        return 'success.main';
+      case 'error':
+        return 'error.main';
+      case 'warning':
+        return 'warning.main';
+      case 'info':
+        return 'info.main';
+      default:
+        return 'text.primary';
+    }
+  };
+
+  // Format timestamp
+  const formatTimestamp = (timestamp: string) => {
+    const date = new Date(timestamp);
+    const now = new Date();
+    const diff = now.getTime() - date.getTime();
+    
+    if (diff < 60000) return 'Just now';
+    if (diff < 3600000) return `${Math.floor(diff / 60000)}m ago`;
+    if (diff < 86400000) return `${Math.floor(diff / 3600000)}h ago`;
+    return date.toLocaleDateString();
   };
 
   // Handle notification click
@@ -159,252 +206,202 @@ export function NotificationCenter({ className: _className, onNotificationClick 
     if (!notification.read) {
       markAsRead(notification.id);
     }
+    
     if (onNotificationClick) {
       onNotificationClick(notification);
     }
   };
 
-  // Filter notifications based on active tab
-  const filteredNotifications = notifications.filter(notification => {
-    switch (activeTab) {
-      case 'unread':
-        return !notification.read;
-      case 'system':
-        return notification.category === 'system';
-      case 'security':
-        return notification.category === 'security';
-      case 'content':
-        return notification.category === 'content';
-      default:
-        return true;
-    }
-  });
-
-  // Format timestamp
-  const formatTimestamp = (timestamp: string) => {
-    const date = new Date(timestamp);
-    const now = new Date();
-    const diffInMinutes = Math.floor((now.getTime() - date.getTime()) / (1000 * 60));
-    
-    if (diffInMinutes < 1) return 'Just now';
-    if (diffInMinutes < 60) return `${diffInMinutes}m ago`;
-    if (diffInMinutes < 1440) return `${Math.floor(diffInMinutes / 60)}h ago`;
-    return date.toLocaleDateString();
-  };
-
+  // Load notifications on mount and when filter changes
   useEffect(() => {
     fetchNotifications();
-  }, [fetchNotifications]);
+  }, [filter]);
 
-  // Set up real-time updates (WebSocket or polling)
+  // Auto-refresh every 30 seconds
   useEffect(() => {
-    const interval = setInterval(() => {
-      if (isOpen) {
-        fetchNotifications();
-      }
-    }, 30000); // Poll every 30 seconds when open
-
+    const interval = setInterval(fetchNotifications, 30000);
     return () => clearInterval(interval);
-  }, [isOpen, fetchNotifications]);
+  }, [filter]);
 
   return (
     <>
-      <Popover open={isOpen} onClose={() => setIsOpen(false)}>
-        <PopoverTrigger>
-          <Button
-            variant="text"
-            size="small"
-            sx={{ position: 'relative' }}
-            aria-label="Notifications"
-          >
-            <Bell style={{ width: 20, height: 20 }} />
-            {unreadCount > 0 && (
-              <Badge
-                variant="destructive"
-                sx={{ position: 'absolute', top: -4, right: -4, height: 20, width: 20, borderRadius: '50%', p: 0, fontSize: '0.75rem' }}
-                label={unreadCount > 99 ? '99+' : unreadCount.toString()}
-              />
-            )}
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent className="w-96 p-0">
-          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', p: 2, borderBottom: '1px solid', borderColor: 'divider' }}>
-            <Typography variant="h6" sx={{ fontWeight: 600 }}>Notifications</Typography>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-              <Button
-                variant="text"
-                size="small"
-                onClick={fetchNotifications}
-                disabled={isLoading}
-              >
-                <RefreshCw className={cn("h-4 w-4", isLoading && "animate-spin")} />
-              </Button>
-              {unreadCount > 0 && (
-                <Button
-                  variant="text"
-                  size="small"
-                  onClick={markAllAsRead}
-                  sx={{ fontSize: '0.75rem' }}
-                >
-                  Mark all read
-                </Button>
-              )}
+      {/* Notification Bell */}
+      <IconButton
+        onClick={() => setDrawerOpen(true)}
+        sx={{ position: 'relative' }}
+      >
+        <Badge badgeContent={unreadCount} color="error">
+          <NotificationsIcon />
+        </Badge>
+      </IconButton>
+
+      {/* Notification Drawer */}
+      <Drawer
+        anchor="right"
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
+        sx={{ '& .MuiDrawer-paper': { width: 400, maxWidth: '90vw' } }}
+      >
+        <Box sx={{ p: 2, height: '100%', display: 'flex', flexDirection: 'column' }}>
+          {/* Header */}
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
+            <Typography variant="h6">Notifications</Typography>
+            <Box>
+              <IconButton onClick={() => setSettingsOpen(true)} size="small">
+                <SettingsIcon />
+              </IconButton>
+              <IconButton onClick={() => setDrawerOpen(false)} size="small">
+                <CloseIcon />
+              </IconButton>
             </Box>
           </Box>
 
-          <Tabs value={activeTab} onChange={(e, newValue) => setActiveTab(newValue)} sx={{ mb: 2 }}>
-            <Tab value="all" label="All" sx={{ fontSize: '0.75rem' }} />
-            <Tab value="unread" label={`Unread ${unreadCount > 0 ? `(${unreadCount})` : ''}`} sx={{ fontSize: '0.75rem' }} />
-            <Tab value="system" label="System" sx={{ fontSize: '0.75rem' }} />
-            <Tab value="security" label="Security" sx={{ fontSize: '0.75rem' }} />
-            <Tab value="content" label="Content" sx={{ fontSize: '0.75rem' }} />
-          </Tabs>
+          {/* Actions */}
+          <Box sx={{ display: 'flex', gap: 1, mb: 2 }}>
+            <Button
+              variant="outlined"
+              size="small"
+              startIcon={<MarkEmailReadIcon />}
+              onClick={markAllAsRead}
+              disabled={unreadCount === 0}
+            >
+              Mark All Read
+            </Button>
+            <Button
+              variant="outlined"
+              size="small"
+              startIcon={<RefreshIcon />}
+              onClick={fetchNotifications}
+              disabled={loading}
+            >
+              Refresh
+            </Button>
+          </Box>
 
-          {activeTab === 0 && (
-            <Box sx={{ p: 0 }}>
-              <ScrollArea className="h-80">
-                {isLoading ? (
-                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', p: 4 }}>
-                    <RefreshCw className="h-6 w-6 animate-spin" aria-label="Loading notifications" />
-                  </Box>
-                ) : filteredNotifications.length === 0 ? (
-                  <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', p: 4, textAlign: 'center' }}>
-                    <Bell className="h-8 w-8 text-gray-400 mb-2" aria-label="No notifications" />
-                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>No notifications</Typography>
-                  </Box>
-                ) : (
-                  <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, p: 1 }}>
-                    {filteredNotifications.map((notification) => (
-                      <Paper
-                        key={notification.id}
-                        sx={{
-                          position: 'relative',
-                          p: 1.5,
-                          borderRadius: 2,
-                          border: '1px solid',
-                          borderColor: 'divider',
-                          cursor: 'pointer',
-                          transition: 'all 0.2s',
-                          '&:hover': { 
-                            bgcolor: 'action.hover',
-                            '& .dark &': { bgcolor: 'grey.800' }
-                          },
-                          ...(!notification.read && {
-                            bgcolor: 'primary.50',
-                            borderColor: 'primary.200',
-                            '& .dark &': { 
-                              bgcolor: 'primary.950',
-                              borderColor: 'primary.800'
-                            }
-                          }),
-                          ...(notification.read && {
-                            opacity: 0.75
-                          })
-                        }}
-                        onClick={() => handleNotificationClick(notification)}
-                      >
-                        <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1.5 }}>
-                          <Box sx={{ flexShrink: 0 }}>
-                            <Typography variant="h6">{CATEGORY_ICONS[notification.category]}</Typography>
-                          </Box>
-                          
-                          <Box sx={{ flex: 1, minWidth: 0 }}>
-                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.5 }}>
-                              <Typography variant="subtitle2" sx={{ fontWeight: 500, fontSize: '0.875rem', lineHeight: 'tight' }}>
+          {/* Filter Chips */}
+          <Box sx={{ display: 'flex', gap: 1, mb: 2, overflowX: 'auto' }}>
+            {['all', 'unread', 'post', 'oauth', 'system', 'scheduled'].map((filterOption) => (
+              <Chip
+                key={filterOption}
+                label={filterOption}
+                size="small"
+                color={filter === filterOption ? 'primary' : 'default'}
+                onClick={() => setFilter(filterOption as any)}
+                variant={filter === filterOption ? 'filled' : 'outlined'}
+              />
+            ))}
+          </Box>
+
+          <Divider sx={{ mb: 2 }} />
+
+          {/* Notifications List */}
+          <Box sx={{ flexGrow: 1, overflow: 'auto' }}>
+            {loading ? (
+              <Box sx={{ textAlign: 'center', py: 4 }}>
+                <Typography color="text.secondary">Loading notifications...</Typography>
+              </Box>
+            ) : notifications.length === 0 ? (
+              <Box sx={{ textAlign: 'center', py: 4 }}>
+                <NotificationsIcon sx={{ fontSize: 48, color: 'text.secondary', mb: 2 }} />
+                <Typography color="text.secondary">No notifications</Typography>
+              </Box>
+            ) : (
+              <List>
+                {notifications.map((notification) => (
+                  <ListItem
+                    key={notification.id}
+                    component="div"
+                    onClick={() => handleNotificationClick(notification)}
+                    sx={{
+                      backgroundColor: notification.read ? 'transparent' : 'action.hover',
+                      borderLeft: `4px solid ${getNotificationColor(notification.type)}`,
+                      mb: 1,
+                      borderRadius: 1,
+                      cursor: 'pointer',
+                      '&:hover': {
+                        backgroundColor: 'action.selected'
+                      }
+                    }}
+                  >
+                        <ListItemIcon>
+                          {getNotificationIcon(notification.type)}
+                        </ListItemIcon>
+                        <ListItemText
+                          primary={
+                            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                              <Typography variant="subtitle2" noWrap>
                                 {notification.title}
                               </Typography>
-                              <Badge
-                                variant="secondary"
-                                className={cn("text-xs", SEVERITY_COLORS[notification.severity])}
-                                label={notification.severity}
-                              />
-                            </Box>
-                            
-                            <Typography variant="body2" sx={{ 
-                              color: 'text.secondary', 
-                              mb: 1,
-                              '& .dark &': { color: 'grey.300' }
-                            }}>
-                              {notification.message}
-                            </Typography>
-                            
-                            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                              <Typography variant="caption" sx={{ color: 'text.disabled' }}>
-                                {formatTimestamp(notification.createdAt)}
-                              </Typography>
-                              
-                              {notification.actionUrl && (
-                                <Button
-                                  variant="text"
-                                  size="small"
-                                  sx={{ fontSize: '0.75rem' }}
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    window.open(notification.actionUrl, '_blank');
+                              {!notification.read && (
+                                <Box
+                                  sx={{
+                                    width: 8,
+                                    height: 8,
+                                    borderRadius: '50%',
+                                    backgroundColor: 'primary.main'
                                   }}
-                                >
-                                  {notification.actionText || 'View'}
-                                </Button>
+                                />
                               )}
                             </Box>
-                          </Box>
-                          
-                          <Box sx={{ 
-                            display: 'flex', 
-                            alignItems: 'center', 
-                            gap: 0.5, 
-                            opacity: 0, 
-                            '&:hover': { opacity: 1 }, 
-                            transition: 'opacity 0.2s' 
-                          }}>
-                            {!notification.read && (
-                              <Button
-                                variant="text"
-                                sx={{ height: 24, width: 24, minWidth: 24 }}
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  markAsRead(notification.id);
-                                }}
-                              >
-                                <Check className="h-3 w-3" />
-                              </Button>
-                            )}
-                            <Button
-                              variant="text"
-                              sx={{ 
-                                height: 24, 
-                                width: 24, 
-                                minWidth: 24,
-                                color: 'error.main',
-                                '&:hover': { color: 'error.dark' }
-                              }}
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                deleteNotification(notification.id);
-                              }}
-                            >
-                              <Trash2 className="h-3 w-3" />
-                            </Button>
-                          </Box>
-                        </Box>
-                      </Paper>
-                    ))}
-                  </Box>
-                )}
-              </ScrollArea>
-            </Box>
-          )}
-        </PopoverContent>
-      </Popover>
+                          }
+                          secondary={
+                            <Box>
+                              <Typography variant="body2" color="text.secondary" noWrap>
+                                {notification.message}
+                              </Typography>
+                              <Typography variant="caption" color="text.secondary">
+                                {formatTimestamp(notification.timestamp)}
+                              </Typography>
+                            </Box>
+                          }
+                        />
+                        <ListItemSecondaryAction>
+                          <IconButton
+                            edge="end"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              deleteNotification(notification.id);
+                            }}
+                            size="small"
+                          >
+                            <DeleteIcon fontSize="small" />
+                          </IconButton>
+                        </ListItemSecondaryAction>
+                      </ListItem>
+                ))}
+              </List>
+            )}
+          </Box>
+        </Box>
+      </Drawer>
 
-      {toast && (
-        <NotificationToast
-          title={toast.title}
-          message={toast.message}
-          variant={toast.variant}
-          onClose={() => setToast(null)}
-        />
-      )}
+      {/* Settings Menu */}
+      <Menu
+        anchorEl={settingsOpen ? document.body : null}
+        open={settingsOpen}
+        onClose={() => setSettingsOpen(false)}
+        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+      >
+        <MenuItem>
+          <FormGroup>
+            <FormControlLabel
+              control={<Switch defaultChecked />}
+              label="Email Notifications"
+            />
+            <FormControlLabel
+              control={<Switch defaultChecked />}
+              label="Push Notifications"
+            />
+            <FormControlLabel
+              control={<Switch defaultChecked />}
+              label="In-App Notifications"
+            />
+          </FormGroup>
+        </MenuItem>
+      </Menu>
     </>
   );
-} 
+}
+
+export default NotificationCenter;

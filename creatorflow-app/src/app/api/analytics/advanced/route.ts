@@ -1,174 +1,161 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { getSession } from '@/auth';
-import { PrismaClient } from '@prisma/client';
+/**
+ * Advanced Analytics API Endpoint
+ * Handle advanced analytics operations
+ */
 
-const prisma = new PrismaClient();
+import { NextRequest, NextResponse } from 'next/server';
+import { AdvancedAnalytics } from '@/lib/analytics/advanced-analytics';
+
+const analytics = new AdvancedAnalytics();
 
 export async function GET(request: NextRequest) {
   try {
-    const session = await getSession(request);
-    if (!session?.user?.id) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    const userId = session.user.id;
     const { searchParams } = new URL(request.url);
-    const timeRange = searchParams.get('timeRange') || '30d';
-    const platform = searchParams.get('platform') || 'all';
+    const action = searchParams.get('action') || 'metrics';
+    const platform = searchParams.get('platform');
+    const industry = searchParams.get('industry');
+    const metric = searchParams.get('metric');
 
-    // Calculate date range
-    const endDate = new Date();
-    const startDate = new Date();
-    
-    switch (timeRange) {
-      case '7d':
-        startDate.setDate(endDate.getDate() - 7);
+    let responseData: any = {};
+
+    switch (action) {
+      case 'metrics':
+        const filter = {
+          dateRange: {
+            start: searchParams.get('start') || new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
+            end: searchParams.get('end') || new Date().toISOString()
+          },
+          platforms: platform ? [platform] : undefined,
+          contentTypes: searchParams.get('contentTypes')?.split(','),
+          minEngagement: searchParams.get('minEngagement') ? parseFloat(searchParams.get('minEngagement')!) : undefined,
+          minReach: searchParams.get('minReach') ? parseFloat(searchParams.get('minReach')!) : undefined
+        };
+
+        responseData = {
+          metrics: analytics.getMetrics(filter),
+          insights: analytics.getInsights(filter)
+        };
         break;
-      case '30d':
-        startDate.setDate(endDate.getDate() - 30);
-        break;
-      case '90d':
-        startDate.setDate(endDate.getDate() - 90);
-        break;
-      case '1y':
-        startDate.setFullYear(endDate.getFullYear() - 1);
-        break;
-      default:
-        startDate.setDate(endDate.getDate() - 30);
-    }
 
-    // Build where clause
-    const whereClause: any = {
-      userId,
-      status: 'PUBLISHED',
-      publishedAt: {
-        gte: startDate,
-        lte: endDate
-      }
-    };
-
-    if (platform !== 'all') {
-      whereClause.platforms = { has: platform };
-    }
-
-    // Get posts for analysis
-    const posts = await prisma.post.findMany({
-      where: whereClause,
-      select: {
-        id: true,
-        contentText: true,
-        platforms: true,
-        publishedAt: true,
-        engagementRate: true,
-        likes: true,
-        comments: true,
-        shares: true,
-        views: true,
-        reach: true,
-        impressions: true
-      }
-    });
-
-    // Calculate metrics
-    const totalPosts = posts.length;
-    const totalEngagement = posts.reduce((sum, post) => 
-      sum + (post.likes || 0) + (post.comments || 0) + (post.shares || 0), 0
-    );
-    const avgEngagementRate = posts.length > 0 
-      ? posts.reduce((sum, post) => sum + (post.engagementRate || 0), 0) / posts.length 
-      : 0;
-    const totalReach = posts.reduce((sum, post) => sum + (post.reach || 0), 0);
-    const totalImpressions = posts.reduce((sum, post) => sum + (post.impressions || 0), 0);
-
-    // Platform breakdown
-    const platformStats: { [key: string]: { posts: number; engagement: number; reach: number } } = {};
-    
-    posts.forEach(post => {
-      post.platforms.forEach((platform: string) => {
-        if (!platformStats[platform]) {
-          platformStats[platform] = { posts: 0, engagement: 0, reach: 0 };
+      case 'benchmark':
+        if (!platform || !industry) {
+          return NextResponse.json({
+            success: false,
+            message: 'Platform and industry are required for benchmark comparison'
+          }, { status: 400 });
         }
-        platformStats[platform].posts++;
-        platformStats[platform].engagement += (post.likes || 0) + (post.comments || 0) + (post.shares || 0);
-        platformStats[platform].reach += post.reach || 0;
-      });
-    });
 
-    const platformBreakdown = Object.entries(platformStats).map(([platform, stats]) => ({
-      platform,
-      ...stats
-    }));
+        responseData = analytics.getBenchmarkComparison(platform, industry);
+        break;
 
-    // Recent performance (last 7 days)
-    const recentStartDate = new Date();
-    recentStartDate.setDate(recentStartDate.getDate() - 7);
-    
-    const recentPosts = posts.filter(post => 
-      post.publishedAt && new Date(post.publishedAt) >= recentStartDate
-    );
+      case 'forecast':
+        if (!metric) {
+          return NextResponse.json({
+            success: false,
+            message: 'Metric is required for forecasting'
+          }, { status: 400 });
+        }
 
-    const recentPerformance = [];
-    for (let i = 6; i >= 0; i--) {
-      const date = new Date();
-      date.setDate(date.getDate() - i);
-      const dateStr = date.toISOString().split('T')[0];
-      
-      const dayPosts = recentPosts.filter(post => 
-        post.publishedAt && post.publishedAt.toISOString().startsWith(dateStr)
-      );
-      
-      recentPerformance.push({
-        date: dateStr,
-        posts: dayPosts.length,
-        engagement: dayPosts.reduce((sum, post) => 
-          sum + (post.likes || 0) + (post.comments || 0) + (post.shares || 0), 0
-        ),
-        reach: dayPosts.reduce((sum, post) => sum + (post.reach || 0), 0)
-      });
-    }
+        const days = parseInt(searchParams.get('days') || '30');
+        responseData = analytics.getPredictiveForecast(metric, days);
+        break;
 
-    // Top performing posts
-    const topPerformingPosts = posts
-      .sort((a, b) => (b.engagementRate || 0) - (a.engagementRate || 0))
-      .slice(0, 10)
-      .map(post => ({
-        id: post.id,
-        content: post.contentText || '',
-        platform: post.platforms[0] || 'unknown',
-        engagement: (post.likes || 0) + (post.comments || 0) + (post.shares || 0),
-        reach: post.reach || 0,
-        publishedAt: post.publishedAt?.toISOString().split('T')[0] || ''
-      }));
+      case 'dashboard':
+        const widgets = searchParams.get('widgets')?.split(',') || [
+          'engagement_trend',
+          'platform_comparison',
+          'content_performance'
+        ];
 
-    // Mock audience growth data (in real app, this would come from platform APIs)
-    const audienceGrowth = [];
-    for (let i = 29; i >= 0; i--) {
-      const date = new Date();
-      date.setDate(date.getDate() - i);
-      audienceGrowth.push({
-        date: date.toISOString().split('T')[0],
-        followers: Math.floor(Math.random() * 1000) + 5000,
-        growth: Math.floor(Math.random() * 50) - 25
-      });
+        const dashboardFilter = {
+          dateRange: {
+            start: searchParams.get('start') || new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString(),
+            end: searchParams.get('end') || new Date().toISOString()
+          },
+          platforms: platform ? [platform] : undefined
+        };
+
+        responseData = analytics.generateCustomDashboard(widgets, dashboardFilter);
+        break;
+
+      default:
+        return NextResponse.json({
+          success: false,
+          message: 'Invalid action'
+        }, { status: 400 });
     }
 
     return NextResponse.json({
-      totalPosts,
-      totalEngagement,
-      avgEngagementRate,
-      totalReach,
-      totalImpressions,
-      platformBreakdown,
-      recentPerformance,
-      topPerformingPosts,
-      audienceGrowth
+      success: true,
+      data: responseData,
+      message: 'Analytics data retrieved successfully'
     });
 
   } catch (error) {
-    console.error('Analytics API error:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch analytics data' },
-      { status: 500 }
-    );
+    console.error('Advanced analytics error:', error);
+    
+    return NextResponse.json({
+      success: false,
+      message: 'Failed to retrieve analytics data',
+      error: error instanceof Error ? error.message : 'Unknown error'
+    }, { status: 500 });
   }
-} 
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    const { action, data } = await request.json();
+
+    switch (action) {
+      case 'track_performance':
+        if (!data) {
+          return NextResponse.json({
+            success: false,
+            message: 'Performance data is required'
+          }, { status: 400 });
+        }
+
+        analytics.trackPerformance(data);
+        return NextResponse.json({
+          success: true,
+          message: 'Performance data tracked successfully'
+        });
+
+      case 'generate_insights':
+        const filter = data?.filter;
+        const insights = analytics.getInsights(filter);
+        
+        return NextResponse.json({
+          success: true,
+          insights,
+          message: 'Insights generated successfully'
+        });
+
+      case 'custom_dashboard':
+        const widgets = data?.widgets || [];
+        const dashboardFilter = data?.filter;
+        const dashboard = analytics.generateCustomDashboard(widgets, dashboardFilter);
+        
+        return NextResponse.json({
+          success: true,
+          dashboard,
+          message: 'Custom dashboard generated successfully'
+        });
+
+      default:
+        return NextResponse.json({
+          success: false,
+          message: 'Invalid action'
+        }, { status: 400 });
+    }
+
+  } catch (error) {
+    console.error('Advanced analytics POST error:', error);
+    
+    return NextResponse.json({
+      success: false,
+      message: 'Analytics operation failed',
+      error: error instanceof Error ? error.message : 'Unknown error'
+    }, { status: 500 });
+  }
+}

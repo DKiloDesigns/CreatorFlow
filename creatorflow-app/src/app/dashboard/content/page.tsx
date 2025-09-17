@@ -2,7 +2,7 @@
 
 export const dynamic = 'force-dynamic';
 
-import { redirect } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import { getSession } from "@/auth"
 import React, { useState, useEffect } from 'react';
 import { 
@@ -28,9 +28,11 @@ import {
   MuiDialogContent,
   DialogActions
 } from '@/components/ui/mui-components';
-import { Plus, Calendar, FileText, Image, Video, Upload, Clock, Brain, TrendingUp, Lightbulb, Target, Sparkles } from 'lucide-react';
+import { Plus, Calendar, FileText, Image, Video, Upload, Clock, Brain, TrendingUp, Lightbulb, Target, Sparkles, Lock } from 'lucide-react';
 import { toast } from 'sonner';
 import dynamicImport from 'next/dynamic';
+import { useUserPlan } from '@/hooks/use-user-plan';
+import { ProFeatureGate } from '@/components/ui/pro-feature-gate';
 
 // Import new components
 import { UploadMediaModal } from './_components/upload-media-modal';
@@ -84,6 +86,42 @@ interface Post {
   publishedAt?: string;
   createdAt?: string;
   updatedAt?: string;
+}
+
+// Smart Workflow Button Component
+function SmartWorkflowButton() {
+  const { userPlan, isProUser } = useUserPlan();
+  const router = useRouter();
+
+  const handleClick = () => {
+    if (isProUser) {
+      window.location.href = '/dashboard/content/smart-workflow';
+    } else {
+      // Show upgrade prompt or redirect to pricing
+      router.push('/dashboard/billing');
+    }
+  };
+
+  return (
+    <MuiButton
+      variant="outline"
+      startIcon={isProUser ? <Sparkles style={{ width: 16, height: 16 }} /> : <Lock style={{ width: 16, height: 16 }} />}
+      onClick={handleClick}
+      sx={{ 
+        width: { xs: '100%', sm: 'auto' },
+        minWidth: 44,
+        minHeight: 44,
+        borderColor: isProUser ? 'primary.main' : 'warning.main',
+        color: isProUser ? 'primary.main' : 'warning.main',
+        '&:hover': {
+          borderColor: isProUser ? 'primary.dark' : 'warning.dark',
+          bgcolor: isProUser ? 'primary.50' : 'warning.50'
+        }
+      }}
+    >
+      {isProUser ? 'Smart Workflow' : 'Smart Workflow (Pro)'}
+    </MuiButton>
+  );
 }
 
 export default function ContentPage() {
@@ -143,15 +181,6 @@ export default function ContentPage() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Debug modal state
-  useEffect(() => {
-    console.log('Modal state changed:', {
-      uploadModalOpen,
-      createVideoModalOpen,
-      useTemplateModalOpen,
-      bulkScheduleModalOpen
-    });
-  }, [uploadModalOpen, createVideoModalOpen, useTemplateModalOpen, bulkScheduleModalOpen]);
 
   // Listen for custom events from the composer
   useEffect(() => {
@@ -374,7 +403,7 @@ export default function ContentPage() {
             {/* Quick Actions - Content Creation Tools - Hidden on mobile since we have mobile buttons above */}
             <Card sx={{ mb: 4, display: { xs: 'none', md: 'block' } }}>
               <CardHeader>
-                <Typography variant="h6">Content Creation Tools</Typography>
+                <Typography variant="h6" sx={{ color: 'text.primary', fontWeight: 'bold' }}>Content Creation Tools</Typography>
               </CardHeader>
               <CardContent>
                 <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', md: 'repeat(4, 1fr)' }, gap: 2 }}>
@@ -436,7 +465,7 @@ export default function ContentPage() {
                     </Typography>
                     <FileText style={{ width: 14, height: 14, color: 'text.secondary' }} />
                   </Box>
-                  <Typography variant="h5" component="div" sx={{ fontWeight: 'bold', mb: 0.5 }}>
+                  <Typography variant="h5" component="div" sx={{ fontWeight: 'bold', mb: 0.5, color: 'text.primary' }}>
                     {overview?.drafts || 0}
                   </Typography>
                   <Typography variant="caption" color="text.secondary" sx={{ fontSize: '0.7rem' }}>
@@ -453,7 +482,7 @@ export default function ContentPage() {
                     </Typography>
                     <Clock style={{ width: 14, height: 14, color: 'text.secondary' }} />
                   </Box>
-                  <Typography variant="h5" component="div" sx={{ fontWeight: 'bold', mb: 0.5 }}>
+                  <Typography variant="h5" component="div" sx={{ fontWeight: 'bold', mb: 0.5, color: 'text.primary' }}>
                     {overview?.scheduled || 0}
                   </Typography>
                   <Typography variant="caption" color="text.secondary" sx={{ fontSize: '0.7rem' }}>
@@ -470,7 +499,7 @@ export default function ContentPage() {
                     </Typography>
                     <TrendingUp style={{ width: 14, height: 14, color: 'text.secondary' }} />
                   </Box>
-                  <Typography variant="h5" component="div" sx={{ fontWeight: 'bold', mb: 0.5 }}>
+                  <Typography variant="h5" component="div" sx={{ fontWeight: 'bold', mb: 0.5, color: 'text.primary' }}>
                     {overview?.published || 0}
                   </Typography>
                   <Typography variant="caption" color="text.secondary" sx={{ fontSize: '0.7rem' }}>
@@ -487,7 +516,7 @@ export default function ContentPage() {
                     </Typography>
                     <Brain style={{ width: 14, height: 14, color: 'text.secondary' }} />
                   </Box>
-                  <Typography variant="h5" component="div" sx={{ fontWeight: 'bold', mb: 0.5 }}>
+                  <Typography variant="h5" component="div" sx={{ fontWeight: 'bold', mb: 0.5, color: 'text.primary' }}>
                     {aiInsights?.length || 0}
                   </Typography>
                   <Typography variant="caption" color="text.secondary" sx={{ fontSize: '0.7rem' }}>
@@ -543,7 +572,7 @@ export default function ContentPage() {
 
   return (
     <Box sx={{ pb: { xs: 12, sm: 8 } }}>
-      <Typography variant="h4" gutterBottom>
+      <Typography variant="h4" gutterBottom sx={{ color: 'text.primary', fontWeight: 'bold' }}>
         Content Hub
       </Typography>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
@@ -598,24 +627,7 @@ export default function ContentPage() {
               Create Post
             </MuiButton>
             
-            <MuiButton
-              variant="outline"
-              startIcon={<Sparkles style={{ width: 16, height: 16 }} />}
-              onClick={() => window.location.href = '/dashboard/content/smart-workflow'}
-              sx={{ 
-                width: { xs: '100%', sm: 'auto' },
-                minWidth: 44,
-                minHeight: 44,
-                borderColor: 'primary.main',
-                color: 'primary.main',
-                '&:hover': {
-                  borderColor: 'primary.dark',
-                  bgcolor: 'primary.50'
-                }
-              }}
-            >
-              Smart Workflow
-            </MuiButton>
+            <SmartWorkflowButton />
           </Box>
         </Box>
 
@@ -626,7 +638,7 @@ export default function ContentPage() {
           gap: 2, 
           mb: 3 
         }}>
-          <Typography variant="h6" sx={{ mb: 1 }}>
+          <Typography variant="h6" sx={{ mb: 1, color: 'text.primary', fontWeight: 'bold' }}>
             Quick Actions
           </Typography>
           <Box sx={{ 
@@ -741,7 +753,7 @@ export default function ContentPage() {
           <MuiDialogTitle>Create Video</MuiDialogTitle>
           <MuiDialogContent>
             <Box sx={{ p: 2 }}>
-              <Typography variant="h6" sx={{ mb: 2 }}>
+              <Typography variant="h6" sx={{ mb: 2, color: 'text.primary', fontWeight: 'bold' }}>
                 Create New Video Content
               </Typography>
               <Typography variant="body2" sx={{ mb: 3 }}>

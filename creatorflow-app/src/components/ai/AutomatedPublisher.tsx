@@ -388,7 +388,7 @@ export default function AutomatedPublisher() {
       {/* Header */}
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2, mb: 4 }}>
         <Box>
-          <Typography variant="h4" gutterBottom>
+          <Typography variant="h4" gutterBottom sx={{ color: 'text.primary', fontWeight: 'bold' }}>
             Automated Publishing
           </Typography>
           <Typography variant="body1" color="text.secondary">

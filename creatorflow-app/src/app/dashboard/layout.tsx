@@ -5,7 +5,7 @@ export const dynamic = 'force-dynamic';
 import { signOut } from "next-auth/react"
 import Link from "next/link"
 import { usePathname } from 'next/navigation';
-import { BarChart2, Users, FileText, Handshake, CreditCard, Menu, Bell, BarChart3, Target, MessageSquare, CalendarIcon, Activity, Shield, Settings, Sparkles, Star, Building2, Smartphone, Plug, TestTube, Home, Calendar, Brain, HelpCircle, HardDrive, Bot, Zap, Accessibility, Code, Layout, Image } from 'lucide-react';
+import { BarChart2, Users, FileText, Handshake, CreditCard, Menu, Bell, BarChart3, Target, MessageSquare, CalendarIcon, Activity, Shield, Settings, Sparkles, Star, Building2, Smartphone, Plug, TestTube, Home, Calendar, Brain, HelpCircle, HardDrive, Bot, Zap, Accessibility, Code, Layout, Image, Wrench, Calculator, Hash, Calendar as CalendarIcon2, BarChart, Clock, TrendingUp } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { 
   AppBar, 
@@ -28,6 +28,7 @@ import {
   MuiEnhancedNavigation
 } from '@/components/ui/mui-components';
 import { MinimalCollaborationPanel } from '@/components/collaboration/MinimalCollaborationPanel';
+import { CommandPalette, useCommandPalette } from '@/components/ui/command-palette';
 import { Popover, PopoverTrigger, PopoverContent } from '@/components/ui/popover';
 import { MinimalThemeToggle } from '@/components/ui/MinimalThemeToggle';
 import { MobileLayout } from '@/components/layout/mobile-layout';
@@ -46,6 +47,7 @@ export default function DashboardLayout({
   const [isClient, setIsClient] = useState(false);
   const { unreadCount, isConnected } = useRealTimeNotifications();
   const { data: session } = useSession();
+  const { open, openCommandPalette, closeCommandPalette } = useCommandPalette();
 
   useEffect(() => {
     setIsClient(true);
@@ -83,6 +85,13 @@ export default function DashboardLayout({
     { href: '/dashboard/content', label: 'Content', icon: FileText },
     { href: '/dashboard/media', label: 'Media Library', icon: Image },
     { href: '/dashboard/analytics', label: 'Analytics', icon: BarChart2 },
+    { href: '/tools', label: 'Free Tools', icon: Wrench },
+    { href: '/tools/social-media-calculator', label: 'ROI Calculator', icon: Calculator },
+    { href: '/tools/hashtag-research', label: 'Hashtag Research', icon: Hash },
+    { href: '/tools/calendar-templates', label: 'Calendar Templates', icon: CalendarIcon2 },
+    { href: '/tools/social-media-audit', label: 'Social Media Audit', icon: BarChart },
+    { href: '/tools/posting-time-optimizer', label: 'Time Optimizer', icon: Clock },
+    { href: '/tools/content-predictor', label: 'Content Predictor', icon: TrendingUp },
     { href: '/dashboard/phase2-hub', label: 'Phase 2 Hub', icon: Brain },
     { href: '/dashboard/phase3-hub', label: 'Phase 3 Hub', icon: Bot },
     { href: '/dashboard/ai-api-test', label: 'AI API Test', icon: TestTube },
@@ -288,6 +297,19 @@ export default function DashboardLayout({
                 </Box>
               )}
               
+              {/* Command Palette Button */}
+              <IconButton
+                onClick={openCommandPalette}
+                sx={{ 
+                  display: { xs: 'none', sm: 'flex' },
+                  bgcolor: 'action.hover',
+                  '&:hover': { bgcolor: 'action.selected' }
+                }}
+                title="Open Command Palette (⌘K)"
+              >
+                <BarChart3 size={20} />
+              </IconButton>
+
               {/* Collaboration Panel - Only render on client */}
               {isClient && (
                 <Box sx={{ position: 'relative', minWidth: 44, minHeight: 44, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -295,19 +317,6 @@ export default function DashboardLayout({
                 </Box>
               )}
               
-              {/* Desktop User Menu - Only render on client */}
-              {isClient && (
-                <Box sx={{ display: { xs: 'none', lg: 'block' } }}>
-                  {/* MuiUserMenu */}
-                </Box>
-              )}
-              
-              {/* Tablet User Menu - Only render on client */}
-              {isClient && (
-                <Box sx={{ display: { xs: 'none', md: 'block', lg: 'none' } }}>
-                  {/* MuiUserMenu */}
-                </Box>
-              )}
             </Box>
           </Toolbar>
         </Container>
@@ -319,6 +328,12 @@ export default function DashboardLayout({
           {children}
         </Container>
       </Box>
+
+      {/* Command Palette */}
+      <CommandPalette 
+        open={open} 
+        onClose={closeCommandPalette} 
+      />
     </MobileLayout>
   );
 }

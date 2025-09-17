@@ -88,8 +88,12 @@ interface ContentTemplate {
   lastUsed: string;
 }
 
-export default function SmartContentWorkflow() {
-  const [activeStep, setActiveStep] = useState(0);
+interface SmartContentWorkflowProps {
+  activeStep: number;
+  onStepChange: (step: number) => void;
+}
+
+export default function SmartContentWorkflow({ activeStep, onStepChange }: SmartContentWorkflowProps) {
   const [workflowData, setWorkflowData] = useState({
     contentIdea: '',
     targetAudience: '',
@@ -150,13 +154,13 @@ export default function SmartContentWorkflow() {
   // Step 1: Content Ideation
   const renderIdeationStep = () => (
     <Box sx={{ p: 3 }}>
-      <Typography variant="h6" gutterBottom>
+      <Typography variant="h6" gutterBottom sx={{ color: 'text.primary', fontWeight: 'bold' }}>
         🚀 AI-Powered Content Ideation
       </Typography>
       
       <Grid container spacing={3}>
         <Grid item xs={12} md={6}>
-          <Card>
+          <Card sx={{ borderRadius: 2, boxShadow: 1 }}>
             <CardHeader title="Generate Content Ideas" />
             <CardContent>
               <TextField
@@ -193,7 +197,7 @@ export default function SmartContentWorkflow() {
         </Grid>
 
         <Grid item xs={12} md={6}>
-          <Card>
+          <Card sx={{ borderRadius: 2, boxShadow: 1 }}>
             <CardHeader title="Generated Ideas" />
             <CardContent>
               {contentIdeas.length === 0 ? (
@@ -211,7 +215,12 @@ export default function SmartContentWorkflow() {
                         cursor: 'pointer',
                         border: selectedIdea?.id === idea.id ? 2 : 1,
                         borderColor: selectedIdea?.id === idea.id ? 'primary.main' : 'divider',
-                        '&:hover': { borderColor: 'primary.main' }
+                        borderRadius: 2,
+                        boxShadow: selectedIdea?.id === idea.id ? 2 : 1,
+                        '&:hover': { 
+                          borderColor: 'primary.main',
+                          boxShadow: 2
+                        }
                       }}
                       onClick={() => setSelectedIdea(idea)}
                     >
@@ -265,7 +274,7 @@ export default function SmartContentWorkflow() {
                 hashtags: selectedIdea.hashtags,
                 platforms: selectedIdea.platforms
               }));
-              setActiveStep(1);
+              onStepChange(1);
             }}
           >
             Use This Idea & Continue
@@ -278,13 +287,13 @@ export default function SmartContentWorkflow() {
   // Step 2: Content Creation
   const renderCreationStep = () => (
     <Box sx={{ p: 3 }}>
-      <Typography variant="h6" gutterBottom>
+      <Typography variant="h6" gutterBottom sx={{ color: 'text.primary', fontWeight: 'bold' }}>
         ✍️ Content Creation & Optimization
       </Typography>
       
       <Grid container spacing={3}>
         <Grid item xs={12} md={8}>
-          <Card>
+          <Card sx={{ borderRadius: 2, boxShadow: 1 }}>
             <CardHeader title="Content Editor" />
             <CardContent>
               <TextField
@@ -326,7 +335,7 @@ export default function SmartContentWorkflow() {
         </Grid>
 
         <Grid item xs={12} md={4}>
-          <Card>
+          <Card sx={{ borderRadius: 2, boxShadow: 1 }}>
             <CardHeader title="Content Analysis" />
             <CardContent>
               <Box sx={{ mb: 2 }}>
@@ -374,7 +383,7 @@ export default function SmartContentWorkflow() {
           variant="contained"
           size="large"
           endIcon={<ArrowRight />}
-          onClick={() => setActiveStep(2)}
+          onClick={() => onStepChange(2)}
           disabled={!workflowData.content.trim()}
         >
           Continue to AI Optimization
@@ -386,13 +395,13 @@ export default function SmartContentWorkflow() {
   // Step 3: AI Optimization
   const renderOptimizationStep = () => (
     <Box sx={{ p: 3 }}>
-      <Typography variant="h6" gutterBottom>
+      <Typography variant="h6" gutterBottom sx={{ color: 'text.primary', fontWeight: 'bold' }}>
         🤖 AI-Powered Optimization
       </Typography>
       
       <Grid container spacing={3}>
         <Grid item xs={12} md={6}>
-          <Card>
+          <Card sx={{ borderRadius: 2, boxShadow: 1 }}>
             <CardHeader title="Smart Caption Generator" />
             <CardContent>
               <SmartCaptionGenerator
@@ -403,7 +412,7 @@ export default function SmartContentWorkflow() {
         </Grid>
 
         <Grid item xs={12} md={6}>
-          <Card>
+          <Card sx={{ borderRadius: 2, boxShadow: 1 }}>
             <CardHeader title="Advanced Hashtag Recommender" />
             <CardContent>
               <AdvancedHashtagRecommender
@@ -414,7 +423,7 @@ export default function SmartContentWorkflow() {
         </Grid>
 
         <Grid item xs={12}>
-          <Card>
+          <Card sx={{ borderRadius: 2, boxShadow: 1 }}>
             <CardHeader title="Content Performance Predictor" />
             <CardContent>
               <ContentPerformancePredictor
@@ -430,7 +439,7 @@ export default function SmartContentWorkflow() {
           variant="contained"
           size="large"
           endIcon={<ArrowRight />}
-          onClick={() => setActiveStep(3)}
+          onClick={() => onStepChange(3)}
         >
           Continue to Smart Scheduling
         </Button>
@@ -441,13 +450,13 @@ export default function SmartContentWorkflow() {
   // Step 4: Smart Scheduling
   const renderSchedulingStep = () => (
     <Box sx={{ p: 3 }}>
-      <Typography variant="h6" gutterBottom>
+      <Typography variant="h6" gutterBottom sx={{ color: 'text.primary', fontWeight: 'bold' }}>
         📅 Smart Scheduling & Performance Prediction
       </Typography>
       
       <Grid container spacing={3}>
         <Grid item xs={12} md={6}>
-          <Card>
+          <Card sx={{ borderRadius: 2, boxShadow: 1 }}>
             <CardHeader title="Optimal Posting Time Predictor" />
             <CardContent>
               <OptimalPostingTimePredictor
@@ -458,7 +467,7 @@ export default function SmartContentWorkflow() {
         </Grid>
 
         <Grid item xs={12} md={6}>
-          <Card>
+          <Card sx={{ borderRadius: 2, boxShadow: 1 }}>
             <CardHeader title="Performance Preview" />
             <CardContent>
               {workflowData.predictedPerformance ? (
@@ -498,7 +507,7 @@ export default function SmartContentWorkflow() {
           variant="contained"
           size="large"
           endIcon={<ArrowRight />}
-          onClick={() => setActiveStep(4)}
+          onClick={() => onStepChange(4)}
         >
           Continue to Review & Publish
         </Button>
@@ -509,20 +518,26 @@ export default function SmartContentWorkflow() {
   // Step 5: Review & Publish
   const renderReviewStep = () => (
     <Box sx={{ p: 3 }}>
-      <Typography variant="h6" gutterBottom>
+      <Typography variant="h6" gutterBottom sx={{ color: 'text.primary', fontWeight: 'bold' }}>
         ✅ Review & Publish
       </Typography>
       
       <Grid container spacing={3}>
         <Grid item xs={12} md={8}>
-          <Card>
+          <Card sx={{ borderRadius: 2, boxShadow: 1 }}>
             <CardHeader title="Content Preview" />
             <CardContent>
               <Box sx={{ mb: 3 }}>
                 <Typography variant="subtitle1" gutterBottom>
                   Final Content:
                 </Typography>
-                <Paper sx={{ p: 2, bgcolor: 'grey.50' }}>
+                <Paper sx={{ 
+                  p: 2, 
+                  bgcolor: 'background.default',
+                  border: 1,
+                  borderColor: 'divider',
+                  borderRadius: 2
+                }}>
                   <Typography variant="body1">
                     {workflowData.caption || workflowData.content}
                   </Typography>
@@ -568,7 +583,7 @@ export default function SmartContentWorkflow() {
         </Grid>
 
         <Grid item xs={12} md={4}>
-          <Card>
+          <Card sx={{ borderRadius: 2, boxShadow: 1 }}>
             <CardHeader title="Publishing Options" />
             <CardContent>
               <Box sx={{ mb: 2 }}>
@@ -669,7 +684,7 @@ export default function SmartContentWorkflow() {
   const handlePublishNow = () => {
     toast.success('Content published successfully!');
     // Reset workflow
-    setActiveStep(0);
+    onStepChange(0);
     setWorkflowData({
       contentIdea: '',
       targetAudience: '',
@@ -709,28 +724,34 @@ export default function SmartContentWorkflow() {
   };
 
   return (
-    <Box sx={{ maxWidth: 1200, mx: 'auto', p: 3 }}>
-      <Typography variant="h4" component="h1" gutterBottom align="center">
-        🚀 Smart Content Creation Workflow
-      </Typography>
-      
-      <Typography variant="body1" color="text.secondary" align="center" sx={{ mb: 4 }}>
-        Create, optimize, and schedule content with AI-powered insights
-      </Typography>
-
-      <Stepper activeStep={activeStep} orientation="vertical">
+    <Box sx={{ maxWidth: 1200, mx: 'auto' }}>
+      <Stepper activeStep={activeStep} orientation="vertical" sx={{ '& .MuiStepLabel-root': { py: 2 } }}>
         {steps.map((step, index) => (
           <Step key={step.id}>
             <StepLabel
               icon={step.icon}
               optional={step.optional}
+              sx={{
+                '& .MuiStepLabel-labelContainer': {
+                  '& .MuiTypography-h6': {
+                    fontSize: '1.1rem',
+                    fontWeight: 600,
+                    color: 'text.primary'
+                  },
+                  '& .MuiTypography-body2': {
+                    fontSize: '0.875rem',
+                    color: 'text.secondary',
+                    mt: 0.5
+                  }
+                }
+              }}
             >
               <Typography variant="h6">{step.label}</Typography>
               <Typography variant="body2" color="text.secondary">
                 {step.description}
               </Typography>
             </StepLabel>
-            <StepContent>
+            <StepContent sx={{ pl: 4, pb: 3 }}>
               {getStepContent(index)}
             </StepContent>
           </Step>
@@ -738,8 +759,16 @@ export default function SmartContentWorkflow() {
       </Stepper>
 
       {activeStep === steps.length && (
-        <Paper square elevation={0} sx={{ p: 3, mt: 3, bgcolor: 'grey.50' }}>
-          <Typography variant="h6" gutterBottom>
+        <Paper sx={{ 
+          p: 3, 
+          mt: 3, 
+          bgcolor: 'background.paper',
+          border: 1,
+          borderColor: 'divider',
+          borderRadius: 2,
+          boxShadow: 1
+        }}>
+          <Typography variant="h6" gutterBottom sx={{ color: 'text.primary', fontWeight: 'bold' }}>
             All steps completed - you&apos;re finished!
           </Typography>
           <Typography variant="body2" color="text.secondary">

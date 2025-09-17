@@ -283,7 +283,7 @@ function AIContentOptimizer() {
       {/* Header */}
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
         <Box>
-          <Typography variant="h4" gutterBottom>
+          <Typography variant="h4" gutterBottom sx={{ color: 'text.primary', fontWeight: 'bold' }}>
             AI Content Optimizer
           </Typography>
           <Typography variant="body2" color="text.secondary">

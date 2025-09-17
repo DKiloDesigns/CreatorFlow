@@ -14,6 +14,8 @@ model User {
   password                String?
   emailVerified           DateTime?
   image                   String?
+  businessName            String?
+  displayName             String?
   createdAt               DateTime               @default(now())
   updatedAt               DateTime               @updatedAt
   plan                    String                 @default("FREE")
@@ -624,3 +626,106 @@ model SecurityAudit {
   @@index([success])
   @@index([timestamp])
 }
+
+model ScheduledPost {
+  id           String   @id @default(cuid())
+  userId       String
+  content      String
+  mediaUrls    String[] @default([])
+  platforms    String[]
+  scheduledTime DateTime
+  status       String   @default("pending") // pending, published, failed
+  results      Json?    // Store platform-specific results
+  hashtags     String[] @default([])
+  location     String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  
+  @@index([userId])
+  @@index([scheduledTime])
+  @@index([status])
+}
+
+model PlatformIntegration {
+  id          String   @id @default(cuid())
+  userId      String
+  platform    String
+  status      String   @default("active") // active, inactive, error
+  lastSync    DateTime?
+  errorCount  Int      @default(0)
+  lastError   String?
+  settings    Json?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@unique([userId, platform])
+  @@index([userId])
+  @@index([platform])
+}
+
+model CustomDashboard {
+  id          String   @id @default(cuid())
+  userId      String
+  name        String
+  description String?
+  widgets     Json     // Array of dashboard widgets
+  isDefault   Boolean  @default(false)
+  isPublic    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@index([userId])
+}
+
+model ReportConfig {
+  id             String    @id @default(cuid())
+  userId         String
+  name           String
+  description    String?
+  type           String    // performance, engagement, growth, custom
+  frequency      String    // daily, weekly, monthly, quarterly, on-demand
+  platforms      String[]  @default([])
+  metrics        String[]  @default([])
+  format         String    @default("pdf") // pdf, excel, csv, json
+  recipients     String[]  @default([])
+  isActive       Boolean   @default(true)
+  lastGenerated  DateTime?
+  nextGeneration DateTime?
+  template       String?
+  filters        Json?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  
+  @@index([userId])
+  @@index([isActive])
+  @@index([nextGeneration])
+}
+
+model ReportData {
+  id          String   @id @default(cuid())
+  userId      String
+  configId    String
+  data        Json     // Report data
+  generatedAt DateTime @default(now())
+  
+  @@index([userId])
+  @@index([configId])
+  @@index([generatedAt])
+}
+
+model ReportTemplate {
+  id          String   @id @default(cuid())
+  userId      String?
+  name        String
+  description String?
+  type        String
+  sections    Json     // Array of report sections
+  isDefault   Boolean  @default(false)
+  isPublic    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@index([userId])
+  @@index([isPublic])
+}
+

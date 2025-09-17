@@ -227,7 +227,7 @@ const MediaLibrary = () => {
         type: 'image',
         size: 2048000,
         url: '/api/media/hero-image.jpg',
-        thumbnail: 'https://via.placeholder.com/300x200/6366f1/ffffff?text=Hero+Image',
+        thumbnail: 'https://picsum.photos/300/200?random=1',
         uploadedAt: new Date('2024-01-15'),
         tags: ['hero', 'banner', 'marketing'],
         description: 'Main hero image for homepage',
@@ -266,7 +266,7 @@ const MediaLibrary = () => {
         type: 'video',
         size: 15728640,
         url: '/api/media/product-demo.mp4',
-        thumbnail: 'https://via.placeholder.com/300x200/10b981/ffffff?text=Product+Demo',
+        thumbnail: 'https://picsum.photos/300/200?random=2',
         uploadedAt: new Date('2024-01-14'),
         tags: ['demo', 'product', 'tutorial'],
         description: 'Product demonstration video',
@@ -288,7 +288,7 @@ const MediaLibrary = () => {
         type: 'image',
         size: 1536000,
         url: '/api/media/team-photo.jpg',
-        thumbnail: 'https://via.placeholder.com/300x200/f59e0b/ffffff?text=Team+Photo',
+        thumbnail: 'https://picsum.photos/300/200?random=3',
         uploadedAt: new Date('2024-01-12'),
         tags: ['team', 'photo', 'about'],
         description: 'Team photo for about page',
@@ -927,13 +927,15 @@ const MediaLibrary = () => {
       sx={{
         display: 'grid',
         gridTemplateColumns: {
-          xs: 'repeat(3, 1fr)',
-          sm: 'repeat(4, 1fr)', 
-          md: 'repeat(6, 1fr)',
-          lg: 'repeat(6, 1fr)'
+          xs: 'repeat(2, 1fr)',
+          sm: 'repeat(3, 1fr)', 
+          md: 'repeat(4, 1fr)',
+          lg: 'repeat(5, 1fr)',
+          xl: 'repeat(6, 1fr)'
         },
-        gap: 2,
-        width: '100%'
+        gap: { xs: 1.5, sm: 2 },
+        width: '100%',
+        justifyItems: 'start'
       }}
     >
       {filteredAndSortedFiles.map((file, index) => {
@@ -949,26 +951,29 @@ const MediaLibrary = () => {
             onDragEnd={handleDragEnd}
             sx={{ 
               cursor: 'grab',
-              border: selectedFiles.includes(file.id) ? '2px solid #1976d2' : '1px solid transparent',
+              border: selectedFiles.includes(file.id) ? '2px solid #1976d2' : '1px solid #e0e0e0',
               borderRadius: 2,
               overflow: 'hidden',
+              boxShadow: 1,
               '&:hover': { 
-                boxShadow: 4,
-                transform: 'scale(1.02)',
+                boxShadow: 3,
+                transform: 'translateY(-2px)',
                 '& .file-actions': { opacity: 1 }
               },
-              transform: draggedFile === file.id ? 'rotate(5deg) scale(1.05)' : 'none',
+              transform: draggedFile === file.id ? 'rotate(2deg) scale(1.02)' : 'none',
               transition: 'all 0.2s ease-in-out',
-              opacity: draggedFile === file.id ? 0.7 : 1,
+              opacity: draggedFile === file.id ? 0.8 : 1,
               '&:active': { cursor: 'grabbing' },
               gridColumn: {
-                xs: isVeryWide ? 'span 3' : isWide ? 'span 2' : 'span 1',
-                sm: isVeryWide ? 'span 4' : isWide ? 'span 2' : 'span 1',
-                md: isVeryWide ? 'span 3' : isWide ? 'span 2' : 'span 1',
-                lg: isVeryWide ? 'span 3' : isWide ? 'span 2' : 'span 1'
+                xs: isVeryWide ? 'span 2' : isWide ? 'span 2' : 'span 1',
+                sm: isVeryWide ? 'span 3' : isWide ? 'span 2' : 'span 1',
+                md: isVeryWide ? 'span 2' : isWide ? 'span 2' : 'span 1',
+                lg: isVeryWide ? 'span 2' : isWide ? 'span 2' : 'span 1'
               },
               position: 'relative',
-              aspectRatio: isVeryWide ? '3/1' : isWide ? '2/1' : '1/1'
+              aspectRatio: isVeryWide ? '3/1' : isWide ? '2/1' : '1/1',
+              width: '100%',
+              maxWidth: '100%'
             }}
             onClick={() => handleFileSelect(file.id)}
           >
@@ -1112,39 +1117,47 @@ const MediaLibrary = () => {
   );
 
   const renderListView = () => (
-    <Box>
+    <Box sx={{ width: '100%' }}>
       {filteredAndSortedFiles.map((file) => (
         <Card 
           key={file.id}
           sx={{ 
-            mb: 1,
+            mb: 1.5,
             cursor: 'pointer',
             border: selectedFiles.includes(file.id) ? '2px solid #1976d2' : '1px solid #e0e0e0',
-            '&:hover': { boxShadow: 2 }
+            boxShadow: 1,
+            '&:hover': { 
+              boxShadow: 2,
+              transform: 'translateY(-1px)',
+              transition: 'all 0.2s ease-in-out'
+            }
           }}
           onClick={() => handleFileSelect(file.id)}
         >
           <CardContent sx={{ display: 'flex', alignItems: 'center', p: 2 }}>
-            <Box sx={{ mr: 2, display: 'flex', alignItems: 'center' }}>
+            <Box sx={{ mr: 2, display: 'flex', alignItems: 'center', minWidth: 40 }}>
               {getFileIcon(file.type)}
             </Box>
             <Box sx={{ flexGrow: 1, minWidth: 0 }}>
-              <Typography variant="subtitle1" noWrap>
+              <Typography variant="subtitle1" noWrap sx={{ fontWeight: 500 }}>
                 {file.name}
               </Typography>
-              <Typography variant="body2" color="text.secondary">
+              <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
                 {formatFileSize(file.size)} • {file.uploadedAt.toLocaleDateString()}
               </Typography>
               {file.description && (
-                <Typography variant="caption" color="text.secondary">
+                <Typography variant="caption" color="text.secondary" sx={{ display: 'block' }}>
                   {file.description}
                 </Typography>
               )}
             </Box>
-            <Box sx={{ display: 'flex', gap: 1 }}>
-              {file.tags.map((tag) => (
-                <Chip key={tag} label={tag} size="small" />
+            <Box sx={{ display: 'flex', gap: 0.5, flexWrap: 'wrap', maxWidth: 200 }}>
+              {file.tags.slice(0, 3).map((tag) => (
+                <Chip key={tag} label={tag} size="small" variant="outlined" />
               ))}
+              {file.tags.length > 3 && (
+                <Chip label={`+${file.tags.length - 3}`} size="small" variant="outlined" />
+              )}
             </Box>
           </CardContent>
         </Card>
@@ -1164,12 +1177,22 @@ const MediaLibrary = () => {
     }, {} as Record<string, MediaFile[]>);
 
     return (
-      <Box>
+      <Box sx={{ width: '100%' }}>
         {Object.entries(groupedFiles)
           .sort(([a], [b]) => new Date(b).getTime() - new Date(a).getTime())
           .map(([date, files]) => (
             <Box key={date} sx={{ mb: 4 }}>
-              <Typography variant="h6" sx={{ mb: 2, color: 'primary.main', borderBottom: 1, borderColor: 'divider', pb: 1 }}>
+              <Typography 
+                variant="h6" 
+                sx={{ 
+                  mb: 2, 
+                  color: 'primary.main', 
+                  borderBottom: 1, 
+                  borderColor: 'divider', 
+                  pb: 1,
+                  fontWeight: 600
+                }}
+              >
                 {date}
               </Typography>
               <Grid container spacing={2}>
@@ -1179,13 +1202,18 @@ const MediaLibrary = () => {
                       sx={{ 
                         cursor: 'pointer',
                         border: selectedFiles.includes(file.id) ? '2px solid #1976d2' : '1px solid #e0e0e0',
-                        '&:hover': { boxShadow: 3 },
+                        boxShadow: 1,
+                        '&:hover': { 
+                          boxShadow: 2,
+                          transform: 'translateY(-2px)',
+                          transition: 'all 0.2s ease-in-out'
+                        },
                         height: '100%'
                       }}
                       onClick={() => handleFileSelect(file.id)}
                     >
-                      <CardContent sx={{ p: 1 }}>
-                        <Box sx={{ position: 'relative', mb: 1 }}>
+                      <CardContent sx={{ p: 1.5 }}>
+                        <Box sx={{ position: 'relative', mb: 1.5 }}>
                           {file.thumbnail ? (
                             <img 
                               src={file.thumbnail} 
@@ -1221,23 +1249,24 @@ const MediaLibrary = () => {
                                 bottom: 8, 
                                 right: 8,
                                 bgcolor: 'rgba(0,0,0,0.7)',
-                                color: 'white'
+                                color: 'white',
+                                fontSize: '0.7rem'
                               }}
                             />
                           )}
                         </Box>
-                        <Typography variant="body2" noWrap title={file.name}>
+                        <Typography variant="body2" noWrap title={file.name} sx={{ fontWeight: 500, mb: 0.5 }}>
                           {file.name}
                         </Typography>
-                        <Typography variant="caption" color="text.secondary">
+                        <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 1 }}>
                           {formatFileSize(file.size)} • {file.uploadedAt.toLocaleTimeString()}
                         </Typography>
-                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, mt: 1 }}>
+                        <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5 }}>
                           {file.tags.slice(0, 2).map((tag) => (
-                            <Chip key={tag} label={tag} size="small" />
+                            <Chip key={tag} label={tag} size="small" variant="outlined" />
                           ))}
                           {file.tags.length > 2 && (
-                            <Chip label={`+${file.tags.length - 2}`} size="small" />
+                            <Chip label={`+${file.tags.length - 2}`} size="small" variant="outlined" />
                           )}
                         </Box>
                       </CardContent>
@@ -1264,10 +1293,17 @@ const MediaLibrary = () => {
       }}
     >
       <Box sx={{ mb: { xs: 3, sm: 4 } }}>
-        <Typography variant="h4" gutterBottom sx={{ fontSize: { xs: '1.75rem', sm: '2.125rem' } }}>
+        <Typography variant="h4" gutterBottom sx={{ 
+          fontSize: { xs: '1.75rem', sm: '2.125rem' },
+          color: 'text.primary',
+          fontWeight: 'bold'
+        }}>
           Media Library
         </Typography>
-        <Typography variant="body1" color="text.secondary">
+        <Typography variant="body1" sx={{ 
+          color: 'text.secondary',
+          opacity: 0.8
+        }}>
           Manage your media files, upload new content, and organize your assets.
         </Typography>
       </Box>
@@ -1279,155 +1315,153 @@ const MediaLibrary = () => {
         gap: 2,
         mb: { xs: 2, sm: 3 }
       }}>
-        {/* Main Toolbar Row */}
+        {/* Search Bar Row - Mobile: Full Width */}
         <Box sx={{ 
           display: 'flex', 
-          flexDirection: { xs: 'column', sm: 'row' },
-          justifyContent: 'space-between', 
-          alignItems: { xs: 'stretch', sm: 'center' },
-          gap: { xs: 2, sm: 2 }
+          justifyContent: 'flex-start',
+          width: '100%'
         }}>
-          {/* Search and Basic Filters */}
-          <Box sx={{ 
-            display: 'flex', 
-            alignItems: 'center', 
-            gap: { xs: 1, sm: 2 }, 
-            flexWrap: 'wrap',
-            flex: 1,
-            minWidth: 0
-          }}>
-            {/* Enhanced Search with Suggestions */}
-            <Box sx={{ position: 'relative', minWidth: { xs: 120, sm: 200 }, flex: 1 }}>
-              <Autocomplete
-                freeSolo
-                options={searchSuggestions}
-                value={searchTerm}
-                onInputChange={(event, newValue) => {
-                  setSearchTerm(newValue || '');
-                }}
-                renderInput={(params) => (
-                  <TextField
-                    {...params}
-                    placeholder="Search files..."
-                    size="small"
-                    InputProps={{
-                      ...params.InputProps,
-                      startAdornment: (
-                        <InputAdornment position="start">
-                          <Search />
-                        </InputAdornment>
-                      ),
-                    }}
-                  />
-                )}
-                renderOption={(props, option) => (
-                  <Box component="li" {...props}>
-                    <Search sx={{ mr: 1, fontSize: 16 }} />
-                    {option}
-                  </Box>
-                )}
-                onClose={() => setShowSuggestions(false)}
-                onOpen={() => setShowSuggestions(true)}
-                open={showSuggestions && searchSuggestions.length > 0}
-              />
-            </Box>
-
-            {/* Type Filter */}
-            <FormControl size="small" sx={{ minWidth: { xs: 100, sm: 120 } }}>
-              <InputLabel>Type</InputLabel>
-              <Select
-                value={filterType}
-                label="Type"
-                onChange={(e) => setFilterType(e.target.value)}
-              >
-                <MenuItem value="all">All</MenuItem>
-                <MenuItem value="image">Images</MenuItem>
-                <MenuItem value="video">Videos</MenuItem>
-                <MenuItem value="document">Docs</MenuItem>
-                <MenuItem value="audio">Audio</MenuItem>
-              </Select>
-            </FormControl>
-
-            {/* Sort Options */}
-            <FormControl size="small" sx={{ minWidth: { xs: 100, sm: 120 } }}>
-              <InputLabel>Sort</InputLabel>
-              <Select
-                value={sortBy}
-                label="Sort"
-                onChange={(e) => setSortBy(e.target.value as any)}
-              >
-                <MenuItem value="name">Name</MenuItem>
-                <MenuItem value="date">Date</MenuItem>
-                <MenuItem value="size">Size</MenuItem>
-                <MenuItem value="type">Type</MenuItem>
-              </Select>
-            </FormControl>
-
-            {/* Sort Order */}
-            <IconButton
-              size="small"
-              onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
-              title={`Sort ${sortOrder === 'asc' ? 'Descending' : 'Ascending'}`}
-            >
-              <Sort sx={{ transform: sortOrder === 'desc' ? 'rotate(180deg)' : 'none' }} />
-            </IconButton>
-          </Box>
-
-          {/* View and Action Buttons */}
-          <Box sx={{ 
-            display: 'flex', 
-            alignItems: 'center', 
-            gap: 1,
-            flexWrap: 'wrap',
-            justifyContent: { xs: 'center', sm: 'flex-end' }
-          }}>
-            <Button
-              variant={viewMode === 'grid' ? 'contained' : 'outlined'}
-              startIcon={<GridIcon />}
-              onClick={() => setViewMode('grid')}
-              size="small"
-            >
-              Grid
-            </Button>
-            <Button
-              variant={viewMode === 'list' ? 'contained' : 'outlined'}
-              startIcon={<ListIcon />}
-              onClick={() => setViewMode('list')}
-              size="small"
-            >
-              List
-            </Button>
-            <Button
-              variant={viewMode === 'timeline' ? 'contained' : 'outlined'}
-              startIcon={<Timeline />}
-              onClick={() => setViewMode('timeline')}
-              size="small"
-            >
-              Timeline
-            </Button>
-            <Button
-              variant="contained"
-              startIcon={<CloudUpload />}
-              onClick={() => setUploadDialogOpen(true)}
-              size="small"
-            >
-              Upload
-            </Button>
-            <Button
-              variant="outlined"
-              startIcon={<CloudDownload />}
-              onClick={handleOpenStorage}
-              size="small"
-              sx={{ display: { xs: 'none', sm: 'flex' } }}
-            >
-              Storage
-            </Button>
+          <Box sx={{ position: 'relative', width: { xs: '100%', sm: 400 } }}>
+            <Autocomplete
+              freeSolo
+              options={searchSuggestions}
+              value={searchTerm}
+              onInputChange={(event, newValue) => {
+                setSearchTerm(newValue || '');
+              }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  placeholder="Search files..."
+                  size="small"
+                  fullWidth
+                  InputProps={{
+                    ...params.InputProps,
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <Search />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              )}
+              renderOption={(props, option) => (
+                <Box component="li" {...props}>
+                  <Search sx={{ mr: 1, fontSize: 16 }} />
+                  {option}
+                </Box>
+              )}
+              onClose={() => setShowSuggestions(false)}
+              onOpen={() => setShowSuggestions(true)}
+              open={showSuggestions && searchSuggestions.length > 0}
+            />
           </Box>
         </Box>
 
+        {/* Filters Row - Type, Sort, Sort Order */}
+        <Box sx={{ 
+          display: 'flex', 
+          alignItems: 'center', 
+          gap: { xs: 1, sm: 2 },
+          flexWrap: 'wrap',
+          justifyContent: 'flex-start'
+        }}>
+          {/* Type Filter */}
+          <FormControl size="small" sx={{ minWidth: { xs: 100, sm: 120 } }}>
+            <InputLabel>Type</InputLabel>
+            <Select
+              value={filterType}
+              label="Type"
+              onChange={(e) => setFilterType(e.target.value)}
+            >
+              <MenuItem value="all">All</MenuItem>
+              <MenuItem value="image">Images</MenuItem>
+              <MenuItem value="video">Videos</MenuItem>
+              <MenuItem value="document">Docs</MenuItem>
+              <MenuItem value="audio">Audio</MenuItem>
+            </Select>
+          </FormControl>
 
-        {/* Advanced Filters Button */}
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+          {/* Sort Options */}
+          <FormControl size="small" sx={{ minWidth: { xs: 100, sm: 120 } }}>
+            <InputLabel>Sort</InputLabel>
+            <Select
+              value={sortBy}
+              label="Sort"
+              onChange={(e) => setSortBy(e.target.value as any)}
+            >
+              <MenuItem value="name">Name</MenuItem>
+              <MenuItem value="date">Date</MenuItem>
+              <MenuItem value="size">Size</MenuItem>
+              <MenuItem value="type">Type</MenuItem>
+            </Select>
+          </FormControl>
+
+          {/* Sort Order */}
+          <IconButton
+            size="small"
+            onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}
+            title={`Sort ${sortOrder === 'asc' ? 'Descending' : 'Ascending'}`}
+          >
+            <Sort sx={{ transform: sortOrder === 'desc' ? 'rotate(180deg)' : 'none' }} />
+          </IconButton>
+        </Box>
+
+        {/* Actions Row - View Toggle, Upload, Storage, Advanced Filters */}
+        <Box sx={{ 
+          display: 'flex', 
+          alignItems: 'center', 
+          gap: 1,
+          flexWrap: 'wrap',
+          justifyContent: 'flex-start'
+        }}>
+          {/* View Toggle */}
+          <Button
+            variant={viewMode === 'grid' ? 'contained' : 'outlined'}
+            startIcon={<GridIcon />}
+            onClick={() => setViewMode('grid')}
+            size="small"
+          >
+            Grid
+          </Button>
+          <Button
+            variant={viewMode === 'list' ? 'contained' : 'outlined'}
+            startIcon={<ListIcon />}
+            onClick={() => setViewMode('list')}
+            size="small"
+          >
+            List
+          </Button>
+          <Button
+            variant={viewMode === 'timeline' ? 'contained' : 'outlined'}
+            startIcon={<Timeline />}
+            onClick={() => setViewMode('timeline')}
+            size="small"
+          >
+            Timeline
+          </Button>
+          
+          {/* Upload Button */}
+          <Button
+            variant="contained"
+            startIcon={<CloudUpload />}
+            onClick={() => setUploadDialogOpen(true)}
+            size="small"
+          >
+            Upload
+          </Button>
+          
+          {/* Storage Button */}
+          <Button
+            variant="outlined"
+            startIcon={<Storage />}
+            onClick={handleOpenStorage}
+            size="small"
+          >
+            Storage
+          </Button>
+          
+          {/* Advanced Filters */}
           <Button
             variant="outlined"
             startIcon={<Filter />}
@@ -1442,7 +1476,7 @@ const MediaLibrary = () => {
       {/* Collections Sidebar */}
       {collections.length > 0 && (
         <Box sx={{ mb: 3 }}>
-          <Typography variant="h6" gutterBottom>
+          <Typography variant="h6" gutterBottom sx={{ color: 'text.primary', fontWeight: 'bold' }}>
             Collections
           </Typography>
           <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
@@ -1482,29 +1516,44 @@ const MediaLibrary = () => {
       )}
 
       {/* Stats */}
-      <Box sx={{ display: 'flex', gap: 2, mb: 3, flexWrap: 'wrap' }}>
+      <Box sx={{ 
+        display: 'flex', 
+        gap: 1.5, 
+        mb: 8, 
+        mt: 4,
+        flexWrap: 'wrap',
+        justifyContent: 'flex-start',
+        padding: '24px 0',
+        backgroundColor: 'rgba(0, 0, 0, 0.02)',
+        borderRadius: 2,
+        border: '1px solid rgba(0, 0, 0, 0.1)'
+      }}>
         <Chip 
           label={`${filteredAndSortedFiles.length} of ${files.length} files`} 
           color="primary" 
-          variant="outlined" 
+          variant="outlined"
+          size="small"
         />
         <Chip 
           label={`${formatFileSize(filteredAndSortedFiles.reduce((acc, file) => acc + file.size, 0))} total`} 
           color="secondary" 
-          variant="outlined" 
+          variant="outlined"
+          size="small"
         />
         {selectedFiles.length > 0 && (
           <Chip 
             label={`${selectedFiles.length} selected`} 
             color="success" 
-            variant="outlined" 
+            variant="outlined"
+            size="small"
           />
         )}
         {(searchTerm || filterType !== 'all' || tagFilter.length > 0 || dateFilter.start || dateFilter.end || sizeFilter.min || sizeFilter.max) && (
           <Chip 
             label="Filtered" 
             color="warning" 
-            variant="outlined" 
+            variant="outlined"
+            size="small"
             onDelete={() => {
               setSearchTerm('');
               setFilterType('all');
@@ -1516,6 +1565,15 @@ const MediaLibrary = () => {
           />
         )}
       </Box>
+
+      {/* Visual Divider */}
+      <Box sx={{ 
+        height: '3px', 
+        backgroundColor: 'primary.main', 
+        mb: 4,
+        mx: 0,
+        borderRadius: '2px'
+      }} />
 
       {/* Bulk Actions Bar */}
       {selectedFiles.length > 0 && (
@@ -1663,7 +1721,7 @@ const MediaLibrary = () => {
             mb: 2
           }}>
             <CloudUpload sx={{ fontSize: 48, color: 'text.secondary', mb: 2 }} />
-            <Typography variant="h6" gutterBottom>
+            <Typography variant="h6" gutterBottom sx={{ color: 'text.primary', fontWeight: 'bold' }}>
               Drag and drop files here
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
@@ -1845,7 +1903,7 @@ const MediaLibrary = () => {
               <Grid container spacing={3}>
                 {/* Basic Information */}
                 <Grid item xs={12} md={6}>
-                  <Typography variant="h6" gutterBottom>
+                  <Typography variant="h6" gutterBottom sx={{ color: 'text.primary', fontWeight: 'bold' }}>
                     Basic Information
                   </Typography>
                   <TextField
@@ -1891,7 +1949,7 @@ const MediaLibrary = () => {
 
                 {/* EXIF Data */}
                 <Grid item xs={12} md={6}>
-                  <Typography variant="h6" gutterBottom>
+                  <Typography variant="h6" gutterBottom sx={{ color: 'text.primary', fontWeight: 'bold' }}>
                     EXIF Data
                   </Typography>
                   <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -2015,7 +2073,7 @@ const MediaLibrary = () => {
               {aiAnalysis.processing ? (
                 <Box sx={{ textAlign: 'center', py: 4 }}>
                   <LinearProgress sx={{ mb: 2 }} />
-                  <Typography variant="h6" gutterBottom>
+                  <Typography variant="h6" gutterBottom sx={{ color: 'text.primary', fontWeight: 'bold' }}>
                     Analyzing Content...
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
@@ -2027,7 +2085,7 @@ const MediaLibrary = () => {
                   {/* Analysis Results */}
                   <Grid container spacing={3}>
                     <Grid item xs={12} md={6}>
-                      <Typography variant="h6" gutterBottom>
+                      <Typography variant="h6" gutterBottom sx={{ color: 'text.primary', fontWeight: 'bold' }}>
                         Suggested Tags
                       </Typography>
                       <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mb: 3 }}>
@@ -2041,7 +2099,7 @@ const MediaLibrary = () => {
                         ))}
                       </Box>
                       
-                      <Typography variant="h6" gutterBottom>
+                      <Typography variant="h6" gutterBottom sx={{ color: 'text.primary', fontWeight: 'bold' }}>
                         AI Description
                       </Typography>
                       <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
@@ -2050,7 +2108,7 @@ const MediaLibrary = () => {
                     </Grid>
 
                     <Grid item xs={12} md={6}>
-                      <Typography variant="h6" gutterBottom>
+                      <Typography variant="h6" gutterBottom sx={{ color: 'text.primary', fontWeight: 'bold' }}>
                         Analysis Details
                       </Typography>
                       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -2075,7 +2133,7 @@ const MediaLibrary = () => {
                       </Box>
 
                       <Box sx={{ mt: 3 }}>
-                        <Typography variant="h6" gutterBottom>
+                        <Typography variant="h6" gutterBottom sx={{ color: 'text.primary', fontWeight: 'bold' }}>
                           Confidence Meter
                         </Typography>
                         <LinearProgress 
@@ -2264,7 +2322,7 @@ const MediaLibrary = () => {
 
           <Grid container spacing={3}>
             <Grid item xs={12} md={6}>
-              <Typography variant="h6" gutterBottom>
+              <Typography variant="h6" gutterBottom sx={{ color: 'text.primary', fontWeight: 'bold' }}>
                 Processing Options
               </Typography>
               
@@ -2326,7 +2384,7 @@ const MediaLibrary = () => {
             </Grid>
 
             <Grid item xs={12} md={6}>
-              <Typography variant="h6" gutterBottom>
+              <Typography variant="h6" gutterBottom sx={{ color: 'text.primary', fontWeight: 'bold' }}>
                 Preview & Progress
               </Typography>
               
@@ -2692,7 +2750,7 @@ const MediaLibrary = () => {
           <Grid container spacing={3}>
             {/* Date Range Filter */}
             <Grid item xs={12} sm={6}>
-              <Typography variant="h6" gutterBottom>
+              <Typography variant="h6" gutterBottom sx={{ color: 'text.primary', fontWeight: 'bold' }}>
                 Date Range
               </Typography>
               <Box sx={{ display: 'flex', gap: 1, alignItems: 'center', flexWrap: 'wrap' }}>
@@ -2719,7 +2777,7 @@ const MediaLibrary = () => {
 
             {/* Size Filter */}
             <Grid item xs={12} sm={6}>
-              <Typography variant="h6" gutterBottom>
+              <Typography variant="h6" gutterBottom sx={{ color: 'text.primary', fontWeight: 'bold' }}>
                 File Size (MB)
               </Typography>
               <Box sx={{ px: 2 }}>
@@ -2743,7 +2801,7 @@ const MediaLibrary = () => {
 
             {/* Tag Filter */}
             <Grid item xs={12}>
-              <Typography variant="h6" gutterBottom>
+              <Typography variant="h6" gutterBottom sx={{ color: 'text.primary', fontWeight: 'bold' }}>
                 Tags
               </Typography>
               <Autocomplete

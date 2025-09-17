@@ -1,512 +1,587 @@
-"use client";
+/**
+ * Advanced Analytics Dashboard
+ * Comprehensive analytics with custom dashboards, AI insights, and reporting
+ */
+
+'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Box, Typography, Button, Container, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
-import { BarChart3, TrendingUp, Brain, Building2, Activity, Users, Target, Zap } from 'lucide-react';
-import { AnalyticsDashboard } from '@/components/analytics/AnalyticsDashboard';
-import QuickInsights from '@/components/analytics/QuickInsights';
-import PerformanceMetrics from '@/components/analytics/PerformanceMetrics';
-import TrendAnalysis from '@/components/analytics/TrendAnalysis';
-import AIInsights from '@/components/analytics/AIInsights';
-import BusinessIntelligence from '@/components/analytics/BusinessIntelligence';
-import PredictiveAnalytics from '@/components/ai/PredictiveAnalytics';
-import EnterpriseAnalytics from '@/components/enterprise/EnterpriseAnalytics';
-import AdvancedAudienceIntelligence from '@/components/analytics/advanced-audience-intelligence';
-import CompetitiveIntelligence from '@/components/analytics/competitive-intelligence';
+import {
+  Box,
+  Container,
+  Typography,
+  Grid,
+  Card,
+  CardContent,
+  Button,
+  Chip,
+  Alert,
+  Tabs,
+  Tab,
+  LinearProgress,
+  Paper,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemIcon,
+  Divider,
+  IconButton,
+  Tooltip,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Switch,
+  FormControlLabel,
+} from '@mui/material';
+import {
+  Analytics as AnalyticsIcon,
+  Dashboard as DashboardIcon,
+  AutoAwesome as AutoAwesomeIcon,
+  Assessment as AssessmentIcon,
+  TrendingUp as TrendingUpIcon,
+  TrendingDown as TrendingDownIcon,
+  TrendingFlat as TrendingFlatIcon,
+  BarChart as BarChartIcon,
+  PieChart as PieChartIcon,
+  TableChart as TableChartIcon,
+  Gauge as GaugeIcon,
+  Add as AddIcon,
+  Edit as EditIcon,
+  Delete as DeleteIcon,
+  Download as DownloadIcon,
+  Refresh as RefreshIcon,
+  Schedule as ScheduleIcon,
+  Email as EmailIcon,
+} from '@mui/icons-material';
+import DashboardBuilder from '@/components/analytics/dashboard-builder';
+import AIInsights, { InsightSummary, QuickActions } from '@/components/analytics/ai-insights';
 
-export default function AnalyticsPage() {
-  const [user, setUser] = useState<any>(null);
-  const [isClient, setIsClient] = useState(false);
-  
-  // Modal state for all analytics tools
-  const [quickInsightsModalOpen, setQuickInsightsModalOpen] = useState(false);
-  const [performanceMetricsModalOpen, setPerformanceMetricsModalOpen] = useState(false);
-  const [trendAnalysisModalOpen, setTrendAnalysisModalOpen] = useState(false);
-  const [aiInsightsModalOpen, setAiInsightsModalOpen] = useState(false);
-  const [businessIntelligenceModalOpen, setBusinessIntelligenceModalOpen] = useState(false);
-  const [predictiveModalOpen, setPredictiveModalOpen] = useState(false);
-  const [enterpriseModalOpen, setEnterpriseModalOpen] = useState(false);
-  const [audienceIntelligenceModalOpen, setAudienceIntelligenceModalOpen] = useState(false);
-  const [competitiveIntelligenceModalOpen, setCompetitiveIntelligenceModalOpen] = useState(false);
-  const [advancedAnalyticsModalOpen, setAdvancedAnalyticsModalOpen] = useState(false);
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+}
 
-  // Client-side hydration check
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
-  useEffect(() => {
-    // Fetch user data for QuickInsights
-    const fetchUserData = async () => {
-      try {
-        const response = await fetch('/api/user');
-        if (response.ok) {
-          const userData = await response.json();
-          setUser(userData);
-        }
-      } catch (error) {
-        console.error('Failed to fetch user data:', error);
-      }
-    };
-
-    fetchUserData();
-  }, []);
-
+function TabPanel(props: TabPanelProps) {
+  const { children, value, index, ...other } = props;
 
   return (
-    <Container maxWidth="xl" sx={{ py: 3 }}>
-      <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4, pb: { xs: 12, sm: 8 } }}>
-        <Typography variant="h4" gutterBottom sx={{ color: 'text.primary' }}>
-          Analytics Dashboard
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`analytics-tabpanel-${index}`}
+      aria-labelledby={`analytics-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ p: 3 }}>
+          {children}
+        </Box>
+      )}
+    </div>
+  );
+}
+
+export default function AnalyticsDashboard() {
+  const [tabValue, setTabValue] = useState(0);
+  const [analytics, setAnalytics] = useState<any>(null);
+  const [dashboards, setDashboards] = useState<any[]>([]);
+  const [insights, setInsights] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [showDashboardBuilder, setShowDashboardBuilder] = useState(false);
+  const [showReportDialog, setShowReportDialog] = useState(false);
+  const [selectedDashboard, setSelectedDashboard] = useState<any>(null);
+
+  useEffect(() => {
+    loadData();
+  }, []);
+
+  const loadData = async () => {
+    try {
+      setLoading(true);
+      
+      // Load comprehensive analytics
+      const analyticsResponse = await fetch('/api/analytics/comprehensive');
+      const analyticsData = await analyticsResponse.json();
+      
+      if (analyticsData.success) {
+        setAnalytics(analyticsData.analytics);
+        setInsights(analyticsData.analytics.insights || []);
+      }
+
+      // Load dashboards
+      const dashboardsResponse = await fetch('/api/analytics/dashboards');
+      const dashboardsData = await dashboardsResponse.json();
+      
+      if (dashboardsData.success) {
+        setDashboards(dashboardsData.dashboards);
+      }
+    } catch (error) {
+      console.error('Failed to load data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleRefreshInsights = async () => {
+    try {
+      await loadData();
+    } catch (error) {
+      console.error('Failed to refresh insights:', error);
+    }
+  };
+
+  const handleActionItemClick = (actionItem: string) => {
+    console.log('Action item clicked:', actionItem);
+    // Implement action item logic
+  };
+
+  const handleCreateDashboard = () => {
+    setSelectedDashboard(null);
+    setShowDashboardBuilder(true);
+  };
+
+  const handleEditDashboard = (dashboard: any) => {
+    setSelectedDashboard(dashboard);
+    setShowDashboardBuilder(true);
+  };
+
+  const handleDashboardSave = (dashboard: any) => {
+    console.log('Dashboard saved:', dashboard);
+    setShowDashboardBuilder(false);
+    loadData(); // Refresh dashboards
+  };
+
+  const handleGenerateReport = () => {
+    setShowReportDialog(true);
+  };
+
+  const getTrendIcon = (trend: string) => {
+    switch (trend) {
+      case 'up':
+        return <TrendingUpIcon color="success" />;
+      case 'down':
+        return <TrendingDownIcon color="error" />;
+      case 'stable':
+        return <TrendingFlatIcon color="info" />;
+      default:
+        return <TrendingFlatIcon />;
+    }
+  };
+
+  const getTrendColor = (trend: string) => {
+    switch (trend) {
+      case 'up':
+        return 'success';
+      case 'down':
+        return 'error';
+      case 'stable':
+        return 'info';
+      default:
+        return 'default';
+    }
+  };
+
+  if (loading) {
+    return (
+      <Container maxWidth="lg" sx={{ mt: 4 }}>
+        <LinearProgress />
+        <Typography variant="h6" sx={{ mt: 2, textAlign: 'center' }}>
+          Loading analytics dashboard...
+        </Typography>
+      </Container>
+    );
+  }
+
+  return (
+    <Container maxWidth="lg" sx={{ mt: 4, pb: { xs: 8, sm: 4 } }}>
+      <Typography variant="h4" gutterBottom sx={{ color: 'text.primary', fontWeight: 'bold' }}>
+        Advanced Analytics Dashboard
+      </Typography>
+      
+      <Typography variant="body1" color="text.secondary" sx={{ mb: 4 }}>
+        Comprehensive analytics with AI-powered insights, custom dashboards, 
+        and automated reporting for your content performance.
+      </Typography>
+
+      <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 3 }}>
+        <Tabs value={tabValue} onChange={(e, newValue) => setTabValue(newValue)}>
+          <Tab label="Overview" icon={<AnalyticsIcon />} />
+          <Tab label="Custom Dashboards" icon={<DashboardIcon />} />
+          <Tab label="AI Insights" icon={<AutoAwesomeIcon />} />
+          <Tab label="Reports" icon={<AssessmentIcon />} />
+        </Tabs>
+      </Box>
+
+      <TabPanel value={tabValue} index={0}>
+        <Typography variant="h6" gutterBottom sx={{ color: 'text.primary', fontWeight: 'bold' }}>
+          Performance Overview
         </Typography>
         
-        {/* Advanced Analytics Button */}
-        <Box sx={{ mb: 3 }}>
+        {analytics ? (
+          <Grid container spacing={3}>
+            {/* Key Metrics */}
+            <Grid item xs={12} md={3}>
+              <Card>
+                <CardContent>
+                  <Typography variant="h4" color="primary">
+                    {analytics.overview.totalPosts}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Total Posts
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+            
+            <Grid item xs={12} md={3}>
+              <Card>
+                <CardContent>
+                  <Typography variant="h4" color="success.main">
+                    {analytics.overview.totalEngagement.toLocaleString()}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Total Engagement
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+            
+            <Grid item xs={12} md={3}>
+              <Card>
+                <CardContent>
+                  <Typography variant="h4" color="info.main">
+                    {analytics.overview.totalReach.toLocaleString()}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Total Reach
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+            
+            <Grid item xs={12} md={3}>
+              <Card>
+                <CardContent>
+                  <Typography variant="h4" color="warning.main">
+                    {analytics.overview.averageEngagementRate.toFixed(1)}%
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Avg Engagement Rate
+                  </Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+
+            {/* Platform Performance */}
+            <Grid item xs={12}>
+              <Card>
+                <CardContent>
+                  <Typography variant="h6" gutterBottom sx={{ color: 'text.primary', fontWeight: 'bold' }}>
+                    Platform Performance
+                  </Typography>
+                  <Grid container spacing={2}>
+                    {analytics.platformMetrics.map((platform: any, index: number) => (
+                      <Grid item xs={12} sm={6} md={4} key={index}>
+                        <Paper sx={{ p: 2 }}>
+                          <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+                            <Typography variant="subtitle1" sx={{ fontWeight: 'bold', color: 'text.primary' }}>
+                              {platform.platform.charAt(0).toUpperCase() + platform.platform.slice(1)}
+                            </Typography>
+                            <Chip
+                              label={`${platform.engagementRate.toFixed(1)}%`}
+                              color={platform.engagementRate > 5 ? 'success' : 'default'}
+                              size="small"
+                            />
+                          </Box>
+                          <Typography variant="body2" color="text.secondary">
+                            {platform.posts} posts • {platform.engagement.toLocaleString()} engagement
+                          </Typography>
+                        </Paper>
+                      </Grid>
+                    ))}
+                  </Grid>
+                </CardContent>
+              </Card>
+            </Grid>
+
+            {/* Trends */}
+            <Grid item xs={12}>
+              <Card>
+                <CardContent>
+                  <Typography variant="h6" gutterBottom sx={{ color: 'text.primary', fontWeight: 'bold' }}>
+                    Performance Trends
+                  </Typography>
+                  <Grid container spacing={2}>
+                    {analytics.trends.map((trend: any, index: number) => (
+                      <Grid item xs={12} sm={6} md={4} key={index}>
+                        <Paper sx={{ p: 2 }}>
+                          <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                            {getTrendIcon(trend.trend)}
+                            <Typography variant="subtitle1" sx={{ ml: 1, color: 'text.primary', fontWeight: 'bold' }}>
+                              {trend.metric.charAt(0).toUpperCase() + trend.metric.slice(1)}
+                            </Typography>
+                          </Box>
+                          <Typography variant="h6" color={`${getTrendColor(trend.trend)}.main`}>
+                            {trend.changePercentage > 0 ? '+' : ''}{trend.changePercentage.toFixed(1)}%
+                          </Typography>
+                          <Typography variant="body2" color="text.secondary">
+                            {trend.confidence > 0.8 ? 'High' : trend.confidence > 0.6 ? 'Medium' : 'Low'} confidence
+                          </Typography>
+                        </Paper>
+                      </Grid>
+                    ))}
+                  </Grid>
+                </CardContent>
+              </Card>
+            </Grid>
+          </Grid>
+        ) : (
+          <Alert severity="info">
+            No analytics data available yet. Start posting content to see your performance metrics.
+          </Alert>
+        )}
+      </TabPanel>
+
+      <TabPanel value={tabValue} index={1}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+          <Typography variant="h6" sx={{ color: 'text.primary', fontWeight: 'bold' }}>
+            Custom Dashboards
+          </Typography>
           <Button
             variant="contained"
-            size="large"
-            startIcon={<Brain style={{ width: 20, height: 20 }} />}
-            onClick={() => setAdvancedAnalyticsModalOpen(true)}
-            sx={{ 
-              height: 60,
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-              '&:hover': {
-                background: 'linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%)',
-              },
-              fontSize: '1.1rem',
-              fontWeight: 600,
-              px: 4
-            }}
+            startIcon={<AddIcon />}
+            onClick={handleCreateDashboard}
           >
-            Advanced Analytics Suite
+            Create Dashboard
           </Button>
         </Box>
 
-        {/* Unified Analytics Tools Grid */}
-        <Box sx={{ mb: 3 }}>
-          <Typography variant="h6" sx={{ mb: 3, color: 'text.primary' }}>
-            Analytics Tools
+        {dashboards.length === 0 ? (
+          <Alert severity="info">
+            No custom dashboards created yet. Create your first dashboard to get started.
+          </Alert>
+        ) : (
+          <Grid container spacing={2}>
+            {dashboards.map((dashboard) => (
+              <Grid item xs={12} sm={6} md={4} key={dashboard.id}>
+                <Card>
+                  <CardContent>
+                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+                      <Typography variant="h6" sx={{ color: 'text.primary', fontWeight: 'bold' }}>
+                        {dashboard.name}
           </Typography>
-          <Box sx={{ 
-            display: 'grid', 
-            gridTemplateColumns: { 
-              xs: 'repeat(2, 1fr)', 
-              sm: 'repeat(3, 1fr)', 
-              md: 'repeat(4, 1fr)' 
-            }, 
-            gap: 2 
-          }}>
-            <Button
-              variant="contained"
-              fullWidth
-              startIcon={<BarChart3 style={{ width: 16, height: 16 }} />}
-              onClick={() => setQuickInsightsModalOpen(true)}
-              sx={{ height: 48 }}
-            >
-              Quick Insights
-            </Button>
-            <Button
-              variant="contained"
-              fullWidth
-              startIcon={<BarChart3 style={{ width: 16, height: 16 }} />}
-              onClick={() => setPerformanceMetricsModalOpen(true)}
-              sx={{ height: 48 }}
-            >
-              Performance Metrics
-            </Button>
-            <Button
-              variant="contained"
-              fullWidth
-              startIcon={<TrendingUp style={{ width: 16, height: 16 }} />}
-              onClick={() => setTrendAnalysisModalOpen(true)}
-              sx={{ height: 48 }}
-            >
-              Trend Analysis
-            </Button>
-            <Button
-              variant="contained"
-              fullWidth
-              startIcon={<Brain style={{ width: 16, height: 16 }} />}
-              onClick={() => setAiInsightsModalOpen(true)}
-              sx={{ height: 48 }}
-            >
-              AI Insights
-            </Button>
-            <Button
-              variant="contained"
-              fullWidth
-              startIcon={<Building2 style={{ width: 16, height: 16 }} />}
-              onClick={() => setBusinessIntelligenceModalOpen(true)}
-              sx={{ height: 48 }}
-            >
-              Business Intelligence
-            </Button>
-            <Button
-              variant="contained"
-              fullWidth
-              startIcon={<Brain style={{ width: 16, height: 16 }} />}
-              onClick={() => setPredictiveModalOpen(true)}
-              sx={{ height: 48 }}
-            >
-              Predictive Analytics
-            </Button>
-            <Button
-              variant="contained"
-              fullWidth
-              startIcon={<Activity style={{ width: 16, height: 16 }} />}
-              onClick={() => setEnterpriseModalOpen(true)}
-              sx={{ height: 48 }}
-            >
-              Enterprise Analytics
-            </Button>
-            <Button
-              variant="contained"
-              fullWidth
-              startIcon={<Users style={{ width: 16, height: 16 }} />}
-              onClick={() => setAudienceIntelligenceModalOpen(true)}
-              sx={{ height: 48 }}
-            >
-              Audience Intelligence
-            </Button>
-            <Button
-              variant="contained"
-              fullWidth
-              startIcon={<Zap style={{ width: 16, height: 16 }} />}
-              onClick={() => setCompetitiveIntelligenceModalOpen(true)}
-              sx={{ height: 48 }}
-            >
-              Competitive Intelligence
-            </Button>
+                      <Box>
+                        <Tooltip title="Edit Dashboard">
+                          <IconButton
+                            size="small"
+                            onClick={() => handleEditDashboard(dashboard)}
+                          >
+                            <EditIcon />
+                          </IconButton>
+                        </Tooltip>
+                        <Tooltip title="Delete Dashboard">
+                          <IconButton
+                            size="small"
+                            onClick={() => console.log('Delete dashboard:', dashboard.id)}
+                          >
+                            <DeleteIcon />
+                          </IconButton>
+                        </Tooltip>
           </Box>
         </Box>
 
-      {/* Bottom Spacer to Clear Bottom Navigation */}
-      <Box sx={{
-        height: { xs: '120px', sm: '40px' },
-        width: '100%'
-      }} />
+                    <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                      {dashboard.description || 'No description'}
+                    </Typography>
+                    
+                    <Box sx={{ display: 'flex', gap: 1, mb: 2 }}>
+                      <Chip
+                        label={`${dashboard.widgets.length} widgets`}
+                        size="small"
+                        color="primary"
+                        variant="outlined"
+                      />
+                      {dashboard.isDefault && (
+                        <Chip
+                          label="Default"
+                          size="small"
+                          color="success"
+                          variant="outlined"
+                        />
+                      )}
     </Box>
 
-    {/* Analytics Modals */}
-    {/* Quick Insights Modal */}
-    <Dialog
-      open={quickInsightsModalOpen}
-      onClose={() => setQuickInsightsModalOpen(false)}
-      maxWidth="md"
+                    <Button
+                      variant="outlined"
       fullWidth
-    >
-      <DialogTitle>Quick Insights</DialogTitle>
-      <DialogContent>
-        <QuickInsights 
-          user={user} 
-          analyticsData={{
-            totalEngagement: 12500,
-            engagementRate: 4.2,
-            growthRate: 15
-          }}
+                      onClick={() => console.log('View dashboard:', dashboard.id)}
+                    >
+                      View Dashboard
+                    </Button>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        )}
+      </TabPanel>
+
+      <TabPanel value={tabValue} index={2}>
+        <AIInsights
+          insights={insights}
+          onRefresh={handleRefreshInsights}
+          onActionItemClick={handleActionItemClick}
         />
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={() => setQuickInsightsModalOpen(false)} variant="outlined">
-          Close
-        </Button>
-      </DialogActions>
-    </Dialog>
+        
+        {insights.length > 0 && (
+          <>
+            <InsightSummary insights={insights} />
+            <QuickActions
+              insights={insights}
+              onActionClick={handleActionItemClick}
+            />
+          </>
+        )}
+      </TabPanel>
 
-
-    {/* Business Intelligence Modal */}
-    <Dialog
-      open={businessIntelligenceModalOpen}
-      onClose={() => setBusinessIntelligenceModalOpen(false)}
-      maxWidth="md"
+      <TabPanel value={tabValue} index={3}>
+        <Typography variant="h6" gutterBottom sx={{ color: 'text.primary', fontWeight: 'bold' }}>
+          Automated Reports
+        </Typography>
+        
+        <Grid container spacing={3}>
+          <Grid item xs={12} md={6}>
+            <Card>
+              <CardContent>
+                <Typography variant="h6" gutterBottom sx={{ color: 'text.primary', fontWeight: 'bold' }}>
+                  Generate Report
+                </Typography>
+                <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                  Create a comprehensive performance report for your content.
+                </Typography>
+                
+                <Button
+                  variant="contained"
+                  startIcon={<AssessmentIcon />}
+                  onClick={handleGenerateReport}
       fullWidth
     >
-      <DialogTitle>Business Intelligence</DialogTitle>
+                  Generate Report
+        </Button>
+              </CardContent>
+            </Card>
+          </Grid>
+          
+          <Grid item xs={12} md={6}>
+            <Card>
+              <CardContent>
+                <Typography variant="h6" gutterBottom sx={{ color: 'text.primary', fontWeight: 'bold' }}>
+                  Schedule Reports
+                </Typography>
+                <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                  Set up automated reports to be sent to your email.
+                </Typography>
+                
+                <Button
+                  variant="outlined"
+                  startIcon={<ScheduleIcon />}
+      fullWidth
+    >
+                  Schedule Reports
+        </Button>
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
+      </TabPanel>
+
+      {/* Dashboard Builder Dialog */}
+    <Dialog
+        open={showDashboardBuilder}
+        onClose={() => setShowDashboardBuilder(false)}
+        maxWidth="xl"
+      fullWidth
+    >
+        <DialogTitle sx={{ color: 'text.primary', fontWeight: 'bold' }}>
+          {selectedDashboard ? 'Edit Dashboard' : 'Create Dashboard'}
+        </DialogTitle>
+        <DialogContent sx={{ p: 0 }}>
+          <DashboardBuilder
+            dashboardId={selectedDashboard?.id}
+            onSave={handleDashboardSave}
+            onCancel={() => setShowDashboardBuilder(false)}
+          />
+      </DialogContent>
+    </Dialog>
+
+      {/* Report Generation Dialog */}
+    <Dialog
+        open={showReportDialog}
+        onClose={() => setShowReportDialog(false)}
+        maxWidth="sm"
+      fullWidth
+    >
+        <DialogTitle sx={{ color: 'text.primary', fontWeight: 'bold' }}>Generate Report</DialogTitle>
       <DialogContent>
-        <BusinessIntelligence />
+          <Grid container spacing={2} sx={{ mt: 1 }}>
+            <Grid item xs={12}>
+              <TextField
+                fullWidth
+                label="Report Name"
+                defaultValue="Performance Report"
+              />
+            </Grid>
+            
+            <Grid item xs={12} sm={6}>
+              <FormControl fullWidth>
+                <InputLabel>Report Type</InputLabel>
+                <Select defaultValue="performance">
+                  <MenuItem value="performance">Performance Report</MenuItem>
+                  <MenuItem value="engagement">Engagement Report</MenuItem>
+                  <MenuItem value="growth">Growth Report</MenuItem>
+                  <MenuItem value="custom">Custom Report</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            
+            <Grid item xs={12} sm={6}>
+              <FormControl fullWidth>
+                <InputLabel>Format</InputLabel>
+                <Select defaultValue="pdf">
+                  <MenuItem value="pdf">PDF</MenuItem>
+                  <MenuItem value="excel">Excel</MenuItem>
+                  <MenuItem value="csv">CSV</MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+            
+            <Grid item xs={12}>
+              <FormControlLabel
+                control={<Switch defaultChecked />}
+                label="Include AI Insights"
+              />
+            </Grid>
+          </Grid>
       </DialogContent>
       <DialogActions>
-        <Button onClick={() => setBusinessIntelligenceModalOpen(false)} variant="outlined">
-          Close
+          <Button onClick={() => setShowReportDialog(false)}>
+            Cancel
+        </Button>
+          <Button variant="contained" startIcon={<DownloadIcon />}>
+            Generate Report
         </Button>
       </DialogActions>
     </Dialog>
 
-    {/* Predictive Analytics Modal */}
-    <Dialog
-      open={predictiveModalOpen}
-      onClose={() => setPredictiveModalOpen(false)}
-      maxWidth="md"
-      fullWidth
-    >
-      <DialogTitle>Predictive Analytics</DialogTitle>
-      <DialogContent>
-        <PredictiveAnalytics />
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={() => setPredictiveModalOpen(false)} variant="outlined">
-          Close
-        </Button>
-      </DialogActions>
-    </Dialog>
-
-    {/* Enterprise Analytics Modal */}
-    <Dialog
-      open={enterpriseModalOpen}
-      onClose={() => setEnterpriseModalOpen(false)}
-      maxWidth="md"
-      fullWidth
-    >
-      <DialogTitle>Enterprise Analytics</DialogTitle>
-      <DialogContent>
-        <EnterpriseAnalytics />
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={() => setEnterpriseModalOpen(false)} variant="outlined">
-          Close
-        </Button>
-      </DialogActions>
-    </Dialog>
-
-    {/* Performance Metrics Modal */}
-    <Dialog
-      open={performanceMetricsModalOpen}
-      onClose={() => setPerformanceMetricsModalOpen(false)}
-      maxWidth="md"
-      fullWidth
-    >
-      <DialogTitle>Performance Metrics</DialogTitle>
-      <DialogContent>
-        <PerformanceMetrics />
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={() => setPerformanceMetricsModalOpen(false)} variant="outlined">
-          Close
-        </Button>
-      </DialogActions>
-    </Dialog>
-
-    {/* Trend Analysis Modal */}
-    <Dialog
-      open={trendAnalysisModalOpen}
-      onClose={() => setTrendAnalysisModalOpen(false)}
-      maxWidth="md"
-      fullWidth
-    >
-      <DialogTitle>Trend Analysis</DialogTitle>
-      <DialogContent>
-        <TrendAnalysis />
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={() => setTrendAnalysisModalOpen(false)} variant="outlined">
-          Close
-        </Button>
-      </DialogActions>
-    </Dialog>
-
-    {/* AI Insights Modal */}
-    <Dialog
-      open={aiInsightsModalOpen}
-      onClose={() => setAiInsightsModalOpen(false)}
-      maxWidth="md"
-      fullWidth
-    >
-      <DialogTitle>AI Insights</DialogTitle>
-      <DialogContent>
-        <AIInsights />
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={() => setAiInsightsModalOpen(false)} variant="outlined">
-          Close
-        </Button>
-      </DialogActions>
-    </Dialog>
-
-    {/* Audience Intelligence Modal */}
-    <Dialog
-      open={audienceIntelligenceModalOpen}
-      onClose={() => setAudienceIntelligenceModalOpen(false)}
-      maxWidth="md"
-      fullWidth
-    >
-      <DialogTitle>Audience Intelligence</DialogTitle>
-      <DialogContent>
-        <AdvancedAudienceIntelligence />
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={() => setAudienceIntelligenceModalOpen(false)} variant="outlined">
-          Close
-        </Button>
-      </DialogActions>
-    </Dialog>
-
-    {/* Competitive Intelligence Modal */}
-    <Dialog
-      open={competitiveIntelligenceModalOpen}
-      onClose={() => setCompetitiveIntelligenceModalOpen(false)}
-      maxWidth="md"
-      fullWidth
-    >
-      <DialogTitle>Competitive Intelligence</DialogTitle>
-      <DialogContent>
-        <CompetitiveIntelligence />
-      </DialogContent>
-      <DialogActions>
-        <Button onClick={() => setCompetitiveIntelligenceModalOpen(false)} variant="outlined">
-          Close
-        </Button>
-      </DialogActions>
-    </Dialog>
-
-    {/* Advanced Analytics Modal */}
-    <Dialog
-      open={advancedAnalyticsModalOpen}
-      onClose={() => setAdvancedAnalyticsModalOpen(false)}
-      maxWidth="lg"
-      fullWidth
-      PaperProps={{
-        sx: {
-          m: { xs: 1, sm: 2 },
-          maxHeight: { xs: '95vh', sm: '90vh' },
-          overflow: 'hidden'
-        }
-      }}
-    >
-      <DialogTitle sx={{ 
-        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-        color: 'white',
-        fontWeight: 600
-      }}>
-        Advanced Analytics Suite
-      </DialogTitle>
-      <DialogContent sx={{ 
-        p: { xs: 2, sm: 3 },
-        pb: { xs: 6, sm: 3 },
-        maxWidth: '100%',
-        overflow: 'hidden',
-        '& *': { maxWidth: '100%' }
-      }}>
-        <Box sx={{ 
-          display: 'grid', 
-          gridTemplateColumns: { 
-            xs: '1fr', 
-            md: 'repeat(2, 1fr)' 
-          }, 
-          gap: 3 
-        }}>
-          {/* Live Performance Monitoring */}
-          <Box sx={{ p: 2, border: '1px solid', borderColor: 'divider', borderRadius: 1 }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
-              <Box sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: 40,
-                height: 40,
-                borderRadius: '50%',
-                bgcolor: 'primary.main',
-                color: 'primary.contrastText'
-              }}>
-                <Activity size={20} />
-              </Box>
-              <Typography variant="h6" sx={{ color: 'text.primary' }}>
-                Live Performance Monitoring
-              </Typography>
-            </Box>
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-              Real-time tracking of content engagement, reach, and conversion metrics.
-            </Typography>
-            <Button variant="outlined" fullWidth>
-              View Live Data
-            </Button>
-          </Box>
-
-          {/* Cross-Platform Analytics */}
-          <Box sx={{ p: 2, border: '1px solid', borderColor: 'divider', borderRadius: 1 }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
-              <Box sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: 40,
-                height: 40,
-                borderRadius: '50%',
-                bgcolor: 'secondary.main',
-                color: 'secondary.contrastText'
-              }}>
-                <BarChart3 size={20} />
-              </Box>
-              <Typography variant="h6" sx={{ color: 'text.primary' }}>
-                Cross-Platform Analytics
-              </Typography>
-            </Box>
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-              Comprehensive analytics across all your social media platforms.
-            </Typography>
-            <Button variant="outlined" fullWidth>
-              View Cross-Platform
-            </Button>
-          </Box>
-
-          {/* Predictive Analytics */}
-          <Box sx={{ p: 2, border: '1px solid', borderColor: 'divider', borderRadius: 1 }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
-              <Box sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: 40,
-                height: 40,
-                borderRadius: '50%',
-                bgcolor: 'success.main',
-                color: 'success.contrastText'
-              }}>
-                <TrendingUp size={20} />
-              </Box>
-              <Typography variant="h6" sx={{ color: 'text.primary' }}>
-                Predictive Analytics
-              </Typography>
-            </Box>
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-              AI-powered forecasting of content performance and audience growth.
-            </Typography>
-            <Button variant="outlined" fullWidth>
-              View Predictions
-            </Button>
-          </Box>
-
-          {/* Audience Insights */}
-          <Box sx={{ p: 2, border: '1px solid', borderColor: 'divider', borderRadius: 1 }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
-              <Box sx={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: 40,
-                height: 40,
-                borderRadius: '50%',
-                bgcolor: 'warning.main',
-                color: 'warning.contrastText'
-              }}>
-                <Users size={20} />
-              </Box>
-              <Typography variant="h6" sx={{ color: 'text.primary' }}>
-                Advanced Audience Insights
-              </Typography>
-            </Box>
-            <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-              Deep audience analysis and demographic insights for better targeting.
-            </Typography>
-            <Button variant="outlined" fullWidth>
-              Analyze Audience
-            </Button>
-          </Box>
-        </Box>
-      </DialogContent>
-      <DialogActions sx={{ p: 2 }}>
-        <Button onClick={() => setAdvancedAnalyticsModalOpen(false)}>Close</Button>
-      </DialogActions>
-    </Dialog>
+    {/* Bottom Spacer to Clear Bottom Navigation */}
+    <div className="h-32 sm:h-10 w-full"></div>
   </Container>
   );
 } 

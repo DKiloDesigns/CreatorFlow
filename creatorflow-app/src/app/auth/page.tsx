@@ -37,6 +37,8 @@ export default function AuthPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
+  const [businessName, setBusinessName] = useState('');
+  const [displayName, setDisplayName] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isCheckingEmail, setIsCheckingEmail] = useState(false);
   const [isNewUser, setIsNewUser] = useState<boolean | null>(null);
@@ -46,12 +48,18 @@ export default function AuthPage() {
 
   // Check if user is already authenticated
   useEffect(() => {
+    let isMounted = true;
+    
     getSession().then((session) => {
-      if (session) {
+      if (isMounted && session) {
         router.push('/dashboard');
       }
     });
-  }, [router]);
+    
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   // Email validation
   useEffect(() => {
@@ -106,16 +114,25 @@ export default function AuthPage() {
 
     try {
       if (isNewUser) {
-        // Validate name for new users
+        // Validate required fields for new users
         if (!name.trim()) {
           throw new Error('Name is required for new accounts');
+        }
+        if (!displayName.trim()) {
+          throw new Error('Display name is required for new accounts');
         }
 
         // Sign up new user
         const response = await fetch('/api/auth/signup', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, password, name }),
+          body: JSON.stringify({ 
+            email, 
+            password, 
+            name, 
+            businessName: businessName.trim() || null,
+            displayName: displayName.trim()
+          }),
         });
 
         if (!response.ok) {
@@ -193,7 +210,7 @@ export default function AuthPage() {
           <Typography variant="h3" component="h1" sx={{ fontWeight: 'bold', mb: 1 }}>
             CreatorFlow
           </Typography>
-          <Typography variant="body1" sx={{ color: 'text.secondary' }}>
+          <Typography variant="body1" sx={{ color: '#f1f5f9 !important', fontWeight: 500, fontSize: '1.1rem' }}>
             {getDescription()}
           </Typography>
         </Box>
@@ -239,6 +256,43 @@ export default function AuthPage() {
                   onChange={(e) => setName(e.target.value)}
                   required
                   fullWidth
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <User style={{ width: 16, height: 16 }} />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              )}
+
+              {/* Business Name Field (only for new users) */}
+              {isNewUser && (
+                <TextField
+                  label="Business Name (Optional)"
+                  value={businessName}
+                  onChange={(e) => setBusinessName(e.target.value)}
+                  fullWidth
+                  placeholder="e.g., My Creative Agency"
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <User style={{ width: 16, height: 16 }} />
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+              )}
+
+              {/* Display Name Field (only for new users) */}
+              {isNewUser && (
+                <TextField
+                  label="Display Name / Username"
+                  value={displayName}
+                  onChange={(e) => setDisplayName(e.target.value)}
+                  required
+                  fullWidth
+                  placeholder="e.g., @johndoe or John Doe"
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
@@ -312,6 +366,37 @@ export default function AuthPage() {
                 )}
               </Button>
             </Box>
+
+            {/* Switch Options */}
+            {isNewUser === false && (
+              <Box sx={{ textAlign: 'center', mt: 2 }}>
+                <Typography variant="body2" sx={{ color: 'text.secondary', mb: 1 }}>
+                  Don't have an account with this email?
+                </Typography>
+                <Button
+                  variant="text"
+                  onClick={() => setIsNewUser(true)}
+                  sx={{ color: 'primary.main', textTransform: 'none' }}
+                >
+                  Create new account
+                </Button>
+              </Box>
+            )}
+
+            {isNewUser === true && (
+              <Box sx={{ textAlign: 'center', mt: 2 }}>
+                <Typography variant="body2" sx={{ color: 'text.secondary', mb: 1 }}>
+                  Already have an account?
+                </Typography>
+                <Button
+                  variant="text"
+                  onClick={() => setIsNewUser(false)}
+                  sx={{ color: 'primary.main', textTransform: 'none' }}
+                >
+                  Sign in instead
+                </Button>
+              </Box>
+            )}
 
             {/* Divider */}
             <Divider sx={{ my: 3 }}>

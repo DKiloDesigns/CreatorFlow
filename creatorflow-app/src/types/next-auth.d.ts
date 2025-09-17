@@ -23,5 +23,6 @@ declare module "next-auth" {
    */
   interface JWT {
     id?: string;
+    plan?: string;
   }
 }

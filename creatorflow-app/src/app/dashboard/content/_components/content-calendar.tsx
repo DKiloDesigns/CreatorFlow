@@ -13,8 +13,21 @@ import { Loader2, AlertCircle } from 'lucide-react'; // For loading/error states
 import { PostStatus } from '@prisma/client';
 import { 
   Button,
-  Tooltip
+  Tooltip,
+  Box,
+  Typography,
+  IconButton,
+  ToggleButton,
+  ToggleButtonGroup
 } from '@mui/material';
+import { 
+  ChevronLeft as ChevronLeftIcon,
+  ChevronRight as ChevronRightIcon,
+  Today as TodayIcon,
+  ViewModule as MonthIcon,
+  ViewWeek as WeekIcon,
+  ViewDay as DayIcon
+} from '@mui/icons-material';
 
 // Type for the data fetched from API
 interface FetchedPost {
@@ -80,6 +93,9 @@ export default function ContentCalendar() {
   const [error, setError] = useState<string | null>(null);
   const [calendarEvents, setCalendarEvents] = useState<CalendarEvent[]>([]);
   const [ariaMessage, setAriaMessage] = useState('');
+  const [currentView, setCurrentView] = useState('dayGridMonth');
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [calendarRef, setCalendarRef] = useState<any>(null);
 
   // Move fetchPosts to component scope
   const fetchPosts = async () => {
@@ -180,6 +196,45 @@ export default function ContentCalendar() {
     fetchPosts();
   };
 
+  // Navigation functions
+  const handlePrev = () => {
+    if (calendarRef) {
+      calendarRef.getApi().prev();
+      setCurrentDate(calendarRef.getApi().getDate());
+    }
+  };
+
+  const handleNext = () => {
+    if (calendarRef) {
+      calendarRef.getApi().next();
+      setCurrentDate(calendarRef.getApi().getDate());
+    }
+  };
+
+  const handleToday = () => {
+    if (calendarRef) {
+      calendarRef.getApi().today();
+      setCurrentDate(new Date());
+    }
+  };
+
+  const handleViewChange = (event: React.MouseEvent<HTMLElement>, newView: string | null) => {
+    if (newView && calendarRef) {
+      calendarRef.getApi().changeView(newView);
+      setCurrentView(newView);
+    }
+  };
+
+  // Get formatted date string for header
+  const getFormattedDate = () => {
+    if (!calendarRef) return '';
+    const date = calendarRef.getApi().getDate();
+    return date.toLocaleDateString('en-US', { 
+      year: 'numeric', 
+      month: 'long' 
+    });
+  };
+
   // Custom event render with tooltip
   function eventRenderWithTooltip(eventInfo: any) {
     const { status, platforms, contentText } = eventInfo.event.extendedProps as CalendarEvent['extendedProps'];
@@ -235,59 +290,203 @@ export default function ContentCalendar() {
         </div>
       )}
       {!isLoading && !error && (
-  <div className="min-h-[400px]">
-    <FullCalendar
-      key={calendarEvents.length}
-      plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
-      initialView="dayGridMonth"
-      weekends={true}
-      events={calendarEvents}
-      headerToolbar={{
-        left: 'title',
-        center: 'prev,next today',
-        right: 'dayGridMonth,timeGridWeek,timeGridDay'
-      }}
-      height="auto"
-      aspectRatio={1.35}
-      dayMaxEvents={3}
-      eventContent={eventRenderWithTooltip}
-      eventClick={(info) => {
-        const { contentText, status, platforms } = info.event.extendedProps as CalendarEvent['extendedProps'];
-        toast.info(`${contentText.substring(0, 100)}...`, {
-          description: `Status: ${status} | Platforms: ${platforms.join(', ')}`
-        });
-      }}
-      buttonText={{
-        today: 'Today',
-        month: 'Month',
-        week: 'Week',
-        day: 'Day'
-      }}
-      views={{
-        dayGridMonth: {
-          titleFormat: { year: 'numeric', month: 'long' },
-          dayHeaderFormat: { weekday: 'short' }
-        },
-        timeGridWeek: {
-          titleFormat: { year: 'numeric', month: 'short', day: 'numeric' }
-        },
-        timeGridDay: {
-          titleFormat: { year: 'numeric', month: 'long', day: 'numeric' }
-        }
-      }}
-      windowResizeDelay={100}
-      eventResizableFromStart={false}
-      selectable={false}
-      selectMirror={false}
-      loading={(isLoading) => {
-        if (isLoading) {
-          setAriaMessage('Loading calendar events...');
-        } else {
-          setAriaMessage('');
-        }
-      }}
-    />
-  </div>
+        <Box sx={{ minHeight: 400 }}>
+          {/* Custom Header */}
+          <Box sx={{ 
+            mb: 3,
+            border: '1px solid',
+            borderColor: 'divider',
+            borderRadius: 2,
+            overflow: 'hidden'
+          }}>
+            {/* Top Row - Month/Year Header */}
+            <Box sx={{ 
+              p: 2,
+              bgcolor: 'primary.main',
+              color: 'primary.contrastText',
+              textAlign: 'center'
+            }}>
+              <Typography variant="h5" component="h2" sx={{ fontWeight: 600 }}>
+                {getFormattedDate()}
+              </Typography>
+            </Box>
+            
+            {/* Bottom Row - Navigation and View Controls */}
+            <Box sx={{ 
+              p: 2,
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              flexWrap: 'wrap',
+              gap: 2,
+              bgcolor: 'background.paper'
+            }}>
+              {/* Left Side - Navigation */}
+              <Box sx={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: 1,
+                flexWrap: 'wrap'
+              }}>
+                <IconButton 
+                  onClick={handlePrev}
+                  size="small"
+                  sx={{ 
+                    border: '1px solid',
+                    borderColor: 'divider',
+                    '&:hover': { bgcolor: 'action.hover' }
+                  }}
+                >
+                  <ChevronLeftIcon />
+                </IconButton>
+                <IconButton 
+                  onClick={handleNext}
+                  size="small"
+                  sx={{ 
+                    border: '1px solid',
+                    borderColor: 'divider',
+                    '&:hover': { bgcolor: 'action.hover' }
+                  }}
+                >
+                  <ChevronRightIcon />
+                </IconButton>
+                <Button
+                  variant="outlined"
+                  startIcon={<TodayIcon />}
+                  onClick={handleToday}
+                  size="small"
+                  sx={{ 
+                    ml: 1,
+                    textTransform: 'none',
+                    fontWeight: 500
+                  }}
+                >
+                  Today
+                </Button>
+              </Box>
+
+              {/* Right Side - View Switcher */}
+              <ToggleButtonGroup
+                value={currentView}
+                exclusive
+                onChange={handleViewChange}
+                size="small"
+                sx={{
+                  '& .MuiToggleButton-root': {
+                    textTransform: 'none',
+                    fontWeight: 500,
+                    px: 2,
+                    py: 0.5,
+                    border: '1px solid',
+                    borderColor: 'divider',
+                    '&.Mui-selected': {
+                      bgcolor: 'primary.main',
+                      color: 'primary.contrastText',
+                      '&:hover': {
+                        bgcolor: 'primary.dark',
+                      }
+                    }
+                  }
+                }}
+              >
+                <ToggleButton value="dayGridMonth" aria-label="Month view">
+                  <MonthIcon sx={{ mr: 1, fontSize: 18 }} />
+                  Month
+                </ToggleButton>
+                <ToggleButton value="timeGridWeek" aria-label="Week view">
+                  <WeekIcon sx={{ mr: 1, fontSize: 18 }} />
+                  Week
+                </ToggleButton>
+                <ToggleButton value="timeGridDay" aria-label="Day view">
+                  <DayIcon sx={{ mr: 1, fontSize: 18 }} />
+                  Day
+                </ToggleButton>
+              </ToggleButtonGroup>
+            </Box>
+          </Box>
+
+          {/* Calendar */}
+          <Box sx={{ 
+            '& .fc': {
+              color: 'text.primary',
+              '& .fc-daygrid-day-number': {
+                color: 'text.primary !important',
+                fontWeight: 500
+              },
+              '& .fc-daygrid-day': {
+                color: 'text.primary'
+              },
+              '& .fc-col-header-cell': {
+                color: 'text.primary !important',
+                fontWeight: 600
+              },
+              '& .fc-daygrid-day-top': {
+                color: 'text.primary'
+              },
+              '& .fc-day-today': {
+                backgroundColor: 'action.hover !important',
+                '& .fc-daygrid-day-number': {
+                  color: 'primary.main !important',
+                  fontWeight: 'bold'
+                }
+              }
+            }
+          }}>
+            <FullCalendar
+              ref={setCalendarRef}
+              key={calendarEvents.length}
+              plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
+              initialView="dayGridMonth"
+              weekends={true}
+              events={calendarEvents}
+              headerToolbar={false} // Hide default header
+              height="auto"
+              aspectRatio={1.35}
+              dayMaxEvents={3}
+              eventContent={eventRenderWithTooltip}
+            eventClick={(info) => {
+              const { contentText, status, platforms } = info.event.extendedProps as CalendarEvent['extendedProps'];
+              toast.info(`${contentText.substring(0, 100)}...`, {
+                description: `Status: ${status} | Platforms: ${platforms.join(', ')}`
+              });
+            }}
+            views={{
+              dayGridMonth: {
+                titleFormat: { year: 'numeric', month: 'long' },
+                dayHeaderFormat: { weekday: 'short' }
+              },
+              timeGridWeek: {
+                titleFormat: { year: 'numeric', month: 'short', day: 'numeric' }
+              },
+              timeGridDay: {
+                titleFormat: { year: 'numeric', month: 'long', day: 'numeric' }
+              }
+            }}
+            windowResizeDelay={100}
+            eventResizableFromStart={false}
+            selectable={true}
+            selectMirror={false}
+            dateClick={(info) => {
+              // Handle day click - you can add functionality here
+              console.log('Day clicked:', info.dateStr);
+              toast.info(`Selected date: ${info.dateStr}`);
+            }}
+            loading={(isLoading) => {
+              if (isLoading) {
+                setAriaMessage('Loading calendar events...');
+              } else {
+                setAriaMessage('');
+              }
+            }}
+            viewDidMount={(view) => {
+              if (view && view.view && view.calendar) {
+                setCurrentView(view.view.type);
+                setCurrentDate(view.calendar.getDate());
+              }
+            }}
+            />
+          </Box>
+        </Box>
       )}
 
       {/* Bottom Spacer to Clear Bottom Navigation */}

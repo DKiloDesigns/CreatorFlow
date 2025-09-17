@@ -27,7 +27,8 @@ export const authOptions: NextAuthOptions = {
       name: "Credentials",
       credentials: {
         email: { label: "Email", type: "email" },
-        password: { label: "Password", type: "password" }
+        password: { label: "Password", type: "password" },
+        name: { label: "Name", type: "text" }
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
@@ -200,6 +201,18 @@ export const authOptions: NextAuthOptions = {
         token.name = user.name;
         token.email = user.email;
         token.picture = user.image;
+        
+        // Fetch user plan from database
+        try {
+          const dbUser = await prisma.user.findUnique({
+            where: { id: user.id },
+            select: { plan: true }
+          });
+          token.plan = dbUser?.plan || 'Free';
+        } catch (error) {
+          console.error('[NextAuth][jwt callback] Error fetching user plan:', error);
+          token.plan = 'Free';
+        }
       }
       
       // Ensure token.id is always available
@@ -207,13 +220,13 @@ export const authOptions: NextAuthOptions = {
         token.id = token.sub;
       }
       
-      console.log('[NextAuth][jwt callback] Final token:', { id: token.id, name: token.name, email: token.email });
+      console.log('[NextAuth][jwt callback] Final token:', { id: token.id, name: token.name, email: token.email, plan: token.plan });
       return token;
     },
     async session({ session, token, user }) {
       console.log('[NextAuth][session callback]', { 
         session: session ? 'Session data available' : null,
-        token: token ? { sub: token.sub, id: token.id, name: token.name, email: token.email } : null,
+        token: token ? { sub: token.sub, id: token.id, name: token.name, email: token.email, plan: token.plan } : null,
         user: user ? { id: user?.id } : null
       });
       
@@ -228,6 +241,7 @@ export const authOptions: NextAuthOptions = {
         session.user.name = token.name as string;
         session.user.email = token.email as string;
         session.user.image = token.picture as string;
+        session.user.plan = token.plan as string || 'Free';
       }
       
       console.log('[NextAuth][session callback] Final session:', session);
@@ -237,7 +251,7 @@ export const authOptions: NextAuthOptions = {
   secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET,
   debug: true, // Enable debug mode to see what's happening
   pages: {
-    signIn: '/signin',
+    signIn: '/auth',
     signOut: '/',
     error: '/error',
   },

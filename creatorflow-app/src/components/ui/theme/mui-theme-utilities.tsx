@@ -23,7 +23,7 @@ import {
 import {
   Brightness4 as DarkModeIcon,
   Brightness7 as LightModeIcon,
-  HighContrast as HighContrastIcon,
+  Contrast as HighContrastIcon,
   Palette as PaletteIcon,
   Settings as SettingsIcon,
 } from '@mui/icons-material';

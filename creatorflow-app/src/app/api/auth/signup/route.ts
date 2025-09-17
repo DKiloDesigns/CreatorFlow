@@ -4,12 +4,12 @@ import bcrypt from 'bcryptjs';
 
 export async function POST(request: NextRequest) {
   try {
-    const { email, password, name } = await request.json();
+    const { email, password, name, businessName, displayName } = await request.json();
 
     // Validation
-    if (!email || !password || !name) {
+    if (!email || !password || !name || !displayName) {
       return NextResponse.json(
-        { error: 'Email, password, and name are required' },
+        { error: 'Email, password, name, and display name are required' },
         { status: 400 }
       );
     }
@@ -42,6 +42,8 @@ export async function POST(request: NextRequest) {
         email: email.toLowerCase(),
         password: hashedPassword,
         name: name.trim(),
+        businessName: businessName?.trim() || null,
+        displayName: displayName.trim(),
         role: 'USER',
         notificationPreferences: {
           email: true,
@@ -53,6 +55,8 @@ export async function POST(request: NextRequest) {
         id: true,
         email: true,
         name: true,
+        businessName: true,
+        displayName: true,
         role: true
       }
     });

@@ -25,23 +25,60 @@ const PLANS = [
   {
     name: "Free",
     price: "$0/month",
-    features: ["1 social account", "Basic analytics", "Community access"],
+    features: [
+      "1 social account", 
+      "Basic analytics", 
+      "Community access",
+      "2 free Academy courses",
+      "Basic template marketplace access"
+    ],
     cta: "Get Started",
     href: "/auth",
     highlight: false,
   },
   {
+    name: "Creator",
+    price: "$19/month",
+    features: [
+      "3 social accounts", 
+      "Advanced analytics", 
+      "Basic scheduling",
+      "5 Academy courses included",
+      "Full template marketplace access",
+      "Email support"
+    ],
+    cta: "Start Free Trial",
+    href: "/auth",
+    highlight: false,
+  },
+  {
     name: "Pro",
-    price: "$12/month",
-    features: ["5 social accounts", "Advanced analytics", "Monetization dashboard", "Priority support"],
+    price: "$49/month",
+    features: [
+      "All social accounts", 
+      "Advanced analytics & insights", 
+      "Advanced scheduling",
+      "All Academy courses included",
+      "Premium template marketplace",
+      "Early access to new courses",
+      "Priority support"
+    ],
     cta: "Start Free Trial",
     href: "/auth",
     highlight: true,
   },
   {
     name: "Enterprise",
-    price: "Contact us",
-    features: ["Unlimited accounts", "Custom integrations", "Dedicated manager"],
+    price: "$199/month",
+    features: [
+      "Unlimited everything", 
+      "White-label options", 
+      "Custom integrations",
+      "All Academy courses + custom training",
+      "Enterprise template marketplace",
+      "Dedicated support",
+      "SLA guarantees"
+    ],
     cta: "Contact Sales",
     href: "/contact",
     highlight: false,

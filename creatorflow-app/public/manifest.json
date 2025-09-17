@@ -1,27 +1,117 @@
 {
-  "name": "CreatorFlow - Social Media Management",
-  "short_name": "CreatorFlow",
-  "description": "AI-powered social media management platform for content creators",
-  "start_url": "/",
+  "name": "CreatorFlow Free Tools",
+  "short_name": "CreatorFlow Tools",
+  "description": "Powerful free social media tools to optimize your content strategy",
+  "start_url": "/tools",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#000000",
+  "theme_color": "#0066CC",
   "orientation": "portrait-primary",
+  "scope": "/tools",
   "icons": [
     {
-      "src": "/icon-192x192.png",
-      "sizes": "192x192",
+      "src": "/icons/icon-72x72.png",
+      "sizes": "72x72",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "maskable any"
     },
     {
-      "src": "/icon-512x512.png",
+      "src": "/icons/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-128x128.png",
+      "sizes": "128x128",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-144x144.png",
+      "sizes": "144x144",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-152x152.png",
+      "sizes": "152x152",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "maskable any"
     }
   ],
-  "categories": ["productivity", "social", "business"],
+  "categories": ["productivity", "business", "social"],
   "lang": "en",
-  "dir": "ltr"
-} 
+  "dir": "ltr",
+  "prefer_related_applications": false,
+  "shortcuts": [
+    {
+      "name": "ROI Calculator",
+      "short_name": "Calculator",
+      "description": "Calculate your social media ROI",
+      "url": "/tools/social-media-calculator",
+      "icons": [
+        {
+          "src": "/icons/calculator-96x96.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Hashtag Research",
+      "short_name": "Hashtags",
+      "description": "Find trending hashtags",
+      "url": "/tools/hashtag-research",
+      "icons": [
+        {
+          "src": "/icons/hashtag-96x96.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "Time Optimizer",
+      "short_name": "Timing",
+      "description": "Find optimal posting times",
+      "url": "/tools/posting-time-optimizer",
+      "icons": [
+        {
+          "src": "/icons/clock-96x96.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/mobile-tools.png",
+      "sizes": "390x844",
+      "type": "image/png",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "/screenshots/desktop-tools.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
+    }
+  ]
+}

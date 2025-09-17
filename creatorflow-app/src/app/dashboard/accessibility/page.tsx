@@ -75,7 +75,7 @@ export default function AccessibilityPage() {
 
   return (
     <Box sx={{ p: 3, maxWidth: 1200, mx: 'auto' }}>
-      <Typography variant="h4" component="h1" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+      <Typography variant="h4" component="h1" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 2, color: 'text.primary', fontWeight: 'bold' }}>
         <AccessibilityIcon color="primary" />
         Accessibility Testing & WCAG 2.1 AA Compliance
       </Typography>
@@ -89,7 +89,7 @@ export default function AccessibilityPage() {
         <Grid item xs={12} md={6}>
           <Card>
             <CardContent>
-              <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1, color: 'text.primary', fontWeight: 'bold' }}>
                 <VolumeUpIcon color="primary" />
                 ARIA Live Regions
               </Typography>
@@ -128,7 +128,7 @@ export default function AccessibilityPage() {
         <Grid item xs={12} md={6}>
           <Card>
             <CardContent>
-              <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1, color: 'text.primary', fontWeight: 'bold' }}>
                 <KeyboardIcon color="primary" />
                 Focus Management
               </Typography>
@@ -151,7 +151,7 @@ export default function AccessibilityPage() {
         <Grid item xs={12} md={6}>
           <Card>
             <CardContent>
-              <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1, color: 'text.primary', fontWeight: 'bold' }}>
                 <TouchAppIcon color="primary" />
                 Form Validation
               </Typography>
@@ -208,7 +208,7 @@ export default function AccessibilityPage() {
         <Grid item xs={12} md={6}>
           <Card>
             <CardContent>
-              <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1, color: 'text.primary', fontWeight: 'bold' }}>
                 <KeyboardIcon color="primary" />
                 Keyboard Navigation
               </Typography>
@@ -233,7 +233,7 @@ export default function AccessibilityPage() {
         <Grid item xs={12} md={6}>
           <Card>
             <CardContent>
-              <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1, color: 'text.primary', fontWeight: 'bold' }}>
                 <VisibilityIcon color="primary" />
                 Motion Reduction
               </Typography>
@@ -265,7 +265,7 @@ export default function AccessibilityPage() {
         <Grid item xs={12} md={6}>
           <Card>
             <CardContent>
-              <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Typography variant="h6" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 1, color: 'text.primary', fontWeight: 'bold' }}>
                 <VisibilityIcon color="primary" />
                 Color Contrast Checker
               </Typography>
@@ -282,7 +282,7 @@ export default function AccessibilityPage() {
       {/* WCAG Compliance Status */}
       <Card sx={{ mt: 3 }}>
         <CardContent>
-          <Typography variant="h6" gutterBottom>
+          <Typography variant="h6" gutterBottom sx={{ color: 'text.primary', fontWeight: 'bold' }}>
             WCAG 2.1 AA Compliance Status
           </Typography>
           

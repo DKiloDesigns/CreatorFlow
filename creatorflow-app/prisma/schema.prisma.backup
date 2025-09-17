@@ -1,0 +1,887 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                      String                 @id @default(cuid())
+  name                    String?
+  email                   String?                @unique
+  password                String?
+  emailVerified           DateTime?
+  image                   String?
+  businessName            String?
+  displayName             String?
+  createdAt               DateTime               @default(now())
+  updatedAt               DateTime               @updatedAt
+  plan                    String                 @default("FREE")
+  stripeCustomerId        String?                @unique @map("stripe_customer_id")
+  stripeSubscriptionId    String?                @unique @map("stripe_subscription_id")
+  stripePriceId           String?                @map("stripe_price_id")
+  stripeCurrentPeriodEnd  DateTime?              @map("stripe_current_period_end")
+  paymentRetryCount       Int?                   @default(0) @map("payment_retry_count")
+  paymentRetryDate        DateTime?              @map("payment_retry_date")
+  settings                Json?
+  twoFAEnabled            Boolean                @default(false)
+  role                    UserRole               @default(USER)
+  notificationPreferences Json?
+  deactivated             Boolean                @default(false)
+  resetToken              String?                @unique
+  resetTokenExpiry        DateTime?
+  isTrialUser             Boolean                @default(false) @map("is_trial_user")
+  promoCodeUsed           String?                @map("promo_code_used")
+  promoCodeUsedAt         DateTime?              @map("promo_code_used_at")
+  trialEndDate            DateTime?              @map("trial_end_date")
+  trialStartDate          DateTime?              @map("trial_start_date")
+  accounts                Account[]
+  analyticsAggregations   AnalyticsAggregation[]
+  announcementsCreated    Announcement[]         @relation("AnnouncementCreatedBy")
+  apiKeys                 ApiKey[]
+  audienceMetrics         AudienceMetric[]
+  auditLogs               AuditLog[]             @relation("AuditLogActor")
+  brandCollabs            BrandCollab[]
+  captionTemplates        CaptionTemplate[]
+  feedback                Feedback[]
+  hashtagGroups           HashtagGroup[]
+  notifications           Notification[]
+  posts                   Post[]
+  sessions                Session[]
+  socialAccounts          SocialAccount[]
+  ownedTeams              Team[]                 @relation("TeamOwner")
+  sentInvitations         TeamInvitation[]       @relation("TeamInvitationSender")
+  teamMemberships         TeamMember[]           @relation("TeamMemberships")
+  folders                 TemplateFolder[]
+  snippets                TemplateSnippet[]
+  announcementsRead       Announcement[]         @relation("AnnouncementReads")
+  sharedFolders           TemplateFolder[]       @relation("FolderShares")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model SocialAccount {
+  id                    String    @id @default(cuid())
+  userId                String
+  platform              String
+  platformUserId        String
+  username              String
+  encryptedAccessToken  String?
+  encryptedRefreshToken String?
+  tokenExpiresAt        DateTime?
+  scopes                String?
+  status                String    @default("active")
+  metadata              Json?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, platform])
+}
+
+model Post {
+  id             String       @id @default(cuid())
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  userId         String
+  contentText    String?
+  mediaUrls      String[]
+  platforms      String[]
+  scheduledAt    DateTime?
+  publishedAt    DateTime?
+  status         PostStatus   @default(DRAFT)
+  views          Int?         @default(0)
+  likes          Int?         @default(0)
+  comments       Int?         @default(0)
+  shares         Int?         @default(0)
+  reach          Int?         @default(0)
+  impressions    Int?         @default(0)
+  engagementRate Float?       @default(0)
+  brandCollabId  String?
+  errorMessage   String?
+  hashtags       String[]     @default([])
+  isRepost       Boolean      @default(false)
+  location       String?
+  mentions       String[]     @default([])
+  parentPostId   String?
+  repostCount    Int?
+  repostInterval Int?
+  brandCollab    BrandCollab? @relation(fields: [brandCollabId], references: [id])
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([brandCollabId])
+  @@index([parentPostId])
+}
+
+model CaptionTemplate {
+  id         String            @id @default(cuid())
+  userId     String
+  name       String
+  content    String
+  category   String            @default("Uncategorized")
+  tags       String[]          @default([])
+  isFavorite Boolean           @default(false)
+  isPinned   Boolean           @default(false)
+  createdAt  DateTime          @default(now())
+  updatedAt  DateTime          @updatedAt
+  activeFrom DateTime?
+  activeTo   DateTime?
+  usageLimit Int?
+  usageCount Int               @default(0)
+  language   String            @default("en")
+  order      Int               @default(0)
+  folderId   String?
+  folder     TemplateFolder?   @relation(fields: [folderId], references: [id])
+  user       User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  shares     TemplateShare[]   @relation("CaptionTemplateShares")
+  usages     TemplateUsage[]   @relation("CaptionTemplateUsages")
+  versions   TemplateVersion[] @relation("CaptionTemplateVersions")
+
+  @@index([userId])
+}
+
+model HashtagGroup {
+  id         String            @id @default(cuid())
+  userId     String
+  name       String
+  hashtags   String[]
+  category   String            @default("Uncategorized")
+  tags       String[]          @default([])
+  isFavorite Boolean           @default(false)
+  isPinned   Boolean           @default(false)
+  createdAt  DateTime          @default(now())
+  updatedAt  DateTime          @updatedAt
+  activeFrom DateTime?
+  activeTo   DateTime?
+  usageLimit Int?
+  usageCount Int               @default(0)
+  language   String            @default("en")
+  order      Int               @default(0)
+  folderId   String?
+  folder     TemplateFolder?   @relation(fields: [folderId], references: [id])
+  user       User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  shares     TemplateShare[]   @relation("HashtagGroupShares")
+  usages     TemplateUsage[]   @relation("HashtagGroupUsages")
+  versions   TemplateVersion[] @relation("HashtagGroupVersions")
+
+  @@index([userId])
+}
+
+model AudienceMetric {
+  id        String   @id @default(cuid())
+  userId    String
+  platform  String
+  date      DateTime
+  followers Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model BrandCollab {
+  id           String    @id @default(cuid())
+  userId       String
+  brandName    String
+  campaignName String
+  deadline     DateTime?
+  deliverables String?
+  payment      Float?
+  notes        String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  posts        Post[]
+}
+
+model ApiKey {
+  id        String    @id @default(cuid())
+  userId    String
+  key       String    @unique
+  name      String?
+  createdAt DateTime  @default(now())
+  revokedAt DateTime?
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model TemplateVersion {
+  id                String           @id @default(cuid())
+  captionTemplateId String?
+  hashtagGroupId    String?
+  type              String
+  userId            String
+  name              String
+  content           String?
+  hashtags          String[]
+  category          String
+  tags              String[]
+  createdAt         DateTime         @default(now())
+  captionTemplate   CaptionTemplate? @relation("CaptionTemplateVersions", fields: [captionTemplateId], references: [id])
+  hashtagGroup      HashtagGroup?    @relation("HashtagGroupVersions", fields: [hashtagGroupId], references: [id])
+}
+
+model TemplateShare {
+  id                String           @id @default(cuid())
+  type              String
+  captionTemplateId String?
+  hashtagGroupId    String?
+  userId            String
+  sharedWithUserId  String?
+  sharedWithEmail   String
+  permissions       String[]
+  createdAt         DateTime         @default(now())
+  captionTemplate   CaptionTemplate? @relation("CaptionTemplateShares", fields: [captionTemplateId], references: [id])
+  hashtagGroup      HashtagGroup?    @relation("HashtagGroupShares", fields: [hashtagGroupId], references: [id])
+
+  @@index([captionTemplateId])
+  @@index([hashtagGroupId])
+  @@index([sharedWithEmail])
+}
+
+model TemplateUsage {
+  id                String           @id @default(cuid())
+  type              String
+  captionTemplateId String?
+  hashtagGroupId    String?
+  userId            String
+  action            String
+  usedAt            DateTime         @default(now())
+  captionTemplate   CaptionTemplate? @relation("CaptionTemplateUsages", fields: [captionTemplateId], references: [id])
+  hashtagGroup      HashtagGroup?    @relation("HashtagGroupUsages", fields: [hashtagGroupId], references: [id])
+
+  @@index([captionTemplateId])
+  @@index([hashtagGroupId])
+  @@index([userId])
+}
+
+model TemplateSnippet {
+  id        String   @id @default(cuid())
+  userId    String
+  name      String
+  content   String
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model TemplateFolder {
+  id               String            @id @default(cuid())
+  userId           String
+  name             String
+  parentId         String?
+  createdAt        DateTime          @default(now())
+  sharedWithEmails String[]          @default([])
+  deletedAt        DateTime?
+  isDeleted        Boolean           @default(false)
+  captionTemplates CaptionTemplate[]
+  hashtagGroups    HashtagGroup[]
+  parent           TemplateFolder?   @relation("FolderParent", fields: [parentId], references: [id])
+  children         TemplateFolder[]  @relation("FolderParent")
+  user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  sharedWith       User[]            @relation("FolderShares")
+
+  @@index([userId])
+  @@index([parentId])
+}
+
+model AnalyticsCache {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  data      Json
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([key, expiresAt])
+}
+
+model AnalyticsRateLimit {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  count     Int      @default(0)
+  resetAt   DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  @@index([key, resetAt])
+}
+
+model AnalyticsAggregation {
+  id        String   @id @default(cuid())
+  userId    String
+  type      String
+  platform  String?
+  startDate DateTime
+  endDate   DateTime
+  data      Json
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId, type, platform, startDate, endDate])
+}
+
+model Announcement {
+  id          String    @id @default(cuid())
+  title       String
+  body        String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  createdById String
+  published   Boolean   @default(false)
+  publishedAt DateTime?
+  audience    String?
+  createdBy   User      @relation("AnnouncementCreatedBy", fields: [createdById], references: [id])
+  readBy      User[]    @relation("AnnouncementReads")
+}
+
+model Team {
+  id          String           @id @default(cuid())
+  name        String
+  description String?
+  ownerId     String
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
+  settings    Json?
+  owner       User             @relation("TeamOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  invitations TeamInvitation[]
+  members     TeamMember[]
+  workspaces  TeamWorkspace[]
+
+  @@index([ownerId])
+}
+
+model TeamMember {
+  id        String           @id @default(cuid())
+  teamId    String
+  userId    String
+  role      TeamRole         @default(MEMBER)
+  joinedAt  DateTime         @default(now())
+  invitedBy String?
+  invitedAt DateTime?
+  status    TeamMemberStatus @default(ACTIVE)
+  team      Team             @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  user      User             @relation("TeamMemberships", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([teamId, userId])
+  @@index([teamId])
+  @@index([userId])
+}
+
+model TeamWorkspace {
+  id          String   @id @default(cuid())
+  teamId      String
+  name        String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  settings    Json?
+  team        Team     @relation(fields: [teamId], references: [id], onDelete: Cascade)
+
+  @@index([teamId])
+}
+
+model TeamInvitation {
+  id            String               @id @default(cuid())
+  teamId        String
+  email         String
+  role          TeamRole             @default(MEMBER)
+  invitedBy     String
+  token         String               @unique
+  expiresAt     DateTime
+  acceptedAt    DateTime?
+  createdAt     DateTime             @default(now())
+  respondedAt   DateTime?
+  status        TeamInvitationStatus @default(PENDING)
+  invitedByUser User                 @relation("TeamInvitationSender", fields: [invitedBy], references: [id])
+  team          Team                 @relation(fields: [teamId], references: [id], onDelete: Cascade)
+
+  @@index([teamId])
+  @@index([email])
+  @@index([token])
+}
+
+model Feedback {
+  id        String    @id @default(cuid())
+  userId    String
+  message   String
+  createdAt DateTime  @default(now())
+  resolved  Boolean   @default(false)
+  reply     String?
+  repliedAt DateTime?
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model AuditLog {
+  id         String   @id @default(cuid())
+  action     String
+  actorId    String?
+  targetId   String?
+  targetType String?
+  details    Json?
+  createdAt  DateTime @default(now())
+  actor      User?    @relation("AuditLogActor", fields: [actorId], references: [id])
+}
+
+model Notification {
+  id         String    @id @default(cuid())
+  userId     String
+  type       String
+  title      String
+  message    String
+  severity   String
+  category   String
+  channels   String[]
+  priority   String
+  metadata   Json?
+  actionUrl  String?
+  actionText String?
+  read       Boolean   @default(false)
+  expiresAt  DateTime?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([type])
+  @@index([read])
+  @@index([createdAt])
+}
+
+model PromoCode {
+  id          String    @id @default(cuid())
+  code        String    @unique
+  name        String
+  description String?
+  type        String    @default("TRIAL")
+  value       Int
+  maxUses     Int?      @map("max_uses")
+  usedCount   Int       @default(0) @map("used_count")
+  isActive    Boolean   @default(true) @map("is_active")
+  validFrom   DateTime  @default(now()) @map("valid_from")
+  validUntil  DateTime? @map("valid_until")
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([code])
+  @@index([isActive])
+  @@index([validFrom])
+  @@index([validUntil])
+}
+
+enum PostStatus {
+  DRAFT
+  SCHEDULED
+  PUBLISHING
+  PUBLISHED
+  FAILED
+}
+
+enum TeamRole {
+  OWNER
+  ADMIN
+  MEMBER
+  VIEWER
+}
+
+enum TeamMemberStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+}
+
+enum UserRole {
+  USER
+  ADMIN
+}
+
+enum TeamInvitationStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+  EXPIRED
+  CANCELED
+}
+
+enum ErrorSeverity {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum ErrorType {
+  CLIENT
+  SERVER
+  API
+  DATABASE
+  AUTH
+  VALIDATION
+  NETWORK
+  TIMEOUT
+}
+
+model ErrorLog {
+  id          String        @id @default(cuid())
+  type        ErrorType
+  severity    ErrorSeverity
+  message     String
+  stack       String?
+  context     Json?
+  timestamp   DateTime      @default(now())
+  resolved    Boolean       @default(false)
+  retryable   Boolean       @default(false)
+  userId      String?
+  sessionId   String?
+  requestId   String?
+  endpoint    String?
+  userAgent   String?
+  
+  @@index([timestamp])
+  @@index([type])
+  @@index([severity])
+  @@index([resolved])
+}
+
+model LoginAttempt {
+  id              String    @id @default(cuid())
+  identifier      String    // email or username
+  failedAttempts  Int       @default(0)
+  ipAddress       String
+  userAgent       String
+  createdAt       DateTime  @default(now())
+  lastFailedAt    DateTime?
+  success         Boolean   @default(false)
+  
+  @@index([identifier])
+  @@index([ipAddress])
+  @@index([createdAt])
+}
+
+model SecurityEvent {
+  id          String    @id @default(cuid())
+  userId      String?
+  type        String    // LOGIN_SUCCESS, LOGIN_FAILED, PASSWORD_CHANGE, etc.
+  severity    String    // low, medium, high, critical
+  description String
+  ipAddress   String
+  userAgent   String
+  metadata    Json?
+  timestamp   DateTime  @default(now())
+  
+  @@index([userId])
+  @@index([type])
+  @@index([severity])
+  @@index([timestamp])
+}
+
+model SecurityAudit {
+  id          String    @id @default(cuid())
+  userId      String
+  action      String
+  resource    String
+  success     Boolean
+  ipAddress   String
+  userAgent   String
+  metadata    Json?
+  timestamp   DateTime  @default(now())
+  
+  @@index([userId])
+  @@index([action])
+  @@index([success])
+  @@index([timestamp])
+}
+
+model ScheduledPost {
+  id           String   @id @default(cuid())
+  userId       String
+  content      String
+  mediaUrls    String[] @default([])
+  platforms    String[]
+  scheduledTime DateTime
+  status       String   @default("pending") // pending, published, failed
+  results      Json?    // Store platform-specific results
+  hashtags     String[] @default([])
+  location     String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  
+  @@index([userId])
+  @@index([scheduledTime])
+  @@index([status])
+}
+
+model PlatformIntegration {
+  id          String   @id @default(cuid())
+  userId      String
+  platform    String
+  status      String   @default("active") // active, inactive, error
+  lastSync    DateTime?
+  errorCount  Int      @default(0)
+  lastError   String?
+  settings    Json?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@unique([userId, platform])
+  @@index([userId])
+  @@index([platform])
+}
+
+model CustomDashboard {
+  id          String   @id @default(cuid())
+  userId      String
+  name        String
+  description String?
+  widgets     Json     // Array of dashboard widgets
+  isDefault   Boolean  @default(false)
+  isPublic    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@index([userId])
+}
+
+model ReportConfig {
+  id             String    @id @default(cuid())
+  userId         String
+  name           String
+  description    String?
+  type           String    // performance, engagement, growth, custom
+  frequency      String    // daily, weekly, monthly, quarterly, on-demand
+  platforms      String[]  @default([])
+  metrics        String[]  @default([])
+  format         String    @default("pdf") // pdf, excel, csv, json
+  recipients     String[]  @default([])
+  isActive       Boolean   @default(true)
+  lastGenerated  DateTime?
+  nextGeneration DateTime?
+  template       String?
+  filters        Json?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  
+  @@index([userId])
+  @@index([isActive])
+  @@index([nextGeneration])
+}
+
+model ReportData {
+  id          String   @id @default(cuid())
+  userId      String
+  configId    String
+  data        Json     // Report data
+  generatedAt DateTime @default(now())
+  
+  @@index([userId])
+  @@index([configId])
+  @@index([generatedAt])
+}
+
+model ReportTemplate {
+  id          String   @id @default(cuid())
+  userId      String?
+  name        String
+  description String?
+  type        String
+  sections    Json     // Array of report sections
+  isDefault   Boolean  @default(false)
+  isPublic    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@index([userId])
+  @@index([isPublic])
+}
+
+model Team {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  slug        String   @unique
+  ownerId     String
+  settings    Json     // Team settings and configuration
+  subscription Json    // Subscription and billing info
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@index([ownerId])
+  @@index([slug])
+}
+
+model TeamMember {
+  id          String   @id @default(cuid())
+  teamId      String
+  userId      String
+  role        String
+  permissions String[] @default([])
+  status      String   @default("active") // active, pending, suspended, removed
+  joinedAt    DateTime @default(now())
+  invitedBy   String
+  lastActiveAt DateTime?
+  metadata    Json?
+  
+  @@unique([teamId, userId])
+  @@index([teamId])
+  @@index([userId])
+}
+
+model TeamInvitation {
+  id        String   @id @default(cuid())
+  teamId    String
+  email     String
+  role      String
+  invitedBy String
+  token     String   @unique
+  expiresAt DateTime
+  status    String   @default("pending") // pending, accepted, expired, cancelled
+  createdAt DateTime @default(now())
+  
+  @@index([teamId])
+  @@index([email])
+  @@index([token])
+}
+
+model TeamActivity {
+  id        String   @id @default(cuid())
+  teamId    String
+  userId    String
+  action    String
+  description String
+  metadata  Json?
+  timestamp DateTime @default(now())
+  ipAddress String?
+  userAgent String?
+  
+  @@index([teamId])
+  @@index([userId])
+  @@index([timestamp])
+}
+
+model Permission {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  description String
+  resource    String
+  action      String
+  conditions  String[] @default([])
+  isSystem    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@index([resource])
+  @@index([action])
+}
+
+model Role {
+  id          String   @id @default(cuid())
+  name        String
+  description String
+  permissions String[] @default([])
+  isDefault   Boolean  @default(false)
+  isSystem    Boolean  @default(false)
+  level       Int      @default(5) // 1-10, higher = more permissions
+  teamId      String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@index([teamId])
+  @@index([level])
+}
+
+model UserRole {
+  id        String   @id @default(cuid())
+  userId    String
+  roleId    String
+  teamId    String?
+  assignedBy String
+  assignedAt DateTime @default(now())
+  
+  @@unique([userId, roleId, teamId])
+  @@index([userId])
+  @@index([roleId])
+  @@index([teamId])
+}
+
+model UserPermission {
+  id          String    @id @default(cuid())
+  userId      String
+  permission  String
+  teamId      String?
+  expiresAt   DateTime?
+  grantedBy   String
+  grantedAt   DateTime  @default(now())
+  
+  @@index([userId])
+  @@index([permission])
+  @@index([teamId])
+}
+
+model WhiteLabelConfig {
+  id           String   @id @default(cuid())
+  teamId       String   @unique
+  branding     Json     // Branding configuration
+  theming      Json     // Theme configuration
+  customization Json    // UI customization
+  domain       Json     // Domain configuration
+  features     Json     // Feature configuration
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  
+  @@index([teamId])
+}
+
+model EnterpriseReport {
+  id             String   @id @default(cuid())
+  teamId         String
+  type           String   // executive, operational, detailed, custom
+  period         Json     // Time period configuration
+  metrics        Json     // Enterprise metrics
+  insights       Json     // AI insights
+  recommendations Json    // Recommendations
+  generatedAt    DateTime @default(now())
+  generatedBy    String
+  recipients     String[] @default([])
+  status         String   @default("draft") // draft, ready, sent, archived
+  
+  @@index([teamId])
+  @@index([generatedAt])
+  @@index([status])
+}

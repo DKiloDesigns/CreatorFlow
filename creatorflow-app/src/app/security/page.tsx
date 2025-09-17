@@ -19,7 +19,7 @@ import {
 import { Shield, Activity, RefreshCw, AlertTriangle, Lock, Eye, Download } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Select } from '@mui/material';
-import { CardDescription } from '@/components/ui/card';
+import { CardDescription } from '@/components/ui/mui-card';
 
 interface SecurityEvent {
   id: string;

@@ -17,12 +17,13 @@ import {
   InputLabel,
   Chip,
   Alert,
-  AlertTitle
+  AlertTitle,
+  Tab,
+  Tabs
 } from '@mui/material';
 import { Calendar, Activity, Edit, Trash2, Play, TrendingUp } from 'lucide-react';
 import { format } from 'date-fns';
 import { Badge } from '@/components/ui/badge';
-import { Tab, Tabs, Box } from '@mui/material';
 import { CardDescription } from '@/components/ui/base/Card';
 
 interface ScheduledPost {

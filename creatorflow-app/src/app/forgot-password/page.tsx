@@ -71,7 +71,7 @@ export default function ForgotPasswordPage() {
             href="/auth"
             startIcon={<ArrowLeft style={{ width: 16, height: 16 }} />}
             variant="text"
-            sx={{ color: 'text.secondary' }}
+            sx={{ color: '#f1f5f9 !important' }}
           >
             Back to Sign In
           </Button>
@@ -82,7 +82,7 @@ export default function ForgotPasswordPage() {
           <Typography variant="h3" component="h1" sx={{ fontWeight: 'bold', mb: 1 }}>
             CreatorFlow
           </Typography>
-          <Typography variant="body1" sx={{ color: 'text.secondary' }}>
+          <Typography variant="body1" sx={{ color: '#f1f5f9 !important', fontWeight: 500 }}>
             Reset your password to get back to growing your audience
           </Typography>
         </Box>
@@ -150,7 +150,7 @@ export default function ForgotPasswordPage() {
             </Box>
 
             {/* Help Text */}
-            <Typography variant="body2" sx={{ textAlign: 'center', mt: 3, color: 'text.secondary' }}>
+            <Typography variant="body2" sx={{ textAlign: 'center', mt: 3, color: '#f1f5f9 !important' }}>
               We&apos;ll send you a secure link to reset your password. 
               Check your email and follow the instructions.
             </Typography>
