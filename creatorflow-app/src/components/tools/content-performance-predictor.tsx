@@ -352,6 +352,7 @@ export default function ContentPerformancePredictor() {
       >
         <Box sx={{ textAlign: 'center', mb: 4 }}>
           <Typography variant="h3" gutterBottom sx={{ 
+            color: 'primary.main',
             background: 'linear-gradient(45deg, #0066CC, #00CC66)',
             backgroundClip: 'text',
             WebkitBackgroundClip: 'text',

@@ -33,10 +33,12 @@ import {
   Home,
   ChevronDown,
   ChevronUp,
-  Target
+  Target,
+  CreditCard
 } from 'lucide-react';
 import { useAPIKey } from '@/hooks/use-api-key';
 import dynamic from 'next/dynamic';
+import SubscriptionStatus from '@/components/SubscriptionStatus';
 
 // Lazy load heavy components
 const MiniCalendar = dynamic(() => import('./_components/mini-calendar'), {
@@ -179,6 +181,11 @@ export default function DashboardPage() {
             <Typography variant="caption" color="text.secondary">Plan Status</Typography>
           </Box>
         </Box>
+      </Box>
+
+      {/* Subscription Status */}
+      <Box sx={{ mb: 4 }}>
+        <SubscriptionStatus />
       </Box>
 
       {/* Navigation Hub - Main Section */}

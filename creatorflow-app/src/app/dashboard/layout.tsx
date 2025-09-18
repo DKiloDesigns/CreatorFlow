@@ -105,6 +105,7 @@ export default function DashboardLayout({
     { href: '/dashboard/ai-tools', label: 'AI Tools', icon: Brain },
     { href: '/dashboard/collabs', label: 'Collabs', icon: Handshake },
     { href: '/dashboard/team', label: 'Team', icon: Building2 },
+    { href: '/dashboard/billing', label: 'Billing', icon: CreditCard },
     { href: '/dashboard/mobile', label: 'Mobile', icon: Smartphone },
     { href: '/dashboard/integrations', label: 'Integrations', icon: Plug },
     { href: '/dashboard/api', label: 'API', icon: Plug },

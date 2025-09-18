@@ -282,6 +282,7 @@ export default function MobileToolsPage() {
         {/* Header */}
         <Box sx={{ textAlign: 'center', mb: 4, mt: 2 }}>
           <Typography variant="h4" gutterBottom sx={{ 
+            color: 'primary.main',
             background: 'linear-gradient(45deg, #0066CC, #00CC66)',
             backgroundClip: 'text',
             WebkitBackgroundClip: 'text',

@@ -39,6 +39,7 @@ export function MinimalThemeProvider({ children }: { children: React.ReactNode }
   const [isDark, setIsDark] = useState(false);
 
   const toggleMode = () => {
+    console.log('Theme toggle clicked! Current isDark:', isDark);
     setIsDark(!isDark);
   };
 

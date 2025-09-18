@@ -157,7 +157,10 @@ export function ThemeToggle({ variant = 'icon', size = 'medium' }: ThemeTogglePr
   return (
     <Tooltip title={getTooltipText()}>
       <IconButton
-        onClick={handleClick}
+        onClick={() => {
+          console.log('ThemeToggle clicked! Current isDark:', isDark);
+          toggleMode();
+        }}
         size={size}
         sx={{
           transition: 'all 0.2s ease',
@@ -175,7 +178,7 @@ export function ThemeToggle({ variant = 'icon', size = 'medium' }: ThemeTogglePr
 
 // Advanced theme customizer component
 export function ThemeCustomizer() {
-  const { isDark } = useTheme();
+  const { isDark } = useMinimalTheme();
 
   return (
     <Box

@@ -1,13 +1,15 @@
 {
-  "name": "CreatorFlow Free Tools",
-  "short_name": "CreatorFlow Tools",
-  "description": "Powerful free social media tools to optimize your content strategy",
-  "start_url": "/tools",
+  "name": "CreatorFlow - Mobile Creator Platform",
+  "short_name": "CreatorFlow",
+  "description": "The ultimate mobile platform for content creators to grow, monetize, and manage their social media presence.",
+  "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#0066CC",
+  "theme_color": "#3B82F6",
   "orientation": "portrait-primary",
-  "scope": "/tools",
+  "scope": "/",
+  "lang": "en",
+  "categories": ["productivity", "social", "business"],
   "icons": [
     {
       "src": "/icons/icon-72x72.png",
@@ -58,60 +60,68 @@
       "purpose": "maskable any"
     }
   ],
-  "categories": ["productivity", "business", "social"],
-  "lang": "en",
-  "dir": "ltr",
-  "prefer_related_applications": false,
+  "screenshots": [
+    {
+      "src": "/mobile-screenshots/optimized/landing-page.jpg",
+      "sizes": "375x812",
+      "type": "image/jpeg",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "/mobile-screenshots/optimized/features.jpg",
+      "sizes": "375x812",
+      "type": "image/jpeg",
+      "form_factor": "narrow"
+    }
+  ],
   "shortcuts": [
     {
-      "name": "ROI Calculator",
-      "short_name": "Calculator",
-      "description": "Calculate your social media ROI",
-      "url": "/tools/social-media-calculator",
+      "name": "Create Content",
+      "short_name": "Create",
+      "description": "Start creating new content",
+      "url": "/dashboard/create",
       "icons": [
         {
-          "src": "/icons/calculator-96x96.png",
+          "src": "/icons/create-96x96.png",
           "sizes": "96x96"
         }
       ]
     },
     {
-      "name": "Hashtag Research",
-      "short_name": "Hashtags",
-      "description": "Find trending hashtags",
-      "url": "/tools/hashtag-research",
+      "name": "Analytics",
+      "short_name": "Analytics",
+      "description": "View your analytics",
+      "url": "/dashboard/analytics",
       "icons": [
         {
-          "src": "/icons/hashtag-96x96.png",
+          "src": "/icons/analytics-96x96.png",
           "sizes": "96x96"
         }
       ]
     },
     {
-      "name": "Time Optimizer",
-      "short_name": "Timing",
-      "description": "Find optimal posting times",
-      "url": "/tools/posting-time-optimizer",
+      "name": "Tools",
+      "short_name": "Tools",
+      "description": "Access creator tools",
+      "url": "/tools",
       "icons": [
         {
-          "src": "/icons/clock-96x96.png",
+          "src": "/icons/tools-96x96.png",
           "sizes": "96x96"
         }
       ]
     }
   ],
-  "screenshots": [
+  "related_applications": [
     {
-      "src": "/screenshots/mobile-tools.png",
-      "sizes": "390x844",
-      "type": "image/png",
-      "form_factor": "narrow"
+      "platform": "play",
+      "url": "https://play.google.com/store/apps/details?id=com.creatorflow.app",
+      "id": "com.creatorflow.app"
     },
     {
-      "src": "/screenshots/desktop-tools.png",
-      "sizes": "1280x720",
-      "type": "image/png",
-      "form_factor": "wide"
+      "platform": "itunes",
+      "url": "https://apps.apple.com/app/creatorflow/id123456789"
     }
-  ]
+  ],
+  "prefer_related_applications": false
 }
