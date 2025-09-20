@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Suspense } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import {
@@ -32,7 +32,7 @@ interface UserSubscription {
   stripePriceId?: string;
 }
 
-export default function BillingPage() {
+function BillingContent() {
   const { data: session, status } = useSession();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -450,5 +450,13 @@ export default function BillingPage() {
         </CardContent>
       </Card>
     </Container>
+  );
+}
+
+export default function BillingPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <BillingContent />
+    </Suspense>
   );
 } 

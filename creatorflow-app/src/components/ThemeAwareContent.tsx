@@ -13,6 +13,22 @@ import PWAFeatures from "@/components/PWAFeatures";
 import { useMinimalTheme } from "@/contexts/MinimalThemeContext";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
 import { Footer } from "@/components/Footer";
+import { TrustBadges } from "@/components/landing/TrustBadges";
+import { PlatformShowcase } from "@/components/landing/PlatformShowcase";
+import { UserCount } from "@/components/landing/UserCount";
+import { DynamicValueProp } from "@/components/landing/DynamicValueProp";
+import { CompetitiveAdvantage } from "@/components/landing/CompetitiveAdvantage";
+import { ROICalculator } from "@/components/landing/ROICalculator";
+import { PlatformSelector } from "@/components/landing/PlatformSelector";
+import { ContentCalendarPreview } from "@/components/landing/ContentCalendarPreview";
+import { HashtagResearchTool } from "@/components/landing/HashtagResearchTool";
+import { CompetitorComparison } from "@/components/landing/CompetitorComparison";
+import { EnterpriseSecurity } from "@/components/landing/EnterpriseSecurity";
+import { WhiteLabelShowcase } from "@/components/landing/WhiteLabelShowcase";
+import { TeamManagementPreview } from "@/components/landing/TeamManagementPreview";
+import { AIContentGeneration } from "@/components/landing/AIContentGeneration";
+import { AdvancedAnalytics } from "@/components/landing/AdvancedAnalytics";
+import { CustomIntegrations } from "@/components/landing/CustomIntegrations";
 import { 
   Button, 
   Container, 
@@ -34,7 +50,21 @@ import {
   Link as LinkIcon, 
   Create, 
   Schedule, 
-  MonetizationOn 
+  MonetizationOn,
+  RocketLaunch,
+  PlayArrow,
+  Instagram,
+  YouTube,
+  MusicNote,
+  Twitter,
+  Business,
+  LinkedIn,
+  Chat,
+  GitHub,
+  Forum,
+  CameraAlt,
+  Phone,
+  Public
 } from '@mui/icons-material';
 
 const PLANS = [
@@ -94,6 +124,51 @@ const PLANS = [
       "Enterprise template marketplace",
       "Dedicated support",
       "SLA guarantees"
+    ],
+    cta: "Contact Sales",
+    href: "/contact",
+    highlight: false,
+  },
+];
+
+const WHITE_LABEL_PLANS = [
+  {
+    name: "White-Label Basic",
+    price: "$499/month",
+    features: [
+      "Custom branding", 
+      "Your domain", 
+      "Up to 100 users",
+      "Basic white-label features",
+      "Email support"
+    ],
+    cta: "Contact Sales",
+    href: "/contact",
+    highlight: false,
+  },
+  {
+    name: "White-Label Pro",
+    price: "$999/month",
+    features: [
+      "Full white-label", 
+      "Custom integrations", 
+      "Up to 500 users",
+      "Advanced customization",
+      "Priority support"
+    ],
+    cta: "Contact Sales",
+    href: "/contact",
+    highlight: true,
+  },
+  {
+    name: "White-Label Enterprise",
+    price: "Custom",
+    features: [
+      "Unlimited users", 
+      "Custom development", 
+      "Dedicated infrastructure",
+      "Full source code access",
+      "24/7 dedicated support"
     ],
     cta: "Contact Sales",
     href: "/contact",
@@ -211,16 +286,16 @@ export default function ThemeAwareContent() {
           variant="h1"
           component="h1"
           sx={{
-            fontSize: { xs: '2.5rem', sm: '3.5rem', lg: '4.5rem' },
+            fontSize: { xs: '2rem', sm: '2.75rem', lg: '3.5rem' },
             fontWeight: 900,
             letterSpacing: '-0.03em',
-            lineHeight: 1.1,
+            lineHeight: 1.2,
             color: 'text.primary',
             maxWidth: 'lg',
             mb: 3
           }}
         >
-          The Creator Economy's{' '}
+          The Only Platform That{' '}
           <Box component="span" sx={{ 
             color: 'primary.main',
             background: 'linear-gradient(45deg, #3B82F6 30%, #8B5CF6 90%)',
@@ -228,9 +303,12 @@ export default function ThemeAwareContent() {
             WebkitBackgroundClip: 'text',
             WebkitTextFillColor: 'transparent'
           }}>
-            All-in-One Platform
+            Powers Your Success
           </Box>
         </Typography>
+        
+        {/* Dynamic Value Proposition */}
+        <DynamicValueProp />
         
         <Typography 
           variant="h5"
@@ -245,10 +323,7 @@ export default function ThemeAwareContent() {
           }}
         >
           Plan, publish, analyze, and monetize your content across all platforms. 
-          <Box component="span" sx={{ color: 'primary.main', fontWeight: 600 }}>
-            Join 50,000+ creators
-          </Box>{' '}
-          who are already growing their audience and revenue with CreatorFlow.
+          Join creators who are already growing their audience and revenue with CreatorFlow.
         </Typography>
         
         <Box sx={{ 
@@ -285,7 +360,8 @@ export default function ThemeAwareContent() {
               }
             }}
           >
-            🚀 Start Free Trial
+                <RocketLaunch sx={{ mr: 1, fontSize: '1.2em' }} />
+                Start Free Trial
           </Button>
           
           <Button
@@ -317,29 +393,164 @@ export default function ThemeAwareContent() {
               }
             }}
           >
-            📱 See CreatorFlow in Action
+                <PlayArrow sx={{ mr: 1, fontSize: '1.2em' }} />
+                See CreatorFlow in Action
           </Button>
         </Box>
       </Box>
 
-      {/* Feature Highlights */}
+      {/* Trust & Platform Showcase - Combined Section */}
+      <Box sx={{ py: { xs: 6, sm: 8 }, bgcolor: 'background.default' }}>
+        <Container maxWidth="lg">
+          <Box sx={{ textAlign: 'center', mb: 4 }}>
+            <Typography variant="h4" sx={{ 
+              fontWeight: 'bold', 
+              mb: 2,
+              color: 'text.primary'
+            }}>
+              Trusted by Creators
+            </Typography>
+            <Typography variant="h6" color="text.secondary" sx={{ mb: 4 }}>
+              Manage 16+ social media platforms from one unified dashboard
+            </Typography>
+          </Box>
+          
+          {/* Trust Badges */}
+          <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, flexWrap: 'wrap', mb: 4 }}>
+            <Chip label="SSL Secured" color="success" variant="outlined" />
+            <Chip label="SOC 2 Compliant" color="success" variant="outlined" />
+            <Chip label="GDPR Ready" color="success" variant="outlined" />
+            <Chip label="99.9% Uptime" color="success" variant="outlined" />
+          </Box>
+          
+          {/* Platform Icons */}
+          <Box sx={{ 
+            display: 'grid', 
+            gridTemplateColumns: { xs: 'repeat(4, 1fr)', sm: 'repeat(8, 1fr)', md: 'repeat(12, 1fr)' }, 
+            gap: 2,
+            mb: 4
+          }}>
+            {[
+              { name: 'Instagram', icon: <Instagram />, color: '#E4405F' },
+              { name: 'YouTube', icon: <YouTube />, color: '#FF0000' },
+              { name: 'TikTok', icon: <MusicNote />, color: '#000000' },
+              { name: 'Twitter', icon: <Twitter />, color: '#000000' },
+              { name: 'Facebook', icon: <Business />, color: '#1877F2' },
+              { name: 'LinkedIn', icon: <LinkedIn />, color: '#0A66C2' },
+              { name: 'Discord', icon: <Chat />, color: '#5865F2' },
+              { name: 'GitHub', icon: <GitHub />, color: '#181717' },
+              { name: 'Reddit', icon: <Forum />, color: '#FF4500' },
+              { name: 'Snapchat', icon: <CameraAlt />, color: '#FFFC00' },
+              { name: 'WhatsApp', icon: <Phone />, color: '#25D366' },
+              { name: 'More', icon: <Public />, color: '#6364FF' }
+            ].map((platform, index) => (
+              <Box
+                key={index}
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  p: 2,
+                  borderRadius: 2,
+                  bgcolor: 'background.paper',
+                  border: 1,
+                  borderColor: 'divider',
+                  transition: 'all 0.3s ease',
+                  cursor: 'pointer',
+                  '&:hover': {
+                    bgcolor: 'action.hover',
+                    transform: 'translateY(-2px)',
+                    boxShadow: 2,
+                    borderColor: platform.color
+                  }
+                }}
+              >
+                <Box sx={{ 
+                  color: platform.color,
+                  mb: 1,
+                  '& .MuiSvgIcon-root': {
+                    fontSize: '1.5rem'
+                  }
+                }}>
+                  {platform.icon}
+                </Box>
+                <Typography variant="caption" sx={{ 
+                  fontWeight: 'bold',
+                  textAlign: 'center',
+                  color: 'text.primary',
+                  fontSize: '0.75rem'
+                }}>
+                  {platform.name}
+                </Typography>
+              </Box>
+            ))}
+          </Box>
+        </Container>
+      </Box>
+
+      {/* ROI Calculator - Key Value Prop */}
+      <ROICalculator />
+
+      {/* Key Features - Top 6 Only */}
       <Container maxWidth="lg" sx={{ py: { xs: 6, sm: 8 } }} id="features">
+        <Box sx={{ textAlign: 'center', mb: 6 }}>
+          <Typography variant="h3" component="h2" sx={{ 
+            mb: 2, 
+            fontSize: { xs: '1.875rem', sm: '2.25rem' }, 
+            fontWeight: 'bold',
+            color: 'text.primary'
+          }}>
+            Everything You Need to Succeed
+          </Typography>
+          <Typography variant="h6" sx={{ color: 'text.secondary', mb: 4 }}>
+            Powerful tools designed for modern creators
+          </Typography>
+        </Box>
+        
         <Box sx={{ 
           display: 'grid', 
           gridTemplateColumns: { 
             xs: 'repeat(2, 1fr)', 
             sm: 'repeat(3, 1fr)', 
-            lg: 'repeat(5, 1fr)' 
+            lg: 'repeat(3, 1fr)' 
           }, 
           gap: { xs: 2, sm: 3 } 
         }}>
-          {FEATURES.map((feature, index) => (
+          {FEATURES.slice(0, 6).map((feature, index) => (
             <Fade in={true} timeout={600 + index * 100} key={feature.title}>
               <Box>
                 <FeatureCard {...feature} plan={feature.plan} />
               </Box>
             </Fade>
           ))}
+        </Box>
+        
+        <Box sx={{ textAlign: 'center', mt: 4 }}>
+          <Button
+            component={Link}
+            href="/features"
+            variant="outlined"
+            size="large"
+            sx={{
+              fontWeight: 600,
+              borderRadius: 3,
+              px: 4,
+              py: 1.5,
+              borderColor: 'primary.main',
+              color: 'primary.main',
+              borderWidth: 2,
+              transition: 'all 0.3s ease',
+              '&:hover': {
+                borderColor: 'primary.dark',
+                color: 'primary.dark',
+                bgcolor: 'primary.50',
+                transform: 'translateY(-2px)',
+                boxShadow: '0 8px 25px rgba(59, 130, 246, 0.2)'
+              }
+            }}
+          >
+            View All Features
+          </Button>
         </Box>
       </Container>
 
@@ -514,7 +725,7 @@ export default function ThemeAwareContent() {
       </Container>
 
       {/* Customer Logos */}
-      <Container maxWidth="lg" sx={{ py: { xs: 4, sm: 6 } }}>
+      <Container maxWidth="lg" sx={{ py: { xs: 6, sm: 8 } }}>
         <Box sx={{ textAlign: 'center', mb: 4 }}>
           <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
             Trusted by creators at these amazing companies
@@ -582,7 +793,7 @@ export default function ThemeAwareContent() {
         </Box>
       </Container>
 
-      {/* Plans Section - Moved above footer */}
+      {/* Main Pricing Plans */}
       <Container maxWidth="lg" sx={{ py: { xs: 6, sm: 8 } }} id="plans">
         <Box sx={{ textAlign: 'center', mb: 6 }}>
           <Typography 
@@ -609,24 +820,24 @@ export default function ThemeAwareContent() {
           </Box>
         </Box>
         
-        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' }, gap: 4 }}>
+        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)', lg: 'repeat(4, 1fr)' }, gap: 3 }}>
           {PLANS.map((plan, index) => (
             <Fade in={true} timeout={800 + index * 200} key={plan.name}>
               <Box>
                 <Card
                   sx={{
                     position: 'relative',
-                    transform: plan.highlight ? 'scale(1.05)' : 'none',
+                    transform: plan.highlight ? 'scale(1.02)' : 'none',
                     transition: 'all 0.3s ease',
                     height: '100%',
                     display: 'flex',
                     flexDirection: 'column',
-                    minHeight: 450,
+                    minHeight: 320,
                     overflow: 'visible',
                     cursor: 'pointer',
                     '&:hover': {
-                      transform: plan.highlight ? 'scale(1.08)' : 'scale(1.02)',
-                      boxShadow: 8,
+                      transform: plan.highlight ? 'scale(1.05)' : 'scale(1.02)',
+                      boxShadow: 6,
                       '& .pricing-cta': {
                         transform: 'scale(1.05)'
                       }
@@ -636,57 +847,57 @@ export default function ThemeAwareContent() {
                 <CardHeader
                   title={plan.name}
                   titleTypographyProps={{ 
-                    variant: 'h5', 
+                    variant: 'h6', 
                     fontWeight: 'bold',
-                    sx: { fontSize: { xs: '1.25rem', sm: '1.5rem' } }
+                    sx: { fontSize: { xs: '1rem', sm: '1.125rem' } }
                   }}
-                  sx={{ pb: 2, pt: 2 }}
+                  sx={{ pb: 0.5, pt: 1.5, px: 2 }}
                   action={
                     plan.highlight && (
                       <Chip
-                        label="Most Popular"
+                        label="Popular"
                         size="small"
                         sx={{
                           background: 'linear-gradient(45deg, #3B82F6 30%, #8B5CF6 90%)',
                           color: 'white',
                           fontWeight: 600,
                           fontSize: '0.75rem',
-                          height: 24
+                          height: 20
                         }}
                       />
                     )
                   }
                 />
                 
-                <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', pt: 0 }}>
+                <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', pt: 0, px: 2, pb: 2 }}>
                   <Typography 
-                    variant="h4" 
+                    variant="h5" 
                     component="div" 
                     sx={{ 
                       fontWeight: 'bold', 
-                      mb: 2,
-                      fontSize: { xs: '1.75rem', sm: '2rem' }
+                      mb: 1.5,
+                      fontSize: { xs: '1.25rem', sm: '1.5rem' }
                     }}
                   >
                     {plan.price}
                   </Typography>
                   
-                  <Box component="ul" sx={{ mb: 3, pl: 0, listStyle: 'none', flexGrow: 1 }}>
+                  <Box component="ul" sx={{ mb: 2, pl: 0, listStyle: 'none', flexGrow: 1 }}>
                     {plan.features.map((feature, i) => (
                       <Box component="li" key={i} sx={{ 
-                        fontSize: '0.875rem', 
+                        fontSize: '0.75rem', 
                         color: 'text.primary',
                         display: 'flex',
                         alignItems: 'center',
-                        gap: 1,
-                        mb: 1,
-                        lineHeight: 1.4
+                        gap: 0.75,
+                        mb: 0.25,
+                        lineHeight: 1.2
                       }}>
                         <Box 
                           component="span" 
                           sx={{ 
                             color: 'success.main',
-                            fontSize: '1.25rem',
+                            fontSize: '0.875rem',
                             lineHeight: 1
                           }}
                         >
@@ -702,7 +913,7 @@ export default function ThemeAwareContent() {
                     href={plan.href}
                     variant={plan.cta === "Start Free Trial" ? "contained" : "outlined"}
                     fullWidth
-                    size="large"
+                    size="small"
                     className="pricing-cta"
                     sx={{
                       mt: 'auto',
@@ -719,8 +930,153 @@ export default function ThemeAwareContent() {
                           ? '0 8px 25px rgba(59, 130, 246, 0.3)'
                           : '0 4px 15px rgba(0,0,0,0.1)'
                       },
-                      height: 48,
-                      fontWeight: 600
+                      height: 36,
+                      fontWeight: 600,
+                      fontSize: '0.8rem'
+                    }}
+                  >
+                    {plan.cta}
+                  </Button>
+                </CardContent>
+              </Card>
+              </Box>
+            </Fade>
+          ))}
+        </Box>
+      </Container>
+
+      {/* White-Label Pricing - Right Above Footer */}
+      <Container maxWidth="lg" sx={{ py: { xs: 4, sm: 6 }, bgcolor: 'background.paper', borderTop: 1, borderColor: 'divider' }}>
+        <Box sx={{ textAlign: 'center', mb: 4 }}>
+          <Typography 
+            variant="h4" 
+            component="h2" 
+            sx={{ 
+              mb: 2, 
+              fontSize: { xs: '1.5rem', sm: '1.875rem' }, 
+              fontWeight: 'bold',
+              color: 'text.primary'
+            }}
+          >
+            White-Label Solutions
+          </Typography>
+          <Typography variant="h6" sx={{ color: 'text.secondary', mb: 4 }}>
+            Rebrand CreatorFlow as your own platform
+          </Typography>
+        </Box>
+        
+        <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' }, gap: 3 }}>
+          {WHITE_LABEL_PLANS.map((plan, index) => (
+            <Fade in={true} timeout={1000 + index * 200} key={plan.name}>
+              <Box>
+                <Card
+                  sx={{
+                    position: 'relative',
+                    transform: plan.highlight ? 'scale(1.02)' : 'none',
+                    transition: 'all 0.3s ease',
+                    height: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    minHeight: 280,
+                    overflow: 'visible',
+                    cursor: 'pointer',
+                    border: plan.highlight ? 2 : 1,
+                    borderColor: plan.highlight ? 'primary.main' : 'divider',
+                    '&:hover': {
+                      transform: plan.highlight ? 'scale(1.05)' : 'scale(1.02)',
+                      boxShadow: 6,
+                      '& .pricing-cta': {
+                        transform: 'scale(1.05)'
+                      }
+                    }
+                  }}
+                >
+                <CardHeader
+                  title={plan.name}
+                  titleTypographyProps={{ 
+                    variant: 'h6', 
+                    fontWeight: 'bold',
+                    sx: { fontSize: { xs: '1.125rem', sm: '1.25rem' } }
+                  }}
+                  sx={{ pb: 1, pt: 2 }}
+                  action={
+                    plan.highlight && (
+                      <Chip
+                        label="Recommended"
+                        size="small"
+                        sx={{
+                          background: 'linear-gradient(45deg, #3B82F6 30%, #8B5CF6 90%)',
+                          color: 'white',
+                          fontWeight: 600,
+                          fontSize: '0.75rem',
+                          height: 20
+                        }}
+                      />
+                    )
+                  }
+                />
+                
+                <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', pt: 0 }}>
+                  <Typography 
+                    variant="h5" 
+                    component="div" 
+                    sx={{ 
+                      fontWeight: 'bold', 
+                      mb: 2,
+                      fontSize: { xs: '1.5rem', sm: '1.75rem' }
+                    }}
+                  >
+                    {plan.price}
+                  </Typography>
+                  
+                  <Box component="ul" sx={{ mb: 3, pl: 0, listStyle: 'none', flexGrow: 1 }}>
+                    {plan.features.map((feature, i) => (
+                      <Box component="li" key={i} sx={{ 
+                        fontSize: '0.8rem', 
+                        color: 'text.primary',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 1,
+                        mb: 0.5,
+                        lineHeight: 1.3
+                      }}>
+                        <Box 
+                          component="span" 
+                          sx={{ 
+                            color: 'success.main',
+                            fontSize: '1rem',
+                            lineHeight: 1
+                          }}
+                        >
+                          ✓
+                        </Box>
+                        {feature}
+                      </Box>
+                    ))}
+                  </Box>
+                  
+                  <Button
+                    component={Link}
+                    href={plan.href}
+                    variant="outlined"
+                    fullWidth
+                    size="medium"
+                    className="pricing-cta"
+                    sx={{
+                      mt: 'auto',
+                      borderColor: 'primary.main',
+                      color: 'primary.main',
+                      transition: 'all 0.3s ease',
+                      '&:hover': {
+                        borderColor: 'primary.dark',
+                        color: 'primary.dark',
+                        bgcolor: 'primary.50',
+                        transform: 'translateY(-2px)',
+                        boxShadow: '0 4px 15px rgba(0,0,0,0.1)'
+                      },
+                      height: 40,
+                      fontWeight: 600,
+                      fontSize: '0.875rem'
                     }}
                   >
                     {plan.cta}

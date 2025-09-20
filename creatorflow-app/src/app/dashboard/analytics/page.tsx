@@ -61,6 +61,8 @@ import {
 } from '@mui/icons-material';
 import DashboardBuilder from '@/components/analytics/dashboard-builder';
 import AIInsights, { InsightSummary, QuickActions } from '@/components/analytics/ai-insights';
+import { PageHelpButton } from '@/components/ui/page-help-button';
+import { getPageHelpConfig } from '@/lib/page-help-config';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -201,9 +203,18 @@ export default function AnalyticsDashboard() {
 
   return (
     <Container maxWidth="lg" sx={{ mt: 4, pb: { xs: 8, sm: 4 } }}>
-      <Typography variant="h4" gutterBottom sx={{ color: 'text.primary', fontWeight: 'bold' }}>
-        Advanced Analytics Dashboard
-      </Typography>
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
+        <Typography variant="h4" sx={{ color: 'text.primary', fontWeight: 'bold' }}>
+          Advanced Analytics Dashboard
+        </Typography>
+        <PageHelpButton
+          pageId="analytics"
+          pageName="Analytics"
+          availableTutorials={getPageHelpConfig('analytics')?.tutorials || []}
+          availableVideos={getPageHelpConfig('analytics')?.videos || []}
+          contextualTips={getPageHelpConfig('analytics')?.tips || []}
+        />
+      </Box>
       
       <Typography variant="body1" color="text.secondary" sx={{ mb: 4 }}>
         Comprehensive analytics with AI-powered insights, custom dashboards, 

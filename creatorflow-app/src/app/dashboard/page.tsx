@@ -2,6 +2,9 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from "next-auth/react";
+import { ContextualTips } from '@/components/ui/contextual-tips';
+import { PageHelpButton } from '@/components/ui/page-help-button';
+import { getPageHelpConfig } from '@/lib/page-help-config';
 import { 
   Box, 
   Typography, 
@@ -142,12 +145,21 @@ export default function DashboardPage() {
     <Container maxWidth="xl" sx={{ py: 4, pb: 8 }}>
       {/* Header Section */}
       <Box sx={{ mb: 5 }}>
-        <Typography variant="h4" sx={{ mb: 2, fontWeight: 700, color: 'text.primary' }}>
-          Dashboard{session?.user?.name ? `, ${session.user.name.split(' ')[0]}` : ''}
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
+          <Typography variant="h4" sx={{ fontWeight: 700, color: 'text.primary' }}>
+            Dashboard{session?.user?.name ? `, ${session.user.name.split(' ')[0]}` : ''}
           </Typography>
+          <PageHelpButton
+            pageId="dashboard"
+            pageName="Dashboard"
+            availableTutorials={getPageHelpConfig('dashboard')?.tutorials || []}
+            availableVideos={getPageHelpConfig('dashboard')?.videos || []}
+            contextualTips={getPageHelpConfig('dashboard')?.tips || []}
+          />
+        </Box>
         <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
           Your content creation command center
-          </Typography>
+        </Typography>
         
         {/* Quick Stats Bar */}
         <Box sx={{ 
@@ -1322,6 +1334,14 @@ export default function DashboardPage() {
           <Button variant="contained">Start Optimization</Button>
         </DialogActions>
       </Dialog>
+
+      {/* Contextual Tips */}
+      <ContextualTips 
+        currentPage="dashboard" 
+        onTipAction={(tipId, action) => {
+          console.log(`Tip ${tipId} action: ${action}`);
+        }}
+      />
     </Container>
   );
 } 

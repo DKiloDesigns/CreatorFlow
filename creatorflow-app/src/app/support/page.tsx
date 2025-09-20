@@ -23,7 +23,12 @@ import {
   TextField, 
   InputAdornment,
   Chip,
-  Button
+  Button,
+  CircularProgress,
+  List,
+  ListItem,
+  ListItemText,
+  Divider
 } from '@mui/material';
 import { PublicHeader } from '@/components/PublicHeader';
 import { Footer } from '@/components/Footer';
@@ -81,6 +86,46 @@ const contactMethods = [
 
 export default function SupportPage() {
   const [searchQuery, setSearchQuery] = useState('');
+  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [isSearching, setIsSearching] = useState(false);
+  const [showResults, setShowResults] = useState(false);
+
+  // Search function
+  const handleSearch = async (query: string) => {
+    if (!query.trim()) {
+      setSearchResults([]);
+      setShowResults(false);
+      return;
+    }
+
+    setIsSearching(true);
+    try {
+      const response = await fetch(`/api/help/search?q=${encodeURIComponent(query)}`);
+      const data = await response.json();
+      
+      if (data.success) {
+        setSearchResults(data.articles);
+        setShowResults(true);
+      }
+    } catch (error) {
+      console.error('Search error:', error);
+    } finally {
+      setIsSearching(false);
+    }
+  };
+
+  // Handle search input change
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const query = event.target.value;
+    setSearchQuery(query);
+    
+    // Debounce search
+    const timeoutId = setTimeout(() => {
+      handleSearch(query);
+    }, 300);
+
+    return () => clearTimeout(timeoutId);
+  };
 
   return (
     <Box sx={{ minHeight: '100vh', bgcolor: 'background.default', display: 'flex', flexDirection: 'column' }}>
@@ -128,13 +173,18 @@ export default function SupportPage() {
               fullWidth
               placeholder="Search for help articles..."
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={handleSearchChange}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
                     <Search style={{ color: 'inherit' }} />
                   </InputAdornment>
                 ),
+                endAdornment: isSearching ? (
+                  <InputAdornment position="end">
+                    <CircularProgress size={20} />
+                  </InputAdornment>
+                ) : null,
               }}
               sx={{
                 '& .MuiOutlinedInput-root': {
@@ -150,6 +200,80 @@ export default function SupportPage() {
           </Box>
         </Container>
       </Box>
+
+      {/* Search Results */}
+      {showResults && (
+        <Box component="section" sx={{ py: 4, px: { xs: 2, sm: 3, lg: 4 } }}>
+          <Container maxWidth="lg">
+            <Typography variant="h4" component="h2" sx={{ mb: 3, fontWeight: 'bold' }}>
+              Search Results
+            </Typography>
+            
+            {searchResults.length > 0 ? (
+              <List>
+                {searchResults.map((article, index) => (
+                  <React.Fragment key={article.id}>
+                    <ListItem 
+                      component="a" 
+                      href={`/support/article/${article.id}`}
+                      sx={{ 
+                        textDecoration: 'none',
+                        '&:hover': { bgcolor: 'action.hover' },
+                        borderRadius: 1,
+                        mb: 1
+                      }}
+                    >
+                      <ListItemText
+                        primary={
+                          <Typography variant="h6" sx={{ fontWeight: 'bold', color: 'primary.main' }}>
+                            {article.title}
+                          </Typography>
+                        }
+                        secondary={
+                          <Box>
+                            <Typography variant="body2" sx={{ color: 'text.secondary', mb: 1 }}>
+                              {article.content.substring(0, 150)}...
+                            </Typography>
+                            <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
+                              <Chip 
+                                label={article.category} 
+                                size="small" 
+                                color="primary" 
+                                variant="outlined" 
+                              />
+                              <Chip 
+                                label={article.difficulty} 
+                                size="small" 
+                                color="secondary" 
+                                variant="outlined" 
+                              />
+                              <Chip 
+                                label={`${article.readTime} min read`} 
+                                size="small" 
+                                variant="outlined" 
+                              />
+                            </Box>
+                          </Box>
+                        }
+                      />
+                    </ListItem>
+                    {index < searchResults.length - 1 && <Divider />}
+                  </React.Fragment>
+                ))}
+              </List>
+            ) : (
+              <Box sx={{ textAlign: 'center', py: 4 }}>
+                <Typography variant="h6" sx={{ color: 'text.secondary', mb: 2 }}>
+                  No articles found for "{searchQuery}"
+                </Typography>
+                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                  Try different keywords or browse our help categories below
+                </Typography>
+              </Box>
+            )}
+          </Container>
+        </Box>
+      )}
 
       {/* Help Categories */}
       <Box component="section" sx={{ py: 8, px: { xs: 2, sm: 3, lg: 4 } }}>

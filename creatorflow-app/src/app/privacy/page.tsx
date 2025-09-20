@@ -1,3 +1,5 @@
+'use client';
+
 import { PublicHeader } from '@/components/PublicHeader';
 import { Footer } from '@/components/Footer';
 import { Box, Typography, Container, Paper } from '@mui/material';

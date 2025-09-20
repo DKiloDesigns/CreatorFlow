@@ -27,16 +27,15 @@ import {
 import {
   Shield,
   Lock,
-  AlertTriangle,
-  CheckCircle,
   Warning,
+  CheckCircle,
   Error,
   Refresh,
   Settings,
   Security,
   Key,
-  Eye,
-  EyeOff,
+  Visibility,
+  VisibilityOff,
 } from '@/lib/mui-optimized-imports';
 
 interface SecurityStats {
@@ -126,11 +125,11 @@ export default function SecurityDashboard() {
 
   const getSeverityIcon = (severity: string) => {
     switch (severity) {
-      case 'critical': return <Error size={20} />;
-      case 'high': return <Warning size={20} />;
-      case 'medium': return <AlertTriangle size={20} />;
-      case 'low': return <CheckCircle size={20} />;
-      default: return <Security size={20} />;
+      case 'critical': return <Error sx={{ fontSize: 20 }} />;
+      case 'high': return <Warning sx={{ fontSize: 20 }} />;
+      case 'medium': return <Warning sx={{ fontSize: 20 }} />;
+      case 'low': return <CheckCircle sx={{ fontSize: 20 }} />;
+      default: return <Security sx={{ fontSize: 20 }} />;
     }
   };
 
@@ -166,7 +165,7 @@ export default function SecurityDashboard() {
         </Typography>
         <Button
           variant="outlined"
-          startIcon={<Refresh size={20} />}
+          startIcon={<Refresh sx={{ fontSize: 20 }} />}
           onClick={fetchSecurityData}
         >
           Refresh
@@ -177,7 +176,7 @@ export default function SecurityDashboard() {
       <Card sx={{ mb: 3 }}>
         <CardContent>
           <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-            <Shield size={24} style={{ marginRight: 8 }} />
+            <Shield sx={{ fontSize: 24, marginRight: 1 }} />
             <Typography variant="h6">Security Score</Typography>
           </Box>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
@@ -205,7 +204,7 @@ export default function SecurityDashboard() {
           <Card>
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <AlertTriangle color="error" size={24} style={{ marginRight: 8 }} />
+                <Warning color="error" sx={{ fontSize: 24, marginRight: 1 }} />
                 <Box>
                   <Typography variant="h6">{stats.totalThreats}</Typography>
                   <Typography variant="body2" color="text.secondary">
@@ -220,7 +219,7 @@ export default function SecurityDashboard() {
           <Card>
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <Lock color="warning" size={24} style={{ marginRight: 8 }} />
+                <Lock color="warning" sx={{ fontSize: 24, marginRight: 1 }} />
                 <Box>
                   <Typography variant="h6">{stats.blockedIPs}</Typography>
                   <Typography variant="body2" color="text.secondary">
@@ -235,7 +234,7 @@ export default function SecurityDashboard() {
           <Card>
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <Warning color="info" size={24} style={{ marginRight: 8 }} />
+                <Warning color="info" sx={{ fontSize: 24, marginRight: 1 }} />
                 <Box>
                   <Typography variant="h6">{stats.failedLogins}</Typography>
                   <Typography variant="body2" color="text.secondary">
@@ -250,7 +249,7 @@ export default function SecurityDashboard() {
           <Card>
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                <Key color="success" size={24} style={{ marginRight: 8 }} />
+                <Key color="success" sx={{ fontSize: 24, marginRight: 1 }} />
                 <Box>
                   <Typography variant="h6">{stats.activeSessions}</Typography>
                   <Typography variant="body2" color="text.secondary">
@@ -339,7 +338,7 @@ export default function SecurityDashboard() {
                     variant="outlined"
                     size="small"
                     disabled={rec.completed}
-                    startIcon={rec.completed ? <CheckCircle size={16} /> : <Settings size={16} />}
+                    startIcon={rec.completed ? <CheckCircle sx={{ fontSize: 16 }} /> : <Settings sx={{ fontSize: 16 }} />}
                   >
                     {rec.completed ? 'Completed' : rec.action}
                   </Button>
@@ -364,13 +363,13 @@ export default function SecurityDashboard() {
                   Enable all security features for maximum protection.
                 </Alert>
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                  <Button variant="outlined" startIcon={<Shield size={20} />}>
+                  <Button variant="outlined" startIcon={<Shield sx={{ fontSize: 20 }} />}>
                     Enable 2FA
                   </Button>
-                  <Button variant="outlined" startIcon={<Lock size={20} />}>
+                  <Button variant="outlined" startIcon={<Lock sx={{ fontSize: 20 }} />}>
                     Change Password
                   </Button>
-                  <Button variant="outlined" startIcon={<Key size={20} />}>
+                  <Button variant="outlined" startIcon={<Key sx={{ fontSize: 20 }} />}>
                     Manage API Keys
                   </Button>
                 </Box>

@@ -33,6 +33,8 @@ import { toast } from 'sonner';
 import dynamicImport from 'next/dynamic';
 import { useUserPlan } from '@/hooks/use-user-plan';
 import { ProFeatureGate } from '@/components/ui/pro-feature-gate';
+import { PageHelpButton } from '@/components/ui/page-help-button';
+import { getPageHelpConfig } from '@/lib/page-help-config';
 
 // Import new components
 import { UploadMediaModal } from './_components/upload-media-modal';
@@ -585,27 +587,36 @@ export default function ContentPage() {
           gap: 2,
           mb: 2
         }}>
-          <Box>
-            <Typography 
-              variant="h4" 
-              component="h1" 
-              sx={{ 
-                fontWeight: 'bold', 
-                color: 'text.primary',
-                wordBreak: 'break-word'
-              }}
-            >
-              Content Management
-            </Typography>
-            <Typography 
-              variant="body2" 
-              sx={{ 
-                color: 'text.secondary',
-                mt: 0.5
-              }}
-            >
-              Create, schedule, and manage your content across all platforms
-            </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flex: 1 }}>
+            <Box>
+              <Typography 
+                variant="h4" 
+                component="h1" 
+                sx={{ 
+                  fontWeight: 'bold', 
+                  color: 'text.primary',
+                  wordBreak: 'break-word'
+                }}
+              >
+                Content Management
+              </Typography>
+              <Typography 
+                variant="body2" 
+                sx={{ 
+                  color: 'text.secondary',
+                  mt: 0.5
+                }}
+              >
+                Create, schedule, and manage your content across all platforms
+              </Typography>
+            </Box>
+            <PageHelpButton
+              pageId="content"
+              pageName="Content Management"
+              availableTutorials={getPageHelpConfig('content')?.tutorials || []}
+              availableVideos={getPageHelpConfig('content')?.videos || []}
+              contextualTips={getPageHelpConfig('content')?.tips || []}
+            />
           </Box>
           
           <Box sx={{ 
