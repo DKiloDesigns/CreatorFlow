@@ -4,6 +4,7 @@ import { PrismaClient, PostStatus } from '@prisma/client';
 import { getSession } from "@/auth";
 import { requireApiKey } from '@/lib/apiKeyAuth';
 import { cacheUtils } from '@/lib/cache';
+import { notificationTriggers } from '@/lib/notifications/notification-triggers';
 // import { getServerSession } from "next-auth/next" // Example import
 // import { authOptions } from "@/lib/auth"; // Example import for auth config
 
@@ -49,6 +50,15 @@ export async function POST(req: NextRequest) {
                 scheduledAt: scheduledAt ? new Date(scheduledAt) : null,
             };
             const newPost = await prisma.post.create({ data: postData });
+            
+            // Trigger notification for post creation
+            await notificationTriggers.onPostCreated(userId, {
+                id: newPost.id,
+                contentText: newPost.contentText,
+                platforms: newPost.platforms,
+                status: newPost.status,
+            });
+            
             return NextResponse.json(newPost, { status: 201 });
         } else {
             return auth; // Error response from requireApiKey
@@ -87,6 +97,15 @@ export async function POST(req: NextRequest) {
             scheduledAt: scheduledAt ? new Date(scheduledAt) : null,
         };
         const newPost = await prisma.post.create({ data: postData });
+        
+        // Trigger notification for post creation
+        await notificationTriggers.onPostCreated(userId, {
+            id: newPost.id,
+            contentText: newPost.contentText,
+            platforms: newPost.platforms,
+            status: newPost.status,
+        });
+        
         return NextResponse.json(newPost, { status: 201 });
     } catch (error) {
         return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/auth';
 import { PrismaClient, PostStatus } from '@prisma/client';
 import { schedulePost } from '@/lib/publishing';
+import { notificationTriggers } from '@/lib/notifications/notification-triggers';
 
 const prisma = new PrismaClient();
 
@@ -78,6 +79,15 @@ export async function POST(req: NextRequest) {
         errors.push(`Post ${i + 1}: ${error instanceof Error ? error.message : 'Unknown error'}`);
       }
     }
+
+    // Trigger notification for bulk scheduling
+    await notificationTriggers.onBulkOperation(userId, {
+      operationType: 'bulk_schedule',
+      count: posts.length,
+      platforms,
+      successCount: scheduledPosts.length,
+      errorCount: errors.length,
+    });
 
     return NextResponse.json({
       success: true,

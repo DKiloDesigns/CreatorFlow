@@ -59,7 +59,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { usePWA } from '@/hooks/usePWA';
 
-const tools = [
+const defaultTools = [
   {
     title: 'Social Media ROI Calculator',
     description: 'Calculate the true value of your social media presence',
@@ -128,16 +128,17 @@ const tools = [
   }
 ];
 
-const categories = [
-  { name: 'All', count: 6, color: 'default' },
-  { name: 'Analytics', count: 2, color: 'primary' },
-  { name: 'Content', count: 1, color: 'secondary' },
-  { name: 'Planning', count: 1, color: 'success' },
-  { name: 'Optimization', count: 1, color: 'info' },
-  { name: 'AI', count: 1, color: 'error' }
-];
+interface MobileToolsPageProps {
+  tools?: any[];
+  title?: string;
+  subtitle?: string;
+}
 
-export default function MobileToolsPage() {
+export default function MobileToolsPage({ 
+  tools = defaultTools, 
+  title = "Free Social Media Tools",
+  subtitle = "Powerful tools to optimize your social media strategy"
+}: MobileToolsPageProps) {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [favorites, setFavorites] = useState<string[]>([]);
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -147,6 +148,25 @@ export default function MobileToolsPage() {
   const [snackbarSeverity, setSnackbarSeverity] = useState<'success' | 'error' | 'warning' | 'info'>('info');
   
   const pwa = usePWA();
+
+  // Calculate categories from tools
+  const categories = React.useMemo(() => {
+    const categoryCounts = tools.reduce((acc, tool) => {
+      acc[tool.category] = (acc[tool.category] || 0) + 1;
+      return acc;
+    }, {} as Record<string, number>);
+
+    const categoryList = [
+      { name: 'All', count: tools.length, color: 'default' },
+      ...Object.entries(categoryCounts).map(([name, count]) => ({
+        name,
+        count,
+        color: tools.find(t => t.category === name)?.color || 'default'
+      }))
+    ];
+
+    return categoryList;
+  }, [tools]);
 
   // Load favorites from localStorage
   useEffect(() => {
@@ -245,7 +265,7 @@ export default function MobileToolsPage() {
       >
         <Box sx={{ flexGrow: 1 }}>
           <Typography variant="h5" noWrap>
-            CreatorFlow Tools
+            {title}
           </Typography>
           <Typography variant="body2" color="text.secondary" noWrap>
             {filteredTools.length} tools available
@@ -289,10 +309,10 @@ export default function MobileToolsPage() {
             WebkitTextFillColor: 'transparent',
             fontWeight: 'bold'
           }}>
-            Free Social Media Tools
+            {title}
           </Typography>
           <Typography variant="h6" color="text.secondary" sx={{ mb: 2 }}>
-            Powerful tools to optimize your social media strategy
+            {subtitle}
           </Typography>
         </Box>
 
@@ -387,7 +407,7 @@ export default function MobileToolsPage() {
 
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mt: 2 }}>
                       <Typography variant="body2" color="text.secondary">
-                        {tool.users.toLocaleString()} users
+                        {tool.users ? tool.users.toLocaleString() : '0'} users
                       </Typography>
                     </Box>
                   </CardContent>

@@ -6,6 +6,8 @@ import { signOut } from "next-auth/react"
 import Link from "next/link"
 import { usePathname } from 'next/navigation';
 import { BarChart2, Users, FileText, Handshake, CreditCard, Menu, Bell, BarChart3, Target, MessageSquare, CalendarIcon, Activity, Shield, Settings, Sparkles, Star, Building2, Smartphone, Plug, TestTube, Home, Calendar, Brain, HelpCircle, HardDrive, Bot, Zap, Accessibility, Code, Layout, Image, Wrench, Calculator, Hash, Calendar as CalendarIcon2, BarChart, Clock, TrendingUp } from 'lucide-react';
+import { FloatingNotificationIcon } from '@/components/notifications/FloatingNotificationIcon';
+import { FloatingMessengerIcon } from '@/components/messaging/FloatingMessengerIcon';
 import { useState, useEffect } from 'react';
 import { 
   AppBar, 
@@ -118,6 +120,7 @@ export default function DashboardLayout({
         { href: '/dashboard/security', label: 'Security', icon: Shield },
     { href: '/dashboard/settings', label: 'Settings', icon: Settings },
     { href: '/dashboard/support', label: 'Support', icon: HelpCircle },
+    { href: '/dashboard/messaging', label: 'Messages', icon: MessageSquare },
     { href: '/dashboard/notifications/enhanced', label: 'Notifications', icon: Bell },
     { href: '/dashboard/admin', label: 'Admin Panel', icon: Shield },
   ];
@@ -270,31 +273,27 @@ export default function DashboardLayout({
                 <MinimalThemeToggle />
               </Box>
               
+              {/* Messenger Icon - Only render on client */}
+              {isClient && (
+                <Box sx={{ position: 'relative', minWidth: 44, minHeight: 44, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <FloatingMessengerIcon
+                    unreadCount={3}
+                    href="/dashboard/messaging"
+                    size="medium"
+                    variant="creative"
+                  />
+                </Box>
+              )}
+
               {/* Notification Icon - Only render on client */}
               {isClient && (
                 <Box sx={{ position: 'relative', minWidth: 44, minHeight: 44, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <IconButton
-                    component={Link}
+                  <FloatingNotificationIcon
+                    unreadCount={unreadCount}
                     href="/dashboard/notifications/enhanced"
-                    sx={{
-                      color: 'text.primary',
-                      '&:hover': {
-                        backgroundColor: 'action.hover',
-                        color: 'primary.main',
-                      },
-                      minWidth: 44,
-                      minHeight: 44,
-                      '&:focus-visible': {
-                        outline: '2px solid',
-                        outlineColor: 'primary.main',
-                        outlineOffset: 2,
-                      }
-                    }}
-                  >
-                    <Badge badgeContent={unreadCount} color="error" max={99}>
-                      <Bell size={20} />
-                    </Badge>
-                  </IconButton>
+                    size="medium"
+                    variant="creative"
+                  />
                 </Box>
               )}
               

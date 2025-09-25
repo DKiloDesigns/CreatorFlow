@@ -6,7 +6,15 @@
 import React from 'react';
 import { Metadata } from 'next';
 import MobileToolsPage from '@/components/mobile/mobile-tools-page';
-import { Calculate as CalculateIcon, Tag as TagIcon, Schedule as ScheduleIcon, Assessment as AssessmentIcon, TrendingUp as TrendingUpIcon } from '@mui/icons-material';
+import { 
+  Calculate as CalculateIcon, 
+  Tag as TagIcon, 
+  Schedule as ScheduleIcon, 
+  Assessment as AssessmentIcon, 
+  TrendingUp as TrendingUpIcon,
+  Business as BusinessIcon,
+  Lightbulb as LightbulbIcon
+} from '@mui/icons-material';
 
 export const metadata: Metadata = {
   title: 'Free Social Media Tools - CreatorFlow',
@@ -91,22 +99,37 @@ const tools = [
     comingSoon: false
   },
   {
-    title: 'Content Performance Predictor',
-    description: 'Predict how your content will perform before you post',
-    icon: <TrendingUpIcon sx={{ fontSize: 40 }} />,
-    href: '/tools/content-predictor',
+    title: 'Brand Partnership Finder',
+    description: 'Discover brand partnership opportunities that match your audience',
+    icon: <BusinessIcon sx={{ fontSize: 40 }} />,
+    href: '/tools/brand-partnership-finder',
     features: [
-      'Engagement predictions',
-      'Best platform suggestions',
-      'Content optimization tips',
-      'Performance scoring',
-      'AI-powered insights'
+      'Partnership opportunity discovery',
+      'Brand matching algorithm',
+      'Compensation insights',
+      'Requirements analysis',
+      'Free basic opportunities'
     ],
     color: 'error',
+    comingSoon: false
+  },
+  {
+    title: 'Content Ideas Generator',
+    description: 'Get unlimited content ideas tailored to your audience and platform',
+    icon: <LightbulbIcon sx={{ fontSize: 40 }} />,
+    href: '/tools/content-ideas-generator',
+    features: [
+      'AI-powered content suggestions',
+      'Platform-specific ideas',
+      'Trending topic integration',
+      'Difficulty level filtering',
+      'Pro tips and optimization'
+    ],
+    color: 'primary',
     comingSoon: false
   }
 ];
 
 export default function ToolsPage() {
-  return <MobileToolsPage />;
+  return <MobileToolsPage tools={tools} title="Free Social Media Tools" subtitle="Powerful tools to optimize your social media strategy and grow your audience" />;
 }
