@@ -40,9 +40,9 @@ class EternalZord:
         setup_logging(self.log_dir)
         
         # Import local modules
-        from .protocol_registry import ProtocolRegistry
-        from .memory_anchor import MemoryAnchor
-        from .artifact_retriever import ArtifactRetriever
+        from protocol_registry import ProtocolRegistry
+        from memory_anchor import MemoryAnchor
+        from artifact_retriever import ArtifactRetriever
         
         self.protocols = ProtocolRegistry(data_dir=self.data_dir)
         self.memory = MemoryAnchor(data_dir=self.data_dir)
