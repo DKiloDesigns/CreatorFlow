@@ -1,0 +1,26 @@
+EternalZORD Standalone Package v1.0.0
+==========================================
+
+Package created: Mon Aug 11 13:43:04 CDT 2025
+Version: 1.0.0
+Author: Project Moonshot
+
+Contents:
+- Core EternalZORD package
+- Installation scripts (macOS/Linux & Windows)
+- Demo protocol and data structure
+- Configuration files
+- Documentation
+
+Installation:
+1. Extract this package to your desired directory
+2. Run install.sh (macOS/Linux) or install.bat (Windows)
+3. Follow the prompts to complete installation
+
+Quick Start:
+1. ./start_eternalzord.sh (macOS/Linux)
+2. start_eternalzord.bat (Windows)
+
+Service will run on: http://localhost:7010
+
+For support: Check README.md or create an issue on GitHub

@@ -37,7 +37,8 @@ import {
   ChevronDown,
   ChevronUp,
   Target,
-  CreditCard
+  CreditCard,
+  Wrench
 } from 'lucide-react';
 import { useAPIKey } from '@/hooks/use-api-key';
 import dynamic from 'next/dynamic';
@@ -481,6 +482,43 @@ export default function DashboardPage() {
                         </CardContent>
             </Collapse>
                       </Card>
+        </Grid>
+
+        {/* Free Tools */}
+        <Grid item xs={12} md={6}>
+          <Card sx={{ height: '100%', background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', color: 'white' }}>
+            <CardHeader
+              avatar={<Wrench size={32} color="white" />}
+              title="Free Tools"
+              subheader="Powerful tools to enhance your content creation"
+              sx={{ 
+                color: 'white',
+                '& .MuiCardHeader-title': { color: 'white' },
+                '& .MuiCardHeader-subheader': { color: 'rgba(255,255,255,0.8)' }
+              }}
+            />
+            <CardContent>
+              <Typography variant="body2" sx={{ mb: 2, color: 'rgba(255,255,255,0.9)' }}>
+                Access a suite of free tools to optimize your content, analyze performance, and streamline your workflow
+              </Typography>
+              <Button
+                variant="contained"
+                fullWidth
+                onClick={() => router.push('/tools')}
+                sx={{
+                  bgcolor: 'rgba(255,255,255,0.2)',
+                  color: 'white',
+                  border: '1px solid rgba(255,255,255,0.3)',
+                  '&:hover': {
+                    bgcolor: 'rgba(255,255,255,0.3)',
+                    border: '1px solid rgba(255,255,255,0.5)',
+                  }
+                }}
+              >
+                Explore Free Tools
+              </Button>
+            </CardContent>
+          </Card>
         </Grid>
       </Grid>
 

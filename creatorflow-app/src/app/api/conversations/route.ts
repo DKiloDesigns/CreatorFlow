@@ -1,13 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
+import { getSession } from '@/auth';
 import { prisma } from '@/lib/prisma';
 import { notificationTriggers } from '@/lib/notifications/notification-triggers';
 
 // GET /api/conversations - Get user's conversations
 export async function GET(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
+    const session = await getSession(request);
     if (!session?.user?.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
@@ -105,7 +104,7 @@ export async function GET(request: NextRequest) {
 // POST /api/conversations - Create a new conversation
 export async function POST(request: NextRequest) {
   try {
-    const session = await getServerSession(authOptions);
+    const session = await getSession(request);
     if (!session?.user?.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }

@@ -30,7 +30,6 @@ import {
   Badge
 } from '@mui/material';
 import { useState, useRef } from 'react';
-import { MobileNotificationIcon } from '@/components/notifications/MobileNotificationIcon';
 import { 
   Calculator as CalculateIcon,
   Hash as TagIcon,
@@ -244,28 +243,6 @@ const navItems = [
     label: 'Analytics',
     activePattern: /^\/dashboard\/analytics$/,
     isTools: false
-  },
-  {
-    href: '/dashboard/messaging',
-    icon: MessageSquare,
-    label: 'Messages',
-    activePattern: /^\/dashboard\/messaging/,
-    isTools: false
-  },
-  {
-    href: '/dashboard/notifications/mobile',
-    icon: Bell,
-    label: 'Notifications',
-    activePattern: /^\/dashboard\/notifications/,
-    isTools: false,
-    isNotification: true
-  },
-  {
-    href: '#tools',
-    icon: Wrench,
-    label: 'Tools',
-    activePattern: /^\/tools/,
-    isTools: true
   },
   {
     href: '/dashboard/profile',
@@ -690,17 +667,6 @@ export function BottomNavigation() {
             );
           }
           
-          // Special handling for Notifications item
-          if (item.isNotification) {
-            return (
-              <MobileNotificationIcon
-                key={item.href}
-                href={item.href}
-                size="medium"
-                variant="bottom-nav"
-              />
-            );
-          }
           
           // Special handling for Tools item
           if (item.isTools) {

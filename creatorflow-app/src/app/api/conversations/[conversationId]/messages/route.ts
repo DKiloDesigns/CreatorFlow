@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
+import { getSession } from '@/auth';
 import { prisma } from '@/lib/prisma';
 import { notificationWebSocket } from '@/lib/websocket/notification-server';
 import { notificationTriggers } from '@/lib/notifications/notification-triggers';
@@ -11,7 +10,7 @@ export async function GET(
   { params }: { params: { conversationId: string } }
 ) {
   try {
-    const session = await getServerSession(authOptions);
+    const session = await getSession(request);
     if (!session?.user?.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
@@ -129,7 +128,7 @@ export async function POST(
   { params }: { params: { conversationId: string } }
 ) {
   try {
-    const session = await getServerSession(authOptions);
+    const session = await getSession(request);
     if (!session?.user?.id) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }

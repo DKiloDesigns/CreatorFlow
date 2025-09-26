@@ -1,0 +1,41 @@
+# EternalZORD Standalone Configuration
+# This file contains default configuration values
+
+# Server Configuration
+server:
+  host: "0.0.0.0"
+  port: 7010
+  debug: false
+
+# Data Configuration
+data:
+  directory: "./data"
+  artifacts_dir: "./data/artifacts"
+  protocols_dir: "./data/protocols"
+  knowledge_dir: "./data/knowledge"
+  docs_dir: "./data/docs"
+
+# Logging Configuration
+logging:
+  directory: "./logs"
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  max_size: "10MB"
+  backup_count: 5
+
+# Memory Configuration
+memory:
+  max_breadcrumbs: 10
+  max_notes: 50
+  reanchor_throttle_seconds: 10
+
+# Artifact Configuration
+artifacts:
+  search_max_results: 100
+  supported_extensions: [".md", ".txt", ".yaml", ".yml", ".json"]
+
+# Protocol Configuration
+protocols:
+  default_priority: "medium"
+  default_status: "active"
+  max_protocols: 1000
