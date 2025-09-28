@@ -106,7 +106,7 @@ export function MinimalCollaborationPanel() {
                 <ListItemText
                   primary={user.name}
                   secondary={
-                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                       <Chip 
                         label={user.isActive ? 'Active' : 'Away'} 
                         color={user.isActive ? 'success' : 'default'} 
@@ -117,7 +117,7 @@ export function MinimalCollaborationPanel() {
                           Cursor: {user.cursor.x}, {user.cursor.y}
                         </Typography>
                       )}
-                    </Box>
+                    </span>
                   }
                 />
               </ListItem>
