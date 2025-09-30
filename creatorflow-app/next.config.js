@@ -18,6 +18,34 @@ const nextConfig = {
   compress: true,
   poweredByHeader: false,
   generateEtags: false,
+  // Build optimizations
+  swcMinify: true,
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production',
+  },
+  // Caching headers
+  async headers() {
+    return [
+      {
+        source: '/api/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=300, s-maxage=300',
+          },
+        ],
+      },
+      {
+        source: '/_next/static/:path*',
+        headers: [
+          {
+            key: 'Cache-Control',
+            value: 'public, max-age=31536000, immutable',
+          },
+        ],
+      },
+    ];
+  },
   experimental: {
     optimizePackageImports: [
       'lucide-react', 
@@ -25,6 +53,10 @@ const nextConfig = {
       '@mui/icons-material',
       '@mui/material'
     ],
+    // Enable build cache
+    buildCache: true,
+    // Enable incremental builds
+    incrementalCacheHandlerPath: './src/lib/cache-handler.js',
   },
   images: {
     formats: ['image/webp', 'image/avif'],

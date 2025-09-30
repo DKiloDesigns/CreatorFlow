@@ -24,6 +24,7 @@ import {
   TouchApp as TouchAppIcon,
 } from '@mui/icons-material';
 import {
+  ARIALiveRegionProvider,
   AccessibleModal,
   AccessibleFormField,
   useFormValidation,
@@ -74,7 +75,8 @@ export default function AccessibilityPage() {
   };
 
   return (
-    <Box sx={{ p: 3, maxWidth: 1200, mx: 'auto' }}>
+    <ARIALiveRegionProvider>
+      <Box sx={{ p: 3, maxWidth: 1200, mx: 'auto' }}>
       <Typography variant="h4" component="h1" gutterBottom sx={{ display: 'flex', alignItems: 'center', gap: 2, color: 'text.primary', fontWeight: 'bold' }}>
         <AccessibilityIcon color="primary" />
         Accessibility Testing & WCAG 2.1 AA Compliance
@@ -352,6 +354,7 @@ export default function AccessibilityPage() {
           • Screen readers announce modal state changes
         </Alert>
       </AccessibleModal>
-    </Box>
+      </Box>
+    </ARIALiveRegionProvider>
   );
 }

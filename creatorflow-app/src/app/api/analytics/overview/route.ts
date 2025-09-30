@@ -3,6 +3,8 @@ import { getSession } from '@/auth';
 import { prisma } from '@/lib/prisma';
 import { requireApiKey } from '@/lib/apiKeyAuth';
 import { mockDataService } from '@/lib/analytics/mockData';
+import { withCache, cacheKeyGenerators, skipCacheConditions } from '@/lib/cache-middleware';
+import { withCompression } from '@/lib/compression-middleware';
 import type { AnalyticsResponse, AnalyticsOverview, TimeRange } from '@/lib/analytics/types';
 
 function parseTimeRange(searchParams: URLSearchParams): TimeRange {
@@ -15,7 +17,7 @@ function parseTimeRange(searchParams: URLSearchParams): TimeRange {
   return { startDate, endDate };
 }
 
-export async function GET(req: NextRequest) {
+async function getAnalyticsOverviewHandler(req: NextRequest) {
   const { searchParams } = new URL(req.url);
   const useMock = searchParams.get('mock') === '1';
   const timeRange = parseTimeRange(searchParams);
@@ -140,4 +142,16 @@ export async function GET(req: NextRequest) {
     console.error('Analytics overview error:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
-} 
+}
+
+export const GET = withCompression()(
+  withCache({
+    keyGenerator: cacheKeyGenerators.analytics,
+    skipCache: (req) => {
+      const { searchParams } = new URL(req.url);
+      // Skip cache for mock data or real-time requests
+      return searchParams.get('mock') === '1' || searchParams.get('realtime') === '1';
+    },
+    ttl: 900, // 15 minutes
+  })(getAnalyticsOverviewHandler)
+); 

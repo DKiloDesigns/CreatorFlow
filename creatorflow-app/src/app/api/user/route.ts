@@ -1,8 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getSession } from '@/auth';
 import { prisma } from '@/lib/prisma';
+import { withCache, cacheKeyGenerators, skipCacheConditions } from '@/lib/cache-middleware';
+import { withCompression } from '@/lib/compression-middleware';
 
-export async function GET(req: NextRequest) {
+async function getUserHandler(req: NextRequest) {
   try {
     const session = await getSession(req);
     if (!session?.user?.id) {
@@ -33,6 +35,14 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
+
+export const GET = withCompression()(
+  withCache({
+    keyGenerator: cacheKeyGenerators.user,
+    skipCache: skipCacheConditions.skipAuthenticated,
+    ttl: 300, // 5 minutes
+  })(getUserHandler)
+);
 
 export async function PUT(req: NextRequest) {
   const session = await getSession(req);

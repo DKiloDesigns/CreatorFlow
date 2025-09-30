@@ -5,12 +5,15 @@ import { Providers } from "./providers";
 import { RealTimeNotificationProvider } from "@/components/notifications/real-time-provider";
 import { ServiceWorkerRegistration } from "@/components/ServiceWorkerRegistration";
 import { CriticalCSS } from "@/components/CriticalCSS";
-import ErrorBoundary from "@/components/error/ErrorBoundary";
-import { 
-  ARIALiveRegionProvider, 
-  MotionReductionProvider, 
-  ColorContrastProvider 
-} from "@/components/accessibility";
+import { GlobalErrorBoundary } from '@/components/error/GlobalErrorBoundary';
+import { LoadingProvider } from "@/contexts/LoadingContext";
+import { AccessibilityEnhancements, AriaLiveRegion } from "@/components/ui/accessibility-enhancements";
+import ClientOnlySkipToContent from '@/components/ui/ClientOnlySkipToContent';
+import { MobileUXEnhancements } from "@/components/mobile/mobile-ux-enhancements";
+import { TouchInteractionsWrapper } from "@/components/mobile/touch-interactions-wrapper";
+import { UnifiedMobileControls } from "@/components/mobile/unified-mobile-controls";
+import { PWAEnhancements } from "@/components/mobile/pwa-enhancements";
+import AppAuthGate from './AppAuthGate';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -29,21 +32,31 @@ export default function RootLayout({
       <head>
         <CriticalCSS />
       </head>
-      <body className={inter.className}>
-        <ErrorBoundary>
-          <ARIALiveRegionProvider>
-            <MotionReductionProvider>
-              <ColorContrastProvider>
-                <Providers>
-                  <RealTimeNotificationProvider>
-                    {children}
-                    <ServiceWorkerRegistration />
-                  </RealTimeNotificationProvider>
-                </Providers>
-              </ColorContrastProvider>
-            </MotionReductionProvider>
-          </ARIALiveRegionProvider>
-        </ErrorBoundary>
+      <body className="MuiTypography-root">
+        <ClientOnlySkipToContent />
+        <GlobalErrorBoundary enableBuildErrorHandling={true} enableRecovery={true}>
+          <LoadingProvider>
+            <Providers>
+              <AppAuthGate>
+                <RealTimeNotificationProvider>
+                  <MobileUXEnhancements>
+                    <UnifiedMobileControls />
+                    <TouchInteractionsWrapper>
+                      <PWAEnhancements>
+                        <main id="main-content" tabIndex={-1} style={{ paddingBottom: '100px' }}>
+                          {children}
+                        </main>
+                      </PWAEnhancements>
+                    </TouchInteractionsWrapper>
+                  </MobileUXEnhancements>
+                  <ServiceWorkerRegistration />
+                  <AccessibilityEnhancements />
+                  <AriaLiveRegion />
+                </RealTimeNotificationProvider>
+              </AppAuthGate>
+            </Providers>
+          </LoadingProvider>
+        </GlobalErrorBoundary>
       </body>
     </html>
   );

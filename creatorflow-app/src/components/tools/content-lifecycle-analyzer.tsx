@@ -58,7 +58,7 @@ import {
   Assessment,
   Insights,
   Speed,
-  Target,
+  GpsFixed as Target,
   FlashOn,
   Star,
   StarBorder,

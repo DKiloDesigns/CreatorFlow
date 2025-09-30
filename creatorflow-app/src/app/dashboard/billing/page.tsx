@@ -224,7 +224,11 @@ function BillingContent() {
                 <Card
                   sx={{
                     height: '100%',
+                    maxWidth: 400,
+                    mx: 'auto',
                     position: 'relative',
+                    display: 'flex',
+                    flexDirection: 'column',
                     ...(tier.popular && {
                       border: 2,
                       borderColor: 'primary.main',
@@ -245,17 +249,23 @@ function BillingContent() {
                         top: -12,
                         left: '50%',
                         transform: 'translateX(-50%)',
+                        zIndex: 1,
                       }}
                     />
                   )}
 
-                  <CardHeader>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <Typography variant="h6">{tier.name}</Typography>
+                  <CardHeader
+                    sx={{
+                      pt: tier.popular ? 3 : 2,
+                      pb: 1,
+                    }}
+                  >
+                    <CardTitle sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 1 }}>
+                      <Typography variant="h6" sx={{ fontWeight: 600 }}>{tier.name}</Typography>
                       {isCurrentPlan && (
                         <Chip label="Current Plan" color="primary" size="small" />
                       )}
-                    </Box>
+                    </CardTitle>
                     <Typography variant="body2" color="text.secondary">
                       {tier.description}
                     </Typography>
@@ -277,22 +287,29 @@ function BillingContent() {
                     </Box>
                   </CardHeader>
 
-                  <CardContent>
-                    <List dense>
+                  <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column', pb: 2 }}>
+                    <List dense sx={{ mb: 2, flexGrow: 1 }}>
                       {tier.features.map((feature, index) => (
-                        <ListItem key={index} sx={{ px: 0 }}>
+                        <ListItem key={index} sx={{ px: 0, py: 0.5 }}>
                           <ListItemIcon sx={{ minWidth: 32 }}>
                             <Check size={16} color="green" />
                           </ListItemIcon>
                           <ListItemText
                             primary={feature}
-                            primaryTypographyProps={{ variant: 'body2' }}
+                            primaryTypographyProps={{ 
+                              variant: 'body2',
+                              sx: { 
+                                wordBreak: 'break-word',
+                                overflowWrap: 'break-word',
+                                lineHeight: 1.3
+                              }
+                            }}
                           />
                         </ListItem>
                       ))}
                     </List>
 
-                    <Box sx={{ mt: 3, display: 'flex', flexDirection: 'column', gap: 1 }}>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1, mt: 'auto' }}>
                       {!isCurrentPlan ? (
                         <>
                           <Button
@@ -331,23 +348,23 @@ function BillingContent() {
       {/* Feature Comparison */}
       <Card>
         <CardHeader>
-          <CardTitle>Feature Comparison</CardTitle>
-          <Typography variant="body2" color="text.secondary">
+          <CardTitle sx={{ wordBreak: 'break-word', overflowWrap: 'break-word' }}>Feature Comparison</CardTitle>
+          <Typography variant="body2" color="text.secondary" sx={{ wordBreak: 'break-word', overflowWrap: 'break-word' }}>
             Compare features across all plans
           </Typography>
         </CardHeader>
-        <CardContent>
-          <Box sx={{ overflowX: 'auto' }}>
+        <CardContent sx={{ p: 0 }}>
+          <Box sx={{ overflowX: 'auto', width: '100%' }}>
             <Box sx={{ minWidth: 600 }}>
               <Grid container spacing={2}>
                 <Grid item xs={4}>
-                  <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
+                  <Typography variant="subtitle2" sx={{ fontWeight: 600, wordBreak: 'break-word', overflowWrap: 'break-word' }}>
                     Features
                   </Typography>
                 </Grid>
                 {PRICING_TIERS.map((tier) => (
                   <Grid item xs={2.67} key={tier.id}>
-                    <Typography variant="subtitle2" sx={{ fontWeight: 600, textAlign: 'center' }}>
+                    <Typography variant="subtitle2" sx={{ fontWeight: 600, textAlign: 'center', wordBreak: 'break-word', overflowWrap: 'break-word' }}>
                       {tier.name}
                     </Typography>
                   </Grid>
@@ -358,11 +375,11 @@ function BillingContent() {
               
               <Grid container spacing={2}>
                 <Grid item xs={4}>
-                  <Typography variant="body2">Social Media Accounts</Typography>
+                  <Typography variant="body2" sx={{ wordBreak: 'break-word', overflowWrap: 'break-word' }}>Social Media Accounts</Typography>
                 </Grid>
                 {PRICING_TIERS.map((tier) => (
                   <Grid item xs={2.67} key={tier.id}>
-                    <Typography variant="body2" sx={{ textAlign: 'center' }}>
+                    <Typography variant="body2" sx={{ textAlign: 'center', wordBreak: 'break-word', overflowWrap: 'break-word' }}>
                       {tier.limits.socialAccounts === -1 ? 'Unlimited' : tier.limits.socialAccounts}
                     </Typography>
                   </Grid>
@@ -371,11 +388,11 @@ function BillingContent() {
               
               <Grid container spacing={2}>
                 <Grid item xs={4}>
-                  <Typography variant="body2">Posts per Month</Typography>
+                  <Typography variant="body2" sx={{ wordBreak: 'break-word', overflowWrap: 'break-word' }}>Posts per Month</Typography>
                 </Grid>
                 {PRICING_TIERS.map((tier) => (
                   <Grid item xs={2.67} key={tier.id}>
-                    <Typography variant="body2" sx={{ textAlign: 'center' }}>
+                    <Typography variant="body2" sx={{ textAlign: 'center', wordBreak: 'break-word', overflowWrap: 'break-word' }}>
                       {tier.limits.postsPerMonth === -1 ? 'Unlimited' : tier.limits.postsPerMonth}
                     </Typography>
                   </Grid>
@@ -384,11 +401,11 @@ function BillingContent() {
               
               <Grid container spacing={2}>
                 <Grid item xs={4}>
-                  <Typography variant="body2">Team Members</Typography>
+                  <Typography variant="body2" sx={{ wordBreak: 'break-word', overflowWrap: 'break-word' }}>Team Members</Typography>
                 </Grid>
                 {PRICING_TIERS.map((tier) => (
                   <Grid item xs={2.67} key={tier.id}>
-                    <Typography variant="body2" sx={{ textAlign: 'center' }}>
+                    <Typography variant="body2" sx={{ textAlign: 'center', wordBreak: 'break-word', overflowWrap: 'break-word' }}>
                       {tier.limits.teamMembers === -1 ? 'Unlimited' : tier.limits.teamMembers}
                     </Typography>
                   </Grid>
@@ -397,7 +414,7 @@ function BillingContent() {
               
               <Grid container spacing={2}>
                 <Grid item xs={4}>
-                  <Typography variant="body2">AI Content Generation</Typography>
+                  <Typography variant="body2" sx={{ wordBreak: 'break-word', overflowWrap: 'break-word' }}>AI Content Generation</Typography>
                 </Grid>
                 {PRICING_TIERS.map((tier) => (
                   <Grid item xs={2.67} key={tier.id}>
@@ -414,7 +431,7 @@ function BillingContent() {
               
               <Grid container spacing={2}>
                 <Grid item xs={4}>
-                  <Typography variant="body2">White-Label</Typography>
+                  <Typography variant="body2" sx={{ wordBreak: 'break-word', overflowWrap: 'break-word' }}>White-Label</Typography>
                 </Grid>
                 {PRICING_TIERS.map((tier) => (
                   <Grid item xs={2.67} key={tier.id}>
@@ -431,7 +448,7 @@ function BillingContent() {
               
               <Grid container spacing={2}>
                 <Grid item xs={4}>
-                  <Typography variant="body2">Priority Support</Typography>
+                  <Typography variant="body2" sx={{ wordBreak: 'break-word', overflowWrap: 'break-word' }}>Priority Support</Typography>
                 </Grid>
                 {PRICING_TIERS.map((tier) => (
                   <Grid item xs={2.67} key={tier.id}>

@@ -37,7 +37,7 @@ import {
   MenuItem,
 } from '@mui/material';
 import {
-  Bell,
+  Notifications as Bell,
   Wifi,
   WifiOff,
   Notifications,
@@ -51,9 +51,9 @@ import {
   MoreVert,
   Refresh,
   Settings,
-  X,
-  ChevronDown,
-  ChevronUp,
+  Close as X,
+  ExpandMore as ChevronDown,
+  ExpandLess as ChevronUp,
 } from '@mui/icons-material';
 import { useMobileWebSocketNotifications } from '@/hooks/useMobileWebSocketNotifications';
 

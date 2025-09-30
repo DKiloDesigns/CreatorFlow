@@ -56,7 +56,7 @@ import {
   Assessment,
   Insights,
   Speed,
-  Target,
+  GpsFixed as Target,
   FlashOn,
   Star,
   StarBorder,
@@ -330,7 +330,8 @@ import {
   ZoomOutMapTwoTone,
   ZoomOutOutlined,
   ZoomOutRounded,
-  ZoomOutTwoTone
+  ZoomOutTwoTone,
+  Search
 } from '@/lib/mui-optimized-imports';
 import { designTokens } from '@/lib/design-system';
 

@@ -16,7 +16,7 @@ import {
   Snackbar,
 } from '@mui/material';
 import {
-  Bell,
+  Notifications as Bell,
   PostAdd,
   Schedule,
   Publish,

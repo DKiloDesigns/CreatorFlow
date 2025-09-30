@@ -330,7 +330,8 @@ import {
   ZoomOutMapTwoTone,
   ZoomOutOutlined,
   ZoomOutRounded,
-  ZoomOutTwoTone
+  ZoomOutTwoTone,
+  GpsFixed
 } from '@/lib/mui-optimized-imports';
 import { designTokens } from '@/lib/design-system';
 
@@ -613,7 +614,7 @@ export default function MonetizationOptimizer({
 
       <Tabs value={activeTab} onChange={(e, v) => setActiveTab(v)} sx={{ mb: 3 }}>
         <Tab label="Revenue Streams" icon={<BarChart />} />
-        <Tab label="Strategies" icon={<Target />} />
+        <Tab label="Strategies" icon={<GpsFixed />} />
         <Tab label="Goals & Tracking" icon={<Timeline />} />
       </Tabs>
 

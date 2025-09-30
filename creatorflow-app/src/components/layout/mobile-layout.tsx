@@ -19,7 +19,7 @@ export function MobileLayout({ children }: MobileLayoutProps) {
       {/* Top navigation and main content */}
       <Box sx={{ 
         flexGrow: 1,
-        pb: { xs: 20, md: 0 } // 20 = 80px for bottom nav on mobile, 0 on desktop
+        pb: { xs: 25, md: 0 } // 25 = 100px for bottom nav on mobile, 0 on desktop
       }}>
         {children}
       </Box>

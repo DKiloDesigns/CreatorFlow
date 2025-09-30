@@ -147,10 +147,24 @@ model Post {
   repostInterval Int?
   brandCollab    BrandCollab? @relation(fields: [brandCollabId], references: [id])
   user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  recurrence   Recurrence?
 
   @@index([userId])
   @@index([brandCollabId])
   @@index([parentPostId])
+}
+
+model Recurrence {
+  id        String    @id @default(cuid())
+  postId    String    @unique
+  frequency String    // e.g., "DAILY", "WEEKLY", "MONTHLY", "YEARLY"
+  interval  Int       @default(1)
+  byDay     String?   // e.g., "MO,TU,WE,TH,FR"
+  byMonth   Int?
+  byMonthDay Int?
+  until     DateTime?
+  count     Int?
+  post      Post      @relation(fields: [postId], references: [id], onDelete: Cascade)
 }
 
 model CaptionTemplate {

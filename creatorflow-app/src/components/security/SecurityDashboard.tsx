@@ -37,6 +37,7 @@ import {
   Visibility,
   VisibilityOff,
 } from '@/lib/mui-optimized-imports';
+import { useRouter, usePathname } from 'next/navigation';
 
 interface SecurityStats {
   totalThreats: number;
@@ -63,6 +64,28 @@ interface SecurityRecommendation {
   priority: 'low' | 'medium' | 'high' | 'critical';
   action: string;
   completed: boolean;
+}
+
+export function SecurityTabs() {
+  const router = useRouter();
+  const pathname = usePathname();
+  const value = pathname.includes('/api') ? 1 : 0;
+
+  return (
+    <Box sx={{ mb: 2, mt: 1 }}>
+      <Tabs
+        value={value}
+        onChange={(_, newValue) => {
+          router.push(newValue === 0 ? '/dashboard/security/account' : '/dashboard/security/api');
+        }}
+        variant="fullWidth"
+        aria-label="Security section tabs"
+      >
+        <Tab label="Account Security" />
+        <Tab label="API Security" />
+      </Tabs>
+    </Box>
+  );
 }
 
 export default function SecurityDashboard() {

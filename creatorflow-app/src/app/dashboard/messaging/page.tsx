@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect } from 'react';
+import React, { useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import {
   Box,
@@ -35,7 +35,7 @@ import {
   CheckCircle
 } from 'lucide-react';
 
-export default function MessagingPage() {
+function MessagingContent() {
   const searchParams = useSearchParams();
   const [selectedConversation, setSelectedConversation] = React.useState('1');
 
@@ -462,5 +462,19 @@ export default function MessagingPage() {
         </Grid>
       </Grid>
     </Container>
+  );
+}
+
+export default function MessagingPage() {
+  return (
+    <Suspense fallback={
+      <Container maxWidth="xl" sx={{ py: 3 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh' }}>
+          <Typography variant="h6">Loading messages...</Typography>
+        </Box>
+      </Container>
+    }>
+      <MessagingContent />
+    </Suspense>
   );
 }

@@ -1,4 +1,4 @@
-import { redis } from '../redis';
+import { getRedisClient } from '../redis';
 
 export interface CacheMetrics {
   hits: number;
@@ -50,10 +50,12 @@ export class AnalyticsMonitoring {
 
     try {
       // Update Redis metrics
-      await redis.hincrby(key, operation, 1);
-      await redis.hincrby(key, 'totalResponseTime', responseTime);
-      await redis.hincrby(key, 'operationCount', 1);
-      await redis.expire(key, this.METRICS_TTL);
+      const client = await getRedisClient();
+      if (!client) return;
+      await client.hincrby(key, operation, 1);
+      await client.hincrby(key, 'totalResponseTime', responseTime);
+      await client.hincrby(key, 'operationCount', 1);
+      await client.expire(key, this.METRICS_TTL);
 
       // Update memory metrics
       const metrics = this.cacheMetrics.get(key) || {
@@ -90,12 +92,14 @@ export class AnalyticsMonitoring {
 
     try {
       // Update Redis metrics
-      await redis.hincrby(key, 'totalRequests', 1);
+      const client = await getRedisClient();
+      if (!client) return;
+      await client.hincrby(key, 'totalRequests', 1);
       if (blocked) {
-        await redis.hincrby(key, 'blockedRequests', 1);
+        await client.hincrby(key, 'blockedRequests', 1);
       }
-      await redis.hincrby(key, 'totalResponseTime', responseTime);
-      await redis.expire(key, this.METRICS_TTL);
+      await client.hincrby(key, 'totalResponseTime', responseTime);
+      await client.expire(key, this.METRICS_TTL);
 
       // Update memory metrics
       const metrics = this.rateLimitMetrics.get(key) || {
@@ -123,7 +127,9 @@ export class AnalyticsMonitoring {
     const key = this.generateKey('cache', userId, endpoint);
     
     try {
-      const metrics = await redis.hgetall<RedisMetrics>(key);
+      const client = await getRedisClient();
+      if (!client) return null;
+      const metrics = await client.hgetall<RedisMetrics>(key);
       if (!metrics) return null;
 
       return {
@@ -144,7 +150,9 @@ export class AnalyticsMonitoring {
     const key = this.generateKey('ratelimit', userId, endpoint);
     
     try {
-      const metrics = await redis.hgetall<RedisMetrics>(key);
+      const client = await getRedisClient();
+      if (!client) return null;
+      const metrics = await client.hgetall<RedisMetrics>(key);
       if (!metrics) return null;
 
       return {
@@ -162,9 +170,11 @@ export class AnalyticsMonitoring {
 
   async clearMetrics(): Promise<void> {
     try {
-      const keys = await redis.keys('monitoring:*');
+      const client = await getRedisClient();
+      if (!client) return;
+      const keys = await client.keys('monitoring:*');
       if (keys.length > 0) {
-        await redis.del(...keys);
+        await client.del(...keys);
       }
     } catch (error) {
       console.error('Error clearing metrics:', error);

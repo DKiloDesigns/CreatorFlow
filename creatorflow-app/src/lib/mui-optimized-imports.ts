@@ -387,7 +387,8 @@ export {
   BatteryFull,
   AccountBalance,
   DonutLarge,
-  DonutSmall
+  DonutSmall,
+  GpsFixed
 } from '@mui/icons-material';
 
 // Note: Individual icons are exported above and can be imported directly

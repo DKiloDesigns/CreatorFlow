@@ -330,7 +330,8 @@ import {
   ZoomOutMapTwoTone,
   ZoomOutOutlined,
   ZoomOutRounded,
-  ZoomOutTwoTone
+  ZoomOutTwoTone,
+  GpsFixed
 } from '@/lib/mui-optimized-imports';
 import { designTokens } from '@/lib/design-system';
 
@@ -537,7 +538,7 @@ export default function TrendPredictionTool({
       <Tabs value={activeTab} onChange={(e, v) => setActiveTab(v)} sx={{ mb: 3 }}>
         <Tab label="Trend Analysis" icon={<TrendingUp />} />
         <Tab label="Predictions" icon={<FlashOn />} />
-        <Tab label="Opportunities" icon={<Target />} />
+        <Tab label="Opportunities" icon={<GpsFixed />} />
       </Tabs>
 
       {activeTab === 0 && (

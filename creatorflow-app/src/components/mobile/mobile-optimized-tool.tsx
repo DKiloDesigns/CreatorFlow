@@ -247,7 +247,7 @@ export default function MobileOptimizedTool({
       <Box
         sx={{
           position: 'fixed',
-          bottom: 80,
+          bottom: 100,
           right: 16,
           zIndex: 1000,
           display: { xs: 'flex', md: 'none' },

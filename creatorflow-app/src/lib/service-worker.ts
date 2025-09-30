@@ -1,7 +1,7 @@
 // Service Worker Registration Utility
 
 export async function registerServiceWorker() {
-  if ('serviceWorker' in navigator) {
+  if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
     try {
       const registration = await navigator.serviceWorker.register('/sw.js', {
         scope: '/',
@@ -31,7 +31,7 @@ export async function registerServiceWorker() {
 }
 
 export async function unregisterServiceWorker() {
-  if ('serviceWorker' in navigator) {
+  if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
     const registration = await navigator.serviceWorker.getRegistration();
     if (registration) {
       await registration.unregister();
@@ -42,7 +42,7 @@ export async function unregisterServiceWorker() {
 
 // Request notification permission
 export async function requestNotificationPermission() {
-  if ('Notification' in window) {
+  if (typeof window !== 'undefined' && 'Notification' in window) {
     const permission = await Notification.requestPermission();
     return permission === 'granted';
   }
@@ -51,7 +51,7 @@ export async function requestNotificationPermission() {
 
 // Subscribe to push notifications
 export async function subscribeToPushNotifications() {
-  if ('serviceWorker' in navigator && 'PushManager' in window) {
+  if (typeof window !== 'undefined' && 'serviceWorker' in navigator && 'PushManager' in window) {
     try {
       const registration = await navigator.serviceWorker.ready;
       const subscription = await registration.pushManager.subscribe({
@@ -78,7 +78,7 @@ export async function subscribeToPushNotifications() {
 
 // Background sync for offline actions
 export async function registerBackgroundSync(tag: string) {
-  if ('serviceWorker' in navigator && 'sync' in window.ServiceWorkerRegistration.prototype) {
+  if (typeof window !== 'undefined' && 'serviceWorker' in navigator && 'sync' in window.ServiceWorkerRegistration.prototype) {
     const registration = await navigator.serviceWorker.ready;
     await registration.sync.register(tag);
     console.log('Background sync registered:', tag);
@@ -87,7 +87,7 @@ export async function registerBackgroundSync(tag: string) {
 
 // Cache management utilities
 export async function clearAllCaches() {
-  if ('caches' in window) {
+  if (typeof window !== 'undefined' && 'caches' in window) {
     const cacheNames = await caches.keys();
     await Promise.all(
       cacheNames.map(cacheName => caches.delete(cacheName))
@@ -97,7 +97,7 @@ export async function clearAllCaches() {
 }
 
 export async function getCacheSize() {
-  if ('caches' in window) {
+  if (typeof window !== 'undefined' && 'caches' in window) {
     const cacheNames = await caches.keys();
     let totalSize = 0;
 

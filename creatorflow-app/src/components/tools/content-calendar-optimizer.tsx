@@ -78,7 +78,7 @@ import {
   Language,
   TrackChanges,
   Insights,
-  Target,
+  GpsFixed as Target,
   Speed,
   Timer,
   FlashOn,

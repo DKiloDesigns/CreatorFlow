@@ -78,7 +78,7 @@ import {
   BarChart,
   Language,
   Insights,
-  Target,
+  GpsFixed as Target,
   Speed,
   Timer,
   FlashOn,

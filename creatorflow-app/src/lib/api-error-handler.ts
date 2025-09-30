@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { handleError, createError, AppError } from './error-handler';
+import { handleApiError, createError, AppError } from './error-handler';
 
 export interface APIErrorResponse {
   error: string;
@@ -107,7 +107,7 @@ export function withAPIErrorHandling<T extends any[], R>(
       );
       
       // Log the original error
-      await handleError(error instanceof Error ? error : new Error(String(error)), {
+      await handleApiError(error instanceof Error ? error : new Error(String(error)), {
         endpoint: 'api',
         timestamp: new Date().toISOString(),
       });

@@ -21,7 +21,7 @@ import {
   Divider,
 } from '@mui/material';
 import {
-  Bell,
+  Notifications as Bell,
   Wifi,
   WifiOff,
   Notifications,

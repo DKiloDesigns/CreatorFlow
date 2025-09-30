@@ -1,269 +1,293 @@
-// Comprehensive error handling utilities for production
-
-export interface ErrorContext {
-  userId?: string;
-  sessionId?: string;
-  requestId?: string;
-  endpoint?: string;
-  method?: string;
-  userAgent?: string;
-  timestamp?: string;
-  [key: string]: any;
-}
-
-export interface ErrorReport {
-  id: string;
-  type: 'client' | 'server' | 'api' | 'database' | 'auth' | 'validation' | 'network' | 'timeout';
-  severity: 'low' | 'medium' | 'high' | 'critical';
+// Global error handling utilities
+export interface AppError {
+  code: string;
   message: string;
-  stack?: string;
-  context: ErrorContext;
+  statusCode: number;
+  details?: any;
   timestamp: string;
-  resolved: boolean;
-  retryable: boolean;
+  stack?: string;
 }
 
 export class AppError extends Error {
-  public readonly type: ErrorReport['type'];
-  public readonly severity: ErrorReport['severity'];
-  public readonly retryable: boolean;
-  public readonly context: ErrorContext;
+  public readonly code: string;
+  public readonly statusCode: number;
+  public readonly details?: any;
   public readonly timestamp: string;
 
   constructor(
     message: string,
-    type: ErrorReport['type'] = 'client',
-    severity: ErrorReport['severity'] = 'medium',
-    retryable: boolean = false,
-    context: ErrorContext = {}
+    statusCode: number = 500,
+    code: string = 'INTERNAL_ERROR',
+    details?: any
   ) {
     super(message);
     this.name = 'AppError';
-    this.type = type;
-    this.severity = severity;
-    this.retryable = retryable;
-    this.context = context;
+    this.code = code;
+    this.statusCode = statusCode;
+    this.details = details;
     this.timestamp = new Date().toISOString();
+    
+    // Maintains proper stack trace for where our error was thrown
+    Error.captureStackTrace(this, this.constructor);
   }
 }
 
-export class ErrorHandler {
-  private static instance: ErrorHandler;
-  private errorQueue: ErrorReport[] = [];
-  private maxQueueSize = 100;
+// Predefined error types
+export const ErrorCodes = {
+  // Authentication errors
+  UNAUTHORIZED: 'UNAUTHORIZED',
+  FORBIDDEN: 'FORBIDDEN',
+  INVALID_CREDENTIALS: 'INVALID_CREDENTIALS',
+  TOKEN_EXPIRED: 'TOKEN_EXPIRED',
+  
+  // Validation errors
+  VALIDATION_ERROR: 'VALIDATION_ERROR',
+  INVALID_INPUT: 'INVALID_INPUT',
+  MISSING_REQUIRED_FIELD: 'MISSING_REQUIRED_FIELD',
+  
+  // Resource errors
+  NOT_FOUND: 'NOT_FOUND',
+  CONFLICT: 'CONFLICT',
+  GONE: 'GONE',
+  
+  // Server errors
+  INTERNAL_ERROR: 'INTERNAL_ERROR',
+  SERVICE_UNAVAILABLE: 'SERVICE_UNAVAILABLE',
+  TIMEOUT: 'TIMEOUT',
+  
+  // Database errors
+  DATABASE_ERROR: 'DATABASE_ERROR',
+  CONNECTION_ERROR: 'CONNECTION_ERROR',
+  
+  // External service errors
+  EXTERNAL_SERVICE_ERROR: 'EXTERNAL_SERVICE_ERROR',
+  API_RATE_LIMIT: 'API_RATE_LIMIT',
+  
+  // Build errors
+  BUILD_ERROR: 'BUILD_ERROR',
+  MODULE_NOT_FOUND: 'MODULE_NOT_FOUND',
+  COMPILATION_ERROR: 'COMPILATION_ERROR',
+} as const;
 
-  static getInstance(): ErrorHandler {
-    if (!ErrorHandler.instance) {
-      ErrorHandler.instance = new ErrorHandler();
-    }
-    return ErrorHandler.instance;
-  }
-
-  // Create standardized error reports
-  createErrorReport(
-    error: Error | AppError,
-    context: ErrorContext = {}
-  ): ErrorReport {
-    const isAppError = error instanceof AppError;
+// Error factory functions
+export const createError = {
+  unauthorized: (message: string = 'Unauthorized access') => 
+    new AppError(message, 401, ErrorCodes.UNAUTHORIZED),
     
-    return {
-      id: `err_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-      type: isAppError ? error.type : this.classifyError(error),
-      severity: isAppError ? error.severity : this.determineSeverity(error),
-      message: error.message,
-      stack: error.stack,
-      context: {
-        ...context,
-        timestamp: new Date().toISOString(),
-        userAgent: typeof window !== 'undefined' ? window.navigator.userAgent : undefined,
+  forbidden: (message: string = 'Access forbidden') => 
+    new AppError(message, 403, ErrorCodes.FORBIDDEN),
+    
+  notFound: (message: string = 'Resource not found') => 
+    new AppError(message, 404, ErrorCodes.NOT_FOUND),
+    
+  validation: (message: string = 'Validation failed', details?: any) => 
+    new AppError(message, 400, ErrorCodes.VALIDATION_ERROR, details),
+    
+  conflict: (message: string = 'Resource conflict') => 
+    new AppError(message, 409, ErrorCodes.CONFLICT),
+    
+  internal: (message: string = 'Internal server error', details?: any) => 
+    new AppError(message, 500, ErrorCodes.INTERNAL_ERROR, details),
+    
+  serviceUnavailable: (message: string = 'Service temporarily unavailable') => 
+    new AppError(message, 503, ErrorCodes.SERVICE_UNAVAILABLE),
+    
+  timeout: (message: string = 'Request timeout') => 
+    new AppError(message, 408, ErrorCodes.TIMEOUT),
+    
+  database: (message: string = 'Database error', details?: any) => 
+    new AppError(message, 500, ErrorCodes.DATABASE_ERROR, details),
+    
+  externalService: (message: string = 'External service error', details?: any) => 
+    new AppError(message, 502, ErrorCodes.EXTERNAL_SERVICE_ERROR, details),
+    
+  build: (message: string = 'Build error', details?: any) => 
+    new AppError(message, 500, ErrorCodes.BUILD_ERROR, details),
+    
+  moduleNotFound: (module: string) => 
+    new AppError(`Module not found: ${module}`, 500, ErrorCodes.MODULE_NOT_FOUND, { module }),
+    
+  compilation: (message: string = 'Compilation error', details?: any) => 
+    new AppError(message, 500, ErrorCodes.COMPILATION_ERROR, details),
+};
+
+// Error handler for API routes
+export function handleApiError(error: unknown): NextResponse {
+  console.error('API Error:', error);
+  
+  if (error instanceof AppError) {
+    return NextResponse.json(
+      {
+        error: {
+          code: error.code,
+          message: error.message,
+          details: error.details,
+          timestamp: error.timestamp,
+        },
       },
-      timestamp: new Date().toISOString(),
-      resolved: false,
-      retryable: isAppError ? error.retryable : this.isRetryableError(error),
-    };
+      { status: error.statusCode }
+    );
   }
-
-  // Classify error types
-  private classifyError(error: Error): ErrorReport['type'] {
-    const message = error.message.toLowerCase();
-    const name = error.name.toLowerCase();
-
-    if (name.includes('network') || message.includes('fetch') || message.includes('network')) {
-      return 'network';
-    }
-    if (name.includes('timeout') || message.includes('timeout')) {
-      return 'timeout';
-    }
-    if (name.includes('auth') || message.includes('unauthorized') || message.includes('forbidden')) {
-      return 'auth';
-    }
-    if (name.includes('validation') || message.includes('invalid') || message.includes('required')) {
-      return 'validation';
-    }
-    if (name.includes('database') || message.includes('prisma') || message.includes('sql')) {
-      return 'database';
-    }
-    if (message.includes('api') || message.includes('endpoint')) {
-      return 'api';
-    }
-    return 'client';
+  
+  if (error instanceof Error) {
+    return NextResponse.json(
+      {
+        error: {
+          code: ErrorCodes.INTERNAL_ERROR,
+          message: 'An unexpected error occurred',
+          details: process.env.NODE_ENV === 'development' ? error.message : undefined,
+          timestamp: new Date().toISOString(),
+        },
+      },
+      { status: 500 }
+    );
   }
+  
+  return NextResponse.json(
+    {
+      error: {
+        code: ErrorCodes.INTERNAL_ERROR,
+        message: 'An unknown error occurred',
+        timestamp: new Date().toISOString(),
+      },
+    },
+    { status: 500 }
+  );
+}
 
-  // Determine error severity
-  private determineSeverity(error: Error): ErrorReport['severity'] {
-    const message = error.message.toLowerCase();
-    const name = error.name.toLowerCase();
-
-    if (name.includes('critical') || message.includes('fatal') || message.includes('crash')) {
-      return 'critical';
-    }
-    if (name.includes('error') || message.includes('failed') || message.includes('exception')) {
-      return 'high';
-    }
-    if (name.includes('warning') || message.includes('deprecated')) {
-      return 'medium';
-    }
-    return 'low';
+// Error handler for client-side errors
+export function handleClientError(error: unknown): string {
+  if (error instanceof AppError) {
+    return error.message;
   }
-
-  // Check if error is retryable
-  private isRetryableError(error: Error): boolean {
-    const message = error.message.toLowerCase();
-    const name = error.name.toLowerCase();
-
-    // Network errors are usually retryable
-    if (name.includes('network') || message.includes('fetch') || message.includes('timeout')) {
-      return true;
-    }
-    // Server errors (5xx) are usually retryable
-    if (message.includes('500') || message.includes('502') || message.includes('503') || message.includes('504')) {
-      return true;
-    }
-    // Rate limiting is retryable
-    if (message.includes('rate limit') || message.includes('429')) {
-      return true;
-    }
-    return false;
+  
+  if (error instanceof Error) {
+    return error.message;
   }
+  
+  return 'An unexpected error occurred';
+}
 
-  // Handle and report errors
-  async handleError(
-    error: Error | AppError,
-    context: ErrorContext = {}
-  ): Promise<ErrorReport> {
-    const errorReport = this.createErrorReport(error, context);
-    
-    // Add to queue
-    this.addToQueue(errorReport);
-    
-    // Send to monitoring service
-    await this.reportError(errorReport);
-    
-    // Log to console in development
-    if (process.env.NODE_ENV === 'development') {
-      console.error('Error handled:', errorReport);
-    }
-    
-    return errorReport;
-  }
-
-  // Add error to queue
-  private addToQueue(errorReport: ErrorReport): void {
-    this.errorQueue.push(errorReport);
-    
-    // Maintain queue size
-    if (this.errorQueue.length > this.maxQueueSize) {
-      this.errorQueue.shift();
-    }
-  }
-
-  // Report error to monitoring service
-  private async reportError(errorReport: ErrorReport): Promise<void> {
-    try {
-      await fetch('/api/monitoring/errors', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(errorReport),
-      });
-    } catch (reportError) {
-      console.error('Failed to report error:', reportError);
-    }
-  }
-
-  // Get error statistics
-  getErrorStats(): {
-    total: number;
-    byType: Record<string, number>;
-    bySeverity: Record<string, number>;
-    recent: ErrorReport[];
-  } {
-    const byType: Record<string, number> = {};
-    const bySeverity: Record<string, number> = {};
-    
-    this.errorQueue.forEach(error => {
-      byType[error.type] = (byType[error.type] || 0) + 1;
-      bySeverity[error.severity] = (bySeverity[error.severity] || 0) + 1;
+// Error logger
+export function logError(error: unknown, context?: string): void {
+  const timestamp = new Date().toISOString();
+  const contextStr = context ? `[${context}]` : '';
+  
+  if (error instanceof AppError) {
+    console.error(`${contextStr} ${timestamp} - ${error.code}: ${error.message}`, {
+      statusCode: error.statusCode,
+      details: error.details,
+      stack: error.stack,
     });
-
-    return {
-      total: this.errorQueue.length,
-      byType,
-      bySeverity,
-      recent: this.errorQueue.slice(-10), // Last 10 errors
-    };
-  }
-
-  // Clear error queue
-  clearQueue(): void {
-    this.errorQueue = [];
+  } else if (error instanceof Error) {
+    console.error(`${contextStr} ${timestamp} - Error: ${error.message}`, {
+      stack: error.stack,
+    });
+  } else {
+    console.error(`${contextStr} ${timestamp} - Unknown error:`, error);
   }
 }
 
-// Convenience functions
-export const errorHandler = ErrorHandler.getInstance();
+// Error boundary helper
+export function isAppError(error: unknown): error is AppError {
+  return error instanceof AppError;
+}
 
-export const handleError = (error: Error | AppError, context?: ErrorContext) => 
-  errorHandler.handleError(error, context);
-
-export const createError = (
-  message: string,
-  type?: ErrorReport['type'],
-  severity?: ErrorReport['severity'],
-  retryable?: boolean,
-  context?: ErrorContext
-) => new AppError(message, type, severity, retryable, context);
-
-// API error handling wrapper
-export const withErrorHandling = <T extends any[], R>(
-  fn: (...args: T) => Promise<R>,
-  context?: ErrorContext
-) => {
-  return async (...args: T): Promise<R> => {
-    try {
-      return await fn(...args);
-    } catch (error) {
-      await handleError(error as Error, context);
-      throw error;
+// Error recovery strategies
+export const ErrorRecovery = {
+  // Retry with exponential backoff
+  retry: async <T>(
+    fn: () => Promise<T>,
+    maxRetries: number = 3,
+    baseDelay: number = 1000
+  ): Promise<T> => {
+    let lastError: Error;
+    
+    for (let attempt = 0; attempt <= maxRetries; attempt++) {
+      try {
+        return await fn();
+      } catch (error) {
+        lastError = error as Error;
+        
+        if (attempt === maxRetries) {
+          throw lastError;
+        }
+        
+        const delay = baseDelay * Math.pow(2, attempt);
+        await new Promise(resolve => setTimeout(resolve, delay));
+      }
     }
-  };
+    
+    throw lastError!;
+  },
+  
+  // Fallback value
+  fallback: <T>(fn: () => T, fallbackValue: T): T => {
+    try {
+      return fn();
+    } catch {
+      return fallbackValue;
+    }
+  },
+  
+  // Graceful degradation
+  graceful: async <T>(
+    primary: () => Promise<T>,
+    fallback: () => Promise<T>
+  ): Promise<T> => {
+    try {
+      return await primary();
+    } catch (error) {
+      console.warn('Primary operation failed, using fallback:', error);
+      return await fallback();
+    }
+  },
 };
 
-// React hook for error handling
-export const useErrorHandler = () => {
-  const handleError = React.useCallback(
-    (error: Error | AppError, context?: ErrorContext) => 
-      errorHandler.handleError(error, context),
-    []
-  );
-
-  const createError = React.useCallback(
-    (message: string, type?: ErrorReport['type'], severity?: ErrorReport['severity'], retryable?: boolean, context?: ErrorContext) =>
-      new AppError(message, type, severity, retryable, context),
-    []
-  );
-
-  return { handleError, createError };
+// Error monitoring (placeholder for real monitoring service)
+export const ErrorMonitor = {
+  capture: (error: AppError, context?: Record<string, any>) => {
+    // In a real application, this would send to Sentry, LogRocket, etc.
+    console.error('Error captured:', {
+      error: {
+        code: error.code,
+        message: error.message,
+        statusCode: error.statusCode,
+        details: error.details,
+        timestamp: error.timestamp,
+        stack: error.stack,
+      },
+      context,
+    });
+  },
+  
+  captureException: (error: Error, context?: Record<string, any>) => {
+    console.error('Exception captured:', {
+      error: {
+        name: error.name,
+        message: error.message,
+        stack: error.stack,
+      },
+      context,
+    });
+  },
 };
 
-// Import React for the hook
-import React from 'react';
+// Build error specific handlers
+export const BuildErrorHandler = {
+  handleModuleNotFound: (module: string) => {
+    logError(createError.moduleNotFound(module), 'Build');
+    return createError.moduleNotFound(module);
+  },
+  
+  handleCompilationError: (message: string, details?: any) => {
+    logError(createError.compilation(message, details), 'Build');
+    return createError.compilation(message, details);
+  },
+  
+  handleImportError: (importPath: string, error: Error) => {
+    const message = `Failed to import ${importPath}: ${error.message}`;
+    logError(createError.build(message, { importPath, originalError: error.message }), 'Build');
+    return createError.build(message, { importPath, originalError: error.message });
+  },
+};
