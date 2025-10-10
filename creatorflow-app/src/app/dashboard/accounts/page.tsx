@@ -36,24 +36,21 @@ import {
   Switch
 } from '@mui/material';
 import { 
-  RefreshCw, 
-  AlertCircle, 
-  CheckCircle, 
-  Clock, 
-  XCircle, 
-  Globe, 
-  Twitter, 
-  Instagram, 
-  Youtube,
-  Plus,
-  Trash2,
-  Settings,
-  Link,
-  ExternalLink,
-  Search,
-  ChevronUp,
-  ChevronDown
-} from 'lucide-react';
+  Refresh as RefreshIcon,
+  Error as ErrorIcon,
+  CheckCircle as CheckCircleIcon,
+  AccessTime as AccessTimeIcon,
+  Cancel as CancelIcon,
+  Public as PublicIcon,
+  Add as AddIcon,
+  Delete as DeleteIcon,
+  Settings as SettingsIcon,
+  Link as LinkIcon,
+  OpenInNew as OpenInNewIcon,
+  Search as SearchIcon,
+  ExpandLess as ExpandLessIcon,
+  ExpandMore as ExpandMoreIcon
+} from '@mui/icons-material';
 import InstagramStoriesPlatforms, { createPlatformWithIcon } from '@/components/ui/instagram-stories-platforms';
 
 const PROVIDERS = [
@@ -153,7 +150,7 @@ function MastodonInstanceDialog({
     <Dialog open={isOpen} onClose={onClose} maxWidth="sm" fullWidth>
       <DialogTitle>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <Globe style={{ width: 20, height: 20 }} />
+          <PublicIcon style={{ width: 20, height: 20 }} />
           Connect Mastodon Instance
         </Box>
       </DialogTitle>
@@ -266,7 +263,7 @@ function ConnectedAccountCard({ account, onDisconnect, onRefresh, onReauth, onCo
                 onClick={() => onRefresh(account.id)}
                 disabled={loading}
               >
-                <RefreshCw style={{ width: 16, height: 16 }} />
+                <RefreshIcon style={{ width: 16, height: 16 }} />
               </IconButton>
             </Tooltip>
             <Tooltip title="Switch Account (Mobile: Tap to switch)">
@@ -281,7 +278,7 @@ function ConnectedAccountCard({ account, onDisconnect, onRefresh, onReauth, onCo
                   }
                 }}
               >
-                <Settings style={{ width: 16, height: 16 }} />
+                <SettingsIcon style={{ width: 16, height: 16 }} />
               </IconButton>
             </Tooltip>
             <Tooltip title="Disconnect">
@@ -291,7 +288,7 @@ function ConnectedAccountCard({ account, onDisconnect, onRefresh, onReauth, onCo
                 onClick={() => onDisconnect(account.id)}
                 disabled={loading}
               >
-                <Trash2 style={{ width: 16, height: 16 }} />
+                <DeleteIcon style={{ width: 16, height: 16 }} />
               </IconButton>
             </Tooltip>
           </Box>
@@ -624,7 +621,7 @@ export default function AccountsPage() {
           <CardHeader
             title="Connected Accounts"
             titleTypographyProps={{ variant: 'h6', fontWeight: 'bold' }}
-            avatar={<Link style={{ width: 24, height: 24, color: '#3b82f6' }} />}
+            avatar={<LinkIcon style={{ width: 24, height: 24, color: '#3b82f6' }} />}
           />
           <CardContent>
             {socialAccounts.length > 0 ? (
@@ -660,7 +657,7 @@ export default function AccountsPage() {
           <CardHeader
             title="Available Platforms"
             titleTypographyProps={{ variant: 'h6', fontWeight: 'bold' }}
-            avatar={<Plus style={{ width: 24, height: 24, color: '#10b981' }} />}
+            avatar={<AddIcon style={{ width: 24, height: 24, color: '#10b981' }} />}
           />
           <CardContent>
             {/* Search/Filter for Mobile */}
@@ -673,7 +670,7 @@ export default function AccountsPage() {
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <Search size={20} />
+                      <SearchIcon size={20} />
                     </InputAdornment>
                   ),
                 }}
@@ -791,7 +788,7 @@ export default function AccountsPage() {
                                 handleConnect(provider.id);
                               }
                             }}
-                            startIcon={isConnecting ? <CircularProgress size={14} /> : <Plus style={{ width: 14, height: 14 }} />}
+                            startIcon={isConnecting ? <CircularProgress size={14} /> : <AddIcon style={{ width: 14, height: 14 }} />}
                             sx={{ 
                               fontSize: '0.75rem',
                               minWidth: '80px',

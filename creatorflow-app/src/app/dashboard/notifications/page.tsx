@@ -23,13 +23,13 @@ import {
   Divider
 } from '@mui/material';
 import { 
-  Bell, 
-  CheckCircle, 
-  AlertCircle, 
-  MessageSquare,
-  AtSign,
-  Settings
-} from 'lucide-react';
+  Notifications as NotificationsIcon,
+  CheckCircle as CheckCircleIcon,
+  Error as ErrorIcon,
+  Chat as ChatIcon,
+  AlternateEmail as AlternateEmailIcon,
+  Settings as SettingsIcon
+} from '@mui/icons-material';
 
 interface NotifPrefs {
   mentions: boolean;
@@ -169,7 +169,7 @@ export default function NotificationsPage() {
               </Box>
             }
             titleTypographyProps={{ variant: 'h6', fontWeight: 'bold' }}
-            avatar={<Bell style={{ width: 24, height: 24, color: '#f59e0b' }} />}
+            avatar={<NotificationsIcon style={{ width: 24, height: 24, color: '#f59e0b' }} />}
           />
           <CardContent>
             {annLoading ? (
@@ -242,7 +242,7 @@ export default function NotificationsPage() {
           <CardHeader
             title="Notification Preferences"
             titleTypographyProps={{ variant: 'h6', fontWeight: 'bold' }}
-            avatar={<Settings style={{ width: 24, height: 24, color: '#3b82f6' }} />}
+            avatar={<SettingsIcon style={{ width: 24, height: 24, color: '#3b82f6' }} />}
           />
           <CardContent>
             <Box component="form" onSubmit={handleSave} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -256,7 +256,7 @@ export default function NotificationsPage() {
                   }
                   label={
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                      <AtSign style={{ width: 16, height: 16 }} />
+                      <AlternateEmailIcon style={{ width: 16, height: 16 }} />
                       Mentions
                     </Box>
                   }
@@ -270,7 +270,7 @@ export default function NotificationsPage() {
                   }
                   label={
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                      <MessageSquare style={{ width: 16, height: 16 }} />
+                      <ChatIcon style={{ width: 16, height: 16 }} />
                       Comments
                     </Box>
                   }
@@ -284,7 +284,7 @@ export default function NotificationsPage() {
                   }
                   label={
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                      <AlertCircle style={{ width: 16, height: 16 }} />
+                      <ErrorIcon style={{ width: 16, height: 16 }} />
                       System Alerts
                     </Box>
                   }
@@ -322,7 +322,7 @@ export default function NotificationsPage() {
           <CardHeader
             title="Recent Notifications"
             titleTypographyProps={{ variant: 'h6', fontWeight: 'bold' }}
-            avatar={<Bell style={{ width: 24, height: 24, color: '#8b5cf6' }} />}
+            avatar={<NotificationsIcon style={{ width: 24, height: 24, color: '#8b5cf6' }} />}
           />
           <CardContent>
             <List>
@@ -353,7 +353,7 @@ export default function NotificationsPage() {
                 variant="outlined"
                 onClick={handleMarkAllRead}
                 disabled={updating}
-                startIcon={<CheckCircle style={{ width: 16, height: 16 }} />}
+                startIcon={<CheckCircleIcon style={{ width: 16, height: 16 }} />}
               >
                 Mark All as Read
               </Button>

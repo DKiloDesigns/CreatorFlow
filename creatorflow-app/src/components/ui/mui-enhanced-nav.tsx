@@ -23,22 +23,22 @@ import {
 } from '@mui/material';
 import {
   Menu as MenuIcon,
-  FileText,
-  Users,
-  Users2,
-  BarChart2,
-  Handshake,
-  Settings,
-  LogOut,
-  User,
-  Bell,
-  Home,
-  TrendingUp,
-  MessageSquare,
-  HelpCircle,
-  X,
-  ChevronDown,
-} from 'lucide-react';
+  Description as DescriptionIcon,
+  Group as GroupIcon,
+  People as PeopleIcon,
+  BarChart as BarChartIcon,
+  Handshake as HandshakeIcon,
+  Settings as SettingsIcon,
+  Logout as LogoutIcon,
+  Person as PersonIcon,
+  Notifications as NotificationsIcon,
+  Home as HomeIcon,
+  TrendingUp as TrendingUpIcon,
+  Chat as ChatIcon,
+  Help as HelpIcon,
+  Close as CloseIcon,
+  ExpandMore as ExpandMoreIcon
+} from '@mui/icons-material';
 
 interface NavItem {
   href: string;
@@ -48,11 +48,11 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { href: '/dashboard/content', label: 'Content', icon: FileText },
-  { href: '/dashboard/accounts', label: 'Accounts', icon: Users },
-  { href: '/dashboard/teams', label: 'Teams', icon: Users2 },
-  { href: '/dashboard/analytics', label: 'Analytics', icon: BarChart2 },
-  { href: '/dashboard/collabs', label: 'Brand Collabs', icon: Handshake },
+  { href: '/dashboard/content', label: 'Content', icon: DescriptionIcon },
+  { href: '/dashboard/accounts', label: 'Accounts', icon: GroupIcon },
+  { href: '/dashboard/teams', label: 'Teams', icon: PeopleIcon },
+  { href: '/dashboard/analytics', label: 'Analytics', icon: BarChartIcon },
+  { href: '/dashboard/collabs', label: 'Brand Collabs', icon: HandshakeIcon },
 
 ];
 
@@ -188,7 +188,7 @@ export function MuiEnhancedNavigation() {
               CreatorFlow
             </Typography>
             <IconButton onClick={() => setMobileNavOpen(false)}>
-              <X style={{ width: 20, height: 20 }} />
+              <CloseIcon style={{ width: 20, height: 20 }} />
             </IconButton>
           </Box>
           
@@ -212,7 +212,7 @@ export function MuiEnhancedNavigation() {
           aria-controls="notifications-menu"
         >
           <Badge badgeContent={3} color="error">
-            <Bell style={{ width: 20, height: 20 }} />
+            <NotificationsIcon style={{ width: 20, height: 20 }} />
           </Badge>
         </IconButton>
 
@@ -258,21 +258,21 @@ export function MuiEnhancedNavigation() {
           
           <MenuItem onClick={handleUserMenuClose}>
             <ListItemIcon>
-              <User style={{ width: 16, height: 16 }} />
+              <PersonIcon style={{ width: 16, height: 16 }} />
             </ListItemIcon>
             <ListItemText primary="Profile" />
           </MenuItem>
           
           <MenuItem onClick={handleUserMenuClose}>
             <ListItemIcon>
-              <Settings style={{ width: 16, height: 16 }} />
+              <SettingsIcon style={{ width: 16, height: 16 }} />
             </ListItemIcon>
             <ListItemText primary="Settings" />
           </MenuItem>
           
           <MenuItem onClick={handleUserMenuClose}>
             <ListItemIcon>
-              <HelpCircle style={{ width: 16, height: 16 }} />
+              <HelpIcon style={{ width: 16, height: 16 }} />
             </ListItemIcon>
             <ListItemText primary="Help & Support" />
           </MenuItem>
@@ -281,7 +281,7 @@ export function MuiEnhancedNavigation() {
           
           <MenuItem onClick={handleSignOut} sx={{ color: 'error.main' }}>
             <ListItemIcon>
-              <LogOut style={{ width: 16, height: 16 }} />
+              <LogoutIcon style={{ width: 16, height: 16 }} />
             </ListItemIcon>
             <ListItemText primary="Sign Out" />
           </MenuItem>
@@ -309,7 +309,7 @@ export function MuiEnhancedNavigation() {
           
           <MenuItem onClick={handleNotificationsClose}>
             <ListItemIcon>
-              <Bell style={{ width: 16, height: 16 }} />
+              <NotificationsIcon style={{ width: 16, height: 16 }} />
             </ListItemIcon>
             <ListItemText 
               primary="New content scheduled"
@@ -319,7 +319,7 @@ export function MuiEnhancedNavigation() {
           
           <MenuItem onClick={handleNotificationsClose}>
             <ListItemIcon>
-              <TrendingUp style={{ width: 16, height: 16 }} />
+              <TrendingUpIcon style={{ width: 16, height: 16 }} />
             </ListItemIcon>
             <ListItemText 
               primary="Analytics update"
@@ -329,7 +329,7 @@ export function MuiEnhancedNavigation() {
           
           <MenuItem onClick={handleNotificationsClose}>
             <ListItemIcon>
-              <MessageSquare style={{ width: 16, height: 16 }} />
+              <ChatIcon style={{ width: 16, height: 16 }} />
             </ListItemIcon>
             <ListItemText 
               primary="New collaboration request"
@@ -365,7 +365,7 @@ export function MuiBreadcrumbs() {
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
       <Link href="/dashboard" style={{ textDecoration: 'none' }}>
         <Chip
-                      icon={<Home style={{ width: 16, height: 16 }} />}
+                      icon={<HomeIcon style={{ width: 16, height: 16 }} />}
           label="Dashboard"
           variant="outlined"
           size="small"
@@ -375,7 +375,7 @@ export function MuiBreadcrumbs() {
       
       {breadcrumbs.map((breadcrumb, _index) => (
         <Box key={breadcrumb.href} sx={{ display: 'flex', alignItems: 'center' }}>
-                      <ChevronDown style={{ width: 16, height: 16, transform: 'rotate(-90deg)' }} />
+                      <ExpandMoreIcon style={{ width: 16, height: 16, transform: 'rotate(-90deg)' }} />
           <Link href={breadcrumb.href} style={{ textDecoration: 'none' }}>
             <Chip
               label={breadcrumb.label}

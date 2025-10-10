@@ -15,17 +15,17 @@ import {
   AccordionDetails
 } from '@mui/material';
 import { 
-  Users, 
-  Users2, 
-  Settings, 
-  Shield, 
-  Bell, 
-  LifeBuoy,
-  LogOut,
-  User,
-  CreditCard,
-  ShieldCheck
-} from 'lucide-react';
+  Group as GroupIcon,
+  People as PeopleIcon,
+  Settings as SettingsIcon,
+  Security as SecurityIcon,
+  Notifications as NotificationsIcon,
+  Help as HelpIcon,
+  Logout as LogoutIcon,
+  Person as PersonIcon,
+  CreditCard as CreditCardIcon,
+  VerifiedUser as VerifiedUserIcon
+} from '@mui/icons-material';
 import { ExpandMore } from '@/lib/mui-optimized-imports';
 import Link from 'next/link';
 
@@ -79,29 +79,29 @@ export default function ProfilePage() {
     {
       title: 'Account Management',
       items: [
-        { href: '/dashboard/accounts', label: 'Social Accounts', icon: Users, description: 'Manage connected platforms' },
-        { href: '/dashboard/teams', label: 'Teams', icon: Users2, description: 'Collaborate with team members' },
+        { href: '/dashboard/accounts', label: 'Social Accounts', icon: GroupIcon, description: 'Manage connected platforms' },
+        { href: '/dashboard/teams', label: 'Teams', icon: PeopleIcon, description: 'Collaborate with team members' },
       ]
     },
     {
       title: 'Billing & Subscription',
       items: [
-        { href: '/dashboard/billing', label: 'Manage Billing', icon: CreditCard, description: 'View plans, payment history, and manage subscription' },
+        { href: '/dashboard/billing', label: 'Manage Billing', icon: CreditCardIcon, description: 'View plans, payment history, and manage subscription' },
       ]
     },
     {
       title: 'Settings & Security',
       items: [
-        { href: '/dashboard/settings', label: 'Settings', icon: Settings, description: 'App preferences and configuration' },
-        { href: '/dashboard/security', label: 'Security', icon: Shield, description: 'Password and account security' },
-        { href: '/dashboard/notifications', label: 'Notifications', icon: Bell, description: 'Manage notification preferences' },
-        { href: '/dashboard/admin', label: 'Admin Panel', icon: ShieldCheck, description: 'System administration and monitoring', adminOnly: true },
+        { href: '/dashboard/settings', label: 'Settings', icon: SettingsIcon, description: 'App preferences and configuration' },
+        { href: '/dashboard/security', label: 'Security', icon: SecurityIcon, description: 'Password and account security' },
+        { href: '/dashboard/notifications', label: 'Notifications', icon: NotificationsIcon, description: 'Manage notification preferences' },
+        { href: '/dashboard/admin', label: 'Admin Panel', icon: VerifiedUserIcon, description: 'System administration and monitoring', adminOnly: true },
       ]
     },
     {
       title: 'Support',
       items: [
-        { href: '/dashboard/support', label: 'Help & Support', icon: LifeBuoy, description: 'Get help and contact support' },
+        { href: '/dashboard/support', label: 'Help & Support', icon: HelpIcon, description: 'Get help and contact support' },
       ]
     }
   ];
@@ -124,7 +124,7 @@ export default function ProfilePage() {
             </Box>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
               <Avatar sx={{ bgcolor: 'primary.main', width: 40, height: 40 }}>
-                <User style={{ width: 20, height: 20 }} />
+                <PersonIcon style={{ width: 20, height: 20 }} />
               </Avatar>
               <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
                 <Typography variant="body1" sx={{ fontWeight: 500 }}>
@@ -233,7 +233,7 @@ export default function ProfilePage() {
                   href="/api/auth/signout"
                   variant="contained"
                   fullWidth
-                  startIcon={<LogOut style={{ width: 16, height: 16 }} />}
+                  startIcon={<LogoutIcon style={{ width: 16, height: 16 }} />}
                   sx={{ 
                     bgcolor: 'error.main',
                     '&:hover': {

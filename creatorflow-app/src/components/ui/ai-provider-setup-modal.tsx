@@ -4,13 +4,13 @@ import React, { useState } from 'react';
 import { Card, CardContent } from '@/components/ui/mui-card';
 import { Button, Box, Typography, Grid, Alert, AlertTitle, AlertDescription, Chip } from '@mui/material';
 import { 
-  Eye, 
-  EyeOff, 
-  Copy, 
-  Check, 
-  ExternalLink, 
-  AlertCircle 
-} from 'lucide-react';
+  Visibility as VisibilityIcon,
+  VisibilityOff as VisibilityOffIcon,
+  ContentCopy as ContentCopyIcon,
+  Check as CheckIcon,
+  OpenInNew as OpenInNewIcon,
+  Error as ErrorIcon
+} from '@mui/icons-material';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Badge } from '@/components/ui/badge';
@@ -219,7 +219,7 @@ export function AIProviderSetupModal({
                   size="small"
                   onClick={() => window.open(instructions.link, '_blank')}
                 >
-                  <ExternalLink style={{ width: 16, height: 16, marginRight: 4 }} />
+                  <OpenInNewIcon style={{ width: 16, height: 16, marginRight: 4 }} />
                   Visit Website
                 </Button>
               </Box>
@@ -253,7 +253,7 @@ export function AIProviderSetupModal({
 
               {instructions.note && (
                 <Alert severity="warning" sx={{ borderRadius: 2 }}>
-                  <AlertCircle style={{ width: 16, height: 16, marginTop: 2, flexShrink: 0 }} />
+                  <ErrorIcon style={{ width: 16, height: 16, marginTop: 2, flexShrink: 0 }} />
                   <AlertTitle sx={{ fontSize: '0.875rem' }}>Note</AlertTitle>
                   <AlertDescription sx={{ fontSize: '0.875rem' }}>
                     {instructions.note}
@@ -281,7 +281,7 @@ export function AIProviderSetupModal({
                     size="small"
                     onClick={() => setShowApiKey(!showApiKey)}
                   >
-                    {showApiKey ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                    {showApiKey ? <VisibilityOffIcon className="w-4 h-4" /> : <VisibilityIcon className="w-4 h-4" />}
                   </Button>
                   <Button
                     type="button"
@@ -290,7 +290,7 @@ export function AIProviderSetupModal({
                     onClick={() => navigator.clipboard.writeText(apiKey)}
                     disabled={!apiKey}
                   >
-                    <Copy className="w-4 h-4" />
+                    <ContentCopyIcon className="w-4 h-4" />
                   </Button>
                 </Box>
               </Box>
@@ -325,7 +325,7 @@ export function AIProviderSetupModal({
         {step === 'success' && (
           <Box sx={{ textAlign: 'center', py: 4 }}>
             <Box sx={{ width: 64, height: 64, bgcolor: 'green.100', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', mx: 'auto', mb: 2 }}>
-              <Check style={{ width: 32, height: 32, color: 'green.600' }} />
+              <CheckIcon style={{ width: 32, height: 32, color: 'green.600' }} />
             </Box>
             <Typography variant="h6" sx={{ fontWeight: 600, color: 'text.primary', mb: 1 }}>Setup Complete!</Typography>
             <Typography variant="body2" sx={{ color: 'text.secondary', mb: 3 }}>

@@ -2,7 +2,12 @@
 
 import React, { Component, ErrorInfo, ReactNode } from 'react';
 import { Box, Typography, Button, Paper, Alert, AlertTitle } from '@/lib/mui-optimized-imports';
-import { RefreshCw, AlertTriangle, Home, Bug } from 'lucide-react';
+import { 
+  Refresh as RefreshIcon,
+  Warning as WarningIcon,
+  Home as HomeIcon,
+  BugReport as BugReportIcon
+} from '@mui/icons-material';
 
 interface Props {
   children: ReactNode;
@@ -139,7 +144,7 @@ export class ErrorBoundary extends Component<Props, State> {
             }}
           >
             <Box sx={{ mb: 3 }}>
-              <AlertTriangle size={64} color="#ef4444" />
+              <WarningIcon color="error" sx={{ fontSize: 64 }} />
             </Box>
 
             <Typography variant="h4" gutterBottom color="error">
@@ -165,7 +170,7 @@ export class ErrorBoundary extends Component<Props, State> {
             <Box sx={{ display: 'flex', gap: 2, justifyContent: 'center', flexWrap: 'wrap' }}>
               <Button
                 variant="contained"
-                startIcon={<RefreshCw size={20} />}
+                startIcon={<RefreshIcon />}
                 onClick={this.handleRetry}
                 sx={{ minWidth: 120 }}
               >
@@ -174,7 +179,7 @@ export class ErrorBoundary extends Component<Props, State> {
 
               <Button
                 variant="outlined"
-                startIcon={<Home size={20} />}
+                startIcon={<HomeIcon />}
                 onClick={this.handleGoHome}
                 sx={{ minWidth: 120 }}
               >
@@ -183,7 +188,7 @@ export class ErrorBoundary extends Component<Props, State> {
 
               <Button
                 variant="outlined"
-                startIcon={<Bug size={20} />}
+                startIcon={<BugReportIcon />}
                 onClick={this.handleReportBug}
                 sx={{ minWidth: 120 }}
               >

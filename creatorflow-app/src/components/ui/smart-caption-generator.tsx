@@ -4,20 +4,20 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardHeader } from '@/components/ui/mui-card';
 import { Typography, Button, Slider } from '@mui/material';
 import { 
-  Star, 
-  TrendingUp, 
-  CheckCircle, 
-  AlertCircle, 
-  Sparkles, 
-  RefreshCw, 
-  Wand2, 
-  Copy, 
-  Hash, 
-  Brain, 
-  Target,
-  Settings,
-  BarChart3
-} from 'lucide-react';
+  Star as StarIcon,
+  TrendingUp as TrendingUpIcon,
+  CheckCircle as CheckCircleIcon,
+  Error as ErrorIcon,
+  AutoAwesome as AutoAwesomeIcon,
+  Refresh as RefreshIcon,
+  AutoFixHigh as AutoFixHighIcon,
+  ContentCopy as ContentCopyIcon,
+  Tag as TagIcon,
+  Psychology as PsychologyIcon,
+  Target as TargetIcon,
+  Settings as SettingsIcon,
+  BarChart as BarChartIcon
+} from '@mui/icons-material';
 import { toast } from 'sonner';
 
 import { Select, MenuItem, FormControl, InputLabel } from '@mui/material';
@@ -360,10 +360,10 @@ Which tip resonates most with you? 🤔
   };
 
   const getScoreIcon = (score: number) => {
-    if (score >= 90) return <Star style={{ width: 16, height: 16 }} />;
-    if (score >= 80) return <TrendingUp style={{ width: 16, height: 16 }} />;
-    if (score >= 70) return <CheckCircle style={{ width: 16, height: 16 }} />;
-    return <AlertCircle style={{ width: 16, height: 16 }} />;
+    if (score >= 90) return <StarIcon style={{ width: 16, height: 16 }} />;
+    if (score >= 80) return <TrendingUpIcon style={{ width: 16, height: 16 }} />;
+    if (score >= 70) return <CheckCircleIcon style={{ width: 16, height: 16 }} />;
+    return <ErrorIcon style={{ width: 16, height: 16 }} />;
   };
 
   return (
@@ -372,7 +372,7 @@ Which tip resonates most with you? 🤔
       <Card>
         <CardHeader>
           <Typography variant="h6" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <Sparkles style={{ width: 20, height: 20 }} />
+            <AutoAwesomeIcon style={{ width: 20, height: 20 }} />
             Smart Caption Generator
           </Typography>
           <Typography variant="body2" color="text.secondary">
@@ -446,7 +446,7 @@ Which tip resonates most with you? 🤔
               onClick={() => setShowAdvanced(!showAdvanced)}
               sx={{ width: '100%' }}
             >
-              <Settings style={{ width: 16, height: 16, marginRight: 8 }} />
+              <SettingsIcon style={{ width: 16, height: 16, marginRight: 8 }} />
               {showAdvanced ? 'Hide' : 'Show'} Advanced Settings
             </Button>
 
@@ -568,12 +568,12 @@ Which tip resonates most with you? 🤔
           >
             {isGenerating ? (
               <>
-                <RefreshCw style={{ width: 16, height: 16, marginRight: 8 }} />
+                <RefreshIcon style={{ width: 16, height: 16, marginRight: 8 }} />
                 Generating Captions...
               </>
             ) : (
               <>
-                <Wand2 style={{ width: 16, height: 16, marginRight: 8 }} />
+                <AutoFixHighIcon style={{ width: 16, height: 16, marginRight: 8 }} />
                 Generate Smart Captions
               </>
             )}
@@ -630,7 +630,7 @@ Which tip resonates most with you? 🤔
                             regenerateVariant(variant.id);
                           }}
                         >
-                          <RefreshCw style={{ width: 16, height: 16 }} />
+                          <RefreshIcon style={{ width: 16, height: 16 }} />
                         </Button>
                         <Button
                           variant="text"
@@ -640,7 +640,7 @@ Which tip resonates most with you? 🤔
                             copyToClipboard(variant.text);
                           }}
                         >
-                          <Copy style={{ width: 16, height: 16 }} />
+                          <ContentCopyIcon style={{ width: 16, height: 16 }} />
                         </Button>
                       </Box>
                     </Box>
@@ -680,7 +680,7 @@ Which tip resonates most with you? 🤔
                       </Box>
                       <Box sx={{ textAlign: 'center' }}>
                         <Box sx={{ fontWeight: 600, color: 'text.secondary' }}>
-                          <Hash style={{ width: 16, height: 16, margin: '0 auto' }} />
+                          <TagIcon style={{ width: 16, height: 16, margin: '0 auto' }} />
                         </Box>
                         <Typography variant="body2" sx={{ color: 'text.secondary' }}>Hashtags</Typography>
                         <Typography variant="body2" sx={{ fontWeight: 500 }}>{variant.hashtags.length}</Typography>
@@ -699,7 +699,7 @@ Which tip resonates most with you? 🤔
                   <Card>
                     <CardHeader>
                       <Typography variant="h6" className="flex items-center gap-2">
-                        <Brain className="w-5 h-5" />
+                        <PsychologyIcon className="w-5 h-5" />
                         Content Analysis
                       </Typography>
                     </CardHeader>
@@ -736,7 +736,7 @@ Which tip resonates most with you? 🤔
                   <Card>
                     <CardHeader>
                       <Typography variant="h6" className="flex items-center gap-2">
-                        <BarChart3 className="w-5 h-5" />
+                        <BarChartIcon className="w-5 h-5" />
                         Performance Metrics
                       </Typography>
                     </CardHeader>
@@ -775,7 +775,7 @@ Which tip resonates most with you? 🤔
               <Card>
                 <CardHeader>
                   <Typography variant="h6" className="flex items-center gap-2">
-                    <Target className="w-5 h-5" />
+                    <TargetIcon className="w-5 h-5" />
                     A/B Testing Comparison
                   </Typography>
                   <Typography variant="body2" color="text.secondary">

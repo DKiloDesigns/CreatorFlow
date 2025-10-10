@@ -7,8 +7,6 @@ import interactionPlugin from '@fullcalendar/interaction';
 import { EventInput } from '@fullcalendar/core';
 import { FaInstagram, FaTiktok, FaYoutube, FaXTwitter } from "react-icons/fa6";
 import { toast } from "sonner";
-import { Loader2, AlertCircle } from 'lucide-react';
-import { PostStatus } from '@prisma/client';
 import { 
   Box,
   Typography,
@@ -18,7 +16,13 @@ import {
   CircularProgress,
   Alert
 } from '@mui/material';
-import { Plus, Calendar, ChevronLeft, ChevronRight } from 'lucide-react';
+import { 
+  Add as AddIcon,
+  CalendarToday as CalendarTodayIcon,
+  ChevronLeft as ChevronLeftIcon,
+  ChevronRight as ChevronRightIcon,
+  Error as ErrorIcon
+} from '@mui/icons-material';
 
 // Type for the data fetched from API
 interface FetchedPost {
@@ -192,7 +196,7 @@ export default function MiniCalendar({
             variant="outlined"
             size="small"
             onClick={onViewFullCalendar}
-            startIcon={<Calendar size={10} />}
+            startIcon={<CalendarTodayIcon fontSize="small" />}
             sx={{ 
               fontSize: '0.65rem',
               minWidth: 'auto',
@@ -211,7 +215,7 @@ export default function MiniCalendar({
             variant="outlined"
             size="small"
             onClick={onBulkSchedule}
-            startIcon={<Calendar size={10} />}
+            startIcon={<CalendarTodayIcon fontSize="small" />}
             sx={{ 
               fontSize: '0.65rem',
               minWidth: 'auto',
@@ -228,7 +232,7 @@ export default function MiniCalendar({
           {/* Create Button */}
           <Button
             variant="contained"
-            startIcon={<Plus size={10} />}
+            startIcon={<AddIcon fontSize="small" />}
             onClick={onCreatePost}
             size="small"
             sx={{ 

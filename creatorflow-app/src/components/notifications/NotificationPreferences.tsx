@@ -25,20 +25,20 @@ import {
   LinearProgress,
 } from '@mui/material';
 import {
-  Bell,
-  Settings,
-  Brain,
-  Clock,
-  Target,
-  Zap,
-  Save,
-  RefreshCw,
-  Info,
-  TrendingUp,
-  Users,
-  MessageCircle,
-  Lightbulb,
-} from 'lucide-react';
+  Notifications as NotificationsIcon,
+  Settings as SettingsIcon,
+  Psychology as PsychologyIcon,
+  AccessTime as AccessTimeIcon,
+  Target as TargetIcon,
+  Bolt as BoltIcon,
+  Save as SaveIcon,
+  Refresh as RefreshIcon,
+  Info as InfoIcon,
+  TrendingUp as TrendingUpIcon,
+  Group as GroupIcon,
+  Chat as ChatIcon,
+  LightbulbOutlined as LightbulbOutlinedIcon
+} from '@mui/icons-material';
 import { useSmartNotifications } from '@/contexts/SmartNotificationContext';
 import { useMinimalTheme } from '@/contexts/MinimalThemeContext';
 
@@ -82,12 +82,12 @@ export function NotificationPreferences() {
 
   const getNotificationTypeIcon = (type: string) => {
     switch (type) {
-      case 'content': return MessageCircle;
-      case 'engagement': return TrendingUp;
-      case 'system': return Settings;
-      case 'collaboration': return Users;
-      case 'ai_insight': return Brain;
-      default: return Bell;
+      case 'content': return ChatIcon;
+      case 'engagement': return TrendingUpIcon;
+      case 'system': return SettingsIcon;
+      case 'collaboration': return GroupIcon;
+      case 'ai_insight': return PsychologyIcon;
+      default: return NotificationsIcon;
     }
   };
 
@@ -105,7 +105,7 @@ export function NotificationPreferences() {
   return (
     <Box sx={{ p: 3 }}>
       <Typography variant="h4" sx={{ mb: 3, display: 'flex', alignItems: 'center', gap: 2 }}>
-        <Settings size={32} />
+        <SettingsIcon fontSize="large" />
         Smart Notification Preferences
       </Typography>
 
@@ -113,7 +113,7 @@ export function NotificationPreferences() {
       <Alert 
         severity={isLearning ? "info" : "success"} 
         sx={{ mb: 3 }}
-        icon={<Brain size={20} />}
+        icon={<PsychologyIcon fontSize="small" />}
       >
         <Typography variant="body2">
           {isLearning 
@@ -185,7 +185,7 @@ export function NotificationPreferences() {
       {/* Notification Type Preferences */}
       <Paper sx={{ p: 3, mb: 3 }}>
         <Typography variant="h6" sx={{ mb: 3, display: 'flex', alignItems: 'center', gap: 1 }}>
-          <Target size={20} />
+          <TargetIcon fontSize="large" />
           Notification Types
         </Typography>
         
@@ -196,7 +196,7 @@ export function NotificationPreferences() {
           return (
             <Box key={pref.type} sx={{ mb: 3 }}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
-                <Icon size={20} />
+                <Icon fontSize="large" />
                 <Typography variant="h6" sx={{ textTransform: 'capitalize' }}>
                   {pref.type.replace('_', ' ')} Notifications
                 </Typography>
@@ -265,7 +265,7 @@ export function NotificationPreferences() {
       {/* User Behavior Settings */}
       <Paper sx={{ p: 3, mb: 3 }}>
         <Typography variant="h6" sx={{ mb: 3, display: 'flex', alignItems: 'center', gap: 1 }}>
-          <Clock size={20} />
+          <AccessTimeIcon fontSize="large" />
           Active Hours
         </Typography>
         
@@ -291,7 +291,7 @@ export function NotificationPreferences() {
       <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end' }}>
         <Button
           variant="outlined"
-          startIcon={<RefreshCw size={16} />}
+          startIcon={<RefreshIcon fontSize="small" />}
           onClick={handleReset}
           disabled={!hasChanges}
         >
@@ -299,7 +299,7 @@ export function NotificationPreferences() {
         </Button>
         <Button
           variant="contained"
-          startIcon={<Save size={16} />}
+          startIcon={<SaveIcon fontSize="small" />}
           onClick={handleSave}
           disabled={!hasChanges}
         >

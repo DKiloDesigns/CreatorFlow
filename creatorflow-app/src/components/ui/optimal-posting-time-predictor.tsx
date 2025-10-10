@@ -4,20 +4,20 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardHeader } from '@/components/ui/mui-card';
 import { Typography, Button } from '@mui/material';
 import { 
-  RefreshCw, 
-  Sparkles, 
-  Brain, 
-  Users,
-  Crown,
-  Trophy,
-  Medal,
-  Star,
-  Sun,
-  Briefcase,
-  Home,
-  Moon,
-  Clock
-} from 'lucide-react';
+  Refresh as RefreshIcon,
+  AutoAwesome as AutoAwesomeIcon,
+  Psychology as PsychologyIcon,
+  Group as GroupIcon,
+  Crown as CrownIcon,
+  EmojiEvents as EmojiEventsIcon,
+  MilitaryTech as MilitaryTechIcon,
+  Star as StarIcon,
+  WbSunny as WbSunnyIcon,
+  Work as WorkIcon,
+  Home as HomeIcon,
+  DarkMode as DarkModeIcon,
+  AccessTime as AccessTimeIcon
+} from '@mui/icons-material';
 import { Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 import { TextField } from '@mui/material';
 import { Switch, FormControlLabel } from '@mui/material';
@@ -297,18 +297,18 @@ export function OptimalPostingTimePredictor({ provider }: OptimalPostingTimePred
   };
 
   const getScoreIcon = (score: number) => {
-    if (score >= 90) return <Crown style={{ width: 16, height: 16 }} />;
-    if (score >= 80) return <Trophy style={{ width: 16, height: 16 }} />;
-    if (score >= 70) return <Medal style={{ width: 16, height: 16 }} />;
-    return <Star style={{ width: 16, height: 16 }} />;
+    if (score >= 90) return <CrownIcon style={{ width: 16, height: 16 }} />;
+    if (score >= 80) return <EmojiEventsIcon style={{ width: 16, height: 16 }} />;
+    if (score >= 70) return <MilitaryTechIcon style={{ width: 16, height: 16 }} />;
+    return <StarIcon style={{ width: 16, height: 16 }} />;
   };
 
   const getTimeIcon = (time: string) => {
     const hour = parseInt(time.split(':')[0]);
-    if (hour >= 6 && hour < 12) return <Sun style={{ width: 16, height: 16, color: 'warning.main' }} />;
-    if (hour >= 12 && hour < 17) return <Briefcase style={{ width: 16, height: 16, color: 'primary.main' }} />;
-    if (hour >= 17 && hour < 21) return <Home style={{ width: 16, height: 16, color: 'success.main' }} />;
-    return <Moon style={{ width: 16, height: 16, color: 'secondary.main' }} />;
+    if (hour >= 6 && hour < 12) return <WbSunnyIcon style={{ width: 16, height: 16, color: 'warning.main' }} />;
+    if (hour >= 12 && hour < 17) return <WorkIcon style={{ width: 16, height: 16, color: 'primary.main' }} />;
+    if (hour >= 17 && hour < 21) return <HomeIcon style={{ width: 16, height: 16, color: 'success.main' }} />;
+    return <DarkModeIcon style={{ width: 16, height: 16, color: 'secondary.main' }} />;
   };
 
   return (
@@ -317,7 +317,7 @@ export function OptimalPostingTimePredictor({ provider }: OptimalPostingTimePred
       <Card>
         <CardHeader>
           <Typography variant="h6" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <Clock style={{ width: 20, height: 20 }} />
+            <AccessTimeIcon style={{ width: 20, height: 20 }} />
             Optimal Posting Times
           </Typography>
           <Typography variant="body2" color="text.secondary">
@@ -417,7 +417,7 @@ export function OptimalPostingTimePredictor({ provider }: OptimalPostingTimePred
               onClick={() => setShowAdvanced(!showAdvanced)}
               sx={{ width: '100%' }}
             >
-              <Brain className="w-4 h-4 mr-2" />
+              <PsychologyIcon className="w-4 h-4 mr-2" />
               {showAdvanced ? 'Hide' : 'Show'} Advanced Analysis
             </Button>
 
@@ -477,12 +477,12 @@ export function OptimalPostingTimePredictor({ provider }: OptimalPostingTimePred
           >
             {isAnalyzing ? (
               <>
-                <RefreshCw style={{ width: 16, height: 16, marginRight: 8, animation: 'spin 1s linear infinite' }} />
+                <RefreshIcon style={{ width: 16, height: 16, marginRight: 8, animation: 'spin 1s linear infinite' }} />
                 Analyzing Posting Times...
               </>
             ) : (
               <>
-                <Sparkles className="w-4 h-4 mr-2" />
+                <AutoAwesomeIcon className="w-4 h-4 mr-2" />
                 Analyze Optimal Posting Times
               </>
             )}
@@ -597,7 +597,7 @@ export function OptimalPostingTimePredictor({ provider }: OptimalPostingTimePred
               <Card>
                 <CardHeader>
                   <Typography variant="h6" className="flex items-center gap-2">
-                    <Users className="w-5 h-5" />
+                    <GroupIcon className="w-5 h-5" />
                     Audience Behavior Analysis
                   </Typography>
                 </CardHeader>
@@ -629,7 +629,7 @@ export function OptimalPostingTimePredictor({ provider }: OptimalPostingTimePred
               <Card>
                 <CardHeader>
                   <Typography variant="h6" className="flex items-center gap-2">
-                    <Clock className="h-5 w-5" />
+                    <AccessTimeIcon className="h-5 w-5" />
                     Time Analysis
                   </Typography>
                 </CardHeader>
