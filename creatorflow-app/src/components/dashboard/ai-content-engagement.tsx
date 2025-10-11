@@ -9,4 +9,4 @@ import {
   Grid,
   Chip
 } from '@mui/material';
-import { Heart, Activity } from 'lucide-react'; 
+import { Favorite as HeartIcon, TrendingUp as ActivityIcon } from '@mui/icons-material'; 

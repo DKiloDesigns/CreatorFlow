@@ -5,7 +5,7 @@ import {
   Typography,
   Grid
 } from '@mui/material';
-import { Activity } from 'lucide-react';
+import { TrendingUp as ActivityIcon } from '@mui/icons-material';
 import { AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogCancel } from '@/components/ui/alert-dialog';
 
 export default function UsageModal({ open, onOpenChange, template, type }: {

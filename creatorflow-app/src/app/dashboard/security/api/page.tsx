@@ -1,6 +1,6 @@
 import { PageHeader } from '@/components/ui/page-header';
 import SecurityDashboard, { SecurityTabs } from '@/components/security/SecurityDashboard';
-import { Shield } from 'lucide-react';
+import { Security as SecurityIcon } from '@mui/icons-material';
 import { Box } from '@mui/material';
 
 export default function APISecurityPage() {
@@ -12,7 +12,7 @@ export default function APISecurityPage() {
         breadcrumbs={[
           { label: 'API Security', href: '/dashboard/security/api' }
         ]}
-        icon={<Shield size={24} />}
+        icon={<SecurityIcon sx={{ fontSize: 24 }} />}
       />
       <SecurityTabs />
       <SecurityDashboard />

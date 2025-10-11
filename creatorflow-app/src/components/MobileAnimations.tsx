@@ -18,16 +18,16 @@ import {
   IconButton,
 } from '@mui/material';
 import { 
-  Smartphone, 
-  ArrowLeft,
-  ArrowRight,
-  ZoomIn,
-  RotateCcw,
-  Play,
-  Pause,
-  SkipForward,
-  SkipBack
-} from 'lucide-react';
+  Smartphone as SmartphoneIcon,
+  ArrowBack as ArrowBackIcon,
+  ArrowForward as ArrowForwardIcon,
+  ZoomIn as ZoomInIcon,
+  Refresh as RefreshIcon,
+  PlayArrow as PlayArrowIcon,
+  Pause as PauseIcon,
+  SkipNext as SkipNextIcon,
+  SkipPrevious as SkipPreviousIcon
+} from '@mui/icons-material';
 
 interface AnimationDemo {
   id: string;
@@ -42,28 +42,28 @@ const ANIMATION_DEMOS: AnimationDemo[] = [
     id: 'swipe',
     name: 'Swipe Animations',
     description: 'Smooth swipe transitions between content',
-    icon: <ArrowLeft size={24} />,
+    icon: <ArrowBackIcon size={24} />,
     component: <SwipeAnimationDemo />
   },
   {
     id: 'pinch',
     name: 'Pinch & Zoom',
     description: 'Interactive zoom with pinch gestures',
-    icon: <ZoomIn size={24} />,
+    icon: <ZoomInIcon size={24} />,
     component: <PinchZoomDemo />
   },
   {
     id: 'fade',
     name: 'Fade Transitions',
     description: 'Elegant fade in/out animations',
-    icon: <Play size={24} />,
+    icon: <PlayArrowIcon size={24} />,
     component: <FadeTransitionDemo />
   },
   {
     id: 'slide',
     name: 'Slide Effects',
     description: 'Smooth sliding animations',
-    icon: <SkipForward size={24} />,
+    icon: <SkipNextIcon size={24} />,
     component: <SlideAnimationDemo />
   }
 ];
@@ -178,7 +178,7 @@ function SwipeAnimationDemo() {
             '&:hover': { bgcolor: 'rgba(0,0,0,0.7)' }
           }}
         >
-          <ArrowRight size={20} />
+          <ArrowForwardIcon size={20} />
         </IconButton>
         <IconButton
           onClick={() => handleSwipe('left')}
@@ -190,7 +190,7 @@ function SwipeAnimationDemo() {
             '&:hover': { bgcolor: 'rgba(0,0,0,0.7)' }
           }}
         >
-          <ArrowLeft size={20} />
+          <ArrowBackIcon size={20} />
         </IconButton>
       </Box>
 
@@ -267,13 +267,13 @@ function PinchZoomDemo() {
       {/* Zoom Controls */}
       <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1, mt: 2 }}>
         <IconButton onClick={zoomOut} size="small">
-          <ZoomIn size={16} style={{ transform: 'rotate(180deg)' }} />
+          <ZoomInIcon size={16} style={{ transform: 'rotate(180deg)' }} />
         </IconButton>
         <IconButton onClick={resetZoom} size="small">
-          <RotateCcw size={16} />
+          <RefreshIcon size={16} />
         </IconButton>
         <IconButton onClick={zoomIn} size="small">
-          <ZoomIn size={16} />
+          <ZoomInIcon size={16} />
         </IconButton>
       </Box>
     </Box>
@@ -386,7 +386,7 @@ export default function MobileAnimations() {
     <Container maxWidth="lg" sx={{ py: { xs: 6, sm: 8 } }}>
       <Box sx={{ textAlign: 'center', mb: 6 }}>
         <Typography variant="h3" sx={{ mb: 2, fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2 }}>
-          <Smartphone size={32} />
+          <SmartphoneIcon size={32} />
           Mobile Animations
         </Typography>
         <Typography variant="h6" color="text.secondary" sx={{ mb: 4 }}>

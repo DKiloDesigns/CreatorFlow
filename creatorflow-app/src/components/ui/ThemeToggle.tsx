@@ -13,12 +13,12 @@ import {
   Divider,
 } from '@mui/material';
 import {
-  Sun,
-  Moon,
+  DarkMode,
+  LightMode,
   Monitor,
   Palette,
   Check,
-} from 'lucide-react';
+} from '@mui/icons-material';
 import { useMinimalTheme } from '@/contexts/MinimalThemeContext';
 
 interface ThemeToggleProps {
@@ -51,7 +51,7 @@ export function ThemeToggle({ variant = 'icon', size = 'medium' }: ThemeTogglePr
   };
 
   const getIcon = () => {
-    return isDark ? <Sun size={20} /> : <Moon size={20} />;
+    return isDark ? <LightMode /> : <DarkMode />;
   };
 
   const getTooltipText = () => {
@@ -129,24 +129,24 @@ export function ThemeToggle({ variant = 'icon', size = 'medium' }: ThemeTogglePr
           <Divider />
           <MenuItem onClick={() => handleModeChange('light')} selected={mode === 'light'}>
             <ListItemIcon>
-              <Sun size={18} />
+              <LightMode fontSize="small" />
             </ListItemIcon>
             <ListItemText primary="Light" />
-            {mode === 'light' && <Check size={16} />}
+            {mode === 'light' && <Check fontSize="small" />}
           </MenuItem>
           <MenuItem onClick={() => handleModeChange('dark')} selected={mode === 'dark'}>
             <ListItemIcon>
-              <Moon size={18} />
+              <DarkMode fontSize="small" />
             </ListItemIcon>
             <ListItemText primary="Dark" />
-            {mode === 'dark' && <Check size={16} />}
+            {mode === 'dark' && <Check fontSize="small" />}
           </MenuItem>
           <MenuItem onClick={() => handleModeChange('system')} selected={mode === 'system'}>
             <ListItemIcon>
-              <Monitor size={18} />
+              <Monitor fontSize="small" />
             </ListItemIcon>
             <ListItemText primary="System" />
-            {mode === 'system' && <Check size={16} />}
+            {mode === 'system' && <Check fontSize="small" />}
           </MenuItem>
         </Menu>
       </>
@@ -191,7 +191,7 @@ export function ThemeCustomizer() {
       }}
     >
       <Typography variant="h6" sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
-        <Palette size={20} />
+        <Palette fontSize="small" />
         Theme Customizer
       </Typography>
       

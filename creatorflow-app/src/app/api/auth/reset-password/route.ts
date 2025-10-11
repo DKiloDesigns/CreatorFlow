@@ -48,7 +48,8 @@ export async function POST(request: NextRequest) {
       data: {
         password: hashedPassword,
         resetToken: null,
-        resetTokenExpiry: null
+        resetTokenExpiry: null,
+        emailVerified: new Date(), // Mark email as verified after successful password reset
       }
     });
 

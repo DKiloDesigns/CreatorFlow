@@ -15,7 +15,7 @@ import {
   Chip,
   Button
 } from '@mui/material';
-import { Users, UserPlus, Settings } from 'lucide-react';
+import { Group as PeopleIcon, PersonAdd as UserPlusIcon, Settings as SettingsIcon } from '@mui/icons-material';
 import { useMinimalCollaboration } from '@/contexts/MinimalCollaborationContext';
 
 export function MinimalCollaborationPanel() {
@@ -52,7 +52,7 @@ export function MinimalCollaborationPanel() {
             }
           }}
         >
-          <Users size={20} />
+          <PeopleIcon sx={{ fontSize: 20 }} />
         </IconButton>
       </Tooltip>
       
@@ -71,7 +71,7 @@ export function MinimalCollaborationPanel() {
       >
         <Box sx={{ p: 2, minWidth: 300 }}>
           <Typography variant="h6" sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
-            <Users size={20} />
+            <PeopleIcon sx={{ fontSize: 20 }} />
             Collaboration
             <Chip 
               label={isConnected ? 'Connected' : 'Disconnected'} 
@@ -133,14 +133,14 @@ export function MinimalCollaborationPanel() {
           <Box sx={{ mt: 2, display: 'flex', gap: 1 }}>
             <Button 
               size="small" 
-              startIcon={<UserPlus size={16} />}
+              startIcon={<UserPlusIcon sx={{ fontSize: 16 }} />}
               onClick={() => joinRoom('demo-room')}
             >
               Join Demo Room
             </Button>
             <Button 
               size="small" 
-              startIcon={<Settings size={16} />}
+              startIcon={<SettingsIcon sx={{ fontSize: 16 }} />}
               variant="outlined"
             >
               Settings

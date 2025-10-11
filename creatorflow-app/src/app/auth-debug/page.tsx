@@ -17,7 +17,11 @@ import {
   Select,
   MenuItem
 } from '@mui/material';
-import { Shield, Key, Activity } from 'lucide-react';
+import {
+  Shield as ShieldIcon,
+  Key as KeyIcon,
+  Timeline as ActivityIcon
+} from '@mui/icons-material';
 
 export default function AuthDebugPage() {
   const [email, setEmail] = useState('');

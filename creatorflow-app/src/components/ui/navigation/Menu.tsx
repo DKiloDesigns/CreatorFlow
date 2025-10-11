@@ -3,7 +3,7 @@
 import * as React from 'react';
 import { createContext, useContext, useRef, useEffect, useState } from 'react';
 import { Box, Button, Typography } from '@mui/material';
-import { ChevronDown, Check, Circle } from 'lucide-react';
+import { ExpandMore as ExpandMoreIcon, Check as CheckIcon, RadioButtonUnchecked as RadioButtonUncheckedIcon } from '@mui/icons-material';
 
 // Context for menu state management
 interface MenuContextValue {
@@ -174,7 +174,7 @@ export function MenuTrigger({ children, asChild = false, className, disabled }: 
       }}
     >
       {children}
-      <ChevronDown style={{ 
+      <ExpandMoreIcon sx={{ 
         height: 16, 
         width: 16, 
         transition: 'transform 0.2s',
@@ -381,7 +381,7 @@ export function MenuCheckboxItem({
       }}
     >
       <Box sx={{ position: 'absolute', left: 1, display: 'flex', height: 14, width: 14, alignItems: 'center', justifyContent: 'center' }}>
-        {checked && <Check style={{ height: 12, width: 12 }} />}
+        {checked && <CheckIcon sx={{ height: 12, width: 12 }} />}
       </Box>
       {children}
     </Button>
@@ -456,7 +456,7 @@ export function MenuRadioItem({
       }}
     >
       <Box sx={{ position: 'absolute', left: 1, display: 'flex', height: 14, width: 14, alignItems: 'center', justifyContent: 'center' }}>
-        {checked && <Circle style={{ height: 8, width: 8, fill: 'currentColor' }} />}
+        {checked && <RadioButtonUncheckedIcon sx={{ height: 8, width: 8, fill: 'currentColor' }} />}
       </Box>
       {children}
     </Button>
@@ -574,7 +574,7 @@ export function MenuSubTrigger({ children, className, inset = false }: MenuSubTr
       }}
     >
       {children}
-      <ChevronDown style={{ marginLeft: 'auto', height: 16, width: 16 }} />
+      <ExpandMoreIcon sx={{ marginLeft: 'auto', height: 16, width: 16 }} />
     </Button>
   );
 }
@@ -617,6 +617,8 @@ export function MenuSubContent({
         '--radix-menu-sub-content-trigger-width': 'var(--radix-popper-trigger-width)',
         '--radix-menu-sub-content-trigger-height': 'var(--radix-popper-trigger-height)',
       } as React.CSSProperties}
+      data-side={side}
+      data-align={align}
     >
       {children}
     </Box>

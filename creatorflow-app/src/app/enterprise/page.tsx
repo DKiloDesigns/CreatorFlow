@@ -25,18 +25,18 @@ import {
   useMediaQuery
 } from '@mui/material';
 import { 
-  Search,
-  Shield,
-  Users,
-  Settings,
-  DollarSign,
-  Code,
-  FileText,
-  CheckCircle,
-  Clock,
-  User,
-  Star
-} from 'lucide-react';
+  Search as SearchIcon,
+  Security as ShieldIcon,
+  Group as UsersIcon,
+  Settings as SettingsIcon,
+  AttachMoney as DollarSignIcon,
+  Code as CodeIcon,
+  Description as FileTextIcon,
+  CheckCircle as CheckCircleIcon,
+  AccessTime as ClockIcon,
+  Person as UserIcon,
+  Star as StarIcon
+} from '@mui/icons-material';
 import { enterpriseDocs, getEnterpriseDocsByCategory, searchEnterpriseDocs } from '@/lib/enterprise-docs';
 
 interface TabPanelProps {
@@ -97,21 +97,21 @@ export default function EnterprisePage() {
   const getCategoryIcon = (category: string) => {
     switch (category) {
       case 'administration':
-        return <Settings size={20} />;
+        return <SettingsIcon sx={{ fontSize: 20 }} />;
       case 'security':
-        return <Shield size={20} />;
+        return <ShieldIcon sx={{ fontSize: 20 }} />;
       case 'compliance':
-        return <CheckCircle size={20} />;
+        return <CheckCircleIcon sx={{ fontSize: 20 }} />;
       case 'integration':
-        return <Code size={20} />;
+        return <CodeIcon sx={{ fontSize: 20 }} />;
       case 'api':
-        return <Code size={20} />;
+        return <CodeIcon sx={{ fontSize: 20 }} />;
       case 'billing':
-        return <DollarSign size={20} />;
+        return <DollarSignIcon sx={{ fontSize: 20 }} />;
       case 'support':
-        return <FileText size={20} />;
+        return <FileTextIcon sx={{ fontSize: 20 }} />;
       default:
-        return <FileText size={20} />;
+        return <FileTextIcon sx={{ fontSize: 20 }} />;
     }
   };
 
@@ -178,7 +178,7 @@ export default function EnterprisePage() {
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <Search size={20} />
+                    <SearchIcon sx={{ fontSize: 20 }} />
                   </InputAdornment>
                 ),
               }}
@@ -226,22 +226,22 @@ export default function EnterprisePage() {
           >
             <Tab 
               label="All Documentation" 
-              icon={<FileText size={20} />}
+              icon={<FileTextIcon sx={{ fontSize: 20 }} />}
               iconPosition="start"
             />
             <Tab 
               label="Administration" 
-              icon={<Settings size={20} />}
+              icon={<SettingsIcon sx={{ fontSize: 20 }} />}
               iconPosition="start"
             />
             <Tab 
               label="Security & Compliance" 
-              icon={<Shield size={20} />}
+              icon={<ShieldIcon sx={{ fontSize: 20 }} />}
               iconPosition="start"
             />
             <Tab 
               label="Integration & API" 
-              icon={<Code size={20} />}
+              icon={<CodeIcon sx={{ fontSize: 20 }} />}
               iconPosition="start"
             />
           </Tabs>
@@ -274,7 +274,7 @@ export default function EnterprisePage() {
                         {doc.title}
                       </Typography>
                       {doc.featured && (
-                        <Star size={20} color={theme.palette.secondary.main} />
+                        <StarIcon sx={{ fontSize: 20 }} color={theme.palette.secondary.main} />
                       )}
                     </Box>
                     
@@ -305,11 +305,11 @@ export default function EnterprisePage() {
 
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, color: 'text.secondary' }}>
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                        <Clock size={16} />
+                        <ClockIcon sx={{ fontSize: 16 }} />
                         <Typography variant="caption">{doc.estimatedReadTime} min</Typography>
                       </Box>
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                        <User size={16} />
+                        <UserIcon sx={{ fontSize: 16 }} />
                         <Typography variant="caption">{doc.author}</Typography>
                       </Box>
                     </Box>
@@ -357,12 +357,12 @@ export default function EnterprisePage() {
                 >
                   <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                      <Settings size={20} />
+                      <SettingsIcon sx={{ fontSize: 20 }} />
                       <Typography variant="h6" sx={{ fontWeight: 'bold', ml: 1, flexGrow: 1 }}>
                         {doc.title}
                 </Typography>
                       {doc.featured && (
-                        <Star size={20} color={theme.palette.secondary.main} />
+                        <StarIcon sx={{ fontSize: 20 }} color={theme.palette.secondary.main} />
                       )}
         </Box>
                     
@@ -387,11 +387,11 @@ export default function EnterprisePage() {
                     
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, color: 'text.secondary' }}>
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                        <Clock size={16} />
+                        <ClockIcon sx={{ fontSize: 16 }} />
                         <Typography variant="caption">{doc.estimatedReadTime} min</Typography>
                       </Box>
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                        <User size={16} />
+                        <UserIcon sx={{ fontSize: 16 }} />
                         <Typography variant="caption">{doc.author}</Typography>
                       </Box>
                     </Box>
@@ -439,12 +439,12 @@ export default function EnterprisePage() {
                 >
                   <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                      <Shield size={20} />
+                      <ShieldIcon sx={{ fontSize: 20 }} />
                       <Typography variant="h6" sx={{ fontWeight: 'bold', ml: 1, flexGrow: 1 }}>
                         {doc.title}
               </Typography>
                       {doc.featured && (
-                        <Star size={20} color={theme.palette.secondary.main} />
+                        <StarIcon sx={{ fontSize: 20 }} color={theme.palette.secondary.main} />
                       )}
         </Box>
                     
@@ -469,11 +469,11 @@ export default function EnterprisePage() {
                     
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, color: 'text.secondary' }}>
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                        <Clock size={16} />
+                        <ClockIcon sx={{ fontSize: 16 }} />
                         <Typography variant="caption">{doc.estimatedReadTime} min</Typography>
                       </Box>
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                        <User size={16} />
+                        <UserIcon sx={{ fontSize: 16 }} />
                         <Typography variant="caption">{doc.author}</Typography>
                       </Box>
                     </Box>
@@ -521,12 +521,12 @@ export default function EnterprisePage() {
                 >
                   <CardContent sx={{ flexGrow: 1, display: 'flex', flexDirection: 'column' }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 2 }}>
-                      <Code size={20} />
+                      <CodeIcon sx={{ fontSize: 20 }} />
                       <Typography variant="h6" sx={{ fontWeight: 'bold', ml: 1, flexGrow: 1 }}>
                         {doc.title}
                 </Typography>
                       {doc.featured && (
-                        <Star size={20} color={theme.palette.secondary.main} />
+                        <StarIcon sx={{ fontSize: 20 }} color={theme.palette.secondary.main} />
                       )}
         </Box>
                     
@@ -551,11 +551,11 @@ export default function EnterprisePage() {
                     
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, color: 'text.secondary' }}>
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                        <Clock size={16} />
+                        <ClockIcon sx={{ fontSize: 16 }} />
                         <Typography variant="caption">{doc.estimatedReadTime} min</Typography>
                       </Box>
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                        <User size={16} />
+                        <UserIcon sx={{ fontSize: 16 }} />
                         <Typography variant="caption">{doc.author}</Typography>
                       </Box>
                     </Box>

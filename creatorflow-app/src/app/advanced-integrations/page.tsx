@@ -18,7 +18,24 @@ import {
   Select,
   MenuItem
 } from '@mui/material';
-import { Settings, Zap, Code, Database, Cloud, Shield, Activity, RefreshCw, Plus, Plug, CheckCircle, TrendingUp, Eye, BarChart3, Webhook, Edit } from 'lucide-react';
+import {
+  Settings as SettingsIcon,
+  Bolt as ZapIcon,
+  Code as CodeIcon,
+  Storage as DatabaseIcon,
+  Cloud as CloudIcon,
+  Security as ShieldIcon,
+  Timeline as ActivityIcon,
+  Refresh as RefreshCwIcon,
+  Add as PlusIcon,
+  IntegrationInstructions as PlugIcon,
+  CheckCircle as CheckCircleIcon,
+  TrendingUp as TrendingUpIcon,
+  Visibility as EyeIcon,
+  BarChart as BarChart3Icon,
+  Webhook as WebhookIcon,
+  Edit as EditIcon
+} from '@mui/icons-material';
 
 interface Integration {
   id: string;
@@ -214,11 +231,11 @@ export default function AdvancedIntegrationsPage() {
 
   const getTypeIcon = (type: string) => {
     switch (type) {
-      case 'api': return <Cloud className="h-4 w-4" />;
-      case 'webhook': return <Code className="h-4 w-4" />;
-      case 'oauth': return <Shield className="h-4 w-4" />;
-      case 'sdk': return <Zap className="h-4 w-4" />;
-      default: return <Cloud className="h-4 w-4" />;
+      case 'api': return <CloudIcon sx={{ height: 16, width: 16 }} />;
+      case 'webhook': return <CodeIcon sx={{ height: 16, width: 16 }} />;
+      case 'oauth': return <ShieldIcon sx={{ height: 16, width: 16 }} />;
+      case 'sdk': return <ZapIcon sx={{ height: 16, width: 16 }} />;
+      default: return <CloudIcon sx={{ height: 16, width: 16 }} />;
     }
   };
 
@@ -229,7 +246,7 @@ export default function AdvancedIntegrationsPage() {
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <Box>
           <Typography variant="h3" component="h1" sx={{ fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: 1 }}>
-            <Cloud className="h-8 w-8" />
+            <CloudIcon sx={{ height: 32, width: 32 }} />
             Advanced Integrations
           </Typography>
           <Typography variant="body1" sx={{ color: 'text.secondary' }}>
@@ -238,7 +255,7 @@ export default function AdvancedIntegrationsPage() {
         </Box>
         <Box sx={{ display: 'flex', gap: 1 }}>
           <Button onClick={() => setShowCreateIntegration(true)}>
-            <Plus className="h-4 w-4 mr-2" />
+            <PlusIcon sx={{ height: 16, width: 16, mr: 2 }} />
             New Integration
           </Button>
         </Box>
@@ -250,7 +267,7 @@ export default function AdvancedIntegrationsPage() {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <Typography variant="h6" className="text-sm font-medium">Total Integrations</Typography>
-              <Plug className="h-4 w-4 text-muted-foreground" />
+              <PlugIcon sx={{ height: 16, width: 16, color: 'text.secondary' }} />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{metrics?.totalIntegrations || 0}</div>
@@ -265,7 +282,7 @@ export default function AdvancedIntegrationsPage() {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <Typography variant="h6" className="text-sm font-medium">Active Integrations</Typography>
-              <CheckCircle className="h-4 w-4 text-green-600" />
+              <CheckCircleIcon sx={{ height: 16, width: 16, color: 'green.600' }} />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-green-600">
@@ -282,7 +299,7 @@ export default function AdvancedIntegrationsPage() {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <Typography variant="h6" className="text-sm font-medium">Success Rate</Typography>
-              <TrendingUp className="h-4 w-4 text-blue-600" />
+              <TrendingUpIcon sx={{ height: 16, width: 16, color: 'blue.600' }} />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-blue-600">
@@ -299,7 +316,7 @@ export default function AdvancedIntegrationsPage() {
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <Typography variant="h6" className="text-sm font-medium">Avg Response</Typography>
-              <Activity className="h-4 w-4 text-purple-600" />
+              <ActivityIcon sx={{ height: 16, width: 16, color: 'purple.600' }} />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-purple-600">
@@ -328,7 +345,7 @@ export default function AdvancedIntegrationsPage() {
               <Card>
                 <CardHeader>
                   <Typography variant="h6" className="flex items-center gap-2">
-                    <Activity className="h-5 w-5" />
+                    <ActivityIcon sx={{ height: 20, width: 20 }} />
                     Recent Events
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
@@ -355,7 +372,7 @@ export default function AdvancedIntegrationsPage() {
                             </div>
                           </div>
                           <Button size="small" variant="outlined">
-                            <Eye className="h-3 w-3" />
+                            <EyeIcon sx={{ height: 12, width: 12 }} />
                           </Button>
                         </div>
                       ))
@@ -369,7 +386,7 @@ export default function AdvancedIntegrationsPage() {
               <Card>
                 <CardHeader>
                   <Typography variant="h6" className="flex items-center gap-2">
-                    <BarChart3 className="h-5 w-5" />
+                    <BarChart3Icon sx={{ height: 20, width: 20 }} />
                     Integration Types
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
@@ -408,7 +425,7 @@ export default function AdvancedIntegrationsPage() {
           <Card>
             <CardHeader>
               <Typography variant="h6" className="flex items-center gap-2">
-                <Plug className="h-5 w-5" />
+                <PlugIcon sx={{ height: 20, width: 20 }} />
                 Integrations
               </Typography>
               <Typography variant="body2" color="text.secondary">
@@ -419,7 +436,7 @@ export default function AdvancedIntegrationsPage() {
               <div className="space-y-4">
                 {integrations.length === 0 ? (
                   <div className="text-center py-8 text-muted-foreground">
-                    <Plug className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+                    <PlugIcon sx={{ height: 48, width: 48, color: 'text.muted' }} />
                     <p>No integrations found. Create your first integration to get started.</p>
                   </div>
                 ) : (
@@ -450,13 +467,13 @@ export default function AdvancedIntegrationsPage() {
                         </div>
                         <div className="flex gap-2">
                           <Button size="small" variant="outlined" onClick={() => checkHealth(integration.id)}>
-                            <Activity className="h-3 w-3" />
+                            <ActivityIcon sx={{ height: 12, width: 12 }} />
                           </Button>
                           <Button size="small" variant="outlined" onClick={() => startSync(integration.id)}>
-                            <RefreshCw className="h-3 w-3" />
+                            <RefreshCwIcon sx={{ height: 12, width: 12 }} />
                           </Button>
                           <Button size="small" variant="outlined">
-                            <Settings className="h-3 w-3" />
+                            <SettingsIcon sx={{ height: 12, width: 12 }} />
                           </Button>
                         </div>
                       </div>
@@ -474,7 +491,7 @@ export default function AdvancedIntegrationsPage() {
           <Card>
             <CardHeader>
               <Typography variant="h6" className="flex items-center gap-2">
-                <Webhook className="h-5 w-5" />
+                <WebhookIcon sx={{ height: 20, width: 20 }} />
                 Webhook Management
               </Typography>
               <Typography variant="body2" color="text.secondary">
@@ -507,10 +524,10 @@ export default function AdvancedIntegrationsPage() {
                         </div>
                         <div className="flex gap-2">
                           <Button size="small" variant="outlined">
-                            <Eye className="h-3 w-3" />
+                            <EyeIcon sx={{ height: 12, width: 12 }} />
                           </Button>
                           <Button size="small" variant="outlined">
-                            <Edit className="h-3 w-3" />
+                            <EditIcon sx={{ height: 12, width: 12 }} />
                           </Button>
                         </div>
                       </div>
@@ -528,7 +545,7 @@ export default function AdvancedIntegrationsPage() {
           <Card>
             <CardHeader>
               <Typography variant="h6" className="flex items-center gap-2">
-                <RefreshCw className="h-5 w-5" />
+                <RefreshCwIcon sx={{ height: 20, width: 20 }} />
                 Sync Management
               </Typography>
               <Typography variant="body2" color="text.secondary">
@@ -572,10 +589,10 @@ export default function AdvancedIntegrationsPage() {
                       </div>
                       <div className="flex gap-2">
                         <Button size="small" variant="outlined" onClick={() => startSync(integration.id, 'incremental')}>
-                          <RefreshCw className="h-3 w-3" />
+                          <RefreshCwIcon sx={{ height: 12, width: 12 }} />
                         </Button>
                         <Button size="small" variant="outlined" onClick={() => startSync(integration.id, 'full')}>
-                          <Database className="h-3 w-3" />
+                          <DatabaseIcon sx={{ height: 12, width: 12 }} />
                         </Button>
                       </div>
                     </div>
@@ -592,7 +609,7 @@ export default function AdvancedIntegrationsPage() {
           <Card>
             <CardHeader>
               <Typography variant="h6" className="flex items-center gap-2">
-                <Activity className="h-5 w-5" />
+                <ActivityIcon sx={{ height: 20, width: 20 }} />
                 Health Monitoring
               </Typography>
               <Typography variant="body2" color="text.secondary">
@@ -644,10 +661,10 @@ export default function AdvancedIntegrationsPage() {
                       </div>
                       <div className="flex gap-2">
                         <Button size="small" variant="outlined" onClick={() => checkHealth(integration.id)}>
-                          <Activity className="h-3 w-3" />
+                          <ActivityIcon sx={{ height: 12, width: 12 }} />
                         </Button>
                         <Button size="small" variant="outlined">
-                          <Eye className="h-3 w-3" />
+                          <EyeIcon sx={{ height: 12, width: 12 }} />
                         </Button>
                       </div>
                     </div>

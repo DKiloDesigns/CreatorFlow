@@ -13,18 +13,18 @@ import {
   Tooltip,
   CircularProgress
 } from '@mui/material';
-import { 
-  TrendingUp, 
-  TrendingDown, 
-  Heart, 
-  MessageSquare, 
-  Users, 
-  Lightbulb,
-  RefreshCw,
-  BarChart3,
-  Target,
-  Zap
-} from 'lucide-react';
+import {
+  TrendingUp as TrendingUpIcon,
+  TrendingDown as TrendingDownIcon,
+  Favorite as FavoriteIcon,
+  Chat as ChatIcon,
+  People as PeopleIcon,
+  LightbulbOutlined as LightbulbOutlinedIcon,
+  Refresh as RefreshIcon,
+  BarChart as BarChartIcon,
+  Adjust as AdjustIcon,
+  Bolt as BoltIcon
+} from '@mui/icons-material';
 import { InsightsPanel } from './InsightsPanel';
 
 interface AnalyticsData {
@@ -155,7 +155,7 @@ export function AnalyticsDashboard() {
   if (!analyticsData) {
     return (
       <Box sx={{ textAlign: 'center', py: 4 }}>
-        <BarChart3 style={{ margin: '0 auto', width: 48, height: 48, color: 'inherit', marginBottom: 16 }} />
+        <BarChartIcon sx={{ margin: '0 auto', width: 48, height: 48, color: 'inherit', marginBottom: 16 }} />
         <Typography variant="h6" component="h3" sx={{ mb: 1, color: 'text.primary' }}>
           No Analytics Data
         </Typography>
@@ -218,7 +218,7 @@ export function AnalyticsDashboard() {
               bgcolor: 'background.paper'
             }}
           >
-            <RefreshCw style={{ 
+            <RefreshIcon sx={{ 
               width: 16, 
               height: 16, 
               marginRight: 8,
@@ -235,7 +235,7 @@ export function AnalyticsDashboard() {
               minHeight: 44
             }}
           >
-            <Lightbulb style={{ width: 16, height: 16, marginRight: 8 }} />
+            <LightbulbOutlinedIcon sx={{ width: 16, height: 16, marginRight: 8 }} />
             Generate Insights
           </Button>
         </Box>
@@ -257,7 +257,7 @@ export function AnalyticsDashboard() {
               <Typography variant="h6" component="h3" sx={{ fontSize: '0.875rem', fontWeight: 500, wordBreak: 'break-word' }}>
                 Total Posts
               </Typography>
-              <MessageSquare style={{ width: 16, height: 16, color: 'inherit', flexShrink: 0 }} />
+              <ChatIcon sx={{ width: 16, height: 16, color: 'inherit', flexShrink: 0 }} />
             </CardHeader>
             <CardContent>
               <Typography variant="h4" component="div" sx={{ fontWeight: 'bold' }}>
@@ -284,7 +284,7 @@ export function AnalyticsDashboard() {
               <Typography variant="h6" component="h3" sx={{ fontSize: '0.875rem', fontWeight: 500, wordBreak: 'break-word' }}>
                 Total Engagement
               </Typography>
-              <Heart style={{ width: 16, height: 16, color: 'inherit', flexShrink: 0 }} />
+              <FavoriteIcon sx={{ width: 16, height: 16, color: 'inherit', flexShrink: 0 }} />
             </CardHeader>
             <CardContent>
               <Typography variant="h4" component="div" sx={{ fontWeight: 'bold' }}>
@@ -311,7 +311,7 @@ export function AnalyticsDashboard() {
               <Typography variant="h6" component="h3" sx={{ fontSize: '0.875rem', fontWeight: 500, wordBreak: 'break-word' }}>
                 Avg Engagement Rate
               </Typography>
-              <TrendingUp style={{ width: 16, height: 16, color: 'inherit', flexShrink: 0 }} />
+              <TrendingUpIcon sx={{ width: 16, height: 16, color: 'inherit', flexShrink: 0 }} />
             </CardHeader>
             <CardContent>
               <Typography variant="h4" component="div" sx={{ fontWeight: 'bold' }}>
@@ -338,7 +338,7 @@ export function AnalyticsDashboard() {
               <Typography variant="h6" component="h3" sx={{ fontSize: '0.875rem', fontWeight: 500, wordBreak: 'break-word' }}>
                 Followers
               </Typography>
-              <Users style={{ width: 16, height: 16, color: 'inherit', flexShrink: 0 }} />
+              <PeopleIcon sx={{ width: 16, height: 16, color: 'inherit', flexShrink: 0 }} />
             </CardHeader>
             <CardContent>
               <Typography variant="h4" component="div" sx={{ fontWeight: 'bold' }}>

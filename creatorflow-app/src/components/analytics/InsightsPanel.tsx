@@ -4,7 +4,12 @@ import React from 'react';
 import { Card, CardContent, CardHeader } from '@/components/ui/mui-card';
 import { Button, Typography, Box, Grid, Chip } from '@mui/material';
 import { Badge } from '@/components/ui/badge';
-import { Activity, CheckCircle, Info, Clock } from 'lucide-react';
+import {
+  Timeline as ActivityIcon,
+  CheckCircle as CheckCircleIcon,
+  InfoOutlined as InfoIcon,
+  AccessTime as ClockIcon
+} from '@mui/icons-material';
 
 interface Insight {
   id: string;
@@ -34,17 +39,17 @@ export function InsightsPanel({ insights, onRefresh }: InsightsPanelProps) {
   const getInsightIcon = (type: string) => {
     switch (type) {
       case 'performance':
-        return <Box sx={{ color: 'primary.main' }}><Activity style={{ width: 20, height: 20 }} /></Box>;
+        return <Box sx={{ color: 'primary.main' }}><ActivityIcon sx={{ width: 20, height: 20 }} /></Box>;
       case 'timing':
-        return <Box sx={{ color: 'warning.main' }}><Activity style={{ width: 20, height: 20 }} /></Box>;
+        return <Box sx={{ color: 'warning.main' }}><ActivityIcon sx={{ width: 20, height: 20 }} /></Box>;
       case 'content':
-        return <Box sx={{ color: 'success.main' }}><Activity style={{ width: 20, height: 20 }} /></Box>;
+        return <Box sx={{ color: 'success.main' }}><ActivityIcon sx={{ width: 20, height: 20 }} /></Box>;
       case 'engagement':
-        return <Box sx={{ color: 'info.main' }}><Activity style={{ width: 20, height: 20 }} /></Box>;
+        return <Box sx={{ color: 'info.main' }}><ActivityIcon sx={{ width: 20, height: 20 }} /></Box>;
       case 'growth':
-        return <Box sx={{ color: 'secondary.main' }}><Activity style={{ width: 20, height: 20 }} /></Box>;
+        return <Box sx={{ color: 'secondary.main' }}><ActivityIcon sx={{ width: 20, height: 20 }} /></Box>;
       default:
-        return <Box sx={{ color: 'grey.500' }}><Activity style={{ width: 20, height: 20 }} /></Box>;
+        return <Box sx={{ color: 'grey.500' }}><ActivityIcon sx={{ width: 20, height: 20 }} /></Box>;
     }
   };
 
@@ -76,13 +81,13 @@ export function InsightsPanel({ insights, onRefresh }: InsightsPanelProps) {
     return (
       <Box sx={{ textAlign: 'center', py: 4 }}>
         <Box sx={{ color: 'grey.400', mb: 2 }}>
-          <Activity style={{ width: 48, height: 48 }} />
+          <ActivityIcon sx={{ width: 48, height: 48 }} />
         </Box>
         <Typography variant="h5" component="h3" sx={{ fontWeight: 500, color: 'text.primary', mb: 1 }}>No Insights Available</Typography>
         <Typography variant="body1" sx={{ color: 'text.secondary', mb: 2 }}>Generate AI-powered insights to get personalized recommendations.</Typography>
         <Button onClick={onRefresh}>
           <Box sx={{ mr: 1 }}>
-            <Activity style={{ width: 16, height: 16 }} />
+            <ActivityIcon sx={{ width: 16, height: 16 }} />
           </Box>
           Generate Insights
         </Button>
@@ -102,7 +107,7 @@ export function InsightsPanel({ insights, onRefresh }: InsightsPanelProps) {
         </Box>
         <Button onClick={onRefresh} variant="outlined">
           <Box sx={{ mr: 1 }}>
-            <Activity className="h-4 w-4" />
+            <ActivityIcon sx={{ width: 16, height: 16 }} />
           </Box>
           Refresh
         </Button>
@@ -154,7 +159,7 @@ export function InsightsPanel({ insights, onRefresh }: InsightsPanelProps) {
                       {insight.recommendations.map((recommendation, index) => (
                         <Box component="li" key={index} sx={{ display: 'flex', alignItems: 'flex-start', gap: 1, fontSize: '0.875rem', color: 'grey.600' }}>
                           <Box sx={{ color: 'green.500', mt: 0.5, flexShrink: 0 }}>
-                            <CheckCircle className="h-4 w-4" />
+                            <CheckCircleIcon sx={{ width: 16, height: 16 }} />
                           </Box>
                           <span>{recommendation}</span>
                         </Box>
@@ -189,7 +194,7 @@ export function InsightsPanel({ insights, onRefresh }: InsightsPanelProps) {
         <CardContent sx={{ pt: 3 }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             <Box sx={{ color: 'blue.600' }}>
-              <Clock className="h-5 w-5" />
+              <ClockIcon sx={{ width: 20, height: 20 }} />
             </Box>
             <Box>
               <Typography variant="body2" sx={{ fontSize: '0.875rem', fontWeight: 500, color: 'blue.900' }}>

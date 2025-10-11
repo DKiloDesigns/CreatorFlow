@@ -16,14 +16,14 @@ import {
   MenuItem,
   Chip
 } from '@mui/material';
-import { 
-  Target, 
-  TrendingUp, 
-  Users, 
-  Activity,
-  Download,
-  RefreshCw
-} from 'lucide-react';
+import {
+  Adjust as AdjustIcon,
+  TrendingUp as TrendingUpIcon,
+  People as PeopleIcon,
+  ShowChart as ShowChartIcon, // Equivalent to Activity for general user engagement
+  Download as DownloadIcon,
+  Refresh as RefreshIcon
+} from '@mui/icons-material';
 import { Badge } from '@/components/ui/badge';
 
 interface CampaignData {
@@ -135,10 +135,10 @@ export default function CampaignDashboard() {
             </Select>
           </FormControl>
           <Button onClick={refreshData} disabled={refreshing} variant="outlined" size="small">
-            <RefreshCw className={`h-4 w-4 ${refreshing ? 'animate-spin' : ''}`} />
+            <RefreshIcon sx={{ width: 16, height: 16 }} className={`${refreshing ? 'animate-spin' : ''}`} />
           </Button>
           <Button onClick={exportData} variant="outlined" size="small">
-            <Download className="h-4 w-4" />
+            <DownloadIcon sx={{ width: 16, height: 16 }} />
           </Button>
         </div>
       </div>
@@ -148,7 +148,7 @@ export default function CampaignDashboard() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <Typography variant="h6" className="text-sm font-medium">Campaign Usage</Typography>
-            <Target className="h-4 w-4 text-muted-foreground" />
+            <AdjustIcon sx={{ width: 16, height: 16 }} className="text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{data.campaign.totalUses}/{data.campaign.maxUses}</div>
@@ -168,7 +168,7 @@ export default function CampaignDashboard() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <Typography variant="h6" className="text-sm font-medium">Trial Users</Typography>
-            <Users className="h-4 w-4 text-muted-foreground" />
+            <PeopleIcon sx={{ width: 16, height: 16 }} className="text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{data.trialUsers.total}</div>
@@ -181,7 +181,7 @@ export default function CampaignDashboard() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <Typography variant="h6" className="text-sm font-medium">Conversions</Typography>
-            <TrendingUp className="h-4 w-4 text-muted-foreground" />
+            <TrendingUpIcon sx={{ width: 16, height: 16 }} className="text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{data.conversions.total}</div>
@@ -194,7 +194,7 @@ export default function CampaignDashboard() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <Typography variant="h6" className="text-sm font-medium">User Engagement</Typography>
-            <Activity className="h-4 w-4 text-muted-foreground" />
+            <ShowChartIcon sx={{ width: 16, height: 16 }} className="text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{data.trends.trialUserPosts}</div>

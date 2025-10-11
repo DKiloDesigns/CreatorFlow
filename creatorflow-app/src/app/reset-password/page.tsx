@@ -2,10 +2,10 @@
 
 import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
-import { 
-  Card, 
-  CardContent, 
-  CardHeader, 
+import {
+  Card,
+  CardContent,
+  CardHeader,
   Button,
   Typography,
   Alert,
@@ -17,7 +17,7 @@ import {
   IconButton,
   CircularProgress
 } from '@mui/material';
-import { Lock, ArrowLeft, Eye, EyeOff, Loader2, KeyRound } from 'lucide-react';
+import { LockOutlined as LockOutlinedIcon, ArrowBack as ArrowBackIcon, Visibility as VisibilityIcon, VisibilityOff as VisibilityOffIcon, VpnKey as VpnKeyIcon } from '@mui/icons-material';
 import Link from 'next/link';
 
 function ResetPasswordForm() {
@@ -144,7 +144,7 @@ function ResetPasswordForm() {
             <Button
               component={Link}
               href="/auth"
-              startIcon={<ArrowLeft style={{ width: 16, height: 16 }} />}
+              startIcon={<ArrowBackIcon sx={{ fontSize: 16 }} />}
               variant="text"
               sx={{ color: 'text.secondary' }}
             >
@@ -206,7 +206,7 @@ function ResetPasswordForm() {
           <Button
             component={Link}
             href="/auth"
-            startIcon={<ArrowLeft style={{ width: 16, height: 16 }} />}
+            startIcon={<ArrowBackIcon sx={{ fontSize: 16 }} />}
             variant="text"
             sx={{ color: 'text.secondary' }}
           >
@@ -245,7 +245,7 @@ function ResetPasswordForm() {
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <Lock style={{ width: 16, height: 16 }} />
+                      <LockOutlinedIcon sx={{ fontSize: 16 }} />
                     </InputAdornment>
                   ),
                   endAdornment: (
@@ -255,7 +255,7 @@ function ResetPasswordForm() {
                         edge="end"
                         size="small"
                       >
-                        {showPassword ? <EyeOff style={{ width: 16, height: 16 }} /> : <Eye style={{ width: 16, height: 16 }} />}
+                        {showPassword ? <VisibilityOffIcon sx={{ fontSize: 16 }} /> : <VisibilityIcon sx={{ fontSize: 16 }} />}
                       </IconButton>
                     </InputAdornment>
                   ),
@@ -274,7 +274,7 @@ function ResetPasswordForm() {
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <Lock style={{ width: 16, height: 16 }} />
+                      <LockOutlinedIcon sx={{ fontSize: 16 }} />
                     </InputAdornment>
                   ),
                   endAdornment: (
@@ -284,7 +284,7 @@ function ResetPasswordForm() {
                         edge="end"
                         size="small"
                       >
-                        {showConfirmPassword ? <EyeOff style={{ width: 16, height: 16 }} /> : <Eye style={{ width: 16, height: 16 }} />}
+                        {showConfirmPassword ? <VisibilityOffIcon sx={{ fontSize: 16 }} /> : <VisibilityIcon sx={{ fontSize: 16 }} />}
                       </IconButton>
                     </InputAdornment>
                   ),
@@ -293,7 +293,7 @@ function ResetPasswordForm() {
 
               {/* Message Alert */}
               {message && (
-                <Alert 
+                <Alert
                   severity={message.type === 'error' ? 'error' : 'success'}
                   sx={{ mt: 1 }}
                 >
@@ -313,15 +313,15 @@ function ResetPasswordForm() {
                 sx={{ mt: 2, height: 48 }}
               >
                 {isLoading ? (
-                  <>
-                    <Loader2 style={{ width: 16, height: 16, marginRight: 8, animation: 'spin 1s linear infinite' }} />
-                    Resetting Password...
-                  </>
+                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <CircularProgress size={16} sx={{ mr: 1, animation: 'spin 1s linear infinite' }} />
+                    <Typography>Resetting Password...</Typography>
+                  </Box>
                 ) : (
-                  <>
-                    <KeyRound style={{ width: 16, height: 16, marginRight: 8 }} />
-                    Reset Password
-                  </>
+                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <VpnKeyIcon sx={{ fontSize: 16, mr: 1 }} />
+                    <Typography>Reset Password</Typography>
+                  </Box>
                 )}
               </Button>
             </Box>

@@ -23,19 +23,19 @@ import {
   useMediaQuery
 } from '@mui/material';
 import {
-  CheckCircle,
-  Play,
-  SkipNext,
-  X,
-  HelpCircle,
-  Clock,
-  Users,
-  Settings,
-  BarChart3,
-  Brain,
-  Calendar,
-  Share2
-} from 'lucide-react';
+  CheckCircle as CheckCircleIcon,
+  PlayArrow as PlayIcon,
+  SkipNext as SkipNextIcon,
+  Close as XIcon,
+  HelpOutline as HelpCircleIcon,
+  AccessTime as ClockIcon,
+  Group as UsersIcon,
+  Settings as SettingsIcon,
+  BarChart as BarChart3Icon,
+  Psychology as BrainIcon,
+  CalendarMonth as CalendarIcon,
+  Share as Share2Icon
+} from '@mui/icons-material';
 import { OnboardingStep, OnboardingProgress } from '@/lib/onboarding-progress';
 
 interface EnhancedOnboardingModalProps {
@@ -138,25 +138,25 @@ export function EnhancedOnboardingModal({
   const getStepIcon = (stepId: string) => {
     switch (stepId) {
       case 'welcome':
-        return <CheckCircle size={20} />;
+        return <CheckCircleIcon sx={{ fontSize: 20 }} />;
       case 'connect-accounts':
-        return <Users size={20} />;
+        return <UsersIcon sx={{ fontSize: 20 }} />;
       case 'create-first-post':
-        return <Share2 size={20} />;
+        return <Share2Icon sx={{ fontSize: 20 }} />;
       case 'schedule-content':
-        return <Calendar size={20} />;
+        return <CalendarIcon sx={{ fontSize: 20 }} />;
       case 'explore-analytics':
-        return <BarChart3 size={20} />;
+        return <BarChart3Icon sx={{ fontSize: 20 }} />;
       case 'set-up-team':
-        return <Users size={20} />;
+        return <UsersIcon sx={{ fontSize: 20 }} />;
       case 'explore-ai-tools':
-        return <Brain size={20} />;
+        return <BrainIcon sx={{ fontSize: 20 }} />;
       case 'customize-settings':
-        return <Settings size={20} />;
+        return <SettingsIcon sx={{ fontSize: 20 }} />;
       case 'onboarding-complete':
-        return <CheckCircle size={20} />;
+        return <CheckCircleIcon sx={{ fontSize: 20 }} />;
       default:
-        return <Play size={20} />;
+        return <PlayIcon sx={{ fontSize: 20 }} />;
     }
   };
 
@@ -238,7 +238,7 @@ export function EnhancedOnboardingModal({
               />
             )}
             <IconButton onClick={onClose} size="small">
-              <X />
+              <XIcon />
             </IconButton>
           </Box>
         </Box>
@@ -306,7 +306,7 @@ export function EnhancedOnboardingModal({
                           variant="outlined" 
                         />
                         <Chip 
-                          icon={<Clock size={12} />}
+                          icon={<ClockIcon sx={{ fontSize: 12 }} />}
                           label={`${step.estimatedTime} min`} 
                           size="small" 
                           variant="outlined" 
@@ -431,7 +431,7 @@ export function EnhancedOnboardingModal({
                 {currentStep.type === 'tutorial' && (
                   <Button
                     variant="outlined"
-                    startIcon={<Play />}
+                    startIcon={<PlayIcon />}
                     onClick={() => handleStepAction(currentStep.id, 'start_step')}
                   >
                     Start Tutorial
@@ -441,7 +441,7 @@ export function EnhancedOnboardingModal({
                 {currentStep.type === 'action' && (
                   <Button
                     variant="contained"
-                    startIcon={<Play />}
+                    startIcon={<PlayIcon />}
                     onClick={() => handleStepAction(currentStep.id, 'start_step')}
                   >
                     Try This Action
@@ -471,7 +471,7 @@ export function EnhancedOnboardingModal({
                 <Button
                   variant="contained"
                   onClick={() => handleStepAction(currentStep.id, 'complete_step')}
-                  endIcon={<CheckCircle />}
+                  endIcon={<CheckCircleIcon />}
                 >
                   Complete
                 </Button>

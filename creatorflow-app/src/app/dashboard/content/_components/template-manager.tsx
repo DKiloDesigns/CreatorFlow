@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { 
+import {
   Button,
   Box,
   Typography,
@@ -8,12 +8,22 @@ import {
   Tab,
   Chip
 } from '@mui/material';
-import { FileText, Activity, Edit } from 'lucide-react';
+import {
+  Description as FileTextIcon,
+  TrendingUp as ActivityIcon,
+  Edit as EditIcon
+} from '@mui/icons-material';
 import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogCancel } from '@/components/ui/alert-dialog';
 
 
 import { toast } from 'sonner';
-import { Star, Pin, Eye, Share2, Users } from 'lucide-react';
+import {
+  Star as StarIcon,
+  PushPin as PinIcon,
+  Visibility as EyeIcon,
+  Share as ShareIcon,
+  People as UsersIcon
+} from '@mui/icons-material';
 import dynamic from 'next/dynamic';
 import { DndContext, closestCenter, PointerSensor, useSensor, useSensors } from '@dnd-kit/core';
 import { arrayMove, SortableContext, useSortable, verticalListSortingStrategy } from '@dnd-kit/sortable';
@@ -593,7 +603,7 @@ export default function TemplateManager({ onInsert }: { onInsert?: (text: string
             </div>
             <ul className="mb-2">
               {folders.map(folder => (
-                <li key={folder.id} className={`flex items-center gap-1 mb-1 ${selectedFolderId === folder.id ? 'bg-blue-100 rounded' : ''}`}> 
+                <li key={folder.id} className={`flex items-center gap-1 mb-1 ${selectedFolderId === folder.id ? 'bg-blue-100 rounded' : ''}`}>
                   <button className="flex-1 text-left truncate" onClick={() => setSelectedFolderId(folder.id)}>{folder.name}</button>
                   <button className="text-xs text-gray-500" onClick={() => { setRenamingFolderId(folder.id); setRenamingFolderName(folder.name); }}>✏️</button>
                   <button className="text-xs text-red-500" onClick={() => handleDeleteFolder(folder.id)}>🗑️</button>
@@ -688,14 +698,14 @@ export default function TemplateManager({ onInsert }: { onInsert?: (text: string
                               <input type="checkbox" checked={selectedIds.includes(t.id)} onChange={e => handleSelectOne(t.id, e.target.checked)} aria-label="Select caption template" />
                               {/* Favorite/Pin Buttons */}
                               <button onClick={() => handleToggleFavorite(t.id, t.isFavorite, 'captions')} aria-label={t.isFavorite ? 'Unfavorite' : 'Favorite'} className={t.isFavorite ? 'text-yellow-500' : 'text-gray-400'} style={t.isFavorite ? { background: 'none' } : {}}>
-                                <Star className="h-4 w-4" fill={t.isFavorite ? 'currentColor' : 'none'} />
+                                <StarIcon className="h-4 w-4" fill={t.isFavorite ? 'currentColor' : 'none'} />
                               </button>
                               <button onClick={() => handleTogglePinned(t.id, t.isPinned, 'captions')} aria-label={t.isPinned ? 'Unpin' : 'Pin'} className={t.isPinned ? 'text-blue-500' : 'text-gray-400'} style={t.isPinned ? { background: 'none' } : {}}>
-                                <Pin className="h-4 w-4" fill={t.isPinned ? 'currentColor' : 'none'} />
+                                <PinIcon className="h-4 w-4" fill={t.isPinned ? 'currentColor' : 'none'} />
                               </button>
                               {/* Preview Button */}
                               <button onClick={() => setPreviewContent(t.content)} aria-label="Preview" className="text-gray-500 focus:outline-none">
-                                <Eye className="h-4 w-4" />
+                                <EyeIcon className="h-4 w-4" />
                               </button>
                               {editingId === t.id ? (
                                 <>
@@ -730,8 +740,8 @@ export default function TemplateManager({ onInsert }: { onInsert?: (text: string
                                   <Button size="small" variant="text" onClick={() => handleDelete(t.id)} aria-label="Delete caption">Delete</Button>
                                   <Button size="small" onClick={() => handleInsert(t.content)} aria-label="Insert caption">Insert</Button>
                                   <Button size="small" variant="text" onClick={() => handleShowHistory(t.id, 'captions')} aria-label="Show version history">History</Button>
-                                  <Button size="small" variant="text" onClick={() => { setShareModalOpen(true); setShareTarget(t); setShareType('captions'); }} aria-label="Share caption template"><Share2 className="h-4 w-4" /></Button>
-                                  {sharedIds.includes(t.id) && <Users className="h-4 w-4 text-green-500" aria-label="Shared" />}
+                                  <Button size="small" variant="text" onClick={() => { setShareModalOpen(true); setShareTarget(t); setShareType('captions'); }} aria-label="Share caption template"><ShareIcon className="h-4 w-4" /></Button>
+                                  {sharedIds.includes(t.id) && <UsersIcon className="h-4 w-4 text-green-500" aria-label="Shared" />}
                                   <Button size="small" variant="text" onClick={() => { setUsageModalOpen(true); setUsageTarget(t); setUsageType('captions'); }} aria-label="Usage analytics">Usage</Button>
                                   <span className="text-xs text-gray-500 ml-1">{t.usageCount || 0} uses</span>
                                   <span className="text-xs text-gray-400 ml-1">{t.updatedAt ? new Date(t.updatedAt).toLocaleDateString() : ''}</span>
@@ -797,14 +807,14 @@ export default function TemplateManager({ onInsert }: { onInsert?: (text: string
                               <input type="checkbox" checked={selectedIds.includes(t.id)} onChange={e => handleSelectOne(t.id, e.target.checked)} aria-label="Select hashtag group" />
                               {/* Favorite/Pin Buttons */}
                               <button onClick={() => handleToggleFavorite(t.id, t.isFavorite, 'hashtags')} aria-label={t.isFavorite ? 'Unfavorite' : 'Favorite'} className={t.isFavorite ? 'text-yellow-500' : 'text-gray-400'} style={t.isFavorite ? { background: 'none' } : {}}>
-                                <Star className="h-4 w-4" fill={t.isFavorite ? 'currentColor' : 'none'} />
+                                <StarIcon className="h-4 w-4" fill={t.isFavorite ? 'currentColor' : 'none'} />
                               </button>
                               <button onClick={() => handleTogglePinned(t.id, t.isPinned, 'hashtags')} aria-label={t.isPinned ? 'Unpin' : 'Pin'} className={t.isPinned ? 'text-blue-500' : 'text-gray-400'} style={t.isPinned ? { background: 'none' } : {}}>
-                                <Pin className="h-4 w-4" fill={t.isPinned ? 'currentColor' : 'none'} />
+                                <PinIcon className="h-4 w-4" fill={t.isPinned ? 'currentColor' : 'none'} />
                               </button>
                               {/* Preview Button */}
                               <button onClick={() => setPreviewContent(t.hashtags?.join(' ') || '')} aria-label="Preview" className="text-gray-500 focus:outline-none">
-                                <Eye className="h-4 w-4" />
+                                <EyeIcon className="h-4 w-4" />
                               </button>
                               {editingId === t.id ? (
                                 <>
@@ -834,8 +844,8 @@ export default function TemplateManager({ onInsert }: { onInsert?: (text: string
                                   <Button size="small" variant="text" onClick={() => handleEdit(t.id, t.name, Array.isArray(t.hashtags) ? t.hashtags.join(' ') : t.hashtags, t.category, t.tags)} aria-label="Edit hashtag group">Edit</Button>
                                   <Button size="small" variant="text" onClick={() => handleDelete(t.id)} aria-label="Delete hashtag group">Delete</Button>
                                   <Button size="small" onClick={() => handleInsert(Array.isArray(t.hashtags) ? t.hashtags.join(' ') : t.hashtags)} aria-label="Insert hashtags">Insert</Button>
-                                  <Button size="small" variant="text" onClick={() => { setShareModalOpen(true); setShareTarget(t); setShareType('hashtags'); }} aria-label="Share hashtag group"><Share2 className="h-4 w-4" /></Button>
-                                  {sharedIds.includes(t.id) && <Users className="h-4 w-4 text-green-500" aria-label="Shared" />}
+                                  <Button size="small" variant="text" onClick={() => { setShareModalOpen(true); setShareTarget(t); setShareType('hashtags'); }} aria-label="Share hashtag group"><ShareIcon className="h-4 w-4" /></Button>
+                                  {sharedIds.includes(t.id) && <UsersIcon className="h-4 w-4 text-green-500" aria-label="Shared" />}
                                   <Button size="small" variant="text" onClick={() => { setUsageModalOpen(true); setUsageTarget(t); setUsageType('hashtags'); }} aria-label="Usage analytics">Usage</Button>
                                   <span className="text-xs text-gray-500 ml-1">{t.usageCount || 0} uses</span>
                                   <span className="text-xs text-gray-400 ml-1">{t.updatedAt ? new Date(t.updatedAt).toLocaleDateString() : ''}</span>

@@ -12,7 +12,12 @@ import {
   Grid,
   Chip
 } from '@mui/material';
-import { Gift, CheckCircle, XCircle, Loader2 } from 'lucide-react';
+import {
+  CardGiftcard as CardGiftcardIcon,
+  CheckCircle as CheckCircleIcon,
+  Cancel as CancelIcon,
+} from '@mui/icons-material';
+import { CircularProgress } from '@mui/material';
 import { toast } from 'sonner';
 
 interface PromoCodeInputProps {
@@ -65,7 +70,7 @@ export function PromoCodeInput({ onSuccess, className }: PromoCodeInputProps) {
     <Card sx={{ ...(className && { className }) }}>
       <CardHeader>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <Gift style={{ height: 20, width: 20, color: 'success.main' }} />
+          <CardGiftcardIcon sx={{ height: 20, width: 20, color: 'success.main' }} />
           <Typography variant="h6">Have a Promo Code?</Typography>
         </Box>
         <Typography variant="body2" color="text.secondary">
@@ -85,7 +90,7 @@ export function PromoCodeInput({ onSuccess, className }: PromoCodeInputProps) {
             />
             <Button type="submit" disabled={isLoading || !promoCode.trim()}>
               {isLoading ? (
-                <Loader2 style={{ height: 16, width: 16, animation: 'spin 1s linear infinite' }} />
+                <CircularProgress size={16} sx={{ animation: 'spin 1s linear infinite' }} />
               ) : (
                 'Apply'
               )}
@@ -94,7 +99,7 @@ export function PromoCodeInput({ onSuccess, className }: PromoCodeInputProps) {
 
           {isValid === true && trialInfo && (
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, p: 3, bgcolor: 'success.light', border: '1px solid', borderColor: 'success.main', borderRadius: 2 }}>
-              <CheckCircle style={{ height: 20, width: 20, color: 'success.main' }} />
+              <CheckCircleIcon sx={{ height: 20, width: 20, color: 'success.main' }} />
               <Box sx={{ flexGrow: 1 }}>
                 <Typography variant="body2" fontWeight="medium" color="success.dark">
                   Trial Activated!
@@ -109,6 +114,7 @@ export function PromoCodeInput({ onSuccess, className }: PromoCodeInputProps) {
 
           {isValid === false && (
             <Box sx={{ p: 3, bgcolor: 'error.light', border: '1px solid', borderColor: 'error.main', borderRadius: 2 }}>
+              <CancelIcon sx={{ height: 20, width: 20, color: 'error.main', mr: 1 }} />
               <Typography variant="body2" fontWeight="medium" color="error.dark">Invalid promo code</Typography>
               <Typography variant="body2" color="error.main">
                 Invalid promo code. Please check and try again.

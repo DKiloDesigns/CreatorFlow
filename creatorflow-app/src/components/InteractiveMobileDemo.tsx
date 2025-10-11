@@ -17,20 +17,20 @@ import {
   Chip,
 } from '@mui/material';
 import { 
-  Smartphone, 
-  Play, 
-  Pause, 
-  RotateCcw,
-  Volume2,
-  VolumeX,
-  Maximize,
-  Minimize,
-  Hand,
-  ArrowLeft,
-  ArrowRight,
-  ZoomIn,
-  X
-} from 'lucide-react';
+  Smartphone as SmartphoneIcon,
+  PlayArrow as PlayIcon,
+  Pause as PauseIcon,
+  Refresh as RotateCcwIcon,
+  VolumeUp as Volume2Icon,
+  VolumeOff as VolumeXIcon,
+  Fullscreen as MaximizeIcon,
+  FullscreenExit as MinimizeIcon,
+  TouchApp as HandIcon,
+  ArrowBack as ArrowLeftIcon,
+  ArrowForward as ArrowRightIcon,
+  ZoomIn as ZoomInIcon,
+  Close as XIcon
+} from '@mui/icons-material';
 
 interface TouchGesture {
   id: string;
@@ -45,21 +45,21 @@ const TOUCH_GESTURES: TouchGesture[] = [
     id: 'tap',
     name: 'Tap to Interact',
     description: 'Tap any element to see it respond',
-    icon: <Hand size={24} />,
+    icon: <HandIcon sx={{ fontSize: 24 }} />,
     demo: () => console.log('Tap gesture demo')
   },
   {
     id: 'swipe',
     name: 'Swipe Navigation',
     description: 'Swipe left/right to navigate between features',
-    icon: <ArrowLeft size={24} />,
+    icon: <ArrowLeftIcon sx={{ fontSize: 24 }} />,
     demo: () => console.log('Swipe gesture demo')
   },
   {
     id: 'pinch',
     name: 'Pinch to Zoom',
     description: 'Pinch to zoom in/out on content',
-    icon: <ZoomIn size={24} />,
+    icon: <ZoomInIcon sx={{ fontSize: 24 }} />,
     demo: () => console.log('Pinch gesture demo')
   }
 ];
@@ -144,7 +144,7 @@ export default function InteractiveMobileDemo() {
     <Container maxWidth="lg" sx={{ py: { xs: 6, sm: 8 } }}>
       <Box sx={{ textAlign: 'center', mb: 6 }}>
         <Typography variant="h3" sx={{ mb: 2, fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2 }}>
-          <Smartphone size={32} />
+          <SmartphoneIcon sx={{ fontSize: 32 }} />
           Interactive Mobile Demo
         </Typography>
         <Typography variant="h6" color="text.secondary" sx={{ mb: 4 }}>
@@ -292,15 +292,15 @@ export default function InteractiveMobileDemo() {
         </Typography>
         <Box sx={{ display: 'flex', justifyContent: 'center', gap: 4, flexWrap: 'wrap' }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <Hand size={20} />
+            <HandIcon sx={{ fontSize: 20 }} />
             <Typography variant="body2">Tap to interact</Typography>
           </Box>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <ArrowLeft size={20} />
+            <ArrowLeftIcon sx={{ fontSize: 20 }} />
             <Typography variant="body2">Swipe to navigate</Typography>
           </Box>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <ZoomIn size={20} />
+            <ZoomInIcon sx={{ fontSize: 20 }} />
             <Typography variant="body2">Pinch to zoom</Typography>
           </Box>
         </Box>

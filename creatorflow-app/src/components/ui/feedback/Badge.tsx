@@ -2,7 +2,7 @@
 
 import React, { forwardRef } from 'react';
 import { cn } from '@/lib/utils';
-import { X } from 'lucide-react';
+import { Close as CloseIcon } from '@mui/icons-material';
 import { Box } from '@mui/material';
 
 export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
@@ -129,7 +129,7 @@ const Badge = forwardRef<HTMLSpanElement, BadgeProps>(
             }}
             aria-label="Remove badge"
           >
-            <X style={{ width: 12, height: 12 }} />
+            <CloseIcon sx={{ width: 12, height: 12 }} />
           </Box>
         )}
       </Box>

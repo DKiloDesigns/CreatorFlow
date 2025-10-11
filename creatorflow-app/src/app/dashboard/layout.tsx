@@ -5,18 +5,55 @@ export const dynamic = 'force-dynamic';
 import { signOut } from "next-auth/react"
 import Link from "next/link"
 import { usePathname } from 'next/navigation';
-import { BarChart2, Users, FileText, Handshake, CreditCard, Menu, Bell, BarChart3, Target, MessageSquare, CalendarIcon, Activity, Shield, Settings, Sparkles, Star, Building2, Smartphone, Plug, TestTube, Home, Calendar, Brain, HelpCircle, HardDrive, Bot, Zap, Accessibility, Code, Layout, Image, Wrench, Calculator, Hash, Calendar as CalendarIcon2, BarChart, Clock, TrendingUp } from 'lucide-react';
+import {
+  BarChart as BarChartIcon,
+  Group as GroupIcon,
+  Description as DescriptionIcon,
+  Handshake as HandshakeIcon,
+  CreditCard as CreditCardIcon,
+  Menu as MenuIcon,
+  Notifications as NotificationsIcon,
+  BarChart as BarChart3Icon, // Re-using BarChartIcon for BarChart3
+  Target as TargetIcon,
+  Message as MessageIcon,
+  CalendarMonth as CalendarMonthIcon,
+  TrendingUp as TrendingUpIcon,
+  Security as SecurityIcon,
+  Settings as SettingsIcon,
+  AutoAwesome as AutoAwesomeIcon,
+  Star as StarIcon,
+  Business as BusinessIcon,
+  Smartphone as SmartphoneIcon,
+  Share as ShareIcon, // Using ShareIcon for Plug as it often represents integrations
+  Science as ScienceIcon, // Using ScienceIcon for TestTube
+  Home as HomeIcon,
+  Event as EventIcon, // Using EventIcon for Calendar
+  Psychology as PsychologyIcon, // Using PsychologyIcon for Brain
+  Help as HelpIcon,
+  Storage as StorageIcon, // Using StorageIcon for HardDrive
+  SmartToy as SmartToyIcon, // Using SmartToyIcon for Bot
+  Bolt as BoltIcon,
+  Accessibility as AccessibilityIcon,
+  Code as CodeIcon,
+  Dashboard as DashboardIcon, // Using DashboardIcon for Layout
+  Image as ImageIcon,
+  Build as BuildIcon, // Using BuildIcon for Wrench
+  Calculate as CalculateIcon, // Using CalculateIcon for Calculator
+  Tag as TagIcon, // Using TagIcon for Hash
+  AccessTime as AccessTimeIcon,
+  TrendingUp as TrendingUp2Icon, // Re-using TrendingUpIcon for TrendingUp
+} from '@mui/icons-material';
 import { FloatingNotificationIcon } from '@/components/notifications/FloatingNotificationIcon';
 import { FloatingMessengerIcon } from '@/components/messaging/FloatingMessengerIcon';
 import { useState, useEffect } from 'react';
-import { 
-  AppBar, 
-  Toolbar, 
-  Box, 
-  Typography, 
-  Button, 
-  IconButton, 
-  Badge, 
+import {
+  AppBar,
+  Toolbar,
+  Box,
+  Typography,
+  Button,
+  IconButton,
+  Badge,
   Container,
   Drawer,
   List,
@@ -26,7 +63,7 @@ import {
   Divider,
   Chip
 } from '@mui/material';
-import { 
+import {
   MuiEnhancedNavigation
 } from '@/components/ui/mui-components';
 import { MinimalCollaborationPanel } from '@/components/collaboration/MinimalCollaborationPanel';
@@ -83,56 +120,56 @@ export default function DashboardLayout({
   }, []);
 
   const navigationItems = [
-    { href: '/dashboard', label: 'Dashboard', icon: Home },
-    { href: '/dashboard/content', label: 'Content', icon: FileText },
-    { href: '/dashboard/media', label: 'Media Library', icon: Image },
-    { href: '/dashboard/analytics', label: 'Analytics', icon: BarChart2 },
-    { href: '/tools', label: 'Free Tools', icon: Wrench },
-    { href: '/tools/social-media-calculator', label: 'ROI Calculator', icon: Calculator },
-    { href: '/tools/hashtag-research', label: 'Hashtag Research', icon: Hash },
-    { href: '/tools/calendar-templates', label: 'Calendar Templates', icon: CalendarIcon2 },
-    { href: '/tools/social-media-audit', label: 'Social Media Audit', icon: BarChart },
-    { href: '/tools/posting-time-optimizer', label: 'Time Optimizer', icon: Clock },
-    { href: '/tools/content-predictor', label: 'Content Predictor', icon: TrendingUp },
-    { href: '/dashboard/phase2-hub', label: 'Phase 2 Hub', icon: Brain },
-    { href: '/dashboard/phase3-hub', label: 'Phase 3 Hub', icon: Bot },
-    { href: '/dashboard/ai-api-test', label: 'AI API Test', icon: TestTube },
-    { href: '/dashboard/phase5-test', label: 'Phase 5 Test', icon: Star },
-    { href: '/dashboard/phase4-test', label: 'Phase 4 Test', icon: BarChart3 },
-    { href: '/dashboard/phase6-test', label: 'Phase 6 Test', icon: Zap },
-    { href: '/dashboard/phase7-test', label: 'Phase 7 Test', icon: Settings },
-    { href: '/dashboard/content-builder', label: 'Content Builder', icon: Layout },
-    { href: '/dashboard/accounts', label: 'Accounts', icon: Users },
-    { href: '/dashboard/scheduling', label: 'Scheduling', icon: Calendar },
-    { href: '/dashboard/ai-tools', label: 'AI Tools', icon: Brain },
-    { href: '/dashboard/collabs', label: 'Collabs', icon: Handshake },
-    { href: '/dashboard/team', label: 'Team', icon: Building2 },
-    { href: '/dashboard/billing', label: 'Billing', icon: CreditCard },
-    { href: '/dashboard/mobile', label: 'Mobile', icon: Smartphone },
-    { href: '/dashboard/integrations', label: 'Integrations', icon: Plug },
-    { href: '/dashboard/api', label: 'API', icon: Plug },
-    { href: '/dashboard/testing', label: 'Testing', icon: TestTube },
-            { href: '/dashboard/accessibility-testing', label: 'Accessibility', icon: Accessibility },
-        { href: '/saca-demo', label: 'SACA Demo', icon: Accessibility },
-        { href: '/dashboard/enterprise', label: 'Enterprise', icon: Building2 },
-        { href: '/dashboard/api-management', label: 'API Management', icon: Code },
-        { href: '/dashboard/advanced-integrations', label: 'Advanced', icon: Sparkles },
-        { href: '/dashboard/security/account', label: 'Account Security', icon: Shield },
-    { href: '/dashboard/security/api', label: 'API Security', icon: Code },
-    { href: '/dashboard/settings', label: 'Settings', icon: Settings },
-    { href: '/dashboard/support', label: 'Support', icon: HelpCircle },
-    { href: '/dashboard/messaging', label: 'Messages', icon: MessageSquare },
-    { href: '/dashboard/notifications/enhanced', label: 'Notifications', icon: Bell },
-    { href: '/dashboard/admin', label: 'Admin Panel', icon: Shield },
+    { href: '/dashboard', label: 'Dashboard', icon: HomeIcon },
+    { href: '/dashboard/content', label: 'Content', icon: DescriptionIcon },
+    { href: '/dashboard/media', label: 'Media Library', icon: ImageIcon },
+    { href: '/dashboard/analytics', label: 'Analytics', icon: BarChartIcon },
+    { href: '/tools', label: 'Free Tools', icon: BuildIcon },
+    { href: '/tools/social-media-calculator', label: 'ROI Calculator', icon: CalculateIcon },
+    { href: '/tools/hashtag-research', label: 'Hashtag Research', icon: TagIcon },
+    { href: '/tools/calendar-templates', label: 'Calendar Templates', icon: CalendarMonthIcon },
+    { href: '/tools/social-media-audit', label: 'Social Media Audit', icon: BarChartIcon },
+    { href: '/tools/posting-time-optimizer', label: 'Time Optimizer', icon: AccessTimeIcon },
+    { href: '/tools/content-predictor', label: 'Content Predictor', icon: TrendingUpIcon },
+    { href: '/dashboard/phase2-hub', label: 'Phase 2 Hub', icon: PsychologyIcon },
+    { href: '/dashboard/phase3-hub', label: 'Phase 3 Hub', icon: SmartToyIcon },
+    { href: '/dashboard/ai-api-test', label: 'AI API Test', icon: ScienceIcon },
+    { href: '/dashboard/phase5-test', label: 'Phase 5 Test', icon: StarIcon },
+    { href: '/dashboard/phase4-test', label: 'Phase 4 Test', icon: BarChart3Icon },
+    { href: '/dashboard/phase6-test', label: 'Phase 6 Test', icon: BoltIcon },
+    { href: '/dashboard/phase7-test', label: 'Phase 7 Test', icon: SettingsIcon },
+    { href: '/dashboard/content-builder', label: 'Content Builder', icon: DashboardIcon },
+    { href: '/dashboard/accounts', label: 'Accounts', icon: GroupIcon },
+    { href: '/dashboard/scheduling', label: 'Scheduling', icon: EventIcon },
+    { href: '/dashboard/ai-tools', label: 'AI Tools', icon: PsychologyIcon },
+    { href: '/dashboard/collabs', label: 'Collabs', icon: HandshakeIcon },
+    { href: '/dashboard/team', label: 'Team', icon: BusinessIcon },
+    { href: '/dashboard/billing', label: 'Billing', icon: CreditCardIcon },
+    { href: '/dashboard/mobile', label: 'Mobile', icon: SmartphoneIcon },
+    { href: '/dashboard/integrations', label: 'Integrations', icon: ShareIcon },
+    { href: '/dashboard/api', label: 'API', icon: CodeIcon },
+    { href: '/dashboard/testing', label: 'Testing', icon: ScienceIcon },
+            { href: '/dashboard/accessibility-testing', label: 'Accessibility', icon: AccessibilityIcon },
+        { href: '/saca-demo', label: 'SACA Demo', icon: AccessibilityIcon },
+        { href: '/dashboard/enterprise', label: 'Enterprise', icon: BusinessIcon },
+        { href: '/dashboard/api-management', label: 'API Management', icon: CodeIcon },
+        { href: '/dashboard/advanced-integrations', label: 'Advanced', icon: AutoAwesomeIcon },
+        { href: '/dashboard/security/account', label: 'Account Security', icon: SecurityIcon },
+    { href: '/dashboard/security/api', label: 'API Security', icon: CodeIcon },
+    { href: '/dashboard/settings', label: 'Settings', icon: SettingsIcon },
+    { href: '/dashboard/support', label: 'Support', icon: HelpIcon },
+    { href: '/dashboard/messaging', label: 'Messages', icon: MessageIcon },
+    { href: '/dashboard/notifications/enhanced', label: 'Notifications', icon: NotificationsIcon },
+    { href: '/dashboard/admin', label: 'Admin Panel', icon: SecurityIcon },
   ];
 
   return (
     <MobileLayout>
       {/* Navigation */}
-      <AppBar 
-        position="sticky" 
+      <AppBar
+        position="sticky"
         elevation={0}
-        sx={{ 
+        sx={{
           bgcolor: 'background.paper',
           borderBottom: 1,
           borderColor: 'divider',
@@ -145,11 +182,11 @@ export default function DashboardLayout({
           <Toolbar sx={{ justifyContent: 'space-between', height: 64 }}>
             {/* Logo */}
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-              <Box 
-                sx={{ 
-                  width: 32, 
-                  height: 32, 
-                  bgcolor: 'black', 
+              <Box
+                sx={{
+                  width: 32,
+                  height: 32,
+                  bgcolor: 'black',
                   borderRadius: 1,
                   display: 'flex',
                   alignItems: 'center',
@@ -162,9 +199,9 @@ export default function DashboardLayout({
                   CF
                 </Typography>
               </Box>
-              <Typography 
-                variant="h5" 
-                component="span" 
+              <Typography
+                variant="h5"
+                component="span"
                 sx={{ fontWeight: 'bold', color: 'text.primary' }}
                 aria-label="CreatorFlow"
               >
@@ -173,13 +210,13 @@ export default function DashboardLayout({
             </Box>
 
             {/* Desktop Navigation */}
-            <Box 
+            <Box
               sx={{ display: { xs: 'none', lg: 'flex' }, alignItems: 'center', gap: 4 }}
               role="navigation"
               aria-label="Main navigation"
             >
               {navigationItems.slice(0, 8).map((item) => {
-                const Icon = item.icon;
+                const IconComponent = item.icon;
                 const isActive = pathname === item.href;
                 return (
                   <Button
@@ -190,8 +227,8 @@ export default function DashboardLayout({
                     aria-current={isActive ? 'page' : undefined}
                     aria-label={`Navigate to ${item.label}`}
                     sx={{
-                      color: isActive 
-                        ? 'primary.main' 
+                      color: isActive
+                        ? 'primary.main'
                         : 'text.secondary',
                       '&:hover': {
                         color: 'primary.main',
@@ -215,10 +252,10 @@ export default function DashboardLayout({
             </Box>
 
             {/* Tablet Navigation */}
-            <Box 
-              sx={{ 
-                display: { xs: 'none', md: 'flex', lg: 'none' }, 
-                alignItems: 'center', 
+            <Box
+              sx={{
+                display: { xs: 'none', md: 'flex', lg: 'none' },
+                alignItems: 'center',
                 justifyContent: 'space-between',
                 width: '100%',
                 px: 2,
@@ -232,7 +269,7 @@ export default function DashboardLayout({
             >
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                 {navigationItems.slice(0, 8).map((item) => {
-                  const Icon = item.icon;
+                  const IconComponent = item.icon;
                   const isActive = pathname === item.href;
                   return (
                     <IconButton
@@ -242,8 +279,8 @@ export default function DashboardLayout({
                       aria-current={isActive ? 'page' : undefined}
                       aria-label={`Navigate to ${item.label}`}
                       sx={{
-                        color: isActive 
-                          ? 'primary.main' 
+                        color: isActive
+                          ? 'primary.main'
                           : 'text.secondary',
                         '&:hover': {
                           color: 'primary.main',
@@ -256,7 +293,7 @@ export default function DashboardLayout({
                         }
                       }}
                     >
-                      <Icon size={20} style={{ width: 20, height: 20 }} />
+                      <IconComponent sx={{ fontSize: 20 }} />
                     </IconButton>
                   );
                 })}
@@ -301,14 +338,14 @@ export default function DashboardLayout({
               {/* Command Palette Button */}
               <IconButton
                 onClick={openCommandPalette}
-                sx={{ 
+                sx={{
                   display: { xs: 'none', sm: 'flex' },
                   bgcolor: 'action.hover',
                   '&:hover': { bgcolor: 'action.selected' }
                 }}
                 title="Open Command Palette (⌘K)"
               >
-                <BarChart3 size={20} />
+                <BarChart3Icon sx={{ fontSize: 20 }} />
               </IconButton>
 
               {/* Collaboration Panel - Only render on client */}
@@ -331,9 +368,9 @@ export default function DashboardLayout({
       </Box>
 
       {/* Command Palette */}
-      <CommandPalette 
-        open={open} 
-        onClose={closeCommandPalette} 
+      <CommandPalette
+        open={open}
+        onClose={closeCommandPalette}
       />
     </MobileLayout>
   );

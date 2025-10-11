@@ -19,7 +19,7 @@ import {
   FormControl,
   InputLabel
 } from '@mui/material';
-import { Settings, Activity } from 'lucide-react';
+import { Settings as SettingsIcon, TrendingUp as TrendingUpIcon } from '@mui/icons-material';
 
 interface UXConfig {
   animations: boolean;
@@ -155,7 +155,7 @@ export default function SettingsPage() {
   if (loading) {
     return (
       <Box sx={{ p: 4, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <Activity size={24} />
+        <TrendingUpIcon sx={{ fontSize: 24 }} />
       </Box>
     );
   }
@@ -165,14 +165,14 @@ export default function SettingsPage() {
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <Box>
           <Typography variant="h3" sx={{ fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-            <Settings size={32} />
+            <SettingsIcon sx={{ fontSize: 32 }} />
             Settings
           </Typography>
           <Typography variant="body1" color="text.secondary">
             Manage your preferences and account settings
           </Typography>
         </Box>
-        <Button onClick={saveAllPreferences} disabled={saving} startIcon={saving ? <Activity size={16} /> : <Settings size={16} />}>
+        <Button onClick={saveAllPreferences} disabled={saving} startIcon={saving ? <TrendingUpIcon sx={{ fontSize: 16 }} /> : <SettingsIcon sx={{ fontSize: 16 }} />}>
           Save Changes
         </Button>
       </Box>
@@ -189,7 +189,7 @@ export default function SettingsPage() {
           <Card>
             <CardHeader>
               <Typography variant="h5" component="div" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <Activity size={20} />
+                <TrendingUpIcon sx={{ fontSize: 20 }} />
                 Accessibility Settings
               </Typography>
               <Typography variant="body2" color="text.secondary">
@@ -303,7 +303,7 @@ export default function SettingsPage() {
           <Card>
             <CardHeader>
               <Typography variant="h5" component="div" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <Activity size={20} />
+                <TrendingUpIcon sx={{ fontSize: 20 }} />
                 Notification Preferences
               </Typography>
               <Typography variant="body2" color="text.secondary">
@@ -362,7 +362,7 @@ export default function SettingsPage() {
           <Card>
             <CardHeader>
               <Typography variant="h5" component="div" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <Activity size={20} />
+                <TrendingUpIcon sx={{ fontSize: 20 }} />
                 Privacy & Security
               </Typography>
               <Typography variant="body2" color="text.secondary">
@@ -434,7 +434,7 @@ export default function SettingsPage() {
           <Card>
             <CardHeader>
               <Typography variant="h5" component="div" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <Activity size={20} />
+                <TrendingUpIcon sx={{ fontSize: 20 }} />
                 Data Management
               </Typography>
               <Typography variant="body2" color="text.secondary">
@@ -451,7 +451,7 @@ export default function SettingsPage() {
                         Download all your data and content
                       </Typography>
                     </Box>
-                    <Button variant="outlined" onClick={exportData} startIcon={<Activity size={16} />}>
+                    <Button variant="outlined" onClick={exportData} startIcon={<TrendingUpIcon sx={{ fontSize: 16 }} />}>
                       Export
                     </Button>
                   </Box>
@@ -463,7 +463,7 @@ export default function SettingsPage() {
                         Permanently delete your account and all data
                       </Typography>
                     </Box>
-                    <Button variant="outlined" color="error" onClick={deleteAccount} startIcon={<Activity size={16} />}>
+                    <Button variant="outlined" color="error" onClick={deleteAccount} startIcon={<TrendingUpIcon sx={{ fontSize: 16 }} />}>
                       Delete
                     </Button>
                   </Box>

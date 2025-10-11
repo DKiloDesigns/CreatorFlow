@@ -24,22 +24,22 @@ import {
   DialogActions
 } from '@mui/material';
 import { 
-  FileText, 
-  Users, 
-  BarChart2, 
-  Calendar,
-  Brain,
-  Zap,
-  TrendingUp,
-  Plus,
-  Settings,
-  Home,
-  ChevronDown,
-  ChevronUp,
-  Target,
-  CreditCard,
-  Wrench
-} from 'lucide-react';
+  Description as FileTextIcon,
+  Group as UsersIcon,
+  BarChart as BarChart2Icon,
+  CalendarMonth as CalendarIcon,
+  Psychology as BrainIcon,
+  Bolt as ZapIcon,
+  TrendingUp as TrendingUpIcon,
+  Add as PlusIcon,
+  Settings as SettingsIcon,
+  Home as HomeIcon,
+  ExpandMore as ChevronDownIcon,
+  ExpandLess as ChevronUpIcon,
+  Adjust as TargetIcon,
+  CreditCard as CreditCardIcon,
+  Build as WrenchIcon
+} from '@mui/icons-material';
 import { useAPIKey } from '@/hooks/use-api-key';
 import dynamic from 'next/dynamic';
 import SubscriptionStatus from '@/components/SubscriptionStatus';
@@ -207,7 +207,7 @@ export default function DashboardPage() {
         <Grid item xs={12} md={6}>
           <Card sx={{ height: '100%' }}>
             <CardHeader
-              avatar={<FileText size={32} color="#1976d2" />}
+              avatar={<FileTextIcon sx={{ fontSize: 32, color: "#1976d2" }} />}
               title="Content Hub"
               subheader="Create, manage, and schedule your content"
               action={
@@ -215,7 +215,7 @@ export default function DashboardPage() {
                   onClick={() => setContentHubExpanded(!contentHubExpanded)}
                   size="small"
                 >
-                  {contentHubExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                  {contentHubExpanded ? <ChevronUpIcon sx={{ fontSize: 20 }} /> : <ChevronDownIcon sx={{ fontSize: 20 }} />}
                 </IconButton>
               }
               sx={{ cursor: 'pointer' }}
@@ -328,7 +328,7 @@ export default function DashboardPage() {
         <Grid item xs={12} md={6}>
           <Card sx={{ height: '100%' }}>
             <CardHeader
-              avatar={<BarChart2 size={32} color="#2e7d32" />}
+              avatar={<BarChart2Icon sx={{ fontSize: 32, color: "#2e7d32" }} />}
               title="Analytics Center"
               subheader="Track performance and insights"
               action={
@@ -336,7 +336,7 @@ export default function DashboardPage() {
                   onClick={() => setAnalyticsCenterExpanded(!analyticsCenterExpanded)}
                                 size="small"
                 >
-                  {analyticsCenterExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                  {analyticsCenterExpanded ? <ChevronUpIcon sx={{ fontSize: 20 }} /> : <ChevronDownIcon sx={{ fontSize: 20 }} />}
                 </IconButton>
               }
               sx={{ cursor: 'pointer' }}
@@ -488,7 +488,7 @@ export default function DashboardPage() {
         <Grid item xs={12} md={6}>
           <Card sx={{ height: '100%', background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)', color: 'white' }}>
             <CardHeader
-              avatar={<Wrench size={32} color="white" />}
+              avatar={<WrenchIcon sx={{ fontSize: 32, color: "white" }} />}
               title="Free Tools"
               subheader="Powerful tools to enhance your content creation"
               sx={{ 
@@ -525,7 +525,7 @@ export default function DashboardPage() {
       {/* AI Insights Section */}
       <Card sx={{ mb: 5 }}>
         <CardHeader
-          avatar={<Brain size={32} color="#667eea" />}
+          avatar={<BrainIcon sx={{ fontSize: 32, color: "#667eea" }} />}
           title="AI Insights"
           subheader="Get AI-powered recommendations and insights"
           action={
@@ -533,7 +533,7 @@ export default function DashboardPage() {
               onClick={() => setAiInsightsExpanded(!aiInsightsExpanded)}
               size="small"
             >
-              {aiInsightsExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+              {aiInsightsExpanded ? <ChevronUpIcon sx={{ fontSize: 20 }} /> : <ChevronDownIcon sx={{ fontSize: 20 }} />}
             </IconButton>
           }
           sx={{ cursor: 'pointer' }}
@@ -547,7 +547,7 @@ export default function DashboardPage() {
                   <Box sx={{ mb: 2, display: 'flex', gap: 1, flexWrap: 'wrap' }}>
                     <Button
                       variant="contained"
-                      startIcon={<Zap size={16} />}
+                      startIcon={<ZapIcon sx={{ fontSize: 16 }} />}
                       onClick={() => setAiInsightsModalOpen(true)}
                       sx={{
                         background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
@@ -560,7 +560,7 @@ export default function DashboardPage() {
                     </Button>
                     <Button
                       variant="outlined"
-                      startIcon={<Target size={16} />}
+                      startIcon={<TargetIcon sx={{ fontSize: 16 }} />}
                       onClick={() => handleAnalyticsNavigation('ai-insights')}
                       sx={{ borderColor: 'primary.main', color: 'primary.main' }}
                     >
@@ -610,7 +610,7 @@ export default function DashboardPage() {
         <CardContent>
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, p: 2, bgcolor: 'background.default', borderRadius: 1 }}>
-              <FileText size={20} color="#1976d2" />
+              <FileTextIcon sx={{ fontSize: 20, color: "#1976d2" }} />
               <Box sx={{ flex: 1 }}>
                 <Typography variant="body2" sx={{ fontWeight: 500 }}>
                   New post published on Instagram
@@ -622,7 +622,7 @@ export default function DashboardPage() {
             </Box>
             
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, p: 2, bgcolor: 'background.default', borderRadius: 1 }}>
-              <Brain size={20} color="#2e7d32" />
+              <BrainIcon sx={{ fontSize: 20, color: "#2e7d32" }} />
               <Box sx={{ flex: 1 }}>
                 <Typography variant="body2" sx={{ fontWeight: 500 }}>
                   AI Content Optimization completed
@@ -634,7 +634,7 @@ export default function DashboardPage() {
             </Box>
             
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, p: 2, bgcolor: 'background.default', borderRadius: 1 }}>
-              <Calendar size={20} color="#ed6c02" />
+              <CalendarIcon sx={{ fontSize: 20, color: "#ed6c02" }} />
               <Box sx={{ flex: 1 }}>
                 <Typography variant="body2" sx={{ fontWeight: 500 }}>
                   3 posts scheduled for tomorrow
@@ -694,7 +694,7 @@ export default function DashboardPage() {
                     bgcolor: 'primary.main',
                     color: 'primary.contrastText'
                   }}>
-                    <TrendingUp size={20} />
+                    <TrendingUpIcon sx={{ fontSize: 20 }} />
                   </Box>
                   <Typography variant="h6" sx={{ color: 'text.primary' }}>
                     Performance Insights
@@ -723,7 +723,7 @@ export default function DashboardPage() {
                     bgcolor: 'success.main',
                     color: 'success.contrastText'
                   }}>
-                    <Brain size={20} />
+                    <BrainIcon sx={{ fontSize: 20 }} />
                   </Box>
                   <Typography variant="h6" sx={{ color: 'text.primary' }}>
                     Content Suggestions
@@ -752,7 +752,7 @@ export default function DashboardPage() {
                     bgcolor: 'secondary.main',
                     color: 'secondary.contrastText'
                   }}>
-                    <Users size={20} />
+                    <UsersIcon sx={{ fontSize: 20 }} />
                   </Box>
                   <Typography variant="h6" sx={{ color: 'text.primary' }}>
                     Audience Insights
@@ -781,7 +781,7 @@ export default function DashboardPage() {
                     bgcolor: 'warning.main',
                     color: 'warning.contrastText'
                   }}>
-                    <Zap size={20} />
+                    <ZapIcon sx={{ fontSize: 20 }} />
                   </Box>
                   <Typography variant="h6" sx={{ color: 'text.primary' }}>
                     Trend Predictions
@@ -845,7 +845,7 @@ export default function DashboardPage() {
                     bgcolor: 'primary.main',
                     color: 'primary.contrastText'
                   }}>
-                    <Brain size={20} />
+                    <BrainIcon sx={{ fontSize: 20 }} />
                   </Box>
                   <Typography variant="h6" sx={{ color: 'text.primary' }}>
                     Advanced Content Analysis
@@ -878,7 +878,7 @@ export default function DashboardPage() {
                     bgcolor: 'secondary.main',
                     color: 'secondary.contrastText'
                   }}>
-                    <Target size={20} />
+                    <TargetIcon sx={{ fontSize: 20 }} />
                   </Box>
                   <Typography variant="h6" sx={{ color: 'text.primary' }}>
                     Competitor Intelligence
@@ -911,7 +911,7 @@ export default function DashboardPage() {
                     bgcolor: 'success.main',
                     color: 'success.contrastText'
                   }}>
-                    <TrendingUp size={20} />
+                    <TrendingUpIcon sx={{ fontSize: 20 }} />
                   </Box>
                   <Typography variant="h6" sx={{ color: 'text.primary' }}>
                     Trend Prediction
@@ -944,7 +944,7 @@ export default function DashboardPage() {
                     bgcolor: 'warning.main',
                     color: 'warning.contrastText'
                   }}>
-                    <Zap size={20} />
+                    <ZapIcon sx={{ fontSize: 20 }} />
                   </Box>
                   <Typography variant="h6" sx={{ color: 'text.primary' }}>
                     Content Optimization
@@ -1019,7 +1019,7 @@ export default function DashboardPage() {
                       bgcolor: 'primary.main',
                       color: 'primary.contrastText'
                     }}>
-                      <BarChart2 size={16} />
+                      <BarChart2Icon sx={{ fontSize: 16 }} />
                     </Box>
                     <Typography variant="subtitle1" sx={{ color: 'text.primary' }}>
                       Performance Metrics
@@ -1047,7 +1047,7 @@ export default function DashboardPage() {
                       bgcolor: 'secondary.main',
                       color: 'secondary.contrastText'
                     }}>
-                      <Brain size={16} />
+                      <BrainIcon sx={{ fontSize: 16 }} />
                     </Box>
                     <Typography variant="subtitle1" sx={{ color: 'text.primary' }}>
                       Content Insights
@@ -1120,7 +1120,7 @@ export default function DashboardPage() {
                       bgcolor: 'secondary.main',
                       color: 'secondary.contrastText'
                     }}>
-                      <Target size={16} />
+                      <TargetIcon sx={{ fontSize: 16 }} />
                     </Box>
                     <Typography variant="subtitle1" sx={{ color: 'text.primary' }}>
                       Competitor Tracking
@@ -1148,7 +1148,7 @@ export default function DashboardPage() {
                       bgcolor: 'success.main',
                       color: 'success.contrastText'
                     }}>
-                      <TrendingUp size={16} />
+                      <TrendingUpIcon sx={{ fontSize: 16 }} />
                     </Box>
                     <Typography variant="subtitle1" sx={{ color: 'text.primary' }}>
                       Market Trends
@@ -1221,7 +1221,7 @@ export default function DashboardPage() {
                       bgcolor: 'success.main',
                       color: 'success.contrastText'
                     }}>
-                      <TrendingUp size={16} />
+                      <TrendingUpIcon sx={{ fontSize: 16 }} />
                     </Box>
                     <Typography variant="subtitle1" sx={{ color: 'text.primary' }}>
                       Viral Potential
@@ -1249,7 +1249,7 @@ export default function DashboardPage() {
                       bgcolor: 'warning.main',
                       color: 'warning.contrastText'
                     }}>
-                      <Zap size={16} />
+                      <ZapIcon sx={{ fontSize: 16 }} />
                     </Box>
                     <Typography variant="subtitle1" sx={{ color: 'text.primary' }}>
                       Trend Analysis
@@ -1322,7 +1322,7 @@ export default function DashboardPage() {
                       bgcolor: 'warning.main',
                       color: 'warning.contrastText'
                     }}>
-                      <Zap size={16} />
+                      <ZapIcon sx={{ fontSize: 16 }} />
                     </Box>
                     <Typography variant="subtitle1" sx={{ color: 'text.primary' }}>
                       Quick Optimizations
@@ -1350,7 +1350,7 @@ export default function DashboardPage() {
                       bgcolor: 'primary.main',
                       color: 'primary.contrastText'
                     }}>
-                      <Brain size={16} />
+                      <BrainIcon sx={{ fontSize: 16 }} />
                     </Box>
                     <Typography variant="subtitle1" sx={{ color: 'text.primary' }}>
                       AI Suggestions

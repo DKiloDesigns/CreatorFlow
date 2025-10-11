@@ -2,7 +2,7 @@
 
 import React, { forwardRef } from 'react';
 import { Box, Typography, Button, Link } from '@mui/material';
-import { ChevronRight, Home } from 'lucide-react';
+import { ChevronRight as ChevronRightIcon, Home as HomeIcon } from '@mui/icons-material';
 
 export interface BreadcrumbItem {
   label: string;
@@ -27,12 +27,12 @@ export interface BreadcrumbProps extends React.HTMLAttributes<HTMLElement> {
 }
 
 const Breadcrumb = forwardRef<HTMLElement, BreadcrumbProps>(
-  ({ 
-    className, 
+  ({
+    className,
     items,
-    separator = <ChevronRight style={{ width: 16, height: 16, color: 'var(--mui-palette-text-disabled)' }} />,
+    separator = <ChevronRightIcon sx={{ width: 16, height: 16, color: 'var(--mui-palette-text-disabled)' }} />,
     showHome = true,
-    homeIcon = <Home style={{ width: 16, height: 16 }} />,
+    homeIcon = <HomeIcon sx={{ width: 16, height: 16 }} />,
     homeLabel = 'Home',
     homeHref = '/',
     maxItems,
@@ -40,7 +40,7 @@ const Breadcrumb = forwardRef<HTMLElement, BreadcrumbProps>(
     variant = 'default',
     size = 'md',
     fullWidth = false,
-    ...props 
+    ...props
   }, ref) => {
     const getVariantStyles = () => {
       const variantMap = {
@@ -60,7 +60,7 @@ const Breadcrumb = forwardRef<HTMLElement, BreadcrumbProps>(
       return sizeMap[size];
     };
 
-    const allItems = showHome 
+    const allItems = showHome
       ? [{ label: homeLabel, href: homeHref, icon: homeIcon }, ...items]
       : items;
 

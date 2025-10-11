@@ -17,16 +17,16 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import { 
-  Smartphone, 
-  Camera, 
-  BarChart3, 
-  Users, 
-  Zap, 
-  Calendar,
-  ArrowRight,
-  Play,
-  DollarSign
-} from 'lucide-react';
+  Smartphone as SmartphoneIcon,
+  CameraAlt as CameraAltIcon,
+  BarChart as BarChartIcon,
+  Group as GroupIcon,
+  Bolt as BoltIcon,
+  CalendarToday as CalendarTodayIcon,
+  ArrowForward as ArrowForwardIcon,
+  PlayArrow as PlayArrowIcon,
+  AttachMoney as AttachMoneyIcon
+} from '@mui/icons-material';
 
 interface MobileFeature {
   id: string;
@@ -43,7 +43,7 @@ const MOBILE_FEATURES: MobileFeature[] = [
     id: 'landing',
     title: 'Mobile-First Landing',
     description: 'Experience CreatorFlow the way it was meant to be used - optimized for mobile creators who live on their phones.',
-    icon: <Smartphone size={24} />,
+    icon: <SmartphoneIcon sx={{ fontSize: 24 }} />,
     screenshot: '/mobile-screenshots/optimized/landing-page.jpg',
     highlight: 'Mobile-optimized',
     cta: 'Explore Features'
@@ -52,7 +52,7 @@ const MOBILE_FEATURES: MobileFeature[] = [
     id: 'features',
     title: 'Feature Showcase',
     description: 'Discover all the powerful tools and features designed specifically for mobile content creators.',
-    icon: <Zap size={24} />,
+    icon: <BoltIcon sx={{ fontSize: 24 }} />,
     screenshot: '/mobile-screenshots/optimized/features.jpg',
     highlight: 'All-in-one',
     cta: 'See All Features'
@@ -61,7 +61,7 @@ const MOBILE_FEATURES: MobileFeature[] = [
     id: 'pricing',
     title: 'Simple Pricing',
     description: 'Choose the perfect plan for your creator journey. Transparent pricing with no hidden fees.',
-    icon: <DollarSign size={24} />,
+    icon: <AttachMoneyIcon sx={{ fontSize: 24 }} />,
     screenshot: '/mobile-screenshots/optimized/pricing.jpg',
     highlight: 'Transparent',
     cta: 'View Plans'
@@ -70,7 +70,7 @@ const MOBILE_FEATURES: MobileFeature[] = [
     id: 'auth',
     title: 'Easy Signup',
     description: 'Get started in seconds with our streamlined mobile signup process. No complicated forms.',
-    icon: <Users size={24} />,
+    icon: <GroupIcon sx={{ fontSize: 24 }} />,
     screenshot: '/mobile-screenshots/optimized/auth.jpg',
     highlight: 'Quick setup',
     cta: 'Get Started'
@@ -102,7 +102,7 @@ export default function MobileFeatureShowcase() {
             gap: 2
           }}
         >
-          <Smartphone size={32} />
+          <SmartphoneIcon sx={{ fontSize: 32 }} />
           How It Works on Mobile
         </Typography>
         <Typography variant="h6" sx={{ color: 'text.secondary', mb: 3 }}>
@@ -171,7 +171,7 @@ export default function MobileFeatureShowcase() {
                     transition: 'all 0.3s ease'
                   }}
                 >
-                  <Play size={24} color="white" />
+                  <PlayArrowIcon sx={{ fontSize: 24, color: 'white' }} />
                 </Box>
               </Card>
             </Fade>
@@ -231,7 +231,7 @@ export default function MobileFeatureShowcase() {
                     </Typography>
                     <Button
                       variant="text"
-                      endIcon={<ArrowRight size={16} />}
+                      endIcon={<ArrowForwardIcon sx={{ fontSize: 16 }} />}
                       sx={{
                         p: 0,
                         textTransform: 'none',

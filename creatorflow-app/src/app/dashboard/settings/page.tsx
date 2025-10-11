@@ -23,13 +23,13 @@ import {
   CircularProgress,
   Container
 } from '@mui/material';
-import { 
-  Settings, 
-  Bell, 
-  Shield, 
-  CheckCircle,
-  XCircle
-} from 'lucide-react';
+import {
+  Settings as SettingsIcon,
+  Notifications as NotificationsIcon,
+  Shield as ShieldIcon,
+  CheckCircle as CheckCircleIcon,
+  Cancel as CancelIcon,
+} from '@mui/icons-material';
 
 // Add type for settings
 interface Settings {
@@ -199,7 +199,7 @@ export default function SettingsPage() {
               <CardHeader
                 title="General Settings"
                 titleTypographyProps={{ variant: 'h6', fontWeight: 'bold' }}
-                avatar={<Settings style={{ width: 20, height: 20 }} />}
+                avatar={<SettingsIcon sx={{ width: 20, height: 20 }} />}
               />
               <CardContent>
                 <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -280,7 +280,7 @@ export default function SettingsPage() {
               <CardHeader
                 title="Notification Settings"
                 titleTypographyProps={{ variant: 'h6', fontWeight: 'bold' }}
-                avatar={<Bell style={{ width: 20, height: 20 }} />}
+                avatar={<NotificationsIcon sx={{ width: 20, height: 20 }} />}
               />
               <CardContent>
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
@@ -327,7 +327,7 @@ export default function SettingsPage() {
               <CardHeader
                 title="Connected Accounts"
                 titleTypographyProps={{ variant: 'h6', fontWeight: 'bold' }}
-                avatar={<Shield style={{ width: 20, height: 20 }} />}
+                avatar={<ShieldIcon sx={{ width: 20, height: 20 }} />}
               />
               <CardContent>
                 <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', sm: 'repeat(2, 1fr)' }, gap: 2 }}>

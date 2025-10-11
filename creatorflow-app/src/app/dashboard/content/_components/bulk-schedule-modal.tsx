@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { 
+import {
   Dialog,
   DialogContent,
   DialogTitle,
@@ -17,7 +17,7 @@ import {
   Checkbox,
   FormControlLabel
 } from '@mui/material';
-import { Calendar, Activity, Clock, Upload, Check, Plus, Trash2 } from 'lucide-react';
+import { CalendarMonth as CalendarMonthIcon, AccessTime as AccessTimeIcon, Check as CheckIcon, Add as AddIcon, Delete as DeleteIcon } from '@mui/icons-material';
 
 interface ScheduledPost {
   id: string;
@@ -197,7 +197,7 @@ export function BulkScheduleModal({ open, onClose, onBulkScheduled }: BulkSchedu
     >
       <DialogTitle>
         <Box display="flex" alignItems="center" gap={2} sx={{ flexWrap: 'wrap' }}>
-          <Calendar className="h-6 w-6" />
+          <CalendarMonthIcon sx={{ fontSize: 24 }} />
           <Typography variant="h6" sx={{ wordBreak: 'break-word' }}>Bulk Schedule Posts</Typography>
         </Box>
       </DialogTitle>
@@ -244,7 +244,7 @@ export function BulkScheduleModal({ open, onClose, onBulkScheduled }: BulkSchedu
                 border: currentStep >= 1 ? 'none' : '1px solid',
                 borderColor: 'grey.300'
               }}>
-                {currentStep > 1 ? <Check size={16} /> : '1'}
+                {currentStep > 1 ? <CheckIcon sx={{ fontSize: 16 }} /> : '1'}
               </Box>
               <Typography variant="body2" fontWeight={500}>Posts</Typography>
             </Box>
@@ -276,7 +276,7 @@ export function BulkScheduleModal({ open, onClose, onBulkScheduled }: BulkSchedu
                 border: currentStep >= 2 ? 'none' : '1px solid',
                 borderColor: 'grey.300'
               }}>
-                {currentStep > 2 ? <Check size={16} /> : '2'}
+                {currentStep > 2 ? <CheckIcon sx={{ fontSize: 16 }} /> : '2'}
               </Box>
               <Typography variant="body2" fontWeight={500}>Schedule</Typography>
             </Box>
@@ -308,7 +308,7 @@ export function BulkScheduleModal({ open, onClose, onBulkScheduled }: BulkSchedu
                 border: currentStep >= 3 ? 'none' : '1px solid',
                 borderColor: 'grey.300'
               }}>
-                {currentStep > 3 ? <Check size={16} /> : '3'}
+                {currentStep > 3 ? <CheckIcon sx={{ fontSize: 16 }} /> : '3'}
               </Box>
               <Typography variant="body2" fontWeight={500}>Review</Typography>
             </Box>
@@ -341,7 +341,7 @@ export function BulkScheduleModal({ open, onClose, onBulkScheduled }: BulkSchedu
                   <Button
                     onClick={handleAddPost}
                     variant="contained"
-                    startIcon={<Plus size={16} />}
+                    startIcon={<AddIcon sx={{ fontSize: 16 }} />}
                     sx={{ whiteSpace: 'nowrap' }}
                   >
                     Add Post
@@ -378,7 +378,7 @@ export function BulkScheduleModal({ open, onClose, onBulkScheduled }: BulkSchedu
                           variant="text"
                           size="small"
                           onClick={() => handleDeletePost(post.id)}
-                          startIcon={<Trash2 size={16} />}
+                          startIcon={<DeleteIcon sx={{ fontSize: 16 }} />}
                         >
                           Delete
                         </Button>
@@ -526,7 +526,7 @@ export function BulkScheduleModal({ open, onClose, onBulkScheduled }: BulkSchedu
                                 <Box sx={{ width: '100%', height: '100%', bgcolor: 'currentColor', borderRadius: '50%' }} />
                               </Box>
                               <Typography variant="body2" fontWeight={500}>{platform.name}</Typography>
-                              {isSelected && <Check size={16} color="primary" />}
+                              {isSelected && <CheckIcon sx={{ fontSize: 16 }} color="primary" />}
                             </Box>
                           </Box>
                         </Grid>
@@ -734,7 +734,7 @@ export function BulkScheduleModal({ open, onClose, onBulkScheduled }: BulkSchedu
                       </>
                     ) : (
                       <>
-                        <Calendar size={16} style={{ marginRight: 8 }} />
+                        <CalendarMonthIcon sx={{ fontSize: 16 }} style={{ marginRight: 8 }} />
                         Schedule All Posts
                       </>
                     )}

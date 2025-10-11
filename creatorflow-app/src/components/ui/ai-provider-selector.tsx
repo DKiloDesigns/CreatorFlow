@@ -1,17 +1,20 @@
 'use client';
 
 import React, { useState } from 'react';
-import { 
-  Card, 
-  CardContent, 
-  CardHeader, 
+import {
+  Card,
+  CardContent,
+  CardHeader,
   Button,
   Box,
   Typography,
   Grid,
   Chip
 } from '@mui/material';
-import { Brain, Activity } from 'lucide-react';
+import {
+  PsychologyOutlined as BrainIcon,
+  TrendingUp as ActivityIcon
+} from '@mui/icons-material';
 import { AI_PROVIDERS, AIProvider } from '@/lib/ai-providers';
 
 interface AIProviderSelectorProps {
@@ -74,10 +77,10 @@ export function AIProviderSelector({
       <Box sx={{ display: 'flex', justifyContent: 'center' }}>
         <Box sx={{ display: 'inline-flex', borderRadius: '8px', bgcolor: 'grey.100', p: 0.5 }}>
           {[
-            { key: 'all', label: 'All Options', icon: Brain },
-            { key: 'free', label: 'Free', icon: Activity },
-            { key: 'low-cost', label: 'Low Cost', icon: Brain },
-            { key: 'premium', label: 'Premium', icon: Activity }
+            { key: 'all', label: 'All Options', icon: BrainIcon },
+            { key: 'free', label: 'Free', icon: ActivityIcon },
+            { key: 'low-cost', label: 'Low Cost', icon: BrainIcon },
+            { key: 'premium', label: 'Premium', icon: ActivityIcon }
           ].map(({ key, label, icon: Icon }) => (
             <Button
               key={key}
@@ -130,13 +133,13 @@ export function AIProviderSelector({
             <CardHeader sx={{ pb: 1.5 }}>
               <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
-                  <Box sx={{ 
-                    width: 48, 
-                    height: 48, 
-                    borderRadius: 2, 
-                    display: 'flex', 
-                    alignItems: 'center', 
-                    justifyContent: 'center', 
+                  <Box sx={{
+                    width: 48,
+                    height: 48,
+                    borderRadius: 2,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
                     fontSize: '1.5rem',
                     bgcolor: provider.color
                   }}>
@@ -185,8 +188,8 @@ export function AIProviderSelector({
                 <Box sx={{ '& > * + *': { mt: 0.5 } }}>
                   {provider.features.slice(0, 3).map((feature, index) => (
                     <Box key={index} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                      <Chip 
-                        label={<Brain size={12} color="green" />} 
+                      <Chip
+                        label={<BrainIcon sx={{ width: 12, height: 12, color: 'green' }} />}
                         size="small"
                         sx={{ '& .MuiChip-label': { p: 0.5 } }}
                       />
@@ -212,7 +215,7 @@ export function AIProviderSelector({
                     <Chip label="Ready to use" variant="outlined" sx={{ display: 'flex', alignItems: 'center', gap: 0.5, color: 'success.main' }} />
                   )}
                 </Box>
-                
+
                 {provider.status === 'available' && (
                   <Button
                     size="small"
@@ -243,8 +246,8 @@ export function AIProviderSelector({
       </Grid>
 
       {/* Recommendations */}
-      <Box 
-        sx={{ 
+      <Box
+        sx={{
           background: 'linear-gradient(to right, #e3f2fd, #f3e5f5)',
           borderRadius: 2,
           p: 3

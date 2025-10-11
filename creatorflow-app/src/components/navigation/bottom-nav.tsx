@@ -4,16 +4,23 @@ import { usePathname, useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
 import { 
-  Home, 
-  PenTool, 
-  BarChart3, 
-  Image,
-  User,
-  Upload,
-  Wrench,
-  Bell,
-  MessageSquare
-} from 'lucide-react';
+  Home as HomeIcon,
+  Create as PenToolIcon,
+  BarChart as BarChart3Icon,
+  Image as ImageIcon,
+  Person as UserIcon,
+  CloudUpload as UploadIcon,
+  Build as WrenchIcon,
+  Notifications as BellIcon,
+  Chat as MessageSquareIcon,
+  Calculate as CalculateIcon,
+  Tag as TagIcon,
+  CalendarMonth as CalendarIcon,
+  Assessment as AssessmentIcon,
+  AccessTime as ScheduleIcon,
+  TrendingUp as TrendingUpIcon,
+  Close as CloseIcon
+} from '@mui/icons-material';
 import { 
   Box, 
   Paper, 
@@ -30,15 +37,6 @@ import {
   Badge
 } from '@mui/material';
 import { useState, useRef } from 'react';
-import { 
-  Calculator as CalculateIcon,
-  Hash as TagIcon,
-  Calendar as CalendarIcon,
-  BarChart3 as AssessmentIcon,
-  Clock as ScheduleIcon,
-  TrendingUp as TrendingUpIcon,
-  X as CloseIcon
-} from 'lucide-react';
 
 // Tools data for the drawer - organized by plan tier
 const freeTools = [
@@ -218,35 +216,35 @@ const enterpriseTools = [
 const navItems = [
   {
     href: '/dashboard',
-    icon: Home,
+    icon: HomeIcon,
     label: 'Home',
     activePattern: /^\/dashboard$/,
     isTools: false
   },
   {
     href: '/dashboard/media',
-    icon: Image,
+    icon: ImageIcon,
     label: 'Media',
     activePattern: /^\/dashboard\/media$/,
     isTools: false
   },
   {
     href: '/dashboard/content',
-    icon: PenTool,
+    icon: PenToolIcon,
     label: 'Create',
     activePattern: /^\/dashboard\/content$/,
     isTools: false
   },
   {
     href: '/dashboard/analytics',
-    icon: BarChart3,
+    icon: BarChart3Icon,
     label: 'Analytics',
     activePattern: /^\/dashboard\/analytics$/,
     isTools: false
   },
   {
     href: '/dashboard/profile',
-    icon: User,
+    icon: UserIcon,
     label: 'Profile',
     activePattern: /^\/dashboard\/(profile|security|collabs|accounts|teams|settings|notifications|support)$/,
     isTools: false
@@ -367,7 +365,7 @@ function ProfilePicture({ session, isActive }: { session: any; isActive: boolean
                 alignItems: 'center',
                 justifyContent: 'center'
               }}>
-                <Upload size={16} style={{ color: 'white' }} />
+                <UploadIcon sx={{ fontSize: 16, color: 'white' }} />
               </Box>
             )}
             {/* Upload indicator */}
@@ -386,7 +384,7 @@ function ProfilePicture({ session, isActive }: { session: any; isActive: boolean
               '&:hover': { opacity: 1 },
               transition: 'opacity 0.2s'
             }}>
-              <Upload size={10} style={{ color: 'white' }} />
+              <UploadIcon sx={{ fontSize: 10, color: 'white' }} />
             </Box>
           </Box>
         ) : (
@@ -413,7 +411,7 @@ function ProfilePicture({ session, isActive }: { session: any; isActive: boolean
                 alignItems: 'center',
                 justifyContent: 'center'
               }}>
-                <Upload size={16} style={{ color: 'white' }} />
+                <UploadIcon sx={{ fontSize: 16, color: 'white' }} />
               </Box>
             )}
             {/* Upload indicator */}
@@ -432,7 +430,7 @@ function ProfilePicture({ session, isActive }: { session: any; isActive: boolean
               '&:hover': { opacity: 1 },
               transition: 'opacity 0.2s'
             }}>
-              <Upload size={10} style={{ color: 'white' }} />
+              <UploadIcon sx={{ fontSize: 10, color: 'white' }} />
             </Box>
           </Box>
         )}
@@ -692,11 +690,7 @@ export function BottomNavigation() {
                 }}
               >
                 <Icon 
-                  size={22} 
-                  style={{ 
-                    color: 'inherit',
-                    transition: 'color 0.2s'
-                  }} 
+                  sx={{ fontSize: 22, color: 'inherit', transition: 'color 0.2s' }} 
                 />
                 <Typography 
                   variant="caption" 
@@ -738,11 +732,7 @@ export function BottomNavigation() {
                 }}
               >
                 <Icon 
-                  size={22} 
-                  style={{ 
-                    color: 'inherit',
-                    transition: 'color 0.2s'
-                  }} 
+                  sx={{ fontSize: 22, color: 'inherit', transition: 'color 0.2s' }} 
                 />
                 <Typography 
                   variant="caption" 

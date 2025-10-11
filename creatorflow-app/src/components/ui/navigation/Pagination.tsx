@@ -2,7 +2,7 @@
 
 import React, { forwardRef } from 'react';
 import { Box, Button, Typography } from '@mui/material';
-import { ChevronLeft, ChevronRight, MoreHorizontal } from 'lucide-react';
+import { ChevronLeft as ChevronLeftIcon, ChevronRight as ChevronRightIcon, MoreHoriz as MoreHorizIcon } from '@mui/icons-material';
 
 export interface PaginationProps extends React.HTMLAttributes<HTMLElement> {
   currentPage: number;
@@ -19,8 +19,8 @@ export interface PaginationProps extends React.HTMLAttributes<HTMLElement> {
 }
 
 const Pagination = forwardRef<HTMLElement, PaginationProps>(
-  ({ 
-    className, 
+  ({
+    className,
     currentPage,
     totalPages,
     onPageChange,
@@ -32,7 +32,7 @@ const Pagination = forwardRef<HTMLElement, PaginationProps>(
     maxVisiblePages = 5,
     disabled = false,
     fullWidth = false,
-    ...props 
+    ...props
   }, ref) => {
     const getVariantStyles = () => {
       const variantMap = {
@@ -128,7 +128,7 @@ const Pagination = forwardRef<HTMLElement, PaginationProps>(
               ...getSizeStyles()
             }}
           >
-            <MoreHorizontal style={{ width: 16, height: 16 }} />
+            <MoreHorizIcon sx={{ width: 16, height: 16 }} />
           </Box>
         );
       }
@@ -184,8 +184,8 @@ const Pagination = forwardRef<HTMLElement, PaginationProps>(
             aria-label="Go to first page"
           >
             <Box component="span" sx={{ srOnly: 'First' }}>First</Box>
-            <ChevronLeft style={{ width: 16, height: 16 }} />
-            <ChevronLeft style={{ width: 16, height: 16, marginLeft: -12 }} />
+            <ChevronLeftIcon sx={{ width: 16, height: 16 }} />
+            <ChevronLeftIcon sx={{ width: 16, height: 16, marginLeft: -12 }} />
           </Button>
         )}
 
@@ -197,7 +197,7 @@ const Pagination = forwardRef<HTMLElement, PaginationProps>(
             sx={{ ...getButtonStyles(), borderRadius: '6px' }}
             aria-label="Go to previous page"
           >
-            <ChevronLeft style={{ width: 16, height: 16 }} />
+            <ChevronLeftIcon sx={{ width: 16, height: 16 }} />
           </Button>
         )}
 
@@ -215,7 +215,7 @@ const Pagination = forwardRef<HTMLElement, PaginationProps>(
             sx={{ ...getButtonStyles(), borderRadius: '6px' }}
             aria-label="Go to next page"
           >
-            <ChevronRight style={{ width: 16, height: 16 }} />
+            <ChevronRightIcon sx={{ width: 16, height: 16 }} />
           </Button>
         )}
 
@@ -228,8 +228,8 @@ const Pagination = forwardRef<HTMLElement, PaginationProps>(
             aria-label="Go to last page"
           >
             <Box component="span" sx={{ srOnly: 'Last' }}>Last</Box>
-            <ChevronRight style={{ width: 16, height: 16 }} />
-            <ChevronRight style={{ width: 16, height: 16, marginLeft: -12 }} />
+            <ChevronRightIcon sx={{ width: 16, height: 16 }} />
+            <ChevronRightIcon sx={{ width: 16, height: 16, marginLeft: -12 }} />
           </Button>
         )}
       </Box>

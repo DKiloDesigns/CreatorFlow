@@ -26,30 +26,25 @@ import {
   FormControlLabel,
 } from '@mui/material';
 import {
-  Plus,
-  Trash2,
-  Edit3,
-  Move,
-  Image,
-  Video,
-  Type,
-  Link,
-  Hash,
-  Smile,
-  Calendar,
-  Target,
-  Eye,
-  Save,
-  Download,
-  Share2,
-  Copy,
-  Undo,
-  Redo,
-  Settings,
-  Palette,
-  Layout,
-  Layers,
-} from 'lucide-react';
+  Add as AddIcon,
+  Delete as DeleteIcon,
+  Edit as EditIcon,
+  Image as ImageIcon,
+  VideoLibrary as VideoLibraryIcon,
+  TextFields as TextFieldsIcon,
+  Link as LinkIcon,
+  Tag as TagIcon,
+  SentimentSatisfiedAlt as SentimentSatisfiedAltIcon,
+  Adjust as AdjustIcon,
+  Visibility as VisibilityIcon,
+  Save as SaveIcon,
+  Download as DownloadIcon,
+  Share as ShareIcon,
+  ContentCopy as ContentCopyIcon,
+  ColorLens as ColorLensIcon,
+  Dvr as DvrIcon,
+  Layers as LayersIcon,
+} from '@mui/icons-material';
 import { DndProvider, useDrag, useDrop, DragObjectWithType } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { useMinimalTheme } from '@/contexts/MinimalThemeContext';
@@ -69,13 +64,13 @@ interface DragItem extends DragObjectWithType {
 }
 
 const BLOCK_TYPES = [
-  { type: 'text', label: 'Text', icon: Type, color: '#3b82f6' },
-  { type: 'image', label: 'Image', icon: Image, color: '#10b981' },
-  { type: 'video', label: 'Video', icon: Video, color: '#f59e0b' },
-  { type: 'hashtag', label: 'Hashtag', icon: Hash, color: '#8b5cf6' },
-  { type: 'link', label: 'Link', icon: Link, color: '#ef4444' },
-  { type: 'emoji', label: 'Emoji', icon: Smile, color: '#f97316' },
-  { type: 'cta', label: 'Call to Action', icon: Target, color: '#06b6d4' },
+  { type: 'text', label: 'Text', icon: TextFieldsIcon, color: '#3b82f6' },
+  { type: 'image', label: 'Image', icon: ImageIcon, color: '#10b981' },
+  { type: 'video', label: 'Video', icon: VideoLibraryIcon, color: '#f59e0b' },
+  { type: 'hashtag', label: 'Hashtag', icon: TagIcon, color: '#8b5cf6' },
+  { type: 'link', label: 'Link', icon: LinkIcon, color: '#ef4444' },
+  { type: 'emoji', label: 'Emoji', icon: SentimentSatisfiedAltIcon, color: '#f97316' },
+  { type: 'cta', label: 'Call to Action', icon: AdjustIcon, color: '#06b6d4' },
 ];
 
 const TEMPLATES = [
@@ -121,7 +116,7 @@ function DraggableBlock({ block, index, onEdit, onDelete, onMove }: {
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const blockType = BLOCK_TYPES.find(t => t.type === block.type);
-  const Icon = blockType?.icon || Type;
+  const Icon = blockType?.icon || TextFieldsIcon;
 
   const [{ isDragging }, drag] = useDrag({
     type: 'block',
@@ -184,7 +179,7 @@ function DraggableBlock({ block, index, onEdit, onDelete, onMove }: {
               justifyContent: 'center',
             }}
           >
-            <Icon size={16} color={blockType?.color} />
+            <Icon sx={{ width: 16, height: 16 }} color={blockType?.color} />
           </Box>
           <Typography variant="subtitle2" sx={{ flexGrow: 1, textTransform: 'capitalize' }}>
             {blockType?.label}
@@ -192,12 +187,12 @@ function DraggableBlock({ block, index, onEdit, onDelete, onMove }: {
           <Box sx={{ display: 'flex', gap: 0.5 }}>
             <Tooltip title="Edit">
               <IconButton size="small" onClick={() => onEdit(block)}>
-                <Edit3 size={14} />
+                <EditIcon sx={{ width: 14, height: 14 }} />
               </IconButton>
             </Tooltip>
             <Tooltip title="Delete">
               <IconButton size="small" onClick={() => onDelete(block.id)} color="error">
-                <Trash2 size={14} />
+                <DeleteIcon sx={{ width: 14, height: 14 }} />
               </IconButton>
             </Tooltip>
           </Box>
@@ -209,13 +204,13 @@ function DraggableBlock({ block, index, onEdit, onDelete, onMove }: {
           )}
           {block.type === 'image' && (
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, color: 'text.secondary' }}>
-              <Image size={16} />
+              <ImageIcon sx={{ width: 16, height: 16 }} />
               <Typography variant="body2">{block.content || 'Click to add image...'}</Typography>
             </Box>
           )}
           {block.type === 'video' && (
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, color: 'text.secondary' }}>
-              <Video size={16} />
+              <VideoLibraryIcon sx={{ width: 16, height: 16 }} />
               <Typography variant="body2">{block.content || 'Click to add video...'}</Typography>
             </Box>
           )}
@@ -232,7 +227,7 @@ function DraggableBlock({ block, index, onEdit, onDelete, onMove }: {
           )}
           {block.type === 'link' && (
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, color: 'primary.main' }}>
-              <Link size={16} />
+              <LinkIcon sx={{ width: 16, height: 16 }} />
               <Typography variant="body2">{block.content || 'Click to add link...'}</Typography>
             </Box>
           )}
@@ -254,7 +249,7 @@ function BlockPalette({ onAddBlock }: { onAddBlock: (type: string) => void }) {
   return (
     <Paper sx={{ p: 2, height: 'fit-content' }}>
       <Typography variant="h6" sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
-        <Layers size={20} />
+        <LayersIcon sx={{ width: 20, height: 20 }} />
         Content Blocks
       </Typography>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
@@ -264,7 +259,7 @@ function BlockPalette({ onAddBlock }: { onAddBlock: (type: string) => void }) {
             <Button
               key={blockType.type}
               variant="outlined"
-              startIcon={<Icon size={16} color={blockType.color} />}
+              startIcon={<Icon sx={{ width: 16, height: 16 }} color={blockType.color} />}
               onClick={() => onAddBlock(blockType.type)}
               sx={{
                 justifyContent: 'flex-start',
@@ -290,7 +285,7 @@ function TemplateLibrary({ onLoadTemplate }: { onLoadTemplate: (template: any) =
   return (
     <Paper sx={{ p: 2, height: 'fit-content' }}>
       <Typography variant="h6" sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
-        <Layout size={20} />
+        <DvrIcon sx={{ width: 20, height: 20 }} />
         Templates
       </Typography>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
@@ -472,35 +467,35 @@ export function DragDropContentBuilder() {
             <Box sx={{ display: 'flex', gap: 1 }}>
               <Button
                 variant="outlined"
-                startIcon={<Eye size={16} />}
+                startIcon={<VisibilityIcon sx={{ width: 16, height: 16 }} />}
                 onClick={() => setPreviewMode(!previewMode)}
               >
                 {previewMode ? 'Edit' : 'Preview'}
               </Button>
               <Button
                 variant="outlined"
-                startIcon={<Copy size={16} />}
+                startIcon={<ContentCopyIcon sx={{ width: 16, height: 16 }} />}
                 onClick={exportContent}
               >
                 Export
               </Button>
               <Button
                 variant="outlined"
-                startIcon={<Download size={16} />}
+                startIcon={<DownloadIcon sx={{ width: 16, height: 16 }} />}
                 onClick={loadContent}
               >
                 Load
               </Button>
               <Button
                 variant="outlined"
-                startIcon={<Share2 size={16} />}
+                startIcon={<ShareIcon sx={{ width: 16, height: 16 }} />}
                 onClick={exportAsJSON}
               >
                 Export JSON
               </Button>
               <Button
                 variant="contained"
-                startIcon={<Save size={16} />}
+                startIcon={<SaveIcon sx={{ width: 16, height: 16 }} />}
                 onClick={saveContent}
               >
                 Save
@@ -523,7 +518,7 @@ export function DragDropContentBuilder() {
           <Box sx={{ flexGrow: 1, p: 3, overflow: 'auto', bgcolor: 'background.default' }}>
             <Paper sx={{ p: 3, minHeight: '100%' }}>
               <Typography variant="h6" sx={{ mb: 3, display: 'flex', alignItems: 'center', gap: 1 }}>
-                <Layout size={20} />
+                <DvrIcon sx={{ width: 20, height: 20 }} />
                 Content Canvas
               </Typography>
               
@@ -549,7 +544,7 @@ export function DragDropContentBuilder() {
                   </Typography>
                   <Button
                     variant="contained"
-                    startIcon={<Plus size={16} />}
+                    startIcon={<AddIcon sx={{ width: 16, height: 16 }} />}
                     onClick={() => addBlock('text')}
                   >
                     Add First Block

@@ -10,7 +10,10 @@ import {
   Chip,
   Grid
 } from '@mui/material';
-import { User, Activity } from 'lucide-react';
+import {
+  Person as UserIcon,
+  Timeline as ActivityIcon
+} from '@mui/icons-material';
 
 interface AIContentVoiceProps {
   onVoiceSelect?: (voice: string) => void;
@@ -60,7 +63,7 @@ export function AIContentVoice({ onVoiceSelect, className }: AIContentVoiceProps
       <CardHeader
         title="AI Content Voice Generator"
         subheader="Generate content with different voice styles"
-        avatar={<User style={{ width: 24, height: 24 }} />}
+        avatar={<UserIcon sx={{ width: 24, height: 24 }} />}
       />
       <CardContent>
         <Grid container spacing={3}>
@@ -83,7 +86,7 @@ export function AIContentVoice({ onVoiceSelect, className }: AIContentVoiceProps
               variant="contained"
               onClick={generateVoice}
               disabled={!content.trim() || isGenerating}
-              startIcon={<Activity style={{ width: 20, height: 20 }} />}
+              startIcon={<ActivityIcon sx={{ width: 20, height: 20 }} />}
             >
               {isGenerating ? 'Generating...' : 'Generate Voice Variations'}
             </Button>

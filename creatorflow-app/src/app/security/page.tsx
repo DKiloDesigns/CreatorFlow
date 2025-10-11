@@ -1,10 +1,10 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { 
-  Card, 
-  CardContent, 
-  CardHeader, 
+import {
+  Card,
+  CardContent,
+  CardHeader,
   Button,
   Box,
   Typography,
@@ -16,7 +16,7 @@ import {
   FormControl,
   InputLabel
 } from '@mui/material';
-import { Shield, Activity, RefreshCw, AlertTriangle, Lock, Eye, Download } from 'lucide-react';
+import { Security as SecurityIcon, TrendingUp as TrendingUpIcon, Refresh as RefreshIcon, Warning as WarningIcon, Lock as LockIcon, Visibility as VisibilityIcon, Download as DownloadIcon, CheckCircle as CheckCircleIcon, Close as CloseIcon, TrendingDown as TrendingDownIcon, Bolt as BoltIcon } from '@mui/icons-material';
 import { Badge } from '@/components/ui/badge';
 import { Select } from '@mui/material';
 import { CardDescription } from '@/components/ui/mui-card';
@@ -197,11 +197,11 @@ export default function SecurityPage() {
             </Select>
           </FormControl>
           <Button onClick={refreshData} disabled={refreshing} variant="outlined">
-            <RefreshCw className={`h-4 w-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} />
+            <RefreshIcon sx={{ fontSize: 16 }} className={`mr-2 ${refreshing ? 'animate-spin' : ''}`} />
             Refresh
           </Button>
           <Button onClick={exportSecurityData} variant="outlined">
-            <Download className="h-4 w-4 mr-2" />
+            <DownloadIcon sx={{ fontSize: 16 }} className="mr-2" />
             Export
           </Button>
         </Box>
@@ -214,7 +214,7 @@ export default function SecurityPage() {
             <Card>
               <CardHeader sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', pb: 1 }}>
                 <Typography variant="h6" sx={{ fontSize: '0.875rem', fontWeight: 500 }}>Total Events</Typography>
-                <Activity style={{ height: 16, width: 16, color: 'inherit' }} />
+                <TrendingUpIcon sx={{ fontSize: 16, color: 'inherit' }} />
               </CardHeader>
               <CardContent>
                 <Typography variant="h4" sx={{ fontWeight: 'bold' }}>{stats.total}</Typography>
@@ -229,7 +229,7 @@ export default function SecurityPage() {
             <Card>
               <CardHeader sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', pb: 1 }}>
                 <Typography variant="h6" sx={{ fontSize: '0.875rem', fontWeight: 500 }}>Critical Events</Typography>
-                <AlertTriangle style={{ height: 16, width: 16, color: 'inherit' }} />
+                <WarningIcon sx={{ fontSize: 16, color: 'inherit' }} />
               </CardHeader>
               <CardContent>
                 <Typography variant="h4" sx={{ fontWeight: 'bold', color: 'error.main' }}>
@@ -246,7 +246,7 @@ export default function SecurityPage() {
             <Card>
               <CardHeader sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', pb: 1 }}>
                 <Typography variant="h6" sx={{ fontSize: '0.875rem', fontWeight: 500 }}>Active Threats</Typography>
-                <Shield style={{ height: 16, width: 16, color: 'inherit' }} />
+                <SecurityIcon sx={{ fontSize: 16, color: 'inherit' }} />
               </CardHeader>
               <CardContent>
                 <Typography variant="h4" sx={{ fontWeight: 'bold', color: 'warning.main' }}>
@@ -263,7 +263,7 @@ export default function SecurityPage() {
             <Card>
               <CardHeader sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', pb: 1 }}>
                 <Typography variant="h6" sx={{ fontSize: '0.875rem', fontWeight: 500 }}>Security Score</Typography>
-                <Lock style={{ height: 16, width: 16, color: 'inherit' }} />
+                <LockIcon sx={{ fontSize: 16, color: 'inherit' }} />
               </CardHeader>
               <CardContent>
                 <Typography variant="h4" sx={{ fontWeight: 'bold', color: 'success.main' }}>85%</Typography>
@@ -286,7 +286,7 @@ export default function SecurityPage() {
           <Card>
             <CardHeader>
               <Typography variant="h6" className="flex items-center gap-2">
-                <Eye className="h-5 w-5" />
+                <VisibilityIcon sx={{ fontSize: 20 }} />
                 Security Events
               </Typography>
               <CardDescription>
@@ -317,7 +317,7 @@ export default function SecurityPage() {
                         </div>
                         <div className="flex gap-2">
                           <Button size="small" variant="outlined">
-                            <Eye className="h-3 w-3" />
+                            <VisibilityIcon sx={{ fontSize: 12 }} />
                           </Button>
                         </div>
                       </div>
@@ -335,7 +335,7 @@ export default function SecurityPage() {
           <Card>
             <CardHeader>
               <Typography variant="h6" className="flex items-center gap-2">
-                <AlertTriangle className="h-5 w-5" />
+                <WarningIcon sx={{ fontSize: 20 }} />
                 Threat Detection
               </Typography>
               <CardDescription>
@@ -369,28 +369,28 @@ export default function SecurityPage() {
                           </div>
                           {threat.status === 'active' && (
                             <div className="flex gap-2">
-                              <Button 
-                                size="small" 
+                              <Button
+                                size="small"
                                 variant="outlined"
                                 onClick={() => handleThreatAction(threat.threatId, 'investigate')}
                               >
-                                <Eye className="h-3 w-3 mr-1" />
+                                <VisibilityIcon sx={{ fontSize: 12 }} className="mr-1" />
                                 Investigate
                               </Button>
-                              <Button 
-                                size="small" 
+                              <Button
+                                size="small"
                                 variant="outlined"
                                 onClick={() => handleThreatAction(threat.threatId, 'resolve')}
                               >
-                                <CheckCircle className="h-3 w-3 mr-1" />
+                                <CheckCircleIcon sx={{ fontSize: 12 }} className="mr-1" />
                                 Resolve
                               </Button>
-                              <Button 
-                                size="small" 
+                              <Button
+                                size="small"
                                 variant="outlined"
                                 onClick={() => handleThreatAction(threat.threatId, 'false_positive')}
                               >
-                                <XCircle className="h-3 w-3 mr-1" />
+                                <CloseIcon sx={{ fontSize: 12 }} className="mr-1" />
                                 False Positive
                               </Button>
                             </div>
@@ -412,7 +412,7 @@ export default function SecurityPage() {
             <Card>
               <CardHeader>
                 <Typography variant="h6" className="flex items-center gap-2">
-                  <TrendingUp className="h-5 w-5" />
+                  <TrendingUpIcon sx={{ fontSize: 20 }} />
                   Event Trends
                 </Typography>
               </CardHeader>
@@ -424,25 +424,25 @@ export default function SecurityPage() {
                       <span className="text-lg font-bold text-red-600">
                         {stats?.severityBreakdown.critical || 0}
                       </span>
-                      <TrendingUp className="h-4 w-4 text-red-600" />
+                      <TrendingUpIcon sx={{ fontSize: 16 }} className="text-red-600" />
                     </div>
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-sm">High Severity</span>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap: 2">
                       <span className="text-lg font-bold text-orange-600">
                         {stats?.severityBreakdown.high || 0}
                       </span>
-                      <TrendingDown className="h-4 w-4 text-green-600" />
+                      <TrendingDownIcon sx={{ fontSize: 16 }} className="text-green-600" />
                     </div>
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-sm">Medium Severity</span>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap: 2">
                       <span className="text-lg font-bold text-yellow-600">
                         {stats?.severityBreakdown.medium || 0}
                       </span>
-                      <TrendingUp className="h-4 w-4 text-yellow-600" />
+                      <TrendingUpIcon sx={{ fontSize: 16 }} className="text-yellow-600" />
                     </div>
                   </div>
                 </div>
@@ -452,7 +452,7 @@ export default function SecurityPage() {
             <Card>
               <CardHeader>
                 <Typography variant="h6" className="flex items-center gap-2">
-                  <Zap className="h-5 w-5" />
+                  <BoltIcon sx={{ fontSize: 20 }} />
                   Security Metrics
                 </Typography>
               </CardHeader>

@@ -2,14 +2,21 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Plus, Users2, Settings, Trash2, Mail, UserPlus } from 'lucide-react';
-import { 
-  Box, 
-  Typography, 
-  Button, 
-  Card, 
-  CardContent, 
-  CardHeader, 
+import {
+  Add as PlusIcon,
+  Group as Users2Icon,
+  Settings as SettingsIcon,
+  Delete as Trash2Icon,
+  MailOutline as MailIcon,
+  PersonAdd as UserPlusIcon
+} from '@mui/icons-material';
+import {
+  Box,
+  Typography,
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
   Chip,
   Avatar,
   Dialog,
@@ -199,7 +206,7 @@ export default function TeamsPage() {
           </Box>
           <Button
             variant="contained"
-            startIcon={<Plus style={{ width: 16, height: 16 }} />}
+            startIcon={<PlusIcon sx={{ width: 16, height: 16 }} />}
             onClick={() => setCreateDialogOpen(true)}
           >
             Create Team
@@ -223,7 +230,7 @@ export default function TeamsPage() {
                     <Box sx={{ display: 'flex', gap: 1 }}>
                       <Tooltip title="Team Settings">
                         <IconButton size="small">
-                          <Settings style={{ width: 16, height: 16 }} />
+                          <SettingsIcon sx={{ width: 16, height: 16 }} />
                         </IconButton>
                       </Tooltip>
                       <Tooltip title="Delete Team">
@@ -232,7 +239,7 @@ export default function TeamsPage() {
                           color="error"
                           onClick={() => deleteTeam(team.id)}
                         >
-                          <Trash2 style={{ width: 16, height: 16 }} />
+                          <Trash2Icon sx={{ width: 16, height: 16 }} />
                         </IconButton>
                       </Tooltip>
                     </Box>
@@ -246,14 +253,14 @@ export default function TeamsPage() {
                   )}
                   
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
-                    <Users2 style={{ width: 16, height: 16, color: 'text.secondary' }} />
+                    <Users2Icon sx={{ width: 16, height: 16, color: 'text.secondary' }} />
                     <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                       {team.members.length} members
                     </Typography>
                   </Box>
 
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
-                    <Mail style={{ width: 16, height: 16, color: 'text.secondary' }} />
+                    <MailIcon sx={{ width: 16, height: 16, color: 'text.secondary' }} />
                     <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                       {team.invitations.length} pending invitations
                     </Typography>
@@ -296,7 +303,7 @@ export default function TeamsPage() {
         {teams.length === 0 && (
           <Card>
             <CardContent sx={{ textAlign: 'center', py: 6 }}>
-              <Users2 style={{ width: 48, height: 48, color: 'text.secondary', margin: '0 auto 16px' }} />
+              <Users2Icon sx={{ width: 48, height: 48, color: 'text.secondary', margin: '0 auto 16px' }} />
               <Typography variant="h6" sx={{ mb: 1 }}>
                 No teams yet
               </Typography>
@@ -305,7 +312,7 @@ export default function TeamsPage() {
               </Typography>
               <Button
                 variant="contained"
-                startIcon={<Plus style={{ width: 16, height: 16 }} />}
+                startIcon={<PlusIcon sx={{ width: 16, height: 16 }} />}
                 onClick={() => setCreateDialogOpen(true)}
               >
                 Create Your First Team

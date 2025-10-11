@@ -5,7 +5,7 @@ import {
   Typography,
   Grid
 } from '@mui/material';
-import { Code, Activity, Edit } from 'lucide-react';
+import { Code as CodeIcon, TrendingUp as ActivityIcon, Edit as EditIcon } from '@mui/icons-material';
 
 export const COMMON_VARIABLES = [
   { key: 'username', label: 'Username' },

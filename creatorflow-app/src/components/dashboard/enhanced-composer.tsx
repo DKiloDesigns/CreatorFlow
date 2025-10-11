@@ -8,29 +8,29 @@ import { Tabs, Tab, Box } from '@mui/material';
 import { Badge } from '@/components/ui/feedback/mui-badge';
 import { AlertDialog } from '@/components/ui/alert-dialog';
 import { 
-  Video, 
-  Link, 
-  Smile, 
-  Calendar, 
-  Send, 
-  Eye,
-  EyeOff,
-  Hash,
-  AtSign,
-  Bold,
-  Italic,
-  List,
-  Quote,
-  Sparkles,
-  Brain,
-  Zap,
-  Upload,
-  FileText
-} from 'lucide-react';
+  Videocam as VideoIcon,
+  Link as LinkIcon,
+  Mood as SmileIcon,
+  CalendarMonth as CalendarIcon,
+  Send as SendIcon,
+  Visibility as EyeIcon,
+  VisibilityOff as EyeOffIcon,
+  Tag as HashIcon,
+  AlternateEmail as AtSignIcon,
+  FormatBold as BoldIcon,
+  FormatItalic as ItalicIcon,
+  FormatListBulleted as ListIcon,
+  FormatQuote as QuoteIcon,
+  AutoAwesome as SparklesIcon,
+  Psychology as BrainIcon,
+  Bolt as ZapIcon,
+  CloudUpload as UploadIcon,
+  Description as FileTextIcon
+} from '@mui/icons-material';
 import { cn } from '@/lib/utils';
 import { toast } from 'sonner';
 import AiSuggestModal from '@/app/dashboard/content/_components/ai-suggest-modal';
-import { Typography, Box } from '@mui/material';
+import { Typography } from '@mui/material';
 
 interface Platform {
   id: string;
@@ -279,7 +279,7 @@ export function EnhancedComposer({ onSubmit, className }: EnhancedComposerProps)
               size="sm"
               onClick={() => setShowPreview(!showPreview)}
             >
-              {showPreview ? <EyeOff style={{ width: 16, height: 16 }} /> : <Eye style={{ width: 16, height: 16 }} />}
+              {showPreview ? <EyeOffIcon style={{ width: 16, height: 16 }} /> : <EyeIcon style={{ width: 16, height: 16 }} />}
               {showPreview ? 'Hide Preview' : 'Preview'}
             </Button>
           </Box>
@@ -300,7 +300,7 @@ export function EnhancedComposer({ onSubmit, className }: EnhancedComposerProps)
               minHeight: 44 
             }}
           >
-            <Upload style={{ width: 16, height: 16 }} />
+            <UploadIcon style={{ width: 16, height: 16 }} />
             <Typography component="span" sx={{ color: 'text.primary', wordBreak: 'break-words' }}>Upload Media</Typography>
           </Button>
           <Button
@@ -316,7 +316,7 @@ export function EnhancedComposer({ onSubmit, className }: EnhancedComposerProps)
               minHeight: 44 
             }}
           >
-            <Video style={{ width: 16, height: 16 }} />
+            <VideoIcon style={{ width: 16, height: 16 }} />
             <Typography component="span" sx={{ color: 'text.primary', wordBreak: 'break-words' }}>Create Video</Typography>
           </Button>
           <Button
@@ -332,7 +332,7 @@ export function EnhancedComposer({ onSubmit, className }: EnhancedComposerProps)
               minHeight: 44 
             }}
           >
-            <FileText style={{ width: 16, height: 16 }} />
+            <FileTextIcon style={{ width: 16, height: 16 }} />
             <Typography component="span" sx={{ color: 'text.primary', wordBreak: 'break-words' }}>Use Template</Typography>
           </Button>
           <Button
@@ -348,7 +348,7 @@ export function EnhancedComposer({ onSubmit, className }: EnhancedComposerProps)
               minHeight: 44 
             }}
           >
-            <Calendar style={{ width: 16, height: 16 }} />
+            <CalendarIcon style={{ width: 16, height: 16 }} />
             <Typography component="span" sx={{ color: 'text.primary', wordBreak: 'break-words' }}>Bulk Schedule</Typography>
           </Button>
         </Box>
@@ -401,7 +401,7 @@ export function EnhancedComposer({ onSubmit, className }: EnhancedComposerProps)
                   onClick={generateAiContent}
                   className="flex items-center gap-2 bg-white hover:bg-gray-100 dark:bg-black dark:hover:bg-gray-800"
                 >
-                  <Sparkles className="h-4 w-4 text-purple-400" />
+                  <SparklesIcon className="h-4 w-4 text-purple-400" />
                   <span className="text-sm text-black dark:text-white">AI Content</span>
                 </Button>
                 <Button
@@ -410,7 +410,7 @@ export function EnhancedComposer({ onSubmit, className }: EnhancedComposerProps)
                   onClick={() => handleAiSuggestion('captions')}
                   className="flex items-center gap-2 bg-white hover:bg-gray-100 dark:bg-black dark:hover:bg-gray-800"
                 >
-                  <Brain className="h-4 w-4 text-blue-400" />
+                  <BrainIcon className="h-4 w-4 text-blue-400" />
                   <span className="text-sm text-black dark:text-white">AI Captions</span>
                 </Button>
                 <Button
@@ -419,7 +419,7 @@ export function EnhancedComposer({ onSubmit, className }: EnhancedComposerProps)
                   onClick={() => handleAiSuggestion('hashtags')}
                   className="flex items-center gap-2 bg-white hover:bg-gray-100 dark:bg-black dark:hover:bg-gray-800"
                 >
-                  <Zap className="h-4 w-4 text-green-400" />
+                  <ZapIcon className="h-4 w-4 text-green-400" />
                   <span className="text-sm text-black dark:text-white">AI Hashtags</span>
                 </Button>
               </div>
@@ -432,7 +432,7 @@ export function EnhancedComposer({ onSubmit, className }: EnhancedComposerProps)
                   onClick={() => formatText('bold')}
                   className="h-8 w-8 p-0"
                 >
-                  <Bold className="h-4 w-4" />
+                  <BoldIcon className="h-4 w-4" />
                 </Button>
                 <Button
                   variant="ghost"
@@ -440,7 +440,7 @@ export function EnhancedComposer({ onSubmit, className }: EnhancedComposerProps)
                   onClick={() => formatText('italic')}
                   className="h-8 w-8 p-0"
                 >
-                  <Italic className="h-4 w-4" />
+                  <ItalicIcon className="h-4 w-4" />
                 </Button>
                 <Button
                   variant="ghost"
@@ -448,7 +448,7 @@ export function EnhancedComposer({ onSubmit, className }: EnhancedComposerProps)
                   onClick={() => formatText('list')}
                   className="h-8 w-8 p-0"
                 >
-                  <List className="h-4 w-4" />
+                  <ListIcon className="h-4 w-4" />
                 </Button>
                 <Button
                   variant="ghost"
@@ -456,7 +456,7 @@ export function EnhancedComposer({ onSubmit, className }: EnhancedComposerProps)
                   onClick={() => formatText('quote')}
                   className="h-8 w-8 p-0"
                 >
-                  <Quote className="h-4 w-4" />
+                  <QuoteIcon className="h-4 w-4" />
                 </Button>
                 <div className="w-px h-6 bg-border mx-1" />
                 <Button
@@ -465,7 +465,7 @@ export function EnhancedComposer({ onSubmit, className }: EnhancedComposerProps)
                   onClick={addHashtag}
                   className="h-8 w-8 p-0"
                 >
-                  <Hash className="h-4 w-4" />
+                  <HashIcon className="h-4 w-4" />
                 </Button>
                 <Button
                   variant="ghost"
@@ -473,7 +473,7 @@ export function EnhancedComposer({ onSubmit, className }: EnhancedComposerProps)
                   onClick={addMention}
                   className="h-8 w-8 p-0"
                 >
-                  <AtSign className="h-4 w-4" />
+                  <AtSignIcon className="h-4 w-4" />
                 </Button>
                 <div className="w-px h-6 bg-border mx-1" />
                 <Button
@@ -481,14 +481,14 @@ export function EnhancedComposer({ onSubmit, className }: EnhancedComposerProps)
                   size="sm"
                   className="h-8 w-8 p-0"
                 >
-                  <Link className="h-4 w-4" />
+                  <LinkIcon className="h-4 w-4" />
                 </Button>
                 <Button
                   variant="ghost"
                   size="sm"
                   className="h-8 w-8 p-0"
                 >
-                  <Smile className="h-4 w-4" />
+                  <SmileIcon className="h-4 w-4" />
                 </Button>
               </div>
 
@@ -517,7 +517,7 @@ export function EnhancedComposer({ onSubmit, className }: EnhancedComposerProps)
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Button variant="outline" size="sm">
-                  <Calendar className="h-4 w-4 mr-2" />
+                  <CalendarIcon className="h-4 w-4 mr-2" />
                   Save Draft
                 </Button>
               </div>
@@ -526,7 +526,7 @@ export function EnhancedComposer({ onSubmit, className }: EnhancedComposerProps)
                 disabled={!content.trim() || selectedPlatforms.length === 0 || isOverLimit}
                 className="flex items-center gap-2 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white disabled:opacity-100"
               >
-                <Send className="h-4 w-4" />
+                <SendIcon className="h-4 w-4" />
                 Post Now
               </Button>
             </div>
@@ -536,7 +536,7 @@ export function EnhancedComposer({ onSubmit, className }: EnhancedComposerProps)
           {activeTab === 1 && (
             <Box className="space-y-4">
             <div className="text-center py-8 text-muted-foreground">
-              <Calendar className="h-12 w-12 mx-auto mb-4 opacity-50" />
+              <CalendarIcon className="h-12 w-12 mx-auto mb-4 opacity-50" />
               <p>Scheduling feature coming soon!</p>
             </div>
             </Box>

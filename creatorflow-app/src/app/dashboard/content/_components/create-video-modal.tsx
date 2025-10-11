@@ -1,31 +1,31 @@
 'use client';
 
 import React, { useState, useRef } from 'react';
-import { 
+import {
   Button,
   Select,
   MenuItem
 } from '@mui/material';
-import { Upload } from 'lucide-react';
 import { toast } from 'sonner';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { 
-  Play, 
-  Pause, 
-  Square, 
-  Scissors, 
-  Type, 
-  Image as ImageIcon, 
-  Video as VideoIcon,
-  Download,
-  Settings,
-  Trash2,
-  Plus,
-  Move,
-  RotateCw,
-  Volume2,
-  VolumeX
-} from 'lucide-react';
+import {
+  PlayArrow as PlayArrowIcon,
+  Pause as PauseIcon,
+  Square as SquareIcon,
+  ContentCut as ContentCutIcon,
+  TextFields as TextFieldsIcon,
+  Image as ImageIcon,
+  Videocam as VideocamIcon,
+  CloudUpload as CloudUploadIcon,
+  Settings as SettingsIcon,
+  Delete as DeleteIcon,
+  Add as AddIcon,
+  OpenWith as OpenWithIcon,
+  RotateRight as RotateRightIcon,
+  VolumeUp as VolumeUpIcon,
+  VolumeOff as VolumeOffIcon,
+  Download as DownloadIcon
+} from '@mui/icons-material';
 
 interface VideoClip {
   id: string;
@@ -239,7 +239,7 @@ export function CreateVideoModal({ open, onClose, onVideoCreated }: CreateVideoM
                 size="small"
                 onClick={handlePlayPause}
               >
-                {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
+                {isPlaying ? <PauseIcon sx={{ fontSize: 16 }} /> : <PlayArrowIcon sx={{ fontSize: 16 }} />}
               </Button>
               
               <div className="flex-1">
@@ -341,9 +341,9 @@ export function CreateVideoModal({ open, onClose, onVideoCreated }: CreateVideoM
                         onClick={() => handleAddClip(media)}
                       >
                         {media.type === 'video' ? (
-                          <VideoIcon className="h-8 w-8 text-blue-500" />
+                          <VideocamIcon sx={{ fontSize: 32 }} className="text-blue-500" />
                         ) : (
-                          <ImageIcon className="h-8 w-8 text-green-500" />
+                          <ImageIcon sx={{ fontSize: 32 }} className="text-green-500" />
                         )}
                         <div className="flex-1">
                           <p className="font-medium text-sm">{media.name}</p>
@@ -351,7 +351,7 @@ export function CreateVideoModal({ open, onClose, onVideoCreated }: CreateVideoM
                             {media.type} • {media.duration}s
                           </p>
                         </div>
-                        <Plus className="h-4 w-4 text-muted-foreground" />
+                        <AddIcon sx={{ fontSize: 16 }} className="text-muted-foreground" />
                       </div>
                     ))}
                   </div>
@@ -368,7 +368,7 @@ export function CreateVideoModal({ open, onClose, onVideoCreated }: CreateVideoM
                         size="small"
                         onClick={handleAddTextOverlay}
                       >
-                        <Type className="h-4 w-4 mr-2" />
+                        <TextFieldsIcon sx={{ fontSize: 16 }} className="mr-2" />
                         Add Text
                       </Button>
                     </div>
@@ -385,9 +385,9 @@ export function CreateVideoModal({ open, onClose, onVideoCreated }: CreateVideoM
                           <div className="flex items-center justify-between mb-2">
                             <div className="flex items-center gap-2">
                               {clip.type === 'video' ? (
-                                <VideoIcon className="h-4 w-4 text-blue-500" />
+                                <VideocamIcon sx={{ fontSize: 16 }} className="text-blue-500" />
                               ) : (
-                                <ImageIcon className="h-4 w-4 text-green-500" />
+                                <ImageIcon sx={{ fontSize: 16 }} className="text-green-500" />
                               )}
                               <span className="text-sm font-medium">Clip {index + 1}</span>
                               <span className="px-2 py-1 text-xs bg-gray-100 text-gray-700 rounded-full">{clip.duration}s</span>
@@ -400,7 +400,7 @@ export function CreateVideoModal({ open, onClose, onVideoCreated }: CreateVideoM
                                 handleDeleteClip(clip.id);
                               }}
                             >
-                              <Trash2 className="h-4 w-4" />
+                              <DeleteIcon sx={{ fontSize: 16 }} />
                             </Button>
                           </div>
                           
@@ -459,7 +459,7 @@ export function CreateVideoModal({ open, onClose, onVideoCreated }: CreateVideoM
                         >
                           <div className="flex items-center justify-between mb-2">
                             <div className="flex items-center gap-2">
-                              <Type className="h-4 w-4 text-purple-500" />
+                              <TextFieldsIcon sx={{ fontSize: 16 }} className="text-purple-500" />
                               <span className="text-sm font-medium">Text Overlay</span>
                             </div>
                             <Button
@@ -470,7 +470,7 @@ export function CreateVideoModal({ open, onClose, onVideoCreated }: CreateVideoM
                                 handleDeleteOverlay(overlay.id);
                               }}
                             >
-                              <Trash2 className="h-4 w-4" />
+                              <DeleteIcon sx={{ fontSize: 16 }} />
                             </Button>
                           </div>
                           
@@ -555,7 +555,7 @@ export function CreateVideoModal({ open, onClose, onVideoCreated }: CreateVideoM
                   </>
                 ) : (
                   <>
-                    <Download className="h-4 w-4 mr-2" />
+                    <DownloadIcon sx={{ fontSize: 16 }} className="h-4 w-4 mr-2" />
                     Export Video
                   </>
                 )}

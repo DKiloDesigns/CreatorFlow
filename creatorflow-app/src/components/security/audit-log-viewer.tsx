@@ -32,21 +32,22 @@ import {
   Alert,
   Pagination,
   Tooltip,
+  InputAdornment,
 } from '@mui/material';
 import {
-  Search,
-  Filter,
-  RefreshCw,
-  Eye,
-  Calendar,
-  User,
-  Shield,
-  AlertTriangle,
-  CheckCircle,
-  XCircle,
-  Clock,
-  ChevronDown,
-} from 'lucide-react';
+  Search as SearchIcon,
+  FilterList as FilterIcon,
+  Refresh as RefreshCwIcon,
+  Visibility as EyeIcon,
+  CalendarMonth as CalendarIcon,
+  Person as UserIcon,
+  Security as ShieldIcon,
+  Warning as AlertTriangleIcon,
+  CheckCircle as CheckCircleIcon,
+  Cancel as XCircleIcon,
+  AccessTime as ClockIcon,
+  ExpandMore as ChevronDownIcon,
+} from '@mui/icons-material';
 
 interface AuditEvent {
   id: string;
@@ -157,10 +158,10 @@ export const AuditLogViewer: React.FC = () => {
 
   const getOutcomeIcon = (outcome: string) => {
     switch (outcome) {
-      case 'success': return <CheckCircle size={16} color="#4caf50" />;
-      case 'failure': return <XCircle size={16} color="#f44336" />;
-      case 'error': return <AlertTriangle size={16} color="#ff9800" />;
-      default: return <Clock size={16} color="#9e9e9e" />;
+      case 'success': return <CheckCircleIcon sx={{ fontSize: 16, color: "#4caf50" }} />;
+      case 'failure': return <XCircleIcon sx={{ fontSize: 16, color: "#f44336" }} />;
+      case 'error': return <AlertTriangleIcon sx={{ fontSize: 16, color: "#ff9800" }} />;
+      default: return <ClockIcon sx={{ fontSize: 16, color: "#9e9e9e" }} />;
     }
   };
 
@@ -195,7 +196,7 @@ export const AuditLogViewer: React.FC = () => {
         </Typography>
         <Button
           variant="outlined"
-          startIcon={<RefreshCw />}
+          startIcon={<RefreshCwIcon />}
           onClick={loadEvents}
         >
           Refresh
@@ -208,7 +209,7 @@ export const AuditLogViewer: React.FC = () => {
           <Card>
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                <Shield size={24} color="#1976d2" />
+                <ShieldIcon sx={{ fontSize: 24, color: "#1976d2" }} />
                 <Typography variant="h6" sx={{ ml: 1 }}>
                   Total Events
                 </Typography>
@@ -222,7 +223,7 @@ export const AuditLogViewer: React.FC = () => {
           <Card>
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                <AlertTriangle size={24} color="#f44336" />
+                <AlertTriangleIcon sx={{ fontSize: 24, color: "#f44336" }} />
                 <Typography variant="h6" sx={{ ml: 1 }}>
                   Critical Events
                 </Typography>
@@ -236,7 +237,7 @@ export const AuditLogViewer: React.FC = () => {
           <Card>
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                <XCircle size={24} color="#f44336" />
+                <XCircleIcon sx={{ fontSize: 24, color: "#f44336" }} />
                 <Typography variant="h6" sx={{ ml: 1 }}>
                   Failures
                 </Typography>
@@ -250,7 +251,7 @@ export const AuditLogViewer: React.FC = () => {
           <Card>
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                <CheckCircle size={24} color="#4caf50" />
+                <CheckCircleIcon sx={{ fontSize: 24, color: "#4caf50" }} />
                 <Typography variant="h6" sx={{ ml: 1 }}>
                   Successes
                 </Typography>
@@ -275,6 +276,13 @@ export const AuditLogViewer: React.FC = () => {
                 value={filters.action}
                 onChange={(e) => handleFilterChange('action', e.target.value)}
                 size="small"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon sx={{ fontSize: 16 }} />
+                    </InputAdornment>
+                  ),
+                }}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={2}>
@@ -313,6 +321,13 @@ export const AuditLogViewer: React.FC = () => {
                 value={filters.userId}
                 onChange={(e) => handleFilterChange('userId', e.target.value)}
                 size="small"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <UserIcon sx={{ fontSize: 16 }} />
+                    </InputAdornment>
+                  ),
+                }}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={2}>
@@ -324,6 +339,13 @@ export const AuditLogViewer: React.FC = () => {
                 onChange={(e) => handleFilterChange('startDate', e.target.value)}
                 size="small"
                 InputLabelProps={{ shrink: true }}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <CalendarIcon sx={{ fontSize: 16 }} />
+                    </InputAdornment>
+                  ),
+                }}
               />
             </Grid>
             <Grid item xs={12} sm={6} md={2}>
@@ -335,6 +357,13 @@ export const AuditLogViewer: React.FC = () => {
                 onChange={(e) => handleFilterChange('endDate', e.target.value)}
                 size="small"
                 InputLabelProps={{ shrink: true }}
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <CalendarIcon sx={{ fontSize: 16 }} />
+                    </InputAdornment>
+                  ),
+                }}
               />
             </Grid>
           </Grid>
@@ -404,7 +433,7 @@ export const AuditLogViewer: React.FC = () => {
                           size="small"
                           onClick={() => setSelectedEvent(event)}
                         >
-                          <Eye size={16} />
+                          <EyeIcon sx={{ fontSize: 16 }} />
                         </IconButton>
                       </Tooltip>
                     </TableCell>
@@ -502,7 +531,7 @@ export const AuditLogViewer: React.FC = () => {
 
                 <Grid item xs={12}>
                   <Accordion>
-                    <AccordionSummary expandIcon={<ChevronDown />}>
+                    <AccordionSummary expandIcon={<ChevronDownIcon />}>
                       <Typography variant="subtitle2">Details</Typography>
                     </AccordionSummary>
                     <AccordionDetails>

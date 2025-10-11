@@ -31,24 +31,24 @@ import {
   Rating
 } from '@mui/material';
 import {
-  Brain,
-  Lightbulb,
-  Hash,
-  Calendar,
-  Target,
-  TrendingUp,
-  Sparkles,
-  Zap,
-  Clock,
-  CheckCircle,
-  ArrowRight,
-  RefreshCw,
-  Save,
-  Play,
-  Settings,
-  Eye,
-  BarChart3
-} from 'lucide-react';
+  Psychology as PsychologyIcon,
+  LightbulbOutlined as LightbulbOutlinedIcon,
+  Tag as TagIcon,
+  CalendarToday as CalendarTodayIcon,
+  Target as TargetIcon,
+  TrendingUp as TrendingUpIcon,
+  AutoAwesome as AutoAwesomeIcon,
+  Bolt as BoltIcon,
+  AccessTime as AccessTimeIcon,
+  CheckCircle as CheckCircleIcon,
+  ArrowForward as ArrowForwardIcon,
+  Refresh as RefreshIcon,
+  Save as SaveIcon,
+  PlayArrow as PlayArrowIcon,
+  Settings as SettingsIcon,
+  Visibility as VisibilityIcon,
+  BarChart as BarChartIcon
+} from '@mui/icons-material';
 import { toast } from 'sonner';
 import { SmartCaptionGenerator } from '@/components/ui/smart-caption-generator';
 import { AdvancedHashtagRecommender } from '@/components/ui/advanced-hashtag-recommender';
@@ -118,35 +118,35 @@ export default function SmartContentWorkflow({ activeStep, onStepChange }: Smart
       id: 'ideation',
       label: 'Content Ideation',
       description: 'Generate content ideas with AI',
-      icon: <Lightbulb />,
+      icon: <LightbulbOutlinedIcon />,
       completed: false
     },
     {
       id: 'creation',
       label: 'Content Creation',
       description: 'Create and optimize your content',
-      icon: <Brain />,
+      icon: <PsychologyIcon />,
       completed: false
     },
     {
       id: 'optimization',
       label: 'AI Optimization',
       description: 'Optimize with AI tools',
-      icon: <Sparkles />,
+      icon: <AutoAwesomeIcon />,
       completed: false
     },
     {
       id: 'scheduling',
       label: 'Smart Scheduling',
       description: 'Schedule with performance prediction',
-      icon: <Calendar />,
+      icon: <CalendarTodayIcon />,
       completed: false
     },
     {
       id: 'review',
       label: 'Review & Publish',
       description: 'Final review and publish',
-      icon: <CheckCircle />,
+      icon: <CheckCircleIcon />,
       completed: false
     }
   ];
@@ -185,7 +185,7 @@ export default function SmartContentWorkflow({ activeStep, onStepChange }: Smart
 
               <Button
                 variant="contained"
-                startIcon={<Brain />}
+                startIcon={<PsychologyIcon />}
                 onClick={generateContentIdeas}
                 disabled={!workflowData.contentIdea || isGenerating}
                 fullWidth
@@ -229,7 +229,7 @@ export default function SmartContentWorkflow({ activeStep, onStepChange }: Smart
                           {idea.title}
                         </Typography>
                         <Chip
-                          icon={<TrendingUp />}
+                          icon={<TrendingUpIcon />}
                           label={`${idea.predictedEngagement} engagement`}
                           size="small"
                           color="success"
@@ -266,7 +266,7 @@ export default function SmartContentWorkflow({ activeStep, onStepChange }: Smart
           <Button
             variant="contained"
             size="large"
-            endIcon={<ArrowRight />}
+            endIcon={<ArrowForwardIcon />}
             onClick={() => {
               setWorkflowData(prev => ({
                 ...prev,
@@ -310,21 +310,21 @@ export default function SmartContentWorkflow({ activeStep, onStepChange }: Smart
               <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
                 <Button
                   variant="outlined"
-                  startIcon={<Hash />}
+                  startIcon={<TagIcon />}
                   onClick={() => {/* Open hashtag recommender */}}
                 >
                   Get Hashtag Suggestions
                 </Button>
                 <Button
                   variant="outlined"
-                  startIcon={<Brain />}
+                  startIcon={<PsychologyIcon />}
                   onClick={() => {/* Open caption generator */}}
                 >
                   Generate Caption
                 </Button>
                 <Button
                   variant="outlined"
-                  startIcon={<Target />}
+                  startIcon={<TargetIcon />}
                   onClick={() => {/* Open audience optimizer */}}
                 >
                   Optimize for Audience
@@ -382,7 +382,7 @@ export default function SmartContentWorkflow({ activeStep, onStepChange }: Smart
         <Button
           variant="contained"
           size="large"
-          endIcon={<ArrowRight />}
+          endIcon={<ArrowForwardIcon />}
           onClick={() => onStepChange(2)}
           disabled={!workflowData.content.trim()}
         >
@@ -438,7 +438,7 @@ export default function SmartContentWorkflow({ activeStep, onStepChange }: Smart
         <Button
           variant="contained"
           size="large"
-          endIcon={<ArrowRight />}
+          endIcon={<ArrowForwardIcon />}
           onClick={() => onStepChange(3)}
         >
           Continue to Smart Scheduling
@@ -506,7 +506,7 @@ export default function SmartContentWorkflow({ activeStep, onStepChange }: Smart
         <Button
           variant="contained"
           size="large"
-          endIcon={<ArrowRight />}
+          endIcon={<ArrowForwardIcon />}
           onClick={() => onStepChange(4)}
         >
           Continue to Review & Publish
@@ -572,7 +572,7 @@ export default function SmartContentWorkflow({ activeStep, onStepChange }: Smart
                     Recommended Posting Time:
                   </Typography>
                   <Chip
-                    icon={<Clock />}
+                    icon={<AccessTimeIcon />}
                     label={workflowData.postingTime}
                     color="primary"
                   />
@@ -590,7 +590,7 @@ export default function SmartContentWorkflow({ activeStep, onStepChange }: Smart
                 <Button
                   variant="contained"
                   fullWidth
-                  startIcon={<Play />}
+                  startIcon={<PlayArrowIcon />}
                   onClick={handlePublishNow}
                   sx={{ mb: 2 }}
                 >
@@ -600,7 +600,7 @@ export default function SmartContentWorkflow({ activeStep, onStepChange }: Smart
                 <Button
                   variant="outlined"
                   fullWidth
-                  startIcon={<Calendar />}
+                  startIcon={<CalendarTodayIcon />}
                   onClick={handleSchedulePost}
                   sx={{ mb: 2 }}
                 >
@@ -610,7 +610,7 @@ export default function SmartContentWorkflow({ activeStep, onStepChange }: Smart
                 <Button
                   variant="outlined"
                   fullWidth
-                  startIcon={<Save />}
+                  startIcon={<SaveIcon />}
                   onClick={handleSaveAsTemplate}
                 >
                   Save as Template

@@ -12,7 +12,7 @@ import {
   Chip,
   MenuItem
 } from '@mui/material';
-import { Send, Star } from 'lucide-react';
+import { Send as SendIcon, Star as StarIcon } from '@mui/icons-material';
 import { toast } from 'sonner';
 
 interface FeedbackWidgetProps {
@@ -107,7 +107,7 @@ export function FeedbackWidget({
     return (
       <Card className={className}>
         <CardContent sx={{ p: 3, textAlign: 'center' }}>
-          <Chip icon={<Box sx={{ color: 'success.main' }}><Star style={{ width: 48, height: 48 }} /></Box>} label="Thank You!" />
+          <Chip icon={<Box sx={{ color: 'success.main' }}><StarIcon sx={{ width: 48, height: 48 }} /></Box>} label="Thank You!" />
           <Typography variant="h6" component="h3" sx={{ mt: 1, mb: 0.5 }}>Thank You!</Typography>
           <Typography variant="body2" color="text.secondary">Your feedback has been submitted successfully.</Typography>
         </CardContent>
@@ -122,7 +122,7 @@ export function FeedbackWidget({
         variant="outlined"
         sx={{ gap: 1 }}
       >
-        <Star style={{ width: 16, height: 16 }} />
+        <StarIcon sx={{ width: 16, height: 16 }} />
         Share Feedback
       </Button>
     );
@@ -132,7 +132,7 @@ export function FeedbackWidget({
     <Card className={className}>
       <CardHeader>
         <Typography variant="h5" component="h2" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <Star style={{ width: 20, height: 20 }} />
+          <StarIcon sx={{ width: 20, height: 20 }} />
           {showTitle ? 'Share Your Feedback' : 'Feedback'}
         </Typography>
         <Typography variant="body2" color="text.secondary">
@@ -159,7 +159,7 @@ export function FeedbackWidget({
                     color: star <= rating ? 'yellow.500' : 'grey.300'
                   }}
                 >
-                  <Star style={{ width: 24, height: 24 }} />
+                  <StarIcon sx={{ width: 24, height: 24 }} />
                 </Button>
               ))}
             </Box>
@@ -256,7 +256,7 @@ export function FeedbackWidget({
                 </>
               ) : (
                 <>
-                  <Box sx={{ mr: 0.5 }}><Send style={{ width: 16, height: 16 }} /></Box>
+                  <Box sx={{ mr: 0.5 }}><SendIcon sx={{ width: 16, height: 16 }} /></Box>
                   Submit Feedback
                 </>
               )}

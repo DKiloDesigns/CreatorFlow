@@ -1,8 +1,8 @@
 'use client';
 
 import { IconButton, Tooltip } from '@mui/material';
-import { DarkMode, LightMode } from '@/lib/mui-optimized-imports';
-import { useAppTheme } from '@/components/providers/mui-theme-provider';
+import { DarkMode, LightMode } from '@mui/icons-material'; // Direct import from @mui/icons-material
+import { useMinimalTheme } from '@/contexts/MinimalThemeContext';
 import { useState, useEffect } from 'react';
 
 interface ThemeToggleProps {
@@ -11,21 +11,12 @@ interface ThemeToggleProps {
 
 export function ThemeToggle({ _isLandingPage = false }: ThemeToggleProps) {
   const [fallbackTheme, setFallbackTheme] = useState<'light' | 'dark'>('light');
-  const [isContextAvailable, setIsContextAvailable] = useState(false);
-  
-  // Try to use the theme context, but fall back gracefully if not available
-  let theme: 'light' | 'dark' = fallbackTheme;
-  let toggleTheme: (() => void) | undefined;
-  
-  try {
-    const context = useAppTheme();
-    theme = context.theme;
-    toggleTheme = context.toggleTheme;
-    if (!isContextAvailable) setIsContextAvailable(true);
-  } catch {
-    // Context not available, use fallback
-    if (isContextAvailable) setIsContextAvailable(false);
-  }
+
+  // Call hook unconditionally, it now returns undefined if no provider
+  const context = useMinimalTheme();
+
+  const theme = context ? (context.isDark ? 'dark' : 'light') : fallbackTheme;
+  const toggleMode = context?.toggleMode;
 
   // Fallback theme toggle function
   const handleFallbackToggle = () => {
@@ -51,6 +42,14 @@ export function ThemeToggle({ _isLandingPage = false }: ThemeToggleProps) {
     }
   }, []);
 
+  // Effect to manage body class when context is NOT available (i.e., on public pages outside the provider)
+  useEffect(() => {
+    if (!context && typeof window !== 'undefined') {
+      document.body.classList.remove('light', 'dark');
+      document.body.classList.add(fallbackTheme);
+    }
+  }, [context, fallbackTheme]);
+
   const getIcon = () => {
     return theme === 'dark' ? <LightMode /> : <DarkMode />;
   };
@@ -60,8 +59,8 @@ export function ThemeToggle({ _isLandingPage = false }: ThemeToggleProps) {
   };
 
   const handleClick = () => {
-    if (toggleTheme) {
-      toggleTheme();
+    if (toggleMode) {
+      toggleMode();
     } else {
       handleFallbackToggle();
     }

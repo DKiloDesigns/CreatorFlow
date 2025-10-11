@@ -20,7 +20,7 @@ import {
   ListItemIcon,
   Avatar
 } from '@mui/material';
-import { Bell, Sparkles, Zap, Settings, X, MailCheck, RefreshCw } from 'lucide-react';
+import { Notifications as NotificationsIcon, AutoAwesome as AutoAwesomeIcon, Bolt as BoltIcon, Settings as SettingsIcon, Close as CloseIcon, MarkEmailRead as MarkEmailReadIcon, Refresh as RefreshIcon } from '@mui/icons-material';
 import Link from 'next/link';
 import { useWebSocketNotifications } from '@/hooks/useWebSocketNotifications';
 
@@ -68,13 +68,13 @@ export function FloatingNotificationIcon({
   const [filterType, setFilterType] = useState('all');
 
   // Use WebSocket notifications hook
-  const { 
-    unreadCount: wsUnreadCount, 
-    isConnected, 
-    lastNotification, 
+  const {
+    unreadCount: wsUnreadCount,
+    isConnected,
+    lastNotification,
     notifications,
     markAsRead,
-    markAllAsRead 
+    markAllAsRead
   } = useWebSocketNotifications();
   
   // Use WebSocket unread count if available, fallback to prop
@@ -102,9 +102,9 @@ export function FloatingNotificationIcon({
 
   const getIconSize = () => {
     switch (size) {
-      case 'small': return 16;
-      case 'large': return 24;
-      default: return 20;
+      case 'small': return 'small';
+      case 'large': return 'medium'; // Using 'medium' as large might be too big, adjust as needed
+      default: return 'small';
     }
   };
 
@@ -123,7 +123,7 @@ export function FloatingNotificationIcon({
         };
       case 'creative':
         return {
-          background: isActive 
+          background: isActive
             ? 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
             : 'linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%)',
           backdropFilter: 'blur(10px)',
@@ -191,7 +191,7 @@ export function FloatingNotificationIcon({
                 zIndex: 1
               }}
             >
-              <Sparkles size={12} color="#ffd700" />
+              <AutoAwesomeIcon sx={{ fontSize: 12, color: "#ffd700" }} />
             </Box>
           </Fade>
           <Fade in={showSparkles} timeout={800}>
@@ -204,14 +204,14 @@ export function FloatingNotificationIcon({
                 zIndex: 1
               }}
             >
-              <Zap size={10} color="#ff6b6b" />
+              <BoltIcon sx={{ fontSize: 10, color: "#ff6b6b" }} />
             </Box>
           </Fade>
         </>
       )}
 
       {/* Main icon */}
-      <Bell size={getIconSize()} />
+      <NotificationsIcon sx={{ fontSize: getIconSize() }} />
     </Box>
   );
 
@@ -275,15 +275,15 @@ export function FloatingNotificationIcon({
 
   return (
     <>
-      <Tooltip 
+      <Tooltip
         title={actualUnreadCount > 0 ? `${actualUnreadCount} unread notifications` : 'No new notifications'}
         placement="bottom"
         arrow
       >
         <Box sx={{ position: 'relative' }}>
         {actualUnreadCount > 0 ? (
-          <Badge 
-            badgeContent={actualUnreadCount} 
+          <Badge
+            badgeContent={actualUnreadCount}
             max={99}
             sx={{
               '& .MuiBadge-badge': {
@@ -329,24 +329,24 @@ export function FloatingNotificationIcon({
           }
         }}
       >
-        <Box sx={{ 
-          height: '100%', 
-          display: 'flex', 
+        <Box sx={{
+          height: '100%',
+          display: 'flex',
           flexDirection: 'column',
           background: 'linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%)',
         }}>
           {/* Header */}
-          <Box sx={{ 
-            p: 3, 
+          <Box sx={{
+            p: 3,
             pb: 2,
             background: 'linear-gradient(135deg, #ffffff 0%, #f8fafc 100%)',
             borderBottom: '1px solid rgba(148, 163, 184, 0.1)',
             boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)'
           }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <Typography 
-                variant="h5" 
-                sx={{ 
+              <Typography
+                variant="h5"
+                sx={{
                   fontWeight: 700,
                   background: 'linear-gradient(135deg, #1e293b 0%, #475569 100%)',
                   backgroundClip: 'text',
@@ -358,39 +358,39 @@ export function FloatingNotificationIcon({
                 Notifications
               </Typography>
               <Box sx={{ display: 'flex', gap: 0.5 }}>
-                <IconButton 
-                  size="small" 
-                  sx={{ 
+                <IconButton
+                  size="small"
+                  sx={{
                     color: 'text.secondary',
-                    '&:hover': { 
+                    '&:hover': {
                       color: 'primary.main',
                       bgcolor: 'primary.50'
                     }
                   }}
                 >
-                  <Settings size={20} />
+                  <SettingsIcon sx={{ fontSize: 20 }} />
                 </IconButton>
-                <IconButton 
-                  size="small" 
+                <IconButton
+                  size="small"
                   onClick={handleDrawerClose}
-                  sx={{ 
+                  sx={{
                     color: 'text.secondary',
-                    '&:hover': { 
+                    '&:hover': {
                       color: 'error.main',
                       bgcolor: 'error.50'
                     }
                   }}
                 >
-                  <X size={20} />
+                  <CloseIcon sx={{ fontSize: 20 }} />
                 </IconButton>
               </Box>
             </Box>
           </Box>
 
           {/* Action Buttons */}
-          <Box sx={{ 
-            p: 3, 
-            pt: 2, 
+          <Box sx={{
+            p: 3,
+            pt: 2,
             pb: 2,
             background: 'rgba(255, 255, 255, 0.5)',
             borderBottom: '1px solid rgba(148, 163, 184, 0.1)'
@@ -399,7 +399,7 @@ export function FloatingNotificationIcon({
               <Button
                 variant="outlined"
                 size="small"
-                startIcon={<MailCheck size={16} />}
+                startIcon={<MarkEmailReadIcon sx={{ fontSize: 16 }} />}
                 onClick={handleMarkAllRead}
                 disabled={actualUnreadCount === 0}
                 sx={{
@@ -425,7 +425,7 @@ export function FloatingNotificationIcon({
               <Button
                 variant="outlined"
                 size="small"
-                startIcon={<RefreshCw size={16} />}
+                startIcon={<RefreshIcon sx={{ fontSize: 16 }} />}
                 onClick={handleRefresh}
                 sx={{
                   borderRadius: 2,
@@ -448,9 +448,9 @@ export function FloatingNotificationIcon({
           </Box>
 
           {/* Filter Chips */}
-          <Box sx={{ 
-            p: 3, 
-            pt: 2, 
+          <Box sx={{
+            p: 3,
+            pt: 2,
             pb: 2,
             background: 'rgba(255, 255, 255, 0.3)',
             borderBottom: '1px solid rgba(148, 163, 184, 0.1)'
@@ -492,8 +492,8 @@ export function FloatingNotificationIcon({
           </Box>
 
           {/* Notifications List */}
-          <Box sx={{ 
-            flexGrow: 1, 
+          <Box sx={{
+            flexGrow: 1,
             overflow: 'auto',
             background: 'rgba(255, 255, 255, 0.2)',
             '&::-webkit-scrollbar': {
@@ -511,11 +511,11 @@ export function FloatingNotificationIcon({
             }
           }}>
             {filteredNotifications.length === 0 ? (
-              <Box sx={{ 
-                display: 'flex', 
-                flexDirection: 'column', 
-                alignItems: 'center', 
-                justifyContent: 'center', 
+              <Box sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
                 height: '100%',
                 textAlign: 'center',
                 p: 4
@@ -531,11 +531,11 @@ export function FloatingNotificationIcon({
                   mb: 2,
                   boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
                 }}>
-                  <Bell size={32} color="#94a3b8" />
+                  <NotificationsIcon sx={{ fontSize: 32, color: "#94a3b8" }} />
                 </Box>
-                <Typography 
-                  variant="h6" 
-                  sx={{ 
+                <Typography
+                  variant="h6"
+                  sx={{
                     color: 'text.secondary',
                     fontWeight: 600,
                     mb: 0.5
@@ -543,9 +543,9 @@ export function FloatingNotificationIcon({
                 >
                   No notifications
                 </Typography>
-                <Typography 
-                  variant="body2" 
-                  sx={{ 
+                <Typography
+                  variant="body2"
+                  sx={{
                     color: 'text.disabled',
                     maxWidth: 200
                   }}
@@ -573,8 +573,8 @@ export function FloatingNotificationIcon({
                     }}
                     secondaryAction={
                       !notification.read && (
-                        <IconButton 
-                          edge="end" 
+                        <IconButton
+                          edge="end"
                           size="small"
                           onClick={() => markAsRead(notification.id)}
                           sx={{
@@ -584,30 +584,30 @@ export function FloatingNotificationIcon({
                             }
                           }}
                         >
-                          <MailCheck size={16} />
+                          <MarkEmailReadIcon sx={{ fontSize: 16 }} />
                         </IconButton>
                       )
                     }
                   >
                     <ListItemIcon sx={{ minWidth: 40 }}>
-                      <Avatar sx={{ 
-                        width: 36, 
-                        height: 36, 
-                        background: notification.read 
+                      <Avatar sx={{
+                        width: 36,
+                        height: 36,
+                        background: notification.read
                           ? 'linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%)'
                           : 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)',
-                        boxShadow: notification.read 
+                        boxShadow: notification.read
                           ? '0 2px 4px rgba(0, 0, 0, 0.1)'
                           : '0 2px 8px rgba(59, 130, 246, 0.3)'
                       }}>
-                        <Bell size={18} color={notification.read ? '#94a3b8' : 'white'} />
+                        <NotificationsIcon sx={{ fontSize: 18, color: notification.read ? '#94a3b8' : 'white' }} />
                       </Avatar>
                     </ListItemIcon>
                     <ListItemText
                       primary={
-                        <Typography 
-                          variant="subtitle2" 
-                          sx={{ 
+                        <Typography
+                          variant="subtitle2"
+                          sx={{
                             fontWeight: notification.read ? 500 : 700,
                             color: notification.read ? 'text.primary' : 'primary.main',
                             mb: 0.5
@@ -617,9 +617,9 @@ export function FloatingNotificationIcon({
                         </Typography>
                       }
                       secondary={
-                        <Typography 
-                          variant="body2" 
-                          sx={{ 
+                        <Typography
+                          variant="body2"
+                          sx={{
                             color: 'text.secondary',
                             lineHeight: 1.4
                           }}

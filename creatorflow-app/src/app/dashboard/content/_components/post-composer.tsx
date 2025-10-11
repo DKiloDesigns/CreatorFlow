@@ -1,10 +1,10 @@
 'use client'; // Need this for useState
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { 
-  Card, 
-  CardContent, 
-  CardHeader, 
+import {
+  Card,
+  CardContent,
+  CardHeader,
   Button,
   TextField,
   Box,
@@ -16,10 +16,17 @@ import {
   InputLabel,
   Tooltip,
   Checkbox,
-  FormControlLabel
+  FormControlLabel,
+  CircularProgress
 } from '@mui/material';
-import { Edit, Activity } from 'lucide-react';
-import { Calendar as CalendarIcon, Loader2, UploadCloud, X, Image as ImageIcon } from "lucide-react"
+import {
+  Edit as EditIcon,
+  TrendingUp as TrendingUpIcon,
+  CalendarMonth as CalendarIcon,
+  CloudUpload as UploadCloudIcon,
+  Close as CloseIcon,
+  Image as ImageIcon // Renamed to ImageIcon to avoid conflict with Image component
+} from '@mui/icons-material';
 import { format } from "date-fns"
 import { cn } from "@/lib/utils"
 import { toast } from "sonner"
@@ -387,7 +394,7 @@ export default function PostComposer({ platforms: propPlatforms }: { platforms?:
                 aria-label="Upload media files"
               >
                 <input {...getInputProps()} disabled={isSubmitting} aria-label="Select media files to upload" />
-                <UploadCloud className={cn("h-8 w-8 mb-2 transition-colors", isDragActive ? "text-primary" : "text-muted-foreground")} />
+                <UploadCloudIcon className={cn("h-8 w-8 mb-2 transition-colors", isDragActive ? "text-primary" : "text-muted-foreground")} />
                 {isDragActive ? (
                   <p className="text-primary text-center">Drop the files here ...</p>
                 ) : (
@@ -426,7 +433,7 @@ export default function PostComposer({ platforms: propPlatforms }: { platforms?:
                       onClick={() => removeFileToUpload(file)} 
                       disabled={isSubmitting}
                     >
-                      <X className="h-4 w-4" />
+                      <CloseIcon className="h-4 w-4" />
                     </Button>
                   </div>
                 );
@@ -484,7 +491,7 @@ export default function PostComposer({ platforms: propPlatforms }: { platforms?:
               className="transition-colors focus-visible:ring-2 focus-visible:ring-primary"
               aria-label="Save as draft"
             >
-              {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />} 
+              {isSubmitting && <CircularProgress size={20} />} 
               Save Draft
             </Button>
           </Tooltip>
@@ -495,7 +502,7 @@ export default function PostComposer({ platforms: propPlatforms }: { platforms?:
               className="transition-colors focus-visible:ring-2 focus-visible:ring-primary"
               aria-label="Schedule post"
             >
-              {isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />} 
+              {isSubmitting && <CircularProgress size={20} />} 
               Schedule Post
             </Button>
           </Tooltip>

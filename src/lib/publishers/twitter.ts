@@ -1,6 +1,6 @@
 import { TwitterApi, EUploadMimeType, SendTweetV2Params } from 'twitter-api-v2';
 import { decrypt } from '@/lib/crypto';
-import { _prisma } from '@/lib/prisma';
+import { _prisma } from '@/lib/prisma.ts';
 import type { _TweetV2PostTweetResult, _InlineErrorV2 } from 'twitter-api-v2';
 
 // ... existing code ...

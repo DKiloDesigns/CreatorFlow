@@ -15,13 +15,13 @@ import {
 import { Button as UiButton } from '@/components/ui/mui-button';
 import { Alert, AlertDescription } from '@/components/ui/feedback/mui-alert';
 import { 
-  CheckCircle, 
-  AlertCircle, 
-  Clock, 
-  XCircle, 
-  RefreshCw,
-  Activity
-} from 'lucide-react';
+  CheckCircle as CheckCircleIcon, 
+  Error as ErrorIcon, 
+  AccessTime as AccessTimeIcon, 
+  Cancel as CancelIcon, 
+  Refresh as RefreshIcon,
+  TrendingUp as TrendingUpIcon
+} from '@mui/icons-material';
 import { toast } from 'sonner';
 
 type SocialAccount = {
@@ -129,22 +129,22 @@ export function SocialAccountStatus({ accounts, onRefresh, onReauth }: SocialAcc
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'active':
-        return <CheckCircle style={{ width: 16, height: 16, color: 'success.main' }} />;
+        return <CheckCircleIcon sx={{ width: 16, height: 16, color: 'success.main' }} />;
       case 'pending':
-        return <Clock style={{ width: 16, height: 16, color: 'info.main' }} />;
+        return <AccessTimeIcon sx={{ width: 16, height: 16, color: 'info.main' }} />;
       case 'needs_reauth':
-        return <AlertCircle style={{ width: 16, height: 16, color: 'warning.main' }} />;
+        return <ErrorIcon sx={{ width: 16, height: 16, color: 'warning.main' }} />;
       case 'error':
-        return <XCircle style={{ width: 16, height: 16, color: 'error.main' }} />;
+        return <CancelIcon sx={{ width: 16, height: 16, color: 'error.main' }} />;
       default:
-        return <Activity style={{ width: 16, height: 16, color: 'text.secondary' }} />;
+        return <TrendingUpIcon sx={{ width: 16, height: 16, color: 'text.secondary' }} />;
     }
   };
 
   const getHealthIcon = (isHealthy: boolean) => {
     return isHealthy 
-      ? <CheckCircle className="w-4 h-4 text-green-600" />
-      : <XCircle className="w-4 h-4 text-red-600" />;
+      ? <CheckCircleIcon sx={{ width: 16, height: 16 }} className="text-green-600" />
+      : <CancelIcon sx={{ width: 16, height: 16 }} className="text-red-600" />;
   };
 
   const getTokenExpiryStatus = (account: SocialAccount) => {
@@ -171,14 +171,14 @@ export function SocialAccountStatus({ accounts, onRefresh, onReauth }: SocialAcc
       <Card>
         <CardHeader>
           <Typography variant="h5" component="div" className="flex items-center gap-2">
-            <Activity className="w-5 h-5" />
+            <TrendingUpIcon sx={{ width: 20, height: 20 }} />
             Account Status
           </Typography>
           <Typography variant="body2" color="text.secondary">Monitor the health of your connected social accounts</Typography>
         </CardHeader>
         <CardContent>
           <Alert>
-            <AlertCircle className="h-4 w-4" />
+            <ErrorIcon className="h-4 w-4" />
             <AlertDescription>
               No social accounts connected. Connect your first account to start monitoring.
             </AlertDescription>
@@ -198,7 +198,7 @@ export function SocialAccountStatus({ accounts, onRefresh, onReauth }: SocialAcc
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Box>
             <Typography variant="h5" component="div" className="flex items-center gap-2">
-              <Activity className="w-5 h-5" />
+              <TrendingUpIcon sx={{ width: 20, height: 20 }} />
               Account Status
             </Typography>
             <Typography variant="body2" color="text.secondary">Monitor the health of your connected social accounts</Typography>
@@ -210,7 +210,7 @@ export function SocialAccountStatus({ accounts, onRefresh, onReauth }: SocialAcc
             disabled={loading}
             className="flex items-center gap-2"
           >
-            <RefreshCw className={`w-4 h-4 ${loading ? 'animate-spin' : ''}`} />
+            <RefreshIcon sx={{ width: 16, height: 16 }} className={`${loading ? 'animate-spin' : ''}`} />
             {loading ? 'Checking...' : 'Check Health'}
           </Button>
         </Box>
@@ -222,11 +222,11 @@ export function SocialAccountStatus({ accounts, onRefresh, onReauth }: SocialAcc
             <Grid item xs={12} sm={6} component="div">
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 {healthPercentage >= 80 ? (
-                  <CheckCircle className="w-5 h-5 text-green-600" />
+                  <CheckCircleIcon sx={{ width: 20, height: 20 }} className="text-green-600" />
                 ) : healthPercentage >= 50 ? (
-                  <AlertCircle className="w-5 h-5 text-orange-600" />
+                  <ErrorIcon sx={{ width: 20, height: 20 }} className="text-orange-600" />
                 ) : (
-                  <XCircle className="w-5 h-5 text-red-600" />
+                  <CancelIcon sx={{ width: 20, height: 20 }} className="text-red-600" />
                 )}
                 <Typography variant="subtitle1" component="span" fontWeight="medium">Overall Health</Typography>
               </Box>
@@ -307,7 +307,7 @@ export function SocialAccountStatus({ accounts, onRefresh, onReauth }: SocialAcc
                       </Box>
                     ) : (
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                        <Clock className="w-4 h-4 text-gray-600" />
+                        <AccessTimeIcon sx={{ width: 16, height: 16 }} className="text-gray-600" />
                         <Typography variant="body2" color="text.secondary">Checking...</Typography>
                       </Box>
                     )}
@@ -330,7 +330,7 @@ export function SocialAccountStatus({ accounts, onRefresh, onReauth }: SocialAcc
                           disabled={isChecking}
                           className="flex items-center gap-1"
                         >
-                          <RefreshCw className={`w-4 h-4 ${isChecking ? 'animate-spin' : ''}`} />
+                          <RefreshIcon sx={{ width: 16, height: 16 }} className={`${isChecking ? 'animate-spin' : ''}`} />
                           Refresh
                         </UiButton>
                       )}
@@ -341,7 +341,7 @@ export function SocialAccountStatus({ accounts, onRefresh, onReauth }: SocialAcc
                           onClick={() => onReauth(account.platform)}
                           className="flex items-center gap-1 text-orange-600 border-orange-200 hover:bg-orange-50"
                         >
-                          <AlertCircle className="w-4 h-4" />
+                          <ErrorIcon sx={{ width: 16, height: 16 }} />
                           Re-auth
                         </UiButton>
                       )}
@@ -356,7 +356,7 @@ export function SocialAccountStatus({ accounts, onRefresh, onReauth }: SocialAcc
                     <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
                       {health.issues.map((issue, index) => (
                         <li key={index} style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 5 }}>
-                          <XCircle className="w-3 h-3" />
+                          <CancelIcon sx={{ width: 12, height: 12 }} />
                           <Typography variant="body2" color="red.700">{issue}</Typography>
                         </li>
                       ))}

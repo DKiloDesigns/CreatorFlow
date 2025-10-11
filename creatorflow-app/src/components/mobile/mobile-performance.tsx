@@ -15,16 +15,16 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import {
-  Wifi,
-  WifiOff,
-  Battery,
-  BatteryLow,
-  Zap,
-  Clock,
-  Memory,
-  Cpu,
-  HardDrive,
-} from 'lucide-react';
+  Wifi as WifiIcon,
+  WifiOff as WifiOffIcon,
+  BatteryFull as BatteryIcon,
+  BatteryAlert as BatteryLowIcon,
+  Bolt as ZapIcon,
+  AccessTime as ClockIcon,
+  Memory as MemoryIcon,
+  DeveloperBoard as CpuIcon,
+  Storage as HardDriveIcon,
+} from '@mui/icons-material';
 
 interface PerformanceMetrics {
   connectionType: 'slow-2g' | '2g' | '3g' | '4g' | '5g' | 'unknown';
@@ -133,24 +133,24 @@ export const MobilePerformance: React.FC<MobilePerformanceProps> = ({
     switch (performanceMetrics.effectiveType) {
       case 'slow-2g':
       case '2g':
-        return <WifiOff />;
+        return <WifiOffIcon />;
       case '3g':
-        return <Wifi />;
+        return <WifiIcon />;
       case '4g':
-        return <Wifi />;
+        return <WifiIcon />;
       case '5g':
-        return <Wifi />;
+        return <WifiIcon />;
       default:
-        return <Wifi />;
+        return <WifiIcon />;
     }
   }, [performanceMetrics.effectiveType]);
 
   // Get battery icon based on level
   const getBatteryIcon = useCallback(() => {
-    if (performanceMetrics.batteryLevel === undefined) return <Battery />;
+    if (performanceMetrics.batteryLevel === undefined) return <BatteryIcon />;
     
-    if (performanceMetrics.batteryLevel < 0.2) return <BatteryLow />;
-    return <Battery />;
+    if (performanceMetrics.batteryLevel < 0.2) return <BatteryLowIcon />;
+    return <BatteryIcon />;
   }, [performanceMetrics.batteryLevel]);
 
   // Performance optimizations based on connection
@@ -219,7 +219,7 @@ export const MobilePerformance: React.FC<MobilePerformanceProps> = ({
 
           {performanceMetrics.saveData && (
             <Chip
-              icon={<Zap />}
+              icon={<ZapIcon />}
               label="Data Saver"
               color="warning"
               size="small"
@@ -249,7 +249,7 @@ export const MobilePerformance: React.FC<MobilePerformanceProps> = ({
                 size="small"
                 onClick={() => setShowOptimizations(false)}
               >
-                <Clock />
+                <ClockIcon />
               </IconButton>
             }
           >
@@ -314,7 +314,7 @@ export const MobilePerformance: React.FC<MobilePerformanceProps> = ({
                 },
               }}
             >
-              <Cpu />
+              <CpuIcon />
             </IconButton>
           </Tooltip>
         </Box>

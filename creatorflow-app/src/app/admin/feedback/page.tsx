@@ -16,7 +16,7 @@ import {
   Tab,
   Chip
 } from '@mui/material';
-import { MessageSquare, Star, RefreshCw, Download, Filter, Users, BarChart3 } from 'lucide-react';
+import { ChatBubbleOutline as ChatBubbleOutlineIcon, Star as StarIcon, Refresh as RefreshIcon, Download as DownloadIcon, FilterList as FilterListIcon, People as PeopleIcon, BarChart as BarChartIcon } from '@mui/icons-material';
 
 
 interface FeedbackData {
@@ -156,10 +156,10 @@ export default function FeedbackDashboard() {
         </div>
         <div className="flex gap-2">
           <Button onClick={refreshData} disabled={refreshing} variant="outlined" size="small">
-            <RefreshCw className={`h-4 w-4 ${refreshing ? 'animate-spin' : ''}`} />
+            <RefreshIcon sx={{ width: 16, height: 16 }} className={`${refreshing ? 'animate-spin' : ''}`} />
           </Button>
           <Button onClick={exportData} variant="outlined" size="small">
-            <Download className="h-4 w-4" />
+            <DownloadIcon sx={{ width: 16, height: 16 }} />
           </Button>
         </div>
       </div>
@@ -168,7 +168,7 @@ export default function FeedbackDashboard() {
       <Card>
         <CardHeader>
           <Typography variant="h6" className="flex items-center gap-2">
-            <Filter className="h-5 w-5" />
+            <FilterListIcon sx={{ width: 20, height: 20 }} />
             Filters
           </Typography>
         </CardHeader>
@@ -221,7 +221,7 @@ export default function FeedbackDashboard() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <Typography variant="h6" className="text-sm font-medium">Total Feedback</Typography>
-            <MessageSquare className="h-4 w-4 text-muted-foreground" />
+            <ChatBubbleOutlineIcon sx={{ width: 16, height: 16 }} className="text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{data.analytics.total}</div>
@@ -234,7 +234,7 @@ export default function FeedbackDashboard() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <Typography variant="h6" className="text-sm font-medium">Average Rating</Typography>
-            <Star className="h-4 w-4 text-muted-foreground" />
+            <StarIcon sx={{ width: 16, height: 16 }} className="text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
@@ -249,7 +249,7 @@ export default function FeedbackDashboard() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <Typography variant="h6" className="text-sm font-medium">Trial Users</Typography>
-            <Users className="h-4 w-4 text-muted-foreground" />
+            <PeopleIcon sx={{ width: 16, height: 16 }} className="text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
@@ -264,7 +264,7 @@ export default function FeedbackDashboard() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <Typography variant="h6" className="text-sm font-medium">Top Category</Typography>
-            <BarChart3 className="h-4 w-4 text-muted-foreground" />
+            <BarChartIcon sx={{ width: 16, height: 16 }} className="text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
@@ -413,7 +413,7 @@ export default function FeedbackDashboard() {
                       <div key={rating} className="flex items-center gap-3">
                         <div className="flex items-center gap-1 w-8">
                           <span className="text-sm">{rating}</span>
-                          <Star className="h-3 w-3 fill-current text-yellow-500" />
+                          <StarIcon sx={{ width: 12, height: 12 }} className="fill-current text-yellow-500" />
                         </div>
                         <div className="flex-1 bg-gray-200 rounded-full h-2">
                           <div 

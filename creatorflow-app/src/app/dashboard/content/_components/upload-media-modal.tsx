@@ -10,7 +10,7 @@ import {
   LinearProgress,
   Chip
 } from '@mui/material';
-import { Upload, Activity, Image, Video, File, X, Copy } from 'lucide-react';
+import { CloudUpload as UploadIcon, TrendingUp as ActivityIcon, Image as ImageIcon, VideoLibrary as VideoIcon, Description as FileIcon, Close as XIcon, ContentCopy as CopyIcon } from '@mui/icons-material';
 import { toast } from 'sonner';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
@@ -276,7 +276,7 @@ export function UploadMediaModal({ open, onClose, onUploadComplete }: UploadMedi
       <DialogContent>
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Upload className="h-5 w-5" />
+            <UploadIcon sx={{ height: 20, width: 20 }} />
             Upload Media
           </DialogTitle>
         </DialogHeader>
@@ -297,7 +297,7 @@ export function UploadMediaModal({ open, onClose, onUploadComplete }: UploadMedi
               onDrop={handleDrop}
             >
               <div className="text-center">
-                <Upload className="h-12 w-12 mx-auto text-gray-400 mb-4" />
+                <UploadIcon sx={{ height: 48, width: 48, mx: 'auto', mb: 1 }} className="text-gray-400" />
                 <p className="text-lg font-medium mb-2">
                   Drop files here or click to browse
                 </p>
@@ -345,7 +345,7 @@ export function UploadMediaModal({ open, onClose, onUploadComplete }: UploadMedi
                         />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center">
-                          <Video className="h-8 w-8 text-gray-400" />
+                          <VideoIcon sx={{ height: 32, width: 32 }} className="text-gray-400" />
                         </div>
                       )}
                       
@@ -389,7 +389,7 @@ export function UploadMediaModal({ open, onClose, onUploadComplete }: UploadMedi
                       }}
                       className="absolute top-2 left-2 opacity-0 group-hover:opacity-100 transition-opacity bg-red-500 text-white rounded-full p-1 hover:bg-red-600"
                     >
-                      <X className="h-3 w-3" />
+                      <XIcon sx={{ height: 12, width: 12 }} />
                     </button>
                   </div>
                 ))}
@@ -454,7 +454,7 @@ export function UploadMediaModal({ open, onClose, onUploadComplete }: UploadMedi
                         variant="outlined"
                         onClick={() => copyUrl(selectedFile.uploadedUrl!)}
                       >
-                        <Copy className="h-4 w-4" />
+                        <CopyIcon sx={{ height: 16, width: 16 }} />
                       </Button>
                     </div>
                   </div>
@@ -479,7 +479,7 @@ export function UploadMediaModal({ open, onClose, onUploadComplete }: UploadMedi
               </div>
             ) : (
               <div className="text-center text-gray-500 mt-8">
-                <File className="h-12 w-12 mx-auto mb-4" />
+                <FileIcon sx={{ height: 48, width: 48, mx: 'auto', mb: 1 }} />
                 <p>Select a file to view details</p>
               </div>
             )}

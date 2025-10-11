@@ -1,18 +1,42 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { 
-  Card, 
-  CardContent, 
-  CardHeader, 
+import {
+  Card,
+  CardContent,
+  CardHeader,
   Button,
-  Typography
+  Typography,
+  Tab,
+  Tabs,
+  Box,
+  Select,
+  MenuItem,
+  FormControl,
+  InputLabel
 } from '@mui/material';
-import { TestTube, Activity } from 'lucide-react';
+import {
+  ScienceOutlined as TestTubeIcon,
+  TrendingUp as ActivityIcon,
+  Refresh as RefreshCwIcon,
+  Add as PlusIcon,
+  CheckCircle as CheckCircleIcon,
+  TrendingUp as TrendingUpIcon,
+  AccessTime as ClockIcon,
+  BarChart as BarChart3Icon,
+  Code as CodeIcon,
+  Storage as DatabaseIcon,
+  DesktopWindows as MonitorIcon,
+  FlashOn as ZapIcon,
+  Security as ShieldIcon,
+  Description as FileTextIcon,
+  PlayArrow as PlayIcon,
+  Settings as SettingsIcon,
+  Visibility as EyeIcon,
+  Download as DownloadIcon
+} from '@mui/icons-material';
 import { Badge } from '@/components/ui/badge';
-import { Tab, Tabs, Box } from '@mui/material';
 import { CardDescription, Input, Textarea } from '@/components/ui';
-import { Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 
 interface TestSuite {
   id: string;
@@ -175,23 +199,23 @@ export default function TestingPage() {
 
   const getCategoryIcon = (category: string) => {
     switch (category) {
-      case 'unit': return <Code className="h-4 w-4" />;
-      case 'integration': return <Database className="h-4 w-4" />;
-      case 'e2e': return <Monitor className="h-4 w-4" />;
-      case 'performance': return <Zap className="h-4 w-4" />;
-      case 'security': return <Shield className="h-4 w-4" />;
-      default: return <TestTube className="h-4 w-4" />;
+      case 'unit': return <CodeIcon className="h-4 w-4" />;
+      case 'integration': return <DatabaseIcon className="h-4 w-4" />;
+      case 'e2e': return <MonitorIcon className="h-4 w-4" />;
+      case 'performance': return <ZapIcon className="h-4 w-4" />;
+      case 'security': return <ShieldIcon className="h-4 w-4" />;
+      default: return <TestTubeIcon className="h-4 w-4" />;
     }
   };
 
   const getTypeIcon = (type: string) => {
     switch (type) {
-      case 'unit': return <Code className="h-4 w-4" />;
-      case 'integration': return <Database className="h-4 w-4" />;
-      case 'e2e': return <Monitor className="h-4 w-4" />;
-      case 'performance': return <Zap className="h-4 w-4" />;
-      case 'security': return <Shield className="h-4 w-4" />;
-      default: return <TestTube className="h-4 w-4" />;
+      case 'unit': return <CodeIcon className="h-4 w-4" />;
+      case 'integration': return <DatabaseIcon className="h-4 w-4" />;
+      case 'e2e': return <MonitorIcon className="h-4 w-4" />;
+      case 'performance': return <ZapIcon className="h-4 w-4" />;
+      case 'security': return <ShieldIcon className="h-4 w-4" />;
+      default: return <TestTubeIcon className="h-4 w-4" />;
     }
   };
 
@@ -202,18 +226,18 @@ export default function TestingPage() {
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold flex items-center gap-2">
-            <TestTube className="h-8 w-8" />
+            <TestTubeIcon className="h-8 w-8" />
             Testing & Quality Assurance
           </h1>
           <p className="text-muted-foreground">Comprehensive testing framework and quality assurance</p>
         </div>
         <div className="flex gap-2">
           <Button onClick={runContinuousTests} variant="outlined">
-            <RefreshCw className="h-4 w-4 mr-2" />
+            <RefreshCwIcon className="h-4 w-4 mr-2" />
             Run All Tests
           </Button>
           <Button onClick={() => setShowCreateSuite(true)}>
-            <Plus className="h-4 w-4 mr-2" />
+            <PlusIcon className="h-4 w-4 mr-2" />
             New Test Suite
           </Button>
         </div>
@@ -224,7 +248,7 @@ export default function TestingPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <Typography variant="h6" className="text-sm font-medium">Total Tests</Typography>
-            <TestTube className="h-4 w-4 text-muted-foreground" />
+            <TestTubeIcon className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{metrics?.totalTests || 0}</div>
@@ -237,7 +261,7 @@ export default function TestingPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <Typography variant="h6" className="text-sm font-medium">Passed Tests</Typography>
-            <CheckCircle className="h-4 w-4 text-green-600" />
+            <CheckCircleIcon className="h-4 w-4 text-green-600" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-green-600">
@@ -252,7 +276,7 @@ export default function TestingPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <Typography variant="h6" className="text-sm font-medium">Success Rate</Typography>
-            <TrendingUp className="h-4 w-4 text-blue-600" />
+            <TrendingUpIcon className="h-4 w-4 text-blue-600" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-blue-600">
@@ -267,7 +291,7 @@ export default function TestingPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <Typography variant="h6" className="text-sm font-medium">Avg Duration</Typography>
-            <Clock className="h-4 w-4 text-purple-600" />
+            <ClockIcon className="h-4 w-4 text-purple-600" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-purple-600">
@@ -293,7 +317,7 @@ export default function TestingPage() {
             <Card>
               <CardHeader>
                 <Typography variant="h6" className="flex items-center gap-2">
-                  <BarChart3 className="h-5 w-5" />
+                  <BarChart3Icon className="h-5 w-5" />
                   Test Categories
                 </Typography>
                 <CardDescription>
@@ -326,7 +350,7 @@ export default function TestingPage() {
             <Card>
               <CardHeader>
                 <Typography variant="h6" className="flex items-center gap-2">
-                  <Activity className="h-5 w-5" />
+                  <ActivityIcon className="h-5 w-5" />
                   Recent Test Results
                 </Typography>
                 <CardDescription>
@@ -355,7 +379,7 @@ export default function TestingPage() {
                           <div className="flex items-center gap-2">
                             {getTypeIcon(test.type)}
                             <Button size="small" variant="outlined">
-                              <Play className="h-3 w-3" />
+                              <PlayIcon className="h-3 w-3" />
                             </Button>
                           </div>
                         </div>
@@ -372,7 +396,7 @@ export default function TestingPage() {
           <Card>
             <CardHeader>
               <Typography variant="h6" className="flex items-center gap-2">
-                <TestTube className="h-5 w-5" />
+                <TestTubeIcon className="h-5 w-5" />
                 Test Suites
               </Typography>
               <CardDescription>
@@ -383,7 +407,7 @@ export default function TestingPage() {
               <div className="space-y-4">
                 {suites.length === 0 ? (
                   <div className="text-center py-8 text-muted-foreground">
-                    <TestTube className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
+                    <TestTubeIcon className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
                     <p>No test suites found. Create your first test suite to get started.</p>
                   </div>
                 ) : (
@@ -405,10 +429,10 @@ export default function TestingPage() {
                         </div>
                         <div className="flex gap-2">
                           <Button size="small" variant="outlined" onClick={() => runTestSuite(suite.id)}>
-                            <Play className="h-3 w-3" />
+                            <PlayIcon className="h-3 w-3" />
                           </Button>
                           <Button size="small" variant="outlined">
-                            <Settings className="h-3 w-3" />
+                            <SettingsIcon className="h-3 w-3" />
                           </Button>
                         </div>
                       </div>
@@ -424,7 +448,7 @@ export default function TestingPage() {
           <Card>
             <CardHeader>
               <Typography variant="h6" className="flex items-center gap-2">
-                <FileText className="h-5 w-5" />
+                <FileTextIcon className="h-5 w-5" />
                 Test Results
               </Typography>
               <CardDescription>
@@ -454,10 +478,10 @@ export default function TestingPage() {
                           </div>
                           <div className="flex gap-2">
                             <Button size="small" variant="outlined">
-                              <Eye className="h-3 w-3" />
+                              <EyeIcon className="h-3 w-3" />
                             </Button>
                             <Button size="small" variant="outlined">
-                              <Download className="h-3 w-3" />
+                              <DownloadIcon className="h-3 w-3" />
                             </Button>
                           </div>
                         </div>
@@ -474,7 +498,7 @@ export default function TestingPage() {
           <Card>
             <CardHeader>
               <Typography variant="h6" className="flex items-center gap-2">
-                <Zap className="h-5 w-5" />
+                <ZapIcon className="h-5 w-5" />
                 Performance Tests
               </Typography>
               <CardDescription>
@@ -510,10 +534,10 @@ export default function TestingPage() {
                           </div>
                           <div className="flex gap-2">
                             <Button size="small" variant="outlined">
-                              <Play className="h-3 w-3" />
+                              <PlayIcon className="h-3 w-3" />
                             </Button>
                             <Button size="small" variant="outlined">
-                              <BarChart3 className="h-3 w-3" />
+                              <BarChart3Icon className="h-3 w-3" />
                             </Button>
                           </div>
                         </div>
@@ -529,7 +553,7 @@ export default function TestingPage() {
           <Card>
             <CardHeader>
               <Typography variant="h6" className="flex items-center gap-2">
-                <Shield className="h-5 w-5" />
+                <ShieldIcon className="h-5 w-5" />
                 Security Tests
               </Typography>
               <CardDescription>
@@ -572,10 +596,10 @@ export default function TestingPage() {
                           </div>
                           <div className="flex gap-2">
                             <Button size="small" variant="outlined">
-                              <Play className="h-3 w-3" />
+                              <PlayIcon className="h-3 w-3" />
                             </Button>
                             <Button size="small" variant="outlined">
-                              <Shield className="h-3 w-3" />
+                              <ShieldIcon className="h-3 w-3" />
                             </Button>
                           </div>
                         </div>

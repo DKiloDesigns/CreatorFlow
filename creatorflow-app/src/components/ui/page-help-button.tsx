@@ -15,14 +15,14 @@ import {
   useTheme
 } from '@mui/material';
 import {
-  HelpCircle,
-  BookOpen,
-  Play,
-  Video,
-  Lightbulb,
-  ExternalLink,
-  ChevronRight
-} from 'lucide-react';
+  HelpOutline as HelpCircleIcon,
+  BookOutlined as BookOpenIcon,
+  PlayArrow as PlayIcon,
+  Videocam as VideoIcon,
+  LightbulbOutlined as LightbulbIcon,
+  OpenInNew as ExternalLinkIcon,
+  ChevronRight as ChevronRightIcon
+} from '@mui/icons-material';
 import { useRouter } from 'next/navigation';
 
 interface PageHelpButtonProps {
@@ -96,7 +96,7 @@ export function PageHelpButton({
             }
           }}
         >
-          <HelpCircle size={20} />
+          <HelpCircleIcon sx={{ fontSize: 20 }} />
         </IconButton>
       </Tooltip>
 
@@ -128,24 +128,24 @@ export function PageHelpButton({
         {/* Quick Actions */}
         <MenuItem onClick={handleHelpCenterClick}>
           <ListItemIcon>
-            <BookOpen size={18} />
+            <BookOpenIcon sx={{ fontSize: 18 }} />
           </ListItemIcon>
           <ListItemText 
             primary="Help Center" 
             secondary="Browse all help articles"
           />
-          <ChevronRight size={16} color={theme.palette.text.secondary} />
+          <ChevronRightIcon sx={{ fontSize: 16, color: theme.palette.text.secondary }} />
         </MenuItem>
 
         <MenuItem onClick={handleTutorialsClick}>
           <ListItemIcon>
-            <Play size={18} />
+            <PlayIcon sx={{ fontSize: 18 }} />
           </ListItemIcon>
           <ListItemText 
             primary="Tutorial Center" 
             secondary="Interactive tutorials & videos"
           />
-          <ChevronRight size={16} color={theme.palette.text.secondary} />
+          <ChevronRightIcon sx={{ fontSize: 16, color: theme.palette.text.secondary }} />
         </MenuItem>
 
         {/* Available Tutorials */}
@@ -163,7 +163,7 @@ export function PageHelpButton({
                 onClick={() => handleTutorialClick(tutorialId)}
               >
                 <ListItemIcon>
-                  <Play size={18} />
+                  <PlayIcon sx={{ fontSize: 18 }} />
                 </ListItemIcon>
                 <ListItemText 
                   primary={tutorialId.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
@@ -189,7 +189,7 @@ export function PageHelpButton({
                 onClick={() => handleVideoClick(videoId)}
               >
                 <ListItemIcon>
-                  <Video size={18} />
+                  <VideoIcon sx={{ fontSize: 18 }} />
                 </ListItemIcon>
                 <ListItemText 
                   primary={videoId.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
@@ -215,7 +215,7 @@ export function PageHelpButton({
                 onClick={() => handleTipClick(tipId)}
               >
                 <ListItemIcon>
-                  <Lightbulb size={18} />
+                  <LightbulbIcon sx={{ fontSize: 18 }} />
                 </ListItemIcon>
                 <ListItemText 
                   primary={tipId.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}

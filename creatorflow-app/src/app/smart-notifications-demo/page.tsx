@@ -20,20 +20,20 @@ import {
   Tab,
 } from '@mui/material';
 import {
-  Bell,
-  Brain,
-  Settings,
-  Play,
-  Pause,
-  Refresh,
-  ArrowLeft,
-  TrendingUp,
-  Users,
-  MessageCircle,
-  Lightbulb,
-  Target,
-  Zap,
-} from 'lucide-react';
+  Notifications as NotificationsIcon,
+  Psychology as PsychologyIcon,
+  Settings as SettingsIcon,
+  PlayArrow as PlayArrowIcon,
+  Pause as PauseIcon,
+  Refresh as RefreshIcon,
+  ArrowBack as ArrowBackIcon,
+  TrendingUp as TrendingUpIcon,
+  People as PeopleIcon,
+  Chat as ChatIcon,
+  LightbulbOutlined as LightbulbOutlinedIcon,
+  Adjust as AdjustIcon,
+  Bolt as BoltIcon,
+} from '@mui/icons-material';
 import Link from 'next/link';
 import { useSmartNotifications } from '@/contexts/SmartNotificationContext';
 import { NotificationPreferences } from '@/components/notifications/NotificationPreferences';
@@ -154,7 +154,7 @@ export default function SmartNotificationsDemoPage() {
       {/* Header */}
       <Box sx={{ mb: 4, display: 'flex', alignItems: 'center', gap: 2 }}>
         <Link href="/features-demo">
-          <Button variant="outlined" startIcon={<ArrowLeft size={16} />}>
+          <Button variant="outlined" startIcon={<ArrowBackIcon sx={{ width: 16, height: 16 }} />}>
             Back to Features
           </Button>
         </Link>
@@ -164,7 +164,7 @@ export default function SmartNotificationsDemoPage() {
         <Chip 
           label="Phase 2 Complete" 
           color="success" 
-          icon={<Brain size={16} />}
+          icon={<PsychologyIcon sx={{ width: 16, height: 16 }} />}
         />
       </Box>
 
@@ -172,7 +172,7 @@ export default function SmartNotificationsDemoPage() {
       <Alert 
         severity={isLearning ? "info" : "success"} 
         sx={{ mb: 4 }}
-        icon={<Brain size={20} />}
+        icon={<PsychologyIcon sx={{ width: 20, height: 20 }} />}
       >
         <Typography variant="body1">
           {isLearning 
@@ -195,7 +195,7 @@ export default function SmartNotificationsDemoPage() {
           <Card>
             <CardHeader
               title="AI Accuracy"
-              avatar={<Brain size={24} />}
+              avatar={<PsychologyIcon sx={{ width: 24, height: 24 }} />}
             />
             <CardContent>
               <Typography variant="h4" color="primary">
@@ -211,7 +211,7 @@ export default function SmartNotificationsDemoPage() {
           <Card>
             <CardHeader
               title="Relevance Score"
-              avatar={<Target size={24} />}
+              avatar={<AdjustIcon sx={{ width: 24, height: 24 }} />}
             />
             <CardContent>
               <Typography variant="h4" color="success.main">
@@ -227,7 +227,7 @@ export default function SmartNotificationsDemoPage() {
           <Card>
             <CardHeader
               title="Read Rate"
-              avatar={<MessageCircle size={24} />}
+              avatar={<ChatIcon sx={{ width: 24, height: 24 }} />}
             />
             <CardContent>
               <Typography variant="h4" color="info.main">
@@ -243,7 +243,7 @@ export default function SmartNotificationsDemoPage() {
           <Card>
             <CardHeader
               title="Total Notifications"
-              avatar={<Bell size={24} />}
+              avatar={<NotificationsIcon sx={{ width: 24, height: 24 }} />}
             />
             <CardContent>
               <Typography variant="h4" color="warning.main">
@@ -260,7 +260,7 @@ export default function SmartNotificationsDemoPage() {
       {/* Simulation Controls */}
       <Paper sx={{ p: 3, mb: 4 }}>
         <Typography variant="h6" sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
-          <Zap size={20} />
+          <BoltIcon sx={{ width: 20, height: 20 }} />
           AI Notification Simulation
         </Typography>
         <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>
@@ -270,7 +270,7 @@ export default function SmartNotificationsDemoPage() {
         <Box sx={{ display: 'flex', gap: 2 }}>
           <Button
             variant="contained"
-            startIcon={<Play size={16} />}
+            startIcon={<PlayArrowIcon sx={{ width: 16, height: 16 }} />}
             onClick={startSimulation}
             disabled={isSimulating}
           >
@@ -278,7 +278,7 @@ export default function SmartNotificationsDemoPage() {
           </Button>
           <Button
             variant="outlined"
-            startIcon={<Pause size={16} />}
+            startIcon={<PauseIcon sx={{ width: 16, height: 16 }} />}
             onClick={stopSimulation}
             disabled={!isSimulating}
           >
@@ -286,7 +286,7 @@ export default function SmartNotificationsDemoPage() {
           </Button>
           <Button
             variant="outlined"
-            startIcon={<Bell size={16} />}
+            startIcon={<NotificationsIcon sx={{ width: 16, height: 16 }} />}
             onClick={simulateNotification}
           >
             Send Test Notification
@@ -307,17 +307,17 @@ export default function SmartNotificationsDemoPage() {
           <Tabs value={tabValue} onChange={handleTabChange} aria-label="smart notifications tabs">
             <Tab 
               label="Notification Center" 
-              icon={<Bell size={16} />}
+              icon={<NotificationsIcon sx={{ width: 16, height: 16 }} />}
               iconPosition="start"
             />
             <Tab 
               label="AI Preferences" 
-              icon={<Settings size={16} />}
+              icon={<SettingsIcon sx={{ width: 16, height: 16 }} />}
               iconPosition="start"
             />
             <Tab 
               label="Behavior Analysis" 
-              icon={<TrendingUp size={16} />}
+              icon={<TrendingUpIcon sx={{ width: 16, height: 16 }} />}
               iconPosition="start"
             />
           </Tabs>
@@ -336,7 +336,7 @@ export default function SmartNotificationsDemoPage() {
         <TabPanel value={tabValue} index={2}>
           <Box sx={{ p: 3 }}>
             <Typography variant="h6" sx={{ mb: 3, display: 'flex', alignItems: 'center', gap: 1 }}>
-              <TrendingUp size={20} />
+              <TrendingUpIcon sx={{ width: 20, height: 20 }} />
               AI Behavior Analysis
             </Typography>
             

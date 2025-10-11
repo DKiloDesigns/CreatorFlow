@@ -13,7 +13,16 @@ import {
   Chip,
   InputAdornment
 } from '@mui/material';
-import { FileText, Activity, Heart, Star, Image as ImageIcon, Sparkles, Copy, Download } from 'lucide-react';
+import {
+  Description as FileText,
+  TrendingUp as Activity,
+  Favorite as Heart,
+  Star,
+  Image as ImageIcon,
+  AutoAwesome as Sparkles,
+  ContentCopy as Copy,
+  Download
+} from '@mui/icons-material';
 import { toast } from 'sonner';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Dialog as MuiDialog, DialogContent as MuiDialogContent, DialogTitle as MuiDialogTitle } from '@mui/material';
@@ -283,7 +292,7 @@ export function UseTemplateModal({ open, onClose, onTemplateUsed }: UseTemplateM
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
-                        <Activity />
+                        <Activity sx={{ fontSize: 20 }} />
                       </InputAdornment>
                     ),
                   }}
@@ -349,7 +358,7 @@ export function UseTemplateModal({ open, onClose, onTemplateUsed }: UseTemplateM
                           justifyContent: 'center' 
                         }}>
                           <Box sx={{ textAlign: 'center' }}>
-                            <Activity style={{ fontSize: 32, color: '#9e9e9e', marginBottom: 8 }} />
+                            <Activity sx={{ fontSize: 32, color: '#9e9e9e', marginBottom: 1 }} />
                             <Typography variant="body2" color="text.secondary">
                               Template Preview
                             </Typography>
@@ -384,10 +393,10 @@ export function UseTemplateModal({ open, onClose, onTemplateUsed }: UseTemplateM
                                   handleFavoriteToggle(template.id);
                                 }}
                               >
-                                <Heart style={{ 
+                                <Heart sx={{ 
                                   fontSize: 16, 
                                   color: template.isFavorite ? '#f44336' : '#9e9e9e',
-                                  fill: template.isFavorite ? '#f44336' : 'none'
+                                  fill: template.isFavorite ? 'currentColor' : 'none'
                                 }} />
                               </IconButton>
                             </Box>
@@ -410,11 +419,11 @@ export function UseTemplateModal({ open, onClose, onTemplateUsed }: UseTemplateM
                               />
                             </Box>
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                              <Star style={{ fontSize: 12, color: '#ff9800' }} />
+                              <Star sx={{ fontSize: 12, color: '#ff9800' }} />
                               <Typography variant="caption" color="text.secondary">
                                 {template.rating}
                               </Typography>
-                              <Typography variant="caption" color="text.secondary">•</Typography>
+                              <Typography variant="caption" color="text.secondary"> • </Typography>
                               <Typography variant="caption" color="text.secondary">
                                 {template.usageCount} uses
                               </Typography>
@@ -468,7 +477,7 @@ export function UseTemplateModal({ open, onClose, onTemplateUsed }: UseTemplateM
                   mb: 3
                 }}>
                   <Box sx={{ textAlign: 'center' }}>
-                    <Activity style={{ fontSize: 32, color: '#9e9e9e', marginBottom: 8 }} />
+                    <Activity sx={{ fontSize: 32, color: '#9e9e9e', marginBottom: 1 }} />
                     <Typography variant="body2" color="text.secondary">
                       Live Preview
                     </Typography>
@@ -538,7 +547,7 @@ export function UseTemplateModal({ open, onClose, onTemplateUsed }: UseTemplateM
                           p: 2, 
                           textAlign: 'center' 
                         }}>
-                          <ImageIcon style={{ fontSize: 32, color: '#9e9e9e', marginBottom: 8 }} />
+                          <ImageIcon sx={{ fontSize: 32, color: '#9e9e9e', marginBottom: 1 }} />
                           <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
                             {variable.placeholder}
                           </Typography>
@@ -576,7 +585,7 @@ export function UseTemplateModal({ open, onClose, onTemplateUsed }: UseTemplateM
                     </>
                   ) : (
                     <>
-                      <Sparkles style={{ fontSize: 16, marginRight: 8 }} />
+                      <Sparkles sx={{ fontSize: 16, marginRight: 1 }} />
                       Use Template
                     </>
                   )}
@@ -584,11 +593,11 @@ export function UseTemplateModal({ open, onClose, onTemplateUsed }: UseTemplateM
                 
                 <Box sx={{ display: 'flex', gap: 1 }}>
                   <Button variant="outlined" size="small" sx={{ flex: 1 }}>
-                    <Copy style={{ fontSize: 16, marginRight: 8 }} />
+                    <Copy sx={{ fontSize: 16, marginRight: 1 }} />
                     Duplicate
                   </Button>
                   <Button variant="outlined" size="small" sx={{ flex: 1 }}>
-                    <Download style={{ fontSize: 16, marginRight: 8 }} />
+                    <Download sx={{ fontSize: 16, marginRight: 1 }} />
                     Download
                   </Button>
                 </Box>

@@ -58,6 +58,7 @@ export const authOptions: NextAuthOptions = {
                  // Check if email is verified
                  if (!user.emailVerified) {
                    console.log('[NextAuth][Credentials] Email not verified for user:', user.email);
+                   console.log('[NextAuth][Credentials] User emailVerified status:', user.emailVerified);
                    return null; // Don't allow sign-in if email not verified
                  }
                  

@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Edit, Trash2, Copy, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Edit as EditIcon, Delete as DeleteIcon, ContentCopy as ContentCopyIcon, ChevronLeft as ChevronLeftIcon, ChevronRight as ChevronRightIcon } from '@mui/icons-material';
 import {
   Dialog,
   DialogTitle,
@@ -148,14 +148,14 @@ export default function ContentTable({ posts, loading, error, onEdit, onDelete, 
               style={{ position: 'absolute', left: '8px', top: '50%', transform: 'translateY(-50%)', zIndex: 10, backgroundColor: 'rgba(255,255,255,0.95)', border: 'none', borderRadius: '50%', padding: '8px', color: '#374151', cursor: 'pointer', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }}
               aria-label="Previous card"
             >
-              <ChevronLeft size={24} />
+              <ChevronLeftIcon sx={{ fontSize: 24 }} />
             </button>
             <button
               onClick={nextCard}
               style={{ position: 'absolute', right: '8px', top: '50%', transform: 'translateY(-50%)', zIndex: 10, backgroundColor: 'rgba(255,255,255,0.95)', border: 'none', borderRadius: '50%', padding: '8px', color: '#374151', cursor: 'pointer', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }}
               aria-label="Next card"
             >
-              <ChevronRight size={24} />
+              <ChevronRightIcon sx={{ fontSize: 24 }} />
             </button>
           </>
         )}
@@ -251,7 +251,7 @@ export default function ContentTable({ posts, loading, error, onEdit, onDelete, 
                               onEdit(post);
                             }}
                           >
-                            <Edit size={16} />
+                            <EditIcon sx={{ fontSize: 16 }} />
                           </button>
                           <button
                             style={{ padding: '4px', color: '#4b5563', borderRadius: '4px', border: 'none', background: 'none', cursor: 'pointer' }}
@@ -260,7 +260,7 @@ export default function ContentTable({ posts, loading, error, onEdit, onDelete, 
                               onDuplicate(post);
                             }}
                           >
-                            <Copy size={16} />
+                            <ContentCopyIcon sx={{ fontSize: 16 }} />
                           </button>
                         </div>
                       )}

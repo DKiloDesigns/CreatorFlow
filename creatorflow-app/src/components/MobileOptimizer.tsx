@@ -17,7 +17,10 @@ import {
   Tab,
   LinearProgress
 } from '@mui/material';
-import { Smartphone, Activity } from 'lucide-react';
+import {
+  Smartphone as SmartphoneIcon,
+  Timeline as ActivityIcon
+} from '@mui/icons-material';
 
 interface MobileCapabilities {
   isMobile: boolean;
@@ -168,10 +171,10 @@ export default function MobileOptimizer() {
   };
 
   const getDeviceIcon = () => {
-    if (!capabilities) return <Smartphone style={{ width: 24, height: 24 }} />;
-    if (capabilities.isTablet) return <Smartphone style={{ width: 24, height: 24 }} />;
-    if (capabilities.isMobile) return <Smartphone style={{ width: 24, height: 24 }} />;
-    return <Smartphone style={{ width: 24, height: 24 }} />;
+    if (!capabilities) return <SmartphoneIcon sx={{ width: 24, height: 24 }} />;
+    if (capabilities.isTablet) return <SmartphoneIcon sx={{ width: 24, height: 24 }} />;
+    if (capabilities.isMobile) return <SmartphoneIcon sx={{ width: 24, height: 24 }} />;
+    return <SmartphoneIcon sx={{ width: 24, height: 24 }} />;
   };
 
   const getConnectionIcon = () => {
@@ -197,14 +200,14 @@ export default function MobileOptimizer() {
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <Box>
           <Typography variant="h3" component="h1" sx={{ fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: 1 }}>
-            <Smartphone className="h-8 w-8" />
+            <SmartphoneIcon sx={{ height: 32, width: 32 }} />
             Mobile Optimization
           </Typography>
           <Typography variant="body1" sx={{ color: 'text.secondary' }}>Real-time device detection and optimization</Typography>
         </Box>
         <Button onClick={fetchMobileData} variant="outlined">
           <Box sx={{ mr: 1 }}>
-            <Activity className="h-4 w-4" />
+            <ActivityIcon sx={{ height: 16, width: 16 }} />
           </Box>
           Refresh
         </Button>
@@ -298,7 +301,7 @@ export default function MobileOptimizer() {
               <Card>
                 <CardHeader>
                   <Typography variant="subtitle2" component="div" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                    <Smartphone className="h-5 w-5" />
+                    <SmartphoneIcon sx={{ height: 20, width: 20 }} />
                     Touch Optimization
                   </Typography>
                   <Typography variant="body2" color="text.secondary">
@@ -368,7 +371,7 @@ export default function MobileOptimizer() {
           <Card>
             <CardHeader>
               <Typography variant="subtitle2" component="div" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <Activity className="h-5 w-5" />
+                <ActivityIcon sx={{ height: 20, width: 20 }} />
                 Performance Metrics
               </Typography>
               <Typography variant="body2" color="text.secondary">

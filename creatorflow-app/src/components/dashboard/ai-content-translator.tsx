@@ -10,7 +10,10 @@ import {
   Chip,
   Grid
 } from '@mui/material';
-import { Globe, Activity } from 'lucide-react';
+import {
+  Public as GlobeIcon,
+  Timeline as ActivityIcon
+} from '@mui/icons-material';
 
 interface AIContentTranslatorProps {
   onTranslation?: (translation: string, targetLanguage: string) => void;
@@ -73,7 +76,7 @@ export function AIContentTranslator({ onTranslation, className }: AIContentTrans
       <CardHeader
         title="AI Content Translator"
         subheader="Translate your content to multiple languages"
-        avatar={<Globe size={24} />}
+        avatar={<GlobeIcon sx={{ width: 24, height: 24 }} />}
       />
       <CardContent>
         <Grid container spacing={3}>
@@ -114,7 +117,7 @@ export function AIContentTranslator({ onTranslation, className }: AIContentTrans
               variant="contained"
               onClick={translateContent}
               disabled={!content.trim() || isTranslating}
-              startIcon={<Activity />}
+              startIcon={<ActivityIcon />}
             >
               {isTranslating ? 'Translating...' : `Translate to ${targetLanguage}`}
             </Button>
@@ -139,7 +142,7 @@ export function AIContentTranslator({ onTranslation, className }: AIContentTrans
                     variant="outlined"
                     size="small"
                     onClick={copyTranslation}
-                    startIcon={<Activity size={16} />}
+                    startIcon={<ActivityIcon sx={{ fontSize: 16 }} />}
                   >
                     Copy Translation
                   </Button>

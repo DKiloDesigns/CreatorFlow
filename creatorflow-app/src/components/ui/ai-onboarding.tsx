@@ -12,7 +12,10 @@ import {
   Grid,
   Chip
 } from '@mui/material';
-import { Brain, Activity } from 'lucide-react';
+import {
+  PsychologyOutlined as BrainIcon,
+  Timeline as ActivityIcon
+} from '@mui/icons-material';
 import { APIKeySetup } from './api-key-setup';
 
 interface AIOnboardingProps {
@@ -25,25 +28,25 @@ export function AIOnboarding({ onComplete, className }: AIOnboardingProps) {
 
   const benefits = [
     {
-      icon: Activity,
+      icon: ActivityIcon,
       title: 'Smart Captions',
       description: 'Generate engaging captions in seconds',
       color: 'purple.600'
     },
     {
-      icon: Activity,
+      icon: ActivityIcon,
       title: 'Perfect Hashtags',
       description: 'Find trending and relevant hashtags',
       color: 'blue.600'
     },
     {
-      icon: Activity,
+      icon: ActivityIcon,
       title: 'Content Ideas',
       description: 'Never run out of creative post ideas',
       color: 'green.600'
     },
     {
-      icon: Activity,
+      icon: ActivityIcon,
       title: 'Optimal Timing',
       description: 'Post when your audience is most active',
       color: 'orange.600'
@@ -81,7 +84,7 @@ export function AIOnboarding({ onComplete, className }: AIOnboardingProps) {
               mx: 'auto', 
               mb: 2 
             }}>
-              <Activity style={{ width: 32, height: 32, color: 'success.main' }} />
+              <ActivityIcon sx={{ width: 32, height: 32, color: 'success.main' }} />
             </Box>
             <Typography variant="h4" component="h2" sx={{ fontWeight: 'bold', mb: 1 }}>Setup Complete!</Typography>
             <Typography variant="body1" sx={{ color: 'text.secondary' }}>
@@ -89,7 +92,7 @@ export function AIOnboarding({ onComplete, className }: AIOnboardingProps) {
             </Typography>
           </Box>
           <Button onClick={onComplete} sx={{ width: '100%' }}>
-            <Activity style={{ width: 16, height: 16, marginRight: 8 }} />
+            <ActivityIcon sx={{ width: 16, height: 16, marginRight: 8 }} />
             Start Using AI Tools
           </Button>
         </CardContent>
@@ -112,7 +115,7 @@ export function AIOnboarding({ onComplete, className }: AIOnboardingProps) {
           mx: 'auto', 
           mb: 3 
         }}>
-          <Brain style={{ width: 40, height: 40, color: 'white' }} />
+          <BrainIcon sx={{ width: 40, height: 40, color: 'white' }} />
         </Box>
         <Typography variant="h3" component="h1" sx={{ fontWeight: 'bold', mb: 2 }}>
           Welcome to AI-Powered Content Creation
@@ -145,7 +148,7 @@ export function AIOnboarding({ onComplete, className }: AIOnboardingProps) {
                          benefit.color === 'green.600' ? 'green.50' : 
                          benefit.color === 'purple.600' ? 'purple.50' : 'orange.50'
               }}>
-                <benefit.icon style={{ 
+                <benefit.icon sx={{ 
                   width: 24, 
                   height: 24, 
                   color: benefit.color === 'blue.600' ? 'blue.main' : 
@@ -164,7 +167,7 @@ export function AIOnboarding({ onComplete, className }: AIOnboardingProps) {
       <Card sx={{ mb: 4 }}>
         <CardHeader>
           <Typography variant="h5" component="h2" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <Activity style={{ width: 20, height: 20 }} />
+            <ActivityIcon sx={{ width: 20, height: 20 }} />
             Quick Setup - 2 Minutes
           </Typography>
         </CardHeader>
@@ -235,9 +238,9 @@ export function AIOnboarding({ onComplete, className }: AIOnboardingProps) {
             variant="contained"
             size="large"
           >
-            <Activity style={{ width: 20, height: 20, marginRight: 8 }} />
+            <ActivityIcon sx={{ width: 20, height: 20, marginRight: 8 }} />
             Get Started with AI
-            <Activity style={{ width: 16, height: 16, marginLeft: 8 }} />
+            <ActivityIcon sx={{ width: 16, height: 16, marginLeft: 8 }} />
           </Button>
         </CardContent>
       </Card>
@@ -247,7 +250,7 @@ export function AIOnboarding({ onComplete, className }: AIOnboardingProps) {
         <CardContent sx={{ p: 3 }}>
           <Box sx={{ display: 'flex', alignItems: 'start', gap: 2 }}>
             <Box sx={{ p: 1, bgcolor: 'warning.50', borderRadius: 1 }}>
-              <Activity style={{ width: 20, height: 20, color: 'warning.main' }} />
+              <ActivityIcon sx={{ width: 20, height: 20, color: 'warning.main' }} />
             </Box>
             <Box>
               <Typography variant="subtitle1" sx={{ fontWeight: 600, mb: 1 }}>Cost-Effective AI</Typography>

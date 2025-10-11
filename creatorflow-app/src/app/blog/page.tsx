@@ -12,7 +12,7 @@ import {
   Grid,
   Container
 } from '@mui/material';
-import { User, Calendar, Clock, ArrowRight, Mail } from 'lucide-react';
+import { Person as PersonIcon, CalendarToday as CalendarTodayIcon, AccessTime as AccessTimeIcon, ArrowRight as ArrowRightIcon, MailOutline as MailOutlineIcon } from '@mui/icons-material';
 import Link from 'next/link';
 import { PublicHeader } from '@/components/PublicHeader';
 import { Footer } from '@/components/Footer';
@@ -124,13 +124,13 @@ export default function BlogPage() {
                   
                   <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                      <User className="h-4 w-4" />
+                      <PersonIcon sx={{ width: 16, height: 16 }} />
                       <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                         {post.author}
                       </Typography>
                     </Box>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                      <Calendar className="h-4 w-4" />
+                      <CalendarTodayIcon sx={{ width: 16, height: 16 }} />
                       <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                         {post.date}
                       </Typography>
@@ -139,7 +139,7 @@ export default function BlogPage() {
                   
                   <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                      <Clock className="h-4 w-4" />
+                      <AccessTimeIcon sx={{ width: 16, height: 16 }} />
                       <Typography variant="body2" sx={{ color: 'text.secondary' }}>
                         {post.readTime}
                       </Typography>
@@ -157,7 +157,7 @@ export default function BlogPage() {
                       }}
                     >
                       Read More
-                      <ArrowRight className="h-4 w-4 ml-2" />
+                      <ArrowRightIcon sx={{ width: 16, height: 16 }} className="ml-2" />
                     </Button>
                   </Box>
                 </CardContent>
@@ -214,7 +214,7 @@ export default function BlogPage() {
                   type="submit"
                   className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold py-2 px-4 rounded-lg hover:from-blue-600 hover:to-purple-700 transition flex items-center justify-center gap-2"
                 >
-                  <Mail className="h-4 w-4" />
+                  <MailOutlineIcon sx={{ width: 16, height: 16 }} />
                   Subscribe to Newsletter
                 </button>
               </form>

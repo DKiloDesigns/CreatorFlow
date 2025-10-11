@@ -8,7 +8,7 @@ import { CriticalCSS } from "@/components/CriticalCSS";
 import { GlobalErrorBoundary } from '@/components/error/GlobalErrorBoundary';
 import { LoadingProvider } from "@/contexts/LoadingContext";
 import { AccessibilityEnhancements, AriaLiveRegion } from "@/components/ui/accessibility-enhancements";
-import ClientOnlySkipToContent from '@/components/ui/ClientOnlySkipToContent';
+import ClientOnlySkipToContentLoader from '@/components/ui/ClientOnlySkipToContentLoader';
 import { MobileUXEnhancements } from "@/components/mobile/mobile-ux-enhancements";
 import { TouchInteractionsWrapper } from "@/components/mobile/touch-interactions-wrapper";
 import { UnifiedMobileControls } from "@/components/mobile/unified-mobile-controls";
@@ -33,7 +33,7 @@ export default function RootLayout({
         <CriticalCSS />
       </head>
       <body className="MuiTypography-root">
-        <ClientOnlySkipToContent />
+        <ClientOnlySkipToContentLoader />
         <GlobalErrorBoundary enableBuildErrorHandling={true} enableRecovery={true}>
           <LoadingProvider>
             <Providers>

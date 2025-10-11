@@ -18,7 +18,15 @@ import {
   ListItemIcon,
   ListItemText
 } from '@mui/material';
-import { FileText, Shield, Mail, MessageCircle, HelpCircle, Users, BarChart3 } from 'lucide-react';
+import {
+  Description as FileTextIcon,
+  Security as ShieldIcon,
+  MailOutline as MailIcon,
+  Chat as MessageCircleIcon,
+  HelpOutline as HelpCircleIcon,
+  Group as UsersIcon,
+  BarChart as BarChart3Icon
+} from '@mui/icons-material';
 
 export default function SupportPage() {
   const { loading, error, success, submitFeedback, setSuccess, setError } = useUserSupport();
@@ -45,7 +53,7 @@ export default function SupportPage() {
             <Card>
               <CardContent>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
-                  <HelpCircle style={{ width: 20, height: 20, color: '#2563eb' }} />
+                  <HelpCircleIcon sx={{ width: 20, height: 20, color: '#2563eb' }} />
                   <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
                     Resources
                   </Typography>
@@ -53,7 +61,7 @@ export default function SupportPage() {
                 <List>
                   <ListItem>
                     <ListItemIcon>
-                      <FileText style={{ width: 16, height: 16 }} />
+                      <FileTextIcon sx={{ width: 16, height: 16 }} />
                     </ListItemIcon>
                     <ListItemText 
                       primary={
@@ -68,7 +76,7 @@ export default function SupportPage() {
                   </ListItem>
                   <ListItem>
                     <ListItemIcon>
-                      <BarChart3 style={{ width: 16, height: 16 }} />
+                      <BarChart3Icon sx={{ width: 16, height: 16 }} />
                     </ListItemIcon>
                     <ListItemText 
                       primary={
@@ -83,7 +91,7 @@ export default function SupportPage() {
                   </ListItem>
                   <ListItem>
                     <ListItemIcon>
-                      <Users style={{ width: 16, height: 16 }} />
+                      <UsersIcon sx={{ width: 16, height: 16 }} />
                     </ListItemIcon>
                     <ListItemText 
                       primary={
@@ -104,7 +112,7 @@ export default function SupportPage() {
             <Card sx={{ mt: 2 }}>
               <CardContent>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
-                  <Mail style={{ width: 20, height: 20, color: '#16a34a' }} />
+                  <MailIcon sx={{ width: 20, height: 20, color: '#16a34a' }} />
                   <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
                     Contact Support
                   </Typography>
@@ -114,14 +122,14 @@ export default function SupportPage() {
                     component="a"
                     href="mailto:support@creatorflow.com"
                     variant="contained"
-                    startIcon={<Mail style={{ width: 16, height: 16 }} />}
+                    startIcon={<MailIcon sx={{ width: 16, height: 16 }} />}
                     sx={{ alignSelf: 'flex-start' }}
                   >
                     Email Support
                   </Button>
                   <Button
                     variant="outlined"
-                    startIcon={<MessageCircle style={{ width: 16, height: 16 }} />}
+                    startIcon={<MessageCircleIcon sx={{ width: 16, height: 16 }} />}
                     disabled
                     sx={{ alignSelf: 'flex-start' }}
                   >
@@ -138,7 +146,7 @@ export default function SupportPage() {
             <Card>
               <CardContent>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
-                  <Shield style={{ width: 20, height: 20, color: '#9333ea' }} />
+                  <ShieldIcon sx={{ width: 20, height: 20, color: '#9333ea' }} />
                   <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
                     Legal & Policies
                   </Typography>
@@ -146,7 +154,7 @@ export default function SupportPage() {
                 <List>
                   <ListItem>
                     <ListItemIcon>
-                      <FileText style={{ width: 16, height: 16 }} />
+                      <FileTextIcon sx={{ width: 16, height: 16 }} />
                     </ListItemIcon>
                     <ListItemText 
                       primary={
@@ -163,7 +171,7 @@ export default function SupportPage() {
                   </ListItem>
                   <ListItem>
                     <ListItemIcon>
-                      <Shield style={{ width: 16, height: 16 }} />
+                      <ShieldIcon sx={{ width: 16, height: 16 }} />
                     </ListItemIcon>
                     <ListItemText 
                       primary={

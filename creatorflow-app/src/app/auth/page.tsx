@@ -21,15 +21,14 @@ import {
   Container,
   Grid
 } from '@mui/material';
-import { 
-  ArrowLeft, 
-  Mail, 
-  Lock, 
-  User, 
-  Eye, 
-  EyeOff, 
-  Loader2 
-} from 'lucide-react';
+import {
+  ArrowBack as ArrowLeftIcon,
+  Mail as MailIcon,
+  Lock as LockIcon,
+  Person as UserIcon,
+  Visibility as EyeIcon,
+  VisibilityOff as EyeOffIcon,
+} from '@mui/icons-material';
 import Link from 'next/link';
 
 export default function AuthPage() {
@@ -197,7 +196,7 @@ export default function AuthPage() {
           <Button
             component={Link}
             href="/"
-            startIcon={<ArrowLeft style={{ width: 16, height: 16 }} />}
+            startIcon={<ArrowLeftIcon sx={{ width: 16, height: 16 }} />}
             variant="text"
             sx={{ color: 'text.secondary' }}
           >
@@ -235,7 +234,7 @@ export default function AuthPage() {
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <Mail style={{ width: 16, height: 16 }} />
+                      <MailIcon sx={{ width: 16, height: 16 }} />
                     </InputAdornment>
                   ),
                   endAdornment: isCheckingEmail && (
@@ -259,7 +258,7 @@ export default function AuthPage() {
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
-                        <User style={{ width: 16, height: 16 }} />
+                        <UserIcon sx={{ width: 16, height: 16 }} />
                       </InputAdornment>
                     ),
                   }}
@@ -277,7 +276,7 @@ export default function AuthPage() {
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
-                        <User style={{ width: 16, height: 16 }} />
+                        <UserIcon sx={{ width: 16, height: 16 }} />
                       </InputAdornment>
                     ),
                   }}
@@ -296,7 +295,7 @@ export default function AuthPage() {
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
-                        <User style={{ width: 16, height: 16 }} />
+                        <UserIcon sx={{ width: 16, height: 16 }} />
                       </InputAdornment>
                     ),
                   }}
@@ -314,7 +313,7 @@ export default function AuthPage() {
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <Lock style={{ width: 16, height: 16 }} />
+                      <LockIcon sx={{ width: 16, height: 16 }} />
                     </InputAdornment>
                   ),
                   endAdornment: (
@@ -324,7 +323,7 @@ export default function AuthPage() {
                         edge="end"
                         size="small"
                       >
-                        {showPassword ? <EyeOff style={{ width: 16, height: 16 }} /> : <Eye style={{ width: 16, height: 16 }} />}
+                        {showPassword ? <EyeOffIcon sx={{ width: 16, height: 16 }} /> : <EyeIcon sx={{ width: 16, height: 16 }} />}
                       </IconButton>
                     </InputAdornment>
                   ),
@@ -358,7 +357,7 @@ export default function AuthPage() {
               >
                 {isLoading ? (
                   <>
-                    <Loader2 style={{ width: 16, height: 16, marginRight: 8, animation: 'spin 1s linear infinite' }} />
+                    <CircularProgress size={16} sx={{ marginRight: 1 }} />
                     {isNewUser ? 'Creating Account...' : 'Signing In...'}
                   </>
                 ) : (

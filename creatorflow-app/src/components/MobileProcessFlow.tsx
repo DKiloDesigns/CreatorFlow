@@ -21,17 +21,17 @@ import {
   Slide
 } from '@mui/material';
 import { 
-  Download, 
-  Smartphone, 
-  Camera, 
-  Calendar, 
-  BarChart3, 
-  DollarSign,
-  ArrowRight,
-  CheckCircle,
-  Zap,
-  Users
-} from 'lucide-react';
+  Download as DownloadIcon,
+  Smartphone as SmartphoneIcon,
+  CameraAlt as CameraAltIcon,
+  CalendarToday as CalendarTodayIcon,
+  BarChart as BarChartIcon,
+  AttachMoney as AttachMoneyIcon,
+  ArrowForward as ArrowForwardIcon,
+  CheckCircle as CheckCircleIcon,
+  Bolt as BoltIcon,
+  Group as GroupIcon
+} from '@mui/icons-material';
 
 interface ProcessStep {
   id: string;
@@ -50,7 +50,7 @@ const PROCESS_STEPS: ProcessStep[] = [
     title: 'Discover CreatorFlow',
     description: 'Explore our mobile-first platform',
     mobileDescription: 'Beautiful, responsive design optimized for mobile creators',
-    icon: <Smartphone size={24} />,
+    icon: <SmartphoneIcon size={24} />,
     screenshot: '/mobile-screenshots/optimized/landing-page.jpg',
     features: [
       'Mobile-optimized interface',
@@ -64,7 +64,7 @@ const PROCESS_STEPS: ProcessStep[] = [
     title: 'Explore Features',
     description: 'See all the tools available',
     mobileDescription: 'Comprehensive feature showcase designed for mobile',
-    icon: <Zap size={24} />,
+    icon: <BoltIcon size={24} />,
     screenshot: '/mobile-screenshots/optimized/features.jpg',
     features: [
       'Content creation tools',
@@ -79,7 +79,7 @@ const PROCESS_STEPS: ProcessStep[] = [
     title: 'Choose Your Plan',
     description: 'Select the perfect plan for you',
     mobileDescription: 'Transparent pricing with mobile-optimized plans',
-    icon: <DollarSign size={24} />,
+    icon: <AttachMoneyIcon size={24} />,
     screenshot: '/mobile-screenshots/optimized/pricing.jpg',
     features: [
       'Free tier available',
@@ -94,7 +94,7 @@ const PROCESS_STEPS: ProcessStep[] = [
     title: 'Get Started',
     description: 'Sign up and start creating',
     mobileDescription: 'Quick and easy mobile signup process',
-    icon: <Users size={24} />,
+    icon: <GroupIcon size={24} />,
     screenshot: '/mobile-screenshots/optimized/auth.jpg',
     features: [
       'Quick signup',
@@ -140,7 +140,7 @@ export default function MobileProcessFlow() {
             gap: 2
           }}
         >
-          <Smartphone size={32} />
+          <SmartphoneIcon size={32} />
           Your Mobile Creator Journey
         </Typography>
         <Typography variant="h6" sx={{ color: 'text.secondary' }}>
@@ -220,7 +220,7 @@ export default function MobileProcessFlow() {
                           fontWeight: 'bold'
                         }}
                       >
-                        {activeStep > index ? <CheckCircle size={20} /> : index + 1}
+                        {activeStep > index ? <CheckCircleIcon size={20} /> : index + 1}
                       </Box>
                       <Box sx={{ flex: 1 }}>
                         <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
@@ -276,7 +276,7 @@ export default function MobileProcessFlow() {
                 variant="contained"
                 onClick={handleNext}
                 disabled={activeStep === PROCESS_STEPS.length - 1}
-                endIcon={<ArrowRight size={16} />}
+                endIcon={<ArrowForwardIcon size={16} />}
                 sx={{
                   background: 'linear-gradient(45deg, #3B82F6 30%, #8B5CF6 90%)',
                   '&:hover': {

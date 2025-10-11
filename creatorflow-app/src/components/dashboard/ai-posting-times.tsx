@@ -2,12 +2,12 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardHeader } from '@/components/ui/mui-card';
 import { Typography, Button, Chip, Grid } from '@mui/material';
 import { 
-  Clock, 
-  TrendingUp, 
-  Target,
-  Info,
-  Zap
-} from 'lucide-react';
+  AccessTime as AccessTimeIcon, 
+  TrendingUp as TrendingUpIcon, 
+  Adjust as AdjustIcon,
+  Info as InfoIcon,
+  Bolt as BoltIcon
+} from '@mui/icons-material';
 import { Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 import { Badge } from '@/components/ui/badge';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
@@ -77,7 +77,7 @@ export function AIPostingTimes({ className }: AIPostingTimesProps) {
     <Card className={className}>
       <CardHeader>
         <Typography variant="h6" className="flex items-center gap-2">
-          <Clock className="h-5 w-5" />
+          <AccessTimeIcon sx={{ width: 20, height: 20 }} />
           AI Posting Times
         </Typography>
       </CardHeader>
@@ -112,7 +112,7 @@ export function AIPostingTimes({ className }: AIPostingTimesProps) {
             </>
           ) : (
             <>
-              <Clock style={{ width: 16, height: 16, marginRight: 8 }} />
+              <AccessTimeIcon sx={{ width: 16, height: 16, marginRight: 8 }} />
               Get Optimal Times
             </>
           )}
@@ -153,7 +153,7 @@ export function AIPostingTimes({ className }: AIPostingTimesProps) {
                   <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
                     <Box>
                       <Typography variant="body2" sx={{ fontWeight: 500, mb: 1, display: 'flex', alignItems: 'center', gap: 1 }}>
-                        <Target className="h-4 w-4" />
+                        <AdjustIcon sx={{ width: 16, height: 16 }} />
                         Best Times to Post
                       </Typography>
                       <Grid container spacing={1}>
@@ -177,7 +177,7 @@ export function AIPostingTimes({ className }: AIPostingTimesProps) {
 
                     <Box sx={{ p: 1.5, bgcolor: 'info.50', borderRadius: 2 }}>
                       <Typography variant="body2" sx={{ fontWeight: 500, mb: 0.5, display: 'flex', alignItems: 'center', gap: 1 }}>
-                        <Info className="h-4 w-4" />
+                        <InfoIcon sx={{ width: 16, height: 16 }} />
                         AI Reasoning
                       </Typography>
                       <Typography variant="body2" sx={{ fontSize: '0.75rem', color: 'text.secondary' }}>
@@ -194,7 +194,7 @@ export function AIPostingTimes({ className }: AIPostingTimesProps) {
         {/* Tips Section */}
         <Box sx={{ p: 2, bgcolor: 'success.50', borderRadius: 2 }}>
           <Typography variant="body2" sx={{ fontWeight: 500, mb: 1.5, display: 'flex', alignItems: 'center', gap: 1 }}>
-            <Box sx={{ color: 'success.600' }}><TrendingUp className="h-4 w-4" /></Box>
+            <Box sx={{ color: 'success.600' }}><TrendingUpIcon sx={{ width: 16, height: 16 }} /></Box>
             Posting Time Best Practices
           </Typography>
           <Grid container spacing={2} sx={{ fontSize: '0.75rem', color: 'text.secondary' }}>
@@ -230,7 +230,7 @@ export function AIPostingTimes({ className }: AIPostingTimesProps) {
               getOptimalTimes();
             }}
           >
-            <Zap className="h-4 w-4 mr-2" />
+            <BoltIcon sx={{ width: 16, height: 16, marginRight: 8 }} />
             Instagram Times
           </Button>
           <Button
@@ -242,7 +242,7 @@ export function AIPostingTimes({ className }: AIPostingTimesProps) {
               getOptimalTimes();
             }}
           >
-            <Zap className="h-4 w-4 mr-2" />
+            <BoltIcon sx={{ width: 16, height: 16, marginRight: 8 }} />
             LinkedIn Times
           </Button>
         </Box>

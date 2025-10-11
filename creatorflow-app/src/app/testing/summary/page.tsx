@@ -8,7 +8,7 @@ import {
   Button,
   Typography
 } from '@mui/material';
-import { TestTube, Activity, Download, TrendingUp, BarChart3, Target, CheckCircle } from 'lucide-react';
+import { ScienceOutlined as TestTubeIcon, TrendingUp as ActivityIcon, Download as DownloadIcon, TrendingUp as TrendingUpIcon, BarChart as BarChart3Icon, Adjust as TargetIcon, CheckCircle as CheckCircleIcon } from '@mui/icons-material';
 import { Badge } from '@/components/ui/badge';
 import { Progress } from '@/components/ui/progress';
 import { CardDescription } from '@/components/ui/base/Card/index';
@@ -308,18 +308,18 @@ export default function TestingSummaryPage() {
       <div className="flex justify-between items-center">
         <div>
           <h1 className="text-3xl font-bold flex items-center gap-2">
-            <TestTube className="h-8 w-8" />
+            <TestTubeIcon sx={{ height: 32, width: 32 }} />
             Final Polish & Testing Summary
           </h1>
           <p className="text-muted-foreground">Comprehensive testing results and quality assurance report</p>
         </div>
         <div className="flex gap-2">
                           <Button variant="outlined">
-                  <Download className="h-4 w-4 mr-2" />
+                  <DownloadIcon sx={{ height: 16, width: 16, mr: 1 }} />
                   Export Report
                 </Button>
           <Button>
-            <TestTube className="h-4 w-4 mr-2" />
+            <TestTubeIcon sx={{ height: 16, width: 16, mr: 1 }} />
             Run All Tests
           </Button>
         </div>
@@ -329,7 +329,7 @@ export default function TestingSummaryPage() {
       <Card>
         <CardHeader>
           <Typography variant="h6" className="flex items-center gap-2">
-            <TrendingUp className="h-5 w-5" />
+            <TrendingUpIcon sx={{ height: 20, width: 20 }} />
             Overall Project Progress
           </Typography>
           <CardDescription>
@@ -370,7 +370,7 @@ export default function TestingSummaryPage() {
         <Card>
           <CardHeader>
             <Typography variant="h6" className="flex items-center gap-2">
-              <BarChart3 className="h-5 w-5" />
+              <BarChart3Icon sx={{ height: 20, width: 20 }} />
               Test Results by Category
             </Typography>
             <CardDescription>
@@ -417,7 +417,7 @@ export default function TestingSummaryPage() {
         <Card>
           <CardHeader>
             <Typography variant="h6" className="flex items-center gap-2">
-              <Activity className="h-5 w-5" />
+              <ActivityIcon sx={{ height: 20, width: 20 }} />
               Feature Status Overview
             </Typography>
             <CardDescription>
@@ -464,7 +464,7 @@ export default function TestingSummaryPage() {
       <Card>
         <CardHeader>
           <Typography variant="h6" className="flex items-center gap-2">
-            <Target className="h-5 w-5" />
+            <TargetIcon sx={{ height: 20, width: 20 }} />
             Quality Assurance Metrics
           </Typography>
           <CardDescription>
@@ -502,7 +502,7 @@ export default function TestingSummaryPage() {
       <Card>
         <CardHeader>
           <Typography variant="h6" className="flex items-center gap-2">
-            <CheckCircle className="h-5 w-5" />
+            <CheckCircleIcon sx={{ height: 20, width: 20 }} />
             Final Recommendations
           </Typography>
           <CardDescription>

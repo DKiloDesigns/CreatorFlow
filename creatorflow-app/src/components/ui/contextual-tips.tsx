@@ -13,13 +13,13 @@ import {
   useMediaQuery
 } from '@mui/material';
 import {
-  Lightbulb,
-  X,
-  ChevronRight,
-  ChevronLeft,
-  ThumbsUp,
-  ThumbsDown
-} from 'lucide-react';
+  LightbulbOutlined as LightbulbIcon,
+  Close as XIcon,
+  ChevronRight as ChevronRightIcon,
+  ChevronLeft as ChevronLeftIcon,
+  ThumbUp as ThumbsUpIcon,
+  ThumbDown as ThumbsDownIcon
+} from '@mui/icons-material';
 
 interface ContextualTip {
   id: string;
@@ -279,7 +279,7 @@ export function ContextualTips({ currentPage, onTipAction, className }: Contextu
                 flexShrink: 0
               }}
             >
-              <Lightbulb size={18} />
+              <LightbulbIcon sx={{ fontSize: 18 }} />
             </Box>
             
             <Box sx={{ flexGrow: 1, minWidth: 0 }}>
@@ -301,7 +301,7 @@ export function ContextualTips({ currentPage, onTipAction, className }: Contextu
                   '&:hover': { bgcolor: 'rgba(255, 255, 255, 0.1)' }
                 }}
               >
-                <X size={16} />
+                <XIcon sx={{ fontSize: 16 }} />
               </IconButton>
             )}
           </Box>
@@ -358,7 +358,7 @@ export function ContextualTips({ currentPage, onTipAction, className }: Contextu
                   '&:hover': { bgcolor: 'rgba(255, 255, 255, 0.1)' }
                 }}
               >
-                <ThumbsUp size={16} />
+                <ThumbsUpIcon sx={{ fontSize: 16 }} />
               </IconButton>
               
               <IconButton
@@ -369,7 +369,7 @@ export function ContextualTips({ currentPage, onTipAction, className }: Contextu
                   '&:hover': { bgcolor: 'rgba(255, 255, 255, 0.1)' }
                 }}
               >
-                <ThumbsDown size={16} />
+                <ThumbsDownIcon sx={{ fontSize: 16 }} />
               </IconButton>
               
               <IconButton
@@ -380,7 +380,7 @@ export function ContextualTips({ currentPage, onTipAction, className }: Contextu
                   '&:hover': { bgcolor: 'rgba(255, 255, 255, 0.1)' }
                 }}
               >
-                <ChevronRight size={16} />
+                <ChevronRightIcon sx={{ fontSize: 16 }} />
               </IconButton>
             </Box>
           </Box>

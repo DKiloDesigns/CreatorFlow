@@ -2,7 +2,13 @@
 
 import React, { forwardRef } from 'react';
 import { Box, Typography, IconButton } from '@mui/material';
-import { AlertCircle, CheckCircle, Info, XCircle, X } from 'lucide-react';
+import {
+  ReportProblemOutlined as ReportProblemOutlinedIcon,
+  CheckCircleOutline as CheckCircleOutlineIcon,
+  InfoOutlined as InfoOutlinedIcon,
+  CancelOutlined as CancelOutlinedIcon,
+  Close as CloseIcon,
+} from '@mui/icons-material';
 
 export interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
   variant?: 'default' | 'info' | 'success' | 'warning' | 'error';
@@ -33,27 +39,27 @@ const Alert = forwardRef<HTMLDivElement, AlertProps>(
   }, ref) => {
     const variantConfig = {
       default: {
-        icon: Info,
+        icon: InfoOutlinedIcon,
         classes: 'bg-background border-border text-foreground',
         iconClasses: 'text-muted-foreground',
       },
       info: {
-        icon: Info,
+        icon: InfoOutlinedIcon,
         classes: 'bg-info/10 border-info/20 text-info-foreground',
         iconClasses: 'text-info',
       },
       success: {
-        icon: CheckCircle,
+        icon: CheckCircleOutlineIcon,
         classes: 'bg-success/10 border-success/20 text-success-foreground',
         iconClasses: 'text-success',
       },
       warning: {
-        icon: AlertCircle,
+        icon: ReportProblemOutlinedIcon,
         classes: 'bg-warning/10 border-warning/20 text-warning-foreground',
         iconClasses: 'text-warning',
       },
       error: {
-        icon: XCircle,
+        icon: CancelOutlinedIcon,
         classes: 'bg-error/10 border-error/20 text-error-foreground',
         iconClasses: 'text-error',
       },
@@ -127,7 +133,7 @@ const Alert = forwardRef<HTMLDivElement, AlertProps>(
                      variant === 'warning' ? 'warning.main' :
                      variant === 'error' ? 'error.main' : 'text.primary'
             }}>
-              {React.isValidElement(icon) ? icon : <IconComponent style={{ width: 20, height: 20 }} />}
+              {React.isValidElement(icon) ? icon : <IconComponent sx={{ width: 20, height: 20 }} />}
             </Box>
           )}
           
@@ -170,7 +176,7 @@ const Alert = forwardRef<HTMLDivElement, AlertProps>(
               }}
               aria-label="Dismiss alert"
             >
-              <X style={{ width: 16, height: 16 }} />
+              <CloseIcon sx={{ width: 16, height: 16 }} />
             </IconButton>
           )}
         </Box>

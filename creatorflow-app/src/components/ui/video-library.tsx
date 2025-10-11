@@ -27,24 +27,24 @@ import {
   useMediaQuery
 } from '@mui/material';
 import {
-  Play,
-  Pause,
-  Volume2,
-  VolumeX,
-  Maximize,
-  Minimize,
-  SkipBack,
-  SkipForward,
-  Download,
-  Share2,
-  Bookmark,
-  Search,
-  Filter,
-  SortAsc,
-  Clock,
-  Eye,
-  ThumbsUp
-} from 'lucide-react';
+  PlayArrow as PlayIcon,
+  Pause as PauseIcon,
+  VolumeUp as Volume2Icon,
+  VolumeOff as VolumeXIcon,
+  Fullscreen as MaximizeIcon,
+  FullscreenExit as MinimizeIcon,
+  FastRewind as SkipBackIcon,
+  FastForward as SkipForwardIcon,
+  Download as DownloadIcon,
+  Share as Share2Icon,
+  Bookmark as BookmarkIcon,
+  Search as SearchIcon,
+  FilterList as FilterIcon,
+  Sort as SortAscIcon,
+  AccessTime as ClockIcon,
+  Visibility as EyeIcon,
+  ThumbUp as ThumbsUpIcon
+} from '@mui/icons-material';
 
 interface VideoMetadata {
   id: string;
@@ -241,7 +241,7 @@ export function VideoLibrary({ videos, onVideoSelect, onVideoComplete, className
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
-                <Search size={20} />
+                <SearchIcon sx={{ fontSize: 20 }} />
               </InputAdornment>
             ),
           }}
@@ -319,7 +319,7 @@ export function VideoLibrary({ videos, onVideoSelect, onVideoComplete, className
                   }}
                 >
                   <IconButton sx={{ color: 'white', bgcolor: 'rgba(0,0,0,0.5)' }}>
-                    <Play size={32} />
+                    <PlayIcon sx={{ fontSize: 32 }} />
                   </IconButton>
                 </Box>
                 
@@ -366,15 +366,15 @@ export function VideoLibrary({ videos, onVideoSelect, onVideoComplete, className
                 
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, color: 'text.secondary' }}>
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                    <Eye size={16} />
+                    <EyeIcon sx={{ fontSize: 16 }} />
                     <Typography variant="caption">{video.views}</Typography>
                   </Box>
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                    <ThumbsUp size={16} />
+                    <ThumbsUpIcon sx={{ fontSize: 16 }} />
                     <Typography variant="caption">{video.likes}</Typography>
                   </Box>
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                    <Clock size={16} />
+                    <ClockIcon sx={{ fontSize: 16 }} />
                     <Typography variant="caption">{formatTime(video.duration)}</Typography>
                   </Box>
                 </Box>
@@ -407,10 +407,10 @@ export function VideoLibrary({ videos, onVideoSelect, onVideoComplete, className
                 </Typography>
                 <Box sx={{ display: 'flex', gap: 1 }}>
                   <IconButton onClick={() => setShowTranscript(!showTranscript)} size="small">
-                    <Filter />
+                    <FilterIcon />
                   </IconButton>
                   <IconButton onClick={() => setSelectedVideo(null)} size="small">
-                    <Minimize />
+                    <MinimizeIcon />
                   </IconButton>
                 </Box>
               </Box>
@@ -464,11 +464,11 @@ export function VideoLibrary({ videos, onVideoSelect, onVideoComplete, className
                   {/* Control Buttons */}
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                     <IconButton onClick={togglePlayPause} sx={{ color: 'white' }}>
-                      {isPlaying ? <Pause /> : <Play />}
+                      {isPlaying ? <PauseIcon /> : <PlayIcon />}
                     </IconButton>
                     
                     <IconButton onClick={toggleMute} sx={{ color: 'white' }}>
-                      {isMuted ? <VolumeX /> : <Volume2 />}
+                      {isMuted ? <VolumeXIcon /> : <Volume2Icon />}
                     </IconButton>
                     
                     <Slider
@@ -483,7 +483,7 @@ export function VideoLibrary({ videos, onVideoSelect, onVideoComplete, className
                     <Box sx={{ flex: 1 }} />
                     
                     <IconButton onClick={toggleFullscreen} sx={{ color: 'white' }}>
-                      <Maximize />
+                      <MaximizeIcon />
                     </IconButton>
                   </Box>
                 </Box>

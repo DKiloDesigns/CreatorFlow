@@ -34,18 +34,18 @@ import {
   Divider,
 } from '@mui/material';
 import {
-  Shield,
-  Key,
-  Eye,
-  EyeOff,
-  Plus,
-  Trash2,
-  RefreshCw,
-  AlertTriangle,
-  CheckCircle,
-  Clock,
-  Activity,
-} from 'lucide-react';
+  Security as ShieldIcon,
+  Key as KeyIcon,
+  Visibility as EyeIcon,
+  VisibilityOff as EyeOffIcon,
+  Add as PlusIcon,
+  Delete as Trash2Icon,
+  Refresh as RefreshCwIcon,
+  Warning as AlertTriangleIcon,
+  CheckCircle as CheckCircleIcon,
+  AccessTime as ClockIcon,
+  TrendingUp as ActivityIcon,
+} from '@mui/icons-material';
 
 interface APIKey {
   id: string;
@@ -240,7 +240,7 @@ export const SecurityDashboard: React.FC = () => {
         </Typography>
         <Button
           variant="contained"
-          startIcon={<Plus />}
+          startIcon={<PlusIcon />}
           onClick={() => setCreateDialogOpen(true)}
         >
           Create API Key
@@ -253,7 +253,7 @@ export const SecurityDashboard: React.FC = () => {
           <Card>
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                <Key size={24} color="#1976d2" />
+                <KeyIcon sx={{ fontSize: 24, color: "#1976d2" }} />
                 <Typography variant="h6" sx={{ ml: 1 }}>
                   Total Keys
                 </Typography>
@@ -267,7 +267,7 @@ export const SecurityDashboard: React.FC = () => {
           <Card>
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                <CheckCircle size={24} color="#4caf50" />
+                <CheckCircleIcon sx={{ fontSize: 24, color: "#4caf50" }} />
                 <Typography variant="h6" sx={{ ml: 1 }}>
                   Active Keys
                 </Typography>
@@ -281,7 +281,7 @@ export const SecurityDashboard: React.FC = () => {
           <Card>
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                <AlertTriangle size={24} color="#f44336" />
+                <AlertTriangleIcon sx={{ fontSize: 24, color: "#f44336" }} />
                 <Typography variant="h6" sx={{ ml: 1 }}>
                   Expired Keys
                 </Typography>
@@ -295,7 +295,7 @@ export const SecurityDashboard: React.FC = () => {
           <Card>
             <CardContent>
               <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                <Activity size={24} color="#ff9800" />
+                <ActivityIcon sx={{ fontSize: 24, color: "#ff9800" }} />
                 <Typography variant="h6" sx={{ ml: 1 }}>
                   Recent Activity
                 </Typography>
@@ -312,7 +312,7 @@ export const SecurityDashboard: React.FC = () => {
           <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
             <Typography variant="h6">API Keys</Typography>
             <IconButton onClick={loadAPIKeys}>
-              <RefreshCw />
+              <RefreshCwIcon />
             </IconButton>
           </Box>
           
@@ -379,7 +379,7 @@ export const SecurityDashboard: React.FC = () => {
                           onClick={() => handleRevokeKey(key.id)}
                           color="error"
                         >
-                          <Trash2 size={16} />
+                          <Trash2Icon sx={{ fontSize: 16 }} />
                         </IconButton>
                       </Tooltip>
                     </TableCell>

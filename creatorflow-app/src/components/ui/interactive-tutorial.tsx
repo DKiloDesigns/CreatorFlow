@@ -22,18 +22,18 @@ import {
   useMediaQuery
 } from '@mui/material';
 import {
-  Play,
-  Pause,
-  ChevronRight,
-  ChevronLeft,
-  X,
-  CheckCircle,
-  ArrowRight,
-  ArrowLeft,
-  RotateCcw,
-  Image,
-  Eye
-} from 'lucide-react';
+  PlayArrow as PlayIcon,
+  Pause as PauseIcon,
+  ChevronRight as ChevronRightIcon,
+  ChevronLeft as ChevronLeftIcon,
+  Close as XIcon,
+  CheckCircle as CheckCircleIcon,
+  ArrowRight as ArrowRightIcon,
+  ArrowBack as ArrowLeftIcon,
+  Refresh as RotateCcwIcon,
+  Image as ImageIcon,
+  Visibility as EyeIcon
+} from '@mui/icons-material';
 import { VisualTutorialStep } from './visual-tutorial-step';
 
 interface TutorialStep {
@@ -272,7 +272,7 @@ export function InteractiveTutorial({
               variant="outlined" 
             />
             <IconButton onClick={handleClose} size="small">
-              <X />
+              <XIcon />
             </IconButton>
           </Box>
         </Box>
@@ -408,7 +408,7 @@ export function InteractiveTutorial({
                     variant="contained"
                     onClick={() => handleAction(currentStep.action)}
                     disabled={isValidating}
-                    startIcon={isValidating ? <CircularProgress size={16} /> : <Play />}
+                    startIcon={isValidating ? <CircularProgress size={16} /> : <PlayIcon />}
                     sx={{ mr: 2 }}
                   >
                     {isValidating ? 'Executing...' : 'Try This Action'}
@@ -418,7 +418,7 @@ export function InteractiveTutorial({
                     <Button
                       variant="outlined"
                       onClick={() => setShowHints(!showHints)}
-                      startIcon={<RotateCcw />}
+                      startIcon={<RotateCcwIcon />}
                     >
                       {showHints ? 'Hide' : 'Show'} Hints
                     </Button>
@@ -446,7 +446,7 @@ export function InteractiveTutorial({
               <Button
                 onClick={handlePrevious}
                 disabled={activeStep === 0}
-                startIcon={<ArrowLeft />}
+                startIcon={<ArrowLeftIcon />}
               >
                 Previous
               </Button>
@@ -456,28 +456,28 @@ export function InteractiveTutorial({
                   onClick={handlePlayPause}
                   color="primary"
                 >
-                  {isPlaying ? <Pause /> : <Play />}
+                  {isPlaying ? <PauseIcon /> : <PlayIcon />}
                 </IconButton>
                 
                 <IconButton
                   onClick={() => setActiveStep(0)}
                   disabled={activeStep === 0}
                 >
-                  <ChevronLeft />
+                  <ChevronLeftIcon />
                 </IconButton>
                 
                 <IconButton
                   onClick={() => setActiveStep(steps.length - 1)}
                   disabled={activeStep === steps.length - 1}
                 >
-                  <ChevronRight />
+                  <ChevronRightIcon />
                 </IconButton>
               </Box>
 
               <Button
                 variant="contained"
                 onClick={handleNext}
-                endIcon={activeStep === steps.length - 1 ? <CheckCircle /> : <ArrowRight />}
+                endIcon={activeStep === steps.length - 1 ? <CheckCircleIcon /> : <ArrowRightIcon />}
               >
                 {activeStep === steps.length - 1 ? 'Complete' : 'Next'}
               </Button>

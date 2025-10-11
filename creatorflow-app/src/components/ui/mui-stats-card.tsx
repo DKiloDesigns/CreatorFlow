@@ -1,14 +1,14 @@
 import React from 'react';
 import { Card, CardContent, CardHeader } from './mui-card';
 import { Typography, Skeleton, Stack } from '@mui/material';
-import { TrendingUp, TrendingDown } from 'lucide-react';
-import { LucideIcon } from 'lucide-react';
+import { TrendingUp as TrendingUpIcon, TrendingDown as TrendingDownIcon } from '@mui/icons-material';
+import { SvgIconComponent } from '@mui/icons-material';
 
 interface StatsCardProps {
   title: string;
   value: string | number;
   description?: string;
-  icon?: LucideIcon;
+  icon?: SvgIconComponent;
   trend?: {
     value: number;
     isPositive: boolean;
@@ -84,7 +84,7 @@ export function MuiStatsCard({
         </Typography>
         {Icon && (
           <Icon 
-            style={{ width: 16, height: 16, color: getVariantColor() }}
+            sx={{ width: 16, height: 16, color: getVariantColor() }}
           />
         )}
       </CardHeader>
@@ -126,9 +126,9 @@ export function MuiStatsCard({
             {trend && (
               <Stack direction="row" spacing={0.5} alignItems="center">
                 {trend.isPositive ? (
-                  <TrendingUp style={{ width: 12, height: 12, color: getTrendColor() }} />
+                  <TrendingUpIcon sx={{ width: 12, height: 12, color: getTrendColor() }} />
                 ) : (
-                  <TrendingDown style={{ width: 12, height: 12, color: getTrendColor() }} />
+                  <TrendingDownIcon sx={{ width: 12, height: 12, color: getTrendColor() }} />
                 )}
                 <Typography
                   variant="caption"

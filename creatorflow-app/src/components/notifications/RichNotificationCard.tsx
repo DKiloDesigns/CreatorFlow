@@ -17,34 +17,34 @@ import {
   alpha
 } from '@mui/material';
 import {
-  Eye,
-  EyeOff,
-  MoreVertical,
-  Check,
-  X,
-  Heart,
-  Share,
-  Reply,
-  Calendar,
-  BarChart3,
-  Trophy,
-  Users,
-  Clock,
-  Wrench,
-  Settings,
-  Megaphone,
-  Handshake,
-  ChevronDown,
-  ChevronUp,
-  Minus,
-  AlertTriangle,
-  UserPlus,
-  User,
-  Download,
-  Play,
-  Info,
-  Edit
-} from 'lucide-react';
+  Visibility as EyeIcon,
+  VisibilityOff as EyeOffIcon,
+  MoreVert as MoreVerticalIcon,
+  Check as CheckIcon,
+  Close as XIcon,
+  Favorite as HeartIcon,
+  Share as ShareIcon,
+  Reply as ReplyIcon,
+  CalendarMonth as CalendarIcon,
+  BarChart as BarChart3Icon,
+  EmojiEvents as TrophyIcon,
+  Group as UsersIcon,
+  AccessTime as ClockIcon,
+  Build as WrenchIcon,
+  Settings as SettingsIcon,
+  Campaign as MegaphoneIcon,
+  Handshake as HandshakeIcon,
+  ExpandMore as ChevronDownIcon,
+  ExpandLess as ChevronUpIcon,
+  Remove as MinusIcon,
+  Warning as AlertTriangleIcon,
+  PersonAdd as UserPlusIcon,
+  Person as UserIcon,
+  Download as DownloadIcon,
+  PlayArrow as PlayIcon,
+  Info as InfoIcon,
+  Edit as EditIcon
+} from '@mui/icons-material';
 import { NotificationData, getNotificationTypeConfig, getNotificationPriorityConfig, formatNotificationTime } from './NotificationTypes';
 
 // Animations
@@ -123,43 +123,43 @@ export function RichNotificationCard({
 
   const getPriorityIcon = () => {
     switch (notification.priority) {
-      case 'urgent': return <AlertTriangle size={12} />;
-      case 'high': return <ChevronUp size={12} />;
-      case 'medium': return <Minus size={12} />;
-      case 'low': return <ChevronDown size={12} />;
+      case 'urgent': return <AlertTriangleIcon sx={{ fontSize: 12 }} />;
+      case 'high': return <ChevronUpIcon sx={{ fontSize: 12 }} />;
+      case 'medium': return <MinusIcon sx={{ fontSize: 12 }} />;
+      case 'low': return <ChevronDownIcon sx={{ fontSize: 12 }} />;
       default: return null;
     }
   };
 
   const getTypeIcon = () => {
     switch (notification.type) {
-      case 'system': return <Settings size={16} />;
-      case 'social': return <Users size={16} />;
-      case 'marketing': return <Megaphone size={16} />;
-      case 'reminder': return <Clock size={16} />;
-      case 'achievement': return <Trophy size={16} />;
-      case 'collaboration': return <Handshake size={16} />;
-      case 'analytics': return <BarChart3 size={16} />;
-      case 'tool_update': return <Wrench size={16} />;
+      case 'system': return <SettingsIcon sx={{ fontSize: 16 }} />;
+      case 'social': return <UsersIcon sx={{ fontSize: 16 }} />;
+      case 'marketing': return <MegaphoneIcon sx={{ fontSize: 16 }} />;
+      case 'reminder': return <ClockIcon sx={{ fontSize: 16 }} />;
+      case 'achievement': return <TrophyIcon sx={{ fontSize: 16 }} />;
+      case 'collaboration': return <HandshakeIcon sx={{ fontSize: 16 }} />;
+      case 'analytics': return <BarChart3Icon sx={{ fontSize: 16 }} />;
+      case 'tool_update': return <WrenchIcon sx={{ fontSize: 16 }} />;
       default: return null;
     }
   };
 
   const getActionIcon = (actionId: string) => {
     switch (actionId) {
-      case 'view': return <Eye size={14} />;
-      case 'share': return <Share size={14} />;
-      case 'follow_back': return <UserPlus size={14} />;
-      case 'view_profile': return <User size={14} />;
-      case 'view_report': return <BarChart3 size={14} />;
-      case 'export': return <Download size={14} />;
-      case 'try_tool': return <Play size={14} />;
-      case 'learn_more': return <Info size={14} />;
-      case 'review': return <Edit size={14} />;
-      case 'reschedule': return <Calendar size={14} />;
-      case 'accept': return <Check size={14} />;
-      case 'decline': return <X size={14} />;
-      case 'view_details': return <Info size={14} />;
+      case 'view': return <EyeIcon sx={{ fontSize: 14 }} />;
+      case 'share': return <ShareIcon sx={{ fontSize: 14 }} />;
+      case 'follow_back': return <UserPlusIcon sx={{ fontSize: 14 }} />;
+      case 'view_profile': return <UserIcon sx={{ fontSize: 14 }} />;
+      case 'view_report': return <BarChart3Icon sx={{ fontSize: 14 }} />;
+      case 'export': return <DownloadIcon sx={{ fontSize: 14 }} />;
+      case 'try_tool': return <PlayIcon sx={{ fontSize: 14 }} />;
+      case 'learn_more': return <InfoIcon sx={{ fontSize: 14 }} />;
+      case 'review': return <EditIcon sx={{ fontSize: 14 }} />;
+      case 'reschedule': return <CalendarIcon sx={{ fontSize: 14 }} />;
+      case 'accept': return <CheckIcon sx={{ fontSize: 14 }} />;
+      case 'decline': return <XIcon sx={{ fontSize: 14 }} />;
+      case 'view_details': return <InfoIcon sx={{ fontSize: 14 }} />;
       default: return null;
     }
   };
@@ -422,7 +422,7 @@ export function RichNotificationCard({
                         if (onToggleExpand) onToggleExpand();
                       }}
                     >
-                      <MoreVertical size={16} />
+                      <MoreVerticalIcon sx={{ fontSize: 16 }} />
                     </IconButton>
                   )}
                 </Box>
@@ -473,7 +473,7 @@ export function RichNotificationCard({
                     }}
                     sx={{ color: 'text.secondary' }}
                   >
-                    <Eye size={16} />
+                    <EyeIcon sx={{ fontSize: 16 }} />
                   </IconButton>
                   <IconButton
                     size="small"
@@ -483,7 +483,7 @@ export function RichNotificationCard({
                     }}
                     sx={{ color: 'text.secondary' }}
                   >
-                    <X size={16} />
+                    <XIcon sx={{ fontSize: 16 }} />
                   </IconButton>
                 </Box>
               </Fade>

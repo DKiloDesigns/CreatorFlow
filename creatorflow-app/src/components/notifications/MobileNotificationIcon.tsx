@@ -24,7 +24,7 @@ import {
   Avatar,
   Fab,
 } from '@mui/material';
-import { Bell, Sparkles, Zap, X, CheckCircle, MoreVert } from 'lucide-react';
+import { Notifications as NotificationsIcon, AutoAwesome as AutoAwesomeIcon, Bolt as BoltIcon, Close as CloseIcon, CheckCircle as CheckCircleIcon, MoreVert as MoreVertIcon } from '@mui/icons-material';
 import Link from 'next/link';
 import { useMobileWebSocketNotifications } from '@/hooks/useMobileWebSocketNotifications';
 
@@ -47,7 +47,7 @@ const glow = keyframes`
 const bounce = keyframes`
   0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
   40% { transform: translateY(-8px); }
-  60% { transform: translateY(-4px); }
+  50% { transform: translateY(-4px); }
 `;
 
 interface MobileNotificationIconProps {
@@ -110,6 +110,15 @@ export function MobileNotificationIcon({
     }
   };
 
+  const getIconSize = () => {
+    switch (size) {
+      case 'small': return 'small';
+      case 'medium': return 'medium';
+      case 'large': return 'large';
+      default: return 'medium';
+    }
+  };
+
   const getBadgeStyles = () => ({
     '& .MuiBadge-badge': {
       fontSize: '0.7rem',
@@ -135,19 +144,10 @@ export function MobileNotificationIcon({
     }
   };
 
-  const getIconSize = () => {
-    switch (size) {
-      case 'small': return 18;
-      case 'medium': return 22;
-      case 'large': return 26;
-      default: return 22;
-    }
-  };
-
   const iconElement = (
-    <Bell 
-      size={getIconSize()} 
-      style={{
+    <NotificationsIcon
+      sx={{
+        fontSize: getIconSize(),
         transition: 'all 0.3s ease',
         transform: isHovered ? 'scale(1.1)' : 'scale(1)',
       }}
@@ -201,7 +201,7 @@ export function MobileNotificationIcon({
             animation: `${bounce} 0.6s ease-in-out`,
           }}
         >
-          <Sparkles size={16} color="#ffd700" />
+          <AutoAwesomeIcon sx={{ fontSize: 16, color: "#ffd700" }} />
         </Box>
       )}
     </IconButton>
@@ -243,7 +243,7 @@ export function MobileNotificationIcon({
               <Button
                 size="small"
                 onClick={markAllAsRead}
-                startIcon={<CheckCircle size={16} />}
+                startIcon={<CheckCircleIcon sx={{ fontSize: 16 }} />}
                 sx={{ minWidth: 'auto', px: 1 }}
               >
                 Mark All Read
@@ -254,7 +254,7 @@ export function MobileNotificationIcon({
               onClick={() => setDrawerOpen(false)}
               sx={{ minWidth: 'auto' }}
             >
-              <X size={20} />
+              <CloseIcon sx={{ fontSize: 20 }} />
             </IconButton>
           </Box>
         </Box>
@@ -291,7 +291,7 @@ export function MobileNotificationIcon({
             py: 4,
             color: 'text.secondary'
           }}>
-            <Bell size={48} style={{ opacity: 0.3, marginBottom: 16 }} />
+            <NotificationsIcon sx={{ fontSize: 48, opacity: 0.3, marginBottom: 16 }} />
             <Typography variant="body2">
               No notifications yet
             </Typography>
@@ -326,7 +326,7 @@ export function MobileNotificationIcon({
                         color: notification.read ? 'grey.600' : 'primary.contrastText',
                       }}
                     >
-                      <Bell size={16} />
+                      <NotificationsIcon sx={{ fontSize: 16 }} />
                     </Avatar>
                   </ListItemIcon>
                   
@@ -448,7 +448,7 @@ export function MobileNotificationIcon({
               max={99}
               sx={getBadgeStyles()}
             >
-              <Bell size={24} />
+              <NotificationsIcon sx={{ fontSize: 24 }} />
             </Badge>
           </Fab>
         </Tooltip>

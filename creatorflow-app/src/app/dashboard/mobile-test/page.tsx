@@ -24,29 +24,29 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import {
-  Smartphone,
-  Tablet,
-  Monitor,
-  Hand,
-  Wifi,
-  Battery,
-  Zap,
-  Eye,
-  Settings,
-  Play,
-  CheckCircle,
-  XCircle,
-  Clock,
-  Download,
-  Upload,
-  RefreshCw,
-  WifiOff,
-  BatteryLow,
-  Volume2,
-  VolumeX,
-  Sun,
-  Moon,
-} from 'lucide-react';
+  Smartphone as SmartphoneIcon,
+  Tablet as TabletIcon,
+  DesktopWindows as MonitorIcon,
+  TouchApp as HandIcon,
+  Wifi as WifiIcon,
+  BatteryFull as BatteryIcon,
+  Bolt as ZapIcon,
+  Visibility as EyeIcon,
+  Settings as SettingsIcon,
+  PlayArrow as PlayIcon,
+  CheckCircle as CheckCircleIcon,
+  Cancel as XCircleIcon,
+  AccessTime as ClockIcon,
+  Download as DownloadIcon,
+  CloudUpload as UploadIcon,
+  Refresh as RefreshCwIcon,
+  WifiOff as WifiOffIcon,
+  BatteryAlert as BatteryLowIcon,
+  VolumeUp as Volume2Icon,
+  VolumeOff as VolumeXIcon,
+  WbSunny as SunIcon,
+  DarkMode as MoonIcon,
+} from '@mui/icons-material';
 import { MobileTestSuite } from '@/components/testing/mobile-test-suite';
 import { PageHeader } from '@/components/ui/page-header';
 
@@ -72,37 +72,37 @@ export default function MobileTestPage() {
     {
       name: 'Touch Interactions',
       description: 'Swipe gestures, tap responses, and touch feedback',
-      icon: <Hand />,
+      icon: <HandIcon />,
       status: 'active',
     },
     {
       name: 'Responsive Design',
       description: 'Adaptive layout for all screen sizes',
-      icon: <Monitor />,
+      icon: <MonitorIcon />,
       status: 'active',
     },
     {
       name: 'Performance Optimization',
       description: 'Optimized for mobile performance',
-      icon: <Zap />,
+      icon: <ZapIcon />,
       status: 'active',
     },
     {
       name: 'PWA Features',
       description: 'Progressive Web App capabilities',
-      icon: <Download />,
+      icon: <DownloadIcon />,
       status: 'active',
     },
     {
       name: 'Accessibility',
       description: 'WCAG 2.1 AA compliance',
-      icon: <Eye />,
+      icon: <EyeIcon />,
       status: 'active',
     },
     {
       name: 'Offline Support',
       description: 'Works without internet connection',
-      icon: <WifiOff />,
+      icon: <WifiOffIcon />,
       status: 'active',
     },
   ];
@@ -115,7 +115,7 @@ export default function MobileTestPage() {
         breadcrumbs={[
           { label: 'Mobile Testing', href: '/dashboard/mobile-test' }
         ]}
-        icon={<Smartphone size={24} />}
+        icon={<SmartphoneIcon sx={{ fontSize: 24 }} />}
       />
 
       {/* Device Information */}
@@ -127,8 +127,8 @@ export default function MobileTestPage() {
               <List dense>
                 <ListItem>
                   <ListItemIcon>
-                    {deviceInfo.type === 'mobile' ? <Smartphone /> : 
-                     deviceInfo.type === 'tablet' ? <Tablet /> : <Monitor />}
+                    {deviceInfo.type === 'mobile' ? <SmartphoneIcon /> : 
+                     deviceInfo.type === 'tablet' ? <TabletIcon /> : <MonitorIcon />}
                   </ListItemIcon>
                   <ListItemText 
                     primary="Device Type" 
@@ -137,7 +137,7 @@ export default function MobileTestPage() {
                 </ListItem>
                 <ListItem>
                   <ListItemIcon>
-                    <RefreshCw />
+                    <RefreshCwIcon />
                   </ListItemIcon>
                   <ListItemText 
                     primary="Orientation" 
@@ -146,7 +146,7 @@ export default function MobileTestPage() {
                 </ListItem>
                 <ListItem>
                   <ListItemIcon>
-                    <Hand />
+                    <HandIcon />
                   </ListItemIcon>
                   <ListItemText 
                     primary="Touch Support" 
@@ -155,7 +155,7 @@ export default function MobileTestPage() {
                 </ListItem>
                 <ListItem>
                   <ListItemIcon>
-                    <Wifi />
+                    <WifiIcon />
                   </ListItemIcon>
                   <ListItemText 
                     primary="Connection" 
@@ -174,7 +174,7 @@ export default function MobileTestPage() {
               <List dense>
                 <ListItem>
                   <ListItemIcon>
-                    {deviceInfo.reducedMotion ? <EyeOff /> : <Eye />}
+                    {deviceInfo.reducedMotion ? <EyeOffIcon /> : <EyeIcon />}
                   </ListItemIcon>
                   <ListItemText 
                     primary="Reduced Motion" 
@@ -183,7 +183,7 @@ export default function MobileTestPage() {
                 </ListItem>
                 <ListItem>
                   <ListItemIcon>
-                    {deviceInfo.highContrast ? <Sun /> : <Moon />}
+                    {deviceInfo.highContrast ? <SunIcon /> : <MoonIcon />}
                   </ListItemIcon>
                   <ListItemText 
                     primary="High Contrast" 
@@ -192,7 +192,7 @@ export default function MobileTestPage() {
                 </ListItem>
                 <ListItem>
                   <ListItemIcon>
-                    <Settings />
+                    <SettingsIcon />
                   </ListItemIcon>
                   <ListItemText 
                     primary="Test Mode" 

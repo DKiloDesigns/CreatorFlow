@@ -29,25 +29,33 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import {
-  Play,
-  Pause,
-  CheckCircle,
-  XCircle,
-  Clock,
-  Smartphone,
-  Tablet,
-  Monitor,
-  Wifi,
-  Battery,
-  Hand,
-  Eye,
-  Zap,
-  RefreshCw,
-  Download,
-  Upload,
-  Settings,
-  ChevronDown,
-} from 'lucide-react';
+  PlayArrow as PlayIcon,
+  Pause as PauseIcon,
+  CheckCircle as CheckCircleIcon,
+  Cancel as XCircleIcon,
+  AccessTime as ClockIcon,
+  Smartphone as SmartphoneIcon,
+  Tablet as TabletIcon,
+  DesktopWindows as MonitorIcon,
+  Wifi as WifiIcon,
+  BatteryFull as BatteryIcon,
+  TouchApp as HandIcon,
+  Visibility as EyeIcon,
+  Bolt as ZapIcon,
+  Refresh as RefreshCwIcon,
+  Download as DownloadIcon,
+  CloudUpload as UploadIcon,
+  Settings as SettingsIcon,
+  ExpandMore as ChevronDownIcon,
+  WifiOff as WifiOffIcon,
+  BatteryAlert as BatteryLowIcon,
+  VolumeUp as Volume2Icon,
+  VolumeOff as VolumeXIcon,
+  WbSunny as SunIcon,
+  DarkMode as MoonIcon,
+} from '@mui/icons-material';
+import { MobileTestSuite } from '@/components/testing/mobile-test-suite';
+import { PageHeader } from '@/components/ui/page-header';
 
 interface TestResult {
   id: string;
@@ -224,13 +232,13 @@ export const MobileTestSuite: React.FC<MobileTestSuiteProps> = ({ onTestComplete
   const getStatusIcon = (status: TestResult['status']) => {
     switch (status) {
       case 'pending':
-        return <Clock size={16} />;
+        return <ClockIcon sx={{ fontSize: 16 }} />;
       case 'running':
-        return <RefreshCw size={16} className="animate-spin" />;
+        return <RefreshCwIcon sx={{ fontSize: 16 }} className="animate-spin" />;
       case 'passed':
-        return <CheckCircle size={16} color="green" />;
+        return <CheckCircleIcon sx={{ fontSize: 16 }} color="success" />;
       case 'failed':
-        return <XCircle size={16} color="red" />;
+        return <XCircleIcon sx={{ fontSize: 16 }} color="error" />;
     }
   };
 
@@ -258,7 +266,7 @@ export const MobileTestSuite: React.FC<MobileTestSuiteProps> = ({ onTestComplete
       <Box sx={{ display: 'flex', gap: 2, mb: 3 }}>
         <Button
           variant="contained"
-          startIcon={<Play />}
+          startIcon={<PlayIcon />}
           onClick={runAllTests}
           disabled={isRunning}
           sx={{ minWidth: 120 }}
@@ -268,7 +276,7 @@ export const MobileTestSuite: React.FC<MobileTestSuiteProps> = ({ onTestComplete
         
         <Button
           variant="outlined"
-          startIcon={<Settings />}
+          startIcon={<SettingsIcon />}
           onClick={() => setShowDialog(true)}
         >
           Test Settings
@@ -328,7 +336,7 @@ export const MobileTestSuite: React.FC<MobileTestSuiteProps> = ({ onTestComplete
           
           return (
             <Accordion key={test.id} sx={{ mb: 1 }}>
-              <AccordionSummary expandIcon={<ChevronDown />}>
+              <AccordionSummary expandIcon={<ChevronDownIcon />}>
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, width: '100%' }}>
                   {getStatusIcon(result?.status || 'pending')}
                   <Typography variant="h6">{test.name}</Typography>
@@ -397,7 +405,7 @@ export const MobileTestSuite: React.FC<MobileTestSuiteProps> = ({ onTestComplete
           <List>
             <ListItem>
               <ListItemIcon>
-                <Smartphone />
+                <SmartphoneIcon />
               </ListItemIcon>
               <ListItemText
                 primary="Device Testing"
@@ -406,7 +414,7 @@ export const MobileTestSuite: React.FC<MobileTestSuiteProps> = ({ onTestComplete
             </ListItem>
             <ListItem>
               <ListItemIcon>
-                <Wifi />
+                <WifiIcon />
               </ListItemIcon>
               <ListItemText
                 primary="Network Conditions"
@@ -415,7 +423,7 @@ export const MobileTestSuite: React.FC<MobileTestSuiteProps> = ({ onTestComplete
             </ListItem>
             <ListItem>
               <ListItemIcon>
-                <Battery />
+                <BatteryIcon />
               </ListItemIcon>
               <ListItemText
                 primary="Battery Optimization"
@@ -424,7 +432,7 @@ export const MobileTestSuite: React.FC<MobileTestSuiteProps> = ({ onTestComplete
             </ListItem>
             <ListItem>
               <ListItemIcon>
-                <Hand />
+                <HandIcon />
               </ListItemIcon>
               <ListItemText
                 primary="Touch Interactions"

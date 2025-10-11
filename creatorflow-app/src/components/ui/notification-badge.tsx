@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, Typography, IconButton, Button } from '@mui/material';
-import { Bell, X, CheckCircle, AlertCircle, Info } from 'lucide-react';
+import { Notifications as NotificationsIcon, Close as CloseIcon, CheckCircle as CheckCircleIcon, Warning as WarningIcon, Info as InfoIcon } from '@mui/icons-material';
 
 interface NotificationBadgeProps {
   count?: number;
@@ -40,9 +40,9 @@ export function NotificationBadge({
 
   const getIconSizes = () => {
     const iconSizeMap = {
-      sm: { height: 12, width: 12 },
-      md: { height: 16, width: 16 },
-      lg: { height: 20, width: 20 }
+      sm: 'small',
+      md: 'small',
+      lg: 'medium',
     };
     return iconSizeMap[size];
   };
@@ -74,7 +74,7 @@ export function NotificationBadge({
             {count > 99 ? '99+' : count}
           </Typography>
         ) : (
-          <Bell style={getIconSizes()} />
+          <NotificationsIcon sx={{ fontSize: getIconSizes() }} />
         )}
       </Button>
       {showDot && count === 0 && (
@@ -132,10 +132,10 @@ export function NotificationToast({
   };
 
   const icons = {
-    success: CheckCircle,
-    warning: AlertCircle,
-    error: AlertCircle,
-    info: Info
+    success: CheckCircleIcon,
+    warning: WarningIcon,
+    error: WarningIcon,
+    info: InfoIcon
   };
 
   const Icon = icons[variant];
@@ -171,7 +171,7 @@ export function NotificationToast({
       </div>
       
       {/* Visual Toast Notification */}
-      <Box 
+      <Box
         sx={{
           position: 'fixed',
           top: 16,
@@ -212,7 +212,7 @@ export function NotificationToast({
         aria-describedby={message ? "toast-message" : undefined}
       >
         <Box sx={{ display: 'flex', alignItems: 'start', gap: 1.5 }}>
-          <Icon style={{ height: 20, width: 20, marginTop: 2, flexShrink: 0 }} aria-hidden="true" />
+          <Icon sx={{ fontSize: 20, marginTop: '2px', flexShrink: 0 }} aria-hidden="true" />
           <Box sx={{ flex: 1, minWidth: 0 }}>
             <Typography id="toast-title" variant="h6" sx={{ fontWeight: 500 }}>{title}</Typography>
             {message && (
@@ -228,7 +228,7 @@ export function NotificationToast({
               sx={{ ml: 1, p: 0.5, borderRadius: 1, '&:hover': { bgcolor: 'rgba(0, 0, 0, 0.1)' }, transition: 'colors 0.2s ease' }}
               aria-label="Close notification"
             >
-              <X style={{ height: 16, width: 16 }} aria-hidden="true" />
+              <CloseIcon sx={{ fontSize: 16 }} aria-hidden="true" />
             </IconButton>
           )}
                 </Box>

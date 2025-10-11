@@ -3,16 +3,16 @@
 import { useState, useEffect } from 'react';
 import { useParams, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { 
-  Card, 
-  CardContent, 
-  CardHeader, 
-  Button,
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
   Typography,
   Chip,
   Box
 } from '@mui/material';
-import { Users, Activity, Settings, Edit, ArrowLeft } from 'lucide-react';
+import { Group as GroupIcon, TrendingUp as TrendingUpIcon, Settings as SettingsIcon, Edit as EditIcon, ArrowBack as ArrowBackIcon, PersonAdd as PersonAddIcon, EmojiEvents as EmojiEventsIcon, Security as SecurityIcon, Delete as DeleteIcon, Email as EmailIcon, Person as PersonIcon } from '@mui/icons-material';
 import { useToast } from '@/hooks/use-toast';
 import { useSession } from 'next-auth/react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogTrigger } from '@/components/ui/dialog';
@@ -22,7 +22,6 @@ import { Badge } from '@/components/ui/badge';
 import { Avatar } from '@mui/material';
 import { Tabs, Tab } from '@mui/material';
 import { Textarea } from '@/components/ui/textarea';
-import { Users2, UserPlus, Crown, Shield, Trash2, Mail, User } from 'lucide-react';
 
 interface Team {
   id: string;
@@ -330,7 +329,7 @@ export default function TeamDetailPage() {
       <div className="space-y-6">
         <div className="flex items-center space-x-4">
           <Button variant="text" size="small" disabled>
-            <ArrowLeft className="h-4 w-4 mr-2" />
+            <ArrowBackIcon sx={{ fontSize: 16 }} className="mr-2" />
             Back
           </Button>
           <div className="h-8 bg-gray-200 rounded w-48 animate-pulse"></div>
@@ -346,7 +345,7 @@ export default function TeamDetailPage() {
         <div className="flex items-center space-x-4">
           <Button variant="text" size="small">
             <Link href="/dashboard/teams">
-              <ArrowLeft className="h-4 w-4 mr-2" />
+              <ArrowBackIcon sx={{ fontSize: 16 }} className="mr-2" />
               Back
             </Link>
           </Button>
@@ -372,7 +371,7 @@ export default function TeamDetailPage() {
         <div className="flex items-center space-x-4">
           <Button variant="text" size="small">
             <Link href="/dashboard/teams">
-              <ArrowLeft className="h-4 w-4 mr-2" />
+              <ArrowBackIcon sx={{ fontSize: 16 }} className="mr-2" />
               Back
             </Link>
           </Button>
@@ -385,7 +384,7 @@ export default function TeamDetailPage() {
           <div className="flex space-x-2">
             <Dialog open={editDialogOpen} onClose={() => setEditDialogOpen(false)}>
               <Button variant="outlined" onClick={() => setEditDialogOpen(true)}>
-                <Edit className="h-4 w-4 mr-2" />
+                <EditIcon sx={{ fontSize: 16 }} className="mr-2" />
                 Edit
               </Button>
               <DialogContent>
@@ -427,12 +426,12 @@ export default function TeamDetailPage() {
               </DialogContent>
             </Dialog>
             <Dialog open={deleteDialogOpen} onClose={() => setDeleteDialogOpen(false)}>
-              <Button 
-                variant="contained" 
-                color="error" 
+              <Button
+                variant="contained"
+                color="error"
                 onClick={() => setDeleteDialogOpen(true)}
               >
-                <Trash2 className="h-4 w-4 mr-2" />
+                <DeleteIcon sx={{ fontSize: 16 }} className="mr-2" />
                 Delete
               </Button>
               <DialogContent>
@@ -469,7 +468,7 @@ export default function TeamDetailPage() {
             <Card>
               <CardHeader>
                 <Typography variant="h6" className="flex items-center">
-                  <Users2 className="h-5 w-5 mr-2" />
+                  <GroupIcon sx={{ fontSize: 20 }} className="mr-2" />
                   Team Info
                 </Typography>
               </CardHeader>
@@ -493,11 +492,11 @@ export default function TeamDetailPage() {
                   <Label className="text-sm font-medium">Your Role</Label>
                   <div className="flex items-center space-x-2 mt-1">
                     {userRole === 'OWNER' ? (
-                      <Crown className="h-4 w-4 text-yellow-500" />
+                      <EmojiEventsIcon sx={{ fontSize: 16 }} className="text-yellow-500" />
                     ) : userRole === 'ADMIN' ? (
-                      <Shield className="h-4 w-4 text-blue-500" />
+                      <SecurityIcon sx={{ fontSize: 16 }} className="text-blue-500" />
                     ) : (
-                      <User className="h-4 w-4 text-gray-500" />
+                      <PersonIcon sx={{ fontSize: 16 }} className="text-gray-500" />
                     )}
                     <span className="text-sm capitalize">{userRole?.toLowerCase()}</span>
                   </div>
@@ -508,7 +507,7 @@ export default function TeamDetailPage() {
             <Card>
               <CardHeader>
                 <Typography variant="h6" className="flex items-center">
-                  <Mail className="h-5 w-5 mr-2" />
+                  <EmailIcon sx={{ fontSize: 20 }} className="mr-2" />
                   Quick Actions
                 </Typography>
               </CardHeader>
@@ -516,7 +515,7 @@ export default function TeamDetailPage() {
                 {isOwner && (
                   <Dialog open={inviteDialogOpen} onClose={() => setInviteDialogOpen(false)}>
                     <Button className="w-full justify-start" onClick={() => setInviteDialogOpen(true)}>
-                      <UserPlus className="h-4 w-4 mr-2" />
+                      <PersonAddIcon sx={{ fontSize: 16 }} className="mr-2" />
                       Invite Member
                     </Button>
                     <DialogContent>
@@ -561,13 +560,13 @@ export default function TeamDetailPage() {
                     </DialogContent>
                   </Dialog>
                 )}
-                <Button 
-                  component={Link} 
+                <Button
+                  component={Link}
                   href={`/dashboard/teams/${teamId}?tab=members`}
-                  variant="outlined" 
+                  variant="outlined"
                   className="w-full justify-start"
                 >
-                  <Users2 className="h-4 w-4 mr-2" />
+                  <GroupIcon sx={{ fontSize: 16 }} className="mr-2" />
                   View All Members
                 </Button>
               </CardContent>
@@ -583,7 +582,7 @@ export default function TeamDetailPage() {
             {isOwner && (
               <Dialog open={inviteDialogOpen} onClose={() => setInviteDialogOpen(false)}>
                 <Button onClick={() => setInviteDialogOpen(true)}>
-                  <UserPlus className="h-4 w-4 mr-2" />
+                  <PersonAddIcon sx={{ fontSize: 16 }} className="mr-2" />
                   Invite Member
                 </Button>
                 <DialogContent>
@@ -645,8 +644,8 @@ export default function TeamDetailPage() {
                   </div>
                   <div className="flex items-center space-x-2">
                     <Badge variant={member.role === 'OWNER' ? 'default' : 'secondary'}>
-                      {member.role === 'OWNER' && <Crown className="h-3 w-3 mr-1" />}
-                      {member.role === 'ADMIN' && <Shield className="h-3 w-3 mr-1" />}
+                      {member.role === 'OWNER' && <EmojiEventsIcon sx={{ fontSize: 12 }} className="mr-1 text-yellow-500" />}
+                      {member.role === 'ADMIN' && <SecurityIcon sx={{ fontSize: 12 }} className="mr-1 text-blue-500" />}
                       {member.role.toLowerCase()}
                     </Badge>
                     {isOwner && member.role !== 'OWNER' && (
@@ -655,7 +654,7 @@ export default function TeamDetailPage() {
                         size="small"
                         onClick={() => removeMember(member.user.id)}
                       >
-                        <Trash2 className="h-4 w-4" />
+                        <DeleteIcon sx={{ fontSize: 16 }} />
                       </Button>
                     )}
                   </div>
@@ -673,7 +672,7 @@ export default function TeamDetailPage() {
             {isOwner && (
               <Dialog open={inviteDialogOpen} onClose={() => setInviteDialogOpen(false)}>
                 <Button onClick={() => setInviteDialogOpen(true)}>
-                  <UserPlus className="h-4 w-4 mr-2" />
+                  <PersonAddIcon sx={{ fontSize: 16 }} className="mr-2" />
                   Send Invitation
                 </Button>
                 <DialogContent>
@@ -723,7 +722,7 @@ export default function TeamDetailPage() {
           {team.invitations.length === 0 ? (
             <Card>
               <CardContent className="flex flex-col items-center justify-center py-8">
-                <Mail className="h-8 w-8 text-muted-foreground mb-2" />
+                <EmailIcon sx={{ fontSize: 32 }} className="text-muted-foreground mb-2" />
                 <p className="text-muted-foreground">No invitations found</p>
               </CardContent>
             </Card>
@@ -785,7 +784,7 @@ export default function TeamDetailPage() {
                               size="small"
                               onClick={() => cancelInvitation(invitation.id)}
                             >
-                              <Trash2 className="h-4 w-4" />
+                              <DeleteIcon sx={{ fontSize: 16 }} />
                             </Button>
                           </>
                         )}

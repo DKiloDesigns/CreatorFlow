@@ -12,7 +12,7 @@ import {
   useTheme,
   alpha
 } from '@mui/material';
-import { Bell, Sparkles, Zap, Star, Heart } from 'lucide-react';
+import { Notifications as NotificationsIcon, AutoAwesome as AutoAwesomeIcon, Bolt as BoltIcon, Star as StarIcon, Favorite as FavoriteIcon } from '@mui/icons-material';
 import Link from 'next/link';
 
 // Enhanced keyframe animations
@@ -110,9 +110,9 @@ export function ModernNotificationSystem({
 
   const getIconSize = () => {
     switch (size) {
-      case 'small': return 16;
-      case 'large': return 28;
-      default: return 20;
+      case 'small': return 'small';
+      case 'large': return 'medium'; // Using 'medium' as large might be too big, adjust as needed
+      default: return 'small';
     }
   };
 
@@ -265,7 +265,7 @@ export function ModernNotificationSystem({
                 zIndex: 2
               }}
             >
-              <Sparkles size={12} color="#ffd700" />
+              <AutoAwesomeIcon sx={{ fontSize: 12, color: "#ffd700" }} />
             </Box>
           </Fade>
           <Fade in={showSparkles} timeout={1000}>
@@ -278,7 +278,7 @@ export function ModernNotificationSystem({
                 zIndex: 2
               }}
             >
-              <Zap size={10} color="#ff6b6b" />
+              <BoltIcon sx={{ fontSize: 10, color: "#ff6b6b" }} />
             </Box>
           </Fade>
           <Fade in={showSparkles} timeout={1500}>
@@ -291,14 +291,14 @@ export function ModernNotificationSystem({
                 zIndex: 2
               }}
             >
-              <Star size={8} color="#48dbfb" />
+              <StarIcon sx={{ fontSize: 8, color: "#48dbfb" }} />
             </Box>
           </Fade>
         </>
       )}
 
       {/* Main icon */}
-      <Bell size={getIconSize()} />
+      <NotificationsIcon sx={{ fontSize: getIconSize() }} />
     </Box>
   );
 

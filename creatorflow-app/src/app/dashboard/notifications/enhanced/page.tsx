@@ -1,17 +1,23 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { 
-  Card, 
-  CardContent, 
-  CardHeader, 
+import {
+  Card,
+  CardContent,
+  CardHeader,
   Button,
   Typography,
   Box,
-  Tabs, 
+  Tabs,
   Tab
 } from '@mui/material';
-import { Bell, Activity, Settings, Search, RefreshCw } from 'lucide-react';
+import {
+  Notifications as BellIcon,
+  TrendingUp as ActivityIcon,
+  Settings as SettingsIcon,
+  Search as SearchIcon,
+  Refresh as RefreshCwIcon
+} from '@mui/icons-material';
 import { Badge } from '@/components/ui/badge';
 import { CardDescription } from '@/components/ui/base/Card';
 import { Input } from '@/components/ui/input';
@@ -80,13 +86,13 @@ export default function EnhancedNotificationsPage() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <Typography variant="subtitle2" className="text-sm font-medium">Total Notifications</Typography>
-            <Bell className="h-4 w-4 text-muted-foreground" />
+            <BellIcon sx={{ fontSize: 20, color: 'text.secondary' }} />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{stats.total}</div>
-            <p className="text-xs text-muted-foreground">
+            <Typography variant="caption" sx={{ color: 'text.secondary' }}>
               {stats.unread} unread
-            </p>
+            </Typography>
           </CardContent>
         </Card>
 
@@ -96,10 +102,10 @@ export default function EnhancedNotificationsPage() {
             <Badge variant="destructive" className="text-xs" label={stats.bySeverity.critical.toString()} />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-red-600">{stats.bySeverity.critical}</div>
-            <p className="text-xs text-muted-foreground">
+            <Typography variant="h6" sx={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'error.main' }}>{stats.bySeverity.critical}</Typography>
+            <Typography variant="caption" sx={{ color: 'text.secondary' }}>
               Require immediate attention
-            </p>
+            </Typography>
           </CardContent>
         </Card>
 
@@ -109,10 +115,10 @@ export default function EnhancedNotificationsPage() {
             <Badge variant="secondary" className="text-xs" label={stats.byCategory.security.toString()} />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-orange-600">{stats.byCategory.security}</div>
-            <p className="text-xs text-muted-foreground">
+            <Typography variant="h6" sx={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'warning.main' }}>{stats.byCategory.security}</Typography>
+            <Typography variant="caption" sx={{ color: 'text.secondary' }}>
               Security-related notifications
-            </p>
+            </Typography>
           </CardContent>
         </Card>
 
@@ -122,33 +128,33 @@ export default function EnhancedNotificationsPage() {
             <Badge variant="secondary" className="text-xs" label={stats.byCategory.content.toString()} />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-blue-600">{stats.byCategory.content}</div>
-            <p className="text-xs text-muted-foreground">
+            <Typography variant="h6" sx={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'info.main' }}>{stats.byCategory.content}</Typography>
+            <Typography variant="caption" sx={{ color: 'text.secondary' }}>
               Content and publishing updates
-            </p>
+            </Typography>
           </CardContent>
         </Card>
       </div>
 
       {/* Main Content */}
       <Tabs value={activeTab} onChange={(e, newValue) => setActiveTab(newValue)} sx={{ mb: 2 }}>
-        <Tab 
-          value="notifications" 
+        <Tab
+          value="notifications"
           label={
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-              <Bell size={16} />
+              <BellIcon sx={{ fontSize: 16 }} />
               Notifications
             </Box>
-          } 
+          }
         />
-        <Tab 
-          value="preferences" 
+        <Tab
+          value="preferences"
           label={
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-              <Settings size={16} />
+              <SettingsIcon sx={{ fontSize: 16 }} />
               Preferences
             </Box>
-          } 
+          }
         />
       </Tabs>
 
@@ -163,44 +169,44 @@ export default function EnhancedNotificationsPage() {
                     View and manage your notifications
                   </CardDescription>
                 </div>
-                <div className="flex items-center gap-2">
-                  <div className="relative">
-                    <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+                  <Box sx={{ position: 'relative' }}>
+                    <SearchIcon sx={{ position: 'absolute', left: 8, top: 8, fontSize: 16, color: 'text.secondary' }} />
                     <Input
                       placeholder="Search notifications..."
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
                       className="pl-8 w-64"
                     />
-                  </div>
+                  </Box>
                   <Button
                     variant="outlined"
                     onClick={() => window.location.reload()}
                   >
-                    <RefreshCw className="h-4 w-4" />
+                    <RefreshCwIcon sx={{ fontSize: 16 }} />
                   </Button>
                   {unreadCount > 0 && (
                     <Button onClick={markAllAsRead} variant="outlined">
                       Mark all read
                     </Button>
                   )}
-                </div>
+                </Box>
               </div>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 {filteredNotifications.length === 0 ? (
                   <div className="text-center py-8">
-                    <Bell className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-                    <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">
+                    <BellIcon sx={{ fontSize: 48, color: 'text.disabled', mx: 'auto', mb: 4 }} />
+                    <Typography variant="h6" sx={{ fontWeight: 500, color: 'text.primary', mb: 1 }}>
                       {searchTerm ? 'No notifications found' : 'No notifications'}
-                    </h3>
-                    <p className="text-gray-500 dark:text-gray-400">
-                      {searchTerm 
+                    </Typography>
+                    <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                      {searchTerm
                         ? 'Try adjusting your search terms'
                         : 'You\'re all caught up! New notifications will appear here.'
                       }
-                    </p>
+                    </Typography>
                   </div>
                 ) : (
                   <div className="space-y-2">
@@ -208,31 +214,31 @@ export default function EnhancedNotificationsPage() {
                       <div
                         key={notification.id}
                         className={`p-4 rounded-lg border transition-colors ${
-                          notification.read 
-                            ? 'bg-gray-50 dark:bg-gray-800' 
+                          notification.read
+                            ? 'bg-gray-50 dark:bg-gray-800'
                             : 'bg-blue-50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-800'
                         }`}
                       >
                         <div className="flex items-start justify-between">
                           <div className="flex-1">
                             <div className="flex items-center gap-2 mb-2">
-                              <h4 className="font-medium">{notification.title}</h4>
+                              <Typography variant="subtitle1" sx={{ fontWeight: 500 }}>{notification.title}</Typography>
                               <Badge variant="secondary" className="text-xs" label={notification.severity.toString()} />
                               <Badge variant="outline" className="text-xs" label={notification.category.toString()} />
                               {!notification.read && (
                                 <Badge variant="default" className="text-xs" label="New" />
                               )}
                             </div>
-                            <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">
+                            <Typography variant="body2" sx={{ color: 'text.secondary', mb: 1 }}>
                               {notification.message}
-                            </p>
-                            <div className="flex items-center justify-between text-xs text-gray-500">
+                            </Typography>
+                            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '0.75rem', color: 'text.disabled' }}>
                               <span>{notification.type}</span>
                               <span>
                                 {new Date(notification.createdAt).toLocaleDateString()} at{' '}
                                 {new Date(notification.createdAt).toLocaleTimeString()}
                               </span>
-                            </div>
+                            </Box>
                           </div>
                         </div>
                       </div>

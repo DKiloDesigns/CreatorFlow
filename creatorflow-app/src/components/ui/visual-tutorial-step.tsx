@@ -19,15 +19,15 @@ import {
   Zoom
 } from '@mui/material';
 import {
-  ZoomIn,
-  ZoomOut,
-  RotateCcw,
-  Eye,
-  EyeOff,
-  ChevronLeft,
-  ChevronRight,
-  X
-} from 'lucide-react';
+  ZoomIn as ZoomInIcon,
+  ZoomOut as ZoomOutIcon,
+  Refresh as RotateCcwIcon,
+  Visibility as EyeIcon,
+  VisibilityOff as EyeOffIcon,
+  ChevronLeft as ChevronLeftIcon,
+  ChevronRight as ChevronRightIcon,
+  Close as XIcon
+} from '@mui/icons-material';
 
 interface VisualTutorialStepProps {
   step: {
@@ -196,22 +196,22 @@ export function VisualTutorialStep({
         >
           <Tooltip title="Zoom In">
             <IconButton size="small" onClick={handleZoomIn}>
-              <ZoomIn size={16} />
+              <ZoomInIcon sx={{ fontSize: 16 }} />
             </IconButton>
           </Tooltip>
           <Tooltip title="Zoom Out">
             <IconButton size="small" onClick={handleZoomOut}>
-              <ZoomOut size={16} />
+              <ZoomOutIcon sx={{ fontSize: 16 }} />
             </IconButton>
           </Tooltip>
           <Tooltip title="Reset Zoom">
             <IconButton size="small" onClick={handleResetZoom}>
-              <RotateCcw size={16} />
+              <RotateCcwIcon sx={{ fontSize: 16 }} />
             </IconButton>
           </Tooltip>
           <Tooltip title={showHighlight ? "Hide Highlight" : "Show Highlight"}>
             <IconButton size="small" onClick={() => setShowHighlight(!showHighlight)}>
-              {showHighlight ? <EyeOff size={16} /> : <Eye size={16} />}
+              {showHighlight ? <EyeOffIcon sx={{ fontSize: 16 }} /> : <EyeIcon sx={{ fontSize: 16 }} />}
             </IconButton>
           </Tooltip>
         </Box>
@@ -289,7 +289,7 @@ export function VisualTutorialStep({
         </Box>
         {onClose && (
           <IconButton onClick={onClose} size="small">
-            <X size={20} />
+            <XIcon sx={{ fontSize: 20 }} />
           </IconButton>
         )}
       </Box>
@@ -341,7 +341,7 @@ export function VisualTutorialStep({
       {showNavigation && (
         <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <Button
-            startIcon={<ChevronLeft size={20} />}
+            startIcon={<ChevronLeftIcon sx={{ fontSize: 20 }} />}
             onClick={onPrevious}
             disabled={!onPrevious}
             variant="outlined"
@@ -350,7 +350,7 @@ export function VisualTutorialStep({
           </Button>
           
           <Button
-            endIcon={<ChevronRight size={20} />}
+            endIcon={<ChevronRightIcon sx={{ fontSize: 20 }} />}
             onClick={onNext}
             disabled={!onNext}
             variant="contained"
@@ -385,7 +385,7 @@ export function VisualTutorialStep({
               }
             }}
           >
-            <X size={20} />
+            <XIcon sx={{ fontSize: 20 }} />
           </IconButton>
           {selectedImage && (
             <img

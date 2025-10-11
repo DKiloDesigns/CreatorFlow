@@ -14,15 +14,15 @@ import {
   Alert,
 } from '@mui/material';
 import { 
-  CreditCard, 
-  Calendar, 
-  Users, 
-  Zap, 
-  Shield, 
-  AlertTriangle,
-  CheckCircle,
-  XCircle
-} from 'lucide-react';
+  CreditCard as CreditCardIcon,
+  CalendarToday as CalendarTodayIcon,
+  Group as GroupIcon,
+  Bolt as BoltIcon,
+  Security as SecurityIcon,
+  Warning as WarningIcon,
+  CheckCircle as CheckCircleIcon,
+  Cancel as CancelIcon
+} from '@mui/icons-material';
 import { getPricingTier, formatPrice } from '@/lib/pricing';
 import { toast } from 'sonner';
 
@@ -125,11 +125,11 @@ export default function SubscriptionStatus({
   };
 
   const getStatusIcon = () => {
-    if (isPaymentFailed) return <XCircle size={16} />;
-    if (subscription.plan === 'FREE') return <Shield size={16} />;
-    if (subscription.plan === 'PRO') return <Zap size={16} />;
-    if (subscription.plan === 'ENTERPRISE') return <Users size={16} />;
-    return <Shield size={16} />;
+    if (isPaymentFailed) return <CancelIcon size={16} />;
+    if (subscription.plan === 'FREE') return <SecurityIcon size={16} />;
+    if (subscription.plan === 'PRO') return <BoltIcon size={16} />;
+    if (subscription.plan === 'ENTERPRISE') return <GroupIcon size={16} />;
+    return <SecurityIcon size={16} />;
   };
 
   const formatDate = (dateString: string) => {
@@ -155,7 +155,7 @@ export default function SubscriptionStatus({
     <Card sx={{ ...(className && { className }) }}>
       <CardHeader sx={{ pb: 1 }}>
         <CardTitle sx={{ display: 'flex', alignItems: 'center', gap: 1, fontSize: '0.875rem' }}>
-          <CreditCard size={16} />
+          <CreditCardIcon size={16} />
           Subscription Status
         </CardTitle>
       </CardHeader>
@@ -186,7 +186,7 @@ export default function SubscriptionStatus({
 
         {subscription.stripeCurrentPeriodEnd && (
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <Calendar size={16} />
+            <CalendarTodayIcon size={16} />
             <Typography variant="caption" color="text.secondary">
               {daysUntilRenewal && daysUntilRenewal > 0 ? (
                 `Renews in ${daysUntilRenewal} day${daysUntilRenewal !== 1 ? 's' : ''}`
@@ -234,13 +234,13 @@ export default function SubscriptionStatus({
             </Typography>
             <Box sx={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 1 }}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                <Users size={12} />
+                <GroupIcon size={12} />
                 <Typography variant="caption">
                   {currentTier.limits.socialAccounts === -1 ? '∞' : currentTier.limits.socialAccounts} accounts
                 </Typography>
               </Box>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                <Zap size={12} />
+                <BoltIcon size={12} />
                 <Typography variant="caption">
                   {currentTier.limits.postsPerMonth === -1 ? '∞' : currentTier.limits.postsPerMonth} posts/mo
                 </Typography>

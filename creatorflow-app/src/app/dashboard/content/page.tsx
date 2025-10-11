@@ -5,11 +5,11 @@ export const dynamic = 'force-dynamic';
 import { redirect, useRouter } from 'next/navigation';
 import { getSession } from "@/auth"
 import React, { useState, useEffect } from 'react';
-import { 
-  Box, 
-  Typography, 
-  Grid, 
-  Button, 
+import {
+  Box,
+  Typography,
+  Grid,
+  Button,
   CircularProgress,
   Container,
   Paper,
@@ -18,7 +18,7 @@ import {
   Tabs,
   Tab
 } from '@mui/material';
-import { 
+import {
   Card,
   CardHeader,
   CardContent,
@@ -28,7 +28,21 @@ import {
   MuiDialogContent,
   DialogActions
 } from '@/components/ui/mui-components';
-import { Plus, Calendar, FileText, Image, Video, Upload, Clock, Brain, TrendingUp, Lightbulb, Target, Sparkles, Lock } from 'lucide-react';
+import {
+  Add as AddIcon,
+  CalendarMonth as CalendarMonthIcon,
+  Description as DescriptionIcon,
+  Image as ImageIcon,
+  Videocam as VideocamIcon,
+  CloudUpload as CloudUploadIcon,
+  AccessTime as AccessTimeIcon,
+  PsychologyOutlined as PsychologyOutlinedIcon,
+  TrendingUp as TrendingUpIcon,
+  LightbulbOutlined as LightbulbOutlinedIcon,
+  Adjust as AdjustIcon,
+  AutoAwesome as AutoAwesomeIcon,
+  Lock as LockIcon
+} from '@mui/icons-material';
 import { toast } from 'sonner';
 import dynamicImport from 'next/dynamic';
 import { useUserPlan } from '@/hooks/use-user-plan';
@@ -55,7 +69,7 @@ import AutomatedPublisher from '@/components/ai/AutomatedPublisher';
 const AIOnboarding = dynamicImport(() => import('@/components/ui/ai-onboarding').then(mod => ({ default: mod.AIOnboarding })), {
   ssr: false,
   loading: () => (
-    <Box sx={{ 
+    <Box sx={{
       background: 'linear-gradient(45deg, #f3e8ff 30%, #dbeafe 90%)',
       border: 1,
       borderColor: 'purple.200',
@@ -107,9 +121,9 @@ function SmartWorkflowButton() {
   return (
     <MuiButton
       variant="outline"
-      startIcon={isProUser ? <Sparkles style={{ width: 16, height: 16 }} /> : <Lock style={{ width: 16, height: 16 }} />}
+      startIcon={isProUser ? <AutoAwesomeIcon sx={{ width: 16, height: 16 }} /> : <LockIcon sx={{ width: 16, height: 16 }} />}
       onClick={handleClick}
-      sx={{ 
+      sx={{
         width: { xs: '100%', sm: 'auto' },
         minWidth: 44,
         minHeight: 44,
@@ -133,7 +147,7 @@ export default function ContentPage() {
   const [isUsingTemplate, setIsUsingTemplate] = useState(false);
   const [isBulkScheduling, setIsBulkScheduling] = useState(false);
   const [isClient, setIsClient] = useState(false);
-  
+
   // Upload Media Modal State
   const [uploadModalOpen, setUploadModalOpen] = useState(false);
   const [mediaLibraryOpen, setMediaLibraryOpen] = useState(false);
@@ -178,7 +192,7 @@ export default function ContentPage() {
 
     // Set initial tab based on screen size
     handleResize();
-    
+
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
@@ -281,11 +295,11 @@ export default function ContentPage() {
     try {
       // Simulate API call to update post
       await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      setPosts(prev => prev.map(post => 
+
+      setPosts(prev => prev.map(post =>
         post.id === updatedData.id ? { ...post, ...updatedData } : post
       ));
-      
+
       setEditModalOpen(false);
       setSelectedPost(null);
       toast.success('Post updated successfully!');
@@ -306,7 +320,7 @@ export default function ContentPage() {
     try {
       // Simulate API call to delete post
       await new Promise(resolve => setTimeout(resolve, 1000));
-      
+
       setPosts(prev => prev.filter(post => post.id !== postToDelete.id));
       setDeleteDialogOpen(false);
       setPostToDelete(null);
@@ -321,7 +335,7 @@ export default function ContentPage() {
     try {
       // Simulate API call to duplicate post
       await new Promise(resolve => setTimeout(resolve, 1000));
-      
+
       const duplicatedPost: Post = {
         ...post,
         id: `duplicate-${Date.now()}`,
@@ -330,7 +344,7 @@ export default function ContentPage() {
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString()
       };
-      
+
       setPosts(prev => [duplicatedPost, ...prev]);
       toast.success('Post duplicated successfully!');
     } catch (error) {
@@ -344,7 +358,7 @@ export default function ContentPage() {
     const loadData = async () => {
       try {
         setLoading(true);
-        
+
         // Mock data for now since API doesn't exist
         const mockPosts: Post[] = [
           {
@@ -374,17 +388,17 @@ export default function ContentPage() {
             updatedAt: new Date(Date.now() - 86400000).toISOString()
           }
         ];
-        
+
         setPosts(mockPosts);
         setTotal(mockPosts.length);
-        setOverview({ 
+        setOverview({
           drafts: mockPosts.filter(p => p.status === 'DRAFT').length,
           scheduled: mockPosts.filter(p => p.status === 'SCHEDULED').length,
           published: mockPosts.filter(p => p.status === 'PUBLISHED').length
         });
-        
+
         setLoading(false);
-        
+
       } catch (error) {
         console.error('Error loading data:', error);
         setError('Failed to load data');
@@ -413,7 +427,7 @@ export default function ContentPage() {
                     <MuiButton
                       variant="outline"
                       fullWidth
-                      startIcon={<Upload style={{ width: 16, height: 16 }} />}
+                      startIcon={<CloudUploadIcon sx={{ width: 16, height: 16 }} />}
                       onClick={() => setUploadModalOpen(true)}
                       sx={{ height: 48 }}
                     >
@@ -424,7 +438,7 @@ export default function ContentPage() {
                     <MuiButton
                       variant="outline"
                       fullWidth
-                      startIcon={<Video style={{ width: 16, height: 16 }} />}
+                      startIcon={<VideocamIcon sx={{ width: 16, height: 16 }} />}
                       onClick={() => setCreateVideoModalOpen(true)}
                       sx={{ height: 48 }}
                     >
@@ -435,7 +449,7 @@ export default function ContentPage() {
                     <MuiButton
                       variant="outline"
                       fullWidth
-                      startIcon={<FileText style={{ width: 16, height: 16 }} />}
+                      startIcon={<DescriptionIcon sx={{ width: 16, height: 16 }} />}
                       onClick={() => setUseTemplateModalOpen(true)}
                       sx={{ height: 48 }}
                     >
@@ -446,7 +460,7 @@ export default function ContentPage() {
                     <MuiButton
                       variant="outline"
                       fullWidth
-                      startIcon={<Calendar style={{ width: 16, height: 16 }} />}
+                      startIcon={<CalendarMonthIcon sx={{ width: 16, height: 16 }} />}
                       onClick={() => setBulkScheduleModalOpen(true)}
                       sx={{ height: 48 }}
                     >
@@ -465,7 +479,7 @@ export default function ContentPage() {
                     <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.75rem', fontWeight: 500 }}>
                       Drafts
                     </Typography>
-                    <FileText style={{ width: 14, height: 14, color: 'text.secondary' }} />
+                    <DescriptionIcon sx={{ width: 14, height: 14, color: 'text.secondary' }} />
                   </Box>
                   <Typography variant="h5" component="div" sx={{ fontWeight: 'bold', mb: 0.5, color: 'text.primary' }}>
                     {overview?.drafts || 0}
@@ -482,7 +496,7 @@ export default function ContentPage() {
                     <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.75rem', fontWeight: 500 }}>
                       Scheduled
                     </Typography>
-                    <Clock style={{ width: 14, height: 14, color: 'text.secondary' }} />
+                    <AccessTimeIcon sx={{ width: 14, height: 14, color: 'text.secondary' }} />
                   </Box>
                   <Typography variant="h5" component="div" sx={{ fontWeight: 'bold', mb: 0.5, color: 'text.primary' }}>
                     {overview?.scheduled || 0}
@@ -499,7 +513,7 @@ export default function ContentPage() {
                     <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.75rem', fontWeight: 500 }}>
                       Published
                     </Typography>
-                    <TrendingUp style={{ width: 14, height: 14, color: 'text.secondary' }} />
+                    <TrendingUpIcon sx={{ width: 14, height: 14, color: 'text.secondary' }} />
                   </Box>
                   <Typography variant="h5" component="div" sx={{ fontWeight: 'bold', mb: 0.5, color: 'text.primary' }}>
                     {overview?.published || 0}
@@ -516,7 +530,7 @@ export default function ContentPage() {
                     <Typography variant="body2" color="text.secondary" sx={{ fontSize: '0.75rem', fontWeight: 500 }}>
                       AI Insights
                     </Typography>
-                    <Brain style={{ width: 14, height: 14, color: 'text.secondary' }} />
+                    <PsychologyOutlinedIcon sx={{ width: 14, height: 14, color: 'text.secondary' }} />
                   </Box>
                   <Typography variant="h5" component="div" sx={{ fontWeight: 'bold', mb: 0.5, color: 'text.primary' }}>
                     {aiInsights?.length || 0}
@@ -530,7 +544,7 @@ export default function ContentPage() {
 
             {/* Content Table */}
             <Box sx={{ mb: { xs: 8, sm: 6 } }}>
-              <ContentTable 
+              <ContentTable
                 posts={posts}
                 onEdit={handleEdit}
                 onDelete={handleDelete}
@@ -553,11 +567,11 @@ export default function ContentPage() {
   // Temporarily disable loading state to see content
   // if (loading) {
   //   return (
-  //     <Box sx={{ 
-  //       display: 'flex', 
-  //       alignItems: 'center', 
-  //       justifyContent: 'center', 
-  //       minHeight: 400 
+  //     <Box sx={{
+  //       display: 'flex',
+  //       alignItems: 'center',
+  //       justifyContent: 'center',
+  //       minHeight: 400
   //     }}>
   //       <CircularProgress />
   //     </Box>
@@ -579,30 +593,30 @@ export default function ContentPage() {
       </Typography>
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
         {/* Header */}
-        <Box sx={{ 
-          display: 'flex', 
-          flexDirection: { xs: 'column', sm: 'row' }, 
-          alignItems: { sm: 'center' }, 
-          justifyContent: 'space-between', 
+        <Box sx={{
+          display: 'flex',
+          flexDirection: { xs: 'column', sm: 'row' },
+          alignItems: { sm: 'center' },
+          justifyContent: 'space-between',
           gap: 2,
           mb: 2
         }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, flex: 1 }}>
             <Box>
-              <Typography 
-                variant="h4" 
-                component="h1" 
-                sx={{ 
-                  fontWeight: 'bold', 
+              <Typography
+                variant="h4"
+                component="h1"
+                sx={{
+                  fontWeight: 'bold',
                   color: 'text.primary',
                   wordBreak: 'break-word'
                 }}
               >
                 Content Management
               </Typography>
-              <Typography 
-                variant="body2" 
-                sx={{ 
+              <Typography
+                variant="body2"
+                sx={{
                   color: 'text.secondary',
                   mt: 0.5
                 }}
@@ -618,18 +632,18 @@ export default function ContentPage() {
               contextualTips={getPageHelpConfig('content')?.tips || []}
             />
           </Box>
-          
-          <Box sx={{ 
-            display: 'flex', 
-            flexDirection: { xs: 'column', sm: 'row' }, 
+
+          <Box sx={{
+            display: 'flex',
+            flexDirection: { xs: 'column', sm: 'row' },
             gap: 1,
             width: { xs: '100%', sm: 'auto' }
           }}>
             <MuiButton
               variant="default"
-              startIcon={<Plus style={{ width: 16, height: 16 }} />}
+              startIcon={<AddIcon sx={{ width: 16, height: 16 }} />}
               onClick={() => setUploadModalOpen(true)}
-              sx={{ 
+              sx={{
                 width: { xs: '100%', sm: 'auto' },
                 minWidth: 44,
                 minHeight: 44
@@ -637,30 +651,30 @@ export default function ContentPage() {
             >
               Create Post
             </MuiButton>
-            
+
             <SmartWorkflowButton />
           </Box>
         </Box>
 
         {/* Mobile Action Buttons - Only visible on mobile */}
-        <Box sx={{ 
-          display: { xs: 'flex', md: 'none' }, 
-          flexDirection: 'column', 
-          gap: 2, 
-          mb: 3 
+        <Box sx={{
+          display: { xs: 'flex', md: 'none' },
+          flexDirection: 'column',
+          gap: 2,
+          mb: 3
         }}>
           <Typography variant="h6" sx={{ mb: 1, color: 'text.primary', fontWeight: 'bold' }}>
             Quick Actions
           </Typography>
-          <Box sx={{ 
-            display: 'grid', 
-            gridTemplateColumns: 'repeat(2, 1fr)', 
-            gap: 2 
+          <Box sx={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(2, 1fr)',
+            gap: 2
           }}>
             <Button
               variant="contained"
               fullWidth
-              startIcon={<Upload style={{ width: 16, height: 16 }} />}
+              startIcon={<CloudUploadIcon sx={{ width: 16, height: 16 }} />}
               onClick={() => {
                 console.log('Upload button clicked, setting modal to open');
                 setUploadModalOpen(true);
@@ -672,7 +686,7 @@ export default function ContentPage() {
             <Button
               variant="contained"
               fullWidth
-              startIcon={<Video style={{ width: 16, height: 16 }} />}
+              startIcon={<VideocamIcon sx={{ width: 16, height: 16 }} />}
               onClick={() => setCreateVideoModalOpen(true)}
               sx={{ height: 48 }}
             >
@@ -681,7 +695,7 @@ export default function ContentPage() {
             <Button
               variant="contained"
               fullWidth
-              startIcon={<FileText style={{ width: 16, height: 16 }} />}
+              startIcon={<DescriptionIcon sx={{ width: 16, height: 16 }} />}
               onClick={() => setUseTemplateModalOpen(true)}
               sx={{ height: 48 }}
             >
@@ -690,7 +704,7 @@ export default function ContentPage() {
             <Button
               variant="contained"
               fullWidth
-              startIcon={<Calendar style={{ width: 16, height: 16 }} />}
+              startIcon={<CalendarMonthIcon sx={{ width: 16, height: 16 }} />}
               onClick={() => setBulkScheduleModalOpen(true)}
               sx={{ height: 48 }}
             >
@@ -700,13 +714,13 @@ export default function ContentPage() {
         </Box>
 
         {/* Navigation Tabs - Now visible on mobile */}
-        <Box sx={{ 
-          borderBottom: 1, 
+        <Box sx={{
+          borderBottom: 1,
           borderColor: 'divider',
           display: 'block'
         }}>
-          <Tabs 
-            value={activeTab} 
+          <Tabs
+            value={activeTab}
             onChange={(_, newValue) => setActiveTab(newValue)}
             variant="scrollable"
             scrollButtons="auto"
@@ -773,7 +787,7 @@ export default function ContentPage() {
               <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                 <Button
                   variant="outlined"
-                  startIcon={<Video />}
+                  startIcon={<VideocamIcon />}
                   fullWidth
                   onClick={() => {
                     toast.info('Video creation feature coming soon!');
@@ -784,7 +798,7 @@ export default function ContentPage() {
                 </Button>
                 <Button
                   variant="outlined"
-                  startIcon={<Image />}
+                  startIcon={<ImageIcon />}
                   fullWidth
                   onClick={() => {
                     toast.info('Image to video feature coming soon!');
@@ -795,7 +809,7 @@ export default function ContentPage() {
                 </Button>
                 <Button
                   variant="outlined"
-                  startIcon={<FileText />}
+                  startIcon={<DescriptionIcon />}
                   fullWidth
                   onClick={() => {
                     toast.info('Text to video feature coming soon!');

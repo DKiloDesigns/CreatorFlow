@@ -9,4 +9,4 @@ import {
   Grid,
   Chip
 } from '@mui/material';
-import { BarChart3, Activity } from 'lucide-react'; 
+import { BarChart as BarChartIcon, TrendingUp as ActivityIcon } from '@mui/icons-material'; 

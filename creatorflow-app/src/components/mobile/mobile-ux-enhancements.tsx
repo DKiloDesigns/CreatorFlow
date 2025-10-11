@@ -19,26 +19,26 @@ import {
   useTheme,
 } from '@mui/material';
 import {
-  Menu,
-  X,
-  Hand,
-  Swipe,
-  Pinch,
-  RotateCcw,
-  Smartphone,
-  Tablet,
-  Monitor,
-  Wifi,
-  WifiOff,
-  Battery,
-  BatteryLow,
-  Volume2,
-  VolumeX,
-  Sun,
-  Moon,
-  Eye,
-  EyeOff,
-} from 'lucide-react';
+  Menu as MenuIcon,
+  Close as XIcon,
+  TouchApp as HandIcon,
+  Swipe as SwipeIcon,
+  ZoomOutMap as PinchIcon,
+  Refresh as RotateCcwIcon,
+  Smartphone as SmartphoneIcon,
+  Tablet as TabletIcon,
+  Monitor as MonitorIcon,
+  Wifi as WifiIcon,
+  WifiOff as WifiOffIcon,
+  BatteryFull as BatteryIcon,
+  BatteryAlert as BatteryLowIcon,
+  VolumeUp as Volume2Icon,
+  VolumeOff as VolumeXIcon,
+  WbSunny as SunIcon,
+  DarkMode as MoonIcon,
+  Visibility as EyeIcon,
+  VisibilityOff as EyeOffIcon,
+} from '@mui/icons-material';
 
 interface MobileUXEnhancementsProps {
   children: React.ReactNode;
@@ -170,15 +170,15 @@ export const MobileUXEnhancements: React.FC<MobileUXEnhancementsProps> = ({ chil
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
             <Typography variant="h6">Device Information</Typography>
             <IconButton onClick={() => setShowDeviceInfo(false)}>
-              <X />
+              <XIcon />
             </IconButton>
           </Box>
           
           <List>
             <ListItem>
               <ListItemIcon>
-                {deviceInfo.type === 'mobile' ? <Smartphone /> : 
-                 deviceInfo.type === 'tablet' ? <Tablet /> : <Monitor />}
+                {deviceInfo.type === 'mobile' ? <SmartphoneIcon /> : 
+                 deviceInfo.type === 'tablet' ? <TabletIcon /> : <MonitorIcon />}
               </ListItemIcon>
               <ListItemText 
                 primary="Device Type" 
@@ -188,7 +188,7 @@ export const MobileUXEnhancements: React.FC<MobileUXEnhancementsProps> = ({ chil
             
             <ListItem>
               <ListItemIcon>
-                <RotateCcw />
+                <RotateCcwIcon />
               </ListItemIcon>
               <ListItemText 
                 primary="Orientation" 
@@ -198,7 +198,7 @@ export const MobileUXEnhancements: React.FC<MobileUXEnhancementsProps> = ({ chil
             
             <ListItem>
               <ListItemIcon>
-                <Hand />
+                <HandIcon />
               </ListItemIcon>
               <ListItemText 
                 primary="Touch Support" 
@@ -208,7 +208,7 @@ export const MobileUXEnhancements: React.FC<MobileUXEnhancementsProps> = ({ chil
             
             <ListItem>
               <ListItemIcon>
-                {deviceInfo.connectionType === 'offline' ? <WifiOff /> : <Wifi />}
+                {deviceInfo.connectionType === 'offline' ? <WifiOffIcon /> : <WifiIcon />}
               </ListItemIcon>
               <ListItemText 
                 primary="Connection" 
@@ -218,7 +218,7 @@ export const MobileUXEnhancements: React.FC<MobileUXEnhancementsProps> = ({ chil
             
             <ListItem>
               <ListItemIcon>
-                {deviceInfo.reducedMotion ? <EyeOff /> : <Eye />}
+                {deviceInfo.reducedMotion ? <EyeOffIcon /> : <EyeIcon />}
               </ListItemIcon>
               <ListItemText 
                 primary="Reduced Motion" 
@@ -228,7 +228,7 @@ export const MobileUXEnhancements: React.FC<MobileUXEnhancementsProps> = ({ chil
             
             <ListItem>
               <ListItemIcon>
-                {deviceInfo.highContrast ? <Sun /> : <Moon />}
+                {deviceInfo.highContrast ? <SunIcon /> : <MoonIcon />}
               </ListItemIcon>
               <ListItemText 
                 primary="High Contrast" 
@@ -259,7 +259,7 @@ export const MobileUXEnhancements: React.FC<MobileUXEnhancementsProps> = ({ chil
               gap: 1,
             }}
           >
-            <Hand size={16} />
+            <HandIcon sx={{ fontSize: 16 }} />
             <Typography variant="caption">Gesture Mode Active</Typography>
           </Box>
         </Fade>

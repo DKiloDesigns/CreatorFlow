@@ -12,6 +12,9 @@
   },
   "dependencies": {
     "@atproto/api": "^0.15.26",
+    "@fullcalendar/daygrid": "^6.1.19",
+    "@fullcalendar/interaction": "^6.1.19",
+    "@fullcalendar/react": "^6.1.19",
     "@prisma/client": "^6.11.0",
     "@types/formidable": "^3.4.5",
     "cloudinary": "^2.7.0",

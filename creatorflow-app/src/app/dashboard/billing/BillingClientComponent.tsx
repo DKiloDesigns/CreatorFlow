@@ -4,7 +4,7 @@ import { format } from 'date-fns';
 import { Button, Card, CardContent, CardHeader, Typography } from '@mui/material';
 import { Box, Container, Grid, Alert, AlertTitle, Chip, Tabs, Tab } from '@mui/material';
 import { createPortalSession } from './actions';
-import { ArrowRight, CreditCard, History, TrendingUp, BarChart3, Users, Zap, Download, FileText, BarChart2 } from 'lucide-react';
+import { ArrowRightAlt as ArrowRightIcon, CreditCard as CreditCardIcon, History as HistoryIcon, TrendingUp as TrendingUpIcon, BarChart as BarChart3Icon, Group as UsersIcon, Bolt as ZapIcon, Download as DownloadIcon, Description as FileTextIcon, BarChart as BarChart2Icon } from '@mui/icons-material';
 import { LinearProgress } from '@mui/material';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -224,7 +224,7 @@ export default function BillingClientComponent({ user, searchParams, upcomingCha
                 <Grid item xs={12} md={6}>
                   <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                      <TrendingUp style={{ height: 20, width: 20, color: 'var(--mui-palette-text-secondary)' }} />
+                      <TrendingUpIcon sx={{ height: 20, width: 20, color: 'text.secondary' }} />
                       <Typography variant="body2" sx={{ fontWeight: 500 }}>Scheduled Posts</Typography>
                     </Box>
                     <Typography variant="h4" sx={{ fontWeight: 'bold' }}>{user?._count.posts || 0}</Typography>
@@ -237,7 +237,7 @@ export default function BillingClientComponent({ user, searchParams, upcomingCha
                 <Grid item xs={12} md={6}>
                   <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                      <CreditCard style={{ height: 20, width: 20, color: 'var(--mui-palette-text-secondary)' }} />
+                      <CreditCardIcon sx={{ height: 20, width: 20, color: 'text.secondary' }} />
                       <Typography variant="body2" sx={{ fontWeight: 500 }}>Connected Accounts</Typography>
                     </Box>
                     <Typography variant="h4" sx={{ fontWeight: 'bold' }}>{user?._count.socialAccounts || 0}</Typography>
@@ -302,7 +302,7 @@ export default function BillingClientComponent({ user, searchParams, upcomingCha
                           size="small"
                           onClick={() => window.open(payment.invoice_pdf, '_blank')}
                         >
-                          <History className="h-4 w-4 mr-2" />
+                          <HistoryIcon sx={{ height: 16, width: 16, mr: 1 }} />
                           View Invoice
                         </Button>
                       </div>
@@ -321,7 +321,7 @@ export default function BillingClientComponent({ user, searchParams, upcomingCha
             <Typography variant="h4">Usage Analytics</Typography>
             <div className="flex gap-2">
               <Button variant="outlined" size="small" onClick={() => window.print()}>
-                <FileText className="h-4 w-4 mr-2" />
+                <FileTextIcon sx={{ height: 16, width: 16, mr: 1 }} />
                 Export Report
               </Button>
               <Button variant="outlined" size="small" onClick={() => {
@@ -344,7 +344,7 @@ export default function BillingClientComponent({ user, searchParams, upcomingCha
                 document.body.removeChild(a);
                 URL.revokeObjectURL(url);
               }}>
-                <Download className="h-4 w-4 mr-2" />
+                <DownloadIcon sx={{ height: 16, width: 16, mr: 1 }} />
                 Download Data
               </Button>
             </div>
@@ -359,7 +359,7 @@ export default function BillingClientComponent({ user, searchParams, upcomingCha
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
-                    <BarChart2 className="h-5 w-5 text-muted-foreground" />
+                    <BarChart2Icon sx={{ height: 20, width: 20 }} className="text-muted-foreground" />
                     <p className="text-sm font-medium">Engagement Rate</p>
                   </div>
                   <div className="h-[200px] bg-muted bg-opacity-20 rounded-lg p-4">
@@ -376,7 +376,7 @@ export default function BillingClientComponent({ user, searchParams, upcomingCha
                 </div>
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
-                    <BarChart3 className="h-5 w-5 text-muted-foreground" />
+                    <BarChart3Icon sx={{ height: 20, width: 20 }} className="text-muted-foreground" />
                     <p className="text-sm font-medium">Reach</p>
                   </div>
                   <div className="h-[200px] bg-muted bg-opacity-20 rounded-lg p-4">
@@ -393,7 +393,7 @@ export default function BillingClientComponent({ user, searchParams, upcomingCha
                 </div>
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
-                    <Users className="h-5 w-5 text-muted-foreground" />
+                    <UsersIcon sx={{ height: 20, width: 20 }} className="text-muted-foreground" />
                     <p className="text-sm font-medium">Follower Growth</p>
                   </div>
                   <div className="h-[200px] bg-muted bg-opacity-20 rounded-lg p-4">
@@ -461,18 +461,7 @@ export default function BillingClientComponent({ user, searchParams, upcomingCha
                   <ul className="space-y-3">
                     {tier.features.map((feature) => (
                       <li key={feature} className="flex items-center">
-                        <svg
-                          className="h-5 w-5 text-green-500 mr-2"
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 20 20"
-                          fill="currentColor"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
+                        <CheckCircleIcon sx={{ height: 20, width: 20, mr: 1, color: 'success.main' }} />
                         <span>{feature}</span>
                       </li>
                     ))}

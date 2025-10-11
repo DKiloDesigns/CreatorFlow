@@ -10,7 +10,7 @@ import {
   LinearProgress,
   Paper
 } from '@mui/material';
-import { Rocket, Activity, Sparkles, Users, Zap, Calendar, BarChart3, Settings, X, CheckCircle, ArrowRight } from 'lucide-react';
+import { RocketLaunch as RocketIcon, TrendingUp as ActivityIcon, AutoAwesome as SparklesIcon, Group as UsersIcon, Bolt as ZapIcon, CalendarMonth as CalendarIcon, BarChart as BarChart3Icon, Settings as SettingsIcon, Close as XIcon, CheckCircle as CheckCircleIcon, ArrowRightAlt as ArrowRightIcon } from '@mui/icons-material';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
@@ -110,12 +110,12 @@ export default function OnboardingModal({ isOpen, onClose, onComplete }: Onboard
 
   const getStepIcon = (stepId: string) => {
     switch (stepId) {
-      case 'welcome': return <Box sx={{ color: 'secondary.main' }}><Sparkles style={{ width: 24, height: 24 }} /></Box>;
-      case 'connect_accounts': return <Box sx={{ color: 'info.main' }}><Users style={{ width: 24, height: 24 }} /></Box>;
-      case 'create_post': return <Box sx={{ color: 'success.main' }}><Zap style={{ width: 24, height: 24 }} /></Box>;
-      case 'schedule_content': return <Box sx={{ color: 'warning.main' }}><Calendar style={{ width: 24, height: 24 }} /></Box>;
-      case 'analytics': return <Box sx={{ color: 'primary.main' }}><BarChart3 style={{ width: 24, height: 24 }} /></Box>;
-      default: return <Box sx={{ color: 'text.secondary' }}><Settings style={{ width: 24, height: 24 }} /></Box>;
+      case 'welcome': return <Box sx={{ color: 'secondary.main' }}><SparklesIcon sx={{ width: 24, height: 24 }} /></Box>;
+      case 'connect_accounts': return <Box sx={{ color: 'info.main' }}><UsersIcon sx={{ width: 24, height: 24 }} /></Box>;
+      case 'create_post': return <Box sx={{ color: 'success.main' }}><ZapIcon sx={{ width: 24, height: 24 }} /></Box>;
+      case 'schedule_content': return <Box sx={{ color: 'warning.main' }}><CalendarIcon sx={{ width: 24, height: 24 }} /></Box>;
+      case 'analytics': return <Box sx={{ color: 'primary.main' }}><BarChart3Icon sx={{ width: 24, height: 24 }} /></Box>;
+      default: return <Box sx={{ color: 'text.secondary' }}><SettingsIcon sx={{ width: 24, height: 24 }} /></Box>;
     }
   };
 
@@ -143,7 +143,7 @@ export default function OnboardingModal({ isOpen, onClose, onComplete }: Onboard
               Welcome to CreatorFlow
             </DialogTitle>
             <Button variant="text" size="small" onClick={onClose}>
-              <X className="h-4 w-4" />
+              <XIcon sx={{ width: 16, height: 16 }} />
             </Button>
           </Box>
         </DialogHeader>
@@ -183,7 +183,7 @@ export default function OnboardingModal({ isOpen, onClose, onComplete }: Onboard
                 }}
               >
                 {step.completed ? (
-                  <CheckCircle className="h-3 w-3" />
+                  <CheckCircleIcon sx={{ width: 12, height: 12 }} />
                 ) : (
                   <span>{index + 1}</span>
                 )}
@@ -271,7 +271,7 @@ export default function OnboardingModal({ isOpen, onClose, onComplete }: Onboard
                 <Button onClick={() => completeStep(currentStepData.id)} disabled={loading}>
                   {loading ? 'Completing...' : 'Complete Step'}
                   <Box sx={{ ml: 1 }}>
-                    <ArrowRight className="h-4 w-4" />
+                    <ArrowRightIcon sx={{ height: 16, width: 16 }} />
                   </Box>
                 </Button>
               ) : (
@@ -282,7 +282,7 @@ export default function OnboardingModal({ isOpen, onClose, onComplete }: Onboard
                   <Button onClick={() => completeStep(currentStepData.id)} disabled={loading}>
                     {loading ? 'Completing...' : 'Complete'}
                     <Box sx={{ ml: 1 }}>
-                      <ArrowRight className="h-4 w-4" />
+                      <ArrowRightIcon sx={{ height: 16, width: 16 }} />
                     </Box>
                   </Button>
                 </>

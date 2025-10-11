@@ -11,7 +11,7 @@ import {
   Chip,
   LinearProgress
 } from '@mui/material';
-import { Clock, Activity } from 'lucide-react';
+import { AccessTime as ClockIcon, TrendingUp as ActivityIcon } from '@mui/icons-material';
 
 interface TrialStatusProps {
   trialStartDate: Date;
@@ -68,7 +68,7 @@ export function TrialStatus({ trialStartDate, trialEndDate, className }: TrialSt
       <CardHeader>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <Box sx={{ color: 'warning.main' }}>
-            <Activity style={{ width: 20, height: 20 }} />
+            <ActivityIcon sx={{ width: 20, height: 20 }} />
           </Box>
           <Typography variant="h6">Pro Trial Status</Typography>
         </Box>
@@ -121,7 +121,7 @@ export function TrialStatus({ trialStartDate, trialEndDate, className }: TrialSt
           ) : (
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, p: 2, bgcolor: 'error.light', borderRadius: 1 }}>
               <Box sx={{ color: 'error.main' }}>
-                <Activity className="h-5 w-5" />
+                <ActivityIcon sx={{ height: 20, width: 20 }} />
               </Box>
               <Box>
                 <Typography variant="body2" color="error.dark" sx={{ fontWeight: 500 }}>Trial Expired</Typography>
@@ -142,7 +142,7 @@ export function TrialStatus({ trialStartDate, trialEndDate, className }: TrialSt
           {isExpiringSoon && !isExpired && (
             <Grid item xs={12} component="div">
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, p: 2, bgcolor: 'warning.light', borderRadius: 1 }}>
-                <Box sx={{ color: 'warning.600' }}><Clock className="h-4 w-4" /></Box>
+                <Box sx={{ color: 'warning.600' }}><ClockIcon sx={{ height: 16, width: 16 }} /></Box>
                 <Typography variant="body2" color="warning.dark">
                   Your trial expires soon! Upgrade to Pro to keep all features.
                 </Typography>

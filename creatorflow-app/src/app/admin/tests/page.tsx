@@ -24,14 +24,14 @@ import {
   useTheme
 } from '@mui/material';
 import {
-  Play,
-  CheckCircle,
-  XCircle,
-  Clock,
-  RefreshCw,
-  Download,
-  BarChart3
-} from 'lucide-react';
+  PlayArrow as PlayIcon,
+  CheckCircle as CheckCircleIcon,
+  Cancel as XCircleIcon,
+  AccessTime as ClockIcon,
+  Refresh as RefreshCwIcon,
+  Download as DownloadIcon,
+  BarChart as BarChart3Icon
+} from '@mui/icons-material';
 import { runHelpSystemTests, TestSuite, TestResult } from '@/lib/help-system-tests';
 
 export default function TestDashboardPage() {
@@ -57,13 +57,13 @@ export default function TestDashboardPage() {
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'pass':
-        return <CheckCircle size={16} color={theme.palette.success.main} />;
+        return <CheckCircleIcon sx={{ fontSize: 16 }} color={theme.palette.success.main} />;
       case 'fail':
-        return <XCircle size={16} color={theme.palette.error.main} />;
+        return <XCircleIcon sx={{ fontSize: 16 }} color={theme.palette.error.main} />;
       case 'skip':
-        return <Clock size={16} color={theme.palette.warning.main} />;
+        return <ClockIcon sx={{ fontSize: 16 }} color={theme.palette.warning.main} />;
       default:
-        return <Clock size={16} />;
+        return <ClockIcon sx={{ fontSize: 16 }} />;
     }
   };
 
@@ -112,7 +112,7 @@ export default function TestDashboardPage() {
           <Box sx={{ display: 'flex', gap: 2, mb: 3 }}>
             <Button
               variant="contained"
-              startIcon={isRunning ? <CircularProgress size={16} /> : <Play />}
+              startIcon={isRunning ? <CircularProgress size={16} /> : <PlayIcon />}
               onClick={runTests}
               disabled={isRunning}
             >
@@ -122,7 +122,7 @@ export default function TestDashboardPage() {
             {testSuite && (
               <Button
                 variant="outlined"
-                startIcon={<Download />}
+                startIcon={<DownloadIcon />}
                 onClick={exportResults}
               >
                 Export Results
@@ -145,7 +145,7 @@ export default function TestDashboardPage() {
                 <Card>
                   <CardContent>
                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                      <BarChart3 size={20} sx={{ mr: 1 }} />
+                      <BarChart3Icon sx={{ fontSize: 20, mr: 1 }} />
                       <Typography variant="h6">Total Tests</Typography>
                     </Box>
                     <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
@@ -159,7 +159,7 @@ export default function TestDashboardPage() {
                 <Card>
                   <CardContent>
                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                      <CheckCircle size={20} color={theme.palette.success.main} sx={{ mr: 1 }} />
+                      <CheckCircleIcon sx={{ fontSize: 20, mr: 1 }} color={theme.palette.success.main} />
                       <Typography variant="h6">Passed</Typography>
                     </Box>
                     <Typography variant="h4" sx={{ fontWeight: 'bold', color: 'success.main' }}>
@@ -173,7 +173,7 @@ export default function TestDashboardPage() {
                 <Card>
                   <CardContent>
                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                      <XCircle size={20} color={theme.palette.error.main} sx={{ mr: 1 }} />
+                      <XCircleIcon sx={{ fontSize: 20, mr: 1 }} color={theme.palette.error.main} />
                       <Typography variant="h6">Failed</Typography>
                     </Box>
                     <Typography variant="h4" sx={{ fontWeight: 'bold', color: 'error.main' }}>
@@ -187,7 +187,7 @@ export default function TestDashboardPage() {
                 <Card>
                   <CardContent>
                     <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                      <Clock size={20} color={theme.palette.warning.main} sx={{ mr: 1 }} />
+                      <ClockIcon sx={{ fontSize: 20, mr: 1 }} color={theme.palette.warning.main} />
                       <Typography variant="h6">Skipped</Typography>
                     </Box>
                     <Typography variant="h4" sx={{ fontWeight: 'bold', color: 'warning.main' }}>
@@ -298,7 +298,7 @@ export default function TestDashboardPage() {
               </Typography>
               <Button
                 variant="contained"
-                startIcon={<Play />}
+                startIcon={<PlayIcon />}
                 onClick={runTests}
               >
                 Run Tests

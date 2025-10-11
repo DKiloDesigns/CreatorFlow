@@ -1,10 +1,10 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { 
-  Card, 
-  CardContent, 
-  CardHeader, 
+import {
+  Card,
+  CardContent,
+  CardHeader,
   Button,
   Typography,
   Box,
@@ -16,7 +16,21 @@ import {
   Select as MuiSelect,
   MenuItem
 } from '@mui/material';
-import { BarChart3, TrendingUp, Activity, Settings, RefreshCw, AlertTriangle, Eye, Users, Target, Lightbulb, Zap, Download, Brain } from 'lucide-react';
+import {
+  BarChart as BarChartIcon,
+  TrendingUp as TrendingUpIcon,
+  Timeline as ActivityIcon,
+  Settings as SettingsIcon,
+  Refresh as RefreshIcon,
+  Warning as AlertTriangleIcon,
+  Visibility as EyeIcon,
+  Group as UsersIcon,
+  Adjust as TargetIcon,
+  LightbulbOutlined as LightbulbIcon,
+  Bolt as ZapIcon,
+  Download as DownloadIcon,
+  PsychologyOutlined as BrainIcon
+} from '@mui/icons-material';
 
 import { TabsContent } from '@/components/ui/tabs';
 
@@ -85,13 +99,13 @@ export default function AnalyticsPage() {
 
   const getInsightIcon = (type: string) => {
     switch (type) {
-      case 'opportunity': return <TrendingUp style={{ width: 20, height: 20, color: 'success.main' }} />;
-      case 'risk': return <AlertTriangle style={{ width: 20, height: 20, color: 'error.main' }} />;
-      case 'trend': return <BarChart3 style={{ width: 20, height: 20, color: 'primary.main' }} />;
-      case 'anomaly': return <Eye style={{ width: 20, height: 20, color: 'warning.main' }} />;
-      case 'segment': return <Users style={{ width: 20, height: 20, color: 'secondary.main' }} />;
-      case 'funnel': return <Target style={{ width: 20, height: 20, color: 'info.main' }} />;
-      default: return <Lightbulb style={{ width: 20, height: 20, color: 'warning.main' }} />;
+      case 'opportunity': return <TrendingUpIcon sx={{ width: 20, height: 20, color: 'success.main' }} />;
+      case 'risk': return <AlertTriangleIcon sx={{ width: 20, height: 20, color: 'error.main' }} />;
+      case 'trend': return <BarChartIcon sx={{ width: 20, height: 20, color: 'primary.main' }} />;
+      case 'anomaly': return <EyeIcon sx={{ width: 20, height: 20, color: 'warning.main' }} />;
+      case 'segment': return <UsersIcon sx={{ width: 20, height: 20, color: 'secondary.main' }} />;
+      case 'funnel': return <TargetIcon sx={{ width: 20, height: 20, color: 'info.main' }} />;
+      default: return <LightbulbIcon sx={{ width: 20, height: 20, color: 'warning.main' }} />;
     }
   };
 
@@ -165,11 +179,11 @@ export default function AnalyticsPage() {
             </MuiSelect>
           </FormControl>
           <Button onClick={refreshData} disabled={refreshing} variant="outlined">
-            <RefreshCw style={{ width: 16, height: 16, marginRight: 8 }} className={refreshing ? 'animate-spin' : ''} />
+            <RefreshIcon sx={{ width: 16, height: 16, marginRight: 8 }} className={refreshing ? 'animate-spin' : ''} />
             Refresh
           </Button>
           <Button onClick={exportInsights} variant="outlined">
-            <Download style={{ width: 16, height: 16, marginRight: 8 }} />
+            <DownloadIcon sx={{ width: 16, height: 16, marginRight: 8 }} />
             Export
           </Button>
         </Box>
@@ -182,7 +196,7 @@ export default function AnalyticsPage() {
             <Card>
               <CardHeader sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', pb: 1 }}>
                 <Typography variant="subtitle2" sx={{ fontSize: '0.875rem', fontWeight: 500 }}>Active Users</Typography>
-                <Activity style={{ height: 16, width: 16, color: 'var(--mui-palette-text-secondary)' }} />
+                <ActivityIcon sx={{ height: 16, width: 16, color: 'var(--mui-palette-text-secondary)' }} />
               </CardHeader>
               <CardContent>
                 <Typography variant="h4" sx={{ fontWeight: 'bold' }}>{realTimeMetrics.activeUsers}</Typography>
@@ -197,7 +211,7 @@ export default function AnalyticsPage() {
             <Card>
               <CardHeader sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', pb: 1 }}>
                 <Typography variant="subtitle2" sx={{ fontSize: '0.875rem', fontWeight: 500 }}>New Users</Typography>
-                <Users style={{ height: 16, width: 16, color: 'var(--mui-palette-text-secondary)' }} />
+                <UsersIcon sx={{ height: 16, width: 16, color: 'var(--mui-palette-text-secondary)' }} />
               </CardHeader>
               <CardContent>
                 <Typography variant="h4" sx={{ fontWeight: 'bold' }}>{realTimeMetrics.newUsers}</Typography>
@@ -212,7 +226,7 @@ export default function AnalyticsPage() {
             <Card>
               <CardHeader sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', pb: 1 }}>
                 <Typography variant="h6" sx={{ fontSize: '0.875rem', fontWeight: 500 }}>Total Events</Typography>
-                <BarChart3 style={{ height: 16, width: 16, color: 'var(--mui-palette-text-secondary)' }} />
+                <BarChartIcon sx={{ height: 16, width: 16, color: 'var(--mui-palette-text-secondary)' }} />
               </CardHeader>
               <CardContent>
                 <Typography variant="h4" sx={{ fontWeight: 'bold' }}>{realTimeMetrics.totalEvents}</Typography>
@@ -227,7 +241,7 @@ export default function AnalyticsPage() {
             <Card>
               <CardHeader sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', pb: 1 }}>
                 <Typography variant="h6" sx={{ fontSize: '0.875rem', fontWeight: 500 }}>Platform Usage</Typography>
-                <Zap style={{ height: 16, width: 16, color: 'var(--mui-palette-text-secondary)' }} />
+                <ZapIcon sx={{ height: 16, width: 16, color: 'var(--mui-palette-text-secondary)' }} />
               </CardHeader>
               <CardContent>
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
@@ -326,7 +340,7 @@ export default function AnalyticsPage() {
 
         <Box sx={{ p: 2, border: 1, borderRadius: 2 }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-            <TrendingUp className="h-5 w-5" />
+            <TrendingUpIcon sx={{ width: 20, height: 20 }} />
             <Typography variant="h6" sx={{ fontWeight: 600 }}>Predictive Analytics</Typography>
                          <Chip label="Predictive" variant="outlined" size="small" />
           </Box>
@@ -367,7 +381,7 @@ export default function AnalyticsPage() {
 
         <Box sx={{ p: 2, border: 1, borderRadius: 2 }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-            <Users className="h-5 w-5" />
+            <UsersIcon sx={{ width: 20, height: 20 }} />
             <Typography variant="h6" sx={{ fontWeight: 600 }}>User Segments</Typography>
                          <Chip label="Segments" variant="outlined" size="small" />
           </Box>
@@ -424,7 +438,7 @@ export default function AnalyticsPage() {
 
         <Box sx={{ p: 2, border: 1, borderRadius: 2 }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-            <Target className="h-5 w-5" />
+            <TargetIcon sx={{ width: 20, height: 20 }} />
             <Typography variant="h6" sx={{ fontWeight: 600 }}>Conversion Funnel</Typography>
                          <Chip label="Funnel" variant="outlined" size="small" />
           </Box>

@@ -57,8 +57,5 @@ export function MinimalThemeProvider({ children }: { children: React.ReactNode }
 
 export function useMinimalTheme() {
   const context = useContext(ThemeContext);
-  if (context === undefined) {
-    throw new Error('useMinimalTheme must be used within a MinimalThemeProvider');
-  }
-  return context;
+  return context; // Return context, will be undefined if not within provider
 }

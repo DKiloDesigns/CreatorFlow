@@ -9,4 +9,4 @@ import {
   Grid,
   Chip
 } from '@mui/material';
-import { Building2, Activity } from 'lucide-react'; 
+import { CorporateFare as Building2Icon, TrendingUp as ActivityIcon } from '@mui/icons-material'; 

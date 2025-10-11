@@ -23,19 +23,19 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import {
-  Download,
-  Wifi,
-  WifiOff,
-  Smartphone,
-  Monitor,
-  X,
-  CheckCircle,
-  Clock,
-  HardDrive,
-  Zap,
-  Shield,
-  Star,
-} from 'lucide-react';
+  Download as DownloadIcon,
+  Wifi as WifiIcon,
+  WifiOff as WifiOffIcon,
+  Smartphone as SmartphoneIcon,
+  DesktopWindows as MonitorIcon,
+  Close as XIcon,
+  CheckCircle as CheckCircleIcon,
+  AccessTime as ClockIcon,
+  Storage as HardDriveIcon,
+  Bolt as ZapIcon,
+  Security as ShieldIcon,
+  Star as StarIcon,
+} from '@mui/icons-material';
 
 interface PWAEnhancementsProps {
   children: React.ReactNode;
@@ -198,7 +198,7 @@ export const PWAEnhancements: React.FC<PWAEnhancementsProps> = ({ children }) =>
         }}
       >
         <DialogTitle sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <Smartphone />
+          <SmartphoneIcon />
           Install CreatorFlow
         </DialogTitle>
         <DialogContent>
@@ -208,25 +208,25 @@ export const PWAEnhancements: React.FC<PWAEnhancementsProps> = ({ children }) =>
           <List dense>
             <ListItem>
               <ListItemIcon>
-                <Zap color="white" />
+                <ZapIcon sx={{ color: 'white' }} />
               </ListItemIcon>
               <ListItemText primary="Faster loading" />
             </ListItem>
             <ListItem>
               <ListItemIcon>
-                <WifiOff color="white" />
+                <WifiOffIcon sx={{ color: 'white' }} />
               </ListItemIcon>
               <ListItemText primary="Works offline" />
             </ListItem>
             <ListItem>
               <ListItemIcon>
-                <Shield color="white" />
+                <ShieldIcon sx={{ color: 'white' }} />
               </ListItemIcon>
               <ListItemText primary="Secure access" />
             </ListItem>
             <ListItem>
               <ListItemIcon>
-                <Star color="white" />
+                <StarIcon sx={{ color: 'white' }} />
               </ListItemIcon>
               <ListItemText primary="Native app feel" />
             </ListItem>
@@ -240,7 +240,7 @@ export const PWAEnhancements: React.FC<PWAEnhancementsProps> = ({ children }) =>
             onClick={handleInstall}
             variant="contained"
             sx={{ bgcolor: 'white', color: 'primary.main' }}
-            startIcon={<Download />}
+            startIcon={<DownloadIcon />}
           >
             Install
           </Button>
@@ -255,7 +255,7 @@ export const PWAEnhancements: React.FC<PWAEnhancementsProps> = ({ children }) =>
         fullWidth
       >
         <DialogTitle sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <CheckCircle color="primary" />
+          <CheckCircleIcon color="primary" />
           Update Available
         </DialogTitle>
         <DialogContent>
@@ -274,7 +274,7 @@ export const PWAEnhancements: React.FC<PWAEnhancementsProps> = ({ children }) =>
           <Button onClick={() => setShowUpdateDialog(false)}>
             Later
           </Button>
-          <Button onClick={handleUpdate} variant="contained" startIcon={<Download />}>
+          <Button onClick={handleUpdate} variant="contained" startIcon={<DownloadIcon />}>
             Update Now
           </Button>
         </DialogActions>
@@ -293,7 +293,7 @@ export const PWAEnhancements: React.FC<PWAEnhancementsProps> = ({ children }) =>
               zIndex: 1400,
               borderRadius: 0,
             }}
-            icon={<WifiOff />}
+            icon={<WifiOffIcon />}
           >
             <AlertTitle>You're offline</AlertTitle>
             Some features may not be available. We'll sync when you're back online.
@@ -338,7 +338,7 @@ export const PWAEnhancements: React.FC<PWAEnhancementsProps> = ({ children }) =>
           {pwaState.isInstalled && (
             <Tooltip title="Installed as PWA">
               <Chip
-                icon={<CheckCircle />}
+                icon={<CheckCircleIcon />}
                 label="PWA"
                 color="success"
                 size="small"
@@ -360,7 +360,7 @@ export const PWAEnhancements: React.FC<PWAEnhancementsProps> = ({ children }) =>
                   },
                 }}
               >
-                <Download />
+                <DownloadIcon />
               </IconButton>
             </Tooltip>
           )}

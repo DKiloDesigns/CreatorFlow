@@ -2,7 +2,7 @@
 
 import { DragDropContentBuilder } from '@/components/content-builder/DragDropContentBuilder';
 import { Box, Typography, Container, Paper, Grid, Chip, Button } from '@mui/material';
-import { ArrowLeft, Play, Code, Palette } from 'lucide-react';
+import { ArrowBack as ArrowBackIcon, PlayArrow as PlayArrowIcon, Code as CodeIcon, ColorLens as ColorLensIcon } from '@mui/icons-material';
 import Link from 'next/link';
 
 export default function ContentBuilderDemoPage() {
@@ -11,7 +11,7 @@ export default function ContentBuilderDemoPage() {
       {/* Header */}
       <Box sx={{ mb: 4, display: 'flex', alignItems: 'center', gap: 2 }}>
         <Link href="/features-demo">
-          <Button variant="outlined" startIcon={<ArrowLeft size={16} />}>
+          <Button variant="outlined" startIcon={<ArrowBackIcon sx={{ width: 16, height: 16 }} />}>
             Back to Features
           </Button>
         </Link>
@@ -21,7 +21,7 @@ export default function ContentBuilderDemoPage() {
         <Chip 
           label="Phase 1 Complete" 
           color="success" 
-          icon={<Play size={16} />}
+          icon={<PlayArrowIcon sx={{ width: 16, height: 16 }} />}
         />
       </Box>
 
@@ -30,7 +30,7 @@ export default function ContentBuilderDemoPage() {
         <Grid item xs={12} md={4}>
           <Paper sx={{ p: 3, height: '100%' }}>
             <Typography variant="h6" sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
-              <Code size={20} />
+              <CodeIcon sx={{ width: 20, height: 20 }} />
               Drag & Drop
             </Typography>
             <Typography variant="body2" color="text.secondary">
@@ -41,7 +41,7 @@ export default function ContentBuilderDemoPage() {
         <Grid item xs={12} md={4}>
           <Paper sx={{ p: 3, height: '100%' }}>
             <Typography variant="h6" sx={{ mb: 2, display: 'flex', alignItems: 'center', gap: 1 }}>
-              <Palette size={20} />
+              <ColorLensIcon sx={{ width: 20, height: 20 }} />
               Content Blocks
             </Typography>
             <Typography variant="body2" color="text.secondary">

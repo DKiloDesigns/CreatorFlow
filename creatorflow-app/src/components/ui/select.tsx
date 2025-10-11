@@ -10,7 +10,7 @@ import {
   Typography,
   Chip
 } from "@mui/material"
-import { Check, ChevronDown, ChevronUp } from "lucide-react"
+import { Check as CheckIcon, KeyboardArrowDown as KeyboardArrowDownIcon, KeyboardArrowUp as KeyboardArrowUpIcon } from "@mui/icons-material"
 
 // Simplified MUI-based Select components
 const Select = MuiSelect
@@ -45,7 +45,7 @@ SelectTrigger.displayName = "SelectTrigger"
 const SelectScrollUpButton = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ ...props }, ref) => (
     <Box ref={ref} {...props}>
-      <ChevronUp style={{ width: 16, height: 16 }} aria-hidden="true" />
+      <KeyboardArrowUpIcon sx={{ width: 16, height: 16 }} aria-hidden="true" />
     </Box>
   )
 )
@@ -54,7 +54,7 @@ SelectScrollUpButton.displayName = "SelectScrollUpButton"
 const SelectScrollDownButton = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ ...props }, ref) => (
     <Box ref={ref} {...props}>
-      <ChevronDown style={{ width: 16, height: 16 }} aria-hidden="true" />
+      <KeyboardArrowDownIcon sx={{ width: 16, height: 16 }} aria-hidden="true" />
     </Box>
   )
 )

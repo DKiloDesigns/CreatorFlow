@@ -15,16 +15,16 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import {
-  Wifi,
-  WifiOff,
-  Battery,
-  BatteryLow,
-  ChevronDown,
-  ChevronUp,
-  Smartphone,
-  Hand,
-  Settings,
-} from 'lucide-react';
+  Wifi as WifiIcon,
+  WifiOff as WifiOffIcon,
+  BatteryFull as BatteryIcon,
+  BatteryAlert as BatteryLowIcon,
+  ExpandMore as ChevronDownIcon,
+  ExpandLess as ChevronUpIcon,
+  Smartphone as SmartphoneIcon,
+  TouchApp as HandIcon,
+  Settings as SettingsIcon,
+} from '@mui/icons-material';
 
 interface PerformanceMetrics {
   effectiveType: string;
@@ -111,22 +111,22 @@ export function UnifiedMobileControls({
     switch (performanceMetrics.effectiveType) {
       case 'slow-2g':
       case '2g':
-        return <WifiOff />;
+        return <WifiOffIcon />;
       case '3g':
-        return <Wifi />;
+        return <WifiIcon />;
       case '4g':
-        return <Wifi />;
+        return <WifiIcon />;
       case '5g':
-        return <Wifi />;
+        return <WifiIcon />;
       default:
-        return <Wifi />;
+        return <WifiIcon />;
     }
   }, [performanceMetrics.effectiveType]);
 
   const getBatteryIcon = useCallback(() => {
     const level = performanceMetrics.batteryLevel || 0;
-    if (level < 25) return <BatteryLow />;
-    return <Battery />;
+    if (level < 25) return <BatteryLowIcon />;
+    return <BatteryIcon />;
   }, [performanceMetrics.batteryLevel]);
 
   const getConnectionColor = useCallback(() => {
@@ -184,7 +184,7 @@ export function UnifiedMobileControls({
             onClick={() => setIsExpanded(!isExpanded)}
           >
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-              <Smartphone size={16} />
+              <SmartphoneIcon sx={{ fontSize: 16 }} />
               <Typography variant="caption" fontWeight="medium">
                 Mobile Controls
               </Typography>
@@ -201,7 +201,7 @@ export function UnifiedMobileControls({
               />
             </Box>
             <IconButton size="small" sx={{ p: 0.5 }}>
-              {isExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+              {isExpanded ? <ChevronUpIcon sx={{ fontSize: 16 }} /> : <ChevronDownIcon sx={{ fontSize: 16 }} />}
             </IconButton>
           </Box>
 
@@ -240,7 +240,7 @@ export function UnifiedMobileControls({
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 <Tooltip title="Touch gestures enabled - swipe, pull-to-refresh, and more">
                   <Chip
-                    icon={<Hand size={14} />}
+                    icon={<HandIcon sx={{ fontSize: 14 }} />}
                     label="Touch Gestures"
                     size="small"
                     color="primary"

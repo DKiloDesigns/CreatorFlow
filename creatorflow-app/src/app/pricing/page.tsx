@@ -1,53 +1,81 @@
+'use client';
+
 import { ThemeToggle } from '@/components/theme-toggle';
+import { Box, Typography, Container, Grid, Card, CardContent, Button, IconButton } from '@mui/material';
+import { PublicPageLayout } from '@/components/layout/PublicPageLayout';
+import { useRouter } from 'next/navigation';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 export default function Pricing() {
+  const router = useRouter();
   return (
-    <div className="max-w-3xl mx-auto py-16 px-4 relative">
-      {/* Theme Toggle - Top Right */}
-      <div className="absolute top-4 right-4 z-10">
-        <ThemeToggle />
-      </div>
-      
-      <h1 className="text-3xl font-bold mb-6 text-center">Our Plans</h1>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-        {/* Free Plan */}
-        <div className="bg-white dark:bg-slate-800 rounded-xl shadow p-6 flex flex-col items-center">
-          <h2 className="font-bold text-xl mb-2">Free</h2>
-          <p className="mb-4">$0/month</p>
-          <ul className="mb-6 text-sm text-slate-600 dark:text-slate-300">
-            <li>✓ 1 social account</li>
-            <li>✓ Basic analytics</li>
-            <li>✓ Community access</li>
-          </ul>
-          <button className="bg-primary text-white px-6 py-2 rounded">Get Started</button>
-        </div>
-        {/* Pro Plan */}
-        <div className="bg-white dark:bg-slate-800 rounded-xl shadow p-6 flex flex-col items-center border-2 border-primary scale-105">
-          <h2 className="font-bold text-xl mb-2">Pro</h2>
-          <p className="mb-4">$12/month</p>
-          <ul className="mb-6 text-sm text-slate-600 dark:text-slate-300">
-            <li>✓ 5 social accounts</li>
-            <li>✓ Advanced analytics</li>
-            <li>✓ Monetization dashboard</li>
-            <li>✓ Priority support</li>
-          </ul>
-          <button className="bg-primary text-white px-6 py-2 rounded">Start Free Trial</button>
-        </div>
-        {/* Enterprise Plan */}
-        <div className="bg-white dark:bg-slate-800 rounded-xl shadow p-6 flex flex-col items-center">
-          <h2 className="font-bold text-xl mb-2">Enterprise</h2>
-          <p className="mb-4">Contact us</p>
-          <ul className="mb-6 text-sm text-slate-600 dark:text-slate-300">
-            <li>✓ Unlimited accounts</li>
-            <li>✓ Custom integrations</li>
-            <li>✓ Dedicated manager</li>
-          </ul>
-          <button className="bg-primary text-white px-6 py-2 rounded">Contact Sales</button>
-        </div>
-      </div>
-      
-      {/* Bottom Spacer to Clear Bottom Navigation */}
-      <div className="h-32 sm:h-10 w-full"></div>
-    </div>
+    <PublicPageLayout>
+      <Box component="section" sx={{ py: 8, px: { xs: 4, sm: 3, lg: 4 } }}>
+        <Container maxWidth="lg">
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 3 }}>
+            <IconButton
+              edge="start"
+              color="inherit"
+              aria-label="back"
+              onClick={() => router.back()}
+              sx={{ mr: 2 }}
+            >
+              <ArrowBackIcon />
+            </IconButton>
+            <Box sx={{ flex: 1, textAlign: 'center' }}>
+              <Typography variant="h3" component="h1" sx={{ fontWeight: 'bold', color: 'grey.900', mb: 4 }}>
+                Our Plans
+              </Typography>
+            </Box>
+            <Box sx={{ width: 48, mr: 2 }} /> {/* Spacer to balance the IconButton */}
+          </Box>
+
+          <Grid container spacing={4} justifyContent="center">
+            {/* Free Plan */}
+            <Grid item xs={12} md={4}>
+              <Card sx={{ p: 3, textAlign: 'center', display: 'flex', flexDirection: 'column', height: '100%' }}>
+                <Typography variant="h5" component="h2" sx={{ fontWeight: 'bold', mb: 1.5, color: 'text.primary' }}>Free</Typography>
+                <Typography variant="h4" sx={{ mb: 2, color: 'text.secondary' }}>$0/month</Typography>
+                <Box component="ul" sx={{ mb: 3, textAlign: 'left', pl: 2, flexGrow: 1, color: 'text.secondary' }}>
+                  <Typography component="li" variant="body1" sx={{ mb: 1 }}>✓ 1 social account</Typography>
+                  <Typography component="li" variant="body1" sx={{ mb: 1 }}>✓ Basic analytics</Typography>
+                  <Typography component="li" variant="body1">✓ Community access</Typography>
+                </Box>
+                <Button variant="contained" fullWidth sx={{ mt: 'auto', bgcolor: 'primary.main', '&:hover': { bgcolor: 'primary.dark' } }}>Get Started</Button>
+              </Card>
+            </Grid>
+
+            {/* Pro Plan */}
+            <Grid item xs={12} md={4}>
+              <Card sx={{ p: 3, textAlign: 'center', display: 'flex', flexDirection: 'column', height: '100%', border: '2px solid', borderColor: 'primary.main', transform: { md: 'scale(1.05)' }, zIndex: 1 }}>
+                <Typography variant="h5" component="h2" sx={{ fontWeight: 'bold', mb: 1.5, color: 'text.primary' }}>Pro</Typography>
+                <Typography variant="h4" sx={{ mb: 2, color: 'text.secondary' }}>$12/month</Typography>
+                <Box component="ul" sx={{ mb: 3, textAlign: 'left', pl: 2, flexGrow: 1, color: 'text.secondary' }}>
+                  <Typography component="li" variant="body1" sx={{ mb: 1 }}>✓ 5 social accounts</Typography>
+                  <Typography component="li" variant="body1" sx={{ mb: 1 }}>✓ Advanced analytics</Typography>
+                  <Typography component="li" variant="body1" sx={{ mb: 1 }}>✓ Monetization dashboard</Typography>
+                  <Typography component="li" variant="body1">✓ Priority support</Typography>
+                </Box>
+                <Button variant="contained" fullWidth sx={{ mt: 'auto', bgcolor: 'primary.main', '&:hover': { bgcolor: 'primary.dark' } }}>Start Free Trial</Button>
+              </Card>
+            </Grid>
+
+            {/* Enterprise Plan */}
+            <Grid item xs={12} md={4}>
+              <Card sx={{ p: 3, textAlign: 'center', display: 'flex', flexDirection: 'column', height: '100%' }}>
+                <Typography variant="h5" component="h2" sx={{ fontWeight: 'bold', mb: 1.5, color: 'text.primary' }}>Enterprise</Typography>
+                <Typography variant="h4" sx={{ mb: 2, color: 'text.secondary' }}>Contact us</Typography>
+                <Box component="ul" sx={{ mb: 3, textAlign: 'left', pl: 2, flexGrow: 1, color: 'text.secondary' }}>
+                  <Typography component="li" variant="body1" sx={{ mb: 1 }}>✓ Unlimited accounts</Typography>
+                  <Typography component="li" variant="body1" sx={{ mb: 1 }}>✓ Custom integrations</Typography>
+                  <Typography component="li" variant="body1">✓ Dedicated manager</Typography>
+                </Box>
+                <Button variant="contained" fullWidth sx={{ mt: 'auto', bgcolor: 'primary.main', '&:hover': { bgcolor: 'primary.dark' } }}>Contact Sales</Button>
+              </Card>
+            </Grid>
+          </Grid>
+        </Container>
+      </Box>
+    </PublicPageLayout>
   );
 } 

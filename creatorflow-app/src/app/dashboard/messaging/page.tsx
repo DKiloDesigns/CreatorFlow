@@ -22,18 +22,18 @@ import {
   InputAdornment,
   IconButton
 } from '@mui/material';
-import { 
-  MessageSquare, 
-  Search, 
-  Plus, 
-  Send, 
-  Phone, 
-  Video, 
-  MoreVertical,
-  Users,
-  Clock,
-  CheckCircle
-} from 'lucide-react';
+import {
+  Chat as MessageSquareIcon,
+  Search as SearchIcon,
+  Add as PlusIcon,
+  Send as SendIcon,
+  Phone as PhoneIcon,
+  Videocam as VideoIcon,
+  MoreVert as MoreVerticalIcon,
+  Group as UsersIcon,
+  AccessTime as ClockIcon,
+  CheckCircle as CheckCircleIcon
+} from '@mui/icons-material';
 
 function MessagingContent() {
   const searchParams = useSearchParams();
@@ -146,14 +146,14 @@ function MessagingContent() {
                   InputProps={{
                     startAdornment: (
                       <InputAdornment position="start">
-                        <Search size={20} />
+                        <SearchIcon sx={{ fontSize: 20 }} />
                       </InputAdornment>
                     ),
                   }}
                 />
                 <Button
                   variant="contained"
-                  startIcon={<Plus size={20} />}
+                  startIcon={<PlusIcon sx={{ fontSize: 20 }} />}
                   onClick={() => {
                     // For now, just show an alert. In a real app, this would open a modal or navigate to a new conversation page
                     alert('New message feature coming soon! This will open a modal to start a new conversation.');
@@ -194,7 +194,7 @@ function MessagingContent() {
                             bgcolor: conversation.online ? 'success.main' : 'grey.400'
                           }}
                         >
-                          <MessageSquare size={24} />
+                          <MessageSquareIcon sx={{ fontSize: 24 }} />
                         </Avatar>
                         {conversation.online && (
                           <Box
@@ -284,7 +284,7 @@ function MessagingContent() {
                           bgcolor: selectedConv.online ? 'success.main' : 'grey.400'
                         }}
                       >
-                        <MessageSquare size={20} />
+                        <MessageSquareIcon sx={{ fontSize: 20 }} />
                       </Avatar>
                       {selectedConv.online && (
                         <Box
@@ -313,13 +313,13 @@ function MessagingContent() {
                   </Box>
                   <Box sx={{ display: 'flex', gap: 1 }}>
                     <IconButton size="small">
-                      <Phone size={20} />
+                      <PhoneIcon sx={{ fontSize: 20 }} />
                     </IconButton>
                     <IconButton size="small">
-                      <Video size={20} />
+                      <VideoIcon sx={{ fontSize: 20 }} />
                     </IconButton>
                     <IconButton size="small">
-                      <MoreVertical size={20} />
+                      <MoreVerticalIcon sx={{ fontSize: 20 }} />
                     </IconButton>
                   </Box>
                 </Box>
@@ -353,7 +353,7 @@ function MessagingContent() {
                           <Avatar
                             sx={{ width: 32, height: 32 }}
                           >
-                            <MessageSquare size={16} />
+                            <MessageSquareIcon sx={{ fontSize: 16 }} />
                           </Avatar>
                         )}
                         <Box
@@ -384,7 +384,7 @@ function MessagingContent() {
                           </Typography>
                         </Box>
                         {message.isOwn && (
-                          <CheckCircle size={16} color="#22c55e" />
+                          <CheckCircleIcon sx={{ fontSize: 16, color: "#22c55e" }} />
                         )}
                       </Box>
                     </Box>
@@ -414,7 +414,7 @@ function MessagingContent() {
                     />
                     <Button
                       variant="contained"
-                      startIcon={<Send size={20} />}
+                      startIcon={<SendIcon sx={{ fontSize: 20 }} />}
                       sx={{ 
                         minWidth: 'auto', 
                         px: 2,
@@ -448,7 +448,7 @@ function MessagingContent() {
                   mb: 2,
                   boxShadow: '0 4px 12px rgba(34, 197, 94, 0.1)'
                 }}>
-                  <MessageSquare size={32} color="#22c55e" />
+                  <MessageSquareIcon sx={{ fontSize: 32, color: "#22c55e" }} />
                 </Box>
                 <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
                   Select a conversation

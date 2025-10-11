@@ -1,8 +1,14 @@
+import { Home as HomeIcon } from '@mui/icons-material';
 import Link from 'next/link';
+import dynamic from 'next/dynamic';
 import { AppBar, Toolbar, Container, Typography, Box } from '@mui/material';
-import { ThemeToggle } from '@/components/theme-toggle';
+import { useMinimalTheme } from '@/contexts/MinimalThemeContext';
+
+// Dynamically import ThemeToggle with ssr: false
+const ThemeToggle = dynamic(() => import('@/components/theme-toggle').then(mod => mod.ThemeToggle), { ssr: false });
 
 export function PublicHeader() {
+  const { isDark } = useMinimalTheme();
   return (
     <AppBar 
       position="static" 
@@ -15,7 +21,7 @@ export function PublicHeader() {
       }}
     >
       <Container maxWidth="xl">
-        <Toolbar sx={{ minHeight: 64, px: { xs: 2, sm: 3, lg: 4 } }}>
+        <Toolbar sx={{ minHeight: 64, px: { xs: 2, sm: 3, lg: 4 }, flexGrow: 1, justifyContent: 'space-between' }}>
           <Link href="/" style={{ textDecoration: 'none' }}>
             <Typography 
               variant="h5" 

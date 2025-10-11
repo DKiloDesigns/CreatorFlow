@@ -12,7 +12,7 @@ import {
   Grid,
   Chip
 } from '@mui/material';
-import { Hash, Activity } from 'lucide-react';
+import { Hash as HashIcon, TrendingUp as ActivityIcon } from '@mui/icons-material';
 import { toast } from 'sonner';
 
 interface HashtagData {
@@ -244,10 +244,10 @@ export function AdvancedHashtagRecommender({ provider: _provider }: AdvancedHash
 
   const getTrendIcon = (trend: string) => {
     switch (trend) {
-      case 'rising': return <Activity style={{ width: 16, height: 16, color: 'success.main' }} />;
-      case 'declining': return <Activity style={{ width: 16, height: 16, color: 'error.main' }} />;
-      case 'stable': return <Activity style={{ width: 16, height: 16, color: 'text.secondary' }} />;
-      default: return <Activity style={{ width: 16, height: 16, color: 'text.secondary' }} />;
+      case 'rising': return <ActivityIcon sx={{ width: 16, height: 16, color: 'success.main' }} />;
+      case 'declining': return <ActivityIcon sx={{ width: 16, height: 16, color: 'error.main' }} />;
+      case 'stable': return <ActivityIcon sx={{ width: 16, height: 16, color: 'text.secondary' }} />;
+      default: return <ActivityIcon sx={{ width: 16, height: 16, color: 'text.secondary' }} />;
     }
   };
 
@@ -266,7 +266,7 @@ export function AdvancedHashtagRecommender({ provider: _provider }: AdvancedHash
       <Card>
         <CardHeader>
           <Typography variant="h5" component="div" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <Hash className="w-5 h-5" />
+            <HashIcon sx={{ width: 20, height: 20 }} />
             Advanced Hashtag Recommender
           </Typography>
           <Typography variant="body2" color="text.secondary">
@@ -332,7 +332,7 @@ export function AdvancedHashtagRecommender({ provider: _provider }: AdvancedHash
               onClick={() => setShowAdvanced(!showAdvanced)}
               fullWidth
             >
-              <Activity className="w-4 h-4 mr-2" />
+              <ActivityIcon sx={{ width: 16, height: 16, mr: 1 }} />
               {showAdvanced ? 'Hide' : 'Show'} Advanced Analysis
             </Button>
 
@@ -383,12 +383,12 @@ export function AdvancedHashtagRecommender({ provider: _provider }: AdvancedHash
           >
             {isAnalyzing ? (
               <>
-                <Activity style={{ width: 16, height: 16, marginRight: 8, animation: 'spin 1s linear infinite' }} />
+                <ActivityIcon sx={{ width: 16, height: 16, mr: 1, animation: 'spin 1s linear infinite' }} />
                 Analyzing Hashtags...
               </>
             ) : (
               <>
-                <Activity className="w-4 h-4 mr-2" />
+                <ActivityIcon sx={{ width: 16, height: 16, mr: 1 }} />
                 Analyze Hashtags with AI
               </>
             )}
@@ -409,7 +409,7 @@ export function AdvancedHashtagRecommender({ provider: _provider }: AdvancedHash
                 onClick={copyHashtags}
                 disabled={selectedHashtags.length === 0}
               >
-                <Activity style={{ width: 16, height: 16, marginRight: 4 }} />
+                <ActivityIcon sx={{ width: 16, height: 16, mr: 0.5 }} />
                 Copy Selected
               </Button>
             </Box>
@@ -421,8 +421,8 @@ export function AdvancedHashtagRecommender({ provider: _provider }: AdvancedHash
             <Grid item xs={12}>
               <Card>
                 <CardHeader>
-                  <Typography variant="h6" component="div" className="flex items-center gap-2">
-                    <Activity className="w-5 h-5" />
+                  <Typography variant="h6" component="div" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <ActivityIcon sx={{ width: 20, height: 20 }} />
                     Performance Analysis
                   </Typography>
                 </CardHeader>
@@ -465,8 +465,8 @@ export function AdvancedHashtagRecommender({ provider: _provider }: AdvancedHash
             <Grid item xs={12}>
               <Card>
                 <CardHeader>
-                  <Typography variant="h6" component="div" className="flex items-center gap-2">
-                    <Activity className="w-5 h-5" />
+                  <Typography variant="h6" component="div" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                    <ActivityIcon sx={{ width: 20, height: 20 }} />
                     Trending Insights
                   </Typography>
                 </CardHeader>
@@ -474,21 +474,21 @@ export function AdvancedHashtagRecommender({ provider: _provider }: AdvancedHash
                   <Grid container spacing={2}>
                     <Grid item xs={12} md={4}>
                       <Box sx={{ textAlign: 'center', p: 2, bgcolor: 'green.50', borderRadius: 2 }}>
-                        <Activity className="w-8 h-8 text-green-600 mx-auto mb-2" />
+                        <ActivityIcon sx={{ width: 32, height: 32, mx: 'auto', mb: 1 }} />
                         <Typography variant="subtitle2" sx={{ color: 'green.800' }}>Rising Trends</Typography>
                         <Typography variant="body2" sx={{ color: 'green.600' }}>15 hashtags trending up</Typography>
                       </Box>
                     </Grid>
                     <Grid item xs={12} md={4}>
                       <Box sx={{ textAlign: 'center', p: 2, bgcolor: 'yellow.50', borderRadius: 2 }}>
-                        <Activity className="w-8 h-8 text-yellow-600 mx-auto mb-2" />
+                        <ActivityIcon sx={{ width: 32, height: 32, mx: 'auto', mb: 1 }} />
                         <Typography variant="subtitle2" sx={{ color: 'yellow.800' }}>Stable Trends</Typography>
                         <Typography variant="body2" sx={{ color: 'yellow.600' }}>8 hashtags maintaining</Typography>
                       </Box>
                     </Grid>
                     <Grid item xs={12} md={4}>
                       <Box sx={{ textAlign: 'center', p: 2, bgcolor: 'red.50', borderRadius: 2 }}>
-                        <Activity className="w-8 h-8 text-red-600 mx-auto mb-2" />
+                        <ActivityIcon sx={{ width: 32, height: 32, mx: 'auto', mb: 1 }} />
                         <Typography variant="subtitle2" sx={{ color: 'red.800' }}>Declining Trends</Typography>
                         <Typography variant="body2" sx={{ color: 'red.600' }}>3 hashtags trending down</Typography>
                       </Box>

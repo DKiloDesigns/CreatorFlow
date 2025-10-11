@@ -12,16 +12,16 @@ import { Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 import { Badge } from '@/components/ui/badge';
 
 import { 
-  Lightbulb, 
-  Copy, 
-  Check, 
-  RefreshCw,
-  Calendar,
-  Image,
-  Video,
-  Layers,
-  BookOpen
-} from 'lucide-react';
+  LightbulbOutlined as LightbulbOutlinedIcon, 
+  ContentCopy as ContentCopyIcon, 
+  Check as CheckIcon, 
+  Refresh as RefreshIcon,
+  CalendarToday as CalendarTodayIcon,
+  Image as ImageIcon,
+  VideoLibrary as VideoLibraryIcon,
+  Layers as LayersIcon,
+  BookOutlined as BookOutlinedIcon
+} from '@mui/icons-material';
 import { ContentIdea } from '@/lib/ai-service';
 
 interface AIContentIdeasProps {
@@ -117,15 +117,15 @@ export function AIContentIdeas({ onIdeaSelect, className }: AIContentIdeasProps)
   const getContentTypeIcon = (type: string) => {
     switch (type) {
       case 'image':
-        return <Image style={{ width: 16, height: 16 }} aria-label="Image content type" />;
+        return <ImageIcon sx={{ width: 16, height: 16 }} aria-label="Image content type" />;
       case 'video':
-        return <Video style={{ width: 16, height: 16 }} aria-label="Video content type" />;
+        return <VideoLibraryIcon sx={{ width: 16, height: 16 }} aria-label="Video content type" />;
       case 'carousel':
-        return <Layers style={{ width: 16, height: 16 }} aria-label="Carousel content type" />;
+        return <LayersIcon sx={{ width: 16, height: 16 }} aria-label="Carousel content type" />;
       case 'story':
-        return <BookOpen style={{ width: 16, height: 16 }} aria-label="Story content type" />;
+        return <BookOutlinedIcon sx={{ width: 16, height: 16 }} aria-label="Story content type" />;
       default:
-        return <Image style={{ width: 16, height: 16 }} aria-label="Default content type" />;
+        return <ImageIcon sx={{ width: 16, height: 16 }} aria-label="Default content type" />;
     }
   };
 
@@ -134,7 +134,7 @@ export function AIContentIdeas({ onIdeaSelect, className }: AIContentIdeasProps)
       <CardHeader>
         <Typography variant="h5" component="div" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <Box sx={{ color: 'warning.600' }}>
-            <Lightbulb className="h-5 w-5" />
+            <LightbulbOutlinedIcon sx={{ width: 20, height: 20 }} />
           </Box>
           AI Content Ideas
         </Typography>
@@ -193,7 +193,7 @@ export function AIContentIdeas({ onIdeaSelect, className }: AIContentIdeasProps)
             sx={{ mt: 2, width: '100%' }}
           >
             <Box sx={{ mr: 1 }}>
-              <RefreshCw style={{ 
+              <RefreshIcon sx={{ 
                 width: 16, 
                 height: 16,
                 animation: isGenerating ? 'spin 1s linear infinite' : 'none'
@@ -263,9 +263,9 @@ export function AIContentIdeas({ onIdeaSelect, className }: AIContentIdeasProps)
                       sx={{ p: 0, minWidth: 40 }}
                     >
                       {copiedIndex === index ? (
-                        <Box sx={{ color: 'success.600' }}><Check className="h-4 w-4" /></Box>
+                        <Box sx={{ color: 'success.600' }}><CheckIcon sx={{ width: 16, height: 16 }} /></Box>
                       ) : (
-                        <Copy className="h-4 w-4" />
+                        <ContentCopyIcon sx={{ width: 16, height: 16 }} />
                       )}
                     </Button>
                     <Button
@@ -274,7 +274,7 @@ export function AIContentIdeas({ onIdeaSelect, className }: AIContentIdeasProps)
                       onClick={() => handleUseIdea(idea)}
                       sx={{ p: 0, minWidth: 40 }}
                     >
-                      <Calendar className="h-4 w-4" />
+                      <CalendarTodayIcon sx={{ width: 16, height: 16 }} />
                     </Button>
                   </Grid>
                 </Grid>
@@ -287,7 +287,7 @@ export function AIContentIdeas({ onIdeaSelect, className }: AIContentIdeasProps)
               disabled={isGenerating}
               sx={{ width: '100%' }}
             >
-              <Box sx={{ mr: 1 }}><RefreshCw className={`h-4 w-4 ${isGenerating ? 'animate-spin' : ''}`} /></Box>
+              <Box sx={{ mr: 1 }}><RefreshIcon sx={{ width: 16, height: 16 }} className={`h-4 w-4 ${isGenerating ? 'animate-spin' : ''}`} /></Box>
               Generate More Ideas
             </Button>
           </Box>
@@ -296,7 +296,7 @@ export function AIContentIdeas({ onIdeaSelect, className }: AIContentIdeasProps)
         {/* Quick Tips */}
         <Box sx={{ p: 2, backgroundColor: 'yellow.50', borderRadius: 1, border: '1px solid', borderColor: 'divider' }}>
           <Typography variant="subtitle2" component="h6" sx={{ fontWeight: 'medium', display: 'flex', alignItems: 'center', gap: 0.5, mb: 0.5 }}>
-            <Box sx={{ color: 'warning.600' }}><Lightbulb className="h-4 w-4" /></Box>
+            <Box sx={{ color: 'warning.600' }}><LightbulbOutlinedIcon sx={{ width: 16, height: 16 }} /></Box>
             Content Creation Tips
           </Typography>
           <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>

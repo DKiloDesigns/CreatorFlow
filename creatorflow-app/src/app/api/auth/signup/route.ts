@@ -44,6 +44,7 @@ export async function POST(request: NextRequest) {
         name: name.trim(),
         businessName: businessName?.trim() || null,
         displayName: displayName.trim(),
+        emailVerified: new Date(), // Set email as verified upon creation for immediate login
         role: 'USER',
         notificationPreferences: {
           email: true,

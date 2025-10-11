@@ -21,20 +21,20 @@ import {
   Snackbar,
 } from '@mui/material';
 import { 
-  Smartphone, 
-  Download,
-  Wifi,
-  WifiOff,
-  Bell,
-  BellOff,
-  Home,
-  Plus,
-  BarChart3,
-  Wrench,
-  CheckCircle,
-  XCircle,
-  Info
-} from 'lucide-react';
+  Smartphone as SmartphoneIcon,
+  Download as DownloadIcon,
+  Wifi as WifiIcon,
+  WifiOff as WifiOffIcon,
+  Notifications as NotificationsIcon,
+  NotificationsOff as NotificationsOffIcon,
+  Home as HomeIcon,
+  Add as AddIcon,
+  BarChart as BarChartIcon,
+  Build as BuildIcon,
+  CheckCircle as CheckCircleIcon,
+  Cancel as CancelIcon,
+  Info as InfoIcon
+} from '@mui/icons-material';
 
 interface PWAFeature {
   id: string;
@@ -60,7 +60,7 @@ export default function PWAFeatures() {
       id: 'offline',
       name: 'Offline Mode',
       description: 'Access core features even without internet',
-      icon: <WifiOff size={24} />,
+      icon: <WifiOffIcon size={24} />,
       enabled: false,
       toggle: () => toggleFeature('offline')
     },
@@ -68,7 +68,7 @@ export default function PWAFeatures() {
       id: 'notifications',
       name: 'Push Notifications',
       description: 'Get notified about important updates',
-      icon: <Bell size={24} />,
+      icon: <NotificationsIcon size={24} />,
       enabled: false,
       toggle: () => toggleFeature('notifications')
     },
@@ -76,7 +76,7 @@ export default function PWAFeatures() {
       id: 'shortcuts',
       name: 'App Shortcuts',
       description: 'Quick access to key features from home screen',
-      icon: <Home size={24} />,
+      icon: <HomeIcon size={24} />,
       enabled: true,
       toggle: () => toggleFeature('shortcuts')
     },
@@ -84,7 +84,7 @@ export default function PWAFeatures() {
       id: 'background-sync',
       name: 'Background Sync',
       description: 'Sync data when connection is restored',
-      icon: <Wifi size={24} />,
+      icon: <WifiIcon size={24} />,
       enabled: false,
       toggle: () => toggleFeature('background-sync')
     }
@@ -176,7 +176,7 @@ export default function PWAFeatures() {
     <Container maxWidth="lg" sx={{ py: { xs: 6, sm: 8 } }}>
       <Box sx={{ textAlign: 'center', mb: 6 }}>
         <Typography variant="h3" sx={{ mb: 2, fontWeight: 'bold', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 2 }}>
-          <Smartphone size={32} />
+          <SmartphoneIcon size={32} />
           Progressive Web App
         </Typography>
         <Typography variant="h6" color="text.secondary" sx={{ mb: 4 }}>
@@ -188,12 +188,12 @@ export default function PWAFeatures() {
       <Box sx={{ mb: 4 }}>
         {isInstalled ? (
           <Alert severity="success" sx={{ mb: 2 }}>
-            <CheckCircle size={20} style={{ marginRight: 8 }} />
+            <CheckCircleIcon size={20} style={{ marginRight: 8 }} />
             CreatorFlow is installed as a PWA!
           </Alert>
         ) : (
           <Alert severity="info" sx={{ mb: 2 }}>
-            <Info size={20} style={{ marginRight: 8 }} />
+            <InfoIcon size={20} style={{ marginRight: 8 }} />
             Install CreatorFlow for a native app experience
           </Alert>
         )}
@@ -203,7 +203,7 @@ export default function PWAFeatures() {
             <Button
               variant="contained"
               size="large"
-              startIcon={<Download size={20} />}
+              startIcon={<DownloadIcon size={20} />}
               onClick={handleInstall}
               sx={{
                 background: 'linear-gradient(45deg, #3B82F6 30%, #8B5CF6 90%)',
@@ -298,7 +298,7 @@ export default function PWAFeatures() {
         <List>
           <ListItem sx={{ px: 0 }}>
             <ListItemIcon>
-              <Plus size={24} color="#3B82F6" />
+              <AddIcon color="primary" />
             </ListItemIcon>
             <ListItemText
               primary="Create Content"
@@ -307,7 +307,7 @@ export default function PWAFeatures() {
           </ListItem>
           <ListItem sx={{ px: 0 }}>
             <ListItemIcon>
-              <BarChart3 size={24} color="#8B5CF6" />
+              <BarChartIcon color="secondary" />
             </ListItemIcon>
             <ListItemText
               primary="View Analytics"
@@ -316,7 +316,7 @@ export default function PWAFeatures() {
           </ListItem>
           <ListItem sx={{ px: 0 }}>
             <ListItemIcon>
-              <Wrench size={24} color="#10B981" />
+              <BuildIcon color="success" />
             </ListItemIcon>
             <ListItemText
               primary="Creator Tools"
@@ -329,7 +329,7 @@ export default function PWAFeatures() {
       {/* Connection Status */}
       <Box sx={{ textAlign: 'center', mb: 4 }}>
         <Chip
-          icon={isOnline ? <Wifi size={16} /> : <WifiOff size={16} />}
+          icon={isOnline ? <WifiIcon size={16} /> : <WifiOffIcon size={16} />}
           label={isOnline ? 'Online' : 'Offline'}
           color={isOnline ? 'success' : 'error'}
           sx={{ mb: 2 }}
@@ -347,7 +347,7 @@ export default function PWAFeatures() {
         
         <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(3, 1fr)' }, gap: 3, mt: 4 }}>
           <Card sx={{ p: 3, textAlign: 'center' }}>
-            <Download size={48} color="#3B82F6" style={{ marginBottom: 16 }} />
+            <DownloadIcon size={48} color="#3B82F6" style={{ marginBottom: 16 }} />
             <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 1 }}>
               Native App Feel
             </Typography>
@@ -357,7 +357,7 @@ export default function PWAFeatures() {
           </Card>
           
           <Card sx={{ p: 3, textAlign: 'center' }}>
-            <Wifi size={48} color="#8B5CF6" style={{ marginBottom: 16 }} />
+            <WifiIcon size={48} color="#8B5CF6" style={{ marginBottom: 16 }} />
             <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 1 }}>
               Offline Access
             </Typography>
@@ -367,7 +367,7 @@ export default function PWAFeatures() {
           </Card>
           
           <Card sx={{ p: 3, textAlign: 'center' }}>
-            <Bell size={48} color="#10B981" style={{ marginBottom: 16 }} />
+            <NotificationsIcon size={48} color="#10B981" style={{ marginBottom: 16 }} />
             <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 1 }}>
               Push Notifications
             </Typography>

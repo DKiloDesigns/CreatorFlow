@@ -24,22 +24,22 @@ import {
   useMediaQuery
 } from '@mui/material';
 import {
-  ArrowLeft,
-  Download,
-  Share2,
-  Bookmark,
-  Printer,
-  Clock,
-  User,
-  Calendar,
-  Tag,
-  Shield,
-  Settings,
-  Code,
-  DollarSign,
-  FileText,
-  CheckCircle
-} from 'lucide-react';
+  ArrowBack as ArrowLeftIcon,
+  Download as DownloadIcon,
+  Share as Share2Icon,
+  Bookmark as BookmarkIcon,
+  Print as PrinterIcon,
+  AccessTime as ClockIcon,
+  Person as UserIcon,
+  CalendarMonth as CalendarIcon,
+  Tag as TagIcon,
+  Security as ShieldIcon,
+  Settings as SettingsIcon,
+  Code as CodeIcon,
+  AttachMoney as DollarSignIcon,
+  Description as FileTextIcon,
+  CheckCircle as CheckCircleIcon
+} from '@mui/icons-material';
 import { getEnterpriseDocById, getEnterpriseDocsByCategory } from '@/lib/enterprise-docs';
 
 export default function EnterpriseDocPage() {
@@ -88,21 +88,21 @@ export default function EnterpriseDocPage() {
   const getCategoryIcon = (category: string) => {
     switch (category) {
       case 'administration':
-        return <Settings size={20} />;
+        return <SettingsIcon sx={{ fontSize: 20 }} />;
       case 'security':
-        return <Shield size={20} />;
+        return <ShieldIcon sx={{ fontSize: 20 }} />;
       case 'compliance':
-        return <CheckCircle size={20} />;
+        return <CheckCircleIcon sx={{ fontSize: 20 }} />;
       case 'integration':
-        return <Code size={20} />;
+        return <CodeIcon sx={{ fontSize: 20 }} />;
       case 'api':
-        return <Code size={20} />;
+        return <CodeIcon sx={{ fontSize: 20 }} />;
       case 'billing':
-        return <DollarSign size={20} />;
+        return <DollarSignIcon sx={{ fontSize: 20 }} />;
       case 'support':
-        return <FileText size={20} />;
+        return <FileTextIcon sx={{ fontSize: 20 }} />;
       default:
-        return <FileText size={20} />;
+        return <FileTextIcon sx={{ fontSize: 20 }} />;
     }
   };
 
@@ -155,7 +155,7 @@ export default function EnterpriseDocPage() {
           </Alert>
           <Button 
             variant="contained" 
-            startIcon={<ArrowLeft />}
+            startIcon={<ArrowLeftIcon />}
             href="/enterprise"
           >
             Back to Enterprise Documentation
@@ -187,19 +187,19 @@ export default function EnterpriseDocPage() {
               
               <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', mb: 3 }}>
                 <Chip 
-                  icon={<User size={16} />}
+                  icon={<UserIcon sx={{ fontSize: 16 }} />}
                   label={doc.author} 
                   size="small" 
                   variant="outlined" 
                 />
                 <Chip 
-                  icon={<Clock size={16} />}
+                  icon={<ClockIcon sx={{ fontSize: 16 }} />}
                   label={`${doc.estimatedReadTime} min read`} 
                   size="small" 
                   variant="outlined" 
                 />
                 <Chip 
-                  icon={<Calendar size={16} />}
+                  icon={<CalendarIcon sx={{ fontSize: 16 }} />}
                   label={`Updated ${doc.lastUpdated}`} 
                   size="small" 
                   variant="outlined" 
@@ -222,7 +222,7 @@ export default function EnterpriseDocPage() {
                 {doc.tags.map((tag: string) => (
                   <Chip 
                     key={tag}
-                    icon={<Tag size={16} />}
+                    icon={<TagIcon sx={{ fontSize: 16 }} />}
                     label={tag} 
                     size="small" 
                     variant="outlined" 
@@ -234,16 +234,16 @@ export default function EnterpriseDocPage() {
             
             <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
               <IconButton onClick={handleDownload} title="Download PDF">
-                <Download />
+                <DownloadIcon />
               </IconButton>
               <IconButton onClick={handleShare} title="Share">
-                <Share2 />
+                <Share2Icon />
               </IconButton>
               <IconButton onClick={handlePrint} title="Print">
-                <Printer />
+                <PrinterIcon />
               </IconButton>
               <IconButton title="Bookmark">
-                <Bookmark />
+                <BookmarkIcon />
               </IconButton>
             </Box>
           </Box>
@@ -376,7 +376,7 @@ export default function EnterpriseDocPage() {
         <Container maxWidth="lg" sx={{ textAlign: 'center' }}>
           <Button 
             variant="contained" 
-            startIcon={<ArrowLeft />}
+            startIcon={<ArrowLeftIcon />}
             href="/enterprise"
             size="large"
           >

@@ -1,10 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { 
-  Card, 
-  CardContent, 
-  CardHeader, 
+import {
+  Card,
+  CardContent,
+  CardHeader,
   Button,
   TextField,
   Box,
@@ -15,7 +15,7 @@ import {
   AlertTitle,
   CircularProgress
 } from '@mui/material';
-import { Mail, ArrowLeft, Loader2, KeyRound } from 'lucide-react';
+import { Email as EmailIcon, ArrowBack as ArrowBackIcon, VpnKey as VpnKeyIcon } from '@mui/icons-material';
 import Link from 'next/link';
 
 export default function ForgotPasswordPage() {
@@ -69,7 +69,7 @@ export default function ForgotPasswordPage() {
           <Button
             component={Link}
             href="/auth"
-            startIcon={<ArrowLeft style={{ width: 16, height: 16 }} />}
+            startIcon={<ArrowBackIcon sx={{ fontSize: 16 }} />}
             variant="text"
             sx={{ color: '#f1f5f9 !important' }}
           >
@@ -108,7 +108,7 @@ export default function ForgotPasswordPage() {
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
-                      <Mail style={{ width: 16, height: 16 }} />
+                      <EmailIcon sx={{ fontSize: 16 }} />
                     </InputAdornment>
                   ),
                 }}
@@ -116,7 +116,7 @@ export default function ForgotPasswordPage() {
 
               {/* Message Alert */}
               {message && (
-                <Alert 
+                <Alert
                   severity={message.type === 'error' ? 'error' : 'success'}
                   sx={{ mt: 1 }}
                 >
@@ -136,15 +136,15 @@ export default function ForgotPasswordPage() {
                 sx={{ mt: 2, height: 48 }}
               >
                 {isLoading ? (
-                  <>
-                    <Loader2 style={{ width: 16, height: 16, marginRight: 8, animation: 'spin 1s linear infinite' }} />
-                    Sending Reset Link...
-                  </>
+                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <CircularProgress size={16} sx={{ mr: 1, animation: 'spin 1s linear infinite' }} />
+                    <Typography>Sending Reset Link...</Typography>
+                  </Box>
                 ) : (
-                  <>
-                    <KeyRound style={{ width: 16, height: 16, marginRight: 8 }} />
-                    Send Reset Link
-                  </>
+                  <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <VpnKeyIcon sx={{ fontSize: 16, mr: 1 }} />
+                    <Typography>Send Reset Link</Typography>
+                  </Box>
                 )}
               </Button>
             </Box>

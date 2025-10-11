@@ -9,7 +9,7 @@ import {
   Typography,
   Chip
 } from '@mui/material';
-import { Mic } from 'lucide-react';
+import { Mic as MicIcon } from '@mui/icons-material';
 
 interface AIContentToneProps {
   onToneSelect?: (tone: string) => void;
@@ -59,7 +59,7 @@ export function AIContentTone({ onToneSelect, className }: AIContentToneProps) {
       <CardHeader
         title="AI Content Tone Analyzer"
         subheader="Analyze and adjust the tone of your content"
-        avatar={<Mic style={{ width: 24, height: 24 }} />}
+        avatar={<MicIcon sx={{ width: 24, height: 24 }} />}
       />
       <CardContent>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
@@ -79,7 +79,7 @@ export function AIContentTone({ onToneSelect, className }: AIContentToneProps) {
             variant="contained"
             onClick={analyzeTone}
             disabled={!content.trim() || isAnalyzing}
-            startIcon={<Mic style={{ width: 20, height: 20 }} />}
+            startIcon={<MicIcon sx={{ width: 20, height: 20 }} />}
           >
             {isAnalyzing ? 'Analyzing...' : 'Analyze Tone'}
           </Button>

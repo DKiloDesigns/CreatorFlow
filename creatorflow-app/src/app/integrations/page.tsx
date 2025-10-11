@@ -19,18 +19,19 @@ import {
   Stack,
   Container
 } from '@mui/material';
-import { 
-  Plug, 
-  Activity, 
-  Settings, 
-  RefreshCw, 
-  Plus, 
-  CheckCircle, 
-  Webhook, 
-  TrendingUp, 
-  Eye, 
-  Database 
-} from 'lucide-react';
+import {
+  SettingsInputComponent as SettingsInputComponentIcon,
+  Timeline as TimelineIcon, // Using Timeline for general activity/health
+  Settings as SettingsIcon,
+  Refresh as RefreshIcon,
+  Add as AddIcon,
+  CheckCircle as CheckCircleIcon,
+  Webhook as WebhookIcon,
+  TrendingUp as TrendingUpIcon,
+  Visibility as VisibilityIcon,
+  Storage as StorageIcon,
+  Cancel as CancelIcon, // For unhealthy status
+} from '@mui/icons-material';
 
 interface Integration {
   id: string;
@@ -146,18 +147,18 @@ export default function IntegrationsPage() {
 
   const getProviderIcon = (provider: string) => {
     switch (provider.toLowerCase()) {
-      case 'stripe': return <Plug style={{ width: 20, height: 20 }} />;
-      case 'slack': return <Plug style={{ width: 20, height: 20 }} />;
-      case 'google': return <Plug style={{ width: 20, height: 20 }} />;
-      default: return <Settings style={{ width: 20, height: 20 }} />;
+      case 'stripe': return <SettingsInputComponentIcon sx={{ width: 20, height: 20 }} />;
+      case 'slack': return <SettingsInputComponentIcon sx={{ width: 20, height: 20 }} />;
+      case 'google': return <SettingsInputComponentIcon sx={{ width: 20, height: 20 }} />;
+      default: return <SettingsIcon sx={{ width: 20, height: 20 }} />;
     }
   };
 
   const getHealthIcon = (healthy: boolean) => {
     return healthy ? (
-      <Activity style={{ width: 20, height: 20, color: 'var(--mui-palette-success-main)' }} />
+      <CheckCircleIcon sx={{ width: 20, height: 20, color: 'success.main' }} />
     ) : (
-      <Plug style={{ width: 20, height: 20, color: 'var(--mui-palette-error-main)' }} />
+      <CancelIcon sx={{ width: 20, height: 20, color: 'error.main' }} />
     );
   };
 
@@ -229,7 +230,7 @@ export default function IntegrationsPage() {
               onClick={refreshData} 
               disabled={refreshing} 
               variant="outlined"
-              startIcon={<RefreshCw style={{ 
+              startIcon={<RefreshIcon sx={{ 
                 width: 16, 
                 height: 16,
                 animation: refreshing ? 'spin 1s linear infinite' : 'none'
@@ -240,7 +241,7 @@ export default function IntegrationsPage() {
             
             <Button
               variant="contained"
-              startIcon={<Plus style={{ width: 16, height: 16 }} />}
+              startIcon={<AddIcon sx={{ width: 16, height: 16 }} />}
             >
               Add Integration
             </Button>
@@ -256,7 +257,7 @@ export default function IntegrationsPage() {
                   <Typography variant="subtitle2" sx={{ fontWeight: 500 }}>
                     Total Integrations
                   </Typography>
-                  <Settings style={{ width: 16, height: 16, color: 'var(--mui-palette-text-secondary)' }} />
+                  <SettingsIcon sx={{ width: 16, height: 16, color: 'text.secondary' }} />
                 </Box>
               }
               sx={{ pb: 1 }}
@@ -278,7 +279,7 @@ export default function IntegrationsPage() {
                   <Typography variant="subtitle2" sx={{ fontWeight: 500 }}>
                     Active Integrations
                   </Typography>
-                  <CheckCircle style={{ width: 16, height: 16, color: 'var(--mui-palette-success-main)' }} />
+                  <CheckCircleIcon sx={{ width: 16, height: 16, color: 'success.main' }} />
                 </Box>
               }
               sx={{ pb: 1 }}
@@ -300,7 +301,7 @@ export default function IntegrationsPage() {
                   <Typography variant="subtitle2" sx={{ fontWeight: 500 }}>
                     Webhook Events
                   </Typography>
-                  <Webhook style={{ width: 16, height: 16, color: 'var(--mui-palette-primary-main)' }} />
+                  <WebhookIcon sx={{ width: 16, height: 16, color: 'primary.main' }} />
                 </Box>
               }
               sx={{ pb: 1 }}
@@ -322,7 +323,7 @@ export default function IntegrationsPage() {
                   <Typography variant="subtitle2" sx={{ fontWeight: 500 }}>
                     Sync Success Rate
                   </Typography>
-                  <TrendingUp style={{ width: 16, height: 16, color: 'var(--mui-palette-success-main)' }} />
+                  <TrendingUpIcon sx={{ width: 16, height: 16, color: 'success.main' }} />
                 </Box>
               }
               sx={{ pb: 1 }}
@@ -356,7 +357,7 @@ export default function IntegrationsPage() {
               <CardHeader
                 title={
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                    <Settings style={{ width: 20, height: 20 }} />
+                    <SettingsIcon sx={{ width: 20, height: 20 }} />
                     <Typography variant="h6">Connected Services</Typography>
                   </Box>
                 }
@@ -411,12 +412,12 @@ export default function IntegrationsPage() {
                               size="small" 
                               variant="outlined"
                               onClick={() => startSync(integration.id)}
-                              startIcon={<RefreshCw style={{ width: 14, height: 14 }} />}
+                              startIcon={<RefreshIcon sx={{ width: 14, height: 14 }} />}
                             >
                               Sync
                             </Button>
                             <Button size="small" variant="outlined">
-                              <Settings style={{ width: 14, height: 14 }} />
+                              <SettingsIcon sx={{ width: 14, height: 14 }} />
                             </Button>
                           </Box>
                         </Box>
@@ -435,7 +436,7 @@ export default function IntegrationsPage() {
               <CardHeader
                 title={
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                    <Webhook style={{ width: 20, height: 20 }} />
+                    <WebhookIcon sx={{ width: 20, height: 20 }} />
                     <Typography variant="h6">Webhook Events</Typography>
                   </Box>
                 }
@@ -473,11 +474,11 @@ export default function IntegrationsPage() {
                           </Box>
                           <Box sx={{ display: 'flex', gap: 1 }}>
                             <Button size="small" variant="outlined">
-                              <Eye style={{ width: 14, height: 14 }} />
+                              <VisibilityIcon sx={{ width: 14, height: 14 }} />
                             </Button>
                             {event.status === 'failed' && (
                               <Button size="small" variant="outlined">
-                                <RefreshCw style={{ width: 14, height: 14 }} />
+                                <RefreshIcon sx={{ width: 14, height: 14 }} />
                               </Button>
                             )}
                           </Box>
@@ -497,7 +498,7 @@ export default function IntegrationsPage() {
               <CardHeader
                 title={
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                    <Database style={{ width: 20, height: 20 }} />
+                    <StorageIcon sx={{ width: 20, height: 20 }} />
                     <Typography variant="h6">Sync History</Typography>
                   </Box>
                 }
@@ -551,7 +552,7 @@ export default function IntegrationsPage() {
                           </Box>
                           <Box sx={{ display: 'flex', gap: 1 }}>
                             <Button size="small" variant="outlined">
-                              <Eye style={{ width: 14, height: 14 }} />
+                              <VisibilityIcon sx={{ width: 14, height: 14 }} />
                             </Button>
                           </Box>
                         </Box>

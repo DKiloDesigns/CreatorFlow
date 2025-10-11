@@ -10,7 +10,7 @@ import {
   Grid,
   MenuItem
 } from '@mui/material';
-import { MessageSquare, Activity } from 'lucide-react';
+import { Chat as MessageSquareIcon, TrendingUp as ActivityIcon } from '@mui/icons-material';
 import { CaptionSuggestion } from '@/lib/ai-service';
 
 interface AICaptionGeneratorProps {
@@ -105,7 +105,7 @@ export function AICaptionGenerator({ onCaptionSelect, className }: AICaptionGene
       <CardHeader>
         <Typography variant="h5" component="div" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <Box sx={{ color: 'secondary.main' }}>
-            <Activity style={{ width: 20, height: 20 }} />
+            <ActivityIcon sx={{ width: 20, height: 20 }} />
           </Box>
           AI Caption Generator
         </Typography>
@@ -209,7 +209,7 @@ export function AICaptionGenerator({ onCaptionSelect, className }: AICaptionGene
             </>
           ) : (
             <>
-              <Box sx={{ mr: 1 }}><Activity className="h-4 w-4" /></Box>
+              <Box sx={{ mr: 1 }}><ActivityIcon sx={{ height: 16, width: 16 }} /></Box>
               Generate Captions
             </>
           )}
@@ -244,7 +244,7 @@ export function AICaptionGenerator({ onCaptionSelect, className }: AICaptionGene
                       <Chip label={caption.platform} variant="outlined" size="small" />
                       {caption.engagement_score && (
                         <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                          <Activity className="h-3 w-3" />
+                          <ActivityIcon sx={{ height: 12, width: 12 }} />
                           <Typography variant="body2">{caption.engagement_score}% engagement</Typography>
                         </Box>
                       )}
@@ -259,9 +259,9 @@ export function AICaptionGenerator({ onCaptionSelect, className }: AICaptionGene
                         sx={{ p: 0.5 }}
                       >
                         {copiedIndex === index ? (
-                          <Activity className="h-4 w-4 text-green-600" />
+                          <ActivityIcon sx={{ height: 16, width: 16, color: 'green.600' }} />
                         ) : (
-                          <MessageSquare className="h-4 w-4" />
+                          <MessageSquareIcon sx={{ height: 16, width: 16 }} />
                         )}
                       </Button>
                       <Button
@@ -270,7 +270,7 @@ export function AICaptionGenerator({ onCaptionSelect, className }: AICaptionGene
                         onClick={() => useCaption(caption.caption)}
                         sx={{ p: 0.5 }}
                       >
-                        <MessageSquare className="h-4 w-4" />
+                        <MessageSquareIcon sx={{ height: 16, width: 16 }} />
                       </Button>
                     </Box>
                   </Grid>
@@ -285,7 +285,7 @@ export function AICaptionGenerator({ onCaptionSelect, className }: AICaptionGene
               fullWidth
               sx={{ mt: 1 }}
             >
-              <Activity className={`h-4 w-4 mr-2 ${isGenerating ? 'animate-spin' : ''}`} />
+              <ActivityIcon sx={{ height: 16, width: 16, mr: 1 }} className={isGenerating ? 'animate-spin' : ''} />
               Generate More
             </Button>
           </Box>

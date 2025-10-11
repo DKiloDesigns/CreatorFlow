@@ -10,7 +10,7 @@ import {
   Grid,
   Chip
 } from '@mui/material';
-import { Key, Activity } from 'lucide-react';
+import { VpnKey as KeyIcon, TrendingUp as ActivityIcon } from '@mui/icons-material';
 import { LoadingSpinner } from './loading-spinner';
 
 
@@ -109,7 +109,7 @@ export function APIKeySetup({ onKeyAdded, className }: APIKeySetupProps) {
     <Card sx={className ? { className } : undefined}>
       <CardHeader>
         <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <Activity style={{ width: 20, height: 20, color: 'inherit' }} />
+          <ActivityIcon sx={{ width: 20, height: 20, color: 'inherit' }} />
           <Typography variant="h5" component="div">
             OpenAI API Key Setup
           </Typography>
@@ -125,7 +125,7 @@ export function APIKeySetup({ onKeyAdded, className }: APIKeySetupProps) {
           
           <Grid container alignItems="center" spacing={1}>
             <Grid item>
-              <Key style={{ width: 20, height: 20, color: 'inherit' }} />
+              <KeyIcon sx={{ width: 20, height: 20, color: 'inherit' }} />
             </Grid>
             <Grid item xs>
               <Typography variant="body2">Don&apos;t have an API key?</Typography>
@@ -232,7 +232,7 @@ export function APIKeySetup({ onKeyAdded, className }: APIKeySetupProps) {
             disabled={!isValid || isValidating}
             fullWidth
             variant="contained"
-            startIcon={isValidating ? <LoadingSpinner size="sm" /> : <span style={{ fontSize: '1rem' }}>⚡</span>}
+            startIcon={isValidating ? <LoadingSpinner size="sm" /> : <ActivityIcon sx={{ fontSize: 16 }} />}
           >
             {isValidating ? (
               <>
@@ -241,7 +241,7 @@ export function APIKeySetup({ onKeyAdded, className }: APIKeySetupProps) {
               </>
             ) : (
               <>
-                <span style={{ fontSize: '1rem', marginRight: 8 }}>⚡</span>
+                <ActivityIcon sx={{ fontSize: 16, mr: 1 }} />
                 Activate AI Features
               </>
             )}

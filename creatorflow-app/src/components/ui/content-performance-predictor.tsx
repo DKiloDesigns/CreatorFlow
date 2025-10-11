@@ -3,26 +3,26 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader } from '@/components/ui/mui-card';
 import { Typography, Button } from '@mui/material';
-import { 
-  RefreshCw, 
-  Sparkles, 
-  CheckCircle, 
-  AlertTriangle, 
-  Info, 
-  Users, 
-  Eye, 
-  DollarSign, 
-  Zap, 
-  Target, 
-  BarChart3 
-} from 'lucide-react';
+import {
+  Refresh as RefreshCwIcon,
+  AutoAwesome as SparklesIcon,
+  CheckCircle as CheckCircleIcon,
+  Warning as AlertTriangleIcon,
+  Info as InfoIcon,
+  Group as UsersIcon,
+  Visibility as EyeIcon,
+  MonetizationOn as DollarSignIcon,
+  Bolt as ZapIcon,
+  Adjust as TargetIcon,
+  BarChart as BarChart3Icon
+} from '@mui/icons-material';
 
 import { Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 import { TextField } from '@mui/material';
 import { Switch, FormControlLabel } from '@mui/material';
 import { Chip } from '@mui/material';
 import { Tabs, Tab, Box } from '@mui/material';
-import { TrendingUp, Activity, Crown, Trophy, Medal, Star, TrendingDown, Minus, Brain } from 'lucide-react';
+import { TrendingUp as TrendingUpIcon, TrendingUp as ActivityIcon, EmojiEvents as CrownIcon, EmojiEvents as TrophyIcon, MilitaryTech as MedalIcon, Star as StarIcon, TrendingDown as TrendingDownIcon, Remove as MinusIcon, PsychologyOutlined as BrainIcon } from '@mui/icons-material';
 import { toast } from 'sonner';
 
 interface PerformancePrediction {
@@ -311,18 +311,18 @@ export function ContentPerformancePredictor({ provider }: ContentPerformancePred
   };
 
   const getScoreIcon = (score: number) => {
-    if (score >= 90) return <Crown className="w-4 h-4" />;
-    if (score >= 80) return <Trophy className="w-4 h-4" />;
-    if (score >= 70) return <Medal className="w-4 h-4" />;
-    return <Star className="w-4 h-4" />;
+    if (score >= 90) return <CrownIcon sx={{ width: 16, height: 16 }} />;
+    if (score >= 80) return <TrophyIcon sx={{ width: 16, height: 16 }} />;
+    if (score >= 70) return <MedalIcon sx={{ width: 16, height: 16 }} />;
+    return <StarIcon sx={{ width: 16, height: 16 }} />;
   };
 
   const getTrendIcon = (trend: string) => {
     switch (trend) {
-      case 'rising': return <TrendingUp className="w-4 h-4 text-green-600" />;
-      case 'declining': return <TrendingDown className="w-4 h-4 text-red-600" />;
-      case 'stable': return <Minus className="w-4 h-4 text-gray-600" />;
-      default: return <Minus className="w-4 h-4 text-gray-600" />;
+      case 'rising': return <TrendingUpIcon sx={{ width: 16, height: 16, color: 'success.main' }} />;
+      case 'declining': return <TrendingDownIcon sx={{ width: 16, height: 16, color: 'error.main' }} />;
+      case 'stable': return <MinusIcon sx={{ width: 16, height: 16, color: 'text.secondary' }} />;
+      default: return <MinusIcon sx={{ width: 16, height: 16, color: 'text.secondary' }} />;
     }
   };
 
@@ -331,8 +331,8 @@ export function ContentPerformancePredictor({ provider }: ContentPerformancePred
       {/* Input Section */}
       <Card>
         <CardHeader>
-          <Typography variant="h6" className="flex items-center gap-2">
-            <TrendingUp className="w-5 h-5" />
+          <Typography variant="h6" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+            <TrendingUpIcon sx={{ width: 20, height: 20 }} />
             Content Performance Predictor
           </Typography>
           <Typography variant="body2" color="text.secondary">
@@ -422,7 +422,7 @@ export function ContentPerformancePredictor({ provider }: ContentPerformancePred
               onClick={() => setShowAdvanced(!showAdvanced)}
               sx={{ width: '100%' }}
             >
-              <Brain className="w-4 h-4 mr-2" />
+              <BrainIcon sx={{ width: 16, height: 16, mr: 1 }} />
               {showAdvanced ? 'Hide' : 'Show'} Advanced Analysis
             </Button>
 
@@ -489,12 +489,12 @@ export function ContentPerformancePredictor({ provider }: ContentPerformancePred
           >
             {isAnalyzing ? (
               <>
-                <RefreshCw style={{ width: 16, height: 16, marginRight: 8, animation: 'spin 1s linear infinite' }} />
+                <RefreshCwIcon sx={{ width: 16, height: 16, mr: 1, animation: 'spin 1s linear infinite' }} />
                 Analyzing Performance...
               </>
             ) : (
               <>
-                <Sparkles className="w-4 h-4 mr-2" />
+                <SparklesIcon sx={{ width: 16, height: 16, mr: 1 }} />
                 Predict Content Performance
               </>
             )}
@@ -513,7 +513,7 @@ export function ContentPerformancePredictor({ provider }: ContentPerformancePred
               <Chip 
                 label={`${prediction.confidence_score}% Confidence`}
                 color="success" 
-                icon={<CheckCircle size={16} />}
+                icon={<CheckCircleIcon sx={{ fontSize: 16 }} />}
                 sx={{ bgcolor: 'green.100', color: 'green.800' }}
               />
             </Box>
@@ -547,7 +547,7 @@ export function ContentPerformancePredictor({ provider }: ContentPerformancePred
                   <CardContent sx={{ pt: 6 }}>
                     <Box sx={{ textAlign: 'center' }}>
                       <Box sx={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'blue.600' }}>
-                        <Users style={{ width: 24, height: 24, margin: '0 auto' }} />
+                        <UsersIcon sx={{ width: 24, height: 24, margin: '0 auto' }} />
                       </Box>
                       <Typography variant="body2" sx={{ color: 'text.secondary', fontSize: '0.875rem' }}>Predicted Reach</Typography>
                       <Typography variant="h6" sx={{ fontWeight: 'bold' }}>{prediction.predicted_reach.toLocaleString()}</Typography>
@@ -559,7 +559,7 @@ export function ContentPerformancePredictor({ provider }: ContentPerformancePred
                   <CardContent sx={{ pt: 6 }}>
                     <Box sx={{ textAlign: 'center' }}>
                       <Box sx={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'purple.600' }}>
-                        <Eye style={{ width: 24, height: 24, margin: '0 auto' }} />
+                        <EyeIcon sx={{ width: 24, height: 24, margin: '0 auto' }} />
                       </Box>
                       <Typography variant="body2" sx={{ color: 'text.secondary', fontSize: '0.875rem' }}>Impressions</Typography>
                       <Typography variant="h6" sx={{ fontWeight: 'bold' }}>{prediction.predicted_impressions.toLocaleString()}</Typography>
@@ -571,7 +571,7 @@ export function ContentPerformancePredictor({ provider }: ContentPerformancePred
                   <CardContent sx={{ pt: 6 }}>
                     <Box sx={{ textAlign: 'center' }}>
                       <Box sx={{ fontSize: '1.5rem', fontWeight: 'bold', color: 'green.600' }}>
-                        <DollarSign style={{ width: 24, height: 24, margin: '0 auto' }} />
+                        <DollarSignIcon sx={{ width: 24, height: 24, margin: '0 auto' }} />
                       </Box>
                       <Typography variant="body2" sx={{ color: 'text.secondary', fontSize: '0.875rem' }}>Estimated Value</Typography>
                       <Typography variant="h6" sx={{ fontWeight: 'bold' }}>${prediction.roi_prediction.estimated_value}</Typography>
@@ -592,7 +592,7 @@ export function ContentPerformancePredictor({ provider }: ContentPerformancePred
                       <Box component="ul" sx={{ fontSize: '0.875rem', display: 'flex', flexDirection: 'column', gap: 1, listStyle: 'none', p: 0 }}>
                         {prediction.factors.positive.map((factor, index) => (
                           <Box component="li" key={index} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                            <CheckCircle className="w-3 h-3 text-green-600" />
+                            <CheckCircleIcon sx={{ width: 12, height: 12, color: 'green.600' }} />
                             {factor}
                           </Box>
                         ))}
@@ -603,7 +603,7 @@ export function ContentPerformancePredictor({ provider }: ContentPerformancePred
                       <Box component="ul" sx={{ fontSize: '0.875rem', display: 'flex', flexDirection: 'column', gap: 1, listStyle: 'none', p: 0 }}>
                         {prediction.factors.negative.map((factor, index) => (
                           <Box component="li" key={index} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                            <AlertTriangle className="w-3 h-3 text-red-600" />
+                            <AlertTriangleIcon sx={{ width: 12, height: 12, color: 'red.600' }} />
                             {factor}
                           </Box>
                         ))}
@@ -614,7 +614,7 @@ export function ContentPerformancePredictor({ provider }: ContentPerformancePred
                       <Box component="ul" sx={{ fontSize: '0.875rem', display: 'flex', flexDirection: 'column', gap: 1, listStyle: 'none', p: 0 }}>
                         {prediction.factors.neutral.map((factor, index) => (
                           <Box component="li" key={index} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                            <Info className="w-3 h-3 text-gray-600" />
+                            <InfoIcon sx={{ width: 12, height: 12, color: 'gray.600' }} />
                             {factor}
                           </Box>
                         ))}
@@ -699,7 +699,7 @@ export function ContentPerformancePredictor({ provider }: ContentPerformancePred
                         <Box component="ul" sx={{ fontSize: '0.875rem', display: 'flex', flexDirection: 'column', gap: 1, listStyle: 'none', p: 0 }}>
                           {prediction.recommendations.high_impact.map((rec, index) => (
                             <Box component="li" key={index} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                              <Zap className="w-3 h-3 text-red-600" />
+                              <ZapIcon sx={{ width: 12, height: 12, color: 'red.600' }} />
                               {rec}
                             </Box>
                           ))}
@@ -710,7 +710,7 @@ export function ContentPerformancePredictor({ provider }: ContentPerformancePred
                         <Box component="ul" sx={{ fontSize: '0.875rem', display: 'flex', flexDirection: 'column', gap: 1, listStyle: 'none', p: 0 }}>
                           {prediction.recommendations.medium_impact.map((rec, index) => (
                             <Box component="li" key={index} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                              <Target className="w-3 h-3 text-yellow-600" />
+                              <TargetIcon sx={{ width: 12, height: 12, color: 'yellow.600' }} />
                               {rec}
                             </Box>
                           ))}
@@ -721,7 +721,7 @@ export function ContentPerformancePredictor({ provider }: ContentPerformancePred
                         <Box component="ul" sx={{ fontSize: '0.875rem', display: 'flex', flexDirection: 'column', gap: 1, listStyle: 'none', p: 0 }}>
                           {prediction.recommendations.low_impact.map((rec, index) => (
                             <Box component="li" key={index} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                              <CheckCircle className="w-3 h-3 text-green-600" />
+                              <CheckCircleIcon sx={{ width: 12, height: 12, color: 'green.600' }} />
                               {rec}
                             </Box>
                           ))}
@@ -765,8 +765,8 @@ export function ContentPerformancePredictor({ provider }: ContentPerformancePred
               <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' }, gap: 6 }}>
                 <Card>
                   <CardHeader>
-                    <Typography variant="h6" sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                      <BarChart3 className="w-5 h-5" />
+                    <Typography variant="h6" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                      <BarChart3Icon sx={{ width: 20, height: 20 }} />
                       Competitive Analysis
                     </Typography>
                   </CardHeader>
@@ -790,8 +790,8 @@ export function ContentPerformancePredictor({ provider }: ContentPerformancePred
 
                 <Card>
                   <CardHeader>
-                    <Typography variant="h6" sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
-                      <TrendingUp className="w-5 h-5" />
+                    <Typography variant="h6" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                      <TrendingUpIcon sx={{ width: 20, height: 20 }} />
                       Seasonal Factors
                     </Typography>
                   </CardHeader>

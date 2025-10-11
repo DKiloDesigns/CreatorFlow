@@ -19,18 +19,36 @@ import {
   alpha
 } from '@mui/material';
 import {
-  X,
-  Search,
-  Filter,
-  MoreVertical,
-  Settings,
-  Bell,
-  Check,
-  Archive,
-  Trash2,
-  RefreshCw,
-  Sparkles
-} from 'lucide-react';
+  Notifications as BellIcon,
+  Archive as ArchiveIcon,
+  CheckCircle as CheckCircleIcon,
+  Close as XIcon,
+  Settings as SettingsIcon,
+  FilterList as FilterIcon,
+  Add as PlusIcon,
+  ArrowBack as ArrowLeftIcon,
+  Search as SearchIcon,
+  Group as UsersIcon,
+  Campaign as MegaphoneIcon,
+  AccessTime as ClockIcon,
+  EmojiEvents as TrophyIcon,
+  Handshake as HandshakeIcon,
+  BarChart as BarChart3Icon,
+  Build as WrenchIcon,
+  ExpandMore as ChevronDownIcon,
+  ExpandLess as ChevronUpIcon,
+  Visibility as EyeIcon,
+  VisibilityOff as EyeOffIcon,
+  MoreVert as MoreVerticalIcon,
+  Remove as MinusIcon,
+  Warning as AlertTriangleIcon,
+  PersonAdd as UserPlusIcon,
+  Person as UserIcon,
+  Download as DownloadIcon,
+  PlayArrow as PlayIcon,
+  Info as InfoIcon,
+  Edit as EditIcon
+} from '@mui/icons-material';
 import { NotificationData, NotificationGroup as NotificationGroupType, groupNotifications } from './NotificationTypes';
 import RichNotificationCard from './RichNotificationCard';
 import NotificationGroup from './NotificationGroup';
@@ -211,7 +229,7 @@ export function EnhancedNotificationCenter({
                 animation: unreadCount > 0 ? `${pulse} 2s ease-in-out infinite` : 'none'
               }}
             >
-              <Bell size={20} />
+              <BellIcon sx={{ fontSize: 20 }} />
             </Box>
             <Box>
               <Typography variant="h6" sx={{ fontWeight: 600 }}>
@@ -238,7 +256,7 @@ export function EnhancedNotificationCenter({
               onClick={onClose}
               sx={{ color: 'text.secondary' }}
             >
-              <X size={20} />
+              <XIcon sx={{ fontSize: 20 }} />
             </IconButton>
           </Box>
         </Box>
@@ -253,7 +271,7 @@ export function EnhancedNotificationCenter({
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
-                <Search size={16} />
+                <SearchIcon sx={{ fontSize: 16 }} />
               </InputAdornment>
             ),
             endAdornment: searchQuery && (
@@ -262,7 +280,7 @@ export function EnhancedNotificationCenter({
                   size="small"
                   onClick={() => setSearchQuery('')}
                 >
-                  <X size={16} />
+                  <XIcon sx={{ fontSize: 16 }} />
                 </IconButton>
               </InputAdornment>
             )
@@ -299,7 +317,7 @@ export function EnhancedNotificationCenter({
       <Box sx={{ p: 2, display: 'flex', gap: 1, flexWrap: 'wrap' }}>
         <Button
           size="small"
-          startIcon={<Check size={14} />}
+          startIcon={<CheckCircleIcon sx={{ fontSize: 14 }} />}
           onClick={handleMarkAllAsRead}
           disabled={unreadCount === 0}
           sx={{ borderRadius: '8px' }}
@@ -309,7 +327,7 @@ export function EnhancedNotificationCenter({
         
         <Button
           size="small"
-          startIcon={<Archive size={14} />}
+          startIcon={<ArchiveIcon sx={{ fontSize: 14 }} />}
           onClick={handleDismissAll}
           disabled={totalCount === 0}
           sx={{ borderRadius: '8px' }}
@@ -350,7 +368,7 @@ export function EnhancedNotificationCenter({
                 mb: 2
               }}
             >
-              <Bell size={32} color="#6366f1" />
+              <BellIcon sx={{ fontSize: 32, color: '#6366f1' }} />
             </Box>
             <Typography variant="h6" color="text.secondary" gutterBottom>
               No notifications

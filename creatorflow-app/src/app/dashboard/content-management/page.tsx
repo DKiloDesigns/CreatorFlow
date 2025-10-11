@@ -27,7 +27,7 @@ import {
   DialogContent,
   DialogActions
 } from '@mui/material';
-import { Plus, Calendar, FileText, Image, Video, Upload, Clock, Brain, TrendingUp, Lightbulb, Target, Sparkles } from 'lucide-react';
+import { Add as PlusIcon, CalendarMonth as CalendarIcon, Description as FileTextIcon, Image as ImageIcon, VideoLibrary as VideoIcon, CloudUpload as UploadIcon, AccessTime as ClockIcon, PsychologyOutlined as BrainIcon, TrendingUp as TrendingUpIcon, LightbulbOutlined as LightbulbIcon, Adjust as TargetIcon, AutoAwesome as SparklesIcon } from '@mui/icons-material';
 import { toast } from 'sonner';
 import dynamicImport from 'next/dynamic';
 
@@ -167,7 +167,7 @@ export default function ContentManagementPage() {
               <Grid item xs={12} sm={6} md={3}>
                 <Card sx={{ height: '100%', cursor: 'pointer' }} onClick={() => setUploadModalOpen(true)}>
                   <CardContent sx={{ textAlign: 'center', p: 3 }}>
-                    <Upload size={48} style={{ margin: '0 auto 16px', color: '#3b82f6' }} />
+                    <UploadIcon sx={{ fontSize: 48, margin: '0 auto 16px', color: '#3b82f6' }} />
                     <Typography variant="h6" gutterBottom>Upload Media</Typography>
                     <Typography variant="body2" color="text.secondary">
                       Upload images, videos, and other media files
@@ -179,7 +179,7 @@ export default function ContentManagementPage() {
               <Grid item xs={12} sm={6} md={3}>
                 <Card sx={{ height: '100%', cursor: 'pointer' }} onClick={() => setCreateVideoModalOpen(true)}>
                   <CardContent sx={{ textAlign: 'center', p: 3 }}>
-                    <Video size={48} style={{ margin: '0 auto 16px', color: '#ef4444' }} />
+                    <VideoIcon sx={{ fontSize: 48, margin: '0 auto 16px', color: '#ef4444' }} />
                     <Typography variant="h6" gutterBottom>Create Video</Typography>
                     <Typography variant="body2" color="text.secondary">
                       AI-powered video creation tools
@@ -191,7 +191,7 @@ export default function ContentManagementPage() {
               <Grid item xs={12} sm={6} md={3}>
                 <Card sx={{ height: '100%', cursor: 'pointer' }} onClick={() => setUseTemplateModalOpen(true)}>
                   <CardContent sx={{ textAlign: 'center', p: 3 }}>
-                    <FileText size={48} style={{ margin: '0 auto 16px', color: '#10b981' }} />
+                    <FileTextIcon sx={{ fontSize: 48, margin: '0 auto 16px', color: '#10b981' }} />
                     <Typography variant="h6" gutterBottom>Use Template</Typography>
                     <Typography variant="body2" color="text.secondary">
                       Choose from pre-designed templates
@@ -203,7 +203,7 @@ export default function ContentManagementPage() {
               <Grid item xs={12} sm={6} md={3}>
                 <Card sx={{ height: '100%', cursor: 'pointer' }} onClick={() => setBulkScheduleModalOpen(true)}>
                   <CardContent sx={{ textAlign: 'center', p: 3 }}>
-                    <Calendar size={48} style={{ margin: '0 auto 16px', color: '#f59e0b' }} />
+                    <CalendarIcon sx={{ fontSize: 48, margin: '0 auto 16px', color: '#f59e0b' }} />
                     <Typography variant="h6" gutterBottom>Bulk Schedule</Typography>
                     <Typography variant="body2" color="text.secondary">
                       Schedule multiple posts at once
@@ -217,7 +217,7 @@ export default function ContentManagementPage() {
             <Card>
               <CardHeader 
                 title="AI-Powered Content Tools" 
-                avatar={<Brain size={24} style={{ color: '#8b5cf6' }} />}
+                avatar={<BrainIcon sx={{ fontSize: 24, color: '#8b5cf6' }} />}
               />
               <CardContent>
                 <Grid container spacing={3}>
@@ -243,7 +243,7 @@ export default function ContentManagementPage() {
               <Typography variant="h5">Content Library</Typography>
               <Button
                 variant="contained"
-                startIcon={<Upload size={16} />}
+                startIcon={<UploadIcon sx={{ fontSize: 16 }} />}
                 onClick={() => setMediaLibraryOpen(true)}
               >
                 Upload New Media
@@ -260,7 +260,7 @@ export default function ContentManagementPage() {
               <Typography variant="h5">Content Management</Typography>
               <Button
                 variant="contained"
-                startIcon={<Plus size={16} />}
+                startIcon={<PlusIcon sx={{ fontSize: 16 }} />}
                 onClick={() => setEditModalOpen(true)}
               >
                 Create New Post

@@ -29,33 +29,33 @@ import {
   MenuItem,
 } from '@mui/material';
 import {
-  Bell,
-  X,
-  Settings,
-  Brain,
-  TrendingUp,
-  Users,
-  MessageCircle,
-  Lightbulb,
-  AlertTriangle,
-  CheckCircle,
-  Clock,
-  Filter,
-  MoreVertical,
-  Zap,
-  Target,
-  BarChart3,
-} from 'lucide-react';
+  Notifications as NotificationsIcon,
+  Close as CloseIcon,
+  Settings as SettingsIcon,
+  Psychology as PsychologyIcon,
+  TrendingUp as TrendingUpIcon,
+  People as PeopleIcon,
+  Chat as ChatIcon,
+  LightbulbOutlined as LightbulbOutlinedIcon,
+  ReportProblem as ReportProblemIcon,
+  CheckCircle as CheckCircleIcon,
+  AccessTime as AccessTimeIcon,
+  FilterList as FilterListIcon,
+  MoreVert as MoreVertIcon,
+  Bolt as BoltIcon,
+  Adjust as AdjustIcon,
+  BarChart as BarChartIcon,
+} from '@mui/icons-material';
 import { useSmartNotifications } from '@/contexts/SmartNotificationContext';
 import { useMinimalTheme } from '@/contexts/MinimalThemeContext';
 
-const NOTIFICATION_ICONS = {
-  content: MessageCircle,
-  engagement: TrendingUp,
-  system: Settings,
-  collaboration: Users,
-  ai_insight: Brain,
-};
+const NOTIFICATION_ICONS: { [key: string]: React.ElementType } = {
+  content: ChatIcon,
+  engagement: TrendingUpIcon,
+  system: SettingsIcon,
+  collaboration: PeopleIcon,
+  ai_insight: PsychologyIcon,
+} as const;
 
 const PRIORITY_COLORS = {
   low: 'default',
@@ -96,8 +96,8 @@ export function SmartNotificationCenter() {
   });
 
   const getNotificationIcon = (type: string) => {
-    const Icon = NOTIFICATION_ICONS[type as keyof typeof NOTIFICATION_ICONS] || Bell;
-    return <Icon size={20} />;
+    const Icon = NOTIFICATION_ICONS[type as keyof typeof NOTIFICATION_ICONS] || NotificationsIcon;
+    return <Icon sx={{ width: 20, height: 20 }} />;
   };
 
   const getPriorityColor = (priority: string) => {
@@ -144,7 +144,7 @@ export function SmartNotificationCenter() {
             invisible={unreadCount === 0}
             max={99}
           >
-            <Bell size={20} />
+            <NotificationsIcon sx={{ width: 20, height: 20 }} />
           </Badge>
         </IconButton>
       </Tooltip>
@@ -168,15 +168,15 @@ export function SmartNotificationCenter() {
           <Box sx={{ p: 2, borderBottom: 1, borderColor: 'divider' }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
               <Typography variant="h6" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <Brain size={20} />
+                <PsychologyIcon sx={{ width: 20, height: 20 }} />
                 Smart Notifications
               </Typography>
               <Box sx={{ display: 'flex', gap: 1 }}>
                 <IconButton size="small" onClick={() => setShowSettings(true)}>
-                  <Settings size={16} />
+                  <SettingsIcon sx={{ width: 16, height: 16 }} />
                 </IconButton>
                 <IconButton size="small" onClick={() => setIsOpen(false)}>
-                  <X size={16} />
+                  <CloseIcon sx={{ width: 16, height: 16 }} />
                 </IconButton>
               </Box>
             </Box>
@@ -224,7 +224,7 @@ export function SmartNotificationCenter() {
           <Box sx={{ maxHeight: 400, overflow: 'auto' }}>
             {filteredNotifications.length === 0 ? (
               <Box sx={{ p: 3, textAlign: 'center' }}>
-                <Bell size={48} color={isDark ? '#666' : '#999'} />
+                <NotificationsIcon sx={{ width: 48, height: 48, color: isDark ? '#666' : '#999' }} />
                 <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
                   No notifications to show
                 </Typography>
@@ -269,7 +269,7 @@ export function SmartNotificationCenter() {
                           />
                           {notification.type === 'ai_insight' && (
                             <Chip
-                              icon={<Zap size={12} />}
+                              icon={<BoltIcon sx={{ width: 12, height: 12 }} />}
                               label={`${(notification.aiScore * 100).toFixed(0)}%`}
                               size="small"
                               color="primary"
@@ -307,13 +307,13 @@ export function SmartNotificationCenter() {
                           onClick={() => markAsRead(notification.id)}
                           disabled={notification.read}
                         >
-                          <CheckCircle size={14} />
+                          <CheckCircleIcon sx={{ width: 14, height: 14 }} />
                         </IconButton>
                         <IconButton
                           size="small"
                           onClick={() => dismissNotification(notification.id)}
                         >
-                          <X size={14} />
+                          <CloseIcon sx={{ width: 14, height: 14 }} />
                         </IconButton>
                       </Box>
                     </ListItemSecondaryAction>
@@ -345,7 +345,7 @@ export function SmartNotificationCenter() {
             {/* AI Learning Status */}
             <Paper sx={{ p: 2, mb: 3, bgcolor: 'primary.50' }}>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 1 }}>
-                <Brain size={20} color="#1976d2" />
+                <PsychologyIcon sx={{ width: 20, height: 20, color: '#1976d2' }} />
                 <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
                   AI Learning Status
                 </Typography>

@@ -17,16 +17,16 @@ import {
   Alert
 } from '@mui/material';
 import { 
-  ArrowLeft, 
-  Clock, 
-  User, 
-  Calendar,
-  Tag,
-  ThumbsUp,
-  ThumbsDown,
-  Share2,
-  Bookmark
-} from 'lucide-react';
+  ArrowBack as ArrowLeftIcon,
+  AccessTime as ClockIcon,
+  Person as UserIcon,
+  CalendarMonth as CalendarIcon,
+  Tag as TagIcon,
+  ThumbUp as ThumbsUpIcon,
+  ThumbDown as ThumbsDownIcon,
+  Share as Share2Icon,
+  Bookmark as BookmarkIcon
+} from '@mui/icons-material';
 import { PublicHeader } from '@/components/PublicHeader';
 import { Footer } from '@/components/Footer';
 import { getArticleById, getRelatedArticles } from '@/lib/help-articles';
@@ -86,7 +86,7 @@ export default function ArticlePage() {
           </Alert>
           <Button 
             variant="contained" 
-            startIcon={<ArrowLeft />}
+            startIcon={<ArrowLeftIcon />}
             href="/support"
           >
             Back to Help Center
@@ -120,19 +120,19 @@ export default function ArticlePage() {
 
           <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', mb: 3 }}>
             <Chip 
-              icon={<User size={16} />}
+              icon={<UserIcon sx={{ fontSize: 16 }} />}
               label={article.author} 
               size="small" 
               variant="outlined" 
             />
             <Chip 
-              icon={<Clock size={16} />}
+              icon={<ClockIcon sx={{ fontSize: 16 }} />}
               label={`${article.readTime} min read`} 
               size="small" 
               variant="outlined" 
             />
             <Chip 
-              icon={<Calendar size={16} />}
+              icon={<CalendarIcon sx={{ fontSize: 16 }} />}
               label={`Updated ${article.lastUpdated}`} 
               size="small" 
               variant="outlined" 
@@ -149,7 +149,7 @@ export default function ArticlePage() {
             {article.tags.map((tag: string) => (
               <Chip 
                 key={tag}
-                icon={<Tag size={16} />}
+                icon={<TagIcon sx={{ fontSize: 16 }} />}
                 label={tag} 
                 size="small" 
                 variant="outlined" 
@@ -161,28 +161,28 @@ export default function ArticlePage() {
           <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
             <Button 
               variant="outlined" 
-              startIcon={<ThumbsUp size={16} />}
+              startIcon={<ThumbsUpIcon sx={{ fontSize: 16 }} />}
               size="small"
             >
               Helpful
             </Button>
             <Button 
               variant="outlined" 
-              startIcon={<ThumbsDown size={16} />}
+              startIcon={<ThumbsDownIcon sx={{ fontSize: 16 }} />}
               size="small"
             >
               Not Helpful
             </Button>
             <Button 
               variant="outlined" 
-              startIcon={<Share2 size={16} />}
+              startIcon={<Share2Icon sx={{ fontSize: 16 }} />}
               size="small"
             >
               Share
             </Button>
             <Button 
               variant="outlined" 
-              startIcon={<Bookmark size={16} />}
+              startIcon={<BookmarkIcon sx={{ fontSize: 16 }} />}
               size="small"
             >
               Save
@@ -298,7 +298,7 @@ export default function ArticlePage() {
         <Container maxWidth="lg" sx={{ textAlign: 'center' }}>
           <Button 
             variant="contained" 
-            startIcon={<ArrowLeft />}
+            startIcon={<ArrowLeftIcon />}
             href="/support"
             size="large"
           >

@@ -13,23 +13,23 @@ import {
   Stack,
   Divider,
   Alert,
-  AlertTitle
+  AlertTitle,
+  Grid
 } from '@mui/material';
 import {
-  Lock,
-  Star,
-  ArrowUp,
-  CheckCircle,
-  Sparkles,
-  Crown,
-  Zap
-} from 'lucide-react';
+  Lock as LockIcon,
+  Star as StarIcon,
+  ArrowUpward as ArrowUpwardIcon,
+  CheckCircle as CheckCircleIcon,
+  AutoAwesome as AutoAwesomeIcon,
+  Bolt as BoltIcon
+} from '@mui/icons-material';
 import { useRouter } from 'next/navigation';
-import { UserPlan, PLAN_FEATURES, PLAN_HIERARCHY } from '@/lib/plan-validation';
+import { User极Plan, PLAN_FEATURES, PLAN_HIERARCHY } from '@/lib/plan-validation';
 
 interface ProFeatureGateProps {
   featureId: string;
-  userPlan: UserPlan;
+  userPlan: User极Plan;
   children: React.ReactNode;
   fallback?: React.ReactNode;
   showUpgradePrompt?: boolean;
@@ -111,11 +111,11 @@ export function ProFeatureGate({
               }}
             >
               {featureId === 'smart-workflow' ? (
-                <Sparkles size={32} color="white" />
+                <AutoAwesomeIcon size={32} color="white" />
               ) : featureId === 'ai-content-generation' ? (
-                <Zap size={32} color="white" />
+                <BoltIcon size={32} color="white" />
               ) : (
-                <Lock size={32} color="white" />
+                <LockIcon size={32} color="white" />
               )}
             </Box>
           </Box>
@@ -133,7 +133,7 @@ export function ProFeatureGate({
           {/* Plan Badge */}
           <Box sx={{ mb: 3 }}>
             <Chip
-              icon={<Crown size={16} />}
+              icon={<StarIcon />}
               label={`${feature.requiredPlan} Feature`}
               sx={{
                 bgcolor: 'rgba(255, 255, 255, 0.2)',
@@ -152,7 +152,7 @@ export function ProFeatureGate({
             <Button
               variant="contained"
               size="large"
-              startIcon={<ArrowUp />}
+              startIcon={<ArrowUpwardIcon />}
               onClick={() => router.push('/dashboard/billing')}
               sx={{
                 bgcolor: 'white',
@@ -207,7 +207,7 @@ export function ProFeatureGate({
               <Card sx={{ height: '100%', textAlign: 'center' }}>
                 <CardContent>
                   <Box sx={{ mb: 2 }}>
-                    <CheckCircle size={24} color="#4caf50" />
+                    <CheckCircleIcon size={24} color="#4caf50" />
                   </Box>
                   <Typography variant="body2" fontWeight={600}>
                     {benefit}
@@ -260,6 +260,3 @@ function getFeatureBenefits(featureId: string): string[] {
 
   return benefits[featureId] || [];
 }
-
-// Import Grid component
-import { Grid } from '@mui/material';

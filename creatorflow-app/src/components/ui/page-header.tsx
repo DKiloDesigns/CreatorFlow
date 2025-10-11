@@ -8,7 +8,7 @@ import {
   Link,
   useTheme,
 } from '@mui/material';
-import { ChevronRight, Home } from 'lucide-react';
+import { ChevronRight as ChevronRightIcon, Home as HomeIcon } from '@mui/icons-material';
 
 interface PageHeaderProps {
   title: string;
@@ -21,12 +21,12 @@ interface PageHeaderProps {
   actions?: React.ReactNode;
 }
 
-export function PageHeader({ 
-  title, 
-  subtitle, 
-  breadcrumbs = [], 
+export function PageHeader({
+  title,
+  subtitle,
+  breadcrumbs = [],
   icon,
-  actions 
+  actions
 }: PageHeaderProps) {
   const theme = useTheme();
 
@@ -41,7 +41,7 @@ export function PageHeader({
       {/* Breadcrumbs */}
       {breadcrumbs.length > 0 && (
         <Breadcrumbs
-          separator={<ChevronRight size={16} />}
+          separator={<ChevronRightIcon sx={{ fontSize: 16 }} />}
           sx={{ mb: 2 }}
         >
           <Link
@@ -58,7 +58,7 @@ export function PageHeader({
               },
             }}
           >
-            <Home size={16} />
+            <HomeIcon sx={{ fontSize: 16 }} />
             Dashboard
           </Link>
           {breadcrumbs.map((crumb, index) => (

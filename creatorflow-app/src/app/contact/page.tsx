@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from 'next/link';
-import { Mail, Phone, MapPin, Clock, MessageCircle, Send } from 'lucide-react';
+import { Email as EmailIcon, Phone as PhoneIcon, LocationOn as LocationOnIcon, AccessTime as AccessTimeIcon, Chat as ChatIcon, Send as SendIcon } from '@mui/icons-material';
 import { PublicHeader } from '@/components/PublicHeader';
 import { Footer } from '@/components/Footer';
 
@@ -31,7 +31,7 @@ export default function Contact() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
             <div className="text-center">
               <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Mail className="h-8 w-8 text-blue-600 dark:text-blue-400" />
+                <EmailIcon sx={{ fontSize: 32 }} className="text-blue-600 dark:text-blue-400" />
               </div>
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Email Us</h3>
               <p className="text-gray-600 dark:text-gray-300 mb-2">For general inquiries</p>
@@ -42,7 +42,7 @@ export default function Contact() {
             
             <div className="text-center">
               <div className="w-16 h-16 bg-purple-100 dark:bg-purple-900 rounded-full flex items-center justify-center mx-auto mb-4">
-                <MessageCircle className="h-8 w-8 text-purple-600 dark:text-purple-400" />
+                <ChatIcon sx={{ fontSize: 32 }} className="text-purple-600 dark:text-purple-400" />
               </div>
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Support</h3>
               <p className="text-gray-600 dark:text-gray-300 mb-2">For technical help</p>
@@ -53,7 +53,7 @@ export default function Contact() {
             
             <div className="text-center">
               <div className="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Phone className="h-8 w-8 text-green-600 dark:text-green-400" />
+                <PhoneIcon sx={{ fontSize: 32 }} className="text-green-600 dark:text-green-400" />
               </div>
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Sales</h3>
               <p className="text-gray-600 dark:text-gray-300 mb-2">For enterprise inquiries</p>
@@ -159,7 +159,7 @@ export default function Contact() {
                     type="submit" 
                     className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold py-3 px-6 rounded-lg hover:from-blue-600 hover:to-purple-700 transition flex items-center justify-center gap-2"
                   >
-                    <Send className="h-4 w-4" />
+                    <SendIcon sx={{ fontSize: 16 }} className="h-4 w-4" />
                     Send Message
                   </button>
                 </form>
@@ -178,7 +178,7 @@ export default function Contact() {
             <div className="bg-white dark:bg-gray-700 rounded-lg p-6 border border-gray-200 dark:border-gray-600">
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <MapPin className="h-6 w-6 text-blue-600 dark:text-blue-400" />
+                  <LocationOnIcon sx={{ fontSize: 24 }} className="text-blue-600 dark:text-blue-400" />
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">San Francisco</h3>
@@ -194,7 +194,7 @@ export default function Contact() {
             <div className="bg-white dark:bg-gray-700 rounded-lg p-6 border border-gray-200 dark:border-gray-600">
               <div className="flex items-start gap-4">
                 <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <Clock className="h-6 w-6 text-purple-600 dark:text-purple-400" />
+                  <AccessTimeIcon sx={{ fontSize: 24 }} className="text-purple-600 dark:text-purple-400" />
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Business Hours</h3>

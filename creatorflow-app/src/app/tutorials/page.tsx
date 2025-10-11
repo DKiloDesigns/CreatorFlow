@@ -27,18 +27,18 @@ import {
   useMediaQuery
 } from '@mui/material';
 import {
-  Play,
-  Clock,
-  User,
-  Star,
-  Search,
-  Filter,
-  BookOpen,
-  Brain,
-  BarChart3,
-  Users,
-  Zap
-} from 'lucide-react';
+  PlayArrow as PlayIcon,
+  AccessTime as ClockIcon,
+  Person as UserIcon,
+  Star as StarIcon,
+  Search as SearchIcon,
+  FilterList as FilterIcon,
+  BookOutlined as BookOpenIcon,
+  Psychology as BrainIcon,
+  BarChart as BarChart3Icon,
+  Group as UsersIcon,
+  Bolt as ZapIcon
+} from '@mui/icons-material';
 import { InteractiveTutorial } from '@/components/ui/interactive-tutorial';
 import { tutorials, getTutorialsByCategory, searchTutorials } from '@/lib/tutorials';
 
@@ -118,23 +118,23 @@ export default function TutorialsPage() {
   const getCategoryIcon = (category: string) => {
     switch (category) {
       case 'Getting Started':
-        return <BookOpen size={20} />;
+        return <BookOpenIcon sx={{ fontSize: 20 }} />;
       case 'Content Creation':
-        return <Play size={20} />;
+        return <PlayIcon sx={{ fontSize: 20 }} />;
       case 'AI Tools':
-        return <Brain size={20} />;
+        return <BrainIcon sx={{ fontSize: 20 }} />;
       case 'Planning':
-        return <Clock size={20} />;
+        return <ClockIcon sx={{ fontSize: 20 }} />;
       case 'Analytics':
-        return <BarChart3 size={20} />;
+        return <BarChart3Icon sx={{ fontSize: 20 }} />;
       case 'Team Management':
-        return <Users size={20} />;
+        return <UsersIcon sx={{ fontSize: 20 }} />;
       case 'Mobile':
-        return <Zap size={20} />;
+        return <ZapIcon sx={{ fontSize: 20 }} />;
       case 'Automation':
-        return <Zap size={20} />;
+        return <ZapIcon sx={{ fontSize: 20 }} />;
       default:
-        return <BookOpen size={20} />;
+        return <BookOpenIcon sx={{ fontSize: 20 }} />;
     }
   };
 
@@ -159,7 +159,7 @@ export default function TutorialsPage() {
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <Search size={20} />
+                    <SearchIcon sx={{ fontSize: 20 }} />
                   </InputAdornment>
                 ),
               }}
@@ -192,7 +192,7 @@ export default function TutorialsPage() {
           >
             <Tab 
               label="Interactive Tutorials" 
-              icon={<BookOpen size={20} />}
+              icon={<BookOpenIcon sx={{ fontSize: 20 }} />}
               iconPosition="start"
             />
           </Tabs>
@@ -263,7 +263,7 @@ export default function TutorialsPage() {
                       />
                       {tutorial.featured && (
                         <Chip 
-                          icon={<Star size={16} />}
+                          icon={<StarIcon sx={{ fontSize: 16 }} />}
                           label="Featured" 
                           size="small" 
                           color="secondary"
@@ -274,11 +274,11 @@ export default function TutorialsPage() {
                     
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, color: 'text.secondary' }}>
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                        <Clock size={16} />
+                        <ClockIcon sx={{ fontSize: 16 }} />
                         <Typography variant="caption">{tutorial.estimatedTime} min</Typography>
                       </Box>
                       <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
-                        <User size={16} />
+                        <UserIcon sx={{ fontSize: 16 }} />
                         <Typography variant="caption">{tutorial.author}</Typography>
                       </Box>
                     </Box>

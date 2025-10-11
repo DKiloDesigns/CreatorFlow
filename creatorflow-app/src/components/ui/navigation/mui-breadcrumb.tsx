@@ -9,7 +9,7 @@ import {
   Typography
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { ChevronRight, Home } from 'lucide-react';
+import { ChevronRight as ChevronRightIcon, Home as HomeIcon } from '@mui/icons-material';
 import Link from 'next/link';
 
 // Styled MUI Breadcrumbs
@@ -107,7 +107,7 @@ export const Breadcrumbs = forwardRef<HTMLElement, BreadcrumbsProps>(
   ({ 
     variant = 'default',
     size = 'md',
-    separator = <ChevronRight size={16} />,
+    separator = <ChevronRightIcon fontSize="small" />,
     maxItems,
     itemsBeforeCollapse = 1,
     itemsAfterCollapse = 1,
@@ -208,7 +208,7 @@ export const HomeBreadcrumb = forwardRef<HTMLAnchorElement, HomeBreadcrumbProps>
         href={homeHref}
         variant={variant}
         size={size}
-        icon={<Home size={16} />}
+        icon={<HomeIcon fontSize="small" />}
         {...props}
       >
         Home

@@ -1,19 +1,33 @@
 'use client';
 
-import { PublicHeader } from '@/components/PublicHeader';
-import { Footer } from '@/components/Footer';
-import { Box, Typography, Container, Paper } from '@mui/material';
+import { Box, Typography, Container, Paper, IconButton } from '@mui/material';
+import { PublicPageLayout } from '@/components/layout/PublicPageLayout';
+import { useRouter } from 'next/navigation';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 export default function PrivacyPage() {
+  const router = useRouter();
   return (
-    <Box sx={{ minHeight: '100vh', bgcolor: 'white' }}>
-      <PublicHeader />
-      
-      <Container component="main" sx={{ px: 2, py: 4, maxWidth: 'lg' }}>
-        <Box sx={{ maxWidth: 'none' }}>
-          <Typography variant="h3" component="h1" sx={{ fontWeight: 'bold', color: 'grey.900', mb: 4 }}>
-            Privacy Policy
-          </Typography>
+    <PublicPageLayout>
+      <Box component="section" sx={{ py: 8, px: { xs: 4, sm: 3, lg: 4 } }}>
+        <Container maxWidth="lg">
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 3 }}>
+            <IconButton
+              edge="start"
+              color="inherit"
+              aria-label="back"
+              onClick={() => router.back()}
+              sx={{ mr: 2 }}
+            >
+              <ArrowBackIcon />
+            </IconButton>
+            <Box sx={{ flex: 1, textAlign: 'center' }}>
+              <Typography variant="h3" component="h1" sx={{ fontWeight: 'bold', color: 'grey.900', mb: 4 }}>
+                Privacy Policy
+              </Typography>
+            </Box>
+            <Box sx={{ width: 48, mr: 2 }} /> {/* Spacer to balance the IconButton */}
+          </Box>
           
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3, color: 'grey.700' }}>
             <Box component="section">
@@ -166,17 +180,12 @@ export default function PrivacyPage() {
 
             <Box sx={{ mt: 4, pt: 2, borderTop: '1px solid', borderColor: 'grey.200' }}>
               <Typography variant="body2" sx={{ color: 'grey.500' }}>
-                <Typography variant="body2" sx={{ fontWeight: 'bold' }}>Last updated:</Typography> January 2025
+                <Typography component="span" variant="body2" sx={{ fontWeight: 'bold' }}>Last updated:</Typography> January 2025
               </Typography>
             </Box>
           </Box>
-        </Box>
-      </Container>
-
-      {/* Bottom Spacer to Clear Bottom Navigation */}
-      <Box sx={{ height: { xs: 32, sm: 10 }, width: '100%' }}></Box>
-
-      <Footer />
-    </Box>
+        </Container>
+      </Box>
+    </PublicPageLayout>
   );
 } 

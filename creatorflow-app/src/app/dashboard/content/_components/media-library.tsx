@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { 
-  Card, 
-  CardContent, 
+import {
+  Card,
+  CardContent,
   Button,
   TextField,
   FormControl,
@@ -26,22 +26,21 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Close as CloseIcon } from '@mui/icons-material';
 
 import { toast } from 'sonner';
-import { 
-  Search, 
-  Filter, 
-  Grid as GridIcon, 
-  List, 
-  Eye, 
-  Download, 
-  Trash2, 
-  Copy,
+import {
+  Search as SearchIcon,
+  FilterList as FilterListIcon,
+  GridView as GridViewIcon,
+  ViewList as ViewListIcon,
+  Visibility as VisibilityIcon,
+  Download as DownloadIcon,
+  Delete as DeleteIcon,
+  ContentCopy as ContentCopyIcon,
   Image as ImageIcon,
-  Video,
-  Calendar,
-  FileText,
-  Loader2,
-  RefreshCw
-} from 'lucide-react';
+  Videocam as VideocamIcon,
+  CalendarMonth as CalendarMonthIcon,
+  Description as DescriptionIcon,
+  Refresh as RefreshIcon
+} from '@mui/icons-material';
 
 interface MediaItem {
   id: string;
@@ -284,7 +283,7 @@ export function MediaLibrary({ onSelect, selectedMedia = [], multiple = false }:
             size="small"
             onClick={handleRefresh}
             disabled={refreshing}
-            startIcon={refreshing ? <CircularProgress size={16} /> : <RefreshCw size={16} />}
+            startIcon={refreshing ? <CircularProgress size={16} /> : <RefreshIcon sx={{ fontSize: 16 }} />}
           >
             Refresh
           </Button>
@@ -292,7 +291,7 @@ export function MediaLibrary({ onSelect, selectedMedia = [], multiple = false }:
             variant="outlined"
             size="small"
             onClick={() => setViewMode(viewMode === 'grid' ? 'list' : 'grid')}
-            startIcon={viewMode === 'grid' ? <List size={16} /> : <GridIcon size={16} />}
+            startIcon={viewMode === 'grid' ? <ViewListIcon sx={{ fontSize: 16 }} /> : <GridViewIcon sx={{ fontSize: 16 }} />}
           >
             {viewMode === 'grid' ? 'List' : 'Grid'}
           </Button>
@@ -308,7 +307,7 @@ export function MediaLibrary({ onSelect, selectedMedia = [], multiple = false }:
             onChange={(e) => setSearchTerm(e.target.value)}
             fullWidth
             InputProps={{
-              startAdornment: <Search size={16} className="mr-1 text-gray-500" />,
+              startAdornment: <SearchIcon sx={{ fontSize: 16 }} className="mr-1 text-gray-500" />,
             }}
           />
         </Box>
@@ -384,7 +383,7 @@ export function MediaLibrary({ onSelect, selectedMedia = [], multiple = false }:
                           bgcolor: 'grey.200',
                         }}
                       >
-                        <Video size={32} color="grey" />
+                        <VideocamIcon sx={{ fontSize: 32, color: 'grey.500' }} />
                       </Box>
                     )}
                     
@@ -419,7 +418,7 @@ export function MediaLibrary({ onSelect, selectedMedia = [], multiple = false }:
                             }}
                             sx={{ color: 'white' }}
                           >
-                            <Eye size={16} />
+                            <VisibilityIcon sx={{ fontSize: 16 }} />
                           </IconButton>
                         </Tooltip>
                         <Tooltip title="Download">
@@ -431,7 +430,7 @@ export function MediaLibrary({ onSelect, selectedMedia = [], multiple = false }:
                             }}
                             sx={{ color: 'white' }}
                           >
-                            <Download size={16} />
+                            <DownloadIcon sx={{ fontSize: 16 }} />
                           </IconButton>
                         </Tooltip>
                         <Tooltip title="Delete">
@@ -444,7 +443,7 @@ export function MediaLibrary({ onSelect, selectedMedia = [], multiple = false }:
                             }}
                             sx={{ color: 'white' }}
                           >
-                            <Trash2 size={16} />
+                            <DeleteIcon sx={{ fontSize: 16 }} />
                           </IconButton>
                         </Tooltip>
                       </Box>
@@ -531,7 +530,7 @@ export function MediaLibrary({ onSelect, selectedMedia = [], multiple = false }:
                           justifyContent: 'center',
                         }}
                       >
-                        <Video size={24} color="grey" />
+                        <VideocamIcon sx={{ fontSize: 24, color: 'grey.500' }} />
                       </Box>
                     )}
                   </Box>
@@ -593,7 +592,7 @@ export function MediaLibrary({ onSelect, selectedMedia = [], multiple = false }:
                           setPreviewOpen(true);
                         }}
                       >
-                        <Eye size={16} />
+                        <VisibilityIcon sx={{ fontSize: 16 }} />
                       </IconButton>
                     </Tooltip>
                     <Tooltip title="Copy URL">
@@ -604,7 +603,7 @@ export function MediaLibrary({ onSelect, selectedMedia = [], multiple = false }:
                           copyUrl(item.url);
                         }}
                       >
-                        <Copy size={16} />
+                        <ContentCopyIcon sx={{ fontSize: 16 }} />
                       </IconButton>
                     </Tooltip>
                     <Tooltip title="Download">
@@ -615,7 +614,7 @@ export function MediaLibrary({ onSelect, selectedMedia = [], multiple = false }:
                           handleDownload(item);
                         }}
                       >
-                        <Download size={16} />
+                        <DownloadIcon sx={{ fontSize: 16 }} />
                       </IconButton>
                     </Tooltip>
                     <Tooltip title="Delete">
@@ -627,7 +626,7 @@ export function MediaLibrary({ onSelect, selectedMedia = [], multiple = false }:
                           handleDelete(item.id);
                         }}
                       >
-                        <Trash2 size={16} />
+                        <DeleteIcon sx={{ fontSize: 16 }} />
                       </IconButton>
                     </Tooltip>
                   </Box>
@@ -755,7 +754,7 @@ export function MediaLibrary({ onSelect, selectedMedia = [], multiple = false }:
                 <Button
                   variant="outlined"
                   onClick={() => copyUrl(selectedItem.url)}
-                  startIcon={<Copy size={16} />}
+                  startIcon={<ContentCopyIcon sx={{ fontSize: 16 }} />}
                   fullWidth
                 >
                   Copy URL
@@ -763,7 +762,7 @@ export function MediaLibrary({ onSelect, selectedMedia = [], multiple = false }:
                 <Button
                   variant="outlined"
                   onClick={() => handleDownload(selectedItem)}
-                  startIcon={<Download size={16} />}
+                  startIcon={<DownloadIcon sx={{ fontSize: 16 }} />}
                   fullWidth
                 >
                   Download

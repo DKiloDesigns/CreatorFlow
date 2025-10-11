@@ -7,7 +7,8 @@ import {
   Box
 } from '@mui/material';
 
-import { Loader2, LogOut, Info } from 'lucide-react';
+import { CircularProgress } from '@mui/material'; // For Loader2
+import { Logout as LogoutIcon, InfoOutlined as InfoOutlinedIcon } from '@mui/icons-material'; // For LogOut and Info
 
 interface Session {
   id: string;
@@ -102,7 +103,7 @@ export default function AdminSessionsPage() {
         <button className="px-2 py-1 bg-gray-100 rounded text-xs" onClick={() => { setUserFilter(''); setSearch(''); }}>Clear</button>
       </div>
       {loading ? (
-        <div className="flex items-center gap-2"><Loader2 className="animate-spin" /> Loading...</div>
+        <div className="flex items-center gap-2"><CircularProgress size={16} className="animate-spin" /> Loading...</div>
       ) : error ? (
         <div className="text-red-500">{error}</div>
       ) : (
@@ -118,7 +119,7 @@ export default function AdminSessionsPage() {
           </thead>
           <tbody>
             {filteredSessions.length === 0 ? (
-              <tr><td colSpan={5} className="p-8 text-center text-gray-400"><Info className="inline-block mr-2 align-text-bottom" /> No sessions found.</td></tr>
+              <tr><td colSpan={5} className="p-8 text-center text-gray-400"><InfoOutlinedIcon sx={{ width: 16, height: 16 }} className="inline-block mr-2 align-text-bottom" /> No sessions found.</td></tr>
             ) : filteredSessions.map(s => (
               <tr
                 key={s.id}
@@ -147,7 +148,7 @@ export default function AdminSessionsPage() {
                           setActionLoading(null);
                         }
                       }}
-                    >{actionLoading === s.id ? <Loader2 className="w-4 h-4 animate-spin inline-block" /> : <><LogOut className="w-4 h-4 inline-block" /> Force Logout</>}</button>
+                    >{actionLoading === s.id ? <CircularProgress size={16} className="animate-spin inline-block" /> : <><LogoutIcon sx={{ width: 16, height: 16 }} className="inline-block" /> Force Logout</>}</button>
                   </Tooltip>
                 </td>
               </tr>
@@ -206,7 +207,7 @@ export default function AdminSessionsPage() {
                         }
                       }}
                       disabled={actionLoading === details.id}
-                    >{actionLoading === details.id ? <Loader2 className="w-4 h-4 animate-spin inline-block" /> : 'Force Logout'}</button>
+                    >{actionLoading === details.id ? <CircularProgress size={16} className="animate-spin inline-block" /> : 'Force Logout'}</button>
                   </Tooltip>
                 </div>
               </div>

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { prisma } from '@/lib/prisma.ts';
 import type { Post } from '@prisma/client';
 
 // ... existing code ...

@@ -24,21 +24,21 @@ import {
   Paper
 } from '@mui/material';
 import { 
-  MessageSquare, 
-  Sparkles, 
-  Zap, 
-  Settings, 
-  X, 
-  Send, 
-  RefreshCw, 
-  Users, 
-  Plus, 
-  ArrowLeft,
-  Search,
-  Phone,
-  Video,
-  MoreVertical
-} from 'lucide-react';
+  Chat as MessageSquareIcon, 
+  AutoAwesome as SparklesIcon, 
+  Bolt as ZapIcon, 
+  Settings as SettingsIcon, 
+  Close as XIcon, 
+  Send as SendIcon, 
+  Refresh as RefreshCwIcon, 
+  Group as UsersIcon, 
+  Add as PlusIcon, 
+  ArrowBack as ArrowLeftIcon,
+  Search as SearchIcon,
+  Phone as PhoneIcon,
+  Videocam as VideoIcon,
+  MoreVert as MoreVerticalIcon
+} from '@mui/icons-material';
 
 // Keyframe animations
 const float = keyframes`
@@ -231,7 +231,7 @@ export function FloatingMessengerIcon({
                 zIndex: 1
               }}
             >
-              <Sparkles size={12} color="#ffd700" />
+              <SparklesIcon sx={{ fontSize: 12, color: "#ffd700" }} />
             </Box>
           </Fade>
           <Fade in={showSparkles} timeout={800}>
@@ -244,14 +244,14 @@ export function FloatingMessengerIcon({
                 zIndex: 1
               }}
             >
-              <Zap size={10} color="#ff6b6b" />
+              <ZapIcon sx={{ fontSize: 10, color: "#ff6b6b" }} />
             </Box>
           </Fade>
         </>
       )}
 
       {/* Main icon */}
-      <MessageSquare size={getIconSize()} />
+      <MessageSquareIcon sx={{ fontSize: getIconSize() }} />
     </Box>
   );
 
@@ -357,7 +357,7 @@ export function FloatingMessengerIcon({
           <Button
             variant="outlined"
             size="small"
-            startIcon={<Plus size={16} />}
+            startIcon={<PlusIcon sx={{ fontSize: 16 }} />}
             onClick={handleNewMessage}
             sx={{
               borderRadius: 2,
@@ -379,7 +379,7 @@ export function FloatingMessengerIcon({
           <Button
             variant="outlined"
             size="small"
-            startIcon={<RefreshCw size={16} />}
+            startIcon={<RefreshCwIcon sx={{ fontSize: 16 }} />}
             onClick={handleRefresh}
             sx={{
               borderRadius: 2,
@@ -485,7 +485,7 @@ export function FloatingMessengerIcon({
               mb: 2,
               boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)'
             }}>
-              <MessageSquare size={32} color="#94a3b8" />
+              <MessageSquareIcon sx={{ fontSize: 32, color: "#94a3b8" }} />
             </Box>
             <Typography 
               variant="h6" 
@@ -563,7 +563,7 @@ export function FloatingMessengerIcon({
                       ? '0 2px 8px rgba(59, 130, 246, 0.3)'
                       : '0 2px 4px rgba(0, 0, 0, 0.1)'
                   }}>
-                    <MessageSquare size={20} color={conversation.online ? 'white' : '#6b7280'} />
+                    <MessageSquareIcon sx={{ fontSize: 20, color: conversation.online ? 'white' : '#6b7280' }} />
                   </Avatar>
                   {conversation.online && (
                     <Box
@@ -653,7 +653,7 @@ export function FloatingMessengerIcon({
                 }
               }}
             >
-              <ArrowLeft size={20} />
+              <ArrowLeftIcon sx={{ fontSize: 20 }} />
             </IconButton>
             <Avatar sx={{ 
               width: 40, 
@@ -665,7 +665,7 @@ export function FloatingMessengerIcon({
                 ? '0 2px 8px rgba(59, 130, 246, 0.3)'
                 : '0 2px 4px rgba(0, 0, 0, 0.1)'
             }}>
-              <MessageSquare size={20} color={selectedConv.online ? 'white' : '#6b7280'} />
+              <MessageSquareIcon sx={{ fontSize: 20, color: selectedConv.online ? 'white' : '#6b7280' }} />
             </Avatar>
             <Box sx={{ flexGrow: 1 }}>
               <Typography variant="h6" sx={{ fontWeight: 600, color: 'text.primary' }}>
@@ -677,13 +677,13 @@ export function FloatingMessengerIcon({
             </Box>
             <Box sx={{ display: 'flex', gap: 0.5 }}>
               <IconButton size="small" sx={{ color: 'text.secondary' }}>
-                <Phone size={18} />
+                <PhoneIcon sx={{ fontSize: 18 }} />
               </IconButton>
               <IconButton size="small" sx={{ color: 'text.secondary' }}>
-                <Video size={18} />
+                <VideoIcon sx={{ fontSize: 18 }} />
               </IconButton>
               <IconButton size="small" sx={{ color: 'text.secondary' }}>
-                <MoreVertical size={18} />
+                <MoreVerticalIcon sx={{ fontSize: 18 }} />
               </IconButton>
             </Box>
           </Box>
@@ -795,7 +795,7 @@ export function FloatingMessengerIcon({
                 }
               }}
             >
-              <Send size={18} />
+              <SendIcon sx={{ fontSize: 18 }} />
             </IconButton>
           </Box>
         </Box>
@@ -825,7 +825,7 @@ export function FloatingMessengerIcon({
               }
             }}
           >
-            <ArrowLeft size={20} />
+            <ArrowLeftIcon sx={{ fontSize: 20 }} />
           </IconButton>
           <Typography variant="h6" sx={{ fontWeight: 600, color: 'text.primary' }}>
             New Message
@@ -849,7 +849,7 @@ export function FloatingMessengerIcon({
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
-                <Search size={18} />
+                <SearchIcon sx={{ fontSize: 18 }} />
               </InputAdornment>
             ),
           }}
@@ -875,7 +875,7 @@ export function FloatingMessengerIcon({
         />
         <Button
           variant="contained"
-          startIcon={<Send size={16} />}
+          startIcon={<SendIcon sx={{ fontSize: 16 }} />}
           sx={{
             borderRadius: 2,
             textTransform: 'none',
@@ -992,7 +992,7 @@ export function FloatingMessengerIcon({
                         }
                       }}
                     >
-                      <Settings size={20} />
+                      <SettingsIcon sx={{ fontSize: 20 }} />
                     </IconButton>
                     <IconButton 
                       size="small" 
@@ -1005,7 +1005,7 @@ export function FloatingMessengerIcon({
                         }
                       }}
                     >
-                      <X size={20} />
+                      <XIcon sx={{ fontSize: 20 }} />
                     </IconButton>
                   </>
                 )}
@@ -1021,7 +1021,7 @@ export function FloatingMessengerIcon({
                       }
                     }}
                   >
-                    <X size={20} />
+                    <XIcon sx={{ fontSize: 20 }} />
                   </IconButton>
                 )}
               </Box>

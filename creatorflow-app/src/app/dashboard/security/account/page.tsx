@@ -1,6 +1,6 @@
 import { PageHeader } from '@/components/ui/page-header';
 import { Card, CardContent, Typography, Box, Button } from '@mui/material';
-import { Lock, ShieldCheck, History } from 'lucide-react';
+import { Lock as LockIcon, VerifiedUser as VerifiedUserIcon, History as HistoryIcon } from '@mui/icons-material';
 import { SecurityTabs } from '@/components/security/SecurityDashboard';
 
 export default function AccountSecurityPage() {
@@ -12,7 +12,7 @@ export default function AccountSecurityPage() {
         breadcrumbs={[
           { label: 'Account Security', href: '/dashboard/security/account' }
         ]}
-        icon={<Lock size={24} />}
+        icon={<LockIcon sx={{ fontSize: 24 }} />}
       />
       <SecurityTabs />
       <Box display="flex" flexDirection="column" gap={2} mt={2}>
@@ -20,7 +20,7 @@ export default function AccountSecurityPage() {
         <Card>
           <CardContent>
             <Box display="flex" alignItems="center" gap={2}>
-              <Lock />
+              <LockIcon />
               <Typography variant="h6">Change Password</Typography>
             </Box>
             <Typography color="text.secondary" mt={1}>
@@ -32,7 +32,7 @@ export default function AccountSecurityPage() {
         <Card>
           <CardContent>
             <Box display="flex" alignItems="center" gap={2}>
-              <ShieldCheck />
+              <VerifiedUserIcon />
               <Typography variant="h6">Two-Factor Authentication (2FA)</Typography>
             </Box>
             <Typography color="text.secondary" mt={1}>
@@ -44,7 +44,7 @@ export default function AccountSecurityPage() {
         <Card>
           <CardContent>
             <Box display="flex" alignItems="center" gap={2}>
-              <History />
+              <HistoryIcon />
               <Typography variant="h6">Login History</Typography>
             </Box>
             <Typography color="text.secondary" mt={1}>

@@ -5,7 +5,7 @@ export function TestimonialCard({ quote, author }: { quote: string; author: stri
     <Box
       component="blockquote"
       sx={{
-        bgcolor: 'grey.50',
+        bgcolor: 'background.paper',
         borderRadius: 2,
         boxShadow: 1,
         p: 3,

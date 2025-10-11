@@ -14,7 +14,11 @@ import {
   Box,
 
 } from '@mui/material';
-import { Activity, Settings } from 'lucide-react';
+import {
+  Timeline as ActivityIcon,
+  Settings as SettingsIcon,
+  Refresh as RefreshIcon,
+} from '@mui/icons-material';
 
 interface SystemHealth {
   cpu: number;
@@ -123,7 +127,7 @@ export default function PerformancePage() {
           <p className="text-muted-foreground">System health and optimization insights</p>
         </div>
         <Button onClick={refreshData} disabled={refreshing} variant="outlined">
-          <Activity className={`h-4 w-4 mr-2 ${refreshing ? 'animate-spin' : ''}`} />
+          <RefreshIcon sx={{ height: 16, width: 16, mr: 2 }} className={refreshing ? 'animate-spin' : ''} />
           Refresh
         </Button>
       </div>
@@ -135,7 +139,7 @@ export default function PerformancePage() {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <Typography variant="subtitle2" component="div">Overall Health</Typography>
-                <Activity className="h-4 w-4 text-muted-foreground" />
+                <ActivityIcon sx={{ height: 16, width: 16, color: 'text.secondary' }} />
               </CardHeader>
               <CardContent>
                 <Box sx={{ display: 'flex', alignItems: 'baseline' }}>
@@ -152,7 +156,7 @@ export default function PerformancePage() {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <Typography variant="subtitle2" component="div">CPU Usage</Typography>
-                <Activity className="h-4 w-4 text-muted-foreground" />
+                <ActivityIcon sx={{ height: 16, width: 16, color: 'text.secondary' }} />
               </CardHeader>
               <CardContent>
                 <Box sx={{ display: 'flex', alignItems: 'baseline' }}>
@@ -169,7 +173,7 @@ export default function PerformancePage() {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <Typography variant="subtitle2" component="div">Memory Usage</Typography>
-                <Activity className="h-4 w-4 text-muted-foreground" />
+                <ActivityIcon sx={{ height: 16, width: 16, color: 'text.secondary' }} />
               </CardHeader>
               <CardContent>
                 <Box sx={{ display: 'flex', alignItems: 'baseline' }}>
@@ -186,7 +190,7 @@ export default function PerformancePage() {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <Typography variant="subtitle2" component="div">Database</Typography>
-                <Activity className="h-4 w-4 text-muted-foreground" />
+                <ActivityIcon sx={{ height: 16, width: 16, color: 'text.secondary' }} />
               </CardHeader>
               <CardContent>
                 <Box sx={{ display: 'flex', alignItems: 'baseline' }}>
@@ -203,7 +207,7 @@ export default function PerformancePage() {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <Typography variant="subtitle2" component="div">Cache</Typography>
-                <Activity className="h-4 w-4 text-muted-foreground" />
+                <ActivityIcon sx={{ height: 16, width: 16, color: 'text.secondary' }} />
               </CardHeader>
               <CardContent>
                 <Box sx={{ display: 'flex', alignItems: 'baseline' }}>
@@ -220,7 +224,7 @@ export default function PerformancePage() {
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
                 <Typography variant="subtitle2" component="div">API</Typography>
-                <Activity className="h-4 w-4 text-muted-foreground" />
+                <ActivityIcon sx={{ height: 16, width: 16, color: 'text.secondary' }} />
               </CardHeader>
               <CardContent>
                 <Box sx={{ display: 'flex', alignItems: 'baseline' }}>
@@ -246,7 +250,7 @@ export default function PerformancePage() {
           <Card>
             <CardHeader>
               <Typography variant="h6" component="div" className="flex items-center gap-2">
-                <Activity className="h-5 w-5" />
+                <ActivityIcon sx={{ height: 20, width: 20 }} />
                 Performance Alerts
               </Typography>
               <Typography variant="body2" color="text.secondary">
@@ -291,7 +295,7 @@ export default function PerformancePage() {
                 <Card>
                   <CardHeader>
                     <Typography variant="h6" component="div" className="flex items-center gap-2">
-                      <Activity className="h-5 w-5" />
+                      <ActivityIcon sx={{ height: 20, width: 20 }} />
                       API Performance
                     </Typography>
                   </CardHeader>
@@ -318,7 +322,7 @@ export default function PerformancePage() {
                 <Card>
                   <CardHeader>
                     <Typography variant="h6" component="div" className="flex items-center gap-2">
-                      <Activity className="h-5 w-5" />
+                      <ActivityIcon sx={{ height: 20, width: 20 }} />
                       Database Performance
                     </Typography>
                   </CardHeader>
@@ -345,7 +349,7 @@ export default function PerformancePage() {
                 <Card>
                   <CardHeader>
                     <Typography variant="h6" component="div" className="flex items-center gap-2">
-                      <Activity className="h-5 w-5" />
+                      <ActivityIcon sx={{ height: 20, width: 20 }} />
                       Cache Performance
                     </Typography>
                   </CardHeader>
@@ -377,7 +381,7 @@ export default function PerformancePage() {
           <Card>
             <CardHeader>
               <Typography variant="h6" component="div" className="flex items-center gap-2">
-                <Activity className="h-5 w-5" />
+                <ActivityIcon sx={{ height: 20, width: 20 }} />
                 Optimization Recommendations
               </Typography>
               <Typography variant="body2" color="text.secondary">
@@ -393,12 +397,12 @@ export default function PerformancePage() {
                 ) : (
                   recommendations.map((recommendation, index) => (
                     <Box key={index} sx={{ display: 'flex', alignItems: 'center', gap: 2, p: 2, borderRadius: 1 }}>
-                      <Activity className="h-5 w-5 text-blue-600" />
+                      <ActivityIcon sx={{ height: 20, width: 20, color: 'blue.600' }} />
                       <Box sx={{ flexGrow: 1 }}>
                         <Typography variant="body2">{recommendation}</Typography>
                       </Box>
                       <Button variant="outlined" size="small">
-                        <Settings className="h-4 w-4" />
+                        <SettingsIcon sx={{ height: 16, width: 16 }} />
                       </Button>
                     </Box>
                   ))

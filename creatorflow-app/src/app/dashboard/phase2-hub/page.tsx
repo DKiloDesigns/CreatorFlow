@@ -24,12 +24,15 @@ import {
   ContentCopy,
   Schedule,
   Analytics,
-  Rocket,
   Lightbulb,
   CheckCircle,
   Star,
 } from '@/lib/mui-optimized-imports';
-import { Brain } from 'lucide-react';
+import {
+  PsychologyOutlined as PsychologyOutlinedIcon,
+  RocketLaunch as RocketLaunchIcon,
+  LightbulbOutlined as LightbulbOutlinedIcon,
+} from '@mui/icons-material';
 import { useRouter } from 'next/navigation';
 import { designTokens } from '@/lib/design-system';
 
@@ -120,7 +123,7 @@ export default function Phase2HubPage() {
       id: 'automated-workflows',
       title: 'Automated Workflows',
       description: 'Create intelligent content workflows with AI automation. Streamline your content creation and publishing process.',
-      icon: Rocket,
+      icon: RocketLaunchIcon,
       route: '/dashboard/phase2-hub/automated-workflows',
       status: 'coming-soon',
       difficulty: 'advanced',
@@ -427,7 +430,7 @@ export default function Phase2HubPage() {
                     <Chip
                       label="AI Powered"
                       size="small"
-                      icon={<Brain size={12} />}
+                      icon={<PsychologyOutlinedIcon sx={{ fontSize: 12 }} />}
                       sx={{
                         background: designTokens.colors.ai[100],
                         color: designTokens.colors.ai[700],
@@ -443,7 +446,7 @@ export default function Phase2HubPage() {
                   variant={feature.status === 'available' ? 'contained' : 'outlined'}
                   fullWidth
                   disabled={feature.status !== 'available'}
-                  startIcon={feature.status === 'available' ? <Rocket /> : <Lightbulb />}
+                  startIcon={feature.status === 'available' ? <RocketLaunchIcon /> : <LightbulbOutlinedIcon />}
                   sx={{
                     background: feature.status === 'available' ? 
                       'linear-gradient(90deg, #3B82F6, #8B5CF6)' : 'transparent',

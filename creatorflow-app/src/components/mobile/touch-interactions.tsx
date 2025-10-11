@@ -12,12 +12,12 @@ import {
   useMediaQuery,
 } from '@mui/material';
 import {
-  Hand,
-  Swipe,
-  Pinch,
-  RotateCcw,
-  MousePointer,
-} from 'lucide-react';
+  TouchApp as HandIcon,
+  Swipe as SwipeIcon,
+  ZoomOutMap as PinchIcon,
+  Refresh as RotateCcwIcon,
+  Mouse as MousePointerIcon,
+} from '@mui/icons-material';
 
 interface TouchInteractionsProps {
   children: React.ReactNode;
@@ -238,7 +238,7 @@ export const TouchInteractions: React.FC<TouchInteractionsProps> = ({
               opacity: 0.7,
             }}
           >
-            <Hand size={20} />
+            <HandIcon sx={{ fontSize: 20 }} />
           </Box>
         </Fade>
       )}
@@ -261,7 +261,7 @@ export const TouchInteractions: React.FC<TouchInteractionsProps> = ({
               zIndex: 1300,
             }}
           >
-            <RotateCcw size={20} />
+            <RotateCcwIcon sx={{ fontSize: 20 }} />
             <Typography variant="body2" sx={{ ml: 1 }}>
               Pull to refresh
             </Typography>

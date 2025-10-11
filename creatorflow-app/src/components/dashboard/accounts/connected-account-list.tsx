@@ -5,7 +5,7 @@ import ConnectedAccountCard from './connected-account-card';
 import { Skeleton } from "@mui/material";
 import { Alert, AlertTitle, AlertDescription } from "@/components/ui/feedback/mui-alert";
 import { Box } from '@mui/material';
-import { Terminal } from 'lucide-react';
+import { TerminalOutlined as TerminalOutlinedIcon } from '@mui/icons-material';
 import { toast } from "sonner";
 
 // Define the shape of the account data expected from the API
@@ -83,7 +83,7 @@ export default function ConnectedAccountList() {
   if (error && accounts.length === 0) {
     return (
       <Alert severity="error">
-        <Terminal style={{ width: 16, height: 16 }} />
+        <TerminalOutlinedIcon sx={{ width: 16, height: 16 }} />
         <AlertTitle>Error Loading Accounts</AlertTitle>
         <AlertDescription>{error}</AlertDescription>
       </Alert>
@@ -93,7 +93,7 @@ export default function ConnectedAccountList() {
   if (accounts.length === 0) {
     return (
        <Alert>
-        <Terminal style={{ width: 16, height: 16 }} />
+        <TerminalOutlinedIcon sx={{ width: 16, height: 16 }} />
         <AlertTitle>No Accounts Connected</AlertTitle>
         <AlertDescription>Connect your first social media account using the buttons above.</AlertDescription>
       </Alert>

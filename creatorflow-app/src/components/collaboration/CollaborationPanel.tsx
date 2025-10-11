@@ -23,17 +23,17 @@ import {
   Badge,
 } from '@mui/material';
 import {
-  Users,
-  Plus,
-  Copy,
-  Share2,
-  Video,
-  MessageCircle,
-  Settings,
-  Wifi,
-  WifiOff,
-  Clock,
-} from 'lucide-react';
+  People as PeopleIcon,
+  Add as AddIcon,
+  ContentCopy as ContentCopyIcon,
+  Share as ShareIcon,
+  Videocam as VideocamIcon,
+  Chat as ChatIcon,
+  Settings as SettingsIcon,
+  Wifi as WifiIcon,
+  WifiOff as WifiOffIcon,
+  AccessTime as AccessTimeIcon,
+} from '@mui/icons-material';
 import { useCollaboration } from '@/contexts/CollaborationContext';
 import { useSession } from 'next-auth/react';
 
@@ -111,7 +111,7 @@ export function CollaborationPanel() {
             color="error"
             invisible={users.length === 0}
           >
-            <Users size={20} />
+            <PeopleIcon sx={{ width: 20, height: 20 }} />
           </Badge>
         </IconButton>
       </Tooltip>
@@ -135,7 +135,7 @@ export function CollaborationPanel() {
             {/* Header */}
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
               <Typography variant="h6" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <Users size={20} />
+                <PeopleIcon sx={{ width: 20, height: 20 }} />
                 Collaboration
               </Typography>
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
@@ -161,12 +161,12 @@ export function CollaborationPanel() {
                   <Box sx={{ display: 'flex', gap: 0.5 }}>
                     <Tooltip title="Copy room link">
                       <IconButton size="small" onClick={copyRoomLink}>
-                        <Copy size={14} />
+                        <ContentCopyIcon sx={{ width: 14, height: 14 }} />
                       </IconButton>
                     </Tooltip>
                     <Tooltip title="Share room">
                       <IconButton size="small">
-                        <Share2 size={14} />
+                        <ShareIcon sx={{ width: 14, height: 14 }} />
                       </IconButton>
                     </Tooltip>
                   </Box>
@@ -185,7 +185,7 @@ export function CollaborationPanel() {
                 <Button
                   variant="contained"
                   size="small"
-                  startIcon={<Plus size={16} />}
+                  startIcon={<AddIcon sx={{ width: 16, height: 16 }} />}
                   onClick={() => setShowJoinDialog(true)}
                   sx={{ width: '100%' }}
                 >
@@ -264,7 +264,7 @@ export function CollaborationPanel() {
                   <Button
                     variant="outlined"
                     size="small"
-                    startIcon={<Video size={14} />}
+                    startIcon={<VideocamIcon sx={{ width: 14, height: 14 }} />}
                     sx={{ flex: 1 }}
                   >
                     Video Call
@@ -272,7 +272,7 @@ export function CollaborationPanel() {
                   <Button
                     variant="outlined"
                     size="small"
-                    startIcon={<MessageCircle size={14} />}
+                    startIcon={<ChatIcon sx={{ width: 14, height: 14 }} />}
                     sx={{ flex: 1 }}
                   >
                     Chat

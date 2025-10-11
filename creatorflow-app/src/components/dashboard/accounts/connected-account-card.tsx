@@ -6,7 +6,7 @@ import {
   Typography,
   Box
 } from '@mui/material';
-import { Trash2 } from 'lucide-react';
+import { Delete as DeleteIcon } from '@mui/icons-material';
 import { SiInstagram, SiTiktok, SiYoutube, SiX } from "react-icons/si";
 import { Card, CardContent, CardHeader, CardFooter, CardDescription } from '@/components/ui/mui-components';
 import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogTitle, AlertDialogDescription, AlertDialogFooter, AlertDialogCancel, AlertDialogAction } from '@/components/ui/alert-dialog';
@@ -71,7 +71,7 @@ export default function ConnectedAccountCard({ account, onDisconnect, isDisconne
       <CardFooter>
          <AlertDialog>
           <Button variant="contained" color="error" size="small" disabled={isDisconnecting} onClick={() => {/* Handle disconnect */}}>
-            <Trash2 style={{ marginRight: 8, width: 16, height: 16 }} />
+            <DeleteIcon sx={{ marginRight: 8, width: 16, height: 16 }} />
             Disconnect
           </Button>
           <AlertDialogContent>

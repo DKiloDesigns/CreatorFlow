@@ -2,7 +2,11 @@
 
 import React, { useState } from 'react';
 import { Box, Typography, Container, Paper, Button, Chip } from '@mui/material';
-import { ArrowLeft, Sparkles, CheckCircle } from 'lucide-react';
+import { 
+  ArrowBack as ArrowLeftIcon,
+  AutoAwesome as SparklesIcon,
+  CheckCircle as CheckCircleIcon
+} from '@mui/icons-material';
 import { useRouter } from 'next/navigation';
 import SmartContentWorkflow from '../_components/smart-content-workflow';
 import { ProFeatureGate } from '@/components/ui/pro-feature-gate';
@@ -30,7 +34,7 @@ export default function SmartWorkflowPage() {
       <Box sx={{ mb: 4 }}>
         <Button
           variant="outlined"
-          startIcon={<ArrowLeft />}
+          startIcon={<ArrowLeftIcon />}
           onClick={() => router.back()}
           sx={{ mb: 2 }}
         >
@@ -54,7 +58,7 @@ export default function SmartWorkflowPage() {
               alignItems: 'center',
               justifyContent: 'center'
             }}>
-              <Sparkles style={{ fontSize: 24, color: 'white' }} />
+              <SparklesIcon style={{ fontSize: 24, color: 'white' }} />
             </Box>
             <Box>
               <Typography variant="h4" component="h1" gutterBottom sx={{ color: 'text.primary', fontWeight: 'bold' }}>
@@ -82,7 +86,7 @@ export default function SmartWorkflowPage() {
                 <Chip
                   key={step.id}
                   label={step.label}
-                  icon={isCompleted ? <CheckCircle size={16} /> : undefined}
+                  icon={isCompleted ? <CheckCircleIcon sx={{ fontSize: 16 }} /> : undefined}
                   variant={isActive ? "filled" : "outlined"}
                   color={isActive ? "primary" : isCompleted ? "success" : "default"}
                   size="small"

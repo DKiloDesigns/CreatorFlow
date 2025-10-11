@@ -21,7 +21,7 @@ import {
   ListItemText,
   Alert,
 } from '@mui/material';
-import { Check, X, CreditCard, Calendar, Users, Zap, Shield, Star } from 'lucide-react';
+import { Check as CheckIcon, Close as CloseIcon, CreditCard as CreditCardIcon, CalendarMonth as CalendarMonthIcon, Group as GroupIcon, Bolt as BoltIcon, Security as SecurityIcon, Star as StarIcon } from '@mui/icons-material';
 import { PRICING_TIERS, formatPrice, calculateYearlySavings } from '@/lib/pricing';
 import { toast } from 'sonner';
 
@@ -60,7 +60,7 @@ function BillingContent() {
       fetchUserSubscription();
     } else if (canceled) {
       toast.error('Subscription update canceled');
-    }
+    } 
   }, [searchParams]);
 
   const fetchUserSubscription = async () => {
@@ -77,6 +77,7 @@ function BillingContent() {
       }
     } catch (error) {
       console.error('Error fetching user subscription:', error);
+      toast.error('Failed to fetch user subscription');
     } finally {
       setLoading(false);
     }
@@ -170,7 +171,7 @@ function BillingContent() {
         <Card sx={{ mb: 4 }}>
           <CardHeader>
             <CardTitle sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-              <CreditCard size={20} />
+              <CreditCardIcon sx={{ fontSize: 20 }} />
               Current Plan
             </CardTitle>
           </CardHeader>
@@ -292,7 +293,7 @@ function BillingContent() {
                       {tier.features.map((feature, index) => (
                         <ListItem key={index} sx={{ px: 0, py: 0.5 }}>
                           <ListItemIcon sx={{ minWidth: 32 }}>
-                            <Check size={16} color="green" />
+                            <CheckIcon sx={{ fontSize: 16, color: "green" }} />
                           </ListItemIcon>
                           <ListItemText
                             primary={feature}
@@ -420,9 +421,9 @@ function BillingContent() {
                   <Grid item xs={2.67} key={tier.id}>
                     <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                       {tier.limits.aiContentGeneration ? (
-                        <Check size={16} color="green" />
+                        <CheckIcon sx={{ fontSize: 16, color: "green" }} />
                       ) : (
-                        <X size={16} color="gray" />
+                        <CloseIcon sx={{ fontSize: 16, color: "gray" }} />
                       )}
                     </Box>
                   </Grid>
@@ -437,9 +438,9 @@ function BillingContent() {
                   <Grid item xs={2.67} key={tier.id}>
                     <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                       {tier.limits.whiteLabel ? (
-                        <Check size={16} color="green" />
+                        <CheckIcon sx={{ fontSize: 16, color: "green" }} />
                       ) : (
-                        <X size={16} color="gray" />
+                        <CloseIcon sx={{ fontSize: 16, color: "gray" }} />
                       )}
                     </Box>
                   </Grid>
@@ -454,9 +455,9 @@ function BillingContent() {
                   <Grid item xs={2.67} key={tier.id}>
                     <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                       {tier.limits.prioritySupport ? (
-                        <Check size={16} color="green" />
+                        <CheckIcon sx={{ fontSize: 16, color: "green" }} />
                       ) : (
-                        <X size={16} color="gray" />
+                        <CloseIcon sx={{ fontSize: 16, color: "gray" }} />
                       )}
                     </Box>
                   </Grid>

@@ -1,10 +1,10 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { 
-  Card, 
-  CardContent, 
-  CardHeader, 
+import {
+  Card,
+  CardContent,
+  CardHeader,
   Button,
   TextField,
   Typography,
@@ -21,7 +21,13 @@ import {
   Tab,
   Tabs
 } from '@mui/material';
-import { Calendar, Activity, Edit, Trash2, Play, TrendingUp } from 'lucide-react';
+import {
+  CalendarMonth as CalendarMonthIcon,
+  Edit as EditIcon,
+  Delete as Trash2Icon,
+  PlayArrow as PlayArrowIcon,
+  TrendingUp as TrendingUpIcon
+} from '@mui/icons-material';
 import { format } from 'date-fns';
 import { Badge } from '@/components/ui/badge';
 import { CardDescription } from '@/components/ui/base/Card';
@@ -181,8 +187,8 @@ export default function SchedulingPage() {
   };
 
   const handlePlatformToggle = (platform: string) => {
-    setPlatforms(prev => 
-      prev.includes(platform) 
+    setPlatforms(prev =>
+      prev.includes(platform)
         ? prev.filter(p => p !== platform)
         : [...prev, platform]
     );
@@ -192,7 +198,7 @@ export default function SchedulingPage() {
     return (
       <Box sx={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
         <Box sx={{ textAlign: 'center' }}>
-          <Activity className="h-8 w-8 animate-spin mx-auto mb-4" />
+          <TrendingUpIcon className="h-8 w-8 animate-spin mx-auto mb-4" />
           <Typography>Loading scheduling data...</Typography>
         </Box>
       </Box>
@@ -206,7 +212,7 @@ export default function SchedulingPage() {
           Content Scheduling
         </Typography>
         <Button variant="contained" onClick={handleCreateSchedule} sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <Calendar className="h-4 w-4" />
+          <CalendarMonthIcon className="h-4 w-4" />
           New Schedule
         </Button>
       </Box>
@@ -229,7 +235,7 @@ export default function SchedulingPage() {
               <Card>
                 <CardHeader>
                   <Typography variant="h6" className="flex items-center gap-2">
-                    <Calendar className="h-5 w-5" />
+                    <CalendarMonthIcon className="h-5 w-5" />
                     Create Schedule
                   </Typography>
                   <CardDescription>
@@ -340,8 +346,8 @@ export default function SchedulingPage() {
                     </div>
                   )}
 
-                  <Button 
-                    variant="contained" 
+                  <Button
+                    variant="contained"
                     onClick={handleCreateSchedule}
                     className="w-full"
                     disabled={!content || platforms.length === 0 || !scheduledAt}
@@ -427,15 +433,15 @@ export default function SchedulingPage() {
                         </div>
                         <div className="flex gap-2">
                           <Button size="small" variant="outlined">
-                            <Edit className="h-3 w-3" />
+                            <EditIcon className="h-3 w-3" />
                           </Button>
-                          <Button 
-                            size="small" 
-                            variant="outlined" 
+                          <Button
+                            size="small"
+                            variant="outlined"
                             color="error"
                             onClick={() => handleDeleteSchedule(post.id)}
                           >
-                            <Trash2 className="h-3 w-3" />
+                            <Trash2Icon className="h-3 w-3" />
                           </Button>
                         </div>
                       </div>
@@ -510,7 +516,7 @@ export default function SchedulingPage() {
                       <div key={index} className="flex items-center justify-between p-4 border rounded-lg">
                         <div className="flex items-center gap-3">
                           <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                            <Play className="h-5 w-5 text-blue-600" />
+                            <PlayArrowIcon className="h-5 w-5 text-blue-600" />
                           </div>
                           <div>
                             <Typography variant="subtitle1" className="font-medium">

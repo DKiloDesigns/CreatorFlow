@@ -10,14 +10,15 @@ import {
   Chip,
   MenuItem
 } from '@mui/material';
-import { Hash, Activity } from 'lucide-react';
-import { 
-  Copy, 
-  Check, 
-  RefreshCw,
-  TrendingUp,
-  Zap
-} from 'lucide-react';
+import {
+  Tag as HashIcon,
+  Timeline as ActivityIcon,
+  ContentCopy as CopyIcon,
+  Check as CheckIcon,
+  Refresh as RefreshCwIcon,
+  TrendingUp as TrendingUpIcon,
+  Bolt as ZapIcon
+} from '@mui/icons-material';
 import { HashtagSuggestion } from '@/lib/ai-service';
 
 interface AIHashtagGeneratorProps {
@@ -120,7 +121,7 @@ export function AIHashtagGenerator({ onHashtagsSelect, className }: AIHashtagGen
     <Card className={className}>
       <CardHeader>
         <Typography variant="h5" component="div" sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-          <Hash style={{ width: 20, height: 20, color: 'primary.main' }} />
+          <HashIcon sx={{ width: 20, height: 20, color: 'primary.main' }} />
           AI Hashtag Generator
         </Typography>
       </CardHeader>
@@ -178,12 +179,12 @@ export function AIHashtagGenerator({ onHashtagsSelect, className }: AIHashtagGen
         >
           {isGenerating ? (
             <>
-              <Activity style={{ width: 16, height: 16, marginRight: 8 }} />
+              <ActivityIcon sx={{ width: 16, height: 16, marginRight: 8 }} />
               Generating Hashtags...
             </>
           ) : (
             <>
-              <Hash style={{ width: 16, height: 16, marginRight: 8 }} />
+              <HashIcon sx={{ width: 16, height: 16, marginRight: 8 }} />
               Generate Hashtags
             </>
           )}
@@ -205,14 +206,14 @@ export function AIHashtagGenerator({ onHashtagsSelect, className }: AIHashtagGen
                     variant="outlined"
                     size="small"
                     onClick={copyAllSelected}
-                    startIcon={<Copy style={{ width: 12, height: 12 }} />}
+                    startIcon={<CopyIcon sx={{ width: 12, height: 12 }} />}
                   >
                     Copy All
                   </Button>
                   <Button
                     size="small"
                     onClick={useSelectedHashtags}
-                    startIcon={<Zap style={{ width: 12, height: 12 }} />}
+                    startIcon={<ZapIcon sx={{ width: 12, height: 12 }} />}
                   >
                     Use Selected
                   </Button>
@@ -231,7 +232,7 @@ export function AIHashtagGenerator({ onHashtagsSelect, className }: AIHashtagGen
                           <Chip
                             label="Trending"
                             size="small"
-                            icon={<TrendingUp style={{ width: 12, height: 12 }} />}
+                            icon={<TrendingUpIcon sx={{ width: 12, height: 12 }} />}
                             variant="outlined"
                             color="error"
                           />
@@ -243,9 +244,9 @@ export function AIHashtagGenerator({ onHashtagsSelect, className }: AIHashtagGen
                     onDelete={() => toggleHashtagSelection(hashtag.hashtag)}
                     deleteIcon={
                       copiedIndex === index ? (
-                        <Check style={{ width: 12, height: 12, color: 'success.main' }} />
+                        <CheckIcon sx={{ width: 12, height: 12, color: 'success.main' }} />
                       ) : (
-                        <Copy style={{ width: 12, height: 12 }} />
+                        <CopyIcon sx={{ width: 12, height: 12 }} />
                       )
                     }
                   />
@@ -258,7 +259,7 @@ export function AIHashtagGenerator({ onHashtagsSelect, className }: AIHashtagGen
               onClick={generateHashtags}
               disabled={isGenerating}
               fullWidth
-              startIcon={<RefreshCw style={{ 
+              startIcon={<RefreshCwIcon sx={{ 
                 width: 16, 
                 height: 16, 
                 marginRight: 8,

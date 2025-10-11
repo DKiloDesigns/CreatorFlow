@@ -14,17 +14,17 @@ import {
   keyframes
 } from '@mui/material';
 import {
-  ChevronDown,
-  ChevronUp,
-  Settings,
-  Users,
-  Megaphone,
-  Clock,
-  Trophy,
-  Handshake,
-  BarChart3,
-  Wrench
-} from 'lucide-react';
+  ExpandMore as ChevronDownIcon,
+  ExpandLess as ChevronUpIcon,
+  Settings as SettingsIcon,
+  Group as UsersIcon,
+  Campaign as MegaphoneIcon,
+  AccessTime as ClockIcon,
+  EmojiEvents as TrophyIcon,
+  Handshake as HandshakeIcon,
+  BarChart as BarChart3Icon,
+  Build as WrenchIcon
+} from '@mui/icons-material';
 import { NotificationGroup as NotificationGroupType, getNotificationTypeConfig } from './NotificationTypes';
 import RichNotificationCard from './RichNotificationCard';
 
@@ -77,14 +77,14 @@ export function NotificationGroup({
 
   const getTypeIcon = () => {
     switch (group.type) {
-      case 'system': return <Settings size={20} />;
-      case 'social': return <Users size={20} />;
-      case 'marketing': return <Megaphone size={20} />;
-      case 'reminder': return <Clock size={20} />;
-      case 'achievement': return <Trophy size={20} />;
-      case 'collaboration': return <Handshake size={20} />;
-      case 'analytics': return <BarChart3 size={20} />;
-      case 'tool_update': return <Wrench size={20} />;
+      case 'system': return <SettingsIcon sx={{ fontSize: 20 }} />;
+      case 'social': return <UsersIcon sx={{ fontSize: 20 }} />;
+      case 'marketing': return <MegaphoneIcon sx={{ fontSize: 20 }} />;
+      case 'reminder': return <ClockIcon sx={{ fontSize: 20 }} />;
+      case 'achievement': return <TrophyIcon sx={{ fontSize: 20 }} />;
+      case 'collaboration': return <HandshakeIcon sx={{ fontSize: 20 }} />;
+      case 'analytics': return <BarChart3Icon sx={{ fontSize: 20 }} />;
+      case 'tool_update': return <WrenchIcon sx={{ fontSize: 20 }} />;
       default: return null;
     }
   };
@@ -190,7 +190,7 @@ export function NotificationGroup({
                   sx={{ color: 'text.secondary' }}
                   title="Mark all as read"
                 >
-                  <Settings size={16} />
+                  <SettingsIcon sx={{ fontSize: 16 }} />
                 </IconButton>
                 
                 <IconButton
@@ -202,7 +202,7 @@ export function NotificationGroup({
                   sx={{ color: 'text.secondary' }}
                   title="Dismiss all"
                 >
-                  <ChevronUp size={16} />
+                  <ChevronUpIcon sx={{ fontSize: 16 }} />
                 </IconButton>
               </>
             )}
@@ -216,7 +216,7 @@ export function NotificationGroup({
               }}
               sx={{ color: 'text.secondary' }}
             >
-              {isExpanded ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+              {isExpanded ? <ChevronUpIcon sx={{ fontSize: 20 }} /> : <ChevronDownIcon sx={{ fontSize: 20 }} />}
             </IconButton>
           </Box>
         </Box>

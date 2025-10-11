@@ -6,27 +6,31 @@ import dayGridPlugin from '@fullcalendar/daygrid'; // For month/week/day views
 import interactionPlugin from '@fullcalendar/interaction'; // For clicking events
 import timeGridPlugin from '@fullcalendar/timegrid'; // Import timeGrid plugin
 import { EventInput } from '@fullcalendar/core'; // Import EventInput type
-import { FaInstagram, FaTiktok, FaYoutube, FaXTwitter } from "react-icons/fa6"; // Import specific icons
 import { toast } from "sonner"; // For error reporting
-import { Loader2, AlertCircle } from 'lucide-react'; // For loading/error states
 
 import { PostStatus } from '@prisma/client';
-import { 
+import {
   Button,
   Tooltip,
   Box,
   Typography,
   IconButton,
   ToggleButton,
-  ToggleButtonGroup
+  ToggleButtonGroup,
+  CircularProgress
 } from '@mui/material';
-import { 
+import {
   ChevronLeft as ChevronLeftIcon,
   ChevronRight as ChevronRightIcon,
   Today as TodayIcon,
   ViewModule as MonthIcon,
   ViewWeek as WeekIcon,
-  ViewDay as DayIcon
+  ViewDay as DayIcon,
+  Instagram as InstagramIcon,
+  ShortText as ShortTextIcon,
+  YouTube as YouTubeIcon,
+  Twitter as TwitterIcon,
+  Warning as WarningIcon
 } from '@mui/icons-material';
 
 // Type for the data fetched from API
@@ -62,10 +66,10 @@ function renderEventContent(eventInfo: any) {
   // Use react-icons
   const platformIcons = platforms.map((p: string) => {
     switch (p) {
-      case 'instagram': return <FaInstagram key={p} className="inline h-3 w-3 mr-1" />;
-      case 'tiktok': return <FaTiktok key={p} className="inline h-3 w-3 mr-1" />;
-      case 'twitter': return <FaXTwitter key={p} className="inline h-3 w-3 mr-1" />;
-      case 'youtube': return <FaYoutube key={p} className="inline h-3 w-3 mr-1" />;
+      case 'instagram': return <InstagramIcon key={p} sx={{ fontSize: 16 }} className="inline mr-1" />;
+      case 'tiktok': return <ShortTextIcon key={p} sx={{ fontSize: 16 }} className="inline mr-1" />;
+      case 'twitter': return <TwitterIcon key={p} sx={{ fontSize: 16 }} className="inline mr-1" />;
+      case 'youtube': return <YouTubeIcon key={p} sx={{ fontSize: 16 }} className="inline mr-1" />;
       default: return <span key={p} className="text-xs mr-1">{`[${p.substring(0,2).toUpperCase()}]`}</span>; // Fallback
     }
   });
@@ -241,10 +245,10 @@ export default function ContentCalendar() {
     const title = eventInfo.event.title;
     const platformIcons = platforms.map((p: string) => {
       switch (p) {
-        case 'instagram': return <FaInstagram key={p} className="inline h-3 w-3 mr-1" />;
-        case 'tiktok': return <FaTiktok key={p} className="inline h-3 w-3 mr-1" />;
-        case 'twitter': return <FaXTwitter key={p} className="inline h-3 w-3 mr-1" />;
-        case 'youtube': return <FaYoutube key={p} className="inline h-3 w-3 mr-1" />;
+        case 'instagram': return <InstagramIcon key={p} sx={{ fontSize: 16 }} className="inline mr-1" />;
+        case 'tiktok': return <ShortTextIcon key={p} sx={{ fontSize: 16 }} className="inline mr-1" />;
+        case 'twitter': return <TwitterIcon key={p} sx={{ fontSize: 16 }} className="inline mr-1" />;
+        case 'youtube': return <YouTubeIcon key={p} sx={{ fontSize: 16 }} className="inline mr-1" />;
         default: return <span key={p} className="text-xs mr-1">[{p.substring(0,2).toUpperCase()}]</span>;
       }
     });
@@ -276,13 +280,13 @@ export default function ContentCalendar() {
     <>
       {isLoading && (
         <div className="flex items-center justify-center h-64">
-          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+          <CircularProgress size={32} color="inherit" sx={{ mr: 1 }} />
           <span className="ml-2 text-muted-foreground">Loading Calendar...</span>
         </div>
       )}
       {error && !isLoading && (
         <div className="flex flex-col items-center justify-center h-64 text-destructive">
-          <AlertCircle className="h-8 w-8 mb-2" />
+          <WarningIcon sx={{ fontSize: 32 }} className="mb-2" />
           <span>Error loading calendar:</span>
           <span className="text-sm mb-2">{error}</span>
           <Button onClick={handleRetry} className="mt-2 focus-visible:ring-2 focus-visible:ring-primary transition-shadow" aria-label="Retry loading calendar">Retry</Button>

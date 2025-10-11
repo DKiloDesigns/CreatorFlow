@@ -9,4 +9,4 @@ import {
   Grid,
   Chip
 } from '@mui/material';
-import { Target, Activity } from 'lucide-react'; 
+import { Adjust as TargetIcon, TrendingUp as ActivityIcon } from '@mui/icons-material'; 

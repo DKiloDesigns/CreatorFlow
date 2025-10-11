@@ -2,25 +2,25 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { 
-  FileText, 
-  Shield, 
-  Mail, 
-  Users, 
-  BarChart3, 
-  Search, 
-  BookOpen, 
-  MessageSquare, 
-  Phone 
-} from 'lucide-react';
-import { 
-  Box, 
-  Container, 
-  Typography, 
-  Grid, 
-  Card, 
-  CardContent, 
-  TextField, 
+import {
+  Description as FileTextIcon,
+  Security as ShieldIcon,
+  Mail as MailIcon,
+  Group as UsersIcon,
+  BarChart as BarChart3Icon,
+  Search as SearchIcon,
+  BookOutlined as BookOpenIcon,
+  Chat as MessageSquareIcon,
+  Phone as PhoneIcon
+} from '@mui/icons-material';
+import {
+  Box,
+  Container,
+  Typography,
+  Grid,
+  Card,
+  CardContent,
+  TextField,
   InputAdornment,
   Chip,
   Button,
@@ -28,34 +28,36 @@ import {
   List,
   ListItem,
   ListItemText,
-  Divider
+  Divider,
+  IconButton
 } from '@mui/material';
-import { PublicHeader } from '@/components/PublicHeader';
-import { Footer } from '@/components/Footer';
+import { PublicPageLayout } from '@/components/layout/PublicPageLayout';
+import { useRouter } from 'next/navigation';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const helpCategories = [
   {
     title: "Getting Started",
     description: "Learn the basics of CreatorFlow",
-    icon: BookOpen,
+    icon: BookOpenIcon,
     articles: 12
   },
   {
     title: "Account & Billing",
     description: "Manage your account and payments",
-    icon: Users,
+    icon: UsersIcon,
     articles: 8
   },
   {
     title: "Content Creation",
     description: "Tips for creating great content",
-    icon: FileText,
+    icon: FileTextIcon,
     articles: 15
   },
   {
     title: "Analytics & Insights",
     description: "Understand your performance data",
-    icon: BarChart3,
+    icon: BarChart3Icon,
     articles: 10
   }
 ];
@@ -64,21 +66,21 @@ const contactMethods = [
   {
     title: "Email Support",
     description: "Get help via email",
-    icon: Mail,
+    icon: MailIcon,
     contact: "support@creatorflow.com",
     response: "Within 24 hours"
   },
   {
     title: "Live Chat",
     description: "Chat with our team",
-    icon: MessageSquare,
+    icon: MessageSquareIcon,
     contact: "Available 9AM-6PM PST",
     response: "Real-time"
   },
   {
     title: "Phone Support",
     description: "Call us directly",
-    icon: Phone,
+    icon: PhoneIcon,
     contact: "+1 (555) 123-4567",
     response: "Mon-Fri 9AM-6PM PST"
   }
@@ -89,6 +91,7 @@ export default function SupportPage() {
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const [isSearching, setIsSearching] = useState(false);
   const [showResults, setShowResults] = useState(false);
+  const router = useRouter();
 
   // Search function
   const handleSearch = async (query: string) => {
@@ -128,9 +131,7 @@ export default function SupportPage() {
   };
 
   return (
-    <Box sx={{ minHeight: '100vh', bgcolor: 'background.default', display: 'flex', flexDirection: 'column' }}>
-      <PublicHeader />
-
+    <PublicPageLayout>
       {/* Hero Section */}
       <Box 
         component="section" 
@@ -144,18 +145,32 @@ export default function SupportPage() {
         }}
       >
         <Container maxWidth="lg" sx={{ textAlign: 'center' }}>
-          <Typography 
-            variant="h2" 
-            component="h1" 
-            sx={{ 
-              fontSize: { xs: '2.5rem', sm: '3rem' }, 
-              fontWeight: 'bold', 
-              color: 'text.primary', 
-              mb: 3 
-            }}
-          >
-            How Can We Help?
-          </Typography>
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 3 }}>
+            <IconButton
+              edge="start"
+              color="inherit"
+              aria-label="back"
+              onClick={() => router.back()}
+              sx={{ mr: 2 }}
+            >
+              <ArrowBackIcon />
+            </IconButton>
+            <Box sx={{ flex: 1, textAlign: 'center' }}>
+              <Typography 
+                variant="h2" 
+                component="h1" 
+                sx={{ 
+                  fontSize: { xs: '2.5rem', sm: '3rem' }, 
+                  fontWeight: 'bold', 
+                  color: 'text.primary', 
+                  mb: 3 
+                }}
+              >
+                How Can We Help?
+              </Typography>
+            </Box>
+            <Box sx={{ width: 48, mr: 2 }} /> {/* Spacer to balance the IconButton */}
+          </Box>
           <Typography 
             variant="h6" 
             component="p" 
@@ -177,7 +192,7 @@ export default function SupportPage() {
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <Search style={{ color: 'inherit' }} />
+                    <SearchIcon sx={{ color: 'inherit' }} />
                   </InputAdornment>
                 ),
                 endAdornment: isSearching ? (
@@ -325,7 +340,7 @@ export default function SupportPage() {
                             mb: 2 
                           }}
                         >
-                          <Icon style={{ color: 'inherit', fontSize: 24 }} />
+                          <Icon sx={{ color: 'inherit', fontSize: 24 }} />
                         </Box>
                         <Typography 
                           variant="h6" 
@@ -408,7 +423,7 @@ export default function SupportPage() {
                           mb: 2 
                         }}
                       >
-                        <Icon style={{ color: 'inherit', fontSize: 24 }} />
+                        <Icon sx={{ color: 'inherit', fontSize: 24 }} />
                       </Box>
                       <Typography 
                         variant="h6" 
@@ -502,7 +517,7 @@ export default function SupportPage() {
                       flexShrink: 0 
                     }}
                   >
-                    <FileText style={{ color: 'inherit', fontSize: 24 }} />
+                    <FileTextIcon sx={{ color: 'inherit', fontSize: 24 }} />
                   </Box>
                   <Box>
                     <Typography 
@@ -556,7 +571,7 @@ export default function SupportPage() {
                       flexShrink: 0 
                     }}
                   >
-                    <Shield style={{ color: 'inherit', fontSize: 24 }} />
+                    <ShieldIcon sx={{ color: 'inherit', fontSize: 24 }} />
                   </Box>
                   <Box>
                     <Typography 
@@ -757,8 +772,6 @@ export default function SupportPage() {
 
       {/* Bottom Spacer to Clear Bottom Navigation */}
       <Box sx={{ height: { xs: '128px', sm: '40px' }, width: '100%' }} />
-
-      <Footer />
-    </Box>
+    </PublicPageLayout>
   );
 } 
