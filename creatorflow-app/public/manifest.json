@@ -1,6 +1,6 @@
 {
-  "name": "CreatorFlow - Mobile Creator Platform",
-  "short_name": "CreatorFlow",
+  "name": "floai.studio - Mobile Creator Platform",
+  "short_name": "floai.studio",
   "description": "The ultimate mobile platform for content creators to grow, monetize, and manage their social media presence.",
   "start_url": "/",
   "display": "standalone",
@@ -115,12 +115,12 @@
   "related_applications": [
     {
       "platform": "play",
-      "url": "https://play.google.com/store/apps/details?id=com.creatorflow.app",
-      "id": "com.creatorflow.app"
+      "url": "https://play.google.com/store/apps/details?id=com.floai.studio.app",
+      "id": "com.floai.studio.app"
     },
     {
       "platform": "itunes",
-      "url": "https://apps.apple.com/app/creatorflow/id123456789"
+      "url": "https://apps.apple.com/app/floai.studio/id123456789"
     }
   ],
   "prefer_related_applications": false

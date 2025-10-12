@@ -68,7 +68,7 @@ export default function BlogPage() {
       <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20">
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white mb-6">
-            CreatorFlow Blog
+            floai.studio Blog
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-300 mb-8">
             Insights, strategies, and stories to help you succeed in the creator economy.

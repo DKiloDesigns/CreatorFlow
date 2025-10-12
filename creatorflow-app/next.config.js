@@ -64,6 +64,9 @@ const nextConfig = {
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     minimumCacheTTL: 60,
   },
+  env: {
+    NEXT_PUBLIC_DISABLE_WEBSOCKET_ERRORS: process.env.NODE_ENV === 'development' ? 'true' : 'false',
+  },
   webpack: (config, { dev, isServer }) => {
     // Optimize webpack cache
     if (dev) {

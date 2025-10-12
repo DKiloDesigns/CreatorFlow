@@ -31,7 +31,7 @@ import {
   Settings as SettingsIcon,
   Logout as LogoutIcon,
   Person as PersonIcon,
-  Notifications as NotificationsIcon,
+  NotificationsActive as NotificationsIcon,
   Home as HomeIcon,
   TrendingUp as TrendingUpIcon,
   Chat as ChatIcon,
@@ -164,8 +164,9 @@ export function MuiEnhancedNavigation() {
         aria-label="Open mobile navigation menu"
         aria-expanded={mobileNavOpen}
         aria-controls="mobile-nav-drawer"
+        size="large"
       >
-        <MenuIcon style={{ width: 20, height: 20 }} />
+        <MenuIcon fontSize="large" />
       </IconButton>
 
       {/* Mobile Navigation Drawer */}
@@ -185,10 +186,10 @@ export function MuiEnhancedNavigation() {
         <Box sx={{ p: 2 }}>
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
             <Typography variant="h6" fontWeight={600}>
-              CreatorFlow
+              floai.studio
             </Typography>
-            <IconButton onClick={() => setMobileNavOpen(false)}>
-              <CloseIcon style={{ width: 20, height: 20 }} />
+            <IconButton onClick={() => setMobileNavOpen(false)} size="large">
+              <CloseIcon fontSize="large" />
             </IconButton>
           </Box>
           
@@ -206,13 +207,21 @@ export function MuiEnhancedNavigation() {
         <IconButton
           color="inherit"
           onClick={handleNotificationsOpen}
-          sx={{ position: 'relative' }}
+          sx={{
+            position: 'relative',
+            '& .MuiSvgIcon-root': {
+              fontSize: 30,
+              width: 30,
+              height: 30,
+            },
+          }}
           aria-label="Open notifications menu"
           aria-expanded={Boolean(notificationsAnchor)}
           aria-controls="notifications-menu"
+          
         >
           <Badge badgeContent={3} color="error">
-            <NotificationsIcon style={{ width: 20, height: 20 }} />
+            <NotificationsIcon />
           </Badge>
         </IconButton>
 
@@ -309,7 +318,7 @@ export function MuiEnhancedNavigation() {
           
           <MenuItem onClick={handleNotificationsClose}>
             <ListItemIcon>
-              <NotificationsIcon style={{ width: 16, height: 16 }} />
+              <NotificationsIcon />
             </ListItemIcon>
             <ListItemText 
               primary="New content scheduled"
@@ -365,7 +374,7 @@ export function MuiBreadcrumbs() {
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 2 }}>
       <Link href="/dashboard" style={{ textDecoration: 'none' }}>
         <Chip
-                      icon={<HomeIcon style={{ width: 16, height: 16 }} />}
+          icon={<HomeIcon fontSize="small" />}
           label="Dashboard"
           variant="outlined"
           size="small"
@@ -375,7 +384,7 @@ export function MuiBreadcrumbs() {
       
       {breadcrumbs.map((breadcrumb, _index) => (
         <Box key={breadcrumb.href} sx={{ display: 'flex', alignItems: 'center' }}>
-                      <ExpandMoreIcon style={{ width: 16, height: 16, transform: 'rotate(-90deg)' }} />
+          <ExpandMoreIcon fontSize="small" style={{ transform: 'rotate(-90deg)' }} />
           <Link href={breadcrumb.href} style={{ textDecoration: 'none' }}>
             <Chip
               label={breadcrumb.label}

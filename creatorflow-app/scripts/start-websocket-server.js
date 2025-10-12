@@ -9,6 +9,7 @@ const io = new Server(httpServer, {
     origin: ["http://localhost:3001", "http://localhost:3000"],
     methods: ["GET", "POST"]
   },
+  path: '/api/socketio',
 });
 
 console.log('📢 Announcement Socket.IO server starting on port 4001');

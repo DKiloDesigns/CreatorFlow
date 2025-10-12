@@ -158,8 +158,8 @@ export default function PWAFeatures() {
       setNotificationPermission(permission);
       
       if (permission === 'granted') {
-        new Notification('CreatorFlow', {
-          body: 'You\'ll now receive notifications from CreatorFlow!',
+        new Notification('floai.studio', {
+          body: 'You\'ll now receive notifications from floai.studio!',
           icon: '/icons/icon-192x192.png'
         });
       }
@@ -180,7 +180,7 @@ export default function PWAFeatures() {
           Progressive Web App
         </Typography>
         <Typography variant="h6" color="text.secondary" sx={{ mb: 4 }}>
-          Install CreatorFlow as a native app on your mobile device
+          Install floai.studio as a native app on your mobile device
         </Typography>
       </Box>
 
@@ -189,12 +189,12 @@ export default function PWAFeatures() {
         {isInstalled ? (
           <Alert severity="success" sx={{ mb: 2 }}>
             <CheckCircleIcon size={20} style={{ marginRight: 8 }} />
-            CreatorFlow is installed as a PWA!
+            floai.studio is installed as a PWA!
           </Alert>
         ) : (
           <Alert severity="info" sx={{ mb: 2 }}>
             <InfoIcon size={20} style={{ marginRight: 8 }} />
-            Install CreatorFlow for a native app experience
+            Install floai.studio for a native app experience
           </Alert>
         )}
 
@@ -220,7 +220,7 @@ export default function PWAFeatures() {
                 transition: 'all 0.3s ease'
               }}
             >
-              Install CreatorFlow App
+              Install floai.studio App
             </Button>
           </Box>
         )}
@@ -380,7 +380,7 @@ export default function PWAFeatures() {
 
       <Snackbar
         open={showInstallPrompt && !isInstalled}
-        message="Install CreatorFlow for a better mobile experience!"
+        message="Install floai.studio for a better mobile experience!"
         action={
           <Button color="inherit" size="small" onClick={handleInstall}>
             Install

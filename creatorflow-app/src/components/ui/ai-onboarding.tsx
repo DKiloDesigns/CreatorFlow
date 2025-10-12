@@ -208,7 +208,7 @@ export function AIOnboarding({ onComplete, className }: AIOnboardingProps) {
               </Box>
               <Typography variant="subtitle2" component="h4" sx={{ fontWeight: 500, mb: 0.5 }}>Enter Key</Typography>
               <Typography variant="body2" sx={{ fontSize: '0.875rem', color: 'text.secondary' }}>
-                Paste your key securely in CreatorFlow
+                Paste your key securely in floai.studio
               </Typography>
             </Box>
             <Box sx={{ textAlign: 'center' }}>

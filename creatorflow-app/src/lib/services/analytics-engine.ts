@@ -128,7 +128,6 @@ export class AnalyticsEngine {
           },
           status: 'published',
         },
-        include: { results: true },
       });
 
       // Filter by platforms if specified

@@ -144,10 +144,10 @@ export default function TutorialsPage() {
       <Box sx={{ bgcolor: 'background.paper', py: 6 }}>
         <Container maxWidth="lg">
           <Typography variant="h3" component="h1" sx={{ fontWeight: 'bold', mb: 2 }}>
-            Learn CreatorFlow
+            Learn floai.studio
           </Typography>
           <Typography variant="h6" sx={{ color: 'text.secondary', mb: 4 }}>
-            Master CreatorFlow with interactive tutorials and step-by-step guides
+            Master floai.studio with interactive tutorials and step-by-step guides
           </Typography>
           
           {/* Search and Filter */}

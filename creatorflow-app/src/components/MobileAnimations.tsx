@@ -285,7 +285,7 @@ function FadeTransitionDemo() {
   const [isVisible, setIsVisible] = useState(true);
 
   const items = [
-    { text: 'Welcome to CreatorFlow', color: '#3B82F6' },
+    { text: 'Welcome to floai.studio', color: '#3B82F6' },
     { text: 'Create Amazing Content', color: '#8B5CF6' },
     { text: 'Grow Your Audience', color: '#10B981' },
     { text: 'Monetize Your Passion', color: '#F59E0B' }

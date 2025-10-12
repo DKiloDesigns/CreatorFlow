@@ -33,9 +33,9 @@ export interface WhiteLabelDomain {
 
 export interface WhiteLabelBranding {
   logo: {
-    primary: string;
-    secondary?: string;
-    favicon: string;
+    primary: '/logo-light.png';
+    secondary?: '/logo-dark.png';
+    favicon: '/favicon.png';
     sizes: Array<{
       width: number;
       height: number;
@@ -615,14 +615,14 @@ export class WhiteLabelEngine {
   // Private helper methods
   private generateSubdomain(domain: string): string {
     const cleanDomain = domain.replace(/[^a-zA-Z0-9]/g, '').toLowerCase();
-    return `${cleanDomain}.creatorflow.app`;
+    return `${cleanDomain}.floai.studio`;
   }
 
   private getDefaultBranding(): WhiteLabelBranding {
     return {
       logo: {
-        primary: '/default-logo.png',
-        favicon: '/default-favicon.ico',
+        primary: '/logo-light.png',
+        favicon: '/favicon.png',
         sizes: [
           { width: 32, height: 32, url: '/logo-32.png' },
           { width: 64, height: 64, url: '/logo-64.png' },
@@ -701,10 +701,10 @@ export class WhiteLabelEngine {
   private getDefaultSettings(): WhiteLabelSettings {
     return {
       general: {
-        appName: 'CreatorFlow',
-        tagline: 'Social Media Management Made Simple',
-        description: 'Manage all your social media accounts in one place',
-        supportEmail: 'support@creatorflow.app',
+        appName: 'floai.studio',
+        tagline: 'floai.studio - Social Media Management Made Simple',
+        description: 'Manage all your social media accounts in one place with floai.studio',
+        supportEmail: 'support@floai.studio',
         timezone: 'UTC',
         language: 'en',
         currency: 'USD'
@@ -736,8 +736,8 @@ export class WhiteLabelEngine {
         email: {
           enabled: true,
           templates: {},
-          senderName: 'CreatorFlow',
-          senderEmail: 'noreply@creatorflow.app'
+          senderName: 'floai.studio',
+          senderEmail: 'noreply@floai.studio'
         },
         inApp: {
           enabled: true,
@@ -819,7 +819,7 @@ export class WhiteLabelEngine {
     const defaultTheme: WhiteLabelTheme = {
       id: 'default_theme',
       name: 'Default Theme',
-      description: 'Default CreatorFlow theme',
+      description: 'Default floai.studio theme',
       organizationId: 'system',
       branding: this.getDefaultBranding(),
       css: this.generateCSS(this.getDefaultBranding()),

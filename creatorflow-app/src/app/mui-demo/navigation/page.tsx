@@ -116,7 +116,7 @@ export default function MuiNavigationDemo() {
         <Container maxWidth="xl">
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', py: 1 }}>
             <Typography variant="h6" fontWeight={600}>
-              CreatorFlow
+              floai.studio
             </Typography>
             
             <MuiEnhancedNavigation />

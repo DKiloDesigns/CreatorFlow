@@ -263,7 +263,7 @@ export function AIProviderSelector({
                 🎯 For Beginners
               </Typography>
               <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                Start with <strong>CreatorFlow AI</strong> or <strong>DeepSeek</strong> - both free and easy to use.
+                Start with <strong>floai.studio AI</strong> or <strong>DeepSeek</strong> - both free and easy to use.
               </Typography>
             </Box>
           </Grid>

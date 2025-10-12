@@ -512,7 +512,7 @@ export default function AboutPage() {
             mb: 2,
             '& .dark &': { color: 'grey.300' }
           }}>
-            Join thousands of creators who are already using CreatorFlow to grow their audience and income.
+            Join thousands of creators who are already using floai.studio to grow their audience and income.
           </Typography>
           <Box 
             component={Link}

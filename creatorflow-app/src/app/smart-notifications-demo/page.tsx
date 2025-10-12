@@ -90,7 +90,7 @@ export default function SmartNotificationsDemoPage() {
     
     const notificationTemplates = {
       content: [
-        { title: "New Content Idea", message: "AI found trending hashtag #CreatorFlow2024" },
+        { title: "New Content Idea", message: "AI found trending hashtag #floai.studio2024" },
         { title: "Content Performance", message: "Your latest post gained 150% more engagement" },
         { title: "Content Optimization", message: "Suggested improvements for better reach" },
       ],
@@ -100,7 +100,7 @@ export default function SmartNotificationsDemoPage() {
         { title: "Comment Activity", message: "High engagement on your recent post" },
       ],
       system: [
-        { title: "System Update", message: "New features available in CreatorFlow" },
+        { title: "System Update", message: "New features available in floai.studio" },
         { title: "Backup Complete", message: "Your content has been backed up successfully" },
         { title: "Maintenance", message: "Scheduled maintenance completed" },
       ],
@@ -111,7 +111,7 @@ export default function SmartNotificationsDemoPage() {
       ],
       ai_insight: [
         { title: "AI Insight", message: "Optimal posting time identified: 2 PM EST" },
-        { title: "Trend Prediction", message: "Hashtag #CreatorFlow will trend next week" },
+        { title: "Trend Prediction", message: "Hashtag #floai.studio will trend next week" },
         { title: "Content Analysis", message: "Your content style matches trending creators" },
       ],
     };

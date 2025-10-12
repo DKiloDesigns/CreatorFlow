@@ -111,7 +111,7 @@ export default function MobileTestPage() {
     <Container maxWidth="xl" sx={{ py: 3 }}>
       <PageHeader
         title="Mobile Testing & Optimization"
-        subtitle="Comprehensive mobile testing suite for CreatorFlow's mobile experience"
+        subtitle="Comprehensive mobile testing suite for floai.studio's mobile experience"
         breadcrumbs={[
           { label: 'Mobile Testing', href: '/dashboard/mobile-test' }
         ]}

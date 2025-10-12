@@ -33,7 +33,7 @@
         "project": {
           "type": "string",
           "description": "Project name",
-          "example": "CreatorFlow"
+          "example": "floai.studio"
         }
       }
     },

@@ -38,7 +38,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 const helpCategories = [
   {
     title: "Getting Started",
-    description: "Learn the basics of CreatorFlow",
+    description: "Learn the basics of floai.studio",
     icon: BookOpenIcon,
     articles: 12
   },
@@ -67,7 +67,7 @@ const contactMethods = [
     title: "Email Support",
     description: "Get help via email",
     icon: MailIcon,
-    contact: "support@creatorflow.com",
+    contact: "support@floai.studio",
     response: "Within 24 hours"
   },
   {
@@ -179,7 +179,7 @@ export default function SupportPage() {
               mb: 4 
             }}
           >
-            Find answers, get support, and learn how to make the most of CreatorFlow.
+            Find answers, get support, and learn how to make the most of floai.studio.
           </Typography>
           
           {/* Search Bar */}
@@ -635,7 +635,7 @@ export default function SupportPage() {
                   mb: 1 
                 }}
               >
-                How do I get started with CreatorFlow?
+                How do I get started with floai.studio?
               </Typography>
               <Typography 
                 variant="body2" 
@@ -657,7 +657,7 @@ export default function SupportPage() {
                   mb: 1 
                 }}
               >
-                What platforms does CreatorFlow support?
+                What platforms does floai.studio support?
               </Typography>
               <Typography 
                 variant="body2" 
@@ -679,7 +679,7 @@ export default function SupportPage() {
                   mb: 1 
                 }}
               >
-                How much does CreatorFlow cost?
+                How much does floai.studio cost?
               </Typography>
               <Typography 
                 variant="body2" 

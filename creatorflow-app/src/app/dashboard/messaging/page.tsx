@@ -71,7 +71,7 @@ function MessagingContent() {
     },
     {
       id: '3',
-      name: 'CreatorFlow Team',
+      name: 'floai.studio Team',
       lastMessage: 'Welcome to the community! 🎉',
       timestamp: '3h ago',
       unread: 1,

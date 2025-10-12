@@ -43,7 +43,7 @@ interface ContextualTipsProps {
 const TIPS_DATABASE: ContextualTip[] = [
   {
     id: 'dashboard-welcome',
-    title: 'Welcome to CreatorFlow! 🚀',
+    title: 'Welcome to floai.studio! 🚀',
     content: 'Start by connecting your social media accounts to begin managing all your content from one place.',
     category: 'onboarding',
     page: 'dashboard',
@@ -88,7 +88,7 @@ const TIPS_DATABASE: ContextualTip[] = [
   {
     id: 'team-collaboration',
     title: 'Invite Your Team',
-    content: 'Collaborate with team members by inviting them to your CreatorFlow workspace. You can assign roles and manage permissions.',
+    content: 'Collaborate with team members by inviting them to your floai.studio workspace. You can assign roles and manage permissions.',
     category: 'collaboration',
     page: 'team',
     priority: 'medium',
@@ -188,7 +188,7 @@ export function ContextualTips({ currentPage, onTipAction, className }: Contextu
 
   // Load dismissed tips from localStorage
   useEffect(() => {
-    const saved = localStorage.getItem('creatorflow-dismissed-tips');
+    const saved = localStorage.getItem('floai.studio-dismissed-tips');
     if (saved) {
       try {
         setDismissedTips(new Set(JSON.parse(saved)));
@@ -200,7 +200,7 @@ export function ContextualTips({ currentPage, onTipAction, className }: Contextu
 
   // Save dismissed tips to localStorage
   const saveDismissedTips = useCallback((tips: Set<string>) => {
-    localStorage.setItem('creatorflow-dismissed-tips', JSON.stringify([...tips]));
+    localStorage.setItem('floai.studio-dismissed-tips', JSON.stringify([...tips]));
   }, []);
 
   const handleDismiss = useCallback(() => {

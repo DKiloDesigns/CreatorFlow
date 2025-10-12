@@ -352,7 +352,6 @@ export class EnterpriseAnalyticsService {
           },
           status: 'published',
         },
-        include: { results: true },
       });
 
       // Calculate metrics
@@ -435,7 +434,6 @@ export class EnterpriseAnalyticsService {
             },
             status: 'published',
           },
-          include: { results: true },
         });
 
         // Calculate user metrics
@@ -599,7 +597,6 @@ export class EnterpriseAnalyticsService {
           },
           status: 'published',
         },
-        include: { results: true },
       });
 
       // Analyze content type trends

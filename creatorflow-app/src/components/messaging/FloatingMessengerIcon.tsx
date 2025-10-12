@@ -117,14 +117,14 @@ export function FloatingMessengerIcon({
     },
     {
       id: '3',
-      name: 'CreatorFlow Team',
+      name: 'floai.studio Team',
       lastMessage: 'Welcome to the community! 🎉',
       timestamp: '3h ago',
       unread: 1,
       online: true,
       messages: [
-        { id: '1', sender: 'CreatorFlow Team', content: 'Welcome to the community! 🎉', timestamp: '3h ago', isOwn: false },
-        { id: '2', sender: 'CreatorFlow Team', content: 'Don\'t forget to check out our latest features!', timestamp: '2h ago', isOwn: false }
+        { id: '1', sender: 'floai.studio Team', content: 'Welcome to the community! 🎉', timestamp: '3h ago', isOwn: false },
+        { id: '2', sender: 'floai.studio Team', content: 'Don\'t forget to check out our latest features!', timestamp: '2h ago', isOwn: false }
       ]
     }
   ]);

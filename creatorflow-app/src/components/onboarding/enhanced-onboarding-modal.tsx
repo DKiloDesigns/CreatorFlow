@@ -185,7 +185,7 @@ export function EnhancedOnboardingModal({
         <DialogContent>
           <Box sx={{ textAlign: 'center', py: 4 }}>
             <Typography variant="h6" sx={{ mb: 2 }}>
-              Welcome to CreatorFlow!
+              Welcome to floai.studio!
             </Typography>
             <Typography variant="body2" sx={{ mb: 3, color: 'text.secondary' }}>
               Let's get you started with a quick onboarding tour.
@@ -226,7 +226,7 @@ export function EnhancedOnboardingModal({
       <DialogTitle sx={{ pb: 1 }}>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <Typography variant="h6" sx={{ fontWeight: 'bold' }}>
-            CreatorFlow Onboarding
+            floai.studio Onboarding
           </Typography>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
             {completionStats && (

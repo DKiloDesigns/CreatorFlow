@@ -108,8 +108,8 @@ export default function SystemSettings() {
   const [backupModalOpen, setBackupModalOpen] = useState(false);
   const [settings, setSettings] = useState<SystemSettings>({
     general: {
-      siteName: 'CreatorFlow',
-      siteDescription: 'The ultimate platform for content creators',
+      siteName: 'floai.studio',
+      siteDescription: 'The ultimate platform for floai.studio content creators',
       timezone: 'UTC',
       language: 'en',
       maintenanceMode: false,
@@ -151,8 +151,8 @@ export default function SystemSettings() {
       theme: 'light',
       primaryColor: '#6366f1',
       secondaryColor: '#ec4899',
-      logoUrl: '/logo.png',
-      faviconUrl: '/favicon.ico'
+      logoUrl: '/logo-light.png',
+      faviconUrl: '/favicon.png'
     }
   });
 
@@ -264,7 +264,7 @@ export default function SystemSettings() {
           <Typography variant="body1" color="text.secondary" sx={{
             fontSize: { xs: '0.875rem', sm: '1rem' }
           }}>
-            Configure and manage your CreatorFlow platform settings
+            Configure and manage your floai.studio platform settings
           </Typography>
         </Box>
         <Box sx={{ 

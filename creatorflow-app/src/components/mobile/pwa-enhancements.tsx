@@ -199,11 +199,11 @@ export const PWAEnhancements: React.FC<PWAEnhancementsProps> = ({ children }) =>
       >
         <DialogTitle sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <SmartphoneIcon />
-          Install CreatorFlow
+          Install floai.studio
         </DialogTitle>
         <DialogContent>
           <Typography variant="body1" paragraph>
-            Install CreatorFlow on your device for a better experience:
+            Install floai.studio on your device for a better experience:
           </Typography>
           <List dense>
             <ListItem>
@@ -260,7 +260,7 @@ export const PWAEnhancements: React.FC<PWAEnhancementsProps> = ({ children }) =>
         </DialogTitle>
         <DialogContent>
           <Typography variant="body1" paragraph>
-            A new version of CreatorFlow is available with improvements and bug fixes.
+            A new version of floai.studio is available with improvements and bug fixes.
           </Typography>
           <Alert severity="info" sx={{ mt: 2 }}>
             <AlertTitle>What's New</AlertTitle>
@@ -317,7 +317,7 @@ export const PWAEnhancements: React.FC<PWAEnhancementsProps> = ({ children }) =>
           }}
         >
           <Typography variant="body2">
-            Installing CreatorFlow... {installProgress}%
+            Installing floai.studio... {installProgress}%
           </Typography>
         </Box>
       )}
@@ -348,7 +348,7 @@ export const PWAEnhancements: React.FC<PWAEnhancementsProps> = ({ children }) =>
           )}
           
           {pwaState.isInstallable && !pwaState.isInstalled && (
-            <Tooltip title="Install CreatorFlow">
+            <Tooltip title="Install floai.studio">
               <IconButton
                 onClick={() => setShowInstallDialog(true)}
                 sx={{

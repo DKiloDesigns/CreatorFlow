@@ -42,7 +42,7 @@ const MOBILE_FEATURES: MobileFeature[] = [
   {
     id: 'landing',
     title: 'Mobile-First Landing',
-    description: 'Experience CreatorFlow the way it was meant to be used - optimized for mobile creators who live on their phones.',
+    description: 'Experience floai.studio the way it was meant to be used - optimized for mobile creators who live on their phones.',
     icon: <SmartphoneIcon sx={{ fontSize: 24 }} />,
     screenshot: '/mobile-screenshots/optimized/landing-page.jpg',
     highlight: 'Mobile-optimized',
@@ -106,7 +106,7 @@ export default function MobileFeatureShowcase() {
           How It Works on Mobile
         </Typography>
         <Typography variant="h6" sx={{ color: 'text.secondary', mb: 3 }}>
-          Experience CreatorFlow the way it was meant to be used
+          Experience floai.studio the way it was meant to be used
         </Typography>
         <Chip
           label="Mobile-First Design"
@@ -259,7 +259,7 @@ export default function MobileFeatureShowcase() {
           Ready to Create on Mobile?
         </Typography>
         <Typography variant="body1" sx={{ mb: 4, color: 'text.secondary', maxWidth: 'md', mx: 'auto' }}>
-          Join thousands of creators who are already using CreatorFlow to grow their audience and monetize their content.
+          Join thousands of creators who are already using floai.studio to grow their audience and monetize their content.
         </Typography>
         <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 2, justifyContent: 'center' }}>
           <Button

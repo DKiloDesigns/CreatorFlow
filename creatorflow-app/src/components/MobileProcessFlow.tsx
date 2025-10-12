@@ -47,7 +47,7 @@ interface ProcessStep {
 const PROCESS_STEPS: ProcessStep[] = [
   {
     id: 'landing',
-    title: 'Discover CreatorFlow',
+    title: 'Discover floai.studio',
     description: 'Explore our mobile-first platform',
     mobileDescription: 'Beautiful, responsive design optimized for mobile creators',
     icon: <SmartphoneIcon size={24} />,

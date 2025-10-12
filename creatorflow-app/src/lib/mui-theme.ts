@@ -7,7 +7,7 @@ const roboto = Roboto({
   display: 'swap',
 });
 
-// Color palette based on current CreatorFlow design
+// Color palette based on current floai.studio design
 const colors = {
   primary: {
     main: '#6366f1', // Indigo-500
@@ -164,6 +164,13 @@ const lightTheme: ThemeOptions = {
         },
       },
     },
+    MuiSvgIcon: {
+      styleOverrides: {
+        root: {
+          fontSize: 30,
+        },
+      },
+    },
   },
 };
 
@@ -281,6 +288,13 @@ const darkTheme: ThemeOptions = {
       styleOverrides: {
         root: {
           borderRadius: 12,
+        },
+      },
+    },
+    MuiSvgIcon: {
+      styleOverrides: {
+        root: {
+          fontSize: 30,
         },
       },
     },

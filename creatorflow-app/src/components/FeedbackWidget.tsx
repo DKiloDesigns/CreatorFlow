@@ -136,7 +136,7 @@ export function FeedbackWidget({
           {showTitle ? 'Share Your Feedback' : 'Feedback'}
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          Help us improve CreatorFlow by sharing your experience
+          Help us improve floai.studio by sharing your experience
         </Typography>
       </CardHeader>
       <CardContent>

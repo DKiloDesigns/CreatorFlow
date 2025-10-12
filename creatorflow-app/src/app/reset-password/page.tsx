@@ -155,7 +155,7 @@ function ResetPasswordForm() {
           {/* Logo */}
           <Box sx={{ textAlign: 'center', mb: 2 }}>
             <Typography variant="h3" component="h1" sx={{ fontWeight: 'bold', mb: 1 }}>
-              CreatorFlow
+              floai.studio
             </Typography>
             <Typography variant="body1" sx={{ color: 'text.secondary' }}>
               Invalid Reset Link
@@ -217,7 +217,7 @@ function ResetPasswordForm() {
         {/* Logo */}
         <Box sx={{ textAlign: 'center', mb: 2 }}>
           <Typography variant="h3" component="h1" sx={{ fontWeight: 'bold', mb: 1 }}>
-            CreatorFlow
+            floai.studio
           </Typography>
           <Typography variant="body1" sx={{ color: 'text.secondary' }}>
             Set your new password to get back to growing your audience

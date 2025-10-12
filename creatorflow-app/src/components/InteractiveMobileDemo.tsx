@@ -148,7 +148,7 @@ export default function InteractiveMobileDemo() {
           Interactive Mobile Demo
         </Typography>
         <Typography variant="h6" color="text.secondary" sx={{ mb: 4 }}>
-          Experience CreatorFlow with real mobile gestures and interactions
+          Experience floai.studio with real mobile gestures and interactions
         </Typography>
       </Box>
 

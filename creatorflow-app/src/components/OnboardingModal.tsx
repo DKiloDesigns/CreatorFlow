@@ -140,7 +140,7 @@ export default function OnboardingModal({ isOpen, onClose, onComplete }: Onboard
         <DialogHeader>
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <DialogTitle className="text-xl font-bold">
-              Welcome to CreatorFlow
+              Welcome to floai.studio
             </DialogTitle>
             <Button variant="text" size="small" onClick={onClose}>
               <XIcon sx={{ width: 16, height: 16 }} />
@@ -220,7 +220,7 @@ export default function OnboardingModal({ isOpen, onClose, onComplete }: Onboard
             {currentStepData.id === 'welcome' && (
               <Paper sx={{ bgcolor: 'blue.50', p: 2, borderRadius: 2 }}>
                 <Typography variant="body2" sx={{ color: 'blue.800' }}>
-                  Let&apos;s get you started with CreatorFlow! We&apos;ll guide you through the essential features to help you create and manage your social media content effectively.
+                  Let&apos;s get you started with floai.studio! We&apos;ll guide you through the essential features to help you create and manage your social media content effectively.
                 </Typography>
               </Paper>
             )}
@@ -228,7 +228,7 @@ export default function OnboardingModal({ isOpen, onClose, onComplete }: Onboard
             {currentStepData.id === 'connect_accounts' && (
               <Paper sx={{ bgcolor: 'green.50', p: 2, borderRadius: 2 }}>
                 <Typography variant="body2" sx={{ color: 'green.800' }}>
-                  Connect your social media accounts to start publishing content directly from CreatorFlow. We support Instagram, TikTok, YouTube, and Twitter.
+                  Connect your social media accounts to start publishing content directly from floai.studio. We support Instagram, TikTok, YouTube, and Twitter.
                 </Typography>
               </Paper>
             )}

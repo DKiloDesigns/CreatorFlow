@@ -18,8 +18,8 @@ import AppAuthGate from './AppAuthGate';
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "CreatorFlow",
-  description: "Social media management platform",
+  title: "floai.studio",
+  description: "Modern social media management platform",
 };
 
 export default function RootLayout({
@@ -31,6 +31,7 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <CriticalCSS />
+        <link rel="icon" href="/favicon.png" />
       </head>
       <body className="MuiTypography-root">
         <ClientOnlySkipToContentLoader />

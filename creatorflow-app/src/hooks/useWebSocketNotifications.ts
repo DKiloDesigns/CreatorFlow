@@ -7,6 +7,25 @@ import { useEffect, useState, useCallback } from 'react';
 import { io, Socket } from 'socket.io-client';
 import { useSession } from 'next-auth/react';
 
+// Custom console wrapper for development
+const consoleWrapper = {
+  error: (...args: any[]) => {
+    if (process.env.NEXT_PUBLIC_DISABLE_WEBSOCKET_ERRORS !== 'true') {
+      console.error(...args);
+    }
+  },
+  warn: (...args: any[]) => {
+    if (process.env.NEXT_PUBLIC_DISABLE_WEBSOCKET_ERRORS !== 'true') {
+      console.warn(...args);
+    }
+  },
+  log: (...args: any[]) => {
+    if (process.env.NEXT_PUBLIC_DISABLE_WEBSOCKET_ERRORS !== 'true') {
+      console.log(...args);
+    }
+  },
+};
+
 interface NotificationData {
   id: string;
   userId: string;
@@ -47,16 +66,18 @@ export function useWebSocketNotifications(): UseWebSocketNotificationsReturn {
   useEffect(() => {
     if (status === 'loading' || !session?.user?.id) return;
 
+    const disableWebSocketErrors = process.env.NEXT_PUBLIC_DISABLE_WEBSOCKET_ERRORS === 'true';
+
     // Add a small delay to ensure the server is ready
     const connectionTimeout = setTimeout(() => {
-      console.log('🔌 Initializing WebSocket connection...');
+      consoleWrapper.log('🔌 Initializing WebSocket connection...');
       
       const newSocket = io(process.env.NODE_ENV === 'production' 
         ? process.env.NEXTAUTH_URL || 'https://creatorflow.app'
-        : 'http://localhost:3001', {
+        : 'http://localhost:4001', {
         path: '/api/socketio',
         transports: ['websocket', 'polling'],
-        autoConnect: true,
+        autoConnect: false,
         timeout: 20000, // 20 second timeout
         reconnection: true,
         reconnectionAttempts: 3,
@@ -64,9 +85,11 @@ export function useWebSocketNotifications(): UseWebSocketNotificationsReturn {
         reconnectionDelayMax: 10000,
       });
 
+      newSocket.connect(); // Manually connect the socket
+
     // Connection event handlers
     newSocket.on('connect', () => {
-      console.log('✅ WebSocket connected:', newSocket.id);
+      consoleWrapper.log('✅ WebSocket connected:', newSocket.id);
       setIsConnected(true);
       
       // Identify user after connection
@@ -77,28 +100,32 @@ export function useWebSocketNotifications(): UseWebSocketNotificationsReturn {
     });
 
     newSocket.on('disconnect', () => {
-      console.log('❌ WebSocket disconnected');
+      consoleWrapper.log('❌ WebSocket disconnected');
       setIsConnected(false);
     });
 
     newSocket.on('connect_error', (error) => {
-      console.warn('⚠️ WebSocket connection error (this is normal if server is not ready):', error.message);
+      if (!disableWebSocketErrors) {
+        consoleWrapper.warn('⚠️ WebSocket connection error (this is normal if server is not ready):', error.message);
+      }
       setIsConnected(false);
     });
 
     newSocket.on('connect_timeout', () => {
-      console.warn('⏰ WebSocket connection timeout (this is normal if server is not ready)');
+      if (!disableWebSocketErrors) {
+        consoleWrapper.warn('⏰ WebSocket connection timeout (this is normal if server is not ready)');
+      }
       setIsConnected(false);
     });
 
     // User identification confirmation
     newSocket.on('user_identified', (data) => {
-      console.log('👤 User identified:', data);
+      consoleWrapper.log('👤 User identified:', data);
     });
 
     // New notification received
     newSocket.on('new_notification', (notification: NotificationData) => {
-      console.log('📨 New notification received:', notification);
+      consoleWrapper.log('📨 New notification received:', notification);
       setNotifications(prev => [notification, ...prev]);
       setLastNotification(notification);
       
@@ -114,7 +141,7 @@ export function useWebSocketNotifications(): UseWebSocketNotificationsReturn {
 
     // System notification received
     newSocket.on('system_notification', (notification: Omit<NotificationData, 'userId'>) => {
-      console.log('📢 System notification received:', notification);
+      consoleWrapper.log('📢 System notification received:', notification);
       const fullNotification: NotificationData = {
         ...notification,
         userId: session.user.id,
@@ -126,7 +153,7 @@ export function useWebSocketNotifications(): UseWebSocketNotificationsReturn {
 
     // Notification read confirmation
     newSocket.on('notification_read', (data) => {
-      console.log('✅ Notification marked as read:', data);
+      consoleWrapper.log('✅ Notification marked as read:', data);
       setNotifications(prev => 
         prev.map(n => 
           n.id === data.notificationId 
@@ -138,7 +165,7 @@ export function useWebSocketNotifications(): UseWebSocketNotificationsReturn {
 
     // All notifications read confirmation
     newSocket.on('all_notifications_read', (data) => {
-      console.log('✅ All notifications marked as read:', data);
+      consoleWrapper.log('✅ All notifications marked as read:', data);
       setNotifications(prev => 
         prev.map(n => ({ ...n, read: true }))
       );
@@ -146,15 +173,15 @@ export function useWebSocketNotifications(): UseWebSocketNotificationsReturn {
 
     // Error handlers
     newSocket.on('auth_error', (error) => {
-      console.error('🔐 Authentication error:', error);
+      consoleWrapper.error('🔐 Authentication error:', error);
     });
 
     newSocket.on('notification_read_error', (error) => {
-      console.error('❌ Notification read error:', error);
+      consoleWrapper.error('❌ Notification read error:', error);
     });
 
     newSocket.on('bulk_action_error', (error) => {
-      console.error('❌ Bulk action error:', error);
+      consoleWrapper.error('❌ Bulk action error:', error);
     });
 
       setSocket(newSocket);
@@ -167,7 +194,7 @@ export function useWebSocketNotifications(): UseWebSocketNotificationsReturn {
 
     return () => {
       clearTimeout(connectionTimeout);
-      console.log('🔌 Cleaning up WebSocket connection...');
+      consoleWrapper.log('🔌 Cleaning up WebSocket connection...');
       if (socket) {
         socket.close();
       }

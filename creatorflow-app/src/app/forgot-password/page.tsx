@@ -80,7 +80,7 @@ export default function ForgotPasswordPage() {
         {/* Logo */}
         <Box sx={{ textAlign: 'center', mb: 2 }}>
           <Typography variant="h3" component="h1" sx={{ fontWeight: 'bold', mb: 1 }}>
-            CreatorFlow
+            floai.studio
           </Typography>
           <Typography variant="body1" sx={{ color: '#f1f5f9 !important', fontWeight: 500 }}>
             Reset your password to get back to growing your audience

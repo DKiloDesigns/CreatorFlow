@@ -20,7 +20,7 @@ export default function Contact() {
             Get in Touch
           </h1>
           <p className="text-xl text-gray-600 dark:text-gray-300 mb-8">
-            Have questions about CreatorFlow? We'd love to hear from you.
+            Have questions about floai.studio? We'd love to hear from you.
           </p>
         </div>
       </section>
@@ -35,8 +35,8 @@ export default function Contact() {
               </div>
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Email Us</h3>
               <p className="text-gray-600 dark:text-gray-300 mb-2">For general inquiries</p>
-              <a href="mailto:hello@creatorflow.com" className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
-                hello@creatorflow.com
+              <a href="mailto:hello@floai.studio" className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
+                hello@floai.studio
               </a>
             </div>
             
@@ -46,8 +46,8 @@ export default function Contact() {
               </div>
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Support</h3>
               <p className="text-gray-600 dark:text-gray-300 mb-2">For technical help</p>
-              <a href="mailto:support@creatorflow.com" className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
-                support@creatorflow.com
+              <a href="mailto:support@floai.studio" className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
+                support@floai.studio
               </a>
             </div>
             
@@ -57,8 +57,8 @@ export default function Contact() {
               </div>
               <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Sales</h3>
               <p className="text-gray-600 dark:text-gray-300 mb-2">For enterprise inquiries</p>
-              <a href="mailto:sales@creatorflow.com" className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
-                sales@creatorflow.com
+              <a href="mailto:sales@floai.studio" className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
+                sales@floai.studio
               </a>
             </div>
           </div>
@@ -183,7 +183,7 @@ export default function Contact() {
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">San Francisco</h3>
                   <p className="text-gray-600 dark:text-gray-300 text-sm">
-                    123 Creator Street<br />
+                    123 floai.studio Street<br />
                     San Francisco, CA 94105<br />
                     United States
                   </p>

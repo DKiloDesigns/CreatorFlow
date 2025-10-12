@@ -37,7 +37,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 ## Environment Setup for Multiple Dev Instances
 
-If you want to run multiple dev servers (e.g., on ports 3000 and 3001), create a `.env.development.local` in the root of `creatorflow-app` for each instance. Example for port 3001:
+If you want to run multiple dev servers (e.g., on ports 3000 and 3001), create a `.env.development.local` in the root of `floai.studio-app` for each instance. Example for port 3001:
 
 ```
 NEXTAUTH_URL="http://localhost:3001"

@@ -120,7 +120,7 @@ export default function SupportPage() {
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1 }}>
                   <Button
                     component="a"
-                    href="mailto:support@creatorflow.com"
+                    href="mailto:support@floai.studio"
                     variant="contained"
                     startIcon={<MailIcon sx={{ width: 16, height: 16 }} />}
                     sx={{ alignSelf: 'flex-start' }}
@@ -218,7 +218,7 @@ export default function SupportPage() {
                     rows={4}
                     value={feedback}
                     onChange={(e) => setFeedback(e.target.value)}
-                    placeholder="Tell us what you think about CreatorFlow..."
+                    placeholder="Tell us what you think about floai.studio..."
                     fullWidth
                     required
                   />

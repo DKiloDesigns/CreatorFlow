@@ -170,9 +170,9 @@ export default function PrivacyPage() {
               </Typography>
               <Paper sx={{ p: 2, bgcolor: 'grey.50' }}>
                 <Typography variant="body2" sx={{ fontWeight: 'bold' }}>Email:</Typography>
-                <Typography variant="body2">privacy@creatorflow.com</Typography>
+                <Typography variant="body2">privacy@floai.studio</Typography>
                 <Typography variant="body2" sx={{ fontWeight: 'bold' }}>Address:</Typography>
-                <Typography variant="body2">CreatorFlow, Inc.</Typography>
+                <Typography variant="body2">floai.studio, Inc.</Typography>
                 <Typography variant="body2">123 Innovation Drive</Typography>
                 <Typography variant="body2">Tech City, TC 12345</Typography>
               </Paper>

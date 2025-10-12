@@ -69,7 +69,7 @@ export default function FeaturesPage() {
                 color: 'grey.900', 
                 fontSize: { xs: '2.5rem', sm: '3rem', lg: '3.125rem' }
               }}>
-                CreatorFlow Features
+                floai.studio Features
               </Typography>
             </Box>
             <Box sx={{ width: 48, mr: 2 }} /> {/* Spacer to balance the IconButton */}

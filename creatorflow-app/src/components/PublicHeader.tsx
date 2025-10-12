@@ -32,7 +32,7 @@ export function PublicHeader() {
                 cursor: 'pointer'
               }}
             >
-              CreatorFlow
+              floai.studio
             </Typography>
           </Link>
           <Box sx={{ ml: 'auto', display: 'flex', alignItems: 'center', gap: 2 }}>
