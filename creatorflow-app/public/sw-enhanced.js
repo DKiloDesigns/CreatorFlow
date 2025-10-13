@@ -293,7 +293,7 @@ self.addEventListener('push', (event) => {
   };
   
   event.waitUntil(
-    self.registration.showNotification('CreatorFlow', options)
+    self.registration.showNotification('floai.studio', options)
   );
 });
 

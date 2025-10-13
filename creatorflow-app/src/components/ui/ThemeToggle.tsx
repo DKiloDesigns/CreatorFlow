@@ -203,7 +203,7 @@ export function ThemeCustomizer() {
             Current Mode: {isDark ? 'Dark' : 'Light'}
           </Typography>
           <Typography variant="caption" sx={{ color: 'text.secondary' }}>
-            Customize your CreatorFlow experience with our advanced theming system.
+            Customize your floai.studio experience with our advanced theming system.
           </Typography>
         </Box>
       </Box>

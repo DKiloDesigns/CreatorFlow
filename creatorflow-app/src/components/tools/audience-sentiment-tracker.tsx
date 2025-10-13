@@ -514,26 +514,26 @@ export default function AudienceSentimentTracker({
     const mockBrandMentions: BrandMention[] = [
       {
         id: '1',
-        content: 'Just tried @CreatorFlow and it\'s a game changer for content creators!',
+        content: 'Just tried @floai.studio and it\'s a game changer for content creators!',
         platform: 'twitter',
         sentiment: 'positive',
         author: '@content_creator',
         timestamp: '2025-01-20T11:00:00Z',
         reach: 2500,
         engagement: 89,
-        keywords: ['CreatorFlow', 'game changer', 'content creators'],
+        keywords: ['floai.studio', 'game changer', 'content creators'],
         context: 'Product recommendation'
       },
       {
         id: '2',
-        content: 'The new features in CreatorFlow are confusing and hard to use.',
+        content: 'The new features in floai.studio are confusing and hard to use.',
         platform: 'instagram',
         sentiment: 'negative',
         author: '@user_feedback',
         timestamp: '2025-01-20T10:30:00Z',
         reach: 1200,
         engagement: 34,
-        keywords: ['CreatorFlow', 'confusing', 'hard to use'],
+        keywords: ['floai.studio', 'confusing', 'hard to use'],
         context: 'Feature feedback'
       }
     ];

@@ -174,7 +174,7 @@ export default function MobileToolNavigation({ onInstallPrompt, showInstallButto
     if (navigator.share) {
       try {
         await navigator.share({
-          title: 'CreatorFlow Free Tools',
+          title: 'floai.studio Free Tools',
           text: 'Check out these amazing free social media tools!',
           url: window.location.origin + '/tools'
         });
@@ -304,7 +304,7 @@ export default function MobileToolNavigation({ onInstallPrompt, showInstallButto
       >
         <Box sx={{ width: 280, p: 2 }}>
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
-            <Typography variant="h6">CreatorFlow Tools</Typography>
+            <Typography variant="h6">floai.studio Tools</Typography>
             <IconButton onClick={() => setDrawerOpen(false)}>
               <CloseIcon />
             </IconButton>

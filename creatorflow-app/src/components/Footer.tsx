@@ -341,7 +341,7 @@ export function Footer() {
           {/* Mobile: Copyright */}
           <Box sx={{ textAlign: 'center' }}>
             <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-              © {new Date().getFullYear()} CreatorFlow. All rights reserved.
+              © {new Date().getFullYear()} floai.studio. All rights reserved.
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 0.5 }}>
               Made with <Favorite sx={{ fontSize: '1em', color: 'error.main' }} /> for creators.
@@ -783,7 +783,7 @@ export function Footer() {
           {/* Copyright */}
           <Box sx={{ textAlign: { xs: 'center', sm: 'left' } }}>
             <Typography variant="body2" color="text.secondary">
-              © {new Date().getFullYear()} CreatorFlow. All rights reserved.
+              © {new Date().getFullYear()} floai.studio. All rights reserved.
             </Typography>
             <Typography variant="body2" color="text.secondary" sx={{ display: 'flex', alignItems: 'center', justifyContent: { xs: 'center', sm: 'flex-start' }, gap: 0.5, mt: 0.5 }}>
               Made with <Favorite sx={{ fontSize: '1em', color: 'error.main' }} /> for creators.

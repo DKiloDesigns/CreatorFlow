@@ -145,7 +145,7 @@ export default function MobileNotificationCenter() {
       userId: 'test-user',
       type: 'system_event',
       title: 'Mobile Update',
-      message: 'CreatorFlow mobile experience has been enhanced!',
+      message: 'floai.studio mobile experience has been enhanced!',
       category: 'system',
       priority: 'high',
     });

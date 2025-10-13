@@ -111,7 +111,7 @@ export function ROICalculator() {
             Calculate Your ROI
           </Typography>
           <Typography variant="h6" color="text.secondary" sx={{ mb: 4 }}>
-            See exactly how much you can save with CreatorFlow
+            See exactly how much you can save with floai.studio
           </Typography>
         </Box>
 
@@ -217,7 +217,7 @@ export function ROICalculator() {
                 <CardContent sx={{ p: 4 }}>
                   <Typography variant="h5" sx={{ fontWeight: 'bold', mb: 3, display: 'flex', alignItems: 'center', gap: 1 }}>
                     <TrendingUp sx={{ color: 'success.main' }} />
-                    Your Savings with CreatorFlow
+                    Your Savings with floai.studio
                   </Typography>
 
                   <Grid container spacing={3}>
@@ -284,7 +284,7 @@ export function ROICalculator() {
                       </Typography>
                     </Box>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
-                      <Typography>CreatorFlow Pro:</Typography>
+                      <Typography>floai.studio Pro:</Typography>
                       <Typography sx={{ fontWeight: 'bold', color: 'primary.main' }}>
                         ${PLATFORM_COSTS.creatorflow}/month
                       </Typography>
@@ -328,7 +328,7 @@ export function ROICalculator() {
         {/* Benefits */}
         <Box sx={{ mt: 6, textAlign: 'center' }}>
           <Typography variant="h5" sx={{ fontWeight: 'bold', mb: 3 }}>
-            Why Creators Choose CreatorFlow
+            Why Creators Choose floai.studio
           </Typography>
           <Grid container spacing={2} justifyContent="center">
             {[

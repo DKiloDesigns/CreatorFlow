@@ -423,7 +423,7 @@ export function EnhancedAuthFlow() {
           <Typography variant="body1" color="text.secondary" paragraph>
             {authMode === 'signin'
               ? 'You have been signed in successfully.'
-              : 'Your account has been created. You can now start using CreatorFlow.'}
+              : 'Your account has been created. You can now start using floai.studio.'}
           </Typography>
           <Button
             variant="contained"
@@ -480,9 +480,9 @@ export function EnhancedAuthFlow() {
           </Typography>
           <Typography variant="body1" color="text.secondary" align="center">
             {authMode === 'signin'
-              ? 'Sign in to your CreatorFlow account'
+              ? 'Sign in to your floai.studio account'
               : authMode === 'signup'
-              ? 'Join CreatorFlow and start creating amazing content'
+              ? 'Join floai.studio and start creating amazing content'
               : 'Enter your email to reset your password'}
           </Typography>
         </Box>

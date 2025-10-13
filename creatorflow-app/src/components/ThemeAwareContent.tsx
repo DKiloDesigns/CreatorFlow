@@ -221,13 +221,15 @@ export default function ThemeAwareContent() {
         }}
       >
         <Container maxWidth="xl">
-          <Toolbar sx={{ justifyContent: 'space-between', height: 64 }}>
+          <Toolbar sx={{ justifyContent: 'space-between', height: 82 }}>
             {/* Logo and Brand */}
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 8, minWidth: 44, minHeight: 44, textDecoration: 'none' }}>
-                <Typography variant="h5" component="span" sx={{ fontWeight: 'bold', color: 'text.primary' }}>
-                  CreatorFlow
-                </Typography>
+                <img 
+                  src="/logo-light.png" 
+                  alt="floai.studio Logo" 
+                  style={{ height: 82, width: 'auto', display: 'block' }} 
+                />
               </Link>
             </Box>
 
@@ -323,7 +325,7 @@ export default function ThemeAwareContent() {
           }}
         >
           Plan, publish, analyze, and monetize your content across all platforms. 
-          Join creators who are already growing their audience and revenue with CreatorFlow.
+          Join creators who are already growing their audience and revenue with floai.studio.
         </Typography>
         
         <Box sx={{ 
@@ -394,7 +396,7 @@ export default function ThemeAwareContent() {
             }}
           >
                 <PlayArrow sx={{ mr: 1, fontSize: '1.2em' }} />
-                See CreatorFlow in Action
+                See floai.studio in Action
           </Button>
         </Box>
       </Box>
@@ -961,7 +963,7 @@ export default function ThemeAwareContent() {
             White-Label Solutions
           </Typography>
           <Typography variant="h6" sx={{ color: 'text.secondary', mb: 4 }}>
-            Rebrand CreatorFlow as your own platform
+            Rebrand floai.studio as your own platform
           </Typography>
         </Box>
         

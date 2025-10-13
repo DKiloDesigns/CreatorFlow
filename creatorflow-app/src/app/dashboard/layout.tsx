@@ -193,7 +193,7 @@ export default function DashboardLayout({
                   justifyContent: 'center'
                 }}
                 role="img"
-                aria-label="CreatorFlow logo"
+                aria-label="floai.studio logo"
               >
                 <Typography sx={{ color: 'white', fontWeight: 'bold', fontSize: '0.875rem' }}>
                   CF
@@ -203,9 +203,9 @@ export default function DashboardLayout({
                 variant="h5"
                 component="span"
                 sx={{ fontWeight: 'bold', color: 'text.primary' }}
-                aria-label="CreatorFlow"
+                aria-label="floai.studio"
               >
-                CreatorFlow
+                floai.studio
               </Typography>
             </Box>
 

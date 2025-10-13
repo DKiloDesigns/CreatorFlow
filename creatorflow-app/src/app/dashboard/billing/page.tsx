@@ -162,7 +162,7 @@ function BillingContent() {
           Billing & Subscription
         </Typography>
         <Typography variant="body1" color="text.secondary">
-          Manage your CreatorFlow subscription and billing
+          Manage your floai.studio subscription and billing
         </Typography>
       </Box>
 

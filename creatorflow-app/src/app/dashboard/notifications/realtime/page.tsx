@@ -90,7 +90,7 @@ export default function RealtimeNotificationPage() {
       userId: 'test-user',
       type: 'system_event',
       title: 'System Update',
-      message: 'CreatorFlow has been updated with new features!',
+      message: 'floai.studio has been updated with new features!',
       category: 'system',
       priority: 'high',
     });
