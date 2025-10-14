@@ -8,6 +8,7 @@ import PsychologyIcon from '@mui/icons-material/Psychology';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import ShareIcon from '@mui/icons-material/Share';
 import TrackChangesIcon from '@mui/icons-material/TrackChanges';
+import { useTheme } from '@mui/material/styles';
 
 // Import Phase 2 components
 import AIContentIntelligence from '@/components/ui/ai-content-intelligence';
@@ -16,6 +17,7 @@ import MultiPlatformPublisher from '@/components/ui/multi-platform-publisher';
 
 export default function FeaturesPage() {
   const router = useRouter();
+  const theme = useTheme();
   
   const features = [
     {
@@ -51,7 +53,13 @@ export default function FeaturesPage() {
   return (
     <PublicPageLayout>
       {/* Hero Section */}
-      <Box component="section" sx={{ py: 8, px: { xs: 4, sm: 3, lg: 4 } }}>
+      <Box component="section" sx={{
+        py: { xs: 8, md: 12 }, 
+        px: { xs: 4, sm: 3, lg: 4 }, 
+        background: theme.palette.mode === 'light' 
+          ? 'linear-gradient(to right, #dbeafe, #e9d5ff)' 
+          : 'linear-gradient(to right, rgba(30, 58, 138, 0.2), rgba(147, 51, 234, 0.2))', 
+      }}>
         <Container maxWidth="lg">
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 3 }}>
             <IconButton
@@ -66,7 +74,7 @@ export default function FeaturesPage() {
             <Box sx={{ flex: 1, textAlign: 'center' }}>
               <Typography variant="h2" component="h1" sx={{ 
                 fontWeight: 'bold', 
-                color: 'grey.900', 
+                color: theme.palette.text.primary, 
                 fontSize: { xs: '2.5rem', sm: '3rem', lg: '3.125rem' }
               }}>
                 floai.studio Features
@@ -75,9 +83,9 @@ export default function FeaturesPage() {
             <Box sx={{ width: 48, mr: 2 }} /> {/* Spacer to balance the IconButton */}
           </Box>
           <Typography variant="h5" sx={{ 
-            color: 'grey.600', 
+            color: theme.palette.text.secondary, 
             mb: 4,
-            '& .dark &': { color: 'grey.300' }
+            // Removed dark mode explicit override as theme.palette.text.secondary should handle it
           }}>
             Discover the powerful tools that empower your content creation journey.
           </Typography>
@@ -85,7 +93,7 @@ export default function FeaturesPage() {
       </Box>
 
       {/* Features Grid */}
-      <Box component="section" sx={{ py: 8, px: { xs: 4, sm: 3, lg: 4 }, bgcolor: 'grey.50', '& .dark &': { bgcolor: 'grey.800' } }}>
+      <Box component="section" sx={{ py: 8, px: { xs: 4, sm: 3, lg: 4 }, bgcolor: theme.palette.background.default, /* Removed dark mode explicit override */ }}>
         <Container maxWidth="lg">
           <Grid container spacing={3} sx={{ mb: 4 }}>
             {features.map((feature, index) => (
@@ -107,7 +115,7 @@ export default function FeaturesPage() {
                       display: 'flex', 
                       justifyContent: 'center', 
                       mb: 2,
-                      color: `${feature.color}.main`
+                      color: theme.palette[feature.color as 'primary' | 'secondary' | 'error' | 'warning' | 'info' | 'success'].main
                     }}>
                       {feature.icon}
                     </Box>
@@ -120,7 +128,7 @@ export default function FeaturesPage() {
                     <Button 
                       variant="outlined" 
                       size="small"
-                      color={feature.color as any}
+                      color={feature.color as 'primary' | 'secondary' | 'error' | 'warning' | 'info' | 'success'}
                       onClick={(e) => {
                         e.stopPropagation();
                         router.push(feature.route);
@@ -139,7 +147,7 @@ export default function FeaturesPage() {
       {/* Status Summary (Optional - can remove if not relevant for public features page) */}
       <Box component="section" sx={{ py: 8, px: { xs: 4, sm: 3, lg: 4 } }}>
         <Container maxWidth="lg">
-          <Paper sx={{ p: 3, bgcolor: 'primary.main', color: 'primary.contrastText' }}>
+          <Paper sx={{ p: 3, bgcolor: theme.palette.primary.main, color: theme.palette.primary.contrastText }}>
             <Typography variant="h5" sx={{ mb: 2 }}>
               📊 Implementation Status
             </Typography>

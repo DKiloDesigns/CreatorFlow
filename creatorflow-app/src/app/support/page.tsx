@@ -34,6 +34,7 @@ import {
 import { PublicPageLayout } from '@/components/layout/PublicPageLayout';
 import { useRouter } from 'next/navigation';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { useTheme } from '@mui/material/styles'; // Import useTheme
 
 const helpCategories = [
   {
@@ -92,6 +93,7 @@ export default function SupportPage() {
   const [isSearching, setIsSearching] = useState(false);
   const [showResults, setShowResults] = useState(false);
   const router = useRouter();
+  const theme = useTheme(); // Initialize useTheme
 
   // Search function
   const handleSearch = async (query: string) => {
@@ -136,12 +138,11 @@ export default function SupportPage() {
       <Box 
         component="section" 
         sx={{ 
-          py: 8, 
+          py: { xs: 8, md: 12 }, 
           px: { xs: 2, sm: 3, lg: 4 }, 
-          background: 'linear-gradient(to right, #dbeafe, #e9d5ff)',
-          '& .dark &': {
-            background: 'linear-gradient(to right, rgba(30, 58, 138, 0.2), rgba(147, 51, 234, 0.2))'
-          }
+          background: theme.palette.mode === 'light' 
+            ? 'linear-gradient(to right, #dbeafe, #e9d5ff)' 
+            : 'linear-gradient(to right, rgba(30, 58, 138, 0.2), rgba(147, 51, 234, 0.2))', // Custom gradient, can be moved to theme if frequently used
         }}
       >
         <Container maxWidth="lg" sx={{ textAlign: 'center' }}>
@@ -192,23 +193,26 @@ export default function SupportPage() {
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <SearchIcon sx={{ color: 'inherit' }} />
+                    <SearchIcon sx={{ color: theme.palette.text.secondary }} />
                   </InputAdornment>
                 ),
                 endAdornment: isSearching ? (
                   <InputAdornment position="end">
-                    <CircularProgress size={20} />
+                    <CircularProgress size={20} sx={{ color: theme.palette.primary.main }} />
                   </InputAdornment>
                 ) : null,
               }}
               sx={{
                 '& .MuiOutlinedInput-root': {
-                  bgcolor: 'background.paper',
+                  bgcolor: theme.palette.background.paper,
                   '&:hover': {
                     '& .MuiOutlinedInput-notchedOutline': {
-                      borderColor: 'primary.main',
+                      borderColor: theme.palette.primary.main,
                     },
                   },
+                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                    borderColor: theme.palette.primary.main,
+                  }
                 },
               }}
             />
@@ -220,7 +224,7 @@ export default function SupportPage() {
       {showResults && (
         <Box component="section" sx={{ py: 4, px: { xs: 2, sm: 3, lg: 4 } }}>
           <Container maxWidth="lg">
-            <Typography variant="h4" component="h2" sx={{ mb: 3, fontWeight: 'bold' }}>
+            <Typography variant="h4" component="h2" sx={{ mb: 3, fontWeight: 'bold', color: theme.palette.text.primary }}>
               Search Results
             </Typography>
             
@@ -233,20 +237,21 @@ export default function SupportPage() {
                       href={`/support/article/${article.id}`}
                       sx={{ 
                         textDecoration: 'none',
-                        '&:hover': { bgcolor: 'action.hover' },
+                        '&:hover': { bgcolor: theme.palette.action.hover },
                         borderRadius: 1,
-                        mb: 1
+                        mb: 1,
+                        color: theme.palette.text.primary // Ensure link text color is primary
                       }}
                     >
                       <ListItemText
                         primary={
-                          <Typography variant="h6" sx={{ fontWeight: 'bold', color: 'primary.main' }}>
+                          <Typography variant="h6" sx={{ fontWeight: 'bold', color: theme.palette.primary.main }}>
                             {article.title}
                           </Typography>
                         }
                         secondary={
                           <Box>
-                            <Typography variant="body2" sx={{ color: 'text.secondary', mb: 1 }}>
+                            <Typography variant="body2" sx={{ color: theme.palette.text.secondary, mb: 1 }}>
                               {article.content.substring(0, 150)}...
                             </Typography>
                             <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap' }}>
@@ -265,6 +270,7 @@ export default function SupportPage() {
                               <Chip 
                                 label={`${article.readTime} min read`} 
                                 size="small" 
+                                color="default" // Use default color for consistency
                                 variant="outlined" 
                               />
                             </Box>
@@ -272,16 +278,16 @@ export default function SupportPage() {
                         }
                       />
                     </ListItem>
-                    {index < searchResults.length - 1 && <Divider />}
+                    {index < searchResults.length - 1 && <Divider sx={{ borderColor: theme.palette.divider }} />}
                   </React.Fragment>
                 ))}
               </List>
             ) : (
               <Box sx={{ textAlign: 'center', py: 4 }}>
-                <Typography variant="h6" sx={{ color: 'text.secondary', mb: 2 }}>
+                <Typography variant="h6" sx={{ color: theme.palette.text.secondary, mb: 2 }}>
                   No articles found for "{searchQuery}"
                 </Typography>
-                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                <Typography variant="body2" sx={{ color: theme.palette.text.secondary }}>
                   Try different keywords or browse our help categories below
                 </Typography>
               </Box>
@@ -298,7 +304,7 @@ export default function SupportPage() {
             component="h2" 
             sx={{ 
               fontWeight: 'bold', 
-              color: 'text.primary', 
+              color: theme.palette.text.primary, 
               mb: 4, 
               textAlign: 'center' 
             }}
@@ -320,10 +326,11 @@ export default function SupportPage() {
                         p: 3, 
                         textAlign: 'center',
                         '&:hover': {
-                          borderColor: 'primary.main',
+                          borderColor: theme.palette.primary.main,
                           transform: 'translateY(-2px)',
                           transition: 'all 0.2s ease-in-out',
-                        }
+                        },
+                        border: `1px solid ${theme.palette.divider}` // Ensure border is theme-consistent
                       }}
                     >
                       <CardContent>
@@ -331,7 +338,7 @@ export default function SupportPage() {
                           sx={{ 
                             width: 48, 
                             height: 48, 
-                            bgcolor: 'primary.50', 
+                            bgcolor: theme.palette.primary.light, // Using primary.light for consistency
                             borderRadius: 1, 
                             display: 'flex', 
                             alignItems: 'center', 
@@ -340,14 +347,14 @@ export default function SupportPage() {
                             mb: 2 
                           }}
                         >
-                          <Icon sx={{ color: 'inherit', fontSize: 24 }} />
+                          <Icon sx={{ color: theme.palette.primary.main, fontSize: 24 }} />
                         </Box>
                         <Typography 
                           variant="h6" 
                           component="h3" 
                           sx={{ 
                             fontWeight: 600, 
-                            color: 'text.primary', 
+                            color: theme.palette.text.primary, 
                             mb: 1 
                           }}
                         >
@@ -356,7 +363,7 @@ export default function SupportPage() {
                         <Typography 
                           variant="body2" 
                           sx={{ 
-                            color: 'text.secondary', 
+                            color: theme.palette.text.secondary, 
                             mb: 1.5 
                           }}
                         >
@@ -365,7 +372,7 @@ export default function SupportPage() {
                         <Typography 
                           variant="caption" 
                           sx={{ 
-                            color: 'text.disabled' 
+                            color: theme.palette.text.disabled 
                           }}
                         >
                           {category.articles} articles
@@ -386,7 +393,7 @@ export default function SupportPage() {
         sx={{ 
           py: 8, 
           px: { xs: 2, sm: 3, lg: 4 }, 
-          bgcolor: 'grey.50' 
+          bgcolor: theme.palette.background.default 
         }}
       >
         <Container maxWidth="xl">
@@ -395,7 +402,7 @@ export default function SupportPage() {
             component="h2" 
             sx={{ 
               fontWeight: 'bold', 
-              color: 'text.primary', 
+              color: theme.palette.text.primary, 
               mb: 4, 
               textAlign: 'center' 
             }}
@@ -408,13 +415,13 @@ export default function SupportPage() {
               const Icon = method.icon;
               return (
                 <Grid item xs={12} md={4} key={method.title}>
-                  <Card sx={{ p: 3, textAlign: 'center' }}>
+                  <Card sx={{ p: 3, textAlign: 'center', border: `1px solid ${theme.palette.divider}` }}>
                     <CardContent>
                       <Box 
                         sx={{ 
                           width: 48, 
                           height: 48, 
-                          bgcolor: 'primary.50', 
+                          bgcolor: theme.palette.primary.light, // Using primary.light for consistency
                           borderRadius: 1, 
                           display: 'flex', 
                           alignItems: 'center', 
@@ -423,14 +430,14 @@ export default function SupportPage() {
                           mb: 2 
                         }}
                       >
-                        <Icon sx={{ color: 'inherit', fontSize: 24 }} />
+                        <Icon sx={{ color: theme.palette.primary.main, fontSize: 24 }} />
                       </Box>
                       <Typography 
                         variant="h6" 
                         component="h3" 
                         sx={{ 
                           fontWeight: 600, 
-                          color: 'text.primary', 
+                          color: theme.palette.text.primary, 
                           mb: 1 
                         }}
                       >
@@ -439,7 +446,7 @@ export default function SupportPage() {
                       <Typography 
                         variant="body2" 
                         sx={{ 
-                          color: 'text.secondary', 
+                          color: theme.palette.text.secondary, 
                           mb: 1.5 
                         }}
                       >
@@ -450,7 +457,7 @@ export default function SupportPage() {
                           variant="body2" 
                           sx={{ 
                             fontWeight: 500, 
-                            color: 'text.primary' 
+                            color: theme.palette.text.primary 
                           }}
                         >
                           {method.contact}
@@ -458,7 +465,7 @@ export default function SupportPage() {
                         <Typography 
                           variant="caption" 
                           sx={{ 
-                            color: 'text.disabled' 
+                            color: theme.palette.text.disabled 
                           }}
                         >
                           {method.response}
@@ -481,7 +488,7 @@ export default function SupportPage() {
             component="h2" 
             sx={{ 
               fontWeight: 'bold', 
-              color: 'text.primary', 
+              color: theme.palette.text.primary, 
               mb: 4, 
               textAlign: 'center' 
             }}
@@ -499,17 +506,18 @@ export default function SupportPage() {
                     alignItems: 'center',
                     gap: 2,
                     '&:hover': {
-                      borderColor: 'primary.main',
+                      borderColor: theme.palette.primary.main,
                       transform: 'translateY(-2px)',
                       transition: 'all 0.2s ease-in-out',
-                    }
+                    },
+                    border: `1px solid ${theme.palette.divider}` // Ensure border is theme-consistent
                   }}
                 >
                   <Box 
                     sx={{ 
                       width: 48, 
                       height: 48, 
-                      bgcolor: 'primary.50', 
+                      bgcolor: theme.palette.primary.light, // Using primary.light for consistency
                       borderRadius: 1, 
                       display: 'flex', 
                       alignItems: 'center', 
@@ -517,7 +525,7 @@ export default function SupportPage() {
                       flexShrink: 0 
                     }}
                   >
-                    <FileTextIcon sx={{ color: 'inherit', fontSize: 24 }} />
+                    <FileTextIcon sx={{ color: theme.palette.primary.main, fontSize: 24 }} />
                   </Box>
                   <Box>
                     <Typography 
@@ -525,7 +533,7 @@ export default function SupportPage() {
                       component="h3" 
                       sx={{ 
                         fontWeight: 600, 
-                        color: 'text.primary', 
+                        color: theme.palette.text.primary, 
                         mb: 0.5 
                       }}
                     >
@@ -534,7 +542,7 @@ export default function SupportPage() {
                     <Typography 
                       variant="body2" 
                       sx={{ 
-                        color: 'text.secondary' 
+                        color: theme.palette.text.secondary 
                       }}
                     >
                       Read our terms and conditions
@@ -553,17 +561,18 @@ export default function SupportPage() {
                     alignItems: 'center',
                     gap: 2,
                     '&:hover': {
-                      borderColor: 'secondary.main',
+                      borderColor: theme.palette.secondary.main,
                       transform: 'translateY(-2px)',
                       transition: 'all 0.2s ease-in-out',
-                    }
+                    },
+                    border: `1px solid ${theme.palette.divider}` // Ensure border is theme-consistent
                   }}
                 >
                   <Box 
                     sx={{ 
                       width: 48, 
                       height: 48, 
-                      bgcolor: 'secondary.50', 
+                      bgcolor: theme.palette.secondary.light, // Using secondary.light for consistency
                       borderRadius: 1, 
                       display: 'flex', 
                       alignItems: 'center', 
@@ -571,7 +580,7 @@ export default function SupportPage() {
                       flexShrink: 0 
                     }}
                   >
-                    <ShieldIcon sx={{ color: 'inherit', fontSize: 24 }} />
+                    <ShieldIcon sx={{ color: theme.palette.secondary.main, fontSize: 24 }} />
                   </Box>
                   <Box>
                     <Typography 
@@ -579,7 +588,7 @@ export default function SupportPage() {
                       component="h3" 
                       sx={{ 
                         fontWeight: 600, 
-                        color: 'text.primary', 
+                        color: theme.palette.text.primary, 
                         mb: 0.5 
                       }}
                     >
@@ -588,7 +597,7 @@ export default function SupportPage() {
                     <Typography 
                       variant="body2" 
                       sx={{ 
-                        color: 'text.secondary' 
+                        color: theme.palette.text.secondary 
                       }}
                     >
                       Learn how we protect your data
@@ -607,7 +616,7 @@ export default function SupportPage() {
         sx={{ 
           py: 8, 
           px: { xs: 2, sm: 3, lg: 4 }, 
-          bgcolor: 'grey.50' 
+          bgcolor: theme.palette.background.default 
         }}
       >
         <Container maxWidth="lg">
@@ -616,7 +625,7 @@ export default function SupportPage() {
             component="h2" 
             sx={{ 
               fontWeight: 'bold', 
-              color: 'text.primary', 
+              color: theme.palette.text.primary, 
               mb: 4, 
               textAlign: 'center' 
             }}
@@ -625,13 +634,13 @@ export default function SupportPage() {
           </Typography>
           
           <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-            <Card sx={{ p: 3 }}>
+            <Card sx={{ p: 3, border: `1px solid ${theme.palette.divider}` }}>
               <Typography 
                 variant="h6" 
                 component="h3" 
                 sx={{ 
                   fontWeight: 600, 
-                  color: 'text.primary', 
+                  color: theme.palette.text.primary, 
                   mb: 1 
                 }}
               >
@@ -640,20 +649,20 @@ export default function SupportPage() {
               <Typography 
                 variant="body2" 
                 sx={{ 
-                  color: 'text.secondary' 
+                  color: theme.palette.text.secondary 
                 }}
               >
                 Sign up for a free account and connect your social media platforms. Our guided setup will help you get started in minutes.
               </Typography>
             </Card>
             
-            <Card sx={{ p: 3 }}>
+            <Card sx={{ p: 3, border: `1px solid ${theme.palette.divider}` }}>
               <Typography 
                 variant="h6" 
                 component="h3" 
                 sx={{ 
                   fontWeight: 600, 
-                  color: 'text.primary', 
+                  color: theme.palette.text.primary, 
                   mb: 1 
                 }}
               >
@@ -662,20 +671,20 @@ export default function SupportPage() {
               <Typography 
                 variant="body2" 
                 sx={{ 
-                  color: 'text.secondary' 
+                  color: theme.palette.text.secondary 
                 }}
               >
                 We support all major platforms including Instagram, TikTok, YouTube, Twitter, LinkedIn, Facebook, and more.
               </Typography>
             </Card>
             
-            <Card sx={{ p: 3 }}>
+            <Card sx={{ p: 3, border: `1px solid ${theme.palette.divider}` }}>
               <Typography 
                 variant="h6" 
                 component="h3" 
                 sx={{ 
                   fontWeight: 600, 
-                  color: 'text.primary', 
+                  color: theme.palette.text.primary, 
                   mb: 1 
                 }}
               >
@@ -684,20 +693,20 @@ export default function SupportPage() {
               <Typography 
                 variant="body2" 
                 sx={{ 
-                  color: 'text.secondary' 
+                  color: theme.palette.text.secondary 
                 }}
               >
                 We offer a free plan to get started, with Pro plans starting at $12/month for advanced features and analytics.
               </Typography>
             </Card>
             
-            <Card sx={{ p: 3 }}>
+            <Card sx={{ p: 3, border: `1px solid ${theme.palette.divider}` }}>
               <Typography 
                 variant="h6" 
                 component="h3" 
                 sx={{ 
                   fontWeight: 600, 
-                  color: 'text.primary', 
+                  color: theme.palette.text.primary, 
                   mb: 1 
                 }}
               >
@@ -706,7 +715,7 @@ export default function SupportPage() {
               <Typography 
                 variant="body2" 
                 sx={{ 
-                  color: 'text.secondary' 
+                  color: theme.palette.text.secondary 
                 }}
               >
                 Yes, we use industry-standard encryption and security measures to protect your data and account information.
@@ -724,7 +733,7 @@ export default function SupportPage() {
             component="h2" 
             sx={{ 
               fontWeight: 'bold', 
-              color: 'text.primary', 
+              color: theme.palette.text.primary, 
               mb: 2 
             }}
           >
@@ -734,7 +743,7 @@ export default function SupportPage() {
             variant="h6" 
             component="p" 
             sx={{ 
-              color: 'text.secondary', 
+              color: theme.palette.text.secondary, 
               mb: 4 
             }}
           >
@@ -746,9 +755,10 @@ export default function SupportPage() {
               href="/contact" 
               variant="contained"
               sx={{ 
-                background: 'linear-gradient(to right, #3b82f6, #8b5cf6)',
+                bgcolor: theme.palette.primary.main, // Use theme.palette.primary.main for button background
+                color: theme.palette.common.white,
                 '&:hover': {
-                  background: 'linear-gradient(to right, #2563eb, #7c3aed)',
+                  bgcolor: theme.palette.primary.dark, // Use theme.palette.primary.dark for hover
                 }
               }}
             >
@@ -758,9 +768,12 @@ export default function SupportPage() {
               component={Link}
               href="/auth" 
               variant="outlined"
-              sx={{ 
+              sx={{
+                borderColor: theme.palette.primary.main, // Outline button border color
+                color: theme.palette.primary.main, // Outline button text color
                 '&:hover': {
-                  bgcolor: 'grey.50',
+                  bgcolor: theme.palette.action.hover,
+                  borderColor: theme.palette.primary.dark,
                 }
               }}
             >
@@ -771,7 +784,7 @@ export default function SupportPage() {
       </Box>
 
       {/* Bottom Spacer to Clear Bottom Navigation */}
-      <Box sx={{ height: { xs: '128px', sm: '40px' }, width: '100%' }} />
+      <Box sx={{ height: { xs: 32, sm: 10 }, width: '100%' }} />
     </PublicPageLayout>
   );
 } 

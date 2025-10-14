@@ -63,6 +63,7 @@ import {
   Divider,
   Chip
 } from '@mui/material';
+import Image from 'next/image';
 import {
   MuiEnhancedNavigation
 } from '@/components/ui/mui-components';
@@ -182,31 +183,13 @@ export default function DashboardLayout({
           <Toolbar sx={{ justifyContent: 'space-between', height: 64 }}>
             {/* Logo */}
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-              <Box
-                sx={{
-                  width: 32,
-                  height: 32,
-                  bgcolor: 'black',
-                  borderRadius: 1,
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}
-                role="img"
-                aria-label="floai.studio logo"
-              >
-                <Typography sx={{ color: 'white', fontWeight: 'bold', fontSize: '0.875rem' }}>
-                  CF
-                </Typography>
-              </Box>
-              <Typography
-                variant="h5"
-                component="span"
-                sx={{ fontWeight: 'bold', color: 'text.primary' }}
-                aria-label="floai.studio"
-              >
-                floai.studio
-              </Typography>
+              <Image
+                src="/logo-light.png"
+                alt="floai.studio logo"
+                width={82} /* Set initial width for Next/Image optimization */
+                height={82}
+                style={{ height: '82px', width: 'auto', borderRadius: '4px' }}
+              />
             </Box>
 
             {/* Desktop Navigation */}

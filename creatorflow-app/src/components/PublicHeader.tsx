@@ -2,6 +2,7 @@ import { Home as HomeIcon } from '@mui/icons-material';
 import Link from 'next/link';
 import dynamic from 'next/dynamic';
 import { AppBar, Toolbar, Container, Typography, Box } from '@mui/material';
+import Image from 'next/image';
 import { useMinimalTheme } from '@/contexts/MinimalThemeContext';
 
 // Dynamically import ThemeToggle with ssr: false
@@ -23,17 +24,26 @@ export function PublicHeader() {
       <Container maxWidth="xl">
         <Toolbar sx={{ minHeight: 64, px: { xs: 2, sm: 3, lg: 4 }, flexGrow: 1, justifyContent: 'space-between' }}>
           <Link href="/" style={{ textDecoration: 'none' }}>
-            <Typography 
-              variant="h5" 
-              component="div" 
-              sx={{ 
-                fontWeight: 'bold', 
-                color: 'text.primary',
-                cursor: 'pointer'
-              }}
-            >
-              floai.studio
-            </Typography>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <Image
+                src="/logo-light.png"
+                alt="floai.studio logo"
+                width={82} /* Set initial width for Next/Image optimization */
+                height={82}
+                style={{ height: '82px', width: 'auto', borderRadius: '4px' }}
+              />
+              {/* <Typography 
+                variant="h5" 
+                component="div" 
+                sx={{ 
+                  fontWeight: 'bold', 
+                  color: 'text.primary',
+                  cursor: 'pointer'
+                }}
+              >
+                floai.studio
+              </Typography> */}
+            </Box>
           </Link>
           <Box sx={{ ml: 'auto', display: 'flex', alignItems: 'center', gap: 2 }}>
             <ThemeToggle />

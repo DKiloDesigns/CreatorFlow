@@ -5,12 +5,20 @@ import { Box, Typography, Container, Grid, Card, CardContent, Button, IconButton
 import { PublicPageLayout } from '@/components/layout/PublicPageLayout';
 import { useRouter } from 'next/navigation';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { useTheme } from '@mui/material/styles';
 
 export default function Pricing() {
   const router = useRouter();
+  const theme = useTheme();
   return (
     <PublicPageLayout>
-      <Box component="section" sx={{ py: 8, px: { xs: 4, sm: 3, lg: 4 } }}>
+      <Box component="section" sx={{
+        py: { xs: 8, md: 12 }, 
+        px: { xs: 4, sm: 3, lg: 4 }, 
+        background: theme.palette.mode === 'light' 
+          ? 'linear-gradient(to right, #dbeafe, #e9d5ff)' 
+          : 'linear-gradient(to right, rgba(30, 58, 138, 0.2), rgba(147, 51, 234, 0.2))', 
+      }}>
         <Container maxWidth="lg">
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 3 }}>
             <IconButton
@@ -23,14 +31,19 @@ export default function Pricing() {
               <ArrowBackIcon />
             </IconButton>
             <Box sx={{ flex: 1, textAlign: 'center' }}>
-              <Typography variant="h3" component="h1" sx={{ fontWeight: 'bold', color: 'grey.900', mb: 4 }}>
+              <Typography variant="h3" component="h1" sx={{ fontWeight: 'bold', color: theme.palette.text.primary, mb: 4 }}>
                 Our Plans
               </Typography>
             </Box>
             <Box sx={{ width: 48, mr: 2 }} /> {/* Spacer to balance the IconButton */}
           </Box>
+        </Container>
+      </Box>
 
-          <Grid container spacing={4} justifyContent="center">
+      {/* Pricing Plans Section (separated from hero) */}
+      <Box component="section" sx={{ py: 8, px: { xs: 4, sm: 3, lg: 4 }, mt: { xs: 4, md: 8 } }}>
+        <Container maxWidth="lg">
+          <Grid container spacing={4} justifyContent="center" sx={{ mt: '1px' }}> {/* Added 1px custom margin */}
             {/* Free Plan */}
             <Grid item xs={12} md={4}>
               <Card sx={{ p: 3, textAlign: 'center', display: 'flex', flexDirection: 'column', height: '100%' }}>

@@ -16,13 +16,24 @@ import Link from 'next/link';
 import { PublicPageLayout } from '@/components/layout/PublicPageLayout';
 import { useRouter } from 'next/navigation'; // Import useRouter
 import ArrowBackIcon from '@mui/icons-material/ArrowBack'; // Import ArrowBackIcon
+import { useTheme } from '@mui/material/styles';
 
 export default function AboutPage() {
   const router = useRouter();
+  const theme = useTheme();
   return (
     <PublicPageLayout>
       {/* Hero Section */}
-      <Box component="section" sx={{ py: 8, px: { xs: 4, sm: 3, lg: 4 } }}>
+      <Box 
+        component="section" 
+        sx={{
+          py: { xs: 8, md: 12 }, 
+          px: { xs: 4, sm: 3, lg: 4 }, 
+          background: theme.palette.mode === 'light' 
+            ? 'linear-gradient(to right, #dbeafe, #e9d5ff)' 
+            : 'linear-gradient(to right, rgba(30, 58, 138, 0.2), rgba(147, 51, 234, 0.2))', 
+        }}
+      >
         <Container maxWidth="lg">
           <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 3 }}>
             <IconButton 
@@ -37,7 +48,7 @@ export default function AboutPage() {
             <Box sx={{ flex: 1, textAlign: 'center' }}>
               <Typography variant="h2" component="h1" sx={{ 
                 fontWeight: 'bold', 
-                color: 'grey.900', 
+                color: theme.palette.text.primary, 
                 fontSize: { xs: '2.5rem', sm: '3rem', lg: '3.125rem' }
               }}>
                 Empowering Creators Worldwide
@@ -46,9 +57,9 @@ export default function AboutPage() {
             <Box sx={{ width: 48, mr: 2 }} /> {/* Spacer to balance the IconButton */}
           </Box>
           <Typography variant="h5" sx={{ 
-            color: 'grey.600', 
+            color: theme.palette.text.secondary, 
             mb: 4,
-            '& .dark &': { color: 'grey.300' }
+            // Removed dark mode explicit override as theme.palette.text.secondary should handle it
           }}>
             We&apos;re building the future of content creation, one creator at a time.
           </Typography>
@@ -59,22 +70,22 @@ export default function AboutPage() {
       <Box component="section" sx={{ 
         py: 8, 
         px: { xs: 4, sm: 3, lg: 4 }, 
-        bgcolor: 'grey.50',
-        '& .dark &': { bgcolor: 'grey.800' }
+        bgcolor: theme.palette.background.default,
+        // Removed dark mode explicit override as theme.palette.background.default should handle it
       }}>
         <Container maxWidth="lg">
           <Box sx={{ textAlign: 'center', mb: 6 }}>
             <Typography variant="h3" component="h2" sx={{ 
               fontWeight: 'bold', 
-              color: 'grey.900', 
+              color: theme.palette.text.primary, 
               mb: 2,
-              '& .dark &': { color: 'white' }
+              // Removed dark mode explicit override as theme.palette.text.primary should handle it
             }}>
               Our Mission
             </Typography>
             <Typography variant="h6" sx={{ 
-              color: 'grey.600',
-              '& .dark &': { color: 'grey.300' }
+              color: theme.palette.text.secondary,
+              // Removed dark mode explicit override as theme.palette.text.secondary should handle it
             }}>
               To democratize content creation by providing creators with the tools, insights, and opportunities they need to succeed in the digital economy.
             </Typography>
@@ -86,16 +97,16 @@ export default function AboutPage() {
                 <Box sx={{ 
                   width: 64, 
                   height: 64, 
-                  bgcolor: 'blue.100', 
+                  bgcolor: theme.palette.primary.light, 
                   borderRadius: '50%', 
                   display: 'flex', 
                   alignItems: 'center', 
                   justifyContent: 'center', 
                   mx: 'auto', 
                   mb: 2,
-                  '& .dark &': { bgcolor: 'blue.900' }
+                  // Removed dark mode explicit override as theme.palette.primary.light/dark should handle it
                 }}>
-                  <GpsFixedIcon style={{ height: 32, width: 32, color: 'var(--mui-palette-primary-main)' }} />
+                  <GpsFixedIcon style={{ height: 32, width: 32, color: theme.palette.primary.main }} />
                 </Box>
                 <Typography variant="h5" component="h3" sx={{ 
                   fontWeight: 600, 
@@ -119,7 +130,7 @@ export default function AboutPage() {
                 <Box sx={{ 
                   width: 64, 
                   height: 64, 
-                  bgcolor: 'purple.100', 
+                  bgcolor: theme.palette.secondary.light, 
                   borderRadius: '50%', 
                   display: 'flex', 
                   alignItems: 'center', 
@@ -128,19 +139,19 @@ export default function AboutPage() {
                   mb: 2,
                   '& .dark &': { bgcolor: 'purple.900' }
                 }}>
-                  <FavoriteIcon style={{ height: 32, width: 32, color: 'var(--mui-palette-secondary-main)' }} />
+                  <FavoriteIcon style={{ height: 32, width: 32, color: theme.palette.secondary.main }} />
                 </Box>
                 <Typography variant="h5" component="h3" sx={{ 
                   fontWeight: 600, 
-                  color: 'grey.900', 
+                  color: theme.palette.text.primary, 
                   mb: 1,
-                  '& .dark &': { color: 'white' }
+                  // Removed dark mode explicit override as theme.palette.text.primary should handle it
                 }}>
                   Support
                 </Typography>
                 <Typography variant="body1" sx={{ 
-                  color: 'grey.600',
-                  '& .dark &': { color: 'grey.300' }
+                  color: theme.palette.text.secondary,
+                  // Removed dark mode explicit override as theme.palette.text.secondary should handle it
                 }}>
                   Build a community where creators can learn, collaborate, and succeed together.
                 </Typography>
@@ -152,28 +163,28 @@ export default function AboutPage() {
                 <Box sx={{ 
                   width: 64, 
                   height: 64, 
-                  bgcolor: 'green.100', 
+                  bgcolor: theme.palette.success.light, 
                   borderRadius: '50%', 
                   display: 'flex', 
                   alignItems: 'center', 
                   justifyContent: 'center', 
                   mx: 'auto', 
                   mb: 2,
-                  '& .dark &': { bgcolor: 'green.900' }
+                  // Removed dark mode explicit override as theme.palette.success.light/dark should handle it
                 }}>
-                  <FlashOnIcon style={{ height: 32, width: 32, color: '#16a34a' }} />
+                  <FlashOnIcon style={{ height: 32, width: 32, color: theme.palette.success.main }} />
                 </Box>
                 <Typography variant="h5" component="h3" sx={{ 
                   fontWeight: 600, 
-                  color: 'grey.900', 
+                  color: theme.palette.text.primary, 
                   mb: 1,
-                  '& .dark &': { color: 'white' }
+                  // Removed dark mode explicit override as theme.palette.text.primary should handle it
                 }}>
                   Innovate
                 </Typography>
                 <Typography variant="body1" sx={{ 
-                  color: 'grey.600',
-                  '& .dark &': { color: 'grey.300' }
+                  color: theme.palette.text.secondary,
+                  // Removed dark mode explicit override as theme.palette.text.secondary should handle it
                 }}>
                   Continuously develop cutting-edge tools that adapt to the evolving creator economy.
                 </Typography>
@@ -189,8 +200,8 @@ export default function AboutPage() {
           <Box sx={{ textAlign: 'center', mb: 6 }}>
             <Typography variant="h3" component="h2" sx={{ 
               fontWeight: 'bold', 
-              color: 'grey.900',
-              '& .dark &': { color: 'white' }
+              color: theme.palette.text.primary,
+              // Removed dark mode explicit override as theme.palette.text.primary should handle it
             }}>
               Our Values
             </Typography>
@@ -202,28 +213,28 @@ export default function AboutPage() {
                 <Box sx={{ 
                   width: 48, 
                   height: 48, 
-                  bgcolor: 'blue.100', 
+                  bgcolor: theme.palette.primary.light, 
                   borderRadius: 2, 
                   display: 'flex', 
                   alignItems: 'center', 
                   justifyContent: 'center', 
                   flexShrink: 0,
-                  '& .dark &': { bgcolor: 'blue.900' }
+                  // Removed dark mode explicit override as theme.palette.primary.light/dark should handle it
                 }}>
-                  <PeopleIcon style={{ height: 24, width: 24, color: '#2563eb' }} />
+                  <PeopleIcon style={{ height: 24, width: 24, color: theme.palette.primary.dark }} />
                 </Box>
                 <Box>
                   <Typography variant="h6" component="h3" sx={{ 
                     fontWeight: 600, 
-                    color: 'grey.900', 
+                    color: theme.palette.text.primary, 
                     mb: 1,
-                    '& .dark &': { color: 'white' }
+                    // Removed dark mode explicit override as theme.palette.text.primary should handle it
                   }}>
                     Creator-First
                   </Typography>
                   <Typography variant="body1" sx={{ 
-                    color: 'grey.600',
-                    '& .dark &': { color: 'grey.300' }
+                    color: theme.palette.text.secondary,
+                    // Removed dark mode explicit override as theme.palette.text.secondary should handle it
                   }}>
                     Every decision we make is guided by what's best for creators and their communities.
                   </Typography>
@@ -236,15 +247,15 @@ export default function AboutPage() {
                 <Box sx={{ 
                   width: 48, 
                   height: 48, 
-                  bgcolor: 'purple.100', 
+                  bgcolor: theme.palette.secondary.light, 
                   borderRadius: 2, 
                   display: 'flex', 
                   alignItems: 'center', 
                   justifyContent: 'center', 
                   flexShrink: 0,
-                  '& .dark &': { bgcolor: 'purple.900' }
+                  // Removed dark mode explicit override as theme.palette.secondary.light/dark should handle it
                 }}>
-                  <SecurityIcon style={{ height: 24, width: 24, color: '#9333ea' }} />
+                  <SecurityIcon style={{ height: 24, width: 24, color: theme.palette.secondary.dark }} />
                 </Box>
                 <Box>
                   <Typography variant="h6" component="h3" sx={{ 
@@ -270,15 +281,15 @@ export default function AboutPage() {
                 <Box sx={{ 
                   width: 48, 
                   height: 48, 
-                  bgcolor: 'green.100', 
+                  bgcolor: theme.palette.success.light, 
                   borderRadius: 2, 
                   display: 'flex', 
                   alignItems: 'center', 
                   justifyContent: 'center', 
                   flexShrink: 0,
-                  '& .dark &': { bgcolor: 'green.900' }
+                  // Removed dark mode explicit override as theme.palette.success.light/dark should handle it
                 }}>
-                  <PublicIcon style={{ height: 24, width: 24, color: '#16a34a' }} />
+                  <PublicIcon style={{ height: 24, width: 24, color: theme.palette.success.main }} />
                 </Box>
                 <Box>
                   <Typography variant="h6" component="h3" sx={{ 
@@ -304,15 +315,15 @@ export default function AboutPage() {
                 <Box sx={{ 
                   width: 48, 
                   height: 48, 
-                  bgcolor: 'orange.100', 
+                  bgcolor: theme.palette.warning.light, 
                   borderRadius: 2, 
                   display: 'flex', 
                   alignItems: 'center', 
                   justifyContent: 'center', 
                   flexShrink: 0,
-                  '& .dark &': { bgcolor: 'orange.900' }
+                  // Removed dark mode explicit override as theme.palette.warning.light/dark should handle it
                 }}>
-                  <FlashOnIcon style={{ height: 24, width: 24, color: '#ea580c' }} />
+                  <FlashOnIcon style={{ height: 24, width: 24, color: theme.palette.warning.dark }} />
                 </Box>
                 <Box>
                   <Typography variant="h6" component="h3" sx={{ 
@@ -340,22 +351,22 @@ export default function AboutPage() {
       <Box component="section" sx={{ 
         py: 8, 
         px: { xs: 4, sm: 3, lg: 4 }, 
-        bgcolor: 'grey.50',
-        '& .dark &': { bgcolor: 'grey.800' }
+        bgcolor: theme.palette.background.default,
+        // Removed dark mode explicit override as theme.palette.background.default should handle it
       }}>
         <Container maxWidth="lg">
           <Box sx={{ textAlign: 'center', mb: 6 }}>
             <Typography variant="h3" component="h2" sx={{ 
               fontWeight: 'bold', 
-              color: 'grey.900', 
+              color: theme.palette.text.primary, 
               mb: 2,
-              '& .dark &': { color: 'white' }
+              // Removed dark mode explicit override as theme.palette.text.primary should handle it
             }}>
               Our Team
             </Typography>
             <Typography variant="h6" sx={{ 
-              color: 'grey.600',
-              '& .dark &': { color: 'grey.300' }
+              color: theme.palette.text.secondary,
+              // Removed dark mode explicit override as theme.palette.text.secondary should handle it
             }}>
               A passionate group of creators, developers, and entrepreneurs building the future of content creation.
             </Typography>
@@ -367,14 +378,14 @@ export default function AboutPage() {
                 <Box sx={{ 
                   width: 96, 
                   height: 96, 
-                  bgcolor: 'linear-gradient(to right, blue.500, purple.600)', 
+                  bgcolor: theme.palette.primary.main, // Using primary.main for a solid color, or could use a custom gradient if defined in theme
                   borderRadius: '50%', 
                   mx: 'auto', 
                   mb: 2,
                   display: 'flex', 
                   alignItems: 'center', 
                   justifyContent: 'center', 
-                  color: 'white',
+                  color: theme.palette.common.white,
                   fontSize: '2rem',
                   fontWeight: 'bold'
                 }}>
@@ -382,22 +393,22 @@ export default function AboutPage() {
                 </Box>
                 <Typography variant="h6" component="h3" sx={{ 
                   fontWeight: 600, 
-                  color: 'grey.900', 
+                  color: theme.palette.text.primary, 
                   mb: 1,
-                  '& .dark &': { color: 'white' }
+                  // Removed dark mode explicit override as theme.palette.text.primary should handle it
                 }}>
                   Derrell Kilo
                 </Typography>
                 <Typography variant="body2" sx={{ 
-                  color: 'grey.600',
+                  color: theme.palette.text.secondary,
                   mb: 1,
-                  '& .dark &': { color: 'grey.300' }
+                  // Removed dark mode explicit override as theme.palette.text.secondary should handle it
                 }}>
                   Founder & CEO
                 </Typography>
                 <Typography variant="body2" sx={{ 
-                  color: 'grey.500',
-                  '& .dark &': { color: 'grey.400' }
+                  color: theme.palette.text.disabled,
+                  // Removed dark mode explicit override as theme.palette.text.disabled should handle it
                 }}>
                   Former creator turned entrepreneur, passionate about empowering the next generation of digital creators.
                 </Typography>
@@ -409,14 +420,14 @@ export default function AboutPage() {
                 <Box sx={{ 
                   width: 96, 
                   height: 96, 
-                  bgcolor: 'linear-gradient(to right, green.500, blue.600)', 
+                  bgcolor: theme.palette.success.main, // Using success.main for a solid color
                   borderRadius: '50%', 
                   mx: 'auto', 
                   mb: 2,
                   display: 'flex', 
                   alignItems: 'center', 
                   justifyContent: 'center', 
-                  color: 'white',
+                  color: theme.palette.common.white,
                   fontSize: '2rem',
                   fontWeight: 'bold'
                 }}>
@@ -424,22 +435,22 @@ export default function AboutPage() {
                 </Box>
                 <Typography variant="h6" component="h3" sx={{ 
                   fontWeight: 600, 
-                  color: 'grey.900', 
+                  color: theme.palette.text.primary, 
                   mb: 1,
-                  '& .dark &': { color: 'white' }
+                  // Removed dark mode explicit override as theme.palette.text.primary should handle it
                 }}>
                   Shawn Montgomery
                 </Typography>
                 <Typography variant="body2" sx={{ 
-                  color: 'grey.600',
+                  color: theme.palette.text.secondary,
                   mb: 1,
-                  '& .dark &': { color: 'grey.300' }
+                  // Removed dark mode explicit override as theme.palette.text.secondary should handle it
                 }}>
                   CTO
                 </Typography>
                 <Typography variant="body2" sx={{ 
-                  color: 'grey.500',
-                  '& .dark &': { color: 'grey.400' }
+                  color: theme.palette.text.disabled,
+                  // Removed dark mode explicit override as theme.palette.text.disabled should handle it
                 }}>
                   Tech leader with 15+ years building scalable platforms for creators and businesses.
                 </Typography>
@@ -451,14 +462,14 @@ export default function AboutPage() {
                 <Box sx={{ 
                   width: 96, 
                   height: 96, 
-                  bgcolor: 'linear-gradient(to right, purple.500, pink.600)', 
+                  bgcolor: theme.palette.secondary.main, // Using secondary.main for a solid color
                   borderRadius: '50%', 
                   mx: 'auto', 
                   mb: 2,
                   display: 'flex', 
                   alignItems: 'center', 
                   justifyContent: 'center', 
-                  color: 'white',
+                  color: theme.palette.common.white,
                   fontSize: '2rem',
                   fontWeight: 'bold'
                 }}>
@@ -466,22 +477,22 @@ export default function AboutPage() {
                 </Box>
                 <Typography variant="h6" component="h3" sx={{ 
                   fontWeight: 600, 
-                  color: 'grey.900', 
+                  color: theme.palette.text.primary, 
                   mb: 1,
-                  '& .dark &': { color: 'white' }
+                  // Removed dark mode explicit override as theme.palette.text.primary should handle it
                 }}>
                   Lloyd Alexander
                 </Typography>
                 <Typography variant="body2" sx={{ 
-                  color: 'grey.600',
+                  color: theme.palette.text.secondary,
                   mb: 1,
-                  '& .dark &': { color: 'grey.300' }
+                  // Removed dark mode explicit override as theme.palette.text.secondary should handle it
                 }}>
                   Head of Product
                 </Typography>
                 <Typography variant="body2" sx={{ 
-                  color: 'grey.500',
-                  '& .dark &': { color: 'grey.400' }
+                  color: theme.palette.text.disabled,
+                  // Removed dark mode explicit override as theme.palette.text.disabled should handle it
                 }}>
                   Product strategist focused on creating intuitive experiences that creators love to use.
                 </Typography>
@@ -495,22 +506,22 @@ export default function AboutPage() {
       <Box component="section" sx={{ 
         py: 8, 
         px: { xs: 4, sm: 3, lg: 4 }, 
-        bgcolor: 'grey.50',
-        '& .dark &': { bgcolor: 'grey.800' }
+        bgcolor: theme.palette.background.default,
+        // Removed dark mode explicit override as theme.palette.background.default should handle it
       }}>
         <Container maxWidth="lg" sx={{ textAlign: 'center' }}>
           <Typography variant="h3" component="h2" sx={{ 
             fontWeight: 'bold', 
-            color: 'grey.900', 
+            color: theme.palette.text.primary, 
             mb: 2,
-            '& .dark &': { color: 'white' }
+            // Removed dark mode explicit override as theme.palette.text.primary should handle it
           }}>
             Ready to Start Your Creator Journey?
           </Typography>
           <Typography variant="h6" sx={{ 
-            color: 'grey.600',
+            color: theme.palette.text.secondary,
             mb: 2,
-            '& .dark &': { color: 'grey.300' }
+            // Removed dark mode explicit override as theme.palette.text.secondary should handle it
           }}>
             Join thousands of creators who are already using floai.studio to grow their audience and income.
           </Typography>
@@ -519,15 +530,15 @@ export default function AboutPage() {
             href="/auth" 
             sx={{ 
               display: 'inline-block', 
-              bgcolor: 'linear-gradient(to right, blue.500, purple.600)', 
-              color: 'white', 
+              bgcolor: theme.palette.primary.main, // Using primary.main for the button background
+              color: theme.palette.common.white, 
               fontWeight: 'semibold', 
               borderRadius: '0.5rem', 
               px: 3, 
               py: 1, 
               textDecoration: 'none',
               '&:hover': { 
-                bgcolor: 'linear-gradient(to right, blue.600, purple.700)' 
+                bgcolor: theme.palette.primary.dark, // Using primary.dark for hover state
               }
             }}
           >

@@ -3,217 +3,395 @@
 import { useState } from "react";
 import Link from 'next/link';
 import { Email as EmailIcon, Phone as PhoneIcon, LocationOn as LocationOnIcon, AccessTime as AccessTimeIcon, Chat as ChatIcon, Send as SendIcon } from '@mui/icons-material';
-import { PublicHeader } from '@/components/PublicHeader';
-import { Footer } from '@/components/Footer';
+// Removing PublicHeader and Footer imports as PublicPageLayout will handle these
+import { PublicPageLayout } from '@/components/layout/PublicPageLayout';
+import { useTheme } from '@mui/material/styles';
+import { Box, Container, Typography, Grid, Paper, TextField, Button, MenuItem } from '@mui/material'; // Import Material-UI components
 
 export default function Contact() {
   const [submitted, setSubmitted] = useState(false);
+  const theme = useTheme();
 
   return (
-    <div className="min-h-screen bg-background flex flex-col">
-      <PublicHeader />
-
+    <PublicPageLayout>
       {/* Hero Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20">
-        <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white mb-6">
+      <Box component="section" sx={{
+        py: { xs: 8, md: 12 }, 
+        px: { xs: 4, sm: 3, lg: 4 }, 
+        background: theme.palette.mode === 'light' 
+          ? 'linear-gradient(to right, #dbeafe, #e9d5ff)' 
+          : 'linear-gradient(to right, rgba(30, 58, 138, 0.2), rgba(147, 51, 234, 0.2))', 
+      }}>
+        <Container maxWidth="md" sx={{ textAlign: 'center' }}>
+          <Typography variant="h2" component="h1" sx={{ 
+            fontWeight: 'bold', 
+            color: theme.palette.text.primary, 
+            mb: 3,
+            fontSize: { xs: '2.5rem', sm: '3rem', lg: '3.125rem' }
+          }}>
             Get in Touch
-          </h1>
-          <p className="text-xl text-gray-600 dark:text-gray-300 mb-8">
-            Have questions about floai.studio? We'd love to hear from you.
-          </p>
-        </div>
-      </section>
+          </Typography>
+          <Typography variant="h5" sx={{ 
+            color: theme.palette.text.secondary, 
+            mb: 4,
+          }}>
+            Have questions about floai.studio? We&apos;d love to hear from you.
+          </Typography>
+        </Container>
+      </Box>
 
       {/* Contact Methods */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
-            <div className="text-center">
-              <div className="w-16 h-16 bg-blue-100 dark:bg-blue-900 rounded-full flex items-center justify-center mx-auto mb-4">
-                <EmailIcon sx={{ fontSize: 32 }} className="text-blue-600 dark:text-blue-400" />
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Email Us</h3>
-              <p className="text-gray-600 dark:text-gray-300 mb-2">For general inquiries</p>
-              <a href="mailto:hello@floai.studio" className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
+      <Box component="section" sx={{ py: 8, px: { xs: 4, sm: 3, lg: 4 } }}>
+        <Container maxWidth="lg">
+          <Grid container spacing={4} sx={{ mb: 8 }}>
+            <Grid item xs={12} md={4}>
+              <Box sx={{ textAlign: 'center' }}>
+                <Box sx={{
+                  width: 64, 
+                  height: 64, 
+                  bgcolor: theme.palette.primary.light, 
+                  borderRadius: '50%', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center', 
+                  mx: 'auto', 
+                  mb: 2,
+                }}>
+                  <EmailIcon sx={{ fontSize: 32, color: theme.palette.primary.main }} />
+                </Box>
+                <Typography variant="h6" component="h3" sx={{ fontWeight: 'semibold', color: theme.palette.text.primary, mb: 1 }}>Email Us</Typography>
+                <Typography variant="body1" sx={{ color: theme.palette.text.secondary, mb: 2 }}>For general inquiries</Typography>
+                <Link href="mailto:hello@floai.studio" style={{ textDecoration: 'none' }}>
+                  <Typography component="span" sx={{
+                    color: theme.palette.info.main,
+                    '&:hover': { color: theme.palette.info.dark }
+                  }}>
                 hello@floai.studio
-              </a>
-            </div>
+                  </Typography>
+                </Link>
+              </Box>
+            </Grid>
             
-            <div className="text-center">
-              <div className="w-16 h-16 bg-purple-100 dark:bg-purple-900 rounded-full flex items-center justify-center mx-auto mb-4">
-                <ChatIcon sx={{ fontSize: 32 }} className="text-purple-600 dark:text-purple-400" />
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Support</h3>
-              <p className="text-gray-600 dark:text-gray-300 mb-2">For technical help</p>
-              <a href="mailto:support@floai.studio" className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
+            <Grid item xs={12} md={4}>
+              <Box sx={{ textAlign: 'center' }}>
+                <Box sx={{
+                  width: 64, 
+                  height: 64, 
+                  bgcolor: theme.palette.secondary.light, 
+                  borderRadius: '50%', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center', 
+                  mx: 'auto', 
+                  mb: 2,
+                }}>
+                  <ChatIcon sx={{ fontSize: 32, color: theme.palette.secondary.main }} />
+                </Box>
+                <Typography variant="h6" component="h3" sx={{ fontWeight: 'semibold', color: theme.palette.text.primary, mb: 1 }}>Support</Typography>
+                <Typography variant="body1" sx={{ color: theme.palette.text.secondary, mb: 2 }}>For technical help</Typography>
+                <Link href="mailto:support@floai.studio" style={{ textDecoration: 'none' }}>
+                  <Typography component="span" sx={{
+                    color: theme.palette.info.main,
+                    '&:hover': { color: theme.palette.info.dark }
+                  }}>
                 support@floai.studio
-              </a>
-            </div>
+                  </Typography>
+                </Link>
+              </Box>
+            </Grid>
             
-            <div className="text-center">
-              <div className="w-16 h-16 bg-green-100 dark:bg-green-900 rounded-full flex items-center justify-center mx-auto mb-4">
-                <PhoneIcon sx={{ fontSize: 32 }} className="text-green-600 dark:text-green-400" />
-              </div>
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Sales</h3>
-              <p className="text-gray-600 dark:text-gray-300 mb-2">For enterprise inquiries</p>
-              <a href="mailto:sales@floai.studio" className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300">
+            <Grid item xs={12} md={4}>
+              <Box sx={{ textAlign: 'center' }}>
+                <Box sx={{
+                  width: 64, 
+                  height: 64, 
+                  bgcolor: theme.palette.success.light, 
+                  borderRadius: '50%', 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  justifyContent: 'center', 
+                  mx: 'auto', 
+                  mb: 2,
+                }}>
+                  <PhoneIcon sx={{ fontSize: 32, color: theme.palette.success.main }} />
+                </Box>
+                <Typography variant="h6" component="h3" sx={{ fontWeight: 'semibold', color: theme.palette.text.primary, mb: 1 }}>Sales</Typography>
+                <Typography variant="body1" sx={{ color: theme.palette.text.secondary, mb: 2 }}>For enterprise inquiries</Typography>
+                <Link href="mailto:sales@floai.studio" style={{ textDecoration: 'none' }}>
+                  <Typography component="span" sx={{
+                    color: theme.palette.info.main,
+                    '&:hover': { color: theme.palette.info.dark }
+                  }}>
                 sales@floai.studio
-              </a>
-            </div>
-          </div>
+                  </Typography>
+                </Link>
+              </Box>
+            </Grid>
+          </Grid>
 
           {/* Contact Form */}
-          <div className="max-w-2xl mx-auto">
-            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 border border-gray-200 dark:border-gray-700">
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">Send us a Message</h2>
+          <Box maxWidth="sm" sx={{ mx: 'auto' }}>
+            <Paper sx={{ p: 4, border: `1px solid ${theme.palette.divider}` }}>
+              <Typography variant="h4" component="h2" sx={{ fontWeight: 'bold', color: theme.palette.text.primary, mb: 4, textAlign: 'center' }}>Send us a Message</Typography>
               
               {submitted ? (
-                <div className="bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded-lg p-6 text-center">
-                  <div className="text-2xl mb-2">✅</div>
-                  <h3 className="font-semibold mb-2">Thank you for reaching out!</h3>
-                  <p className="text-sm">We'll get back to you within 24 hours.</p>
-                </div>
+                <Box sx={{ bgcolor: theme.palette.success.light, color: theme.palette.success.dark, borderRadius: 1, p: 3, textAlign: 'center' }}>
+                  <Typography variant="h5" sx={{ mb: 1 }}>✅</Typography>
+                  <Typography variant="h6" sx={{ fontWeight: 'semibold', mb: 1 }}>Thank you for reaching out!</Typography>
+                  <Typography variant="body2">We&apos;ll get back to you within 24 hours.</Typography>
+                </Box>
               ) : (
                 <form
-                  className="space-y-6"
                   onSubmit={e => {
                     e.preventDefault();
                     setSubmitted(true);
                   }}
                 >
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div>
-                      <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <Grid container spacing={3} sx={{ mb: 3 }}>
+                    <Grid item xs={12} md={6}>
+                      <Typography variant="body2" component="label" htmlFor="firstName" sx={{ display: 'block', fontWeight: 'medium', color: theme.palette.text.secondary, mb: 1 }}>
                         First Name
-                      </label>
-                      <input 
+                      </Typography>
+                      <TextField 
                         id="firstName" 
                         name="firstName" 
                         type="text" 
                         required 
-                        className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+                        fullWidth
+                        variant="outlined"
+                        sx={{
+                          '& .MuiOutlinedInput-root': {
+                            borderRadius: '8px',
+                            borderColor: theme.palette.divider,
+                            bgcolor: theme.palette.background.paper,
+                            color: theme.palette.text.primary,
+                            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                              borderColor: theme.palette.primary.main,
+                              borderWidth: '2px'
+                            },
+                            '&:hover .MuiOutlinedInput-notchedOutline': {
+                              borderColor: theme.palette.primary.main,
+                            }
+                          }
+                        }}
                       />
-                    </div>
-                    <div>
-                      <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                      <Typography variant="body2" component="label" htmlFor="lastName" sx={{ display: 'block', fontWeight: 'medium', color: theme.palette.text.secondary, mb: 1 }}>
                         Last Name
-                      </label>
-                      <input 
+                      </Typography>
+                      <TextField 
                         id="lastName" 
                         name="lastName" 
                         type="text" 
                         required 
-                        className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+                        fullWidth
+                        variant="outlined"
+                        sx={{
+                          '& .MuiOutlinedInput-root': {
+                            borderRadius: '8px',
+                            borderColor: theme.palette.divider,
+                            bgcolor: theme.palette.background.paper,
+                            color: theme.palette.text.primary,
+                            '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                              borderColor: theme.palette.primary.main,
+                              borderWidth: '2px'
+                            },
+                            '&:hover .MuiOutlinedInput-notchedOutline': {
+                              borderColor: theme.palette.primary.main,
+                            }
+                          }
+                        }}
                       />
-                    </div>
-                  </div>
+                    </Grid>
+                  </Grid>
                   
-                  <div>
-                    <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <Box sx={{ mb: 3 }}>
+                    <Typography variant="body2" component="label" htmlFor="email" sx={{ display: 'block', fontWeight: 'medium', color: theme.palette.text.secondary, mb: 1 }}>
                       Email Address
-                    </label>
-                    <input 
+                    </Typography>
+                    <TextField 
                       id="email" 
                       name="email" 
                       type="email" 
                       required 
-                      className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+                      fullWidth
+                      variant="outlined"
+                      sx={{
+                        '& .MuiOutlinedInput-root': {
+                          borderRadius: '8px',
+                          borderColor: theme.palette.divider,
+                          bgcolor: theme.palette.background.paper,
+                          color: theme.palette.text.primary,
+                          '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                            borderColor: theme.palette.primary.main,
+                            borderWidth: '2px'
+                          },
+                          '&:hover .MuiOutlinedInput-notchedOutline': {
+                            borderColor: theme.palette.primary.main,
+                          }
+                        }
+                      }}
                     />
-                  </div>
+                  </Box>
                   
-                  <div>
-                    <label htmlFor="subject" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <Box sx={{ mb: 3 }}>
+                    <Typography variant="body2" component="label" htmlFor="subject" sx={{ display: 'block', fontWeight: 'medium', color: theme.palette.text.secondary, mb: 1 }}>
                       Subject
-                    </label>
-                    <select 
+                    </Typography>
+                    <TextField 
                       id="subject" 
                       name="subject" 
+                      select
                       required 
-                      className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      fullWidth
+                      variant="outlined"
+                      defaultValue=""
+                      sx={{
+                        '& .MuiOutlinedInput-root': {
+                          borderRadius: '8px',
+                          borderColor: theme.palette.divider,
+                          bgcolor: theme.palette.background.paper,
+                          color: theme.palette.text.primary,
+                          '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                            borderColor: theme.palette.primary.main,
+                            borderWidth: '2px'
+                          },
+                          '&:hover .MuiOutlinedInput-notchedOutline': {
+                            borderColor: theme.palette.primary.main,
+                          }
+                        }
+                      }}
                     >
-                      <option value="">Select a subject</option>
-                      <option value="general">General Inquiry</option>
-                      <option value="support">Technical Support</option>
-                      <option value="sales">Sales Question</option>
-                      <option value="partnership">Partnership</option>
-                      <option value="feedback">Feedback</option>
-                    </select>
-                  </div>
+                      <MenuItem value="">Select a subject</MenuItem>
+                      <MenuItem value="general">General Inquiry</MenuItem>
+                      <MenuItem value="support">Technical Support</MenuItem>
+                      <MenuItem value="sales">Sales Question</MenuItem>
+                      <MenuItem value="partnership">Partnership</MenuItem>
+                      <MenuItem value="feedback">Feedback</MenuItem>
+                    </TextField>
+                  </Box>
                   
-                  <div>
-                    <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <Box sx={{ mb: 4 }}>
+                    <Typography variant="body2" component="label" htmlFor="message" sx={{ display: 'block', fontWeight: 'medium', color: theme.palette.text.secondary, mb: 1 }}>
                       Message
-                    </label>
-                    <textarea 
+                    </Typography>
+                    <TextField 
                       id="message" 
                       name="message" 
                       rows={5} 
                       required 
-                      className="w-full px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent" 
+                      fullWidth
+                      multiline
+                      variant="outlined"
                       placeholder="Tell us how we can help you..."
+                      sx={{
+                        '& .MuiOutlinedInput-root': {
+                          borderRadius: '8px',
+                          borderColor: theme.palette.divider,
+                          bgcolor: theme.palette.background.paper,
+                          color: theme.palette.text.primary,
+                          '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                            borderColor: theme.palette.primary.main,
+                            borderWidth: '2px'
+                          },
+                          '&:hover .MuiOutlinedInput-notchedOutline': {
+                            borderColor: theme.palette.primary.main,
+                          }
+                        }
+                      }}
                     />
-                  </div>
+                  </Box>
                   
-                  <button 
+                  <Button 
                     type="submit" 
-                    className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold py-3 px-6 rounded-lg hover:from-blue-600 hover:to-purple-700 transition flex items-center justify-center gap-2"
+                    variant="contained"
+                    fullWidth
+                    sx={{
+                      bgcolor: theme.palette.primary.main,
+                      color: theme.palette.common.white,
+                      fontWeight: 'semibold',
+                      py: 1.5,
+                      px: 3,
+                      borderRadius: '0.5rem',
+                      textTransform: 'none',
+                      '&:hover': {
+                        bgcolor: theme.palette.primary.dark,
+                      },
+                    }}
+                    startIcon={<SendIcon sx={{ fontSize: 16 }} />}
                   >
-                    <SendIcon sx={{ fontSize: 16 }} className="h-4 w-4" />
                     Send Message
-                  </button>
+                  </Button>
                 </form>
               )}
-            </div>
-          </div>
-        </div>
-      </section>
+            </Paper>
+          </Box>
+        </Container>
+      </Box>
 
       {/* Office Info */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-50 dark:bg-gray-800">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-8 text-center">Our Office</h2>
+      <Box component="section" sx={{ py: 8, px: { xs: 4, sm: 3, lg: 4 }, bgcolor: theme.palette.background.default }}>
+        <Container maxWidth="md">
+          <Typography variant="h3" component="h2" sx={{ fontWeight: 'bold', color: theme.palette.text.primary, mb: 4, textAlign: 'center' }}>Our Office</Typography>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="bg-white dark:bg-gray-700 rounded-lg p-6 border border-gray-200 dark:border-gray-600">
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <LocationOnIcon sx={{ fontSize: 24 }} className="text-blue-600 dark:text-blue-400" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">San Francisco</h3>
-                  <p className="text-gray-600 dark:text-gray-300 text-sm">
+          <Grid container spacing={4}>
+            <Grid item xs={12} md={6}>
+              <Paper sx={{ p: 3, border: `1px solid ${theme.palette.divider}` }}>
+                <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
+                  <Box sx={{
+                    width: 48, 
+                    height: 48, 
+                    bgcolor: theme.palette.primary.light, 
+                    borderRadius: '8px', 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'center', 
+                    flexShrink: 0,
+                  }}>
+                    <LocationOnIcon sx={{ fontSize: 24, color: theme.palette.primary.main }} />
+                  </Box>
+                  <Box>
+                    <Typography variant="h6" component="h3" sx={{ fontWeight: 'semibold', color: theme.palette.text.primary, mb: 1 }}>San Francisco</Typography>
+                    <Typography variant="body2" sx={{ color: theme.palette.text.secondary }}>
                     123 floai.studio Street<br />
                     San Francisco, CA 94105<br />
                     United States
-                  </p>
-                </div>
-              </div>
-            </div>
+                    </Typography>
+                  </Box>
+                </Box>
+              </Paper>
+            </Grid>
             
-            <div className="bg-white dark:bg-gray-700 rounded-lg p-6 border border-gray-200 dark:border-gray-600">
-              <div className="flex items-start gap-4">
-                <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <AccessTimeIcon sx={{ fontSize: 24 }} className="text-purple-600 dark:text-purple-400" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">Business Hours</h3>
-                  <p className="text-gray-600 dark:text-gray-300 text-sm">
+            <Grid item xs={12} md={6}>
+              <Paper sx={{ p: 3, border: `1px solid ${theme.palette.divider}` }}>
+                <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 2 }}>
+                  <Box sx={{
+                    width: 48, 
+                    height: 48, 
+                    bgcolor: theme.palette.secondary.light, 
+                    borderRadius: '8px', 
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    justifyContent: 'center', 
+                    flexShrink: 0,
+                  }}>
+                    <AccessTimeIcon sx={{ fontSize: 24, color: theme.palette.secondary.main }} />
+                  </Box>
+                  <Box>
+                    <Typography variant="h6" component="h3" sx={{ fontWeight: 'semibold', color: theme.palette.text.primary, mb: 1 }}>Business Hours</Typography>
+                    <Typography variant="body2" sx={{ color: theme.palette.text.secondary }}>
                     Monday - Friday: 9:00 AM - 6:00 PM PST<br />
                     Saturday: 10:00 AM - 4:00 PM PST<br />
                     Sunday: Closed
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Bottom Spacer to Clear Bottom Navigation */}
-      <div className="h-32 sm:h-10 w-full"></div>
-
-      <Footer />
-    </div>
+                    </Typography>
+                  </Box>
+                </Box>
+              </Paper>
+            </Grid>
+          </Grid>
+        </Container>
+      </Box>
+    </PublicPageLayout>
   );
 } 
