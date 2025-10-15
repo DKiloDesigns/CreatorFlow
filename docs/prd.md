@@ -1,8 +1,8 @@
-## **Product Requirements Document: "CreatorFlow" \- Social Media Management for Influencers (v3.1 - Lloyd's Polish)**
+## **Product Requirements Document: "floai.studio" - Social Media Management for Influencers (v3.1 - Lloyd's Polish)**
 
 1\. Introduction
 
-* 1.1 Purpose: This document outlines the product requirements for "CreatorFlow," a web-based social media management tool built with Next.js. CreatorFlow is designed specifically to empower individual creators and influencers to efficiently manage their social media presence, grow their audience, and optimize their content for maximum impact and monetization opportunities.  
+* 1.1 Purpose: This document outlines the product requirements for "floai.studio," a web-based social media management tool built with Next.js. floai.studio is designed specifically to empower individual creators and influencers to efficiently manage their social media presence, grow their audience, and optimize their content for maximum impact and monetization opportunities.  
 * 1.2 Goals:  
   * Provide a streamlined and intuitive platform tailored to the workflows of social media creators.  
   * Offer advanced analytics focused on content performance and audience growth relevant to influencer success.  
@@ -12,7 +12,7 @@
   * Explore potential integrations with monetization platforms.  
 * 1.3 Target Audience: Individual social media creators and influencers across various platforms (initially focusing on Instagram, TikTok, YouTube, and potentially Twitter/X). This includes content creators in niches like lifestyle, beauty, gaming, education, and more.  
 * 1.4 Scope: This initial version (MVP \- Minimum Viable Product) will focus on core features for content scheduling, performance analytics, and basic brand collaboration management for the identified platforms.  
-* 1.5 Legal and Compliance Considerations: CreatorFlow will adhere to all relevant data privacy regulations and the Terms of Service of integrated social media platforms. Clear Terms of Service and a comprehensive Privacy Policy will be provided to users. Accessibility (WCAG guidelines) will be considered during the design and development process.  
+* 1.5 Legal and Compliance Considerations: floai.studio will adhere to all relevant data privacy regulations and the Terms of Service of integrated social media platforms. Clear Terms of Service and a comprehensive Privacy Policy will be provided to users. Accessibility (WCAG guidelines) will be considered during the design and development process.  
 * 1.6 Monetization Strategy (Initial Considerations): The MVP may offer a free tier with basic features. Future monetization options will be explored, including subscription tiers with advanced features and increased usage limits.  
 * 1.7 Frontend Color Palette: The frontend design will follow a Clean and Minimalist approach with a Vibrant Accent color to highlight key interactive elements and provide a modern feel without distracting from user content.  
   * Base Colors:  
@@ -37,7 +37,7 @@
 * As a creator, I want to have a media library to store and organize my photos and videos for easy use in my posts.  
 * As a creator, I want to receive notifications about important events, such as successful post publications or potential performance insights.  
 * As a new user, I want a clear and easy onboarding process to connect my accounts and understand the basic features.  
-* As a user, I want access to helpful documentation and FAQs to answer my questions about using CreatorFlow.
+* As a user, I want access to helpful documentation and FAQs to answer my questions about using floai.studio.
 
 3\. Functional Requirements
 

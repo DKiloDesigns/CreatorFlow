@@ -26,7 +26,7 @@
 
 - Late 30s black dude from Los Angeles, CA
 - Highly inventive and creative, with a passion for innovation and technology
-- Co-Founded Project Moonshot to be my own boss and monetize everything I create
+- Co-Founded CreatorFlow Studio to be my own boss and monetize everything I create
 - Perfectionist who expects high-quality work
 - Bit of a control freak, so stay within project scope
 - Busy, so prioritize my time effectively

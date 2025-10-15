@@ -5,7 +5,7 @@
 
 ## The "-ize" Methodology
 
-All development in BizAssist follows our custom "-ize" methodology:
+All development in CreatorFlow Studio follows our custom "-ize" methodology:
 
 1. **Analyze** - Understand requirements and user needs deeply before coding
 2. **Categorize** - Organize work by type, function, and priority
@@ -231,7 +231,7 @@ The development workflow is subject to continuous improvement:
 
 ### Post-Update Feedback Integration (Mandatory for DFAI Beta)
 
-To facilitate the refinement of the DFAI Core Docs and workflows, the following feedback process is required for [e.g., 5-10 sessions] immediately following the integration of a DFAI Core Docs update package:
+To facilitate the refinement of the CreatorFlow Core Docs and workflows, the following feedback process is required for [e.g., 5-10 sessions] immediately following the integration of a CreatorFlow Core Docs update package:
 
 1.  **Add Feedback Section:** In each Session Summary (or AI Journal entry), include a dedicated section titled: `## DFAI Update Feedback (vX.Y)` (replace X.Y with the version updated to).
 2.  **Record Observations:** Within this section, briefly note:
@@ -239,4 +239,4 @@ To facilitate the refinement of the DFAI Core Docs and workflows, the following 
     - Any friction, confusion, or roadblocks encountered related to applying these new elements.
     - Any aspects of the new rules/structures that worked particularly well or improved efficiency.
     - Specific suggestions for clarification or improvement based on the session's experience.
-3.  **Purpose:** This continuous feedback is crucial for the iterative development and improvement of the DFAI system.
+3.  **Purpose:** This continuous feedback is crucial for the iterative development and improvement of the CreatorFlow system.

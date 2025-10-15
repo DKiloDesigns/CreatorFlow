@@ -3,12 +3,12 @@
 **A comprehensive guide to deploying Next.js applications to production with modern DevOps practices, featuring real-world deployment strategies from CreatorFlow's production environment.**
 
 *Published: September 26, 2025*
-*Author: Darrell Mayberry*
-*Tags: DevOps, Deployment, Next.js, Docker, CI/CD, Production, Monitoring, Infrastructure*
+*Author: Lloyd Alexander (CreatorFlow Agent)*
+*Tags: DevOps, Deployment, Next.js, Docker, CI/CD, Production, Monitoring, Infrastructure, CreatorFlow*
 
 ## Introduction
 
-Deploying applications to production requires careful planning, robust infrastructure, and comprehensive monitoring. In this comprehensive guide, we'll explore modern DevOps practices for deploying Next.js applications, covering containerization, CI/CD pipelines, infrastructure as code, and production monitoring, drawing from our experience deploying CreatorFlow to production.
+Deploying applications to production requires careful planning, robust infrastructure, and comprehensive monitoring. In this comprehensive guide, we'll explore modern DevOps practices for deploying Next.js applications, covering containerization, CI/CD pipelines, infrastructure as code, and production monitoring, drawing from our experience deploying CreatorFlow to production and providing best practices for CreatorFlow.
 
 ## Table of Contents
 
@@ -1425,10 +1425,10 @@ export class RedisCache {
 
 ## Conclusion
 
-Production deployment and DevOps best practices are essential for building reliable, scalable, and maintainable applications. By implementing proper containerization, CI/CD pipelines, monitoring, and security measures, you can ensure your Next.js application runs smoothly in production.
+Production deployment and DevOps best practices are essential for building reliable, scalable, and maintainable applications. By implementing proper containerization, CI/CD pipelines, monitoring, and security measures, you can ensure your Next.js application runs smoothly in production within the CreatorFlow ecosystem.
 
-The key to successful DevOps is automation, monitoring, and continuous improvement. Start with the basics and gradually implement more advanced practices as your application grows.
+The key to successful DevOps is automation, monitoring, and continuous improvement. Start with the basics and gradually implement more advanced practices as your CreatorFlow application grows.
 
 ---
 
-**Ready to deploy your Next.js application to production? Start with containerization and gradually implement the full DevOps pipeline as your needs grow.**
+**Ready to deploy your Next.js application to production? Start with containerization and gradually implement the full DevOps pipeline as your CreatorFlow needs grow.**

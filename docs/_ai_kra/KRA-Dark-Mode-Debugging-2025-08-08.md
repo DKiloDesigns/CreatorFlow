@@ -8,7 +8,7 @@
 
 ## Problem Statement
 
-The CreatorFlow app's feature cards and pricing cards were displaying incorrect background colors in dark mode:
+The CreatorFlow Studio app's feature cards and pricing cards were displaying incorrect background colors in dark mode:
 - **Expected:** Light gray backgrounds in light mode, dark gray backgrounds in dark mode
 - **Actual:** Cards always showed dark gray background (`rgb(31, 41, 55)`) regardless of theme
 - **Impact:** Poor user experience, inconsistent theming

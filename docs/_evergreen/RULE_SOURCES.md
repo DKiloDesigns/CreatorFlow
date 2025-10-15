@@ -2,11 +2,11 @@
 
 **Status:** 🟢 Active
 **Last Updated:** March 26, 2024
-**Product:** DevFlow AI™
+**Product:** CreatorFlow
 
 ## Overview
 
-DevFlow AI™ manages multiple sources of development rules and instructions through a priority-based system. This document explains how different rule sources interact and how potential conflicts are resolved.
+CreatorFlow manages multiple sources of development rules and instructions through a priority-based system. This document explains how different rule sources interact and how potential conflicts are resolved.
 
 ## Rule Source Hierarchy
 
@@ -187,4 +187,4 @@ The Mission Control Dashboard provides:
 
 ---
 
-_"Rules don't restrict creativity; they channel it." - DevFlow AI™_
+_"Rules don't restrict creativity; they channel it." - CreatorFlow_

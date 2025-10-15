@@ -704,7 +704,7 @@ The key is to establish clear design tokens, create reusable components, and mai
 **Resources:**
 - [Material-UI Documentation](https://mui.com/)
 - [Tailwind CSS Documentation](https://tailwindcss.com/)
-- [CreatorFlow Design System](https://github.com/your-repo/creatorflow)
+- [CreatorFlow Studio Design System](https://github.com/your-repo/creatorflow)
 - [Design System Best Practices](https://designsystemsrepo.com/)
 
 ---

@@ -2,11 +2,11 @@
 
 **Status:** 🟢 Active
 **Last Updated:** March 26, 2024
-**Product:** DevFlow AI™
+**Product:** CreatorFlow
 
 ## Overview
 
-The DevFlow AI™ Rule Priority System ensures consistent rule application across different development environments and tools. This document defines how rule priorities are determined, managed, and enforced.
+The CreatorFlow Rule Priority System ensures consistent rule application across different development environments and tools. This document defines how rule priorities are determined, managed, and enforced.
 
 ## Priority Levels
 
@@ -192,7 +192,7 @@ const ideContextRule: Rule = {
 
 ```typescript
 // Initialize priority system
-const prioritySystem = new DevFlowPrioritySystem({
+const prioritySystem = new CreatorFlowPrioritySystem({
   rules: Rule[],
   overrides: Override[],
   analytics: boolean
@@ -240,4 +240,4 @@ prioritySystem.trackRuleUsage({
 
 ---
 
-_"Priority isn't about importance; it's about order of operations." - DevFlow AI™_
+_"Priority isn't about importance; it's about order of operations." - CreatorFlow_

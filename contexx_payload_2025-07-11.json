@@ -7,7 +7,7 @@
   "agentPersona": "Lloyd Alexander",
   "content": {
     "eventType": "session_completion",
-    "projectName": "CreatorFlow",
+    "projectName": "floai.studio",
     "projectPath": "creatorflow-app",
     "sessionDuration": "~1 hour",
     "status": "completed_successfully",

@@ -372,9 +372,9 @@ export default function AboutPage() {
             </Typography>
           </Box>
           
-          <Grid container spacing={4}>
+          <Grid container spacing={4} justifyContent="center">
             <Grid item xs={12} md={4} component="div">
-              <Box sx={{ textAlign: 'center' }}>
+              <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <Box sx={{ 
                   width: 96, 
                   height: 96, 
@@ -416,7 +416,7 @@ export default function AboutPage() {
             </Grid>
             
             <Grid item xs={12} md={4} component="div">
-              <Box sx={{ textAlign: 'center' }}>
+              <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <Box sx={{ 
                   width: 96, 
                   height: 96, 
@@ -458,7 +458,7 @@ export default function AboutPage() {
             </Grid>
             
             <Grid item xs={12} md={4} component="div">
-              <Box sx={{ textAlign: 'center' }}>
+              <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                 <Box sx={{ 
                   width: 96, 
                   height: 96, 

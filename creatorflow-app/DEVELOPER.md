@@ -1,6 +1,6 @@
-# CreatorFlow Developer Guide
+# floai.studio Developer Guide
 
-This document provides important information for developers working on the CreatorFlow project to avoid common issues and ensure smooth development.
+This document provides important information for developers working on the floai.studio project to avoid common issues and ensure smooth development.
 
 ## Common Issues and Solutions
 

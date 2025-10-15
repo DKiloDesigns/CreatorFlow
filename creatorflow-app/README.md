@@ -1,20 +1,45 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# floai.studio Application
+
+This directory contains the core Next.js application for floai.studio, an AI-powered social media management platform. It's built with Next.js, TypeScript, and Material-UI, providing tools for content scheduling, analytics, and brand deal management.
 
 ## Getting Started
 
-First, run the development server:
+To run this application, ensure you have Node.js v20+ and npm v10+ installed.
+
+### Installation
+
+1.  **Navigate to the project root:**
+    ```bash
+    cd /Users/darrellmayberry/CreatorFlow
+    ```
+2.  **Install root dependencies:**
+    ```bash
+    npm install
+    ```
+3.  **Navigate to the app directory and install dependencies:**
+    ```bash
+    cd creatorflow-app
+    npm install
+    ```
+
+### Development
+
+To start the development server, you can use the following commands from the project root:
 
 ```bash
+# Start the development server on default port (usually 3000)
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+
+# Start the development server on port 3001
+npm run dev:3001
 ```
 
-Open [http://localhost:3001](http://localhost:3001) with your browser to see the result.
+These commands will automatically:
+1.  Free up the required port if it's in use
+2.  Clean Next.js cache
+3.  Start the Next.js development server
+
+Open `http://localhost:3001` (or your default port) in your browser to see the result.
 
 You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
@@ -37,7 +62,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 ## Environment Setup for Multiple Dev Instances
 
-If you want to run multiple dev servers (e.g., on ports 3000 and 3001), create a `.env.development.local` in the root of `floai.studio-app` for each instance. Example for port 3001:
+If you want to run multiple dev servers (e.g., on ports 3000 and 3001), create a `.env.development.local` in the root of `creatorflow-app` for each instance. Example for port 3001:
 
 ```
 NEXTAUTH_URL="http://localhost:3001"

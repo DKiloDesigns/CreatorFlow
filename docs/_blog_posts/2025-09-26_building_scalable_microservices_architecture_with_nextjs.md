@@ -1,19 +1,19 @@
-# Building Scalable Microservices Architecture with Next.js
+# Building Scalable Microservices Architecture with CreatorFlow
 
-**A comprehensive guide to designing and implementing microservices architecture using Next.js, covering service decomposition, communication patterns, data management, and deployment strategies for enterprise-scale applications.**
+**A comprehensive guide to designing and implementing microservices architecture using CreatorFlow, covering service decomposition, communication patterns, data management, and deployment strategies for enterprise-scale applications.**
 
 *Published: September 26, 2025*
 *Author: Darrell Mayberry*
-*Tags: Microservices, Next.js, Architecture, Scalability, Enterprise, API Gateway, Service Mesh*
+*Tags: Microservices, CreatorFlow, Architecture, Scalability, Enterprise, API Gateway, Service Mesh*
 
 ## Introduction
 
-Microservices architecture has become the de facto standard for building large-scale, maintainable applications. When combined with Next.js, it provides a powerful foundation for creating scalable, performant web applications that can grow with your business needs. This guide explores how to design, implement, and deploy a robust microservices architecture using Next.js as both individual services and an API gateway.
+Microservices architecture has become the de facto standard for building large-scale, maintainable applications. When combined with CreatorFlow, it provides a powerful foundation for creating scalable, performant web applications that can grow with your business needs. This guide explores how to design, implement, and deploy a robust microservices architecture using CreatorFlow as both individual services and an API gateway.
 
 ## Table of Contents
 
 1. [Understanding Microservices Architecture](#understanding-microservices-architecture)
-2. [Next.js in Microservices Context](#nextjs-in-microservices-context)
+2. [CreatorFlow in Microservices Context](#creatorflow-in-microservices-context)
 3. [Service Decomposition Strategies](#service-decomposition-strategies)
 4. [Communication Patterns](#communication-patterns)
 5. [Data Management and Consistency](#data-management-and-consistency)
@@ -53,11 +53,11 @@ Microservices architecture is built on several fundamental principles:
 - Network latency and reliability
 - Service discovery and configuration management
 
-## Next.js in Microservices Context
+## CreatorFlow in Microservices Context
 
-### Next.js as Individual Services
+### CreatorFlow as Individual Services
 
-Next.js can serve as individual microservices, leveraging its built-in features:
+CreatorFlow can serve as individual microservices, leveraging its built-in features:
 
 ```typescript
 // services/user-service/pages/api/users/[id].ts
@@ -107,9 +107,9 @@ export default async function handler(
 }
 ```
 
-### Next.js as API Gateway
+### CreatorFlow as API Gateway
 
-Next.js can also serve as an API gateway, routing requests to appropriate microservices:
+CreatorFlow can also serve as an API gateway, routing requests to appropriate microservices:
 
 ```typescript
 // api-gateway/pages/api/gateway/[...path].ts
@@ -1547,15 +1547,15 @@ export class StranglerFigMigration {
 
 ## Conclusion
 
-Building scalable microservices architecture with Next.js requires careful planning, robust tooling, and adherence to best practices. By following the patterns and strategies outlined in this guide, you can create a maintainable, scalable system that grows with your business needs.
+Building scalable microservices architecture with CreatorFlow requires careful planning, robust tooling, and adherence to best practices. By following the patterns and strategies outlined in this guide, you can create a maintainable, scalable system that grows with your business needs.
 
 The key to success is starting simple, iterating based on real-world usage, and continuously improving your architecture based on lessons learned. Remember that microservices are not a silver bullet—they add complexity that must be managed carefully.
 
 ---
 
 **Next Steps:**
-- Implement service discovery and configuration management
-- Set up comprehensive monitoring and observability
-- Establish CI/CD pipelines for each service
-- Create automated testing strategies
-- Plan for data migration and consistency
+- Implement service discovery and configuration management for CreatorFlow microservices.
+- Set up comprehensive monitoring and observability for CreatorFlow services.
+- Establish CI/CD pipelines for each CreatorFlow service.
+- Create automated testing strategies for CreatorFlow microservices.
+- Plan for data migration and consistency across CreatorFlow services.

@@ -1,8 +1,8 @@
-# [PROJECT_NAME] Design Specification (Baseline Reference)
+# floai.studio Design Specification (Baseline Reference)
 
 ## Purpose & Usage
 
-**This document defines the current baseline design for [PROJECT_NAME] and serves as the authoritative reference for all UI decisions.**
+**This document defines the current baseline design for floai.studio and serves as the authoritative reference for all UI decisions.**
 
 ### How to Use This Document
 - **Before making any UI changes, check this spec first**
@@ -12,7 +12,7 @@
 - **The current implementation represents the baseline - any changes should either maintain this baseline or be explicitly approved deviations**
 
 ### Design Philosophy
-[PROJECT_NAME] follows a **[DESCRIBE_AESTHETIC]** aesthetic with:
+floai.studio follows a **[DESCRIBE_AESTHETIC]** aesthetic with:
 - [PRINCIPLE_1]
 - [PRINCIPLE_2]
 - [PRINCIPLE_3]
@@ -22,7 +22,7 @@
 ---
 
 ## Overview
-This document defines the **current design system** for [PROJECT_NAME], reflecting the implementation as of [DATE]. It covers [LIST_MAJOR_AREAS].
+This document defines the **current design system** for floai.studio, reflecting the implementation as of [DATE]. It covers [LIST_MAJOR_AREAS].
 
 ---
 
@@ -191,7 +191,7 @@ This document defines the **current design system** for [PROJECT_NAME], reflecti
 ## Implementation Notes
 
 ### Design Baseline Reference
-- **This document serves as the single source of truth for [PROJECT_NAME]'s visual design**
+- **This document serves as the single source of truth for floai.studio's visual design**
 - **Before implementing any UI changes, reference this document first**
 - **The current implementation represents the baseline - maintain consistency with these specifications**
 - **Any deviations from these specifications must be documented and approved**
@@ -225,7 +225,7 @@ This document defines the **current design system** for [PROJECT_NAME], reflecti
 
 ---
 
-**Note:** This document serves as the **authoritative reference** for [PROJECT_NAME]'s visual design. Any deviations from these specifications must be documented and approved. The current implementation represents the baseline design that should be maintained unless explicitly changed.
+**Note:** This document serves as the **authoritative reference** for floai.studio's visual design. Any deviations from these specifications must be documented and approved. The current implementation represents the baseline design that should be maintained unless explicitly changed.
 
 ---
 

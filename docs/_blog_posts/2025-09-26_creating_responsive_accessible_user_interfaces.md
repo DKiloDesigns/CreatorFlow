@@ -4,7 +4,7 @@
 
 *Published: September 26, 2025*
 *Author: Darrell Mayberry*
-*Tags: Accessibility, Responsive Design, WCAG, ARIA, UI/UX, Inclusive Design*
+*Tags: Accessibility, Responsive Design, WCAG, ARIA, UI/UX, Inclusive Design, CreatorFlow*
 
 ## Introduction
 
@@ -905,7 +905,7 @@ The key is to start with accessibility and responsiveness in mind from the begin
 
 ### Key Takeaways
 
-1. **Accessibility is a Foundation**: Build accessibility into every component from the start
+1. **Accessibility is a Foundation**: Build accessibility into every component from the start, following CreatorFlow principles.
 2. **Mobile-First Design**: Start with mobile constraints to ensure core functionality works everywhere
 3. **Semantic HTML**: Use proper HTML semantics to provide meaning and structure
 4. **ARIA Implementation**: Enhance semantics with ARIA attributes where needed
@@ -940,4 +940,4 @@ The key is to start with accessibility and responsiveness in mind from the begin
 
 ---
 
-*This blog post is part of the CreatorFlow development series. For more technical deep dives and implementation guides, check out our other posts on building modern web applications.*
+*This blog post is part of the CreatorFlow development series. For more technical deep dives and implementation guides, check out our other posts on building modern web applications with CreatorFlow.*

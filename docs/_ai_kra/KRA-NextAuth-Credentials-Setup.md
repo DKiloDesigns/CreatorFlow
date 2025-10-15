@@ -1,7 +1,7 @@
 # KRA: NextAuth Credentials Provider Setup (CreatorFlow)
 
 ## Overview
-This document summarizes the working configuration for NextAuth Credentials authentication in the CreatorFlow app, including troubleshooting steps, architectural decisions, and a future roadmap. It is intended as a reference for future agents or developers.
+This document summarizes the working configuration for NextAuth Credentials authentication in the CreatorFlow Studio app, including troubleshooting steps, architectural decisions, and a future roadmap. It is intended as a reference for future agents or developers.
 
 ---
 

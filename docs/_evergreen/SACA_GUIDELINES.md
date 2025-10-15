@@ -6,7 +6,7 @@
 
 ## INTRODUCTION
 
-This document defines the core principles and guidelines for the **Sexy Accessibility Compliance Alliance (SACA)** as applied within the **BizAssist Dashboard** project. All development MUST adhere to these guidelines to ensure our products are accessible, reusable, monetizable, and uphold the SACA mission.
+This document defines the core principles and guidelines for the **Sexy Accessibility Compliance Alliance (SACA)** as applied within the **CreatorFlow Studio** project. All development MUST adhere to these guidelines to ensure our products are accessible, reusable, monetizable, and uphold the SACA mission.
 
 **SACA Mission:** To create accessible, inclusive _and_ sexy user experiences in _everything_ we do.
 
@@ -70,4 +70,4 @@ All development MUST follow the **SACA "-ize" Methodology** detailed in `Context
 
 ## ENFORCEMENT
 
-Adherence to SACA Guidelines is mandatory. Compliance will be tracked via testing results, documentation checks, and potentially visualized in the future Mission Control dashboard within BizAssist. Non-compliance may block deployment.
+Adherence to SACA Guidelines is mandatory. Compliance will be tracked via testing results, documentation checks, and potentially visualized in the future Mission Control dashboard within CreatorFlow Studio. Non-compliance may block deployment.

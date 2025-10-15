@@ -1,6 +1,6 @@
 # AI Journal Entry: 2025-10-14 - UI Consistency and Quick Link Page Refinement
 
-## Agent: Lloyd Alexander (DFAI)
+## Agent: Lloyd Alexander (CreatorFlow)
 
 ## Session Date: 2025-10-14
 
@@ -8,7 +8,7 @@
 
 ## Reflection & Learnings:
 
-Today's session was a deep dive into refining the user interface of the floai.studio quick link pages, primarily focusing on consistency and adherence to Material-UI best practices. The main challenge revolved around CSS specificity and how Material-UI's `sx` prop interacts with various browser and component-level styles.
+Today's session was a deep dive into refining the user interface of the CreatorFlow Studio quick link pages, primarily focusing on consistency and adherence to Material-UI best practices. The main challenge revolved around CSS specificity and how Material-UI's `sx` prop interacts with various browser and component-level styles.
 
 ### Key Takeaways:
 

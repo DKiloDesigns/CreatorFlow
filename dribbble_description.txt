@@ -2,7 +2,7 @@ CreatorFlow - The Ultimate Creator's Command Center 🚀
 
 Empower Your Content. Grow Your Audience. Monetize Your Passion.
 
-AI-powered social media management platform for creators. Schedule posts, generate content, track analytics, and manage brand deals across Instagram, TikTok, YouTube & X. Built with Next.js 15, TypeScript & Tailwind CSS.
+AI-powered social media management platform for creators. Schedule posts, generate content, track analytics, and manage brand deals across Instagram, TikTok, YouTube & X. Built with Next.js 15, TypeScript & Material-UI.
 
 Perfect for content creators and influencers who want to spend less time managing accounts and more time creating killer content that drives revenue.
 

@@ -1,8 +1,8 @@
-# CreatorFlow Design Specification (2025 Baseline)
+# floai.studio Design Specification (2025 Baseline)
 
 ## Purpose & Usage
 
-**This document defines the current baseline design for CreatorFlow and serves as the authoritative reference for all UI decisions.**
+**This document defines the current baseline design for floai.studio and serves as the authoritative reference for all UI decisions.**
 
 ### How to Use This Document
 - **Before making any UI changes, check this spec first**
@@ -12,7 +12,7 @@
 - **The current implementation represents the baseline - any changes should either maintain this baseline or be explicitly approved deviations**
 
 ### Design Philosophy
-CreatorFlow follows a **clean, minimal aesthetic** with:
+floai.studio follows a **clean, minimal aesthetic** with:
 - High contrast for accessibility
 - Consistent color system across light/dark modes
 - Blue-to-purple gradients for accent elements
@@ -22,7 +22,7 @@ CreatorFlow follows a **clean, minimal aesthetic** with:
 ---
 
 ## Overview
-This document defines the **current design system** for CreatorFlow, reflecting the implementation as of July 2025. It covers the landing page, navigation, theme toggle, cards, buttons, gradients, and overall color system.
+This document defines the **current design system** for floai.studio, reflecting the implementation as of July 2025. It covers the landing page, navigation, theme toggle, cards, buttons, gradients, and overall color system.
 
 ---
 
@@ -346,7 +346,7 @@ _Last updated: 2025-07-08_
 ## Implementation Notes
 
 ### Design Baseline Reference
-- **This document serves as the single source of truth for CreatorFlow's visual design**
+- **This document serves as the single source of truth for floai.studio's visual design**
 - **Before implementing any UI changes, reference this document first**
 - **The current implementation represents the baseline - maintain consistency with these specifications**
 - **Any deviations from these specifications must be documented and approved**
@@ -385,4 +385,4 @@ _Last updated: 2025-07-08_
 
 ---
 
-**Note:** This document serves as the **authoritative reference** for CreatorFlow's visual design. Any deviations from these specifications must be documented and approved. The current implementation represents the baseline design that should be maintained unless explicitly changed. 
+**Note:** This document serves as the **authoritative reference** for floai.studio's visual design. Any deviations from these specifications must be documented and approved. The current implementation represents the baseline design that should be maintained unless explicitly changed. 

@@ -1,8 +1,8 @@
-# CreatorFlow Monetization Setup Guide
+# floai.studio Monetization Setup Guide
 
 ## 🎯 Overview
 
-CreatorFlow now has a complete monetization system with three pricing tiers:
+floai.studio now has a complete monetization system with three pricing tiers:
 - **Free**: 3 accounts, 10 posts/month, basic features
 - **Pro**: 10 accounts, unlimited posts, AI features, $29/month
 - **Enterprise**: Unlimited everything, white-label, $99/month
@@ -20,7 +20,7 @@ NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_...
 STRIPE_WEBHOOK_SECRET=whsec_...
 
 # App Configuration
-NEXT_PUBLIC_APP_URL=http://localhost:3001
+NEXT_PUBLIC_APP_URL=https://floai.studio
 ```
 
 ### 2. Set Up Stripe Products
@@ -217,7 +217,7 @@ Use these Stripe test cards:
 STRIPE_SECRET_KEY=sk_live_...
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_live_...
 STRIPE_WEBHOOK_SECRET=whsec_...
-NEXT_PUBLIC_APP_URL=https://creatorflow.com
+NEXT_PUBLIC_APP_URL=https://floai.studio
 ```
 
 ## 📈 Analytics & Monitoring
@@ -276,7 +276,7 @@ For issues with the monetization system:
 
 ## 🎉 Success!
 
-Your CreatorFlow monetization system is now ready! Users can:
+Your floai.studio monetization system is now ready! Users can:
 - View pricing plans
 - Subscribe to Pro/Enterprise
 - Manage their billing

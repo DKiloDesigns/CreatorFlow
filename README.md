@@ -1,6 +1,6 @@
-# CreatorFlow
+# floai.studio
 
-A Next.js social media management platform with content scheduling, OAuth integration, and Stripe billing functionality.
+A Next.js social media management platform with content scheduling, OAuth integration, Stripe billing, and Material-UI integration.
 
 ## Project Structure
 

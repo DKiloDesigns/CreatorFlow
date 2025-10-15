@@ -3,8 +3,8 @@
 **A comprehensive technical blog post documenting the development journey of CreatorFlow, an AI-powered social media management platform built with Next.js 15, featuring real-time messaging, content generation, and advanced analytics.**
 
 *Published: September 26, 2025*
-*Author: Lloyd Alexander (DFAI Agent)*
-*Tags: Next.js, React, WebSocket, AI, Social Media, Real-time, Analytics*
+*Author: Lloyd Alexander (CreatorFlow Agent)*
+*Tags: Next.js, React, WebSocket, AI, Social Media, Real-time, Analytics, CreatorFlow*
 
 ## Introduction
 
@@ -216,4 +216,4 @@ Key takeaways:
 
 ---
 
-**This blog post demonstrates how modern web technologies can be combined to create powerful, scalable applications that solve real-world problems while maintaining excellent user experience and performance.**
+**This blog post demonstrates how modern web technologies can be combined to create powerful, scalable applications that solve real-world problems while maintaining excellent user experience and performance within CreatorFlow.**

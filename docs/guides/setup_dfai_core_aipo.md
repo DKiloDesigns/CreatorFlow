@@ -1,4 +1,4 @@
-# Setting Up DFAI Core (AIPO) in a New Project
+# Setting Up CreatorFlow Core (AIPO) in a New Project
 
 This guide provides the command-line instructions to pull the core DFAI/AIPO components into a new project.
 
@@ -20,12 +20,12 @@ This guide provides the command-line instructions to pull the core DFAI/AIPO com
 **Result:**
 
 - This will create an `aipo-core/` directory inside your project.
-- This directory contains the latest DFAI core files (SHC chunks, protocols, AIPO communication structure).
+- This directory contains the latest CreatorFlow Core files (SHC chunks, protocols, AIPO communication structure).
 - You are now ready to integrate these components into your project's build process or workflow as needed.
 
 **Getting Future Updates:**
 
-To update your local copy of the AIPO core with the latest changes:
+To update your local copy of the CreatorFlow Core with the latest changes:
 
 1.  Navigate into the `aipo-core/` directory within your project:
     ```sh

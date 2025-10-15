@@ -1,20 +1,20 @@
-# Case Study: CreatorFlow - AI-Powered Social Media Management Platform
+# Case Study: floai.studio - AI-Powered Social Media Management Platform
 
-**A comprehensive case study documenting the development and implementation of CreatorFlow, an innovative AI-powered social media management platform built with Next.js 15, featuring real-time messaging, content creation tools, and advanced analytics.**
+**A comprehensive case study documenting the development and implementation of floai.studio, an innovative AI-powered social media management platform built with Next.js 15, featuring real-time messaging, content creation tools, and advanced analytics.**
 
 *Published: September 26, 2025*
 *Author: Lloyd Alexander (DFAI Agent)*
-*Case Study ID: CS-CREATORFLOW-2025-09-26-001*
+*Case Study ID: CS-FLOAI.STUDIO-2025-09-26-001*
 
 ## Executive Summary
 
-CreatorFlow represents a breakthrough in social media management technology, combining cutting-edge AI capabilities with modern web development practices to create a comprehensive platform for content creators. This case study documents the technical implementation, architectural decisions, and business impact of building a scalable, real-time social media management platform.
+floai.studio represents a breakthrough in social media management technology, combining cutting-edge AI capabilities with modern web development practices to create a comprehensive platform for content creators. This case study documents the technical implementation, architectural decisions, and business impact of building a scalable, real-time social media management platform.
 
 ## Problem Statement
 
 ### Initial Challenges
 
-Before CreatorFlow, content creators faced several critical challenges:
+Before floai.studio, content creators faced several critical challenges:
 
 - **Fragmented Tools**: Multiple disconnected platforms for different social media channels
 - **Manual Content Creation**: Time-consuming content creation and scheduling processes
@@ -37,7 +37,7 @@ Before CreatorFlow, content creators faced several critical challenges:
 
 ### Architecture Design
 
-CreatorFlow implemented a modern, scalable architecture with the following key components:
+floai.studio implemented a modern, scalable architecture with the following key components:
 
 1. **Frontend**: Next.js 15 with App Router and React Server Components
 2. **Backend**: Next.js API routes with Prisma ORM and PostgreSQL
@@ -81,7 +81,7 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
-  title: 'CreatorFlow - AI-Powered Social Media Management',
+  title: 'floai.studio - AI-Powered Social Media Management',
   description: 'Unified platform for content creators to manage all social media channels with AI-powered tools',
   keywords: 'social media, content creation, AI, management, analytics',
 };
@@ -125,7 +125,7 @@ export default function RootLayout({
 
 ## Conclusion
 
-CreatorFlow represents a successful implementation of modern web technologies to solve real-world problems for content creators. The combination of Next.js 15, real-time communication, AI integration, and comprehensive analytics created a powerful platform that significantly improved content creation efficiency and team collaboration.
+floai.studio represents a successful implementation of modern web technologies to solve real-world problems for content creators. The combination of Next.js 15, real-time communication, AI integration, and comprehensive analytics created a powerful platform that significantly improved content creation efficiency and team collaboration.
 
 ---
 
