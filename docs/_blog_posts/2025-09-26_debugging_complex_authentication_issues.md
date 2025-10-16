@@ -1,14 +1,14 @@
 # Debugging Complex Authentication Issues: A Real-World Case Study
 
-**A comprehensive guide to systematically debugging authentication problems in Next.js applications, featuring real-world troubleshooting strategies from CreatorFlow's authentication system.**
+**A comprehensive guide to systematically debugging authentication problems in Next.js applications, featuring real-world troubleshooting strategies from `floai.studio`'s authentication system.**
 
 *Published: September 26, 2025*
 *Author: Darrell Mayberry*
-*Tags: Authentication, NextAuth.js, Debugging, Next.js, Security, Troubleshooting*
+*Tags: Authentication, NextAuth.js, Debugging, Next.js, Security, Troubleshooting, floai.studio*
 
 ## Introduction
 
-Authentication debugging is one of the most challenging aspects of web development. When authentication fails, it can be difficult to determine whether the issue lies in the frontend, backend, database, or external service integration. In this comprehensive guide, we'll walk through a real-world case study of debugging complex authentication issues in CreatorFlow, providing you with systematic approaches and practical solutions.
+Authentication debugging is one of the most challenging aspects of web development. When authentication fails, it can be difficult to determine whether the issue lies in the frontend, backend, database, or external service integration. In this comprehensive guide, we'll walk through a real-world case study of debugging complex authentication issues in `floai.studio`, providing you with systematic approaches and practical solutions.
 
 ## Table of Contents
 
@@ -21,7 +21,7 @@ Authentication debugging is one of the most challenging aspects of web developme
 7. [Frontend Integration Issues](#frontend-integration-issues)
 8. [Debugging Tools and Techniques](#debugging-tools-and-techniques)
 9. [Prevention Strategies](#prevention-strategies)
-10. [Case Study: CreatorFlow Authentication Crisis](#case-study-creatorflow-authentication-crisis)
+10. [Case Study: `floai.studio` Authentication Crisis](#case-study-creatorflow-authentication-crisis)
 
 ## The Authentication Debugging Challenge
 
@@ -681,11 +681,11 @@ const monitorAuthErrors = (error: Error, context: any) => {
 };
 ```
 
-## Case Study: CreatorFlow Authentication Crisis
+## Case Study: `floai.studio` Authentication Crisis
 
 ### The Problem
 
-A user reported being unable to log in to CreatorFlow after a password reset. The error message was generic: "Internal Server Error."
+A user reported being unable to log in to `floai.studio` after a password reset. The error message was generic: "Internal Server Error."
 
 ### The Investigation Process
 
@@ -789,12 +789,12 @@ After 37 minutes of systematic debugging:
 1. **Start with infrastructure**: Check database, services, and environment first
 2. **Schema consistency**: Always ensure Prisma schema matches database
 3. **User experience**: Balance security with usability
-4. **Systematic approach**: Check each layer methodically
+4. **Systematic approach**: Check each layer methodically for `floai.studio`
 5. **Documentation**: Record findings for future reference
 
 ## Conclusion
 
-Authentication debugging requires a systematic approach, comprehensive logging, and a deep understanding of the entire authentication flow. By following the strategies outlined in this guide, you can effectively diagnose and resolve even the most complex authentication issues.
+Authentication debugging requires a systematic approach, comprehensive logging, and a deep understanding of the entire authentication flow. By following the strategies outlined in this guide, you can effectively diagnose and resolve even the most complex authentication issues for `floai.studio`.
 
 Remember:
 - Always start with infrastructure checks
@@ -803,8 +803,8 @@ Remember:
 - Document your findings
 - Implement prevention strategies
 
-The key to successful authentication debugging is patience, systematic thinking, and a focus on the user experience. With the right approach, you can transform authentication crises into learning opportunities and build more robust systems.
+The key to successful authentication debugging is patience, systematic thinking, and a focus on the user experience. With the right approach, you can transform authentication crises into learning opportunities and build more robust systems for `floai.studio`.
 
 ---
 
-**Ready to debug authentication issues in your Next.js application? Start with the systematic approach and build comprehensive logging into your authentication system.**
+**Ready to debug authentication issues in your Next.js application? Start with the systematic approach and build comprehensive logging into your authentication system for `floai.studio`.**

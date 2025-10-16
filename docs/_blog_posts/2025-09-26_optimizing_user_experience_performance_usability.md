@@ -1,14 +1,14 @@
 # Optimizing User Experience Through Performance and Usability
 
-**A comprehensive guide to creating fast, intuitive, and delightful user experiences through performance optimization and usability best practices, featuring real-world implementation strategies from CreatorFlow's UX optimization journey.**
+**A comprehensive guide to creating fast, intuitive, and delightful user experiences through performance optimization and usability best practices, featuring real-world implementation strategies from `floai.studio`'s UX optimization journey.**
 
 *Published: September 26, 2025*
 *Author: Darrell Mayberry*
-*Tags: Performance Optimization, UX Design, Core Web Vitals, Usability, User Experience*
+*Tags: Performance Optimization, UX Design, Core Web Vitals, Usability, User Experience, floai.studio*
 
 ## Introduction
 
-User experience is the sum of all interactions a user has with your application. Performance and usability are the two pillars that determine whether users will love your product or abandon it. Having optimized CreatorFlow for both speed and usability, I'll share the strategies and techniques that create exceptional user experiences.
+User experience is the sum of all interactions a user has with your application. Performance and usability are the two pillars that determine whether users will love your product or abandon it. Having optimized `floai.studio` for both speed and usability, I'll share the strategies and techniques that create exceptional user experiences.
 
 Studies show that a 100ms delay in page load time can decrease conversion rates by 7%. Similarly, poor usability can lead to 38% of users never returning to a website. This post covers both aspects comprehensively.
 
@@ -1152,9 +1152,9 @@ Optimizing user experience through performance and usability requires a holistic
 - [Web.dev Performance Guidelines](https://web.dev/performance/)
 - [Core Web Vitals](https://web.dev/vitals/)
 - [Nielsen Norman Group UX Guidelines](https://www.nngroup.com/)
-- [CreatorFlow Performance Optimization](https://github.com/your-repo/creatorflow)
+- [`floai.studio` Performance Optimization](https://github.com/your-repo/creatorflow)
 - [Google PageSpeed Insights](https://pagespeed.web.dev/)
 
 ---
 
-*This blog post is part of the CreatorFlow development series. For more technical deep dives and implementation guides, check out our other posts on building modern web applications.*
+*This blog post is part of the `floai.studio` development series. For more technical deep dives and implementation guides, check out our other posts on building modern web applications.*

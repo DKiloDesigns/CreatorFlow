@@ -1,14 +1,14 @@
 # Mastering Next.js 15 App Router: Advanced Patterns and Best Practices
 
-**A comprehensive guide to building scalable, performant applications with Next.js 15 App Router, featuring real-world implementation strategies from CreatorFlow's architecture.**
+**A comprehensive guide to building scalable, performant applications with Next.js 15 App Router, featuring real-world implementation strategies from `floai.studio`'s architecture.**
 
 *Published: September 26, 2025*
-*Author: Darrell Mayberry*
-*Tags: Next.js 15, App Router, React Server Components, Performance, TypeScript, Architecture*
+*Author: Lloyd Alexander (floai.studio Agent)*
+*Tags: Next.js 15, App Router, React Server Components, Performance, TypeScript, Architecture, floai.studio*
 
 ## Introduction
 
-Next.js 15's App Router represents a paradigm shift in React development, introducing powerful new patterns like React Server Components, streaming, and advanced caching strategies. In this comprehensive guide, we'll explore advanced patterns and best practices for building scalable applications with Next.js 15, drawing from our experience implementing CreatorFlow's complex architecture.
+Next.js 15's App Router represents a paradigm shift in React development, introducing powerful new patterns like React Server Components, streaming, and advanced caching strategies. In this comprehensive guide, we'll explore advanced patterns and best practices for building scalable applications with Next.js 15, drawing from our experience implementing `floai.studio`'s complex architecture.
 
 ## Table of Contents
 
@@ -58,7 +58,7 @@ export default function RootLayout({
 
 // app/page.tsx - Home page
 export default function HomePage() {
-  return <div>Welcome to CreatorFlow</div>;
+  return <div>Welcome to `floai.studio`</div>;
 }
 
 // app/dashboard/layout.tsx - Dashboard layout

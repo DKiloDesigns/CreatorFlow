@@ -1,14 +1,14 @@
 # Production Deployment and DevOps Best Practices
 
-**A comprehensive guide to deploying Next.js applications to production with modern DevOps practices, featuring real-world deployment strategies from CreatorFlow's production environment.**
+**A comprehensive guide to deploying Next.js applications to production with modern DevOps practices, featuring real-world deployment strategies from `floai.studio`'s production environment.**
 
 *Published: September 26, 2025*
-*Author: Lloyd Alexander (CreatorFlow Agent)*
-*Tags: DevOps, Deployment, Next.js, Docker, CI/CD, Production, Monitoring, Infrastructure, CreatorFlow*
+*Author: Lloyd Alexander (floai.studio Agent)*
+*Tags: DevOps, Deployment, Next.js, Docker, CI/CD, Production, Monitoring, Infrastructure, floai.studio*
 
 ## Introduction
 
-Deploying applications to production requires careful planning, robust infrastructure, and comprehensive monitoring. In this comprehensive guide, we'll explore modern DevOps practices for deploying Next.js applications, covering containerization, CI/CD pipelines, infrastructure as code, and production monitoring, drawing from our experience deploying CreatorFlow to production and providing best practices for CreatorFlow.
+Deploying applications to production requires careful planning, robust infrastructure, and comprehensive monitoring. In this comprehensive guide, we'll explore modern DevOps practices for deploying Next.js applications, covering containerization, CI/CD pipelines, infrastructure as code, and production monitoring, drawing from our experience deploying `floai.studio` to production and providing best practices for `floai.studio`.
 
 ## Table of Contents
 
@@ -109,7 +109,7 @@ services:
       - "3000:3000"
     environment:
       - NODE_ENV=development
-      - DATABASE_URL=postgresql://postgres:password@db:5432/creatorflow_dev
+      - DATABASE_URL=postgresql://postgres:password@db:5432/floai_studio_dev
       - REDIS_URL=redis://redis:6379
     depends_on:
       - db
@@ -387,9 +387,9 @@ resource "aws_db_instance" "main" {
 apiVersion: v1
 kind: Namespace
 metadata:
-  name: creatorflow
+  name: floai-studio
   labels:
-    name: creatorflow
+    name: floai-studio
 
 ---
 # k8s/configmap.yaml
@@ -397,7 +397,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: app-config
-  namespace: creatorflow
+  namespace: floai-studio
 data:
   NODE_ENV: "production"
   PORT: "3000"
@@ -409,7 +409,7 @@ apiVersion: v1
 kind: Secret
 metadata:
   name: app-secrets
-  namespace: creatorflow
+  namespace: floai-studio
 type: Opaque
 data:
   DATABASE_URL: <base64-encoded-database-url>
@@ -421,21 +421,21 @@ data:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: creatorflow-app
-  namespace: creatorflow
+  name: floai-studio-app
+  namespace: floai-studio
 spec:
   replicas: 3
   selector:
     matchLabels:
-      app: creatorflow-app
+      app: floai-studio-app
   template:
     metadata:
       labels:
-        app: creatorflow-app
+        app: floai-studio-app
     spec:
       containers:
       - name: app
-        image: creatorflow:latest
+        image: floai-studio:latest
         ports:
         - containerPort: 3000
         envFrom:
@@ -468,11 +468,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: creatorflow-service
-  namespace: creatorflow
+  name: floai-studio-service
+  namespace: floai-studio
 spec:
   selector:
-    app: creatorflow-app
+    app: floai-studio-app
   ports:
   - protocol: TCP
     port: 80
@@ -484,8 +484,8 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: creatorflow-ingress
-  namespace: creatorflow
+  name: floai-studio-ingress
+  namespace: floai-studio
   annotations:
     kubernetes.io/ingress.class: nginx
     cert-manager.io/cluster-issuer: letsencrypt-prod
@@ -493,18 +493,18 @@ metadata:
 spec:
   tls:
   - hosts:
-    - creatorflow.com
-    - www.creatorflow.com
-    secretName: creatorflow-tls
+    - floai.studio
+    - www.floai.studio
+    secretName: floai-studio-tls
   rules:
-  - host: creatorflow.com
+  - host: floai.studio
     http:
       paths:
       - path: /
         pathType: Prefix
         backend:
           service:
-            name: creatorflow-service
+            name: floai-studio-service
             port:
               number: 80
 ```
@@ -524,10 +524,10 @@ on:
 
 env:
   AWS_REGION: us-west-2
-  ECR_REPOSITORY: creatorflow
-  ECS_SERVICE: creatorflow-service
-  ECS_CLUSTER: creatorflow-cluster
-  ECS_TASK_DEFINITION: creatorflow-app
+  ECR_REPOSITORY: floai-studio
+  ECS_SERVICE: floai-studio-service
+  ECS_CLUSTER: floai-studio-cluster
+  ECS_TASK_DEFINITION: floai-studio-app
 
 jobs:
   test:
@@ -680,7 +680,7 @@ deploy_staging:
     - curl -X POST $STAGING_WEBHOOK_URL
   environment:
     name: staging
-    url: https://staging.creatorflow.com
+    url: https://staging.floai.studio
   only:
     - develop
 
@@ -693,7 +693,7 @@ deploy_production:
     - curl -X POST $PRODUCTION_WEBHOOK_URL
   environment:
     name: production
-    url: https://creatorflow.com
+    url: https://floai.studio
   when: manual
   only:
     - main
@@ -746,7 +746,7 @@ export type Environment = z.infer<typeof environmentSchema>;
 // config/environments/development.ts
 export const developmentConfig = {
   database: {
-    url: process.env.DATABASE_URL || 'postgresql://localhost:5432/creatorflow_dev',
+    url: process.env.DATABASE_URL || 'postgresql://localhost:5432/floai_studio_dev',
     ssl: false,
     logging: true,
   },
@@ -1175,7 +1175,7 @@ const s3Client = new S3Client({ region: process.env.AWS_REGION });
 
 async function backupDatabase() {
   const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-  const backupFileName = `creatorflow-backup-${timestamp}.sql`;
+  const backupFileName = `floai-studio-backup-${timestamp}.sql`;
   const backupPath = `/tmp/${backupFileName}`;
   
   try {
@@ -1231,7 +1231,7 @@ apiVersion: batch/v1
 kind: CronJob
 metadata:
   name: database-backup
-  namespace: creatorflow
+  namespace: floai-studio
 spec:
   schedule: "0 2 * * *"  # Daily at 2 AM
   jobTemplate:
@@ -1265,7 +1265,7 @@ spec:
                   name: aws-credentials
                   key: secret-access-key
             - name: S3_BACKUP_BUCKET
-              value: "creatorflow-backups"
+              value: "floai-studio-backups"
             volumeMounts:
             - name: backup-storage
               mountPath: /backup
@@ -1425,10 +1425,10 @@ export class RedisCache {
 
 ## Conclusion
 
-Production deployment and DevOps best practices are essential for building reliable, scalable, and maintainable applications. By implementing proper containerization, CI/CD pipelines, monitoring, and security measures, you can ensure your Next.js application runs smoothly in production within the CreatorFlow ecosystem.
+Production deployment and DevOps best practices are essential for building reliable, scalable, and maintainable applications. By implementing proper containerization, CI/CD pipelines, monitoring, and security measures, you can ensure your Next.js application runs smoothly in production within the `floai.studio` ecosystem.
 
-The key to successful DevOps is automation, monitoring, and continuous improvement. Start with the basics and gradually implement more advanced practices as your CreatorFlow application grows.
+The key to successful DevOps is automation, monitoring, and continuous improvement. Start with the basics and gradually implement more advanced practices as your `floai.studio` application grows.
 
 ---
 
-**Ready to deploy your Next.js application to production? Start with containerization and gradually implement the full DevOps pipeline as your CreatorFlow needs grow.**
+**Ready to deploy your Next.js application to production? Start with containerization and gradually implement the full DevOps pipeline as your `floai.studio` needs grow.**

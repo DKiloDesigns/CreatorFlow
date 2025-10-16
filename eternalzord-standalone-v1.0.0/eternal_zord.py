@@ -5,6 +5,10 @@ import time
 import logging
 from pathlib import Path
 
+# Add the parent directory to sys.path for relative imports
+script_dir = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, script_dir)
+
 # Set up logging
 def setup_logging(log_dir=None):
     if log_dir is None:

@@ -1,14 +1,14 @@
 # Implementing Event-Driven Architecture with WebSockets and Message Queues
 
-**A comprehensive guide to building scalable, real-time applications using event-driven architecture patterns with WebSockets, message queues, and event sourcing.**
+**A comprehensive guide to building scalable, real-time applications using event-driven architecture patterns with WebSockets, message queues, and event sourcing for `floai.studio`.**
 
 *Published: September 26, 2025*
-*Author: Lloyd Alexander (CreatorFlow Agent)*
-*Tags: Event-Driven Architecture, WebSockets, Message Queues, Real-time, Scalability, Microservices, CreatorFlow*
+*Author: Lloyd Alexander (floai.studio Agent)*
+*Tags: Event-Driven Architecture, WebSockets, Message Queues, Real-time, Scalability, Microservices, floai.studio*
 
 ## Introduction
 
-Event-driven architecture (EDA) enables building highly scalable, responsive applications by decoupling components through asynchronous event communication. This guide explores implementing EDA using WebSockets for real-time communication and message queues for reliable event processing, with a focus on how these patterns can be applied within the CreatorFlow platform.
+Event-driven architecture (EDA) enables building highly scalable, responsive applications by decoupling components through asynchronous event communication. This guide explores implementing EDA using WebSockets for real-time communication and message queues for reliable event processing, with a focus on how these patterns can be applied within the `floai.studio` platform.
 
 ## Table of Contents
 
@@ -1103,15 +1103,15 @@ describe('User Service Events', () => {
 
 ## Conclusion
 
-Event-driven architecture with WebSockets and message queues provides a powerful foundation for building scalable, real-time applications. By following the patterns and best practices outlined in this guide, you can create robust systems that handle complex business logic while maintaining high performance and reliability within CreatorFlow.
+Event-driven architecture with WebSockets and message queues provides a powerful foundation for building scalable, real-time applications. By following the patterns and best practices outlined in this guide, you can create robust systems that handle complex business logic while maintaining high performance and reliability within `floai.studio`.
 
-Remember that EDA adds complexity, so start simple and gradually introduce more sophisticated patterns as your system grows. Focus on proper testing, monitoring, and error handling to ensure your event-driven system remains reliable and maintainable for CreatorFlow development.
+Remember that EDA adds complexity, so start simple and gradually introduce more sophisticated patterns as your system grows. Focus on proper testing, monitoring, and error handling to ensure your event-driven system remains reliable and maintainable for `floai.studio` development.
 
 ---
 
-**Next Steps for CreatorFlow:**
-- Implement comprehensive event monitoring tailored for CreatorFlow
-- Set up automated testing for CreatorFlow event flows
-- Establish error handling and recovery procedures for CreatorFlow services
-- Plan for event schema evolution within CreatorFlow
-- Monitor system performance and optimize as needed for CreatorFlow applications
+**Next Steps for `floai.studio`:**
+- Implement comprehensive event monitoring tailored for `floai.studio`
+- Set up automated testing for `floai.studio` event flows
+- Establish error handling and recovery procedures for `floai.studio` services
+- Plan for event schema evolution within `floai.studio`
+- Monitor system performance and optimize as needed for `floai.studio` applications
